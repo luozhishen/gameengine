@@ -1,0 +1,60 @@
+
+#include "ServerInc.h"
+
+// CONNECT
+// Cluster ==(    NRPC_Connect    )=> Node 
+// Node    ==(  CRPC_NodeConnect  )=> Cluster
+// Cluster ==(    SRPC_SetNode    )=> Session
+// Session ==(   NRPC_SessionAck  )=> Node 
+
+// DISCONNECT
+// Cluster ==(   NRPC_DISCONNECT  )=> Node
+// Node    ==(CRPC_NODE_DISCONNECT)=> Cluster
+// Cluster ==(    SRPC_SetNode    )=> Session
+
+interface (SessionRpc, 0)
+{
+	SRPC_UserLoginDone(_U64 sndx, _U64 cndx);
+	SRPC_KickUser(_U64 sndx);
+	SRPC_ForwardUserData(_U64 sndx, _U16 code, _U32 len, _U8 data[len]);
+	SRPC_SetNode(_U64 sndx, _U32 nodeid, _U64 nndx, _U32 ip, _U16 port);
+}
+
+interface (ClusterRpc, 1)
+{
+	CRPC_UserLogin(_U32 uid, _STR token, _U64 sndx);
+	CRPC_UserLogout(_U32 uid, _U64 sndx);
+	CRPC_KickUser(_U32 uid);
+	CRPC_OnUserData(_U64 cndx, _U16 code, _U32 len, _U8 data[len]);
+	CRPC_ForwardUserDataByCNDX(_U64 cndx, _U16 code, _U32 len, _U8 data[len]);
+	CRPC_ForwardUserDataByUID(_U32 uid, _U16 code, _U32 len, _U8 data[len]);
+	CRPC_ForwardUserDataByAID(_U32 aid, _U16 code, _U32 len, _U8 data[len]);
+	CRPC_ForwardEventByCNDX(_U64 cndx, _U32 nodeid, _U16 code, _U32 len, _U8 data[len]);
+	CRPC_ForwardEventByUID(_U32 uid, _U32 nodeid, _U16 code, _U32 len, _U8 data[len]);
+	CRPC_ForwardEventByAID(_U32 aid, _U32 nodeid, _U16 code, _U32 len, _U8 data[len]);
+
+	CRPC_NodeConnect(_U64 cndx, _U32 nodeid, _U32 nodeseq, _U64 nndx);
+	CRPC_NodeDisconnect(_U64 cndx, _U32 nodeid, _U32 nodeseq);
+
+	CRPC_SetSessionWorkload(WORKLOAD_INFO info);
+	CRPC_GetSessionWorkload();
+	[callback] CRPC_SessionWorkLoadResult(WORKLOAD_INFO info[count], _U32 count);
+	
+	CRPC_SetNodeWorkload(WORKLOAD_INFO info, _U32 type);
+	CRPC_GetNodeWorkload(_U32 type);
+	[callback] CRPC_NodeWorkLoadResult(_U32 type, WORKLOAD_INFO info[count], _U32 count);
+}
+
+interface (NodeRpc, 2)
+{
+	NRPC_Connect(_U64 cndx, _U32 nodeid, _U32 nodeseq, _U32 len, _U8 data[len]);
+	NRPC_SessionAck(_U64 nndx, _U64 sndx);
+	NRPC_Disconnect(_U64 nndx, _U32 nodeseq);
+	NRPC_OnUserData(_U64 nndx, _U16 code, _U32 len, _U8 data[len]);
+	NRPC_OnForwardEvent(_U64 nndx, _U16 code, _U32 len, _U8 data[len]);
+}
+
+interface (WorkerRpc, 3)
+{
+	WRPC_DoRequest(_U64 tid, _U16 code, _U32 len, _U8 data[len]);
+}

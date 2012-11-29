@@ -33,11 +33,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameCluster.cpp" />
-    <ClCompile Include="SGGameClusterServer.cpp" />
+    <ClCompile Include="SGCluster.cpp" />
+    <ClCompile Include="SGClusterServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SGGameCluster.h" />
+    <ClInclude Include="SGCluster.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D90DD09F-2138-407F-A476-F62C2E8B68E7}</ProjectGuid>

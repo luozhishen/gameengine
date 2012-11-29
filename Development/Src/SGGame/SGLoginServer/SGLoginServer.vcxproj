@@ -33,7 +33,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameLoginServer.cpp" />
+    <ClCompile Include="SGLoginServer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3627A8B0-207D-4E5C-A79C-4804B90A4C7C}</ProjectGuid>

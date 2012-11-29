@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameEditor.cpp" />
+    <ClCompile Include="SGEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LibBase\LibBase.vcxproj">

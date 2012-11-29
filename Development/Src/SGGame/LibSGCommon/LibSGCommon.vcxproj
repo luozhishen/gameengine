@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="SGGameDDL.ddl">
+    <CustomBuild Include="SGDDL.ddl">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)'=='Debug'">$(SolutionDir)..\..\Binaries\DDLGen_D.exe %(FullPath)</Command>
       <Command Condition="'$(Configuration)'=='Release'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
@@ -40,12 +40,12 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameCommon.cpp" />
-    <ClCompile Include="SGGameDDL.cpp" />
+    <ClCompile Include="SGCommon.cpp" />
+    <ClCompile Include="SGDDL.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SGGameCommon.h" />
-    <ClInclude Include="SGGameDDL.h" />
+    <ClInclude Include="SGCommon.h" />
+    <ClInclude Include="SGDDL.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9A814D45-3D49-46B6-A21A-CA4E86A915E8}</ProjectGuid>

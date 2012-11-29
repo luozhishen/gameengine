@@ -33,11 +33,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameNode.cpp" />
-    <ClCompile Include="SGGameNodeServer.cpp" />
+    <ClCompile Include="SGNode.cpp" />
+    <ClCompile Include="SGNodeServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SGGameNode.h" />
+    <ClInclude Include="SGNode.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3717A396-6C94-48A7-BB05-88DED0064FE7}</ProjectGuid>

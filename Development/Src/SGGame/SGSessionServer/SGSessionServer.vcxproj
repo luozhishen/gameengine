@@ -33,10 +33,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SGGameSession.h" />
+    <ClInclude Include="SGSession.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameSession.cpp" />
+    <ClCompile Include="SGSession.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D1022F99-EB34-4EAA-B6AB-04508C767864}</ProjectGuid>

@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameClientStress.cpp" />
+    <ClCompile Include="SGClientStress.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LibBase\LibBase.vcxproj">

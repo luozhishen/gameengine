@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SGGameClient.cpp" />
-    <ClCompile Include="SGGameClientApp.cpp" />
+    <ClCompile Include="SGClient.cpp" />
+    <ClCompile Include="SGClientApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SGGameClient.h" />
-    <ClInclude Include="SGGameClientApp.h" />
+    <ClInclude Include="SGClient.h" />
+    <ClInclude Include="SGClientApp.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{36DA92B8-AEC5-43E2-9E84-0DF47CF36732}</ProjectGuid>

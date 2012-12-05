@@ -2,7 +2,7 @@
 #include <AtlasServer.h>
 
 #include "SGCluster.h"
-#include "SGDDL.h"
+#include "SGGameDDL.h"
 
 namespace Atlas
 {

@@ -16,6 +16,7 @@
 
 #include "SGCommon.h"
 #include "SGClientApp.h"
+#include "ClientComponentDataView.h"
 
 class CSGClientStressApp : public CClientStressApp
 {
@@ -31,6 +32,8 @@ public:
 	virtual void InitClientView(CClientStressFrame* pFrame, wxWindow* pParent)
 	{
 		CClientStressApp::InitClientView(pFrame, pParent);
+
+		pFrame->AddView(ATLAS_NEW CClientComponentDataView(pFrame, pParent));
 	}
 
 	virtual void InitCase()

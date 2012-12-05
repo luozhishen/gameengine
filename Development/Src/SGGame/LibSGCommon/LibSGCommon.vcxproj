@@ -41,11 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SGCommon.cpp" />
-    <ClCompile Include="SGDDL.cpp" />
+    <ClCompile Include="SGGameDDL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGCommon.h" />
-    <ClInclude Include="SGDDL.h" />
+    <ClInclude Include="SGGameDDL.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9A814D45-3D49-46B6-A21A-CA4E86A915E8}</ProjectGuid>

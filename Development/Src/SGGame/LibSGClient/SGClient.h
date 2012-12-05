@@ -14,35 +14,16 @@ namespace Atlas
 		CSGClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CSGClient();
 
-		CSGClientPlayerComponent* GetPlayerComponent()		{ return pPlayerComponent; }
-		CSGClientGeneralComponent* GetGeneralComponent()	{ return pGeneralComponent; }
-		CSGClientSoldierComponent* GetSoldierComponent()	{ return pSoldierComponent; }
+		inline CSGClientPlayerComponent* GetPlayerComponent()		{ return m_pPlayerComponent; }
+		inline CSGClientGeneralComponent* GetGeneralComponent()		{ return m_pGeneralComponent; }
+		inline CSGClientSoldierComponent* GetSoldierComponent()		{ return m_pSoldierComponent; }
+
+		virtual void InitializeComponents();
 
 	private:
-		CSGClientPlayerComponent*	pPlayerComponent;
-		CSGClientGeneralComponent*	pGeneralComponent;
-		CSGClientSoldierComponent*	pSoldierComponent;
-	};
-
-	class CSGClientPlayerComponent : public CClientComponent
-	{
-	public:
-		CSGClientPlayerComponent(CSGClient* pClient);
-		virtual ~CSGClientPlayerComponent();
-	};
-
-	class CSGClientGeneralComponent : public CClientComponent
-	{
-	public:
-		CSGClientGeneralComponent(CSGClient* pClient);
-		virtual ~CSGClientGeneralComponent();
-	};
-
-	class CSGClientSoldierComponent : public CClientComponent
-	{
-	public:
-		CSGClientSoldierComponent(CSGClient* pClient);
-		virtual ~CSGClientSoldierComponent();
+		CSGClientPlayerComponent*	m_pPlayerComponent;
+		CSGClientGeneralComponent*	m_pGeneralComponent;
+		CSGClientSoldierComponent*	m_pSoldierComponent;
 	};
 
 }

@@ -1,7 +1,7 @@
 #ifndef __SGGAME_COMMON__
 #define __SGGAME_COMMON__
 
-#include "SGDDL.h"
+#include "SGGameDDL.h"
 
 namespace Atlas
 {

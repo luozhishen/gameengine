@@ -99,7 +99,7 @@ namespace Atlas
 		{
 			std::map<std::string, std::string>::iterator i;
 			i = g_typekey_map.find(name);
-			if(i==g_typekey_map.end()) return false;
+			if(i==g_typekey_map.end()) return NULL;
 			return i->second.c_str();
 		}
 

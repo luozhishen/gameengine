@@ -21,10 +21,16 @@
   <ItemGroup>
     <ClCompile Include="SGClient.cpp" />
     <ClCompile Include="SGClientApp.cpp" />
+    <ClCompile Include="SGClientGeneralComponent.cpp" />
+    <ClCompile Include="SGClientPlayerComponent.cpp" />
+    <ClCompile Include="SGClientSoldierComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGClient.h" />
     <ClInclude Include="SGClientApp.h" />
+    <ClInclude Include="SGClientGeneralComponent.h" />
+    <ClInclude Include="SGClientPlayerComponent.h" />
+    <ClInclude Include="SGClientSoldierComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{36DA92B8-AEC5-43E2-9E84-0DF47CF36732}</ProjectGuid>

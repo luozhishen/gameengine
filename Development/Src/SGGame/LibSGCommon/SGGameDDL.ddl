@@ -51,76 +51,68 @@ struct SG_ENEMY_CONFIG : SG_PAWN_CONFIG
 task[GEN_STRUCT_SERIALIZE(SG_ENEMY_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_ENEMY_CONFIG)];
 
-struct SG_EQUIP_CONFIG : A_CONTENT_OBJECT
+struct SG_SOLDIER_CONFIG : SG_PAWN_CONFIG
 {
-	_U16 config_id;
+	_U16 type;
 	_U16 level;
-};
-task[GEN_STRUCT_SERIALIZE(SG_EQUIP_CONFIG)];
-task[GEN_STRUCT_REFLECT(SG_EQUIP_CONFIG)];
-
-struct SG_PET_CONFIG : A_CONTENT_OBJECT
-{
-	_U16 config_id;
-	_U16 level;
-};
-task[GEN_STRUCT_SERIALIZE(SG_PET_CONFIG)];
-task[GEN_STRUCT_REFLECT(SG_PET_CONFIG)];
-
-struct SG_SOLDIER_CONFIG : SG_PET_CONFIG
-{
 };
 task[GEN_STRUCT_SERIALIZE(SG_SOLDIER_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_SOLDIER_CONFIG)];
 
-struct SG_GENERAL_CONFIG : SG_PET_CONFIG
+struct SG_GENERAL_CONFIG : SG_PAWN_CONFIG
 {
+	_U32 type;
+	_U16 level;
+	_U32 exp;
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_GENERAL_CONFIG)];
 
+
+
 struct SG_EQUIP_SLOTS
 {
-	A_UUID head;
-	A_UUID hand;
+	A_UUID							head;
+	A_UUID							hand;
 };
 task[GEN_STRUCT_SERIALIZE(SG_EQUIP_SLOTS)];
 task[GEN_STRUCT_REFLECT(SG_EQUIP_SLOTS)];
 
-struct SG_PET : A_LIVE_OBJECT
+struct SG_GENERAL : A_LIVE_OBJECT
 {
-	_U16 config_id;
-	_U16 current_level;
-};
-task[GEN_STRUCT_SERIALIZE(SG_PET)];
-task[GEN_STRUCT_REFLECT(SG_PET)];
-
-struct SG_GENERAL : SG_PET
-{
-	_U32 exp;
+	_U32							type;
+	_U16							level;
+	_U32							exp;
 	SG_EQUIP_SLOTS equip_slots;
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL)];
 task[GEN_STRUCT_REFLECT(SG_GENERAL)];
 
-struct SG_SOLDIER : SG_PET
+struct SG_SOLDIER : A_LIVE_OBJECT
 {
+	_U32							type;
+	_U16							level;
 };
 task[GEN_STRUCT_SERIALIZE(SG_SOLDIER)];
 task[GEN_STRUCT_REFLECT(SG_SOLDIER)];
 
 struct SG_PLAYER : A_LIVE_OBJECT
 {
-	string<SG_PLAYERNAME_LENMAX> nick;
-	_U32 gold;
-	_U32 rmb;
-	_U32 level;
-	_U32 exp;
-
-	SG_EQUIP_SLOTS equip_slots;
+	string<SG_PLAYERNAME_LENMAX>	nick;
+	_U32							gold;
+	_U32							rmb;
+	_U8								sex;
+	array<_U16, 2>					equip_generals;
+	array<_U16, 3>					equip_soldiers;
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];
+
+
+
+
+
+
 
 class SGGAME_C2S
 {

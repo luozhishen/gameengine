@@ -22,7 +22,7 @@ namespace Atlas
 		m_nIndex = nIndex;
 		m_pClient = pClient;
 		pClient->_OnConnectFailed.connect(this, &CStressClient::OnConnectFailed);
-		pClient->_OnConnect.connect(this, &CStressClient::OnConnect);
+		pClient->_OnConnected.connect(this, &CStressClient::OnConnected);
 		pClient->_OnLoginDone.connect(this, &CStressClient::OnLoginDone);
 		pClient->_OnData.connect(this, &CStressClient::OnData);
 		pClient->_OnDisconnect.connect(this, &CStressClient::OnDisconnect);
@@ -104,15 +104,15 @@ namespace Atlas
 
 	void CStressClient::Login()
 	{
-		if(m_pClient->GetClientState()==Atlas::CClient::CLIENT_NA)
+		if(m_pClient->GetClientState()==Atlas::CClient::STATE_NA)
 		{
-			m_pClient->LoginForStress(m_nIndex);
+			m_pClient->LoginForStress(NULL, m_nIndex);
 		}
 	}
 
 	void CStressClient::Logout()
 	{
-		if(m_pClient->GetClientState() != Atlas::CClient::CLIENT_NA)
+		if(m_pClient->GetClientState() != Atlas::CClient::STATE_NA)
 		{
 			//if(m_hTimer)
 			//{
@@ -147,11 +147,11 @@ namespace Atlas
 			_OnConnectFailed(m_nIndex);
 	}
 
-	void CStressClient::OnConnect()
+	void CStressClient::OnConnected()
 	{
 		SetTitle("Connected");
 		if(!CClientApp::GetDefault()->IsThread())
-			_OnConnect(m_nIndex);
+			_OnConnected(m_nIndex);
 	}
 
 	void CStressClient::OnLoginDone()
@@ -161,10 +161,10 @@ namespace Atlas
 			_OnLoginDone(m_nIndex);
 	}
 
-	void CStressClient::OnData(_U16 id, _U32 len, const _U8* data)
+	void CStressClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
 		if(!CClientApp::GetDefault()->IsThread())
-			_OnData(m_nIndex, id, len, data);
+			_OnData(m_nIndex, iid, fid, len, data);
 	}
 
 	void CStressClient::OnDisconnect()

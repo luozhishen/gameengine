@@ -501,7 +501,7 @@ int ddlgen_code_task_class_reflect(const DDL_CLS* cls, const DDL_TASK* task)
 		OutC(1, "	{NULL, 0, NULL},\n");
 	}
 	OutC(0, "	};\n");
-	OutC(0, "	static CLASS_INFO _class_%s_info = { %s, \"%s\", %d, _class_%s_funcinfos };\n", cls->name, ddlgen_get_cparam(cls, "class_id", "0"), cls->name, cls->funs_count, cls->name);
+	OutC(0, "	static CLASS_INFO _class_%s_info = { %s, \"%s\", %d, _class_%s_funcinfos };\n", cls->name, ddlgen_get_cparam(cls, "iid", "0"), cls->name, cls->funs_count, cls->name);
 	OutC(0, "	template<>\n");
 	OutC(0, "	const CLASS_INFO* GetClass<%s>()\n", cls->name);
 	OutC(0, "	{\n");

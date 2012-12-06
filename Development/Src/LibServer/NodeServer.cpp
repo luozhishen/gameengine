@@ -146,7 +146,7 @@ namespace Atlas
 		}
 	}
 
-	void CNodeClient::OnConnect(_U32 len, const _U8* data)
+	void CNodeClient::OnConnected(_U32 len, const _U8* data)
 	{
 	}
 
@@ -179,7 +179,7 @@ namespace Atlas
 		m_nState = STATE_COMPLETE;
 		m_hSession = hSession;
 		m_nSNDX = sndx;
-		OnConnect(m_ConnectData.len, m_ConnectData.data);
+		OnConnected(m_ConnectData.len, m_ConnectData.data);
 		if(m_ConnectData.data) delete [] m_ConnectData.data;
 		m_ConnectData.data = NULL;
 	}

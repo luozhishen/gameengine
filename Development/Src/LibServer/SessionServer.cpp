@@ -138,7 +138,7 @@ namespace Atlas
 		CServerBase::Stop();
 	}
 
-	bool CSessionServer::OnConnect(HCONNECT hConn)
+	bool CSessionServer::OnConnected(HCONNECT hConn)
 	{
 		_U64 nSNDX = _global_session_object_manager.Alloc();
 		if(nSNDX==-1) return false;
@@ -360,7 +360,7 @@ namespace Atlas
 	{
 		ATLAS_ASSERT(m_pRecvBuff);
 		m_nRecvBuffLen = 0;
-		OnConnect();
+		OnConnected();
 	}
 
 	void CSessionClient::OnRawData(_U32 len, const _U8* data)
@@ -457,7 +457,7 @@ namespace Atlas
 		ATLAS_ASSERT(hep);
 		CSessionServer* pServer = (CSessionServer*)KeyOf(hep);
 		ATLAS_ASSERT(pServer);
-		pServer->OnConnect(hConn);
+		pServer->OnConnected(hConn);
 		return true;
 	}
 

@@ -26,7 +26,7 @@ namespace Atlas
 		virtual bool Start();
 		virtual void Stop();
 
-		bool OnConnect(HCONNECT hConn);
+		bool OnConnected(HCONNECT hConn);
 		void OnData(HCONNECT hConn, _U32 len, const _U8* data);
 		void OnDisconnect(HCONNECT hConn);
 
@@ -57,7 +57,7 @@ namespace Atlas
 		_U64 GetSNDX() { return m_nSNDX; }
 		_U64 GetCNDX() { return m_nCNDX; }
 
-		virtual void OnConnect() { }
+		virtual void OnConnected() { }
 		virtual void OnAuthPassed(_U32 nUID, const char* pToken);
 		virtual void OnData(_U16 id, _U32 len, const _U8* data);
 		virtual void OnDisconnect();

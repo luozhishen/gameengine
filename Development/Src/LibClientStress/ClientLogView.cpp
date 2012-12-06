@@ -96,14 +96,14 @@ void CClientLogView::OnNewClient(_U32 index)
 	m_Clients[index];
 	Atlas::CStressClient* pClient = GetFrame()->GetStressClient(index);
 	if(!pClient) return;
-	pClient->_OnConnect.connect(this, &CClientLogView::OnConnect);
+	pClient->_OnConnected.connect(this, &CClientLogView::OnConnected);
 	pClient->_OnDisconnect.connect(this, &CClientLogView::OnDisconnect);
 	pClient->_OnData.connect(this, &CClientLogView::OnData);
 	pClient->_OnConnectFailed.connect(this, &CClientLogView::OnConnectFailed);
 	pClient->_OnLoginDone.connect(this, &CClientLogView::OnLoginDone);
 }
 
-void CClientLogView::OnConnect(_U32 index)
+void CClientLogView::OnConnected(_U32 index)
 {
 	Append(index, "connected");
 }
@@ -113,12 +113,11 @@ void CClientLogView::OnDisconnect(_U32 index)
 	Append(index, "disconnected");
 }
 
-void CClientLogView::OnData(_U32 index, _U16 id, _U32 len, const _U8* data)
+void CClientLogView::OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8* data)
 {
 	char msg[1000];
 	const DDLReflect::CLASS_INFO* cls;
-	_U16 fid;
-	if(Atlas::GetClientFunctionStub(id, cls, fid))
+	if(Atlas::GetClientFunctionStub(iid, fid, cls))
 	{
 		std::string json;
 		DDLReflect::Call2Json(&cls->finfos[fid], len, data, json);
@@ -126,7 +125,7 @@ void CClientLogView::OnData(_U32 index, _U16 id, _U32 len, const _U8* data)
 	}
 	else
 	{
-		sprintf(msg, "ondata : unknown(%d)", id);
+		sprintf(msg, "ondata : unknown(%d, %d)", iid, fid);
 	}
 	Append(index, msg);
 }

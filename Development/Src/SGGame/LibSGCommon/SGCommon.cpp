@@ -32,6 +32,8 @@ namespace Atlas
 	{
 		Atlas::Engine::InitLiveObjects();
 		LiveObject::Register(DDLReflect::GetStruct<SG_PLAYER>());
+		LiveObject::Register(DDLReflect::GetStruct<SG_GENERAL>());
+		LiveObject::Register(DDLReflect::GetStruct<SG_SOLDIER>());
 	}
 
 	void InitSyncObjects()

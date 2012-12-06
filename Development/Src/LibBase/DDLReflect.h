@@ -68,7 +68,7 @@ namespace DDLReflect
 
 	struct CLASS_INFO
 	{
-		_U16			class_id;
+		_U16			iid;
 		char			name[NAME_MAXLEN+1];
 		_U16			fcount;
 		FUNCTION_INFO*	finfos;
@@ -90,7 +90,7 @@ namespace DDLReflect
 	inline _U16 GetClassID()
 	{
 		const CLASS_INFO* pClassInfo = GetClass<T>();
-		return pClassInfo?pClassInfo->class_id:(_U16)-1;
+		return pClassInfo?pClassInfo->iid:(_U16)-1;
 	}
 
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, std::string& json);

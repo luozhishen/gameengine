@@ -20,11 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AtlasClient.cpp" />
-    <ClCompile Include="AtlasClientApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AtlasClient.h" />
-    <ClInclude Include="AtlasClientApp.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{50D67152-761F-4BE9-8EA8-958CFAF1029A}</ProjectGuid>

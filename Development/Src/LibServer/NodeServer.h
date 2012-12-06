@@ -87,7 +87,7 @@ namespace Atlas
 
 		void Disconnect();
 
-		virtual void OnConnect(_U32 len, const _U8* data);
+		virtual void OnConnected(_U32 len, const _U8* data);
 		virtual void OnDisconnect();
 
 		void SendData(_U16 code, _U32 len, const _U8* data);

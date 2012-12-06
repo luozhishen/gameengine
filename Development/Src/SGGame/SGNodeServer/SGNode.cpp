@@ -50,7 +50,7 @@ namespace Atlas
 	{
 	}
 
-	void CSGNodeClient::OnConnect(_U32 len, const _U8* data)
+	void CSGNodeClient::OnConnected(_U32 len, const _U8* data)
 	{
 		/*Lobby.LoginDone();*/
 		char szInfo[256];

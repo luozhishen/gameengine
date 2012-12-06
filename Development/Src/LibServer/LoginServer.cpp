@@ -153,7 +153,7 @@ namespace Atlas
 		CServerBase::Stop();
 	}
 
-	bool CLoginServer::OnConnect(HCONNECT hConn)
+	bool CLoginServer::OnConnected(HCONNECT hConn)
 	{
 		_U64 nLNDX = _global_login_object_manager.Alloc();
 		if(nLNDX==-1) return false;
@@ -253,7 +253,7 @@ namespace Atlas
 		ATLAS_ASSERT(hep);
 		CLoginServer* pServer = (CLoginServer*)KeyOf(hep);
 		ATLAS_ASSERT(pServer);
-		pServer->OnConnect(hConn);
+		pServer->OnConnected(hConn);
 		return true;
 	}
 

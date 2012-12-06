@@ -441,7 +441,7 @@ namespace Atlas
 							ATLAS_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (const char *)&tcpep->sock, sizeof(tcpep->sock))==0);
 							conn->connected = 1;
 							InterlockedIncrement(&conn->iorefs);
-							bool ret = conn->handler.OnConnect((HCONNECT)conn);
+							bool ret = conn->handler.OnConnected((HCONNECT)conn);
 							if(ret) {
 								ctx = conn->buffer_pool->LockInputContext();
 								if(ctx) {
@@ -462,7 +462,7 @@ namespace Atlas
 							ATLAS_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0)==0);
 							conn->connected = 1;
 							InterlockedIncrement(&conn->iorefs);
-							bool ret = conn->handler.OnConnect((HCONNECT)conn);
+							bool ret = conn->handler.OnConnected((HCONNECT)conn);
 							if(ret)
 							{
 								ctx = conn->buffer_pool->LockInputContext();

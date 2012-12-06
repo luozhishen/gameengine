@@ -56,9 +56,9 @@ public:
 	virtual void OnClear();
 	virtual void OnNewClient(_U32 index);
 
-	void OnConnect(_U32 index);
+	void OnConnected(_U32 index);
 	void OnDisconnect(_U32 index);
-	void OnData(_U32 index, _U16 id, _U32 len, const _U8* data);
+	void OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8* data);
 	void OnConnectFailed(_U32 index);
 	void OnLoginDone(_U32 index);
 

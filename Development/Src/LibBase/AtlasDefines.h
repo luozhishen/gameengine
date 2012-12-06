@@ -29,6 +29,7 @@ typedef char*					_STR;
 	#include <stdlib.h>
 	#include <crtdbg.h>
 	#include <malloc.h>
+	#define ATLAS_ALLOCA(x)			_alloca(x)
 	#define ATLAS_ALLOC(x)			malloc(x)
 	#define ATLAS_FREE(x)			free(x)
 	#define ATLAS_ALIGN_ALLOC(x)	_aligned_malloc(x, 16)
@@ -38,7 +39,7 @@ typedef char*					_STR;
 	#else
 	#define ATLAS_NEW				new
 	#endif
-	#define ATLAS_ALLOCA(x)			_alloca(x)
+	#define ATLAS_DELETE			delete
 
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
@@ -60,6 +61,7 @@ typedef char*					_STR;
 	#define ATLAS_SLEEP(x)			Sleep(x)
 #else
 	#include <stdlib.h>
+	#define ATLAS_ALLOCA(x)			_alloca(x)
 	#define ATLAS_ALLOC(x)			malloc(x)
 	#define ATLAS_FREE(x)			free(x)
 	#define ATLAS_ALIGN_ALLOC(x)	malloc(x)
@@ -69,7 +71,7 @@ typedef char*					_STR;
 	#else
 	#define ATLAS_NEW				new
 	#endif
-	#define ATLAS_ALLOCA(x)			_alloca(x)
+	#define ATLAS_DELETE			delete
 
 	#include <pthread.h>
 	#define A_MUTEX					pthread_mutex_t

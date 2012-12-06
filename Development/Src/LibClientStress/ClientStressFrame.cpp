@@ -266,7 +266,7 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 
 	const DDLReflect::CLASS_INFO* cls;
 	_U16 fid;
-	if(!Atlas::GetServerFunctionStub(*cmd.ToUTF8(), cls, fid))
+	if(!Atlas::GetServerFunctionStub((const char*)*cmd.ToUTF8(), cls, fid))
 	{
 		wxMessageBox(wxT("unknown command"), wxT("error"));
 		return;
@@ -302,15 +302,14 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		m_pCmdText->SetValue(val);
 	}
 	
-	_U16 code = (cls->class_id&0xff) | ((fid&0xff)<<8);
 	std::vector<_U32>::iterator i;
 	Atlas::CStressClient* pClient;
 	for(i=clients.begin(); i!=clients.end(); i++)
 	{
 		pClient = Atlas::CStressManager::Get().GetClient(m_nCurrentIndex);
 		if(!pClient) continue;
-		if(pClient->GetClient()->GetClientState()!=Atlas::CClient::CLIENT_LOGINED) continue;
-		pClient->GetClient()->SendData(code, len, data);
+		if(pClient->GetClient()->GetClientState()!=Atlas::CClient::STATE_LOGINED) continue;
+		pClient->GetClient()->SendData(cls->iid, fid, len, data);
 	}
 	
 }

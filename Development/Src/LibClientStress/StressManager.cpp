@@ -1,7 +1,6 @@
 #include <AtlasBase.h>
 #include <AtlasCommon.h>
 #include <AtlasClient.h>
-#include <AtlasClientApp.h>
 
 #include "StressCase.h"
 #include "StressClient.h"
@@ -55,15 +54,16 @@ namespace Atlas
 			for(i=m_mapClients.begin(); i!=m_mapClients.end(); i++)
 			{
 				i->second->Logout();
-				if(i->second->GetClient()->GetClientState()!=CClient::CLIENT_NA) count++;
+				if(i->second->GetClient()->GetClientState()!=CClient::STATE_NA) count++;
 			}
 			A_MUTEX_UNLOCK(&m_mtxLocker);
 			SwitchToThread();
-
+/*
 			if(!CClientApp::GetDefault()->IsThread())
 			{
 				CClientApp::GetDefault()->Tick();
 			}
+*/
 		}
 
 		for(i=m_mapClients.begin(); i!=m_mapClients.end(); i++)

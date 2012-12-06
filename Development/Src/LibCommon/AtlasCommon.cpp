@@ -42,7 +42,7 @@ namespace Atlas
 		_global_stubs[_global_stub_count].is_client_stub = true;
 		_global_stubs[_global_stub_count].is_server_stub = false;
 		_global_stubs[_global_stub_count].nodeid = (_U32)-1;
-		*((_U16*)&pClassInfo->class_id) = _global_stub_count;
+		*((_U16*)&pClassInfo->iid) = _global_stub_count;
 		return _global_stub_count++;
 	}
 
@@ -61,7 +61,7 @@ namespace Atlas
 		_global_stubs[_global_stub_count].is_client_stub = false;
 		_global_stubs[_global_stub_count].is_server_stub = true;
 		_global_stubs[_global_stub_count].nodeid = nodeid;
-		*((_U16*)&pClassInfo->class_id) = _global_stub_count;
+		*((_U16*)&pClassInfo->iid) = _global_stub_count;
 		return _global_stub_count++;
 	}
 
@@ -125,13 +125,10 @@ namespace Atlas
 		return false;
 	}
 
-	bool GetServerFunctionStub(_U16 code, const DDLReflect::CLASS_INFO*& cls, _U16& _fid)
+	bool GetServerFunctionStub(_U16 iid, _U16 fid, const DDLReflect::CLASS_INFO*& cls)
 	{
-		_U16 iid = code & 0xff;
-		_U16 fid = code >> 8;
 		if(!Atlas::GetServerStub(iid, cls)) return false;
 		if(fid>=cls->fcount) return false;
-		_fid = fid;
 		return true;
 	}
 
@@ -159,13 +156,10 @@ namespace Atlas
 		return false;
 	}
 
-	bool GetClientFunctionStub(_U16 code, const DDLReflect::CLASS_INFO*& cls, _U16& _fid)
+	bool GetClientFunctionStub(_U16 iid, _U16 fid, const DDLReflect::CLASS_INFO*& cls)
 	{
-		_U16 iid = code & 0xff;
-		_U16 fid = code >> 8;
 		if(!Atlas::GetClientStub(iid, cls)) return false;
 		if(fid>=cls->fcount) return false;
-		_fid = fid;
 		return true;
 	}
 

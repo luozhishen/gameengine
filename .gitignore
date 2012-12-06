@@ -21,6 +21,3 @@
 *.c.cpp
 *.s.h
 *.s.cpp
-*DDL.h
-*DDL.cpp
-

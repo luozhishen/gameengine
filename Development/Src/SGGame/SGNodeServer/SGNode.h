@@ -39,7 +39,7 @@ namespace Atlas
 		CSGNodeClient(CSGNodeServer* pServer, _U64 nndx, _U64 cndx, HSERVER hCluster);
 		virtual ~CSGNodeClient();
 
-		virtual void OnConnect(_U32 len, const _U8* data);
+		virtual void OnConnected(_U32 len, const _U8* data);
 		virtual void OnDisconnect();
 		virtual void OnData(_U16 code, _U32 len, const _U8* data);
 		virtual void OnEvent(_U16 code, _U32 len, const _U8* data);

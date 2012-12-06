@@ -5,121 +5,80 @@ namespace Atlas
 {
 
 	class CClientComponent;
-	class CClientDataSyncComponent;
+	class CClientConnectionComponent;
 	class CClient;
 	class CClientApp;
 	class CStressClient;
 	class CStressCase;
 
-	class CClientLogOutput
-	{
-	public:
-		enum TYPE
-		{
-			TYPE_INFO,
-			TYPE_ERROR,
-			TYPE_WANNING,
-			TYPE_DEBUG,
-		};
-
-		void I(const char* fmt, ...);
-		void E(const char* fmt, ...);
-		void W(const char* fmt, ...);
-		void D(const char* fmt, ...);
-
-	protected:
-		virtual void Write(int type, const char* pLine);
-	};
-
-	// 1. 表示一个客户端
 	class CClient : public CNoCopy
 	{
 		friend class CClientApp;
 		friend class CStressClient;
 		friend class CStressCase;
 	public:
-		typedef enum {
-			CLIENT_NA,
-			CLIENT_LOGINING,
-			CLIENT_LOGINED,
-			CLIENT_AUTH_FAILED,
+
+		typedef enum
+		{
+			STATE_NA,
+			STATE_LOGINING,
+			STATE_LOGIN_FAILED,
+			STATE_LOGINED,
+			STATE_DISCONNECTED,
 		} CLIENT_STATE;
+
+		typedef enum
+		{
+			ERRCODE_UNKNOWN					= 1,
+			ERRCODE_SERVICE_UNAVALIABLE		= 2,
+			ERRCODE_AUTH_FAIL				= 3,
+		} CLIENT_ERRCODE;
 
 		CClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CClient();
 
 		CClientApp* GetClientApp() { return m_pClientApp; }
-		CLIENT_STATE GetClientState() { return m_nClientState; }
-		CClientLogOutput& GetLogOutput();
 
-		bool Login(const SOCKADDR& sa, _U32 nUID, const char* pToken="");
-		bool LoginForStress(_U32 id);
-		void Logout();
+		bool Login(const char* pURL, const char* pUsername, const char* pPassword);
+		bool Login(const char* pURL, const char* pDevice);
+		virtual bool LoginForStress(const char* pURL, _U32 id);
+		bool Logout();
+		void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+		CLIENT_STATE GetClientState();
+		_U32 GetLoginErrorCode();
 
 		void AddComponent(CClientComponent* pComponent);
 		virtual void InitializeComponents();
-		CClientDataSyncComponent* GetDataSyncComponent();
+		void SetConnectionComponent(CClientConnectionComponent* pConnectionComponent);
 
-		virtual void OnConnect();
-		virtual void OnDisconnect();
-		virtual void OnData(_U16 id, _U32 len, const _U8* data);
-		virtual void OnConnectFailed();
+		virtual void OnConnected();
 		virtual void OnLoginDone();
-		virtual void SendData(_U16 id, _U32 len, const _U8* data);
+		virtual void OnDisconnect();
+		virtual void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+		virtual void OnConnectFailed();
 
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
 			ATLAS_ASSERT(iid<256 && fid<256);
-			SendData(iid|(fid<<8), Buf.GetSize(), Buf.GetBuf());
+			SendData(iid, fid, Buf.GetSize(), Buf.GetBuf());
 			return true;
 		}
 
-		sigslot::signal0<>							_OnConnect;
-		sigslot::signal0<>							_OnDisconnect;
-		sigslot::signal3<_U16, _U32, const _U8*>	_OnData;
-		sigslot::signal0<>							_OnConnectFailed;
-		sigslot::signal0<>							_OnLoginDone;
-
-		sigslot::signal1<int>						_OnSyncDomainCreate;
-		sigslot::signal1<int>						_OnSyncDomainDestory;
-		sigslot::signal2<int, int>					_OnSyncObjectCreate;
-		sigslot::signal2<int, int>					_OnSyncObjectDestory;
-		sigslot::signal2<int, int>					_OnSyncObjectUpdate;
-
-		bool ExistSyncDomain(_U16 domain);
-		bool ExistSyncObject(_U16 domain, _U32 id, _U16 index);
-		void GetSyncDomainList(std::vector<_U16>& list);
-		void GetSyncObjectList(_U16 domain, std::vector<std::pair<_U32, _U16>>& list);
-		const DDLReflect::STRUCT_INFO* GetSyncObjectType(_U16 domain, _U32 id, _U16 index);
-		void* GetSyncObjectType(_U16 domain, _U32 id, _U16 index, const DDLReflect::STRUCT_INFO* info);
+		sigslot::signal0<>								_OnConnected;
+		sigslot::signal0<>								_OnDisconnect;
+		sigslot::signal4<_U16, _U16, _U32, const _U8*>	_OnData;
+		sigslot::signal0<>								_OnConnectFailed;
+		sigslot::signal0<>								_OnLoginDone;
 
 	protected:
 		A_MUTEX m_mtxClient;
-		_U8 m_LoginData[1024];
-		_U16 m_nLoginDataSize;
-
-		void OnRawConnect(HCONNECT hConn);
-		void OnRawData(_U32 len, const _U8* data);
-		void OnRawDisconnect();
-		void OnRawConnectFailed();
 
 	private:
 		CClientApp* m_pClientApp;
-		HCONNECT m_hConnect;
-
 		std::list<CClientComponent*> m_Components;
-		CClientDataSyncComponent* m_pDataSyncComponent;
-
-		CLIENT_STATE m_nClientState;
-		_U8* m_pRecvBuff;
-		_U32 m_nRecvBuffLen;
-		_U32 m_nRecvBuffSize;
-		CClientLogOutput* m_pLogOutput;
-		std::string m_strSessionAddr;
-		bool m_bNeedRedirect;
+		CClientConnectionComponent* m_pConnectionComponent;
 	};
 
-	// 1. 扩展CClient
 	class CClientComponent : public CNoCopy
 	{
 	public:
@@ -135,20 +94,18 @@ namespace Atlas
 		CClient* m_pClient;
 	};
 
-	class CClientDataSyncComponent : CClientComponent
+	class CClientConnectionComponent
 	{
 	public:
-		CClientDataSyncComponent(Atlas::CClient* pClient);
-		virtual ~CClientDataSyncComponent();
+		CClientConnectionComponent(CClient* pClient);
+		virtual ~CClientConnectionComponent();
 
-		bool AppendObject(const DDLReflect::STRUCT_INFO* info, const void* data);
-		bool RemoveObject(const DDLReflect::STRUCT_INFO* info, const void* data);
-		void RemoveAllObjects();
-
-		void GetObjects(std::vector<std::pair<const void*, const DDLReflect::STRUCT_INFO*>>& objects);
-
-	private:
-		std::map<const void*, const DDLReflect::STRUCT_INFO*> m_Objects;
+		virtual bool Login(const char* pURL, const char* pUsername, const char* pPassword) = 0;
+		virtual bool Login(const char* pURL, const char* pDevice) = 0;
+		virtual bool Logout() = 0;
+		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data) = 0;
+		virtual CClient::CLIENT_STATE GetState() = 0;
+		virtual _U32 GetErrorCode() = 0;
 	};
 
 }

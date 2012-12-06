@@ -28,9 +28,9 @@ namespace Atlas
 	bool GetServerStub(_U16 id, const DDLReflect::CLASS_INFO*& pClassInfo, _U32* nodeid=NULL);
 	bool GetServerStub(const char* name, const DDLReflect::CLASS_INFO*& pClassInfo, _U32* nodeid=NULL);
 
-	bool GetServerFunctionStub(_U16 code, const DDLReflect::CLASS_INFO*& cls, _U16& fid);
+	bool GetServerFunctionStub(_U16 iid, _U16 fid, const DDLReflect::CLASS_INFO*& cls);
 	bool GetServerFunctionStub(const char* name, const DDLReflect::CLASS_INFO*& cls, _U16& fid);
-	bool GetClientFunctionStub(_U16 code, const DDLReflect::CLASS_INFO*& cls, _U16& fid);
+	bool GetClientFunctionStub(_U16 iid, _U16 fid, const DDLReflect::CLASS_INFO*& cls);
 	bool GetClientFunctionStub(const char* name, const DDLReflect::CLASS_INFO*& cls, _U16& fid);
 
 	_U32 GetStubCount();

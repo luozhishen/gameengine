@@ -96,8 +96,8 @@ void CClientLogView::OnNewClient(_U32 index)
 	m_Clients[index];
 	Atlas::CStressClient* pClient = GetFrame()->GetStressClient(index);
 	if(!pClient) return;
-	pClient->_OnConnected.connect(this, &CClientLogView::OnConnected);
-	pClient->_OnDisconnect.connect(this, &CClientLogView::OnDisconnect);
+	pClient->_OnConnect.connect(this, &CClientLogView::OnConnected);
+	pClient->_OnDisconnected.connect(this, &CClientLogView::OnDisconnected);
 	pClient->_OnData.connect(this, &CClientLogView::OnData);
 	pClient->_OnConnectFailed.connect(this, &CClientLogView::OnConnectFailed);
 	pClient->_OnLoginDone.connect(this, &CClientLogView::OnLoginDone);
@@ -108,7 +108,7 @@ void CClientLogView::OnConnected(_U32 index)
 	Append(index, "connected");
 }
 
-void CClientLogView::OnDisconnect(_U32 index)
+void CClientLogView::OnDisconnected(_U32 index)
 {
 	Append(index, "disconnected");
 }
@@ -125,7 +125,7 @@ void CClientLogView::OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8*
 	}
 	else
 	{
-		sprintf(msg, "ondata : unknown(%d, %d)", iid, fid);
+		sprintf(msg, "ondata : unknown(%u, %u)", iid, fid);
 	}
 	Append(index, msg);
 }

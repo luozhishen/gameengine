@@ -174,7 +174,7 @@ namespace Atlas
 		_global_login_object_manager.Unlock(pConn->GetLNDX());
 	}
 
-	void CLoginServer::OnDisconnect(HCONNECT hConn)
+	void CLoginServer::OnDisconnected(HCONNECT hConn)
 	{
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
 		ATLAS_ASSERT(pConn);
@@ -262,7 +262,7 @@ namespace Atlas
 		Atlas::SLog("%s", __FUNCTION__);
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
 		ATLAS_ASSERT(pConn);
-		pConn->GetServer()->OnDisconnect(hConn);
+		pConn->GetServer()->OnDisconnected(hConn);
 		CloseConn(hConn);
 	}
 
@@ -342,7 +342,7 @@ namespace Atlas
 		SetUID((_U32)id, (char*)data);
 	}
 
-	void CLoginClient::OnDisconnect()
+	void CLoginClient::OnDisconnected()
 	{
 		//m_pServer->Unbind(m_nUID, m_nLNDX);
 	}

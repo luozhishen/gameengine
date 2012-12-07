@@ -1,5 +1,5 @@
 #include <AtlasBase.h>
-#include <AtlasClient.h>
+#include <AtlasClientApp.h>
 
 #include <tinyxml.h>
 #include "StressLoader.h"

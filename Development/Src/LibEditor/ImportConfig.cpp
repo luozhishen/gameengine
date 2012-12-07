@@ -75,8 +75,14 @@ namespace Atlas
 		return true;
 	}
 
-	void CContentExcelImportManager::Clear()
+	void CContentExcelImportManager::Clear(bool bAll)
 	{
+		if(bAll)
+		{
+			m_Keys.clear();
+			m_ObjectMap.clear();
+		}
+
 		m_strPath.clear();
 	}
 
@@ -98,7 +104,7 @@ namespace Atlas
 			const void* fdata;
 			if(!DDLReflect::GetStructFieldInfo(pInfo, keys[j].c_str(), (const void*)NULL, finfo, fdata))
 			{
-				sprintf(m_szErr, "input key not found in struct:%s\n column:%s", pInfo->name, keys[j].c_str());
+				m_Err = StringFormat("input key not found in struct:%s\n column:%s", pInfo->name, keys[j].c_str());
 				return false;
 			}
 		}
@@ -109,7 +115,7 @@ namespace Atlas
 		std::vector<A_UUID> list;
 		if(!ContentObject::GetList(pInfo, list, true))
 		{
-			sprintf(m_szErr, "Get Object list failed");
+			m_Err = StringFormat("Get Object list failed");
 			return false;
 		}
 
@@ -122,7 +128,7 @@ namespace Atlas
 			strKey.clear();
 			if(!GetObjectUnqiueID(pObject, strKey))
 			{
-				sprintf(m_szErr, "invalidate or no value\nobject %s", pObject->name._Value); 
+				m_Err = StringFormat("invalidate or no value\nobject %s", pObject->name._Value); 
 				return false;
 			}
 
@@ -140,8 +146,7 @@ namespace Atlas
 		wxString strSheet = wxString::FromUTF8(name.c_str());
 		if(m_pExcelWrapper->SetActiveSheet(strSheet) != S_OK)
 		{
-			wxLogDebug(_("no this sheet"));
-			sprintf(m_szErr, "no this sheet[%s]", name.c_str());
+			m_Err = StringFormat("no this sheet[%s]", name.c_str());
 			m_pExcelWrapper->Quit();
 			return false;
 		}
@@ -158,7 +163,7 @@ namespace Atlas
 		{
 			if(!GenerateIndex(nRow, nCol, szTmp, 512))
 			{
-				sprintf(m_szErr, "Get Value from excel failed\n %s", szTmp);
+				m_Err = StringFormat("Get Value from excel failed\n %s", szTmp);
 				m_pExcelWrapper->Quit();
 				return false;
 			}
@@ -185,7 +190,7 @@ namespace Atlas
 
 		if(!bExist)
 		{
-			sprintf(m_szErr, "Column[name] not found");
+			m_Err = StringFormat("Column[name] not found");
 			m_pExcelWrapper->Quit();
 			return false;
 		}
@@ -205,7 +210,7 @@ namespace Atlas
 			if(it_col == columnMap.end())
 			{
 				m_pExcelWrapper->Quit();
-				sprintf(szTmp, "key %s not exist in excel\n", m_Keys[i].data());
+				m_Err = StringFormat("key %s not exist in excel\n", m_Keys[i].data());
 				return false;
 			}
 		}
@@ -217,7 +222,7 @@ namespace Atlas
 			const void* fdata;
 			if(!DDLReflect::GetStructFieldInfo(m_pStructInfo, it_col->second.c_str(), (const void*)NULL, finfo, fdata))
 			{
-				sprintf(m_szErr, "column not match in struct:%s\n column:%s", m_pStructInfo->name, it_col->second.c_str()); 
+				m_Err = StringFormat("column not match in struct:%s\n column:%s", m_pStructInfo->name, it_col->second.c_str()); 
 				m_pExcelWrapper->Quit();
 				return false;
 			}
@@ -248,7 +253,7 @@ namespace Atlas
 				//fill content 
 				if(!StructParamFromString(m_pStructInfo, it_col->second.c_str(), pObject, strValue.mb_str().data()))
 				{
-					sprintf(m_szErr, "Get Value %s failed\n %s", it_col->second.c_str(), it_col->first.c_str());
+					m_Err = StringFormat("Get Value %s failed\n %s", it_col->second.c_str(), it_col->first.c_str());
 					m_pExcelWrapper->Quit();
 					return false;	
 				}
@@ -269,17 +274,18 @@ namespace Atlas
 		ATLAS_ALIGN_FREE(pObject);
 		m_pExcelWrapper->Quit();
 
-		char szUpdateInfo[512];
-		sprintf(szUpdateInfo, "Update %d lines\n Insert %d lines", m_nUpdateRowNum, m_nInsertRowNum);
-		wxString strUpdateInfo = wxString::FromUTF8(szUpdateInfo);
-		wxMessageBox(strUpdateInfo, _T("Import Info"));
-
 		return true;
 	}
 
 	const char* CContentExcelImportManager::GetErrorMsg()
 	{
-		return m_szErr;
+		return m_Err.c_str();
+	}
+
+	const char* CContentExcelImportManager::GetImportInfoMsg()
+	{
+		m_Err = StringFormat("Update %d lines\n Insert %d lines", m_nUpdateRowNum, m_nInsertRowNum);
+		return m_Err.c_str();
 	}
 
 	bool CContentExcelImportManager::UpdateCacheData(const A_CONTENT_OBJECT* pTmpObject)

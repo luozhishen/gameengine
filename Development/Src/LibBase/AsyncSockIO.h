@@ -38,7 +38,7 @@ namespace Atlas
 	struct ASOCKIO_HANDLER
 	{
 		PFN_ON_CONNECT			OnConnected;
-		PFN_ON_DISCONNECT		OnDisconnect;
+		PFN_ON_DISCONNECT		OnDisconnected;
 		PFN_ON_DATA				OnData;
 		PFN_ON_CONNECTFAILED	OnConnectFailed;
 	};

@@ -301,15 +301,15 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		m_pCmdText->AppendString(tmp);
 		m_pCmdText->SetValue(val);
 	}
-	
+
 	std::vector<_U32>::iterator i;
 	Atlas::CStressClient* pClient;
 	for(i=clients.begin(); i!=clients.end(); i++)
 	{
 		pClient = Atlas::CStressManager::Get().GetClient(m_nCurrentIndex);
 		if(!pClient) continue;
-		if(pClient->GetClient()->GetClientState()!=Atlas::CClient::STATE_LOGINED) continue;
-		pClient->GetClient()->SendData(cls->iid, fid, len, data);
+		if(pClient->GetClient()->GetState()!=Atlas::CClient::STATE_LOGINED) continue;
+		pClient->GetClient()->SendData(cls->class_id, fid, len, data);
 	}
 	
 }

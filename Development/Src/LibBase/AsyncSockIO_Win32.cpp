@@ -492,7 +492,7 @@ namespace Atlas
 								}
 							}
 						} else {
-							conn->handler.OnDisconnect((HCONNECT)conn);
+							conn->handler.OnDisconnected((HCONNECT)conn);
 						}
 						break;
 					case SIOP_RECV:

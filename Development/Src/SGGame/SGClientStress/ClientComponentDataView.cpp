@@ -7,24 +7,33 @@
 #include <wx/treectrl.h>
 #include <wx/config.h>
 #include <wx/utils.h>
+#include <wx/wxchar.h>
+#include <wx/window.h>
 
 #include <AtlasBase.h>
 #include <AtlasCommon.h>
 #include <AtlasClient.h>
 
-#include <wx/listctrl.h>
-#include <wx/wxchar.h>
-#include <wx/window.h>
+#include <StressClient.h>
+#include <StressCase.h>
+#include <StressManager.h>
 
 #include "ClientStressApp.h"
 #include "ClientStressFrame.h"
 #include "ClientCaseView.h"
 
-#include <StressClient.h>
-#include <StressCase.h>
-#include <StressManager.h>
+#include "SGCommon.h"
+#include "SGClient.h"
 
 #include "ClientComponentDataView.h"
+#include "SGClient.h"
+//#include "SGClientSoldierComponent.h"
+#include "SGClientPlayerComponent.h"
+//#include "SGClientGeneralComponent.h"
+#include "SGClientSoldierComponent.h"
+#include <SGClientPlayerComponent.h>
+#include "SGClientGeneralComponent.h"
+#include "SGCommon.h"
 #include "SGClient.h"
 //#include "SGClientSoldierComponent.h"
 #include "SGClientPlayerComponent.h"

@@ -53,8 +53,8 @@ namespace Atlas
 
 		bool QueueTask(CClientTask* pTask, CClient* pClient);
 
-		void OnConnect(CClient* pClient, HCONNECT hConn);
-		void OnDisconnect(CClient* pClient, HCONNECT hConn);
+		void OnConnected(CClient* pClient, HCONNECT hConn);
+		void OnDisconnected(CClient* pClient, HCONNECT hConn);
 		void OnData(CClient* pClient, _U32 len, const _U8* data);
 		void OnConnectFailed(CClient* pClient);
 

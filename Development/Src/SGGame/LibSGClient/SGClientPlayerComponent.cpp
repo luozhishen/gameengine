@@ -5,7 +5,6 @@
 #include "SGCommon.h"
 #include "SGClient.h"
 
-
 #include "SGClientPlayerComponent.h"
 
 namespace Atlas

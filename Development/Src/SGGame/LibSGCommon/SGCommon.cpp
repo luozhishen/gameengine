@@ -19,6 +19,7 @@ namespace Atlas
 	void InitContentObjects()
 	{
 		Atlas::Engine::InitContentObjects();
+
 		ContentObject::Register(DDLReflect::GetStruct<SG_ENEMY_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_GENERAL_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_SOLDIER_CONFIG>());
@@ -32,8 +33,6 @@ namespace Atlas
 	{
 		Atlas::Engine::InitLiveObjects();
 		LiveObject::Register(DDLReflect::GetStruct<SG_PLAYER>());
-		LiveObject::Register(DDLReflect::GetStruct<SG_GENERAL>());
-		LiveObject::Register(DDLReflect::GetStruct<SG_SOLDIER>());
 	}
 
 	void InitSyncObjects()

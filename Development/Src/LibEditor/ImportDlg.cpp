@@ -199,9 +199,6 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 	wxString strFilePath = m_pFilePicker->GetPath();
 	m_pImportManger->Load(strFilePath);
 
-	//std::vector<std::string> vSheets;
-	//m_pImportManger->GetSheetsName(vSheets);
-
 	std::vector<wxString> vSheets;
 	m_pImportManger->GetSheets(vSheets);
 	for(unsigned int i = 0; i < vSheets.size(); ++i)
@@ -249,17 +246,19 @@ bool CImportDlg::GetKeyCols(std::vector<std::string>& vec)
 	return CheckKeyCols(vec);
 }
 
-void CImportDlg::EndModal( int retCode )
+void CImportDlg::EndModal(int retCode)
 {
-	if(retCode == wxID_OK && !ProcessImport())
+	if(retCode!=wxID_OK) return wxDialog::EndModal(retCode);
+
+	if(ProcessImport())
+	{
+		wxDialog::EndModal(retCode);
+	}
+	else
 	{
 		wxString strErr = wxString::FromUTF8(m_pImportManger->GetErrorMsg());
-		if(!strErr.IsEmpty())
-			wxMessageBox(strErr);
-		return;
+		if(!strErr.IsEmpty()) wxMessageBox(strErr);
 	}
-
-	return wxDialog::EndModal(retCode);
 }
 
 bool CImportDlg::ProcessImport()
@@ -326,6 +325,9 @@ bool CImportDlg::ProcessImport()
 			return false;
 		}
 	}
+
+	wxString strUpdateInfo = wxString::FromUTF8(m_pImportManger->GetImportInfoMsg());
+	wxMessageBox(strUpdateInfo, wxT("Import Info"));
 
 	return true;
 }

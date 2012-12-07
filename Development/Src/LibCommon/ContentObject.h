@@ -60,10 +60,9 @@ namespace Atlas
 		const char* QueryContentGroupName(const DDLReflect::STRUCT_INFO* info);
 		const char* QueryContentGroupFile(const DDLReflect::STRUCT_INFO* info);
 
-		void GetContentFileList(std::map<std::string, bool>& list);
-
 		bool LoadContent();
 		bool SaveContent(const char* file=NULL, bool force=false);
+		bool IsContentDirty();
 
 	}
 }

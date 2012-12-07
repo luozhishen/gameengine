@@ -17,55 +17,50 @@ namespace Atlas
 		friend class CStressClient;
 		friend class CStressCase;
 	public:
-
-		typedef enum
-		{
+		typedef enum {
 			STATE_NA,
 			STATE_LOGINING,
-			STATE_LOGIN_FAILED,
 			STATE_LOGINED,
-			STATE_DISCONNECTED,
+			STATE_FAILED,
 		} CLIENT_STATE;
 
-		typedef enum
+		enum CLIENT_ERRCODE
 		{
-			ERRCODE_UNKNOWN					= 1,
-			ERRCODE_SERVICE_UNAVALIABLE		= 2,
-			ERRCODE_AUTH_FAIL				= 3,
-		} CLIENT_ERRCODE;
+			ERRCODE_SUCCESSED = 0,
+			ERRCODE_SERVICE_UNAVALIABLE = 1,
+			ERRCODE_AUTH_FAILED = 2,
+		};
 
 		CClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CClient();
 
 		CClientApp* GetClientApp() { return m_pClientApp; }
 
-		bool Login(const char* pURL, const char* pUsername, const char* pPassword);
-		bool Login(const char* pURL, const char* pDevice);
-		virtual bool LoginForStress(const char* pURL, _U32 id);
+		bool Login(const char* pUsername, const char* pPassword, const char* pUrl=NULL);
+		bool Login(const char* pDevice, const char* pUrl=NULL);
+		bool LoginForStress(_U32 id, const char* pUrl=NULL);
 		bool Logout();
+		CLIENT_STATE GetState();
+		_U32 GetErrCode();
 		void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
-		CLIENT_STATE GetClientState();
-		_U32 GetLoginErrorCode();
 
 		void AddComponent(CClientComponent* pComponent);
 		virtual void InitializeComponents();
-		void SetConnectionComponent(CClientConnectionComponent* pConnectionComponent);
 
 		virtual void OnConnected();
-		virtual void OnLoginDone();
-		virtual void OnDisconnect();
+		virtual void OnDisconnected();
 		virtual void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 		virtual void OnConnectFailed();
+		virtual void OnLoginDone();
 
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
-			ATLAS_ASSERT(iid<256 && fid<256);
 			SendData(iid, fid, Buf.GetSize(), Buf.GetBuf());
 			return true;
 		}
 
-		sigslot::signal0<>								_OnConnected;
-		sigslot::signal0<>								_OnDisconnect;
+		sigslot::signal0<>								_OnConnect;
+		sigslot::signal0<>								_OnDisconnected;
 		sigslot::signal4<_U16, _U16, _U32, const _U8*>	_OnData;
 		sigslot::signal0<>								_OnConnectFailed;
 		sigslot::signal0<>								_OnLoginDone;
@@ -94,18 +89,24 @@ namespace Atlas
 		CClient* m_pClient;
 	};
 
-	class CClientConnectionComponent
+	class CClientConnectionComponent : public CClientComponent
 	{
 	public:
 		CClientConnectionComponent(CClient* pClient);
 		virtual ~CClientConnectionComponent();
 
-		virtual bool Login(const char* pURL, const char* pUsername, const char* pPassword) = 0;
-		virtual bool Login(const char* pURL, const char* pDevice) = 0;
+		virtual bool Login(const char* pUsername, const char* pPassword, const char* pUrl) = 0;
+		virtual bool Login(const char* pDevice, const char* pUrl) = 0;
+		virtual bool LoginForStress(_U32 id, const char* pUrl) = 0;
 		virtual bool Logout() = 0;
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data) = 0;
-		virtual CClient::CLIENT_STATE GetState() = 0;
-		virtual _U32 GetErrorCode() = 0;
+
+		CClient::CLIENT_STATE GetState();
+		_U32 GetErrCode();
+
+	protected:
+		CClient::CLIENT_STATE m_nState;
+		_U32 m_nErrCode;
 	};
 
 }

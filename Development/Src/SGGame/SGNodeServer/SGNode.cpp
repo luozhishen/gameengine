@@ -100,9 +100,9 @@ namespace Atlas
 
 	}
 
-	void CSGNodeClient::OnDisconnect()
+	void CSGNodeClient::OnDisconnected()
 	{
-		CNodeClient::OnDisconnect();
+		CNodeClient::OnDisconnected();
 		//if(m_DBPlayer)
 		//{
 		//	//ATLAS_FREE m_DBFile;

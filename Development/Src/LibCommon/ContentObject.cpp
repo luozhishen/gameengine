@@ -241,30 +241,14 @@ namespace Atlas
 		const char* QueryContentGroupFile(const DDLReflect::STRUCT_INFO* info)
 		{
 			ATLAS_ASSERT(info);
-			if(info==DDLReflect::GetStruct<A_CONTENT_OBJECT>()) return g_default_file;
 			std::map<const DDLReflect::STRUCT_INFO*, CONTENT_GROUP>::iterator i;
 			i = g_content_group_map.find(info);
 			if(i!=g_content_group_map.end()) return i->second.file;
 			return QueryContentGroupFile(info->parent);
 		}
 
-		void GetContentFileList(std::map<std::string, bool>& list)
-		{
-			if(g_content_file_map.find(g_default_file)==g_content_file_map.end())
-			{
-				g_content_file_map[g_default_file] = true; 
-			}
-			list = g_content_file_map;
-		}
-
 		bool LoadContent()
 		{
-
-			{
-				std::map<std::string, bool> list;
-				GetContentFileList(list);
-			}
-
 			std::map<std::string, bool>::iterator i;
 			for(i=g_content_file_map.begin(); i!=g_content_file_map.end(); i++)
 			{
@@ -331,11 +315,6 @@ namespace Atlas
 
 		bool SaveContent(const char* file, bool force)
 		{
-			{
-				std::map<std::string, bool> list;
-				GetContentFileList(list);
-			}
-
 			std::map<std::string, std::ofstream*> vmap;
 			std::map<std::string, bool> vmap_a;
 
@@ -414,6 +393,16 @@ namespace Atlas
 			}
 
 			return true;
+		}
+
+		bool IsContentDirty()
+		{
+			std::map<std::string, bool>::iterator i;
+			for(i=g_content_file_map.begin(); i!=g_content_file_map.end(); i++)
+			{
+				if(i->second) return true;
+			}
+			return false;
 		}
 
 	}

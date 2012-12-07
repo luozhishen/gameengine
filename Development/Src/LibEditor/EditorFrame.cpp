@@ -214,19 +214,7 @@ bool CEditorFrame::SaveContent(bool exit)
 
 	if(exit)
 	{
-		std::map<std::string, bool> list;
-		Atlas::ContentObject::GetContentFileList(list);
-		bool modify = false;
-		std::map<std::string, bool>::iterator i;
-		for(i=list.begin(); i!=list.end(); i++)
-		{
-			if(i->second)
-			{
-				modify = true;
-				break;
-			}
-		}
-		if(!modify) return true;
+		if(!Atlas::ContentObject::IsContentDirty()) return true;
 
 		int ret = wxMessageBox(wxT("The file has not been saved... save...?"), wxT("Please confirm"), wxICON_QUESTION | wxYES_NO | wxCANCEL);
 		if(ret==wxCANCEL) return false;

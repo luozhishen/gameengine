@@ -255,6 +255,12 @@ namespace Atlas {
 				ATLAS_ASSERT(len==2);
 				hserver = GetRPCServer(GetRPCClientAddr(this), *((_U16*)buf));
 				return true;
+			} else if(iid==(_U16)-1 && fid==0xfffe) {
+				RPC_OUTPUT_BUF rob(RPC_PACKET_OVERHEAD+_buffer_alignof(len));
+				rob.Serialize(len, buf);
+				rob.SetID((_U16)-1, 0xfffe);
+				rob.SendTo(this);
+				return true;
 			}
 			if(iid>=RPC_IFTBL_SIZE || fid>=lwrpc_interface_table[iid].fcount) return false;
 			RPC_INPUT_BUF rib(len, buf);

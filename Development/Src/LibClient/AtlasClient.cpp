@@ -2,6 +2,7 @@
 
 #include "AtlasBase.h"
 #include "AtlasCommon.h"
+#include "AtlasClientApp.h"
 #include "AtlasClient.h"
 
 namespace Atlas
@@ -9,32 +10,28 @@ namespace Atlas
 
 	CClient::CClient(CClientApp* pClientApp, _U32 recvsize) : m_pClientApp(pClientApp)
 	{
-		m_pConnectionComponent = NULL;
+		A_MUTEX_INIT(&m_mtxClient);
 	}
 
 	CClient::~CClient()
 	{
-		while(!m_Components.empty())
-		{
-			ATLAS_DELETE *m_Components.begin();
-			m_Components.erase(m_Components.begin());
-		}
+		A_MUTEX_DESTROY(&m_mtxClient);
 	}
 
-	bool CClient::Login(const char* pURL, const char* pUsername, const char* pPassword)
+	bool CClient::Login(const char* pUsername, const char* pPassword, const char* pUrl)
 	{
-		return m_pConnectionComponent->Login(pURL, pUsername, pPassword);
+		return m_pConnectionComponent->Login(pUsername, pPassword, pUrl);
 	}
 
-	bool CClient::Login(const char* pURL, const char* pDevice)
+	bool CClient::Login(const char* pDevice, const char* pUrl)
 	{
-		return m_pConnectionComponent->Login(pURL, pDevice);
+		return m_pConnectionComponent->Login(pDevice, pUrl);
 	}
 
-	bool CClient::LoginForStress(const char* pURL, _U32 id)
+	bool CClient::LoginForStress(_U32 id, const char* pUrl)
 	{
-		std::string username = StringFormat("U%u", id);
-		return m_pConnectionComponent->Login(pURL, username.c_str(), "password");
+		std::string uname = StringFormat("U%u", id);
+		return m_pConnectionComponent->Login(uname.c_str(), "password", pUrl);
 	}
 
 	bool CClient::Logout()
@@ -42,19 +39,19 @@ namespace Atlas
 		return m_pConnectionComponent->Logout();
 	}
 
-	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
-	{
-		m_pConnectionComponent->SendData(iid, fid, len, data);
-	}
-
-	CClient::CLIENT_STATE CClient::GetClientState()
+	CClient::CLIENT_STATE CClient::GetState()
 	{
 		return m_pConnectionComponent->GetState();
 	}
 
-	_U32 CClient::GetLoginErrorCode()
+	_U32 CClient::GetErrCode()
 	{
-		return m_pConnectionComponent->GetErrorCode();
+		return m_pConnectionComponent->GetErrCode();
+	}
+
+	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	{
+		m_pConnectionComponent->SendData(iid, fid, len, data);
 	}
 
 	void CClient::AddComponent(CClientComponent* pComponent)
@@ -65,20 +62,15 @@ namespace Atlas
 	void CClient::InitializeComponents()
 	{
 	}
-
-	void CClient::SetConnectionComponent(CClientConnectionComponent* pConnectionComponent)
-	{
-		m_pConnectionComponent = pConnectionComponent;
-	}
-
+	
 	void CClient::OnConnected()
 	{
-		_OnConnected();
+		_OnConnect();
 	}
 
-	void CClient::OnDisconnect()
+	void CClient::OnDisconnected()
 	{
-		_OnDisconnect();
+		_OnDisconnected();
 	}
 
 	void CClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
@@ -104,12 +96,22 @@ namespace Atlas
 	{
 	}
 
-	CClientConnectionComponent::CClientConnectionComponent(CClient* pClient)
+	CClientConnectionComponent::CClientConnectionComponent(CClient* pClient) : CClientComponent(pClient)
 	{
 	}
 
 	CClientConnectionComponent::~CClientConnectionComponent()
 	{
+	}
+
+	CClient::CLIENT_STATE CClientConnectionComponent::GetState()
+	{
+		return m_nState;
+	}
+
+	_U32 CClientConnectionComponent::GetErrCode()
+	{
+		return m_nErrCode;
 	}
 
 }

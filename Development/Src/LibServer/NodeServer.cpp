@@ -150,7 +150,7 @@ namespace Atlas
 	{
 	}
 
-	void CNodeClient::OnDisconnect()
+	void CNodeClient::OnDisconnected()
 	{
 		Disconnect();
 	}
@@ -188,7 +188,7 @@ namespace Atlas
 	{
 		m_nState = STATE_DISCONNECTING;
 		m_DisconnectData.nodeseq = nodeseq;
-		OnDisconnect();
+		OnDisconnected();
 	}
 
 }

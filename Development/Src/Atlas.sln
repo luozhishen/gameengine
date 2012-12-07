@@ -53,9 +53,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SGNodeServer", "SGGame\SGNo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SGSessionServer", "SGGame\SGSessionServer\SGSessionServer.vcxproj", "{D1022F99-EB34-4EAA-B6AB-04508C767864}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SGDataImportConsole", "SGGame\SGDataImportConsole\SGDataImportConsole.vcxproj", "{57C7F48E-B28A-4F04-B8D2-96488DA772DE}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 18
+		SccNumberOfProjects = 19
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -128,6 +130,9 @@ Global
 		SccProjectTopLevelParentUniqueName17 = Atlas.sln
 		SccLocalPath17 = ..
 		SccProjectFilePathRelativizedFromConnection17 = Src\\SGGame\\SGSessionServer\\
+		SccProjectUniqueName18 = SGGame\\SGDataImportConsole\\SGDataImportConsole.vcxproj
+		SccProjectTopLevelParentUniqueName18 = Atlas.sln
+		SccLocalPath18 = SGGame\\SGDataImportConsole
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -272,6 +277,14 @@ Global
 		{D1022F99-EB34-4EAA-B6AB-04508C767864}.Release|Win32.Build.0 = Release|Win32
 		{D1022F99-EB34-4EAA-B6AB-04508C767864}.Release|x64.ActiveCfg = Release|x64
 		{D1022F99-EB34-4EAA-B6AB-04508C767864}.Release|x64.Build.0 = Release|x64
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Debug|Win32.Build.0 = Debug|Win32
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Debug|x64.ActiveCfg = Debug|x64
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Debug|x64.Build.0 = Debug|x64
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Release|Win32.ActiveCfg = Release|Win32
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Release|Win32.Build.0 = Release|Win32
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Release|x64.ActiveCfg = Release|x64
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -294,5 +307,6 @@ Global
 		{3627A8B0-207D-4E5C-A79C-4804B90A4C7C} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
 		{3717A396-6C94-48A7-BB05-88DED0064FE7} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
 		{D1022F99-EB34-4EAA-B6AB-04508C767864} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
+		{57C7F48E-B28A-4F04-B8D2-96488DA772DE} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
 	EndGlobalSection
 EndGlobal

@@ -42,7 +42,7 @@ namespace Atlas
 		_global_stubs[_global_stub_count].is_client_stub = true;
 		_global_stubs[_global_stub_count].is_server_stub = false;
 		_global_stubs[_global_stub_count].nodeid = (_U32)-1;
-		*((_U16*)&pClassInfo->iid) = _global_stub_count;
+		*((_U16*)&pClassInfo->class_id) = _global_stub_count;
 		return _global_stub_count++;
 	}
 
@@ -61,7 +61,7 @@ namespace Atlas
 		_global_stubs[_global_stub_count].is_client_stub = false;
 		_global_stubs[_global_stub_count].is_server_stub = true;
 		_global_stubs[_global_stub_count].nodeid = nodeid;
-		*((_U16*)&pClassInfo->iid) = _global_stub_count;
+		*((_U16*)&pClassInfo->class_id) = _global_stub_count;
 		return _global_stub_count++;
 	}
 
@@ -216,6 +216,7 @@ namespace Atlas
 
 		void InitContentObjects()
 		{
+			ContentObject::CreateContentGroup(DDLReflect::GetStruct<A_CONTENT_OBJECT>(), "default", "default.json");
 		}
 
 		void InitLiveObjects()

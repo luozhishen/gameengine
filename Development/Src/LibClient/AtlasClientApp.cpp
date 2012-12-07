@@ -113,21 +113,21 @@ namespace Atlas
 			switch(i.nCode)
 			{
 			case 0:
-				i.pClient->OnRawConnect(i.hConn);
+//				i.pClient->OnRawConnect(i.hConn);
 				break;
 			case 1:
-				i.pClient->OnRawDisconnect();
+//				i.pClient->OnRawDisconnect();
 				CloseConn(i.hConn);
 				break;
 			case 2:
-				i.pClient->OnRawData(i.len, i.data);
+//				i.pClient->OnRawData(i.len, i.data);
 				delete [] i.data;
 				break;
 			case 3:
-				i.pClient->OnRawConnectFailed();
+//				i.pClient->OnRawConnectFailed();
 				break;
 			case 4:
-				((CClientTask*)i.hConn)->DoTask(i.pClient);
+//				((CClientTask*)i.hConn)->DoTask(i.pClient);
 				delete ((CClientTask*)i.hConn);
 			}
 		}
@@ -150,12 +150,12 @@ namespace Atlas
 		return true;
 	}
 
-	void CClientApp::OnConnect(CClient* pClient, HCONNECT hConn)
+	void CClientApp::OnConnected(CClient* pClient, HCONNECT hConn)
 	{
 		if(m_bThread)
 		{
 			A_MUTEX_LOCK(&pClient->m_mtxClient);
-			pClient->OnRawConnect(hConn);
+//			pClient->OnRawConnect(hConn);
 			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
 		}
 		else
@@ -167,12 +167,12 @@ namespace Atlas
 		}
 	}
 
-	void CClientApp::OnDisconnect(CClient* pClient, HCONNECT hConn)
+	void CClientApp::OnDisconnected(CClient* pClient, HCONNECT hConn)
 	{
 		if(m_bThread)
 		{
 			A_MUTEX_LOCK(&pClient->m_mtxClient);
-			pClient->OnRawDisconnect();
+//			pClient->OnRawDisconnect();
 			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
 			CloseConn(hConn);
 		}
@@ -190,7 +190,7 @@ namespace Atlas
 		if(m_bThread)
 		{
 			A_MUTEX_LOCK(&pClient->m_mtxClient);
-			pClient->OnRawData(len, data);
+//			pClient->OnRawData(len, data);
 			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
 		}
 		else
@@ -209,7 +209,7 @@ namespace Atlas
 		if(m_bThread)
 		{
 			A_MUTEX_LOCK(&pClient->m_mtxClient);
-			pClient->OnRawConnectFailed();
+//			pClient->OnRawConnectFailed();
 			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
 		}
 		else

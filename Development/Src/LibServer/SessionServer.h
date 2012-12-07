@@ -28,7 +28,7 @@ namespace Atlas
 
 		bool OnConnected(HCONNECT hConn);
 		void OnData(HCONNECT hConn, _U32 len, const _U8* data);
-		void OnDisconnect(HCONNECT hConn);
+		void OnDisconnected(HCONNECT hConn);
 
 		bool BindUID(_U32 uid, _U64 sndx);
 		bool Unbind(_U32 uid, _U64 sndx);		
@@ -60,7 +60,7 @@ namespace Atlas
 		virtual void OnConnected() { }
 		virtual void OnAuthPassed(_U32 nUID, const char* pToken);
 		virtual void OnData(_U16 id, _U32 len, const _U8* data);
-		virtual void OnDisconnect();
+		virtual void OnDisconnected();
 		virtual void SendRawData(_U16 id, _U32 len, const _U8* data);
 
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)

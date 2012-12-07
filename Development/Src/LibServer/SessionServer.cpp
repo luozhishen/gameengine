@@ -160,7 +160,7 @@ namespace Atlas
 		_global_session_object_manager.Unlock(pConn->GetSNDX());
 	}
 
-	void CSessionServer::OnDisconnect(HCONNECT hConn)
+	void CSessionServer::OnDisconnected(HCONNECT hConn)
 	{
 		CSessionClient* pConn = (CSessionClient*)KeyOf(hConn);
 		ATLAS_ASSERT(pConn);
@@ -258,7 +258,7 @@ namespace Atlas
 		}
 	}
 
-	void CSessionClient::OnDisconnect()
+	void CSessionClient::OnDisconnected()
 	{
 		ClusterLogout();
 	}
@@ -426,7 +426,7 @@ namespace Atlas
 	void CSessionClient::OnRawDisconnect()
 	{
 		m_hConnect = NULL;
-		OnDisconnect();
+		OnDisconnected();
 	}
 
 	void CSessionClient::SetUID(_U32 uid, const char* token)
@@ -465,7 +465,7 @@ namespace Atlas
 	{
 		CSessionClient* pConn = (CSessionClient*)KeyOf(hConn);
 		ATLAS_ASSERT(pConn);
-		pConn->GetServer()->OnDisconnect(hConn);
+		pConn->GetServer()->OnDisconnected(hConn);
 		CloseConn(hConn);
 	}
 

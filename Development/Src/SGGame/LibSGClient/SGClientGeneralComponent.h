@@ -1,7 +1,6 @@
 #ifndef __SGCLIENT_GENREAL_COMPONENT_H__
 #define __SGCLIENT_GENREAL_COMPONENT_H__
 
-#include "SGGameDDL.h"
 
 namespace Atlas
 {

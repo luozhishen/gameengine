@@ -40,7 +40,7 @@ namespace Atlas
 		virtual ~CSGNodeClient();
 
 		virtual void OnConnected(_U32 len, const _U8* data);
-		virtual void OnDisconnect();
+		virtual void OnDisconnected();
 		virtual void OnData(_U16 code, _U32 len, const _U8* data);
 		virtual void OnEvent(_U16 code, _U32 len, const _U8* data);
 		DDLProxy::SGGAME_S2C<CSGNodeClient, DDL::TMemoryWriter<1*1024>> m_Sender;

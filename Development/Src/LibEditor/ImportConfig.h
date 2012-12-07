@@ -10,8 +10,6 @@ namespace Atlas
 	class CContentExcelImportManager;
 	class COLEAutoExcelWrapper;
 
-#define CONTENT_EXCEL_ERR_LEN 512
-
 	class CContentExcelImportManager
 	{
 	public:
@@ -19,12 +17,13 @@ namespace Atlas
 		~CContentExcelImportManager();
 
 		bool Load(const wxString& szExcelFilePath);
-		void Clear();
+		void Clear(bool bAll = false);
 
 		bool GetSheets(std::vector<wxString>& vSheets);
 		bool PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const std::vector<std::string>& keys);
 		bool ProcessSheet(const std::string& name);
 		const char* GetErrorMsg();
+		const char* GetImportInfoMsg();
 
 	protected:
 		bool GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, std::string& id);
@@ -36,7 +35,7 @@ namespace Atlas
 		std::map<std::string, A_UUID> m_ObjectMap;// map<keys, A_UUID> this map deal with loading data exist and data from excel
 		COLEAutoExcelWrapper* m_pExcelWrapper;
 		wxString m_strPath;
-		char m_szErr[CONTENT_EXCEL_ERR_LEN];
+		std::string m_Err;
 		int m_nUpdateRowNum;
 		int m_nInsertRowNum;
 	};

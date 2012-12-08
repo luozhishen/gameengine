@@ -153,23 +153,17 @@ namespace Atlas
 
 	void CClusterServer::NotifyNodeWorkLoad(HSERVER hServer, const WORKLOAD_INFO& info, _U32 type)
 	{
-		if(type > NODETYPE_MAX)
-		{
-			return;
-		}
+		if(type>NODETYPE_MAX) return;
 
 		NODE_LOADLIST& loadlist = m_NodeLoads[type];
 		NODE_LOADLIST::iterator it;
 
-		for(it = loadlist.begin(); it != loadlist.end(); ++it)
+		for(it=loadlist.begin(); it!=loadlist.end(); ++it)
 		{
-			if(it->first == hServer)
-			{
-				break;
-			}
+			if(it->first==hServer) break;
 		}
 
-		if(it == loadlist.end())
+		if(it==loadlist.end())
 		{
 			loadlist.push_back(std::make_pair(hServer, info));
 		}

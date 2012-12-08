@@ -19,10 +19,11 @@ namespace Atlas
 
 	struct CLIENTAPP_ITEM
 	{
-		// 0 Connected 1 Disconnect 2 OnData 3 ConnectFailed 4 Client Task
+		// 0 LoginDone 1 LoginFailed 2 Disconnect 3 OnData
 		_U32 nCode;
 		CClient* pClient;
-		HCONNECT hConn;
+		_U16 iid;
+		_U16 fid;
 		_U32 len;
 		_U8* data;
 	};
@@ -30,42 +31,42 @@ namespace Atlas
 	class CClientApp : public CNoCopy
 	{
 	public:
-		CClientApp(bool bThread, _U32 nThreadCount=1);
+		CClientApp(bool bThread);
 		virtual ~CClientApp();
+
+		void SetPacketSize(_U32 sendsize, _U32 recvsize);
+		_U32 GetUpPacketSize();
+		_U32 GetDownPacketSize();
 
 		void SetParam(const char* name, const char* value);
 		const char* GetParam(const char* name, const char* default_value=NULL);
-		std::map<std::string, std::string>& GetParams();
-		bool LoadParams();
-		bool SaveParams();
+		const std::map<std::string, std::string>& GetParams();
+		bool LoadParams(const char* filename);
+		bool SaveParams(const char* filename);
 
 		static CClientApp* GetDefault();
 		virtual void InitApp();
 		virtual CClient* NewClient();
 
 		bool IsThread() { return m_bThread; }
-		HWORKERS GetHWorkers() { return m_hWorkers; }
-		HIOPOOL GetIOPool() { return m_hPool; }
 
 		void EnableTick(bool bEnable=true);
 		bool Tick(_U32 nTime=0);
 		bool IsEnableTick() { return m_bEnableTick; }
 
-		bool QueueTask(CClientTask* pTask, CClient* pClient);
-
-		void OnConnected(CClient* pClient, HCONNECT hConn);
-		void OnDisconnected(CClient* pClient, HCONNECT hConn);
-		void OnData(CClient* pClient, _U32 len, const _U8* data);
-		void OnConnectFailed(CClient* pClient);
+		void QueueLoginDone(CClient* pClient);
+		void QueueLoginFailed(CClient* pClient);
+		void QueueDisconnected(CClient* pClient);
+		void QueueData(CClient* pClient, _U16 iid, _U16 fid, _U32 len, const _U8* data);
+		void QueueTask(CClient* pClient, CClientTask* pTask);
 
 	private:
-		A_MUTEX m_mtxQueue;
-		bool m_bThread;
-		HWORKERS m_hWorkers;
-		HIOPOOL m_hPool;
-		std::list<CLIENTAPP_ITEM> m_Queue;
-		bool m_bEnableTick;
 		std::map<std::string, std::string> m_Params;
+		A_MUTEX m_mtxQueue;
+		std::list<CLIENTAPP_ITEM> m_Queue;
+		bool m_bThread;
+		bool m_bEnableTick;
+		_U32 m_nRecvSize, m_nSendSize;
 	};
 
 }

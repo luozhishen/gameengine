@@ -560,7 +560,7 @@ namespace Atlas
 		// we exceed our high water wark: we need to scale back the traffic
 		// we're sending or we will overwhelm the netowrk link and either crash
 		// or reset the connection.
-		if(conn->iopendlimit == LONG_MAX && conn->iopends > DOE_ASOCKIO_HIGH_PENDING_BUFFER_SIZE) {
+		if(conn->iopendlimit==LONG_MAX && conn->iopends > DOE_ASOCKIO_HIGH_PENDING_BUFFER_SIZE) {
 			BOOL towork = conn->workers->IsMyWorker();
 			while(conn->iopends > DOE_ASOCKIO_LOW_PENDING_BUFFER_SIZE) {
 				if(towork) {

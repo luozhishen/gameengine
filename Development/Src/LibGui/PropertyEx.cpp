@@ -21,7 +21,7 @@ wxObjectRefProperty::wxObjectRefProperty(const wxString& label, const wxString& 
 bool wxObjectRefProperty::OnButtonClick(wxPropertyGrid* propGrid, wxString& strValue)
 {
 	CRefSelDlg dlg(propGrid, wxString::FromUTF8(m_finfo->ref_type));
-	if(dlg.ShowModal() == wxID_OK)
+	if(dlg.ShowModal()==wxID_OK)
 	{
 		AUuidFromString((const char*)dlg.GetSelect().ToUTF8(), *((A_UUID*)m_data));
 		UpdateValue();

@@ -64,13 +64,11 @@ public:
 	void OnLogin(wxCommandEvent& event);
 	void OnLogout(wxCommandEvent& event);
 	void OnAddCase(wxCommandEvent& event);
-	void OnSvrAddr(wxCommandEvent& event);
-	void OnSvrParam(wxCommandEvent& event);
+	void OnSetParam(wxCommandEvent& event);
 	
 	void OnClientSelected(wxCommandEvent& event);
 	void OnStressView(wxCommandEvent& event);
 	void OnRunScript(wxCommandEvent& event);
-	void OnOpenSvrParamDlg(wxCommandEvent& event);
 
 	void OnSize(wxSizeEvent& event);
 	void OnShow(wxShowEvent& event);

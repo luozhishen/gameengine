@@ -7,19 +7,16 @@
 
 class ServerParamDlg : public wxDialog
 {
-public:
-	ServerParamDlg(wxWindow* pParent);
-	virtual ~ServerParamDlg();
-
 	DECLARE_EVENT_TABLE()
+public:
+	ServerParamDlg();
+	virtual ~ServerParamDlg();
 
 	void OnConfirm(wxCommandEvent& event);
 	void OnNewLine(wxCommandEvent& event);
 	void OnDeleteLine(wxCommandEvent& event);
 
 protected:
-	void InitCtrls();
-
 	void LoadScript();
 	void SaveScript();
 

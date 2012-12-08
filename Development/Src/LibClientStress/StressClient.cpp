@@ -21,11 +21,10 @@ namespace Atlas
 	{
 		m_nIndex = nIndex;
 		m_pClient = pClient;
-		pClient->_OnConnectFailed.connect(this, &CStressClient::OnConnectFailed);
-		pClient->_OnConnect.connect(this, &CStressClient::OnConnected);
 		pClient->_OnLoginDone.connect(this, &CStressClient::OnLoginDone);
-		pClient->_OnData.connect(this, &CStressClient::OnData);
+		pClient->_OnLoginFailed.connect(this, &CStressClient::OnLoginFailed);
 		pClient->_OnDisconnected.connect(this, &CStressClient::OnDisconnected);
+		pClient->_OnData.connect(this, &CStressClient::OnData);
 		SetTitle("NA");
 
 		m_hTimer = NULL;
@@ -119,7 +118,7 @@ namespace Atlas
 			//	HANDLE hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 			//	while(!DeleteTimerQueueTimer(CStressManager::Get().GetTimerQueue(), m_hTimer, hEvent))
 			//	{
-			//		if(GetLastError() == ERROR_IO_PENDING)
+			//		if(GetLastError()==ERROR_IO_PENDING)
 			//		{
 			//			Sleep(0);
 			//			break;
@@ -140,20 +139,6 @@ namespace Atlas
 		}
 	}
 
-	void CStressClient::OnConnectFailed()
-	{
-		SetTitle("Connect Failed");
-		if(!CClientApp::GetDefault()->IsThread())
-			_OnConnectFailed(m_nIndex);
-	}
-
-	void CStressClient::OnConnected()
-	{
-		SetTitle("Connected");
-		if(!CClientApp::GetDefault()->IsThread())
-			_OnConnect(m_nIndex);
-	}
-
 	void CStressClient::OnLoginDone()
 	{
 		SetTitle("Login Done");
@@ -161,10 +146,11 @@ namespace Atlas
 			_OnLoginDone(m_nIndex);
 	}
 
-	void CStressClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	void CStressClient::OnLoginFailed()
 	{
+		SetTitle("Login Failed");
 		if(!CClientApp::GetDefault()->IsThread())
-			_OnData(m_nIndex, iid, fid, len, data);
+			_OnConnectFailed(m_nIndex);
 	}
 
 	void CStressClient::OnDisconnected()
@@ -173,6 +159,13 @@ namespace Atlas
 		if(!CClientApp::GetDefault()->IsThread())
 			_OnDisconnected(m_nIndex);
 	}
+
+	void CStressClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	{
+		if(!CClientApp::GetDefault()->IsThread())
+			_OnData(m_nIndex, iid, fid, len, data);
+	}
+
 
 	bool CStressClient::IsExistCase(const char* name)
 	{

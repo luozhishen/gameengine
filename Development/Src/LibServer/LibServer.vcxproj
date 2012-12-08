@@ -25,12 +25,12 @@
     <ClInclude Include="NodeServer.h" />
     <ClInclude Include="ServerBase.h" />
     <ClInclude Include="ServerApp.h" />
+    <ClInclude Include="ServerInc.h" />
     <ClInclude Include="ServerRpc.c.h" />
     <ClInclude Include="ServerRpc.s.h" />
     <ClInclude Include="ServerTask.h" />
     <ClInclude Include="ServerUtils.h" />
     <ClInclude Include="SessionServer.h" />
-    <ClInclude Include="SimpleDBFile.h" />
     <ClInclude Include="WorkerServer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +45,6 @@
     <ClCompile Include="ServerTask.cpp" />
     <ClCompile Include="ServerUtils.cpp" />
     <ClCompile Include="SessionServer.cpp" />
-    <ClCompile Include="SimpleDBFile.cpp" />
     <ClCompile Include="WorkerServer.cpp" />
   </ItemGroup>
   <ItemGroup>

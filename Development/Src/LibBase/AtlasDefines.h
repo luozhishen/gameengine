@@ -38,6 +38,7 @@ typedef char*					_STR;
 	#else
 	#define ATLAS_NEW				new
 	#endif
+	#define ATLAS_DELETE			delete
 	#define ATLAS_ALLOCA(x)			_alloca(x)
 
 	#define WIN32_LEAN_AND_MEAN
@@ -69,6 +70,7 @@ typedef char*					_STR;
 	#else
 	#define ATLAS_NEW				new
 	#endif
+	#define ATLAS_DELETE			delete
 	#define ATLAS_ALLOCA(x)			_alloca(x)
 
 	#include <pthread.h>
@@ -90,11 +92,11 @@ typedef char*					_STR;
 	#define ATLAS_SLEEP(x)			sleep(x*1000)
 #endif
 
-//#pragma warning(disable:4366)
 #pragma warning(disable:4121)
 #pragma warning(disable:4100)
 #pragma warning(disable:4189)
 #pragma warning(disable:4355)
+#pragma warning(disable:4996)
 
 #define ATLAS_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 

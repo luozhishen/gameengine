@@ -5,39 +5,42 @@
 #include "AtlasClientApp.h"
 #include "AtlasClient.h"
 
-#define CLIENT_IORECVBUF_SIZE		(1024)
-#define CLIENT_IOSENDBUF_SIZE		(1024)
-
 namespace Atlas
 {
 
 	static CClientApp* __global_client_app = NULL;
-	CClientApp::CClientApp(bool bThread, _U32 nThreadCount)
+
+	CClientApp::CClientApp(bool bThread)
 	{
 		ATLAS_ASSERT(!__global_client_app);
 		__global_client_app = this;
-
 		m_bThread = bThread;
-		if(!m_bThread) nThreadCount = 1;
-		m_hWorkers = CreateWorkers(nThreadCount);
-		m_hPool = AllocIoBufferPool(CLIENT_IORECVBUF_SIZE, CLIENT_IOSENDBUF_SIZE, 0, 0);
-		A_MUTEX_INIT(&m_mtxQueue);
 		m_bEnableTick = true;
+		A_MUTEX_INIT(&m_mtxQueue);
+
+		m_nRecvSize = 20*1024;
+		m_nSendSize = 1*1024;
 	}
 
 	CClientApp::~CClientApp()
 	{
-		if(m_hPool)
-		{
-			FreeIoBufferPool(m_hPool);
-			m_hPool = NULL;
-		}
-		if(m_hWorkers)
-		{
-			KillWorkers(m_hWorkers);
-			m_hWorkers = NULL;
-		}
 		A_MUTEX_DESTROY(&m_mtxQueue);
+	}
+
+	void CClientApp::SetPacketSize(_U32 sendsize, _U32 recvsize)
+	{
+		m_nSendSize = sendsize;
+		m_nRecvSize = recvsize;
+	}
+
+	_U32 CClientApp::GetUpPacketSize()
+	{
+		return m_nSendSize;
+	}
+	
+	_U32 CClientApp::GetDownPacketSize()
+	{
+		return m_nRecvSize;
 	}
 
 	void CClientApp::SetParam(const char* name, const char* value)
@@ -53,17 +56,17 @@ namespace Atlas
 		return i->second.c_str();
 	}
 	
-	std::map<std::string, std::string>& CClientApp::GetParams()
+	const std::map<std::string, std::string>& CClientApp::GetParams()
 	{
 		return m_Params;
 	}
 
-	bool CClientApp::LoadParams()
+	bool CClientApp::LoadParams(const char* filename)
 	{
 		return true;
 	}
 
-	bool CClientApp::SaveParams()
+	bool CClientApp::SaveParams(const char* filename)
 	{
 		return true;
 	}
@@ -113,112 +116,90 @@ namespace Atlas
 			switch(i.nCode)
 			{
 			case 0:
-//				i.pClient->OnRawConnect(i.hConn);
+				i.pClient->OnLoginDone();
 				break;
 			case 1:
-//				i.pClient->OnRawDisconnect();
-				CloseConn(i.hConn);
+				i.pClient->OnLoginFailed();
 				break;
 			case 2:
-//				i.pClient->OnRawData(i.len, i.data);
-				delete [] i.data;
+				i.pClient->OnDisconnected();
 				break;
 			case 3:
-//				i.pClient->OnRawConnectFailed();
+				i.pClient->OnData(i.iid, i.fid, i.len, i.data);
+				delete [] i.data;
 				break;
-			case 4:
-//				((CClientTask*)i.hConn)->DoTask(i.pClient);
-				delete ((CClientTask*)i.hConn);
 			}
 		}
 
 		return bRet;
 	}
 
-	bool CClientApp::QueueTask(CClientTask* pTask, CClient* pClient)
+	void CClientApp::QueueLoginDone(CClient* pClient)
 	{
 		if(m_bThread)
 		{
+			pClient->OnLoginDone();
+			return;
 		}
-		else
-		{
-			CLIENTAPP_ITEM i = { 4, pClient, (HCONNECT)pTask, 0, NULL };
-			A_MUTEX_LOCK(&m_mtxQueue);
-			m_Queue.push_back(i);
-			A_MUTEX_UNLOCK(&m_mtxQueue);
-		}
-		return true;
+
+		CLIENTAPP_ITEM i = { 0, pClient, 0, 0, 0, NULL };
+		A_MUTEX_LOCK(&m_mtxQueue);
+		m_Queue.push_back(i);
+		A_MUTEX_UNLOCK(&m_mtxQueue);
 	}
 
-	void CClientApp::OnConnected(CClient* pClient, HCONNECT hConn)
+	void CClientApp::QueueLoginFailed(CClient* pClient)
 	{
 		if(m_bThread)
 		{
-			A_MUTEX_LOCK(&pClient->m_mtxClient);
-//			pClient->OnRawConnect(hConn);
-			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
+			pClient->OnLoginFailed();
+			return;
 		}
-		else
-		{
-			CLIENTAPP_ITEM i = { 0, pClient, hConn, 0, NULL };
-			A_MUTEX_LOCK(&m_mtxQueue);
-			m_Queue.push_back(i);
-			A_MUTEX_UNLOCK(&m_mtxQueue);
-		}
+
+		CLIENTAPP_ITEM i = { 1, pClient, 0, 0, 0, NULL };
+		A_MUTEX_LOCK(&m_mtxQueue);
+		m_Queue.push_back(i);
+		A_MUTEX_UNLOCK(&m_mtxQueue);
 	}
 
-	void CClientApp::OnDisconnected(CClient* pClient, HCONNECT hConn)
+	void CClientApp::QueueDisconnected(CClient* pClient)
 	{
 		if(m_bThread)
 		{
-			A_MUTEX_LOCK(&pClient->m_mtxClient);
-//			pClient->OnRawDisconnect();
-			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
-			CloseConn(hConn);
+			pClient->OnDisconnected();
+			return;
 		}
-		else
-		{
-			CLIENTAPP_ITEM i = { 1, pClient, hConn, 0, NULL };
-			A_MUTEX_LOCK(&m_mtxQueue);
-			m_Queue.push_back(i);
-			A_MUTEX_UNLOCK(&m_mtxQueue);
-		}
+
+		CLIENTAPP_ITEM i = { 2, pClient, 0, 0, 0, NULL };
+		A_MUTEX_LOCK(&m_mtxQueue);
+		m_Queue.push_back(i);
+		A_MUTEX_UNLOCK(&m_mtxQueue);
 	}
 
-	void CClientApp::OnData(CClient* pClient, _U32 len, const _U8* data)
+	void CClientApp::QueueData(CClient* pClient, _U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
 		if(m_bThread)
 		{
-			A_MUTEX_LOCK(&pClient->m_mtxClient);
-//			pClient->OnRawData(len, data);
-			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
+			pClient->OnData(iid, fid, len, data);
+			return;
 		}
-		else
-		{
-			CLIENTAPP_ITEM i = { 2, pClient, NULL, len, NULL };
-			i.data = (_U8*)ATLAS_ALLOC(len);
-			memcpy(i.data, data, len);
-			A_MUTEX_LOCK(&m_mtxQueue);
-			m_Queue.push_back(i);
-			A_MUTEX_UNLOCK(&m_mtxQueue);
-		}
+
+		CLIENTAPP_ITEM i = { 3, pClient, iid, fid, len, NULL };
+		i.data = (_U8*)ATLAS_ALLOC(len);
+		memcpy(i.data, data, len);
+		A_MUTEX_LOCK(&m_mtxQueue);
+		m_Queue.push_back(i);
+		A_MUTEX_UNLOCK(&m_mtxQueue);
 	}
 
-	void CClientApp::OnConnectFailed(CClient* pClient)
+	void CClientApp::QueueTask(CClient* pClient, CClientTask* pTask)
 	{
-		if(m_bThread)
-		{
-			A_MUTEX_LOCK(&pClient->m_mtxClient);
-//			pClient->OnRawConnectFailed();
-			A_MUTEX_UNLOCK(&pClient->m_mtxClient);
-		}
-		else
-		{
-			CLIENTAPP_ITEM i = { 3, pClient, NULL, 0, NULL };
-			A_MUTEX_LOCK(&m_mtxQueue);
-			m_Queue.push_back(i);
-			A_MUTEX_UNLOCK(&m_mtxQueue);
-		}
+		ATLAS_ASSERT(!m_bThread);
+
+		CLIENTAPP_ITEM i = { 4, pClient, 0, 0, 0, NULL };
+		A_MUTEX_LOCK(&m_mtxQueue);
+		m_Queue.push_back(i);
+		A_MUTEX_UNLOCK(&m_mtxQueue);
 	}
 
 }

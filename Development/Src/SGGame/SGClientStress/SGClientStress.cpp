@@ -21,7 +21,7 @@
 class CSGClientStressApp : public CClientStressApp
 {
 public:
-	CSGClientStressApp() : m_App(false, 20)
+	CSGClientStressApp() : m_App(false)
 	{
 	}
 

@@ -104,7 +104,7 @@ namespace Atlas
 				for(; script_it != (*it).scripts.end(); ++script_it)
 				{
 					CStressCase* pCase = pClient->NewStressCase((*script_it).case_name.c_str());
-					if(pCase == NULL)
+					if(pCase==NULL)
 					{
 						return false;
 					}

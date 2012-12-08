@@ -7,7 +7,7 @@ namespace Atlas
 	class CSGClientApp : public Atlas::CClientApp
 	{
 	public:
-		CSGClientApp(bool bThread, _U32 nThreadCount=1);
+		CSGClientApp(bool bThread);
 		virtual ~CSGClientApp();
 
 		virtual Atlas::CClient* NewClient();

@@ -180,7 +180,7 @@ void CImportDlg::InitCombox()
 			continue;
 		}
 
-		if(nTypeIndex == -1)
+		if(nTypeIndex==-1)
 		{
 			nTypeIndex = m_cbType->Insert(wxString::FromUTF8(in->first.c_str()), m_cbType->GetCount());
 		}
@@ -219,7 +219,7 @@ void CImportDlg::OnSelectAll(wxCommandEvent& event)
 
 bool CImportDlg::GetSelectSheets(std::vector<std::string>& vSheets)
 {
-	if(m_checkList->GetCount() == 0)
+	if(m_checkList->GetCount()==0)
 	{
 		wxMessageBox(wxT("no Sheet load!!!"));
 		return false;
@@ -339,7 +339,7 @@ bool CImportDlg::CheckKeyCols( std::vector<std::string>& vec )
 		int nTime = 0;
 		for(size_t j = i; j < vec.size(); ++j)
 		{
-			if(vec[i] == vec[j])
+			if(vec[i]==vec[j])
 			{
 				++nTime;
 			}

@@ -33,11 +33,10 @@ namespace Atlas
 		void Login();
 		void Logout();
 
-		void OnConnectFailed();
-		void OnConnected();
 		void OnLoginDone();
-		void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+		void OnLoginFailed();
 		void OnDisconnected();
+		void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 
 		bool IsExistCase(const char* name);
 		CStressCase* GetStressCase(const char* name);

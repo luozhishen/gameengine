@@ -62,7 +62,7 @@ namespace Atlas
 
 			if(!CClientApp::GetDefault()->IsThread())
 			{
-				CClientApp::GetDefault()->Tick();
+				CClientApp::GetDefault()->Tick(0);
 			}
 		}
 
@@ -161,11 +161,6 @@ namespace Atlas
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return NULL;
 		return i->second->GetConfig(data, size);
-	}
-	
-	void CStressManager::SetUIDStart(_U32 nUIDtart)
-	{
-		m_nIDSeq = nUIDtart;
 	}
 
 }

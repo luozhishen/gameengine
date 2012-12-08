@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AsyncIOConnection.cpp" />
     <ClCompile Include="AtlasClient.cpp" />
     <ClCompile Include="AtlasClientApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsyncIOConnection.h" />
     <ClInclude Include="AtlasClient.h" />
     <ClInclude Include="AtlasClientApp.h" />
   </ItemGroup>

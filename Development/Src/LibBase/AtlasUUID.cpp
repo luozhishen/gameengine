@@ -16,7 +16,7 @@ A_UUID::A_UUID(const A_UUID& uuid)
 bool A_UUID::isEmpty() const
 {
 	A_UUID empty_uuid;
-	return (empty_uuid == *this);
+	return (empty_uuid==*this);
 }
 
 bool A_UUID::operator<(const A_UUID& n) const
@@ -26,22 +26,22 @@ bool A_UUID::operator<(const A_UUID& n) const
 
 bool A_UUID::operator==(const A_UUID& n) const
 {
-	return (data1 == n.data1)
-			&&(data2 == n.data2)
-			&&(data3 == n.data3)
-			&&(data4 == n.data4)
-			&&(data5 == n.data5)
-			&&(data6 == n.data6)
-			&&(data7 == n.data7)
-			&&(data8 == n.data8)
-			&&(data9 == n.data9)
-			&&(data10 == n.data10)
-			&&(data11 == n.data11);
+	return (data1==n.data1)
+			&&(data2==n.data2)
+			&&(data3==n.data3)
+			&&(data4==n.data4)
+			&&(data5==n.data5)
+			&&(data6==n.data6)
+			&&(data7==n.data7)
+			&&(data8==n.data8)
+			&&(data9==n.data9)
+			&&(data10==n.data10)
+			&&(data11==n.data11);
 }
 
 bool A_UUID::operator != (const A_UUID& n) const
 {
-	return !(*this == n);
+	return !(*this==n);
 }
 
 #ifdef _WIN32

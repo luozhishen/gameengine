@@ -31,7 +31,7 @@ namespace Atlas
 	{
 		for(std::vector<SG_SOLDIER>::iterator it = m_vecSoldiers.begin(); it != m_vecSoldiers.end(); ++it)
 		{
-			if(type == it->type)
+			if(type==it->type)
 			{
 				return &*it;
 			}

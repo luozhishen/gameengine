@@ -10,7 +10,7 @@
 namespace Atlas
 {
 
-	CSGClientApp::CSGClientApp(bool bThread, _U32 nThreadCount) : CClientApp(bThread, nThreadCount)
+	CSGClientApp::CSGClientApp(bool bThread) : CClientApp(bThread)
 	{
 	}
 

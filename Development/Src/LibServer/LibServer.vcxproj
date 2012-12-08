@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="AtlasServer.h" />
     <ClInclude Include="ClusterServer.h" />
+    <ClInclude Include="ConnectionServer.h" />
     <ClInclude Include="LoginServer.h" />
     <ClInclude Include="NodeServer.h" />
     <ClInclude Include="ServerBase.h" />
@@ -36,6 +37,7 @@
   <ItemGroup>
     <ClCompile Include="AtlasServer.cpp" />
     <ClCompile Include="ClusterServer.cpp" />
+    <ClCompile Include="ConnectionServer.cpp" />
     <ClCompile Include="LoginServer.cpp" />
     <ClCompile Include="NodeServer.cpp" />
     <ClCompile Include="ServerBase.cpp" />

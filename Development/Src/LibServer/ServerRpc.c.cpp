@@ -229,18 +229,17 @@ Atlas::RPC_RESULT CRPC_NodeDisconnect(Atlas::HSERVER hServer, _U64 cndx, _U32 no
 	return(buf.SendTo(hServer));
 }
 
-Atlas::RPC_RESULT CRPC_SetWorkload(Atlas::HSERVER hServer, _U32 type, const WORKLOAD_INFO& info)
+Atlas::RPC_RESULT CRPC_SetSessionWorkload(Atlas::HSERVER hServer, const WORKLOAD_INFO& info)
 {
 	ClusterRpc_Client_Register();
-	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD+_aligned_sizeof(type)+_aligned_sizeof(info));
+	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD+_aligned_sizeof(info));
 	if(!buf) return(RPC_RES_OOM);
-	if(!buf.Serialize(type)) return(RPC_RES_TMP);
 	if(!buf.Serialize(info)) return(RPC_RES_TMP);
 	buf.SetID(1, 12);
 	return(buf.SendTo(hServer));
 }
 
-Atlas::RPC_RESULT CRPC_GetWorkload(Atlas::HSERVER hServer)
+Atlas::RPC_RESULT CRPC_GetSessionWorkload(Atlas::HSERVER hServer)
 {
 	ClusterRpc_Client_Register();
 	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD);
@@ -251,15 +250,48 @@ Atlas::RPC_RESULT CRPC_GetWorkload(Atlas::HSERVER hServer)
 
 static bool CRPC_SessionWorkLoadResult_stub_0(Atlas::HSERVER hServer, Atlas::RPC_INPUT_BUF& buf)
 {
+	WORKLOAD_INFO* info;
+	unsigned int* info__length;
+	_U32* count;
+	if(!buf.Serialize(info__length)) return false;
+	if(!buf.Serialize(*info__length, info)) return false;
+	if(!buf.Serialize(count)) return false;
+	CRPC_SessionWorkLoadResult(hServer, info, *count);
+	return true;
+}
+
+Atlas::RPC_RESULT CRPC_SetNodeWorkload(Atlas::HSERVER hServer, const WORKLOAD_INFO& info, _U32 type)
+{
+	ClusterRpc_Client_Register();
+	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD+_aligned_sizeof(info)+_aligned_sizeof(type));
+	if(!buf) return(RPC_RES_OOM);
+	if(!buf.Serialize(info)) return(RPC_RES_TMP);
+	if(!buf.Serialize(type)) return(RPC_RES_TMP);
+	buf.SetID(1, 14);
+	return(buf.SendTo(hServer));
+}
+
+Atlas::RPC_RESULT CRPC_GetNodeWorkload(Atlas::HSERVER hServer, _U32 type)
+{
+	ClusterRpc_Client_Register();
+	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD+_aligned_sizeof(type));
+	if(!buf) return(RPC_RES_OOM);
+	if(!buf.Serialize(type)) return(RPC_RES_TMP);
+	buf.SetID(1, 15);
+	return(buf.SendTo(hServer));
+}
+
+static bool CRPC_NodeWorkLoadResult_stub_1(Atlas::HSERVER hServer, Atlas::RPC_INPUT_BUF& buf)
+{
 	_U32* type;
-	WORKLOAD_INFO* infos;
-	unsigned int* infos__length;
+	WORKLOAD_INFO* info;
+	unsigned int* info__length;
 	_U32* count;
 	if(!buf.Serialize(type)) return false;
-	if(!buf.Serialize(infos__length)) return false;
-	if(!buf.Serialize(*infos__length, infos)) return false;
+	if(!buf.Serialize(info__length)) return false;
+	if(!buf.Serialize(*info__length, info)) return false;
 	if(!buf.Serialize(count)) return false;
-	CRPC_SessionWorkLoadResult(hServer, *type, infos, *count);
+	CRPC_NodeWorkLoadResult(hServer, *type, info, *count);
 	return true;
 }
 
@@ -354,6 +386,7 @@ void SessionRpc_Client_Register() {
 }
 	static Atlas::RPC_CBFUNC_STUB ClusterRpc_callback_table[] = {
 	CRPC_SessionWorkLoadResult_stub_0,
+	CRPC_NodeWorkLoadResult_stub_1,
 	NULL};
 void ClusterRpc_Client_Register() {
 	Atlas::lwrpc_cbinterface_table[1].cbfcount = sizeof(ClusterRpc_callback_table)/sizeof(ClusterRpc_callback_table[0]) - 1;

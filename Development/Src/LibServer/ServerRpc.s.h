@@ -23,9 +23,12 @@ void CRPC_ForwardEventByUID(Atlas::HCLIENT hClient, _U32 uid, _U32 nodeid, _U16 
 void CRPC_ForwardEventByAID(Atlas::HCLIENT hClient, _U32 aid, _U32 nodeid, _U16 code, _U32 len, const _U8* data);
 void CRPC_NodeConnect(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U64 nndx);
 void CRPC_NodeDisconnect(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq);
-void CRPC_SetWorkload(Atlas::HCLIENT hClient, _U32 type, const WORKLOAD_INFO& info);
-void CRPC_GetWorkload(Atlas::HCLIENT hClient);
-Atlas::RPC_RESULT CRPC_SessionWorkLoadResult(Atlas::HCLIENT hClient, _U32 type, const WORKLOAD_INFO* infos, _U32 count);
+void CRPC_SetSessionWorkload(Atlas::HCLIENT hClient, const WORKLOAD_INFO& info);
+void CRPC_GetSessionWorkload(Atlas::HCLIENT hClient);
+Atlas::RPC_RESULT CRPC_SessionWorkLoadResult(Atlas::HCLIENT hClient, const WORKLOAD_INFO* info, _U32 count);
+void CRPC_SetNodeWorkload(Atlas::HCLIENT hClient, const WORKLOAD_INFO& info, _U32 type);
+void CRPC_GetNodeWorkload(Atlas::HCLIENT hClient, _U32 type);
+Atlas::RPC_RESULT CRPC_NodeWorkLoadResult(Atlas::HCLIENT hClient, _U32 type, const WORKLOAD_INFO* info, _U32 count);
 void NRPC_Connect(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U32 len, const _U8* data);
 void NRPC_SessionAck(Atlas::HCLIENT hClient, _U64 nndx, _U64 sndx);
 void NRPC_Disconnect(Atlas::HCLIENT hClient, _U64 nndx, _U32 nodeseq);

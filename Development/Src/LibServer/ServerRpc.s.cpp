@@ -232,35 +232,62 @@ static bool CRPC_NodeDisconnect_stub_15(Atlas::HCLIENT hClient, Atlas::RPC_INPUT
 	return true;
 }
 
-static bool CRPC_SetWorkload_stub_16(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool CRPC_SetSessionWorkload_stub_16(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
-	_U32* type;
 	WORKLOAD_INFO* info;
-	if(!buf.Serialize(type)) return false;
 	if(!buf.Serialize(info)) return false;
-	CRPC_SetWorkload(hClient, *type, *info);
+	CRPC_SetSessionWorkload(hClient, *info);
 	return true;
 }
 
-static bool CRPC_GetWorkload_stub_17(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool CRPC_GetSessionWorkload_stub_17(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
-	CRPC_GetWorkload(hClient);
+	CRPC_GetSessionWorkload(hClient);
 	return true;
 }
 
-Atlas::RPC_RESULT CRPC_SessionWorkLoadResult(Atlas::HCLIENT hClient, _U32 type, const WORKLOAD_INFO* infos, _U32 count)
+Atlas::RPC_RESULT CRPC_SessionWorkLoadResult(Atlas::HCLIENT hClient, const WORKLOAD_INFO* info, _U32 count)
 {
-	unsigned int infos__length = (_U32)(count);	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD+_aligned_sizeof(type)+_aligned_sizeof(infos__length)+_buffer_alignof(sizeof(infos[0])*infos__length)+_aligned_sizeof(count));
+	unsigned int info__length = (_U32)(count);	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD+_aligned_sizeof(info__length)+_buffer_alignof(sizeof(info[0])*info__length)+_aligned_sizeof(count));
 	if(!buf) return(RPC_RES_OOM);
-	if(!buf.Serialize(type)) return(RPC_RES_TMP);
-	if(!buf.Serialize(infos__length)) return(RPC_RES_TMP);
-	if(!buf.Serialize(infos__length, infos)) return(RPC_RES_TMP);
+	if(!buf.Serialize(info__length)) return(RPC_RES_TMP);
+	if(!buf.Serialize(info__length, info)) return(RPC_RES_TMP);
 	if(!buf.Serialize(count)) return(RPC_RES_TMP);
 	buf.SetID(1, 0);
 	return(buf.SendTo(hClient));
 }
 
-static bool NRPC_Connect_stub_18(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool CRPC_SetNodeWorkload_stub_18(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+{
+	WORKLOAD_INFO* info;
+	_U32* type;
+	if(!buf.Serialize(info)) return false;
+	if(!buf.Serialize(type)) return false;
+	CRPC_SetNodeWorkload(hClient, *info, *type);
+	return true;
+}
+
+static bool CRPC_GetNodeWorkload_stub_19(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+{
+	_U32* type;
+	if(!buf.Serialize(type)) return false;
+	CRPC_GetNodeWorkload(hClient, *type);
+	return true;
+}
+
+Atlas::RPC_RESULT CRPC_NodeWorkLoadResult(Atlas::HCLIENT hClient, _U32 type, const WORKLOAD_INFO* info, _U32 count)
+{
+	unsigned int info__length = (_U32)(count);	Atlas::RPC_OUTPUT_BUF buf(RPC_PACKET_OVERHEAD+_aligned_sizeof(type)+_aligned_sizeof(info__length)+_buffer_alignof(sizeof(info[0])*info__length)+_aligned_sizeof(count));
+	if(!buf) return(RPC_RES_OOM);
+	if(!buf.Serialize(type)) return(RPC_RES_TMP);
+	if(!buf.Serialize(info__length)) return(RPC_RES_TMP);
+	if(!buf.Serialize(info__length, info)) return(RPC_RES_TMP);
+	if(!buf.Serialize(count)) return(RPC_RES_TMP);
+	buf.SetID(1, 1);
+	return(buf.SendTo(hClient));
+}
+
+static bool NRPC_Connect_stub_20(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
 	_U64* cndx;
 	_U32* nodeid;
@@ -278,7 +305,7 @@ static bool NRPC_Connect_stub_18(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& b
 	return true;
 }
 
-static bool NRPC_SessionAck_stub_19(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool NRPC_SessionAck_stub_21(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
 	_U64* nndx;
 	_U64* sndx;
@@ -288,7 +315,7 @@ static bool NRPC_SessionAck_stub_19(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF
 	return true;
 }
 
-static bool NRPC_Disconnect_stub_20(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool NRPC_Disconnect_stub_22(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
 	_U64* nndx;
 	_U32* nodeseq;
@@ -298,7 +325,7 @@ static bool NRPC_Disconnect_stub_20(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF
 	return true;
 }
 
-static bool NRPC_OnUserData_stub_21(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool NRPC_OnUserData_stub_23(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
 	_U64* nndx;
 	_U16* code;
@@ -314,7 +341,7 @@ static bool NRPC_OnUserData_stub_21(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF
 	return true;
 }
 
-static bool NRPC_OnForwardEvent_stub_22(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool NRPC_OnForwardEvent_stub_24(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
 	_U64* nndx;
 	_U16* code;
@@ -330,7 +357,7 @@ static bool NRPC_OnForwardEvent_stub_22(Atlas::HCLIENT hClient, Atlas::RPC_INPUT
 	return true;
 }
 
-static bool WRPC_DoRequest_stub_23(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
+static bool WRPC_DoRequest_stub_25(Atlas::HCLIENT hClient, Atlas::RPC_INPUT_BUF& buf)
 {
 	_U64* tid;
 	_U16* code;
@@ -371,8 +398,10 @@ CRPC_ForwardEventByUID_stub_12,
 CRPC_ForwardEventByAID_stub_13,
 CRPC_NodeConnect_stub_14,
 CRPC_NodeDisconnect_stub_15,
-CRPC_SetWorkload_stub_16,
-CRPC_GetWorkload_stub_17,
+CRPC_SetSessionWorkload_stub_16,
+CRPC_GetSessionWorkload_stub_17,
+CRPC_SetNodeWorkload_stub_18,
+CRPC_GetNodeWorkload_stub_19,
 NULL };
 void ClusterRpc_Server_Register() {
 	Atlas::lwrpc_interface_table[1].fcount = sizeof(ClusterRpc_server_table)/sizeof(ClusterRpc_server_table[0]) - 1;
@@ -380,11 +409,11 @@ void ClusterRpc_Server_Register() {
 }
 static Atlas::RPC_FUNC_STUB NodeRpc_server_table[] =
 {
-NRPC_Connect_stub_18,
-NRPC_SessionAck_stub_19,
-NRPC_Disconnect_stub_20,
-NRPC_OnUserData_stub_21,
-NRPC_OnForwardEvent_stub_22,
+NRPC_Connect_stub_20,
+NRPC_SessionAck_stub_21,
+NRPC_Disconnect_stub_22,
+NRPC_OnUserData_stub_23,
+NRPC_OnForwardEvent_stub_24,
 NULL };
 void NodeRpc_Server_Register() {
 	Atlas::lwrpc_interface_table[2].fcount = sizeof(NodeRpc_server_table)/sizeof(NodeRpc_server_table[0]) - 1;
@@ -392,7 +421,7 @@ void NodeRpc_Server_Register() {
 }
 static Atlas::RPC_FUNC_STUB WorkerRpc_server_table[] =
 {
-WRPC_DoRequest_stub_23,
+WRPC_DoRequest_stub_25,
 NULL };
 void WorkerRpc_Server_Register() {
 	Atlas::lwrpc_interface_table[3].fcount = sizeof(WorkerRpc_server_table)/sizeof(WorkerRpc_server_table[0]) - 1;

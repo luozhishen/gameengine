@@ -18,7 +18,7 @@ namespace Atlas
 		virtual void Stop();
 
 		virtual CConnectionClient* NewConnection(HCONNECT hConn) = 0;
-		bool OnConnected(HCONNECT hConn);
+		virtual bool OnConnected(HCONNECT hConn);
 
 	private:
 		SOCKADDR m_saAddr;
@@ -31,6 +31,8 @@ namespace Atlas
 	public:
 		CConnectionClient(HCONNECT hConn, _U32 ndx, _U32 recvsize);
 		virtual ~CConnectionClient();
+
+		_U32 GetIndex() { return m_nNDX; }
 
 		virtual void OnConnected();
 		virtual void OnDisconnected();

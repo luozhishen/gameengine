@@ -7,12 +7,23 @@
 namespace Atlas
 {
 
+	static bool CS_ON_CONNECT(HCONNECT hConn);
+	static void CS_ON_DISCONNECT(HCONNECT hConn);
+	static void CS_ON_DATA(HCONNECT hConn, _U32 len, const _U8* data);
+
 	CConnectionServer::CConnectionServer(CServerApp* pServerApp) : CServerBase(pServerApp)
 	{
+		m_hPool = AllocIoBufferPool(500, 500, 0, 0);
+		m_hEp = NULL;
 	}
 
 	CConnectionServer::~CConnectionServer()
 	{
+		if(m_hEp) DelEP(m_hEp);
+		m_hEp = NULL;
+
+		if(m_hPool) FreeIoBufferPool(m_hPool);
+		m_hPool = NULL;
 	}
 
 	void CConnectionServer::SetEP(const SOCKADDR& sa)
@@ -22,14 +33,24 @@ namespace Atlas
 
 	bool CConnectionServer::Start()
 	{
-		m_hPool = AllocIoBufferPool(500, 500, 0, 0);
+		ATLAS_ASSERT(m_hEp);
+		ASOCKIO_HANDLER handler = { CS_ON_CONNECT, CS_ON_DISCONNECT, CS_ON_DATA, NULL };
+		m_hEp = NewEP(m_saAddr, handler, m_hPool, GetServerApp()->GetIOWorkers(), this);
+		ATLAS_ASSERT(m_hEp);
+		if(!m_hEp) return false;
+		StartEP(m_hEp);
+
 		return true;
 	}
 
 	void CConnectionServer::Stop()
 	{
-		if(m_hPool) FreeIoBufferPool(m_hPool);
-		m_hPool = NULL;
+		ATLAS_ASSERT(m_hEp);
+		StopEP(m_hEp);
+		while(IsRunning(m_hEp))
+		{
+			SwitchToThread();
+		}
 	}
 
 	bool CConnectionServer::OnConnected(HCONNECT hConn)
@@ -80,6 +101,7 @@ namespace Atlas
 
 	void CConnectionClient::OnRawDisconnected()
 	{
+		m_hConn = NULL;
 	}
 
 	void CConnectionClient::OnRawData(_U32 len, const _U8* data)
@@ -112,6 +134,30 @@ namespace Atlas
 				memmove(m_pRecvBuff, m_pRecvBuff+ulen, m_nRecvBuffLen);
 			}
 		}
+	}
+
+	bool CS_ON_CONNECT(HCONNECT hConn)
+	{
+		HTCPEP hep = HepOf(hConn);
+		ATLAS_ASSERT(hep);
+		CConnectionServer* pServer = (CConnectionServer*)KeyOf(hep);
+		ATLAS_ASSERT(pServer);
+		return pServer->OnConnected(hConn);
+	}
+
+	void CS_ON_DISCONNECT(HCONNECT hConn)
+	{
+		CConnectionClient* pConn = (CConnectionClient*)KeyOf(hConn);
+		ATLAS_ASSERT(pConn);
+		pConn->OnRawDisconnected();
+		CloseConn(hConn);
+	}
+
+	void CS_ON_DATA(HCONNECT hConn, _U32 len, const _U8* data)
+	{
+		CConnectionClient* pConn = (CConnectionClient*)KeyOf(hConn);
+		ATLAS_ASSERT(pConn);
+		pConn->OnRawData(len, data);
 	}
 
 }

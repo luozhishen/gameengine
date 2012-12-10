@@ -20,6 +20,7 @@ namespace Atlas
 		typedef enum {
 			STATE_NA,
 			STATE_LOGINING,
+			STATE_PENDING,
 			STATE_LOGINED,
 			STATE_FAILED,
 		} CLIENT_STATE;

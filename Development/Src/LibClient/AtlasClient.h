@@ -113,7 +113,7 @@ namespace Atlas
 		virtual ~CClientConnection();
 
 		virtual bool Connect(const SOCKADDR& sa) = 0;
-		virtual bool Disconnect() = 0;
+		virtual void Disconnect() = 0;
 		virtual void SendData(_U32 len, const _U8* data, bool bPending=false) = 0;
 	};
 

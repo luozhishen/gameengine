@@ -83,12 +83,16 @@ namespace Atlas
 		InitContentObjects();
 		InitLiveObjects();
 
+#ifndef WITHOUT_ASYNCIO
 		CAsyncIOConnection::Init();
+#endif
 	}
 
 	void CClientApp::FiniApp()
 	{
+#ifndef WITHOUT_ASYNCIO
 		CAsyncIOConnection::Fini();
+#endif
 	}
 
 	CClient* CClientApp::NewClient()

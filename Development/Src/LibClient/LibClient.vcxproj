@@ -22,11 +22,13 @@
     <ClCompile Include="AsyncIOConnection.cpp" />
     <ClCompile Include="AtlasClient.cpp" />
     <ClCompile Include="AtlasClientApp.cpp" />
+    <ClCompile Include="NonblockConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncIOConnection.h" />
     <ClInclude Include="AtlasClient.h" />
     <ClInclude Include="AtlasClientApp.h" />
+    <ClInclude Include="NonblockConnection.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{50D67152-761F-4BE9-8EA8-958CFAF1029A}</ProjectGuid>

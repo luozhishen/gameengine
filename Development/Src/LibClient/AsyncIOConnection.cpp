@@ -36,40 +36,51 @@ namespace Atlas
 		m_hConn = NULL;
 		m_pSendBuf = NULL;
 		m_nSendBufLen = 0;
+		A_MUTEX_INIT(&m_mtxLock);
 	}
 
 	CAsyncIOConnection::~CAsyncIOConnection()
 	{
+		A_MUTEX_DESTROY(&m_mtxLock);
 	}
 
 	bool CAsyncIOConnection::Connect(const SOCKADDR& sa)
 	{
+		bool bRet;
+
+		A_MUTEX_LOCK(&m_mtxLock);
+
 		ATLAS_ASSERT(!m_pSendBuf);
 		ATLAS_ASSERT(!m_hConn);
 		ATLAS_ASSERT(!m_bConnecting);
-		if(m_hConn || m_bConnecting) return false;
-
-		m_pSendBuf = NULL;
-		m_bConnecting = true;
-		if(!Atlas::Connect(sa, g_client_handler, g_client_iopool, g_client_workers, this))
+		if(m_hConn || m_bConnecting)
 		{
-			m_bConnecting = false;
-			return false;
+			bRet = false;
 		}
 		else
 		{
-			return true;
+			m_pSendBuf = NULL;
+			m_bConnecting = true;
+			bRet = Atlas::Connect(sa, g_client_handler, g_client_iopool, g_client_workers, this);
+			if(!bRet) m_bConnecting = false;
 		}
+
+		A_MUTEX_UNLOCK(&m_mtxLock);
+
+		return bRet;
 	}
 
-	bool CAsyncIOConnection::Disconnect()
+	void CAsyncIOConnection::Disconnect()
 	{
+		A_MUTEX_LOCK(&m_mtxLock);
 		if(m_hConn) Atlas::Disconnect(m_hConn);
-		return true;
+		A_MUTEX_UNLOCK(&m_mtxLock);
 	}
 
 	void CAsyncIOConnection::SendData(_U32 len, const _U8* data, bool bPending)
 	{
+		A_MUTEX_LOCK(&m_mtxLock);
+
 		HIOPOOL pool = HIOPoolOf(m_hConn);
 		_U32 blen = GetIoBufferSize(pool);
 		_U32 dolen;
@@ -99,24 +110,32 @@ namespace Atlas
 			Send(m_hConn, m_nSendBufLen, m_pSendBuf);
 			m_pSendBuf = NULL;
 		}
+
+		A_MUTEX_UNLOCK(&m_mtxLock);
 	}
 
 	void CAsyncIOConnection::OnRawConnected(HCONNECT hConn)
 	{
+		A_MUTEX_LOCK(&m_mtxLock);
 		ATLAS_ASSERT(!m_hConn);
 		m_hConn = hConn;
 		m_bConnecting = false;
+		A_MUTEX_UNLOCK(&m_mtxLock);
+
 		GetClient()->OnRawConnected();
 	}
 
 	void CAsyncIOConnection::OnRawDisconnected()
 	{
+		A_MUTEX_LOCK(&m_mtxLock);
 		if(m_pSendBuf)
 		{
 			UnlockIoBuffer(m_pSendBuf);
 			m_pSendBuf = NULL;
 		}
 		m_hConn = NULL;
+		A_MUTEX_UNLOCK(&m_mtxLock);
+
 		GetClient()->OnRawDisconnected();
 	}
 

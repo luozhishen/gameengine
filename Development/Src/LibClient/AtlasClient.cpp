@@ -76,9 +76,17 @@ namespace Atlas
 
 	void CClient::Logout()
 	{
-		if(m_nState == STATE_LOGINED)
+		switch(m_nState)
 		{
+		case STATE_NA:
+		case STATE_FAILED:
+			return;
+		case STATE_LOGINED:
+		case STATE_LOGINING:
 			m_pClientConnection->Disconnect();
+			break;
+		default:
+			ATLAS_ASSERT(0);
 		}
 	}
 

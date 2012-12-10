@@ -28,7 +28,7 @@ private:
 int main(int argc, char* argv[])
 {
 	CSessionServerApp SessionApp;
-	if(argc >= 3)
+	if(argc>3)
 	{
 		SessionApp.SetListenAddrPort(argv[1]);
 		SessionApp.SetRPCAddrPort(argv[2]);

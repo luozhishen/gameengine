@@ -28,7 +28,7 @@ private:
 int main(int argc, char* argv[])
 {
 	CLoginServerApp LoginApp;
-	if(argc >= 3)
+	if(argc>3)
 	{
 		LoginApp.SetListenAddrPort(argv[1]);
 		LoginApp.SetRPCAddrPort(argv[2]);

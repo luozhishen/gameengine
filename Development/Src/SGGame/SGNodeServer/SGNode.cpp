@@ -71,4 +71,5 @@ namespace Atlas
 	void CSGNodeClient::OnEvent(_U16 code, _U32 len, const _U8* data)
 	{
 	}
+
 }

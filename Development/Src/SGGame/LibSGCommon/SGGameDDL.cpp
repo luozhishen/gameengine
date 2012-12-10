@@ -391,13 +391,15 @@ namespace DDLReflect
 		// 0 CreateAvatar
 		{TYPE_S8|TYPE_ARRAY, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 1 QueryAvatar
+		// 2 Ping
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
 		{"CreateAvatar", 1, _class_SGGAME_C2S_fieldinfos+0},
 		{"QueryAvatar", 0, _class_SGGAME_C2S_fieldinfos+1},
+		{"Ping", 0, _class_SGGAME_C2S_fieldinfos+1},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 2, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 3, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -413,13 +415,15 @@ namespace DDLReflect
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 1 QueryAvatarResult
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 Pong
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
 		{"CreatAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+0},
 		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+1},
+		{"Pong", 0, _class_SGGAME_S2C_fieldinfos+2},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 2, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 3, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

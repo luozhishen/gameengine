@@ -21,13 +21,18 @@ namespace Atlas
 		m_nRecvBuffSize = recvsize;
 		m_bNeedRedirect = false;
 
-		//
 		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this);
 		AddComponent(m_pClientConnection);
 	}
 
 	CClient::~CClient()
 	{
+		while(!m_Components.empty())
+		{
+			ATLAS_DELETE *m_Components.begin();
+			m_Components.erase(m_Components.begin());
+		}
+
 		ATLAS_FREE(m_pRecvBuff);
 		A_MUTEX_DESTROY(&m_mtxClient);
 	}
@@ -108,7 +113,7 @@ namespace Atlas
 
 	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
-		_U16 code =  (iid<<8) | fid;
+		_U16 code =  iid | (fid<<8);
 		_U16 datalen = sizeof(code) + (_U16)len;
 		m_pClientConnection->SendData(sizeof(datalen), (const _U8*)&datalen, true);
 		m_pClientConnection->SendData(sizeof(code), (const _U8*)&code, true);
@@ -167,7 +172,18 @@ namespace Atlas
 		}
 		else
 		{
-			m_nState = STATE_NA;
+			ATLAS_ASSERT(m_nState!=STATE_NA);
+			if(m_nState==STATE_LOGINED)
+			{
+				m_nState = STATE_NA;
+				GetClientApp()->QueueDisconnected(this);
+			}
+			else
+			{
+				SetErrorCode(ERRCODE_NETWORK);
+				m_nState = STATE_FAILED;
+				GetClientApp()->QueueLoginFailed(this);
+			}
 		}
 	}
 

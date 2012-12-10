@@ -14,13 +14,7 @@ namespace Atlas
 	
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize)
 	{
-
 		InitializeComponents();
-
-		AddComponent(m_pPlayerComponent);
-		AddComponent(m_pGeneralComponent);
-		AddComponent(m_pSoldierComponent);
-
 	}	
 
 	CSGClient::~CSGClient()
@@ -33,5 +27,8 @@ namespace Atlas
 		m_pPlayerComponent = ATLAS_NEW CSGClientPlayerComponent(this);
 		m_pGeneralComponent = ATLAS_NEW CSGClientGeneralComponent(this);
 		m_pSoldierComponent = ATLAS_NEW CSGClientSoldierComponent(this);
+		AddComponent(m_pPlayerComponent);
+		AddComponent(m_pGeneralComponent);
+		AddComponent(m_pSoldierComponent);
 	}
 }

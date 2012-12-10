@@ -266,7 +266,7 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 
 	const DDLReflect::CLASS_INFO* cls;
 	_U16 fid;
-	if(!Atlas::GetServerFunctionStub((const char*)*cmd.ToUTF8(), cls, fid))
+	if(!Atlas::GetServerFunctionStub((const char*)cmd.ToUTF8(), cls, fid))
 	{
 		wxMessageBox(wxT("unknown command"), wxT("error"));
 		return;

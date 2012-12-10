@@ -25,6 +25,7 @@
 
 namespace Atlas
 {
+
 	// Number of bytes allowed to be in the WSASend callback pending state before stalling sends
 	static const _U32 DOE_ASOCKIO_HIGH_PENDING_BUFFER_SIZE = 60 * 1024 * 1024; // 60MiB
 	// Data pending a WSASend callback must drop below this threshold before resuming sends
@@ -804,9 +805,9 @@ namespace Atlas
 		return((HIOPOOL)((AIO_UDP_END_POINT*)hep)->buffer_pool);
 	}
 
-	HIOPOOL HIOPoolOf(HCONNECT hconn)
+	HIOPOOL HIOPoolOf(HCONNECT hConn)
 	{
-		return((HIOPOOL)((AIO_CONNECTION*)hconn)->buffer_pool);
+		return((HIOPOOL)((AIO_CONNECTION*)hConn)->buffer_pool);
 	}
 
 	HWORKERS HWorkersOf(HTCPEP hep)
@@ -819,14 +820,14 @@ namespace Atlas
 		return((HWORKERS)((AIO_UDP_END_POINT*)hep)->workers);
 	}
 
-	HWORKERS HWorkersOf(HCONNECT hconn)
+	HWORKERS HWorkersOf(HCONNECT hConn)
 	{
-		return((HWORKERS)((AIO_CONNECTION*)hconn)->workers);
+		return((HWORKERS)((AIO_CONNECTION*)hConn)->workers);
 	}
 
-	HTCPEP HepOf(HCONNECT hconn)
+	HTCPEP HepOf(HCONNECT hConn)
 	{
-		return((HTCPEP)((AIO_CONNECTION*)hconn)->end_point);
+		return((HTCPEP)((AIO_CONNECTION*)hConn)->end_point);
 	}
 
 	PVOID KeyOf(HTCPEP hep)
@@ -839,9 +840,9 @@ namespace Atlas
 		return(((AIO_UDP_END_POINT*)hep)->key);
 	}
 
-	PVOID KeyOf(HCONNECT hconn)
+	PVOID KeyOf(HCONNECT hConn)
 	{
-		return(((AIO_CONNECTION*)hconn)->key);
+		return(((AIO_CONNECTION*)hConn)->key);
 	}
 
 	void SetKey(HTCPEP hep, PVOID key)
@@ -854,26 +855,26 @@ namespace Atlas
 		((AIO_UDP_END_POINT*)hep)->key = key;
 	}
 
-	void SetKey(HCONNECT hconn, PVOID key)
+	void SetKey(HCONNECT hConn, PVOID key)
 	{
-		((AIO_CONNECTION*)hconn)->key = key;
+		((AIO_CONNECTION*)hConn)->key = key;
 	}
 
-	bool GetSelfAddr(HCONNECT hconn, SOCKADDR& sa)
+	bool GetSelfAddr(HCONNECT hConn, SOCKADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
-		if(getsockname(hconn->sock, (sockaddr *)&addr, &len)!=0) return false;
+		if(getsockname(hConn->sock, (sockaddr *)&addr, &len)!=0) return false;
 		sa.ip = addr.sin_addr.S_un.S_addr;
 		sa.port = ntohs(addr.sin_port);
 		return true;
 	}
 
-	bool GetPeerAddr(HCONNECT hconn, SOCKADDR& sa)
+	bool GetPeerAddr(HCONNECT hConn, SOCKADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
-		if(getpeername(hconn->sock, (sockaddr *)&addr, &len)!=0) return false;
+		if(getpeername(hConn->sock, (sockaddr *)&addr, &len)!=0) return false;
 		sa.ip = addr.sin_addr.S_un.S_addr;
 		sa.port = ntohs(addr.sin_port);
 		return true;
@@ -992,19 +993,19 @@ namespace Atlas
 		return false;
 	}
 
-	void Disconnect(HCONNECT hconn)
+	void Disconnect(HCONNECT hConn)
 	{
-		((AIO_CONNECTION*)hconn)->Disconnect();
+		((AIO_CONNECTION*)hConn)->Disconnect();
 	}
 
-	bool IsConnected(HCONNECT hconn)
+	bool IsConnected(HCONNECT hConn)
 	{
-		return(((AIO_CONNECTION*)hconn)->connected ? true : false);
+		return(((AIO_CONNECTION*)hConn)->connected ? true : false);
 	}
 
-	void CloseConn(HCONNECT hconn)
+	void CloseConn(HCONNECT hConn)
 	{
-		AIO_CONNECTION* conn = (AIO_CONNECTION*)hconn;
+		AIO_CONNECTION* conn = (AIO_CONNECTION*)hConn;
 		ATLAS_ASSERT(!conn->iorefs);
 		ATLAS_ASSERT(!conn->connected);
 		if(conn->iorefs || conn->connected) return;
@@ -1020,13 +1021,13 @@ namespace Atlas
 		}
 	}
 
-	void Send(HCONNECT hconn, _U32 len, _U8* buf)
+	void Send(HCONNECT hConn, _U32 len, _U8* buf)
 	{
 		AIO_CONTEXT* ctx = CtxOfBuf(buf);
 		ATLAS_ASSERT(ctx->operation==SIOP_SEND);
 		ATLAS_ASSERT(len<=ctx->buffer_pool->output_size);
 		ctx->wsabuf.len = len;
-		((AIO_CONNECTION*)hconn)->Send(ctx);
+		((AIO_CONNECTION*)hConn)->Send(ctx);
 	}
 
 	void Send(HUDPEP hep, PSOCKADDR_IN addr, _U32 len, _U8* buf)
@@ -1039,14 +1040,14 @@ namespace Atlas
 		((AIO_UDP_END_POINT*)hep)->Send(addr, ctx);
 	}
 
-	void SetRefLimit(HCONNECT hconn, _U32 limit)
+	void SetRefLimit(HCONNECT hConn, _U32 limit)
 	{
-		((AIO_CONNECTION*)hconn)->ioreflimit = limit;
+		((AIO_CONNECTION*)hConn)->ioreflimit = limit;
 	}
 
-	void SetPendLimit(HCONNECT hconn, _U32 limit)
+	void SetPendLimit(HCONNECT hConn, _U32 limit)
 	{
-		((AIO_CONNECTION*)hconn)->iopendlimit = limit;
+		((AIO_CONNECTION*)hConn)->iopendlimit = limit;
 	}
 
 	_U32 GetIORefs(HTCPEP hep)
@@ -1059,14 +1060,14 @@ namespace Atlas
 		return(((AIO_UDP_END_POINT*)hep)->iorefs);
 	}
 
-	_U32 GetIORefs(HCONNECT hconn)
+	_U32 GetIORefs(HCONNECT hConn)
 	{
-		return(((AIO_CONNECTION*)hconn)->iorefs);
+		return(((AIO_CONNECTION*)hConn)->iorefs);
 	}
 
-	_U32 GetIOPends(HCONNECT hconn)
+	_U32 GetIOPends(HCONNECT hConn)
 	{
-		return(((AIO_CONNECTION*)hconn)->iopends);
+		return(((AIO_CONNECTION*)hConn)->iopends);
 	}
 
 	static _U32 g_asockio_init_count = 0;

@@ -19,6 +19,7 @@ namespace Atlas
 
 		void CreateAvatar(CSGNodeClient* pClient, _S8 name[]);
 		void QueryAvatar(CSGNodeClient* pClient);
+		void Ping(CSGNodeClient* pClient);
 
 	private:
 		SGGAME_STUB m_Stub;

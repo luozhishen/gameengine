@@ -270,6 +270,14 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatar(Caller);
 				return true;
 			}
+			if(fid==2)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Ping(Caller);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -312,6 +320,14 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool Ping()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 	};
 
@@ -358,6 +374,14 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatarResult(Caller, _prefix_code);
 				return true;
 			}
+			if(fid==2)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Pong(Caller);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -399,6 +423,14 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool Pong()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 	};
 

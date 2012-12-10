@@ -32,7 +32,7 @@ private:
 int main(int argc, char* argv[])
 {
 	CNodeServerApp NodeServerApp;
-	if(argc >= 1)
+	if(argc>1)
 	{
 		NodeServerApp.SetRPCAddrPort(argv[1]);
 		Atlas::SLog("Node Server Start rpc[%s]", argv[1]);

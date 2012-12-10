@@ -25,7 +25,7 @@ namespace Atlas
 
 	CSGClientPlayerComponent::~CSGClientPlayerComponent()
 	{
-
+		ATLAS_DELETE m_pPlayerInfo;
 	}
 
 	const SG_PLAYER* CSGClientPlayerComponent::GetPlayerInfo()

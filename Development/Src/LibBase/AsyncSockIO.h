@@ -56,21 +56,21 @@ namespace Atlas
 	HWORKERS HWorkersOf(HTCPEP hep);
 
 	bool Connect(const SOCKADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key);
-	void Disconnect(HCONNECT hconn);
-	bool IsConnected(HCONNECT hconn);
-	void CloseConn(HCONNECT hconn);
-	void Send(HCONNECT hconn, _U32 len, _U8* buf);
-	void SetRefLimit(HCONNECT hconn, _U32 count);
-	void SetPendLimit(HCONNECT hconn, _U32 bytes);
-	_U32 GetIORefs(HCONNECT hconn);
-	_U32 GetIOPends(HCONNECT hconn);
-	HTCPEP HepOf(HCONNECT hconn);
-	void* KeyOf(HCONNECT hconn);
-	void SetKey(HCONNECT hconn, void* key);
-	bool GetSelfAddr(HCONNECT hconn, SOCKADDR& sa);
-	bool GetPeerAddr(HCONNECT hconn, SOCKADDR& sa);
-	HIOPOOL HIOPoolOf(HCONNECT hconn);
-	HWORKERS HWorkersOf(HCONNECT hconn);
+	void Disconnect(HCONNECT hConn);
+	bool IsConnected(HCONNECT hConn);
+	void CloseConn(HCONNECT hConn);
+	void Send(HCONNECT hConn, _U32 len, _U8* buf);
+	void SetRefLimit(HCONNECT hConn, _U32 count);
+	void SetPendLimit(HCONNECT hConn, _U32 bytes);
+	_U32 GetIORefs(HCONNECT hConn);
+	_U32 GetIOPends(HCONNECT hConn);
+	HTCPEP HepOf(HCONNECT hConn);
+	void* KeyOf(HCONNECT hConn);
+	void SetKey(HCONNECT hConn, void* key);
+	bool GetSelfAddr(HCONNECT hConn, SOCKADDR& sa);
+	bool GetPeerAddr(HCONNECT hConn, SOCKADDR& sa);
+	HIOPOOL HIOPoolOf(HCONNECT hConn);
+	HWORKERS HWorkersOf(HCONNECT hConn);
 
 	typedef struct AIO_UDP_END_POINT*	HUDPEP;
 	typedef void (*PFN_ON_DATAGRAM)(HUDPEP hep, const SOCKADDR& sa, _U32 len, const _U8* data);

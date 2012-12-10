@@ -8,7 +8,6 @@ namespace Atlas
 	void InitDDLStub();
 	void InitContentObjects();
 	void InitLiveObjects();
-	void InitSyncObjects();
 }
 
 #endif

@@ -112,7 +112,6 @@ namespace Atlas
 		Atlas::InitDDLStub();
 		Atlas::InitContentObjects();
 		Atlas::InitLiveObjects();
-		Atlas::InitSyncObjects();
 	}
 
 	void CServerApp::FiniApp()

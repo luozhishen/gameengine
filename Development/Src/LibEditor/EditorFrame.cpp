@@ -105,33 +105,18 @@ void CEditorFrame::InitClient()
 
 	std::map<int, const DDLReflect::STRUCT_INFO*> content;
 	std::map<int, const DDLReflect::STRUCT_INFO*> live;
-	std::map<int, const DDLReflect::STRUCT_INFO*> sync;
+	std::vector<const DDLReflect::STRUCT_INFO*> list;
+	std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+
+	Atlas::ContentObject::GetTypeList(list);
+	for(i=list.begin(); i!=list.end(); i++)
 	{
-		std::vector<const DDLReflect::STRUCT_INFO*> list;
-		Atlas::ContentObject::GetTypeList(list);
-		std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
-		for(i=list.begin(); i!=list.end(); i++)
-		{
-			content[Atlas::ContentObject::GetTypeId((*i)->name)] = *i;
-		}
+		content[Atlas::ContentObject::GetTypeId((*i)->name)] = *i;
 	}
+	Atlas::LiveObject::GetTypeList(list);
+	for(i=list.begin(); i!=list.end(); i++)
 	{
-		std::vector<const DDLReflect::STRUCT_INFO*> list;
-		Atlas::LiveObject::GetTypeList(list);
-		std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
-		for(i=list.begin(); i!=list.end(); i++)
-		{
-			live[Atlas::LiveObject::GetTypeId((*i)->name)] = *i;
-		}
-	}
-	{
-		std::vector<const DDLReflect::STRUCT_INFO*> list;
-		Atlas::Sync::GetTypeList(list);
-		std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
-		for(i=list.begin(); i!=list.end(); i++)
-		{
-			sync[Atlas::Sync::GetTypeId((*i)->name)] = *i;
-		}
+		live[Atlas::LiveObject::GetTypeId((*i)->name)] = *i;
 	}
 
 	CObjectDefineView* pView = ATLAS_NEW CObjectDefineView(pTab);
@@ -141,7 +126,6 @@ void CEditorFrame::InitClient()
 
 	pView->Add(DDLReflect::GetStruct<A_CONTENT_OBJECT>(), content);
 	pView->Add(DDLReflect::GetStruct<A_LIVE_OBJECT>(), live);
-	pView->Add(DDLReflect::GetStruct<A_SYNC_OBJECT>(), sync);
 }
 
 void CEditorFrame::OnFrameQuit(wxCloseEvent& event)

@@ -84,7 +84,6 @@ _U16 CObjectDefineView::GetObjectId(const char* name)
 {
 	_U16 id = Atlas::ContentObject::GetTypeId(name);
 	if(id==(_U16)-1) id = Atlas::LiveObject::GetTypeId(name);
-	if(id==(_U16)-1) id = Atlas::Sync::GetTypeId(name);
 	return id;
 }
 

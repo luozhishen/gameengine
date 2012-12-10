@@ -28,7 +28,6 @@ bool CEditorApp::OnInit()
 	Atlas::InitDDLStub();
 	Atlas::InitContentObjects();
 	Atlas::InitLiveObjects();
-	Atlas::InitSyncObjects();
 	Atlas::ContentObject::LoadContent();
 
 	wxImage::AddHandler(ATLAS_NEW wxPNGHandler);

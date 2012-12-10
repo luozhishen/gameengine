@@ -24,11 +24,6 @@
     <ClCompile Include="ContentObject.cpp" />
     <ClCompile Include="LiveDBApi.cpp" />
     <ClCompile Include="LiveObject.cpp" />
-    <ClCompile Include="SyncDomain.cpp" />
-    <ClCompile Include="SyncProxy.cpp" />
-    <ClCompile Include="SyncObject.cpp" />
-    <ClCompile Include="SyncMonitor.cpp" />
-    <ClCompile Include="SyncCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AtlasCommon.h" />
@@ -36,11 +31,6 @@
     <ClInclude Include="ContentObject.h" />
     <ClInclude Include="LiveDBApi.h" />
     <ClInclude Include="LiveObject.h" />
-    <ClInclude Include="SyncDomain.h" />
-    <ClInclude Include="SyncProxy.h" />
-    <ClInclude Include="SyncObject.h" />
-    <ClInclude Include="SyncMonitor.h" />
-    <ClInclude Include="SyncCommon.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CommonDDL.ddl">

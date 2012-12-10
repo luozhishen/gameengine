@@ -51,6 +51,8 @@ bool CClientStressApp::OnInit()
 
 int CClientStressApp::OnExit()
 {
+	Atlas::CClientApp::GetDefault()->FiniApp();
+
 	delete wxConfigBase::Set(NULL);
 	return 0;
 }

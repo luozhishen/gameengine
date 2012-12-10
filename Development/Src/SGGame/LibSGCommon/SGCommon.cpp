@@ -14,6 +14,9 @@ namespace Atlas
 	void InitDDLStub()
 	{
 		Atlas::Engine::InitDDLStub();
+
+		RegisterClientStub<SGGAME_S2C>();
+		RegisterServerStub<SGGAME_C2S>(0);
 	}
 
 	void InitContentObjects()
@@ -33,11 +36,6 @@ namespace Atlas
 	{
 		Atlas::Engine::InitLiveObjects();
 		LiveObject::Register(DDLReflect::GetStruct<SG_PLAYER>());
-	}
-
-	void InitSyncObjects()
-	{
-		Atlas::Engine::InitSyncObjects();
 	}
 
 };

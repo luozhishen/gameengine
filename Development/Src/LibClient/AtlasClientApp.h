@@ -46,6 +46,7 @@ namespace Atlas
 
 		static CClientApp* GetDefault();
 		virtual void InitApp();
+		virtual void FiniApp();
 		virtual CClient* NewClient();
 
 		bool IsThread() { return m_bThread; }

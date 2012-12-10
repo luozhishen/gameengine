@@ -211,7 +211,6 @@ namespace Atlas
 
 		void InitDDLStub()
 		{
-			RegisterClientStub<SyncObjectProtocol>();
 		}
 
 		void InitContentObjects()
@@ -220,10 +219,6 @@ namespace Atlas
 		}
 
 		void InitLiveObjects()
-		{
-		}
-
-		void InitSyncObjects()
 		{
 		}
 

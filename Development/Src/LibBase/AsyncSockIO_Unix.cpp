@@ -124,71 +124,71 @@ namespace Atlas
 		return false;
 	}
 
-	void Disconnect(HCONNECT hconn)
+	void Disconnect(HCONNECT hConn)
 	{
 	}
 
-	bool IsConnected(HCONNECT hconn)
+	bool IsConnected(HCONNECT hConn)
 	{
 		return false;
 	}
 
-	void CloseConn(HCONNECT hconn)
+	void CloseConn(HCONNECT hConn)
 	{
 	}
 
-	void Send(HCONNECT hconn, _U32 len, _U8* buf)
+	void Send(HCONNECT hConn, _U32 len, _U8* buf)
 	{
 	}
 
-	void SetRefLimit(HCONNECT hconn, _U32 count)
+	void SetRefLimit(HCONNECT hConn, _U32 count)
 	{
 	}
 
-	void SetPendLimit(HCONNECT hconn, _U32 bytes)
+	void SetPendLimit(HCONNECT hConn, _U32 bytes)
 	{
 	}
 
-	_U32 GetIORefs(HCONNECT hconn)
+	_U32 GetIORefs(HCONNECT hConn)
 	{
 		return 0;
 	}
 
-	_U32 GetIOPends(HCONNECT hconn)
+	_U32 GetIOPends(HCONNECT hConn)
 	{
 		return 0;
 	}
 
-	HTCPEP HepOf(HCONNECT hconn)
+	HTCPEP HepOf(HCONNECT hConn)
 	{
 		return NULL;
 	}
 
-	void* KeyOf(HCONNECT hconn)
+	void* KeyOf(HCONNECT hConn)
 	{
 		return NULL;
 	}
 
-	void SetKey(HCONNECT hconn, void* key)
+	void SetKey(HCONNECT hConn, void* key)
 	{
 	}
 
-	bool GetSelfAddr(HCONNECT hconn, SOCKADDR& sa)
+	bool GetSelfAddr(HCONNECT hConn, SOCKADDR& sa)
 	{
 		return false;
 	}
 
-	bool GetPeerAddr(HCONNECT hconn, SOCKADDR& sa)
+	bool GetPeerAddr(HCONNECT hConn, SOCKADDR& sa)
 	{
 		return false;
 	}
 
-	HIOPOOL HIOPoolOf(HCONNECT hconn)
+	HIOPOOL HIOPoolOf(HCONNECT hConn)
 	{
 		return NULL;
 	}
 
-	HWORKERS HWorkersOf(HCONNECT hconn)
+	HWORKERS HWorkersOf(HCONNECT hConn)
 	{
 		return NULL;
 	}

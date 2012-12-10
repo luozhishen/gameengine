@@ -86,6 +86,11 @@ namespace Atlas
 		CAsyncIOConnection::Init();
 	}
 
+	void CClientApp::FiniApp()
+	{
+		CAsyncIOConnection::Fini();
+	}
+
 	CClient* CClientApp::NewClient()
 	{
 		return ATLAS_NEW CClient(this);

@@ -18,7 +18,7 @@ namespace Atlas {
 	#define	RPC_SERVER_STOPPING			5
 
 	struct RPC_SERVER {
-		HCONNECT hconn;
+		HCONNECT hConn;
 		_S32 state;
 		SOCKADDR sain;
 		A_MUTEX lock;
@@ -37,7 +37,7 @@ namespace Atlas {
 			return MakeCall(packet.iid, packet.fid, packet.len, packet.buf);
 		}
 		void OnData(_U32 len, const _U8* buf) {
-			if(!IsConnected(hconn)) return;
+			if(!IsConnected(hConn)) return;
 			do {
 				if(curlen) {
 					_U32 cpylen;
@@ -52,7 +52,7 @@ namespace Atlas {
 						buf += cpylen;
 					} else {
 						if(packet.len>RPC_MAX_LEN) {
-							Disconnect(hconn);
+							Disconnect(hConn);
 							return;
 						}
 						if(curlen==RPC_PACKET_OVERHEAD && len>=packet.len) {
@@ -61,7 +61,7 @@ namespace Atlas {
 								len -= packet.len;
 								buf += packet.len;
 							} else {
-								Disconnect(hconn);
+								Disconnect(hConn);
 								return;
 							}
 						} else {
@@ -77,7 +77,7 @@ namespace Atlas {
 								if(MakeCall()) {
 									curlen = 0;
 								} else {
-									Disconnect(hconn);
+									Disconnect(hConn);
 									return;
 								}
 							}
@@ -91,7 +91,7 @@ namespace Atlas {
 					} else {
 						RPC_PACKET* pp = (RPC_PACKET*)buf;
 						if(pp->len>RPC_MAX_LEN) {
-							Disconnect(hconn);
+							Disconnect(hConn);
 							return;
 						}
 						_U32 tlen = RPC_PACKET_OVERHEAD + pp->len;
@@ -100,7 +100,7 @@ namespace Atlas {
 								len -= tlen;
 								buf += tlen;
 							} else {
-								Disconnect(hconn);
+								Disconnect(hConn);
 								return;
 							}
 						} else {
@@ -124,24 +124,24 @@ namespace Atlas {
 				while(state==RPC_SERVER_STOPPING) ATLAS_SLEEP(100);
 			}
 			if(state==RPC_SERVER_CONNECTED) {
-				Disconnect(hconn);
+				Disconnect(hConn);
 				while(state==RPC_SERVER_CONNECTED) ATLAS_SLEEP(100);
 			}
-			if(state==RPC_SERVER_DISCONNECTED) CloseConn(hconn);
+			if(state==RPC_SERVER_DISCONNECTED) CloseConn(hConn);
 			A_MUTEX_DESTROY(&lock);
 		}
 		HCONNECT Lock() {
 			A_MUTEX_LOCK(&lock);
-			if(state==RPC_SERVER_CONNECTED) return hconn;
+			if(state==RPC_SERVER_CONNECTED) return hConn;
 			if(state==RPC_SERVER_DISCONNECTED) {
-				CloseConn(hconn);
+				CloseConn(hConn);
 				state = RPC_SERVER_NONE;
 			}
 			if(state==RPC_SERVER_NONE) {
 				state = RPC_SERVER_CONNECTING;
 				if(Connect()) {
 					while(state==RPC_SERVER_CONNECTING) ATLAS_SLEEP(100);
-					if(state==RPC_SERVER_CONNECTED) return hconn;
+					if(state==RPC_SERVER_CONNECTED) return hConn;
 				} else {
 					state = RPC_SERVER_NONE;
 				}
@@ -205,10 +205,10 @@ namespace Atlas {
 
 	static RPC_ENGINE theRpcEngine;
 
-	bool RPCClientOnConnect(HCONNECT hconn)
+	bool RPCClientOnConnect(HCONNECT hConn)
 	{
-		RPC_SERVER* srv = (RPC_SERVER*)KeyOf(hconn);
-		srv->hconn = hconn;
+		RPC_SERVER* srv = (RPC_SERVER*)KeyOf(hConn);
+		srv->hConn = hConn;
 		srv->state = RPC_SERVER_CONNECTED;
 		srv->curlen = 0;
 		_U8* buf = (_U8*)theRpcEngine.allocator.Alloc(RPC_PACKET_OVERHEAD+sizeof(_U16));
@@ -216,18 +216,18 @@ namespace Atlas {
 		*((_U16*)(buf+4)) = (_U16)-1;
 		*((_U16*)(buf+6)) = (_U16)-1;
 		*((_U16*)(buf+8)) = GetRPCBindPort();
-		Send(hconn, RPC_PACKET_OVERHEAD+sizeof(_U16), buf);
+		Send(hConn, RPC_PACKET_OVERHEAD+sizeof(_U16), buf);
 		return true;
 	}
 
-	void RPCClientOnDisconnect(HCONNECT hconn)
+	void RPCClientOnDisconnect(HCONNECT hConn)
 	{
-		((RPC_SERVER*)KeyOf(hconn))->state = RPC_SERVER_DISCONNECTED;
+		((RPC_SERVER*)KeyOf(hConn))->state = RPC_SERVER_DISCONNECTED;
 	}
 
-	void RPCClientOnData(HCONNECT hconn, _U32 len, const _U8* buf)
+	void RPCClientOnData(HCONNECT hConn, _U32 len, const _U8* buf)
 	{
-		((RPC_SERVER*)KeyOf(hconn))->OnData(len, buf);
+		((RPC_SERVER*)KeyOf(hConn))->OnData(len, buf);
 	}
 
 	void RPCClientOnConnectFailed(RPC_SERVER* srv)
@@ -245,7 +245,7 @@ namespace Atlas {
 	}
 
 	struct RPC_CLIENT {
-		HCONNECT hconn;
+		HCONNECT hConn;
 		HSERVER hserver;
 		_U32 curlen;
 		RPC_PACKET packet;
@@ -273,7 +273,7 @@ namespace Atlas {
 			return MakeCall(packet.iid, packet.fid, packet.len, packet.buf);
 		}
 		void OnData(_U32 len, const _U8* buf) {
-			if(!IsConnected(hconn)) return;
+			if(!IsConnected(hConn)) return;
 			do {
 				if(curlen) {
 					_U32 cpylen;
@@ -288,7 +288,7 @@ namespace Atlas {
 						buf += cpylen;
 					} else {
 						if(packet.len>RPC_MAX_LEN) {
-							Disconnect(hconn);
+							Disconnect(hConn);
 							return;
 						}
 						if(curlen==RPC_PACKET_OVERHEAD && len>=packet.len) {
@@ -297,7 +297,7 @@ namespace Atlas {
 								len -= packet.len;
 								buf += packet.len;
 							} else {
-								Disconnect(hconn);
+								Disconnect(hConn);
 								return;
 							}
 						} else {
@@ -313,7 +313,7 @@ namespace Atlas {
 								if(MakeCall()) {
 									curlen = 0;
 								} else {
-									Disconnect(hconn);
+									Disconnect(hConn);
 									return;
 								}
 							}
@@ -327,7 +327,7 @@ namespace Atlas {
 					} else {
 						RPC_PACKET* pp = (RPC_PACKET*)buf;
 						if(pp->len>RPC_MAX_LEN) {
-							Disconnect(hconn);
+							Disconnect(hConn);
 							return;
 						}
 						_U32 tlen = RPC_PACKET_OVERHEAD + pp->len;
@@ -336,7 +336,7 @@ namespace Atlas {
 								len -= tlen;
 								buf += tlen;
 							} else {
-								Disconnect(hconn);
+								Disconnect(hConn);
 								return;
 							}
 						} else {
@@ -357,20 +357,20 @@ namespace Atlas {
 		std::map<HCONNECT, RPC_CLIENT*> conns;
 		SOCKADDR sockaddr;
 
-		bool Add(HCONNECT hconn, RPC_CLIENT* pclt) {
+		bool Add(HCONNECT hConn, RPC_CLIENT* pclt) {
 			bool res = true;
 			A_MUTEX_LOCK(&maplock);
 			try {
-				conns[hconn] = pclt;
+				conns[hConn] = pclt;
 			} catch(...) {
 				res =false;
 			}
 			A_MUTEX_UNLOCK(&maplock);
 			return res;
 		}
-		void Del(HCONNECT hconn) {
+		void Del(HCONNECT hConn) {
 			A_MUTEX_LOCK(&maplock);
-			conns.erase(hconn);
+			conns.erase(hConn);
 			A_MUTEX_UNLOCK(&maplock);
 		}
 		bool init(_U32, _U16, _U32);
@@ -379,34 +379,34 @@ namespace Atlas {
 
 	static RPC_MANAGER theRpcManager;
 
-	bool RPCServerOnConnect(HCONNECT hconn)
+	bool RPCServerOnConnect(HCONNECT hConn)
 	{
 		RPC_CLIENT* pclt = (RPC_CLIENT*)ATLAS_ALIGN_ALLOC(sizeof(RPC_CLIENT));
 		if(!pclt) return false;
-		if(!theRpcManager.Add(hconn, pclt)) {
+		if(!theRpcManager.Add(hConn, pclt)) {
 			ATLAS_ALIGN_FREE(pclt);
 			return false;
 		}
-		pclt->hconn = hconn;
+		pclt->hConn = hConn;
 		pclt->hserver = NULL;
 		pclt->curlen = 0;
-		SetKey(hconn, pclt);
+		SetKey(hConn, pclt);
 		return true;
 	}
 
-	void RPCServerOnDisconnect(HCONNECT hconn)
+	void RPCServerOnDisconnect(HCONNECT hConn)
 	{
-		RPC_CLIENT* pclt = (RPC_CLIENT*)KeyOf(hconn);
+		RPC_CLIENT* pclt = (RPC_CLIENT*)KeyOf(hConn);
 		if(pclt) {
-			theRpcManager.Del(hconn);
+			theRpcManager.Del(hConn);
 			ATLAS_ALIGN_FREE(pclt);
 		}
-		CloseConn(hconn);
+		CloseConn(hConn);
 	}
 
-	void RPCServerOnData(HCONNECT hconn , _U32 len, const _U8* buf)
+	void RPCServerOnData(HCONNECT hConn , _U32 len, const _U8* buf)
 	{
-		((RPC_CLIENT*)KeyOf(hconn))->OnData(len, buf);
+		((RPC_CLIENT*)KeyOf(hConn))->OnData(len, buf);
 	}
 
 	bool RPC_MANAGER::init(_U32 ip, _U16 port, _U32 tcnt)
@@ -473,9 +473,9 @@ namespace Atlas {
 
 	RPC_RESULT RPC_OUTPUT_BUF::SendTo(HSERVER hserver)
 	{
-		HCONNECT hconn = ((RPC_SERVER*)hserver)->Lock();
-		if(hconn) {
-			Send(hconn, RPC_PACKET_OVERHEAD+packet->len, (_U8*)packet);
+		HCONNECT hConn = ((RPC_SERVER*)hserver)->Lock();
+		if(hConn) {
+			Send(hConn, RPC_PACKET_OVERHEAD+packet->len, (_U8*)packet);
 			packet = NULL;
 			A_MUTEX_UNLOCK(&((RPC_SERVER*)hserver)->lock);
 			return RPC_RES_NONE;
@@ -485,7 +485,7 @@ namespace Atlas {
 
 	RPC_RESULT RPC_OUTPUT_BUF::SendTo(HCLIENT hclient)
 	{
-		Send(((RPC_CLIENT*)hclient)->hconn, RPC_PACKET_OVERHEAD+packet->len, (_U8*)packet);
+		Send(((RPC_CLIENT*)hclient)->hConn, RPC_PACKET_OVERHEAD+packet->len, (_U8*)packet);
 		packet = NULL;
 		return RPC_RES_NONE;
 	}
@@ -503,7 +503,7 @@ namespace Atlas {
 	_U32 GetRPCClientAddr(HCLIENT hClient)
 	{
 		SOCKADDR sain;
-		ATLAS_VERIFY(GetPeerAddr(((RPC_CLIENT*)hClient)->hconn, sain));
+		ATLAS_VERIFY(GetPeerAddr(((RPC_CLIENT*)hClient)->hConn, sain));
 		return sain.ip;
 	}
 

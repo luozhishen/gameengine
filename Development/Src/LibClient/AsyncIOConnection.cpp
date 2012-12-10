@@ -144,6 +144,7 @@ namespace Atlas
 		CAsyncIOConnection* pConnection = (CAsyncIOConnection*)KeyOf(hConn);
 		if(!pConnection) return;
 		pConnection->OnRawDisconnected();
+		CloseConn(hConn);
 	}
 
 	void CLT_ON_DATA(HCONNECT hConn, _U32 len, const _U8* data)

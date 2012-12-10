@@ -118,12 +118,16 @@ class SGGAME_C2S
 {
 	CreateAvatar(_S8 name[SG_PLAYERNAME_LENMAX]);
 	QueryAvatar();
+
+	Ping();
 };
 
 class SGGAME_S2C
 {
 	CreatAvatarResult(_U32 code);
 	QueryAvatarResult(_U32 code);
+
+	Pong();
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

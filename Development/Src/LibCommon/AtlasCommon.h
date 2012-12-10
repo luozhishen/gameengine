@@ -3,12 +3,6 @@
 
 #include "ContentObject.h"
 #include "LiveObject.h"
-#include "SyncCommon.h"
-#include "SyncDomain.h"
-#include "SyncObject.h"
-#include "SyncProxy.h"
-#include "SyncMonitor.h"
-
 #include "CommonDDL.h"
 
 namespace Atlas
@@ -50,7 +44,7 @@ namespace Atlas
 	{
 		const DDLReflect::CLASS_INFO* pClassInfo = DDLReflect::GetClass<T>();
 		ATLAS_ASSERT(pClassInfo);
-		if(!pClassInfo) return -1;
+		if(!pClassInfo) return (_U16)-1;
 		return RegisterServerStub(pClassInfo, nodeid);
 	}
 
@@ -72,7 +66,6 @@ namespace Atlas
 	void InitDDLStub();
 	void InitContentObjects();
 	void InitLiveObjects();
-	void InitSyncObjects();
 
 	namespace Engine
 	{
@@ -80,7 +73,6 @@ namespace Atlas
 		void InitDDLStub();
 		void InitContentObjects();
 		void InitLiveObjects();
-		void InitSyncObjects();
 
 	}
 

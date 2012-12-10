@@ -81,7 +81,7 @@ namespace Atlas
 	{
 		if(!CServerBase::Start()) return false;
 
-		SOCKADDR& cluster = GetServerApp()->GetClusterAddrPort();
+		SOCKADDR& cluster = GetServerApp()->GetClusterRpcEP();
 		m_hDefaultCluster = GetRPCServer(cluster.ip, cluster.port);
 
 		ASOCKIO_HANDLER handler =
@@ -198,7 +198,7 @@ namespace Atlas
 		return m_mapUID.Unbind(uid, lndx);
 	}
 		
-	bool CLoginServer::GetNewToken(_U32 uid, std::string& strNewToken)
+	bool CLoginServer::GetSession(_U32 uid, SOCKADDR& sa)
 	{
 		if(m_WorkLoads.empty()) 
 			return false;
@@ -213,14 +213,9 @@ namespace Atlas
 		}
 
 		++m_WorkLoads[ndx].workload;
-		//sprintf strNewToken
-		SOCKADDR sa;
+
 		ADDR(sa, m_WorkLoads[ndx].ip, m_WorkLoads[ndx].port);
 		A_MUTEX_UNLOCK(&m_mtxWorkLoad);
-
-		char szNewToken[100];
-		ADDR2STR(sa, (_STR)szNewToken, 100);
-		strNewToken = szNewToken;
 
 		return true;
 	}
@@ -306,31 +301,24 @@ namespace Atlas
 		_global_login_object_manager.UnbindObject(m_nLNDX, this);
 	}
 	
-	void CLoginClient::OnAuthPassed(_U32 nUID, const char* pToken)
+	void CLoginClient::OnAuthPassed(_U32 nUID, _U32 len, const _U8* pToken)
 	{
-		//varify token
-		//if(!m_pServer->BindUID(nUID, m_nLNDX))
-		//{
-		//	KickUser();
-		//	return;
-		//}
-
-		SetUID(nUID, pToken);
+		SetUID(nUID, "");
 
 		//return session add and new token
-		std::string strNewToken;
-		if(!m_pServer->GetNewToken(nUID, strNewToken))
+		SOCKADDR sa;
+		if(!m_pServer->GetSession(nUID, sa))
 		{
 			KickUser();
 			return;
 		}
 
 		//strNewToken = "127.0.0.1:1980";
-		_U16 iid = 0;
-		_U16 fid = 0;
+		_U16 iid = (_U32)(nUID>>16);
+		_U16 fid = (_U32)(nUID&0xffff);
 		_U8 sendBuf[TOKE_LEN];
 		DDL::MemoryWriter Buf(sendBuf, TOKE_LEN);
-		Buf.WriteData(strNewToken.c_str(), TOKE_LEN);
+		Buf.WriteData(pToken, len);
 		Send(iid, fid, Buf);
 	}
 
@@ -413,7 +401,6 @@ namespace Atlas
 	void CLoginClient::OnRawData(_U32 len, const _U8* data)
 	{
 		_U16 pkglen;
-		_U16 id;
 		while(len>0)
 		{
 			_U32 copylen = len;
@@ -422,7 +409,7 @@ namespace Atlas
 			m_nRecvBuffLen += copylen;
 			len -= copylen;
 			data = data + copylen;
-			while(m_nRecvBuffLen>=sizeof(pkglen)+sizeof(id))
+			while(m_nRecvBuffLen>=sizeof(pkglen))
 			{
 				memcpy(&pkglen, m_pRecvBuff, sizeof(pkglen));
 
@@ -437,13 +424,14 @@ namespace Atlas
 
 				if(m_nUID!=-1)
 				{
-					if(pkglen<sizeof(id))
+					_U32 uid;
+					if(pkglen<sizeof(uid))
 					{
 						KickUser();
 						return;
 					}
-					memcpy(&id, m_pRecvBuff+sizeof(pkglen), sizeof(id));
-					OnAuthPassed((_U32)id, (const char*)m_pRecvBuff+sizeof(pkglen)+sizeof(_U32));
+					memcpy(&uid, m_pRecvBuff+sizeof(pkglen), sizeof(uid));
+					OnAuthPassed(uid, pkglen-sizeof(uid), m_pRecvBuff+sizeof(pkglen)+sizeof(uid));
 				}
 				
 				_U32 ulen = pkglen + sizeof(pkglen);

@@ -42,10 +42,9 @@ namespace Atlas
 		bool BindUID(_U32 uid, _U64 lndx);
 		bool Unbind(_U32 uid, _U64 lndx);
 
-		bool GetNewToken(_U32 uid, std::string& strNewToken);
+		bool GetSession(_U32 uid, SOCKADDR& sa);
 		void UpdateWorkLoadInfo(const WORKLOAD_INFO* info_list, _U32 count);
 		void Tick();
-		
 
 	private:
 		HSERVER m_hDefaultCluster;
@@ -75,7 +74,7 @@ namespace Atlas
 		CLoginServer* GetServer() { return m_pServer; }
 
 		virtual void OnConnected() { }
-		virtual void OnAuthPassed(_U32 nUID, const char* pToken);
+		virtual void OnAuthPassed(_U32 nUID, _U32 len, const _U8* pToken);
 		virtual void OnData(_U16 id, _U32 len, const _U8* data);
 		virtual void OnDisconnected();
 		virtual void SendRawData(_U16 id, _U32 len, const _U8* data);

@@ -177,7 +177,7 @@ namespace Atlas
 				break;
 			}
 
-			if(strValue==_("name"))
+			if(strValue == _("name"))
 			{
 				bExist = true;
 			}
@@ -201,13 +201,13 @@ namespace Atlas
 		{
 			for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
 			{
-				if(it_col->second==m_Keys[i])
+				if(it_col->second == m_Keys[i])
 				{
 					break;
 				}
 			}
 
-			if(it_col==columnMap.end())
+			if(it_col == columnMap.end())
 			{
 				m_pExcelWrapper->Quit();
 				m_Err = StringFormat("key %s not exist in excel\n", m_Keys[i].data());
@@ -300,7 +300,7 @@ namespace Atlas
 		A_UUID uuid;
 		A_CONTENT_OBJECT* pObject = NULL;
 		std::map<std::string, A_UUID>::iterator it_obj = m_ObjectMap.find(strKey);
-		if(it_obj==m_ObjectMap.end()) //insert
+		if(it_obj == m_ObjectMap.end()) //insert
 		{
 			m_ObjectMap[strKey] = uuid;
 

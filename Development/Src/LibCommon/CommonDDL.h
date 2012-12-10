@@ -301,38 +301,6 @@ namespace DDLProxy
 
 }
 
-struct SG_ITEM
-{
-	A_UUID fref;
-	A_UUID fuuid;
-	_U8 u8;
-	_U16 u16;
-	_U32 u32;
-	_U64 u64;
-	_S8 s8;
-	_S16 s16;
-	_S32 s32;
-	_S64 s64;
-	_F32 f32;
-	_F64 f64;
-	DDL::String<100> str;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_ITEM>(SG_ITEM& Value);
-	template<>
-	bool BufferWriter::Write<SG_ITEM>(const SG_ITEM& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_ITEM>();
-	extern STRUCT_INFO _rfl_struct_SG_ITEM_info;
-}
-
 
 #pragma pack(pop)
 

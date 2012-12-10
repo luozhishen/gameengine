@@ -4,6 +4,7 @@
 #include "AtlasCommon.h"
 #include "AtlasClientApp.h"
 #include "AtlasClient.h"
+#include "AsyncIOConnection.h"
 
 namespace Atlas
 {
@@ -81,6 +82,8 @@ namespace Atlas
 		InitDDLStub();
 		InitContentObjects();
 		InitLiveObjects();
+
+		CAsyncIOConnection::Init();
 	}
 
 	CClient* CClientApp::NewClient()

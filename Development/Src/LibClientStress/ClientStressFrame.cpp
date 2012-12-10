@@ -43,13 +43,15 @@ enum
 	ID_SELECT_ALL,
 	ID_LOGIN,
 	ID_LOGOUT,
-	ID_SETPARAM,
+	ID_SVRADDR,
+	ID_SVRPARAM,
 	ID_TIMER,
 	ID_CLIENT_LIST,
 	ID_CASE_LIST,
 	ID_CASE_ADD,
 	ID_STRESS_VIEW,
 	ID_RUN_SCRIPT,
+	ID_SVR_PARAM_DLG,
 };
 
 BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
@@ -65,11 +67,13 @@ BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_MENU(ID_LOGIN,			CClientStressFrame::OnLogin)
 	EVT_MENU(ID_LOGOUT,			CClientStressFrame::OnLogout)
 	EVT_MENU(ID_CASE_ADD,		CClientStressFrame::OnAddCase)
-	EVT_MENU(ID_SETPARAM,		CClientStressFrame::OnSetParam)
+	EVT_MENU(ID_SVRADDR,		CClientStressFrame::OnSvrAddr)
+	EVT_MENU(ID_SVRPARAM,		CClientStressFrame::OnSvrParam)
 	EVT_MENU(ID_SELECT_ALL,		CClientStressFrame::OnSelectAll)
 	EVT_LISTBOX(ID_CLIENT_LIST,	CClientStressFrame::OnClientSelected)
 	EVT_MENU(ID_STRESS_VIEW,	CClientStressFrame::OnStressView)
 	EVT_MENU(ID_RUN_SCRIPT,		CClientStressFrame::OnRunScript)
+	EVT_MENU(ID_SVR_PARAM_DLG,		CClientStressFrame::OnOpenSvrParamDlg)
 	EVT_TIMER(ID_TIMER,			CClientStressFrame::OnTimer)
 	EVT_SIZE(CClientStressFrame::OnSize)
 	EVT_SHOW(CClientStressFrame::OnShow)
@@ -147,11 +151,13 @@ void CClientStressFrame::InitMenu()
 {
 	SetMenuBar(ATLAS_NEW wxMenuBar);
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
-	GetMenuBar()->GetMenu(0)->Append(ID_PROTOCAL, wxT("Protocal..."), wxT("Show protocal dailog"));
-	GetMenuBar()->GetMenu(0)->Append(ID_SETPARAM, wxT("Set Params..."), wxT("Set Params"));
+	GetMenuBar()->GetMenu(0)->Append(ID_PROTOCAL, wxT("Protocal"), wxT("Show protocal dailog"));
+	GetMenuBar()->GetMenu(0)->Append(ID_SVR_PARAM_DLG, wxT("Server Params"), wxT("Set Server Params"));
+	GetMenuBar()->GetMenu(0)->Append(ID_SVRADDR, wxT("Server Address"), wxT("Set Server Address"));
+	GetMenuBar()->GetMenu(0)->Append(ID_SVRPARAM, wxT("Param Address"), wxT("Set Server Param"));
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
-	GetMenuBar()->GetMenu(1)->Append(ID_ABOUT, wxT("&About..."), wxT("Show About Dailog"));
+	GetMenuBar()->GetMenu(1)->Append(ID_ABOUT, wxT("&About"), wxT("Show About Dailog"));
 }
 
 void CClientStressFrame::InitToolBar()
@@ -295,7 +301,7 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		m_pCmdText->AppendString(tmp);
 		m_pCmdText->SetValue(val);
 	}
-
+	
 	std::vector<_U32>::iterator i;
 	Atlas::CStressClient* pClient;
 	for(i=clients.begin(); i!=clients.end(); i++)
@@ -380,12 +386,33 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 	}
 }
 
-void CClientStressFrame::OnSetParam(wxCommandEvent& event)
+void CClientStressFrame::OnSvrAddr(wxCommandEvent& event)
 {
-	ServerParamDlg dlg;
-	if(dlg.ShowModal()==wxID_OK)
+	wxTextEntryDialog Dialog(this, wxT("Input Server Address"), wxT("Please enter a string"), m_FrameData.svraddr);
+	while(Dialog.ShowModal()==wxID_OK)
 	{
-		wxMessageBox(wxT("save succ!"));
+		Atlas::SOCKADDR sa;
+		if(!Atlas::STR2ADDR((char*)Dialog.GetValue().c_str(), sa))
+		{
+			wxMessageBox(wxT(""), wxT(""));
+			continue;
+		}
+		else
+		{
+			m_FrameData.svraddr = Dialog.GetValue();
+			break;
+		}
+	}
+}
+
+void CClientStressFrame::OnSvrParam(wxCommandEvent& event)
+{
+	_U32 nUIDtart = 0;
+	wxNumberEntryDialog Dialog(this, wxT("Input Server Param"), wxT("Please enter a num"), wxT("cpation"), nUIDtart, 0, 10000);
+	if(Dialog.ShowModal() == wxID_OK)
+	{
+		nUIDtart = Dialog.GetValue();
+		Atlas::CStressManager::Get().SetUIDStart(nUIDtart);
 	}
 }
 
@@ -413,7 +440,7 @@ void CClientStressFrame::OnRunScript(wxCommandEvent& event)
 	loader._OnNewCase.connect(this, &CClientStressFrame::NotifyClientAddCase);
 
 	wxFileDialog dlg(this, wxT("script file"), wxT(""), wxT(""), wxT("xml files (*.xml) | *.xml"), wxFD_OPEN|wxFD_FILE_MUST_EXIST);
-	if(dlg.ShowModal()==wxID_CANCEL)
+	if(dlg.ShowModal() == wxID_CANCEL)
 	{
 		return;
 	}
@@ -422,6 +449,15 @@ void CClientStressFrame::OnRunScript(wxCommandEvent& event)
 	if(!loader.RunScript((const char*)strPath.c_str()))
 	{
 		wxMessageBox(wxT("Invalid script, please check it"));
+	}
+}
+
+void CClientStressFrame::OnOpenSvrParamDlg(wxCommandEvent& event)
+{
+	ServerParamDlg dlg(this);
+	if(dlg.ShowModal() == wxID_OK)
+	{
+		wxMessageBox(wxT("save succ!"));
 	}
 }
 
@@ -451,7 +487,7 @@ void CClientStressFrame::OnShow(wxShowEvent& event)
 
 void CClientStressFrame::OnTimer(wxTimerEvent& event)
 {
-	if(Atlas::CClientApp::GetDefault()->Tick(0))
+	if(Atlas::CClientApp::GetDefault()->Tick())
 	{
 		UpdateClientList();	
 	}

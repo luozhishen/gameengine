@@ -295,7 +295,7 @@ void CContentDataView::OnMenuSave(wxCommandEvent& event)
 
 void CContentDataView::OnContextMenu(wxContextMenuEvent& event)
 {
-	if(event.GetEventObject()==m_pList)
+	if(event.GetEventObject() == m_pList)
 	{
 		wxMenu menu;
 		menu.Append(wxID_NEW, wxT("N&ew"));
@@ -323,7 +323,7 @@ void CContentDataView::UpdateItemName(wxString& strItemValue, A_UUID& uuid)
 	{
 		wxUIntPtr pData = m_pList->GetItemData(i);
 		A_UUID& item_uuid = *(A_UUID*)pData;
-		if(item_uuid==uuid)
+		if(item_uuid == uuid)
 		{
 			m_pList->SetItem(i, 0, strItemValue);
 		}
@@ -382,7 +382,7 @@ void CContentDataView::RemoveObject(const A_UUID& uuid)
 	{
 		wxUIntPtr pData = m_pList->GetItemData(i);
 		A_UUID& item_uuid = *(A_UUID*)pData;
-		if(item_uuid==uuid)
+		if(item_uuid == uuid)
 		{
 			m_pList->DeleteItem(i);
 		}
@@ -397,7 +397,7 @@ void CContentDataView::SelectObject(const A_UUID& uuid)
 	{
 		wxUIntPtr pData = m_pList->GetItemData(i);
 		A_UUID& item_uuid = *(A_UUID*)pData;
-		if(item_uuid==uuid)
+		if(item_uuid == uuid)
 		{
 			m_pList->SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 		}

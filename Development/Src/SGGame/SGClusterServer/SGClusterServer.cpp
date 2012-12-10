@@ -31,7 +31,7 @@ private:
 int main(int argc, char* argv[])
 {
 	CClusterServerApp ClusterServerApp;
-	if(argc >= 1)
+	if(argc > 1)
 	{
 		ClusterServerApp.SetRPCAddrPort(argv[1]);
 		Atlas::SLog("Cluster Server Start rpc[%s]", argv[1]);

@@ -97,12 +97,12 @@ namespace Atlas
 		Atlas::STR2ADDR(str, m_saRPC);
 	}
 
-	void CServerApp::SetClusterAddrPort(const _STR str)
+	void CServerApp::SetClusterRpcEP(const _STR str)
 	{
 		Atlas::STR2ADDR(str, m_saCluster);
 	}
 
-	SOCKADDR& CServerApp::GetClusterAddrPort()
+	SOCKADDR& CServerApp::GetClusterRpcEP()
 	{
 		return m_saCluster;
 	}

@@ -32,14 +32,14 @@ int main(int argc, char* argv[])
 	{
 		LoginApp.SetListenAddrPort(argv[1]);
 		LoginApp.SetRPCAddrPort(argv[2]);
-		LoginApp.SetClusterAddrPort(argv[3]);
+		LoginApp.SetClusterRpcEP(argv[3]);
 		Atlas::SLog("Login Server Start port[%s] rpc[%s] cluster[%s]", argv[1], argv[2], argv[3]);
 	}
 	else
 	{
 		LoginApp.SetListenAddrPort("127.0.0.1:1978");
 		LoginApp.SetRPCAddrPort("127.0.0.1:1979");
-		LoginApp.SetClusterAddrPort("127.0.0.1:1982");
+		LoginApp.SetClusterRpcEP("127.0.0.1:1982");
 	}
 	
 	LoginApp.Run();

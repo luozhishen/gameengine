@@ -22,7 +22,18 @@ BEGIN_EVENT_TABLE(ServerParamDlg, wxDialog)
 	EVT_BUTTON(ID_DELETE_LINE,	ServerParamDlg::OnDeleteLine)
 END_EVENT_TABLE()
 
-ServerParamDlg::ServerParamDlg() : wxDialog(NULL, wxID_ANY, wxString(wxT("Server param Config")), wxDefaultPosition, wxSize(400, 300), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
+
+ServerParamDlg::ServerParamDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Server param Config")), wxDefaultPosition, wxSize(400, 300), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
+{
+	InitCtrls();
+}
+
+ServerParamDlg::~ServerParamDlg()
+{
+
+}
+
+void ServerParamDlg::InitCtrls()
 {
 	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer2->AddStretchSpacer();
@@ -50,16 +61,11 @@ ServerParamDlg::ServerParamDlg() : wxDialog(NULL, wxID_ANY, wxString(wxT("Server
 	SetSizer(pSizer1);
 }
 
-ServerParamDlg::~ServerParamDlg()
-{
-
-}
-
 void ServerParamDlg::OnConfirm(wxCommandEvent& event)
 {
 	Atlas::CStressLoader loader;
 	wxFileDialog dlg(this, wxT("save script file"), wxT(""), wxT(""), wxT("xml files (*.xml) | *.xml"), wxFD_OPEN|wxFD_FILE_MUST_EXIST);
-	if(dlg.ShowModal()==wxID_CANCEL)
+	if(dlg.ShowModal() == wxID_CANCEL)
 	{
 		return;
 	}

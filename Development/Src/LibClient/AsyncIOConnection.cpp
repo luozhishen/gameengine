@@ -20,45 +20,46 @@ namespace Atlas
 	{
 		ATLAS_ASSERT(!g_client_workers);
 		ATLAS_ASSERT(!g_client_iopool);
+		g_client_workers = CreateWorkers(tcount);
+		g_client_iopool = AllocIoBufferPool(1024, 1024, 0, 0);
 	}
 
 	void CAsyncIOConnection::Fini()
 	{
+		KillWorkers(g_client_workers);
+		FreeIoBufferPool(g_client_iopool);
 	}
 	
 	CAsyncIOConnection::CAsyncIOConnection(CClient* pClient) : CClientConnection(pClient)
 	{
+		m_bConnecting = false;
 		m_hConn = NULL;
-
-		m_nRecvBuffLen = 0;
-		m_nRecvBuffSize = GetClient()->GetClientApp()->GetDownPacketSize();
-		m_pRecvBuff = (_U8*)ATLAS_ALLOC(m_nRecvBuffSize);
+		m_pSendBuf = NULL;
+		m_nSendBufLen = 0;
 	}
 
 	CAsyncIOConnection::~CAsyncIOConnection()
 	{
-		if(m_pRecvBuff)
-		{
-			ATLAS_FREE(m_pRecvBuff);
-			m_pRecvBuff = NULL;
-		}
 	}
 
-	bool CAsyncIOConnection::Connect(const SOCKADDR& sa, const char* token)
+	bool CAsyncIOConnection::Connect(const SOCKADDR& sa)
 	{
-		ATLAS_ASSERT(GetClient()->GetState()==CClient::STATE_LOGINING);
+		ATLAS_ASSERT(!m_pSendBuf);
 		ATLAS_ASSERT(!m_hConn);
+		ATLAS_ASSERT(!m_bConnecting);
+		if(m_hConn || m_bConnecting) return false;
 
-		m_sRedirectToken = token;
-
+		m_pSendBuf = NULL;
+		m_bConnecting = true;
 		if(!Atlas::Connect(sa, g_client_handler, g_client_iopool, g_client_workers, this))
 		{
-			GetClient()->SetErrCode(CClient::ERRCODE_NETWORK);
-			GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
+			m_bConnecting = false;
 			return false;
 		}
-
-		return true;
+		else
+		{
+			return true;
+		}
 	}
 
 	bool CAsyncIOConnection::Disconnect()
@@ -67,91 +68,67 @@ namespace Atlas
 		return true;
 	}
 
-	void CAsyncIOConnection::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	void CAsyncIOConnection::SendData(_U32 len, const _U8* data, bool bPending)
 	{
+		HIOPOOL pool = HIOPoolOf(m_hConn);
+		_U32 blen = GetIoBufferSize(pool);
+		_U32 dolen;
+		while(len>0)
+		{
+			if(!m_pSendBuf)
+			{
+				m_pSendBuf = LockIoBuffer(pool);
+				m_nSendBufLen = 0;
+			}
+
+			dolen = (len>blen-m_nSendBufLen)?blen-m_nSendBufLen:len;
+
+			memcpy(m_pSendBuf+m_nSendBufLen, data, dolen);
+			len -= dolen;
+			data += dolen;
+			m_nSendBufLen += dolen;
+			if(m_nSendBufLen==blen)
+			{
+				Send(m_hConn, m_nSendBufLen, m_pSendBuf);
+				m_pSendBuf = NULL;
+			}
+		}
+
+		if(!bPending && m_pSendBuf!=NULL && m_nSendBufLen>0)
+		{
+			Send(m_hConn, m_nSendBufLen, m_pSendBuf);
+			m_pSendBuf = NULL;
+		}
 	}
 
 	void CAsyncIOConnection::OnRawConnected(HCONNECT hConn)
 	{
-		ATLAS_ASSERT(GetClient()->GetState()==CClient::STATE_LOGINING);
 		ATLAS_ASSERT(!m_hConn);
 		m_hConn = hConn;
-
-		IOBUFFER_STREAM<10> stream(HIOPoolOf(hConn), 0);
-		_U32 token_len = (_U32)m_sRedirectToken.size();
-		stream.Write(token_len);
-		stream.WriteData(m_sRedirectToken.c_str(), token_len);
-		stream.Send(hConn);
+		m_bConnecting = false;
+		GetClient()->OnRawConnected();
 	}
 
 	void CAsyncIOConnection::OnRawDisconnected()
 	{
-		if(!m_bRedirect)
+		if(m_pSendBuf)
 		{
-			if(GetClient()->GetState()==CClient::STATE_LOGINED)
-			{
-				GetClient()->GetClientApp()->QueueDisconnected(GetClient());
-			}
-			else
-			{
-				GetClient()->SetErrCode(CClient::ERRCODE_NETWORK);
-				GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
-			}
+			UnlockIoBuffer(m_pSendBuf);
+			m_pSendBuf = NULL;
 		}
-		else
-		{
-			ATLAS_ASSERT(GetClient()->GetState()==CClient::STATE_LOGINING);
-			m_bRedirect = false;
-
-			if(!Atlas::Connect(m_saRedirectAddr, g_client_handler, g_client_iopool, g_client_workers, this))
-			{
-				GetClient()->SetErrCode(CClient::ERRCODE_NETWORK);
-				GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
-			}
-		}
+		m_hConn = NULL;
+		GetClient()->OnRawDisconnected();
 	}
 
 	void CAsyncIOConnection::OnRawData(_U32 len, const _U8* data)
 	{
-		_U16 pkglen;
-		_U32 copylen;
-		while(len>0)
-		{
-			copylen = len;
-			if(m_nRecvBuffLen+copylen>m_nRecvBuffSize) copylen = m_nRecvBuffSize - m_nRecvBuffLen;
-			memcpy(m_pRecvBuff+m_nRecvBuffLen, data, copylen);
-			m_nRecvBuffLen += copylen;
-			len -= copylen;
-			data = data + copylen;
-			while(m_nRecvBuffLen>=sizeof(pkglen))
-			{
-				pkglen = *((const _U16*)m_pRecvBuff);
-
-				if(pkglen>m_nRecvBuffSize-sizeof(pkglen))
-				{
-					Disconnect();
-					return;
-				}
-
-				if(pkglen+sizeof(pkglen)>m_nRecvBuffLen)
-				{
-					break;
-				}
-
-				GetClient()->ProcessPacket((_U32)pkglen, m_pRecvBuff+sizeof(pkglen));
-
-				_U32 ulen = pkglen + sizeof(pkglen);
-				m_nRecvBuffLen -= ulen;
-				memmove(m_pRecvBuff, m_pRecvBuff+ulen, m_nRecvBuffLen);
-			}
-		}
+		GetClient()->OnRawData(len, data);
 	}
 
 	void CAsyncIOConnection::OnRawConnectFailed()
 	{
-		ATLAS_ASSERT(GetClient()->GetState()==CClient::STATE_LOGINING);
-		GetClient()->SetErrCode(CClient::ERRCODE_NETWORK);
-		GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
+		m_bConnecting = false;
+		GetClient()->OnRawConnectFailed();
 	}
 
 	bool CLT_ON_CONNECT(HCONNECT hConn)

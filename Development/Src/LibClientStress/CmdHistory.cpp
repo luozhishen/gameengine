@@ -66,7 +66,7 @@ void CmdHistory::AddCmd( std::string& cmd )
 {
 	//std::unique(m_cmds.begin(), m_cmds.end());
 	CMD_SET::iterator it = find(m_cmds.begin(), m_cmds.end(), cmd);
-	if(it==m_cmds.end())
+	if(it == m_cmds.end())
 	{
 		m_cmds.push_back(cmd);
 	}

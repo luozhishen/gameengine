@@ -46,8 +46,8 @@ namespace Atlas
 
 		void SetRPCAddrPort(_U32 ip, _U16 port);
 		void SetRPCAddrPort(const _STR str);
-		void SetClusterAddrPort(const _STR str);
-		SOCKADDR& GetClusterAddrPort();
+		void SetClusterRpcEP(const _STR str);
+		SOCKADDR& GetClusterRpcEP();
 
 		virtual void InitApp();
 		virtual void FiniApp();

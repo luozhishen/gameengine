@@ -30,13 +30,13 @@ namespace Atlas
 		std::wstring Utf8ToUtf16( const char* const szSource, const _U32 uiSize )
 		{
 			static std::wstring sWrongString = L"\"String::Utf8ToUtf16 Conversion Failed\"";
-			if ( uiSize==0 )
+			if ( uiSize == 0 )
 			{
 				return std::wstring();
 			}
 
 			const int iRequiredLength = MultiByteToWideChar( CP_UTF8, MB_ERR_INVALID_CHARS, szSource, uiSize, NULL, 0 );
-			if ( iRequiredLength==0 )
+			if ( iRequiredLength == 0 )
 			{
 				//ALOGE( gLogRoot, "Failed to determine length of the converted UTF-16 string: %d", GetLastError() );
 				return sWrongString;
@@ -61,13 +61,13 @@ namespace Atlas
 		std::string Utf16ToUtf8( const wchar_t* const szSource, const _U32 uiSize )
 		{
 			static std::string sWrongString = "\"String::Utf16ToUtf8 Conversion Failed\"";
-			if ( uiSize==0 )
+			if ( uiSize == 0 )
 			{
 				return std::string();
 			}
 
 			const int iRequiredLength = WideCharToMultiByte( CP_UTF8, 0, szSource, uiSize, NULL, 0, NULL, NULL );
-			if ( iRequiredLength==0 )
+			if ( iRequiredLength == 0 )
 			{
 				//ALOGE( gLogRoot, "Failed to determine length of the converted UTF-8 string: %d", GetLastError() );
 				return sWrongString;
@@ -93,13 +93,13 @@ namespace Atlas
 		std::string MultiByteToUtf8( const char* const szSource, const _U32 uiSize )
 		{
 			static std::string sWrongString = "\"String::MultiByteToUtf8 Conversion Failed\"";
-			if ( uiSize==0 )
+			if ( uiSize == 0 )
 			{
 				return std::string();
 			}
 
 			const int iRequiredLength = MultiByteToWideChar( CP_ACP, MB_ERR_INVALID_CHARS, szSource, uiSize, NULL, 0 );
-			if ( iRequiredLength==0 )
+			if ( iRequiredLength == 0 )
 			{
 				//ALOGE( gLogRoot, "Failed to determine length of converted UTF-8 string: %d", GetLastError() );
 				return sWrongString;
@@ -125,7 +125,7 @@ namespace Atlas
 		std::string Utf8ToMultiByte( const char* const szSource, const _U32 uiSize )
 		{
 			static std::string sWrongString = "\"String::MultiByteToUtf8 Conversion Failed\"";
-			if ( uiSize==0 )
+			if ( uiSize == 0 )
 			{
 				return std::string();
 			}
@@ -133,7 +133,7 @@ namespace Atlas
 			std::wstring wsTemp = String::Utf8ToUtf16( szSource, uiSize );
 
 			const int iRequiredLength = WideCharToMultiByte( CP_ACP, 0, wsTemp.c_str(), (_U32)( wsTemp.length() ), NULL, 0, NULL, NULL );
-			if ( iRequiredLength==0 )
+			if ( iRequiredLength == 0 )
 			{
 				//ALOGE( gLogRoot, "Failed to determine length of the converted MultiByte string: %d", GetLastError() );
 				return sWrongString;
@@ -179,7 +179,7 @@ namespace Atlas
 		{
 			for(int i = 0; szSrc+i != NULL && *(szSrc+i) != '\0' && i < len; ++i)
 			{
-				if(*(szSrc+i)==szTarget)
+				if(*(szSrc+i) == szTarget)
 				{
 					*(szSrc+i) = szValue;
 				}

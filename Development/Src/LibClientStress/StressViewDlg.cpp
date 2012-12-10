@@ -76,7 +76,7 @@ void CStressViewDlg::InitClients()
 	for(_U32 i = 0; i < clients.size(); ++i)
 	{
 		Atlas::CStressClient* pClient = stressMgr.GetClient(clients[i]);
-		if(pClient==NULL)
+		if(pClient == NULL)
 			continue;
 
 		wxTreeItemId clientItem = m_pClientTree->AppendItem(rootItem, wxString::FromUTF8(pClient->GetTitle().c_str()), -1, -1);

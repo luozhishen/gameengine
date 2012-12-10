@@ -73,7 +73,7 @@ namespace Atlas
 		if(!CServerBase::Start()) return false;
 		
 		//m_hDefaultCluster = GetRPCServer("192.168.0.15:1982");
-		SOCKADDR& cluster = GetServerApp()->GetClusterAddrPort();
+		SOCKADDR& cluster = GetServerApp()->GetClusterRpcEP();
 		m_hDefaultCluster = GetRPCServer(cluster.ip, cluster.port);
 
 		ASOCKIO_HANDLER handler =
@@ -400,7 +400,7 @@ namespace Atlas
 				}
 				else
 				{
-					if(pkglen<sizeof(m_nUID)+1)
+					if(pkglen<sizeof(m_nUID))
 					{
 						KickUser();
 						return;

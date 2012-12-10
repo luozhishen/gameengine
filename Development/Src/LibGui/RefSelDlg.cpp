@@ -77,7 +77,7 @@ void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 		}
 	}
 
-	if(p==NULL)
+	if(p == NULL)
 	{
 		return;
 	}
@@ -95,7 +95,7 @@ void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 		if(!object || !info) continue;
 
 		wxString strNameValue(object->name._Value, wxMBConvUTF8());
-		if(!strInput.empty() && strNameValue.find(strInput)==wxNOT_FOUND)
+		if(!strInput.empty() && strNameValue.find(strInput) == wxNOT_FOUND)
 		{
 			continue;
 		}

@@ -15,9 +15,9 @@ namespace Atlas
 		CAsyncIOConnection(CClient* pClient);
 		virtual ~CAsyncIOConnection();
 
-		virtual bool Connect(const SOCKADDR& sa, const char* token);
+		virtual bool Connect(const SOCKADDR& sa);
 		virtual bool Disconnect();
-		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+		virtual void SendData(_U32 len, const _U8* data, bool bPending);
 
 		void OnRawConnected(HCONNECT hConn);
 		void OnRawDisconnected();
@@ -25,10 +25,10 @@ namespace Atlas
 		void OnRawConnectFailed();
 
 	private:
+		bool m_bConnecting;
 		HCONNECT m_hConn;
-		_U8* m_pRecvBuff;
-		_U32 m_nRecvBuffLen;
-		_U32 m_nRecvBuffSize;
+		_U8* m_pSendBuf;
+		_U32 m_nSendBufLen;
 	};
 
 }
@@ -52,7 +52,7 @@ namespace Atlas
 	CClient::CClient(CClientApp* pClientApp, _U32 recvsize) : m_pClientApp(pClientApp)
 	{
 		m_nLoginDataSize = 0;
-		m_nClientState = CLIENT_NA;
+		m_nClientState = STATE_NA;
 		m_hConnect = NULL;
 		A_MUTEX_INIT(&m_mtxClient);
 		if(recvsize)
@@ -81,7 +81,7 @@ namespace Atlas
 
 	bool CClient::Login(const SOCKADDR& sa, _U32 nUID, const char* pToken)
 	{
-		if(m_nClientState!=CLIENT_NA) return false;
+		if(m_nClientState!=STATE_NA) return false;
 
 		_U16 len = (_U16)strlen(pToken)+1;
 		*((_U32*)m_LoginData) = nUID;
@@ -98,7 +98,7 @@ namespace Atlas
 		m_nClientState = CLIENT_LOGINING;
 		if(!Connect(sa, handler, m_pClientApp->GetIOPool(), m_pClientApp->GetHWorkers(), this))
 		{
-			m_nClientState = CLIENT_NA;
+			m_nClientState = STATE_NA;
 			return false;
 		}
 		return true;
@@ -122,7 +122,7 @@ namespace Atlas
 		}
 		else
 		{
-			m_nClientState = CLIENT_NA;
+			m_nClientState = STATE_NA;
 		}
 	}
 
@@ -252,7 +252,7 @@ namespace Atlas
 		}
 		else
 		{
-			m_nClientState = CLIENT_NA;
+			m_nClientState = STATE_NA;
 			m_hConnect = NULL;
 			m_strSessionAddr.clear();
 			m_bNeedRedirect = true;
@@ -262,7 +262,7 @@ namespace Atlas
 
 	void CClient::OnRawConnectFailed()
 	{
-		m_nClientState = CLIENT_NA;
+		m_nClientState = STATE_NA;
 		OnConnectFailed();
 	}
 

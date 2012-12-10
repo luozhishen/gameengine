@@ -182,7 +182,7 @@ namespace Atlas
 	{
 		if(m_nState==CClient::STATE_LOGINING)
 		{
-			_U8 code;
+			_U16 code;
 			if(len<sizeof(code))
 			{
 				SetErrorCode(CClient::ERRCODE_UNKOWN);
@@ -195,6 +195,7 @@ namespace Atlas
 			{
 			case 0x0: // login completed
 				m_nState = CClient::STATE_LOGINED;
+				GetClientApp()->QueueLoginDone(this);
 				break;
 			case 0x1: // redirect
 				if(len<sizeof(code)+sizeof(SOCKADDR))
@@ -203,15 +204,16 @@ namespace Atlas
 				}
 				else
 				{
-					m_saRedirectAddr = *((const SOCKADDR*)(data+1));
-					m_nLoginDataSize = (_U16)len - sizeof(code) - sizeof(SOCKADDR);
+					m_saRedirectAddr = *((const SOCKADDR*)(data+sizeof(code)));
+					m_nLoginDataSize = (_U16)len - sizeof(code) - sizeof(SOCKADDR) + sizeof(_U16);
 					if(m_nLoginDataSize>sizeof(m_LoginData))
 					{
 						SetErrorCode(CClient::ERRCODE_UNKOWN);
 					}
 					else
 					{
-						memcpy(m_LoginData, data+sizeof(code)+sizeof(SOCKADDR), (size_t)m_nLoginDataSize);
+						*((_U16*)m_LoginData) = (_U16)m_nLoginDataSize - sizeof(_U16);
+						memcpy(m_LoginData+sizeof(_U16), data+sizeof(code)+sizeof(SOCKADDR), (size_t)m_nLoginDataSize);
 						m_bNeedRedirect = true;
 					}
 				}

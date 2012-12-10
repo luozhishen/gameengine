@@ -237,6 +237,7 @@ namespace Atlas
 			KickUser();
 			return;
 		}
+		SendRawData(0, 0, NULL);
 		SetUID(nUID, pToken);
 		ClusterLogin(GetServer()->GetDefaultCluster());
 	}

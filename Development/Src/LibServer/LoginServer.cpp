@@ -314,12 +314,12 @@ namespace Atlas
 		}
 
 		//strNewToken = "127.0.0.1:1980";
-		_U16 iid = (_U32)(nUID>>16);
-		_U16 fid = (_U32)(nUID&0xffff);
 		_U8 sendBuf[TOKE_LEN];
 		DDL::MemoryWriter Buf(sendBuf, TOKE_LEN);
+		Buf.Write(sa);
+		Buf.Write(nUID);
 		Buf.WriteData(pToken, len);
-		Send(iid, fid, Buf);
+		Send(1, 0, Buf);
 	}
 
 	void CLoginClient::OnData(_U16 id, _U32 len, const _U8* data)

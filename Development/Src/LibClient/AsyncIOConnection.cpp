@@ -44,7 +44,7 @@ namespace Atlas
 		A_MUTEX_DESTROY(&m_mtxLock);
 	}
 
-	bool CAsyncIOConnection::Connect(const SOCKADDR& sa)
+	bool CAsyncIOConnection::Connect(const SOCK_ADDR& sa)
 	{
 		bool bRet;
 

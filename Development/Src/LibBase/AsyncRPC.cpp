@@ -1,6 +1,7 @@
 #include <map>
 
 #include "AtlasDefines.h"
+#include "AtlasSocket.h"
 #include "AsyncSockIO.h"
 #include "MemPool.h"
 #include "DDL.h"
@@ -20,7 +21,7 @@ namespace Atlas {
 	struct RPC_SERVER {
 		HCONNECT hConn;
 		_S32 state;
-		SOCKADDR sain;
+		SOCK_ADDR sain;
 		A_MUTEX lock;
 		_U32 curlen;
 		RPC_PACKET packet;
@@ -355,7 +356,7 @@ namespace Atlas {
 		HTCPEP hep;
 		A_MUTEX maplock;
 		std::map<HCONNECT, RPC_CLIENT*> conns;
-		SOCKADDR sockaddr;
+		SOCK_ADDR sockaddr;
 
 		bool Add(HCONNECT hConn, RPC_CLIENT* pclt) {
 			bool res = true;
@@ -502,7 +503,7 @@ namespace Atlas {
 
 	_U32 GetRPCClientAddr(HCLIENT hClient)
 	{
-		SOCKADDR sain;
+		SOCK_ADDR sain;
 		ATLAS_VERIFY(GetPeerAddr(((RPC_CLIENT*)hClient)->hConn, sain));
 		return sain.ip;
 	}
@@ -533,8 +534,8 @@ namespace Atlas {
 
 	HSERVER GetRPCServer(const _STR ep)
 	{
-		SOCKADDR sa;
-		if(!STR2ADDR(ep, sa)) return NULL;
+		SOCK_ADDR sa;
+		if(!sock_str2addr(ep, &sa)) return NULL;
 		return GetRPCServer(sa.ip, sa.port);
 	}
 

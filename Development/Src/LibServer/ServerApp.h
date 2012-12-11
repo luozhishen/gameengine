@@ -41,22 +41,22 @@ namespace Atlas
 
 		void Run();
 		void SetListenAddrPort(const _STR str);
-		SOCKADDR& GetListenAddrPort();
-		SOCKADDR& GetRPCAddrPort();
+		SOCK_ADDR& GetListenAddrPort();
+		SOCK_ADDR& GetRPCAddrPort();
 
 		void SetRPCAddrPort(_U32 ip, _U16 port);
 		void SetRPCAddrPort(const _STR str);
 		void SetClusterRpcEP(const _STR str);
-		SOCKADDR& GetClusterRpcEP();
+		SOCK_ADDR& GetClusterRpcEP();
 
 		virtual void InitApp();
 		virtual void FiniApp();
 
 	private:
 		HWORKERS m_hIOWorkers;
-		SOCKADDR m_saRPC;		//rpc binding addr and port of server self
-		SOCKADDR m_saListen; //server listen addr and port
-		SOCKADDR m_saCluster; //cluster port only for server who communicate with cluster
+		SOCK_ADDR m_saRPC;		//rpc binding addr and port of server self
+		SOCK_ADDR m_saListen; //server listen addr and port
+		SOCK_ADDR m_saCluster; //cluster port only for server who communicate with cluster
 	};
 
 }

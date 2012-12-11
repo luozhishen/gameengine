@@ -105,7 +105,7 @@ namespace Atlas
 
 	void CNodeServer::Tick()
 	{
-		SOCKADDR& sockInfo = GetServerApp()->GetRPCAddrPort();
+		SOCK_ADDR& sockInfo = GetServerApp()->GetRPCAddrPort();
 		WORKLOAD_INFO info;
 		info.ip = sockInfo.ip;
 		info.port = sockInfo.port;

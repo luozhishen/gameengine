@@ -17,16 +17,6 @@ namespace Atlas
 	void UnlockIoBuffer(_U8* buf);
 	_U32 GetIoBufferSize(HIOPOOL hpool);
 
-	struct SOCKADDR
-	{
-		_U32 ip;
-		_U16 port;
-	};
-	_U32 STR2IP(const _STR str);
-	bool STR2ADDR(const _STR str, SOCKADDR& sa);
-	bool ADDR2STR(const SOCKADDR& sa, _STR str, _U32 size);
-	void ADDR(SOCKADDR& sa, _U32 ip, _U16 port);
-
 	typedef struct AIO_CONNECTION*		HCONNECT;
 	typedef struct AIO_TCP_END_POINT*	HTCPEP;
 
@@ -43,7 +33,7 @@ namespace Atlas
 		PFN_ON_CONNECTFAILED	OnConnectFailed;
 	};
 
-	HTCPEP NewEP(const SOCKADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key, _U32 count=0);
+	HTCPEP NewEP(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key, _U32 count=0);
 	void DelEP(HTCPEP hep);
 	void StartEP(HTCPEP hep);
 	void StopEP(HTCPEP hep);
@@ -51,11 +41,11 @@ namespace Atlas
 	_U32 GetIORefs(HTCPEP hep);
 	void* KeyOf(HTCPEP hep);
 	void SetKey(HTCPEP hep, void* key);
-	bool GetEpAddr(HTCPEP hep, SOCKADDR& sa);
+	bool GetEpAddr(HTCPEP hep, SOCK_ADDR& sa);
 	HIOPOOL HIOPoolOf(HTCPEP hep);
 	HWORKERS HWorkersOf(HTCPEP hep);
 
-	bool Connect(const SOCKADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key);
+	bool Connect(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key);
 	void Disconnect(HCONNECT hConn);
 	bool IsConnected(HCONNECT hConn);
 	void CloseConn(HCONNECT hConn);
@@ -67,23 +57,23 @@ namespace Atlas
 	HTCPEP HepOf(HCONNECT hConn);
 	void* KeyOf(HCONNECT hConn);
 	void SetKey(HCONNECT hConn, void* key);
-	bool GetSelfAddr(HCONNECT hConn, SOCKADDR& sa);
-	bool GetPeerAddr(HCONNECT hConn, SOCKADDR& sa);
+	bool GetSelfAddr(HCONNECT hConn, SOCK_ADDR& sa);
+	bool GetPeerAddr(HCONNECT hConn, SOCK_ADDR& sa);
 	HIOPOOL HIOPoolOf(HCONNECT hConn);
 	HWORKERS HWorkersOf(HCONNECT hConn);
 
 	typedef struct AIO_UDP_END_POINT*	HUDPEP;
-	typedef void (*PFN_ON_DATAGRAM)(HUDPEP hep, const SOCKADDR& sa, _U32 len, const _U8* data);
+	typedef void (*PFN_ON_DATAGRAM)(HUDPEP hep, const SOCK_ADDR& sa, _U32 len, const _U8* data);
 
-	HUDPEP NewEP(const SOCKADDR& sa, PFN_ON_DATAGRAM on, HIOPOOL hpool, HWORKERS hworkers, void* key);
+	HUDPEP NewEP(const SOCK_ADDR& sa, PFN_ON_DATAGRAM on, HIOPOOL hpool, HWORKERS hworkers, void* key);
 	void DelEP(HUDPEP hep);
 	void StartEP(HUDPEP hep);
 	void StopEP(HUDPEP hep);
-	void Send(HUDPEP hep, const SOCKADDR& sa, _U32 len, _U8* data);
+	void Send(HUDPEP hep, const SOCK_ADDR& sa, _U32 len, _U8* data);
 	bool IsRunning(HUDPEP hep);
 	void* KeyOf(HUDPEP hep);
 	void SetKey(HUDPEP hep, void* key);
-	bool GetEpAddr(HUDPEP hep, SOCKADDR& sa);
+	bool GetEpAddr(HUDPEP hep, SOCK_ADDR& sa);
 	HIOPOOL HIOPoolOf(HUDPEP hep);
 	HWORKERS HWorkersOf(HUDPEP hep);
 

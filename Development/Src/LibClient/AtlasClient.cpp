@@ -5,12 +5,15 @@
 #include "AtlasClientApp.h"
 #include "AtlasClient.h"
 #include "AsyncIOConnection.h"
+#include "NonblockConnection.h"
 
 namespace Atlas
 {
 
 	CClient::CClient(CClientApp* pClientApp, _U32 recvsize) : m_pClientApp(pClientApp)
 	{
+		pClientApp->RegisterClient(this);
+
 		m_nLoginDataSize = 0;
 		m_nState = STATE_NA;
 		m_nErrCode = ERRCODE_SUCCESSED;
@@ -21,7 +24,12 @@ namespace Atlas
 		m_nRecvBuffSize = recvsize;
 		m_bNeedRedirect = false;
 
-		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this);
+#ifndef WITHOUT_ASYNCIO
+		m_pClientConnection = ATLAS_NEW CNonblockConnection(this);
+//		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this);
+#else
+		m_pClientConnection = ATLAS_NEW CNonblockConnection(this);
+#endif
 		AddComponent(m_pClientConnection);
 	}
 
@@ -35,6 +43,8 @@ namespace Atlas
 
 		ATLAS_FREE(m_pRecvBuff);
 		A_MUTEX_DESTROY(&m_mtxClient);
+
+		m_pClientApp->UnregisterClient(this);
 	}
 
 	void CClient::SetErrorCode(_U32 errcode)
@@ -42,7 +52,7 @@ namespace Atlas
 		if(m_nErrCode==ERRCODE_SUCCESSED) m_nErrCode = errcode;
 	}
 
-	bool CClient::Login(const SOCKADDR& sa, _U32 nUID, const char* pToken)
+	bool CClient::Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken)
 	{
 		if(m_nState!=STATE_NA && m_nState!=STATE_FAILED) return false;
 
@@ -68,8 +78,8 @@ namespace Atlas
 	{
 		const char* addr = m_pClientApp->GetParam("svraddr", "127.0.0.1:1978");
 
-		Atlas::SOCKADDR sa;
-		if(!Atlas::STR2ADDR((char*)addr, sa)) return false;
+		SOCK_ADDR sa;
+		if(!sock_str2addr(addr, &sa)) return false;
 		const char* uid_base = m_pClientApp->GetParam("uid_base", "0");
 		return Login(sa, id+atoi(uid_base));
 	}
@@ -98,7 +108,16 @@ namespace Atlas
 	void CClient::InitializeComponents()
 	{
 	}
-	
+
+	void CClient::Tick()
+	{
+		std::list<CClientComponent*>::iterator i;
+		for(i=m_Components.begin(); i!=m_Components.end(); i++)
+		{
+			(*i)->Tick();
+		}
+	}
+
 	void CClient::OnLoginDone()
 	{
 		_OnLoginDone();
@@ -222,14 +241,14 @@ namespace Atlas
 				GetClientApp()->QueueLoginDone(this);
 				break;
 			case 0x1: // redirect
-				if(len<sizeof(code)+sizeof(SOCKADDR))
+				if(len<sizeof(code)+sizeof(SOCK_ADDR))
 				{
 					SetErrorCode(CClient::ERRCODE_UNKOWN);
 				}
 				else
 				{
-					m_saRedirectAddr = *((const SOCKADDR*)(data+sizeof(code)));
-					m_nLoginDataSize = (_U16)len - sizeof(code) - sizeof(SOCKADDR) + sizeof(_U16);
+					m_saRedirectAddr = *((const SOCK_ADDR*)(data+sizeof(code)));
+					m_nLoginDataSize = (_U16)len - sizeof(code) - sizeof(SOCK_ADDR) + sizeof(_U16);
 					if(m_nLoginDataSize>sizeof(m_LoginData))
 					{
 						SetErrorCode(CClient::ERRCODE_UNKOWN);
@@ -237,7 +256,7 @@ namespace Atlas
 					else
 					{
 						*((_U16*)m_LoginData) = (_U16)m_nLoginDataSize - sizeof(_U16);
-						memcpy(m_LoginData+sizeof(_U16), data+sizeof(code)+sizeof(SOCKADDR), (size_t)m_nLoginDataSize);
+						memcpy(m_LoginData+sizeof(_U16), data+sizeof(code)+sizeof(SOCK_ADDR), (size_t)m_nLoginDataSize);
 						m_bNeedRedirect = true;
 					}
 				}

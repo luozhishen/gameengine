@@ -73,7 +73,7 @@ BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_LISTBOX(ID_CLIENT_LIST,	CClientStressFrame::OnClientSelected)
 	EVT_MENU(ID_STRESS_VIEW,	CClientStressFrame::OnStressView)
 	EVT_MENU(ID_RUN_SCRIPT,		CClientStressFrame::OnRunScript)
-	EVT_MENU(ID_SVR_PARAM_DLG,		CClientStressFrame::OnOpenSvrParamDlg)
+	EVT_MENU(ID_SVR_PARAM_DLG,	CClientStressFrame::OnOpenSvrParamDlg)
 	EVT_TIMER(ID_TIMER,			CClientStressFrame::OnTimer)
 	EVT_SIZE(CClientStressFrame::OnSize)
 	EVT_SHOW(CClientStressFrame::OnShow)
@@ -213,7 +213,7 @@ void CClientStressFrame::InitClient()
 	wxBoxSizer* pSizer1 = ATLAS_NEW wxBoxSizer(wxVERTICAL);
 	m_pTabView = ATLAS_NEW wxNotebook(pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
 	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	m_pCmdText = ATLAS_NEW wxComboBox( pPanel, ID_CMDTEXT, wxT("CMD"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER|wxCB_DROPDOWN|wxCB_SORT);
+	m_pCmdText = ATLAS_NEW wxComboBox( pPanel, ID_CMDTEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER|wxCB_DROPDOWN|wxCB_SORT);
 	int n = m_pCmdHistory->GetHistoryNum();
 	CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
 	for(int i = 0; i < n; ++i)
@@ -288,9 +288,8 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		wxMessageBox(wxT("no client selected"), wxT("error"));
 		return;
 	}
-	
-	
-	std::string line = (char*)(val.c_str());
+
+	std::string line = (const char*)val.ToUTF8();
 	m_pCmdHistory->AddCmd(line);
 	m_pCmdText->Clear();
 	int n = m_pCmdHistory->GetHistoryNum();
@@ -391,8 +390,8 @@ void CClientStressFrame::OnSvrAddr(wxCommandEvent& event)
 	wxTextEntryDialog Dialog(this, wxT("Input Server Address"), wxT("Please enter a string"), m_FrameData.svraddr);
 	while(Dialog.ShowModal()==wxID_OK)
 	{
-		Atlas::SOCKADDR sa;
-		if(!Atlas::STR2ADDR((char*)Dialog.GetValue().c_str(), sa))
+		SOCK_ADDR sa;
+		if(!sock_str2addr((const char*)Dialog.GetValue().ToUTF8(), &sa))
 		{
 			wxMessageBox(wxT(""), wxT(""));
 			continue;
@@ -490,6 +489,17 @@ void CClientStressFrame::OnTimer(wxTimerEvent& event)
 	if(Atlas::CClientApp::GetDefault()->Tick())
 	{
 		UpdateClientList();	
+	}
+
+	std::vector<_U32> clients;
+	Atlas::CStressManager::Get().GetClients(clients);
+	for(size_t i=0; i<clients.size(); i++)
+	{
+		Atlas::CStressClient* pClient = Atlas::CStressManager::Get().GetClient(clients[i]);
+		if(pClient)
+		{
+			pClient->GetClient()->Tick();
+		}
 	}
 
 	Atlas::CStressManager::Get().UpdateAll();

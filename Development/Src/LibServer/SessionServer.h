@@ -36,7 +36,7 @@ namespace Atlas
 
 	private:
 		HSERVER m_hDefaultCluster;
-		SOCKADDR m_saEndPoint;
+		SOCK_ADDR m_saEndPoint;
 		HIOPOOL m_hPool;
 		HTCPEP m_hEp;
 		_U32 m_nConnCount;

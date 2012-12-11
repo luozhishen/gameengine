@@ -177,7 +177,7 @@ namespace Atlas
 				break;
 			}
 
-			if(strValue == _("name"))
+			if(strValue == wxT("name"))
 			{
 				bExist = true;
 			}

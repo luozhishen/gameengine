@@ -97,6 +97,7 @@ typedef char*					_STR;
 #pragma warning(disable:4189)
 #pragma warning(disable:4355)
 #pragma warning(disable:4996)
+#pragma warning(disable:4127)
 
 #define ATLAS_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 

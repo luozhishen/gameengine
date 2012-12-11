@@ -103,7 +103,7 @@ namespace Atlas
 
 	void CStressClient::Login()
 	{
-		if(m_pClient->GetState()==Atlas::CClient::STATE_NA)
+		if(m_pClient->GetState()==Atlas::CClient::STATE_NA || m_pClient->GetState()==Atlas::CClient::STATE_FAILED)
 		{
 			m_pClient->LoginForStress(m_nIndex);
 		}

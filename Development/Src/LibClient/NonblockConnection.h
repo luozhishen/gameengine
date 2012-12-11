@@ -4,15 +4,25 @@
 namespace Atlas
 {
 
-	class CNonblockConnection : CClientConnection
+	class CNonblockConnection : public CClientConnection
 	{
 	public:
 		CNonblockConnection(CClient* pClient);
 		virtual ~CNonblockConnection();
 
-		virtual bool Connect(const SOCKADDR& sa);
+		virtual void Tick();
+
+		virtual bool Connect(const SOCK_ADDR& sa);
 		virtual void Disconnect();
 		virtual void SendData(_U32 len, const _U8* data, bool bPending);
+
+		void Clear();
+
+	private:
+		bool m_bNeedDisconnect, m_bConnecting;
+		SOCK_HANDLE m_hSocket;
+		std::list<std::pair<_U8*, _U32>> m_SendQueue;
+		_U32 m_nSendLen;
 	};
 
 }

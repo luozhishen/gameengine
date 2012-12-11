@@ -81,7 +81,7 @@ namespace Atlas
 	{
 		if(!CServerBase::Start()) return false;
 
-		SOCKADDR& cluster = GetServerApp()->GetClusterRpcEP();
+		SOCK_ADDR& cluster = GetServerApp()->GetClusterRpcEP();
 		m_hDefaultCluster = GetRPCServer(cluster.ip, cluster.port);
 
 		ASOCKIO_HANDLER handler =
@@ -198,7 +198,7 @@ namespace Atlas
 		return m_mapUID.Unbind(uid, lndx);
 	}
 		
-	bool CLoginServer::GetSession(_U32 uid, SOCKADDR& sa)
+	bool CLoginServer::GetSession(_U32 uid, SOCK_ADDR& sa)
 	{
 		if(m_WorkLoads.empty()) 
 			return false;
@@ -214,7 +214,7 @@ namespace Atlas
 
 		++m_WorkLoads[ndx].workload;
 
-		ADDR(sa, m_WorkLoads[ndx].ip, m_WorkLoads[ndx].port);
+		sock_addr(&sa, m_WorkLoads[ndx].ip, m_WorkLoads[ndx].port);
 		A_MUTEX_UNLOCK(&m_mtxWorkLoad);
 
 		return true;
@@ -306,7 +306,7 @@ namespace Atlas
 		SetUID(nUID, "");
 
 		//return session add and new token
-		SOCKADDR sa;
+		SOCK_ADDR sa;
 		if(!m_pServer->GetSession(nUID, sa))
 		{
 			KickUser();

@@ -2,6 +2,7 @@
 #ifndef WIN32
 
 #include "AtlasDefines.h"
+#include "AtlasSocket.h"
 #include "AsyncSockIO.h"
 
 namespace Atlas
@@ -54,21 +55,7 @@ namespace Atlas
 		return 0;
 	}
 
-	bool STR2ADDR(const _STR str, SOCKADDR& sa)
-	{
-		return false;
-	}
-
-	bool ADDR2STR(const SOCKADDR& sa, _STR str, _U32 size)
-	{
-		return false;
-	}
-
-	void ADDR(SOCKADDR& sa, _U32 ip, _U16 port)
-	{
-	}
-
-	HTCPEP NewEP(const SOCKADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key, _U32 count)
+	HTCPEP NewEP(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key, _U32 count)
 	{
 		return NULL;
 	}
@@ -104,7 +91,7 @@ namespace Atlas
 	{
 	}
 
-	bool GetEpAddr(HTCPEP hep, SOCKADDR& sa)
+	bool GetEpAddr(HTCPEP hep, SOCK_ADDR& sa)
 	{
 		return false;
 	}
@@ -119,7 +106,7 @@ namespace Atlas
 		return NULL;
 	}
 
-	bool Connect(const SOCKADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key)
+	bool Connect(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key)
 	{
 		return false;
 	}
@@ -173,12 +160,12 @@ namespace Atlas
 	{
 	}
 
-	bool GetSelfAddr(HCONNECT hConn, SOCKADDR& sa)
+	bool GetSelfAddr(HCONNECT hConn, SOCK_ADDR& sa)
 	{
 		return false;
 	}
 
-	bool GetPeerAddr(HCONNECT hConn, SOCKADDR& sa)
+	bool GetPeerAddr(HCONNECT hConn, SOCK_ADDR& sa)
 	{
 		return false;
 	}
@@ -193,7 +180,7 @@ namespace Atlas
 		return NULL;
 	}
 
-	HUDPEP NewEP(const SOCKADDR& sa, PFN_ON_DATAGRAM on, HIOPOOL hpool, HWORKERS hworkers, void* key)
+	HUDPEP NewEP(const SOCK_ADDR& sa, PFN_ON_DATAGRAM on, HIOPOOL hpool, HWORKERS hworkers, void* key)
 	{
 		return NULL;
 	}
@@ -210,7 +197,7 @@ namespace Atlas
 	{
 	}
 
-	void Send(HUDPEP hep, const SOCKADDR& sa, _U32 len, _U8* data)
+	void Send(HUDPEP hep, const SOCK_ADDR& sa, _U32 len, _U8* data)
 	{
 	}
 
@@ -228,7 +215,7 @@ namespace Atlas
 	{
 	}
 
-	bool GetEpAddr(HUDPEP hep, SOCKADDR& sa)
+	bool GetEpAddr(HUDPEP hep, SOCK_ADDR& sa)
 	{
 		return false;
 	}

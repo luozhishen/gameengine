@@ -143,6 +143,12 @@ namespace Atlas
 			}
 		}
 
+		std::set<CClient*>::iterator it;
+		for(it=m_Clients.begin(); it!=m_Clients.end(); it++)
+		{
+			(*it)->Tick();
+		}
+
 		return bRet;
 	}
 
@@ -212,6 +218,16 @@ namespace Atlas
 		A_MUTEX_LOCK(&m_mtxQueue);
 		m_Queue.push_back(i);
 		A_MUTEX_UNLOCK(&m_mtxQueue);
+	}
+
+	void CClientApp::RegisterClient(CClient* pClient)
+	{
+		m_Clients.insert(pClient);
+	}
+	
+	void CClientApp::UnregisterClient(CClient* pClient)
+	{
+		m_Clients.erase(pClient);
 	}
 
 }

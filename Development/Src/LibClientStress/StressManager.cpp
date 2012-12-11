@@ -55,7 +55,7 @@ namespace Atlas
 			for(i=m_mapClients.begin(); i!=m_mapClients.end(); i++)
 			{
 				i->second->Logout();
-				if(i->second->GetClient()->GetState()!=CClient::STATE_NA) count++;
+				if(i->second->GetClient()->GetState()!=CClient::STATE_NA && i->second->GetClient()->GetState()!=CClient::STATE_FAILED) count++;
 			}
 			A_MUTEX_UNLOCK(&m_mtxLocker);
 			SwitchToThread();

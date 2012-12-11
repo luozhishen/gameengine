@@ -25,7 +25,7 @@ namespace Atlas
 			STATE_FAILED,
 		} CLIENT_STATE;
 
-		typedef enum {
+		enum {
 			ERRCODE_SUCCESSED = 0,
 			ERRCODE_UNKOWN,
 			ERRCODE_AUTH_FAILED,
@@ -39,12 +39,13 @@ namespace Atlas
 		CLIENT_STATE GetState() { return m_nState; }
 		void SetErrorCode(_U32 errcode);
 
-		bool Login(const SOCKADDR& sa, _U32 nUID, const char* pToken="");
+		bool Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken="");
 		bool LoginForStress(_U32 id);
 		void Logout();
 
 		void AddComponent(CClientComponent* pComponent);
 		virtual void InitializeComponents();
+		virtual void Tick();
 
 		virtual void OnLoginDone();
 		virtual void OnLoginFailed();
@@ -86,7 +87,7 @@ namespace Atlas
 		_U32 m_nRecvBuffLen;
 		_U32 m_nRecvBuffSize;
 		bool m_bNeedRedirect;
-		SOCKADDR m_saRedirectAddr;
+		SOCK_ADDR m_saRedirectAddr;
 		_U8 m_LoginData[1024];
 		_U16 m_nLoginDataSize;
 	};
@@ -112,7 +113,7 @@ namespace Atlas
 		CClientConnection(CClient* pClient);
 		virtual ~CClientConnection();
 
-		virtual bool Connect(const SOCKADDR& sa) = 0;
+		virtual bool Connect(const SOCK_ADDR& sa) = 0;
 		virtual void Disconnect() = 0;
 		virtual void SendData(_U32 len, const _U8* data, bool bPending=false) = 0;
 	};

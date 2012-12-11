@@ -12,7 +12,7 @@ namespace Atlas
 		CConnectionServer(CServerApp* pServerApp);
 		virtual ~CConnectionServer();
 
-		void SetEP(const SOCKADDR& sa);
+		void SetEP(const SOCK_ADDR& sa);
 
 		virtual bool Start();
 		virtual void Stop();
@@ -21,7 +21,7 @@ namespace Atlas
 		virtual bool OnConnected(HCONNECT hConn);
 
 	private:
-		SOCKADDR m_saAddr;
+		SOCK_ADDR m_saAddr;
 		HIOPOOL m_hPool;
 		HTCPEP m_hEp;
 	};

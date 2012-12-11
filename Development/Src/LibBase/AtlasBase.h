@@ -4,6 +4,7 @@
 #include <string>
 
 #include "AtlasDefines.h"
+#include "AtlasSocket.h"
 #include "AsyncSockIO.h"
 #include "MemPool.h"
 #include "DDL.h"

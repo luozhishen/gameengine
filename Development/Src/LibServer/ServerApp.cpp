@@ -38,8 +38,8 @@ namespace Atlas
 	CServerApp::CServerApp(_U32 nIOThreadCount)
 	{
 		m_hIOWorkers = CreateWorkers(nIOThreadCount);
-		ADDR(m_saRPC, 0, 0);
-		ADDR(m_saListen, 0, 0);
+		sock_addr(&m_saRPC, 0, 0);
+		sock_addr(&m_saListen, 0, 0);
 	}
 
 	CServerApp::~CServerApp()
@@ -73,36 +73,36 @@ namespace Atlas
 
 	void CServerApp::SetListenAddrPort(const _STR str)
 	{
-		Atlas::STR2ADDR(str, m_saListen);
+		sock_str2addr(str, &m_saListen);
 	}
 
-	SOCKADDR& CServerApp::GetListenAddrPort()
+	SOCK_ADDR& CServerApp::GetListenAddrPort()
 	{
 		ATLAS_ASSERT(m_saListen.ip&&m_saListen.port);
 		return m_saListen;
 	}
 
-	SOCKADDR& CServerApp::GetRPCAddrPort()
+	SOCK_ADDR& CServerApp::GetRPCAddrPort()
 	{
 		return m_saRPC;
 	}
 
 	void CServerApp::SetRPCAddrPort(_U32 ip, _U16 port)
 	{
-		ADDR(m_saRPC, ip, port);
+		sock_addr(&m_saRPC, ip, port);
 	}
 
 	void CServerApp::SetRPCAddrPort(const _STR str)
 	{
-		Atlas::STR2ADDR(str, m_saRPC);
+		sock_str2addr(str, &m_saRPC);
 	}
 
 	void CServerApp::SetClusterRpcEP(const _STR str)
 	{
-		Atlas::STR2ADDR(str, m_saCluster);
+		sock_str2addr(str, &m_saCluster);
 	}
 
-	SOCKADDR& CServerApp::GetClusterRpcEP()
+	SOCK_ADDR& CServerApp::GetClusterRpcEP()
 	{
 		return m_saCluster;
 	}

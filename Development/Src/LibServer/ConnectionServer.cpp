@@ -26,7 +26,7 @@ namespace Atlas
 		m_hPool = NULL;
 	}
 
-	void CConnectionServer::SetEP(const SOCKADDR& sa)
+	void CConnectionServer::SetEP(const SOCK_ADDR& sa)
 	{
 		m_saAddr = sa;
 	}

@@ -30,6 +30,7 @@ namespace Atlas
 
 	class CClientApp : public CNoCopy
 	{
+		friend class CClient;
 	public:
 		CClientApp(bool bThread);
 		virtual ~CClientApp();
@@ -61,6 +62,10 @@ namespace Atlas
 		void QueueData(CClient* pClient, _U16 iid, _U16 fid, _U32 len, const _U8* data);
 		void QueueTask(CClient* pClient, CClientTask* pTask);
 
+	protected:
+		void RegisterClient(CClient* pClient);
+		void UnregisterClient(CClient* pClient);
+
 	private:
 		std::map<std::string, std::string> m_Params;
 		A_MUTEX m_mtxQueue;
@@ -68,6 +73,7 @@ namespace Atlas
 		bool m_bThread;
 		bool m_bEnableTick;
 		_U32 m_nRecvSize, m_nSendSize;
+		std::set<CClient*> m_Clients;
 	};
 
 }

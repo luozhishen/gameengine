@@ -10,6 +10,7 @@
 #pragma comment(lib, "ws2_32")
 
 #include "AtlasDefines.h"
+#include "AtlasSocket.h"
 #include "AsyncSockIO.h"
 
 #include <pshpack8.h>
@@ -209,33 +210,6 @@ namespace Atlas
 			}
 		}
 		return ret;
-	}
-
-	bool STR2ADDR(const _STR str, SOCKADDR& sa)
-	{
-		SOCKADDR_IN sain;
-		INT salen = sizeof(sain);
-		if(WSAStringToAddressA(str, AF_INET, NULL, (LPSOCKADDR)&sain, &salen)==SOCKET_ERROR) return false;
-		sa.ip = sain.sin_addr.S_un.S_addr;
-		sa.port = ntohs(sain.sin_port);
-		return true;
-	}
-
-	bool ADDR2STR(const SOCKADDR& sa, _STR str, _U32 size)
-	{
-		SOCKADDR_IN sain;
-		sain.sin_family = AF_INET;
-		sain.sin_addr.S_un.S_addr = sa.ip;
-		sain.sin_port = htons(sa.port);
-		DWORD len = size;
-		if(WSAAddressToStringA((LPSOCKADDR)&sain, sizeof(sain), NULL, str, &len)==SOCKET_ERROR) return false;
-		return true;
-	}
-
-	void ADDR(SOCKADDR& sa, _U32 ip, _U16 port)
-	{
-		sa.ip = ip;
-		sa.port = port;
 	}
 
 	static void ThrottleSendBandwidth(AIO_CONNECTION* conn);
@@ -515,8 +489,8 @@ namespace Atlas
 						break;
 					case SIOP_RECVFROM:
 						udpep = (AIO_UDP_END_POINT*)key;
-						SOCKADDR sa;
-						ADDR(sa, udpep->sainSrc.sin_addr.S_un.S_addr, ntohs(udpep->sainSrc.sin_port));
+						SOCK_ADDR sa;
+						sock_addr(&sa, udpep->sainSrc.sin_addr.S_un.S_addr, ntohs(udpep->sainSrc.sin_port));
 						udpep->Recv();
 						if(nob) {
 							udpep->pfnOnDatagram((HUDPEP)udpep, sa, nob, ctx->buffer);
@@ -860,7 +834,7 @@ namespace Atlas
 		((AIO_CONNECTION*)hConn)->key = key;
 	}
 
-	bool GetSelfAddr(HCONNECT hConn, SOCKADDR& sa)
+	bool GetSelfAddr(HCONNECT hConn, SOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -870,7 +844,7 @@ namespace Atlas
 		return true;
 	}
 
-	bool GetPeerAddr(HCONNECT hConn, SOCKADDR& sa)
+	bool GetPeerAddr(HCONNECT hConn, SOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -880,7 +854,7 @@ namespace Atlas
 		return true;
 	}
 
-	bool GetEpAddr(HTCPEP hep, SOCKADDR& sa)
+	bool GetEpAddr(HTCPEP hep, SOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -890,7 +864,7 @@ namespace Atlas
 		return true;
 	}
 
-	bool GetEpAddr(HUDPEP hep, SOCKADDR& sa)
+	bool GetEpAddr(HUDPEP hep, SOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -900,7 +874,7 @@ namespace Atlas
 		return true;
 	}
 
-	HTCPEP NewEP(const SOCKADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key, _U32 count)
+	HTCPEP NewEP(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key, _U32 count)
 	{
 		AIO_TCP_END_POINT* ep = (AIO_TCP_END_POINT*)ATLAS_ALIGN_ALLOC(sizeof(AIO_TCP_END_POINT));
 		if(ep) {
@@ -917,7 +891,7 @@ namespace Atlas
 		return NULL;
 	}
 
-	HUDPEP NewEP(const SOCKADDR& sa, PFN_ON_DATAGRAM pfn, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
+	HUDPEP NewEP(const SOCK_ADDR& sa, PFN_ON_DATAGRAM pfn, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
 	{
 		AIO_UDP_END_POINT* ep = (AIO_UDP_END_POINT*)ATLAS_ALIGN_ALLOC(sizeof(AIO_UDP_END_POINT));
 		if(ep) {
@@ -976,7 +950,7 @@ namespace Atlas
 		return(((AIO_UDP_END_POINT*)hep)->running ? true : false);
 	}
 
-	bool Connect(const SOCKADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
+	bool Connect(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
 	{
 		AIO_CONNECTION* conn = NewConn(handler, (AIO_BUFFER_POOL*)hpool, (AIO_WORKERS*)hworkers, NULL);
 		if(conn) {

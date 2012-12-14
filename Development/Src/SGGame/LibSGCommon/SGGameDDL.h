@@ -29,34 +29,7 @@ const _U32 SG_SOLDIER_MAX = 10;
 
 const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 
-struct SG_ATTR_BASE_CONFIG
-{
-	_F32 Base_HP;
-	_F32 Base_ATK;
-	_F32 Base_DEF;
-	_F32 Base_HIT;
-	_F32 Base_Evasion;
-	_F32 Base_CRIT;
-	_F32 Base_SP;
-	_F32 Base_WS;
-	_F32 Base_STR;
-	_F32 Base_INT;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_ATTR_BASE_CONFIG>(SG_ATTR_BASE_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_ATTR_BASE_CONFIG>(const SG_ATTR_BASE_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_ATTR_BASE_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_ATTR_BASE_CONFIG_info;
-}
+const _U32 SG_DESCRIPTION_MAX = 512;
 
 struct SG_ATTR_MOD_CONFIG
 {
@@ -99,6 +72,35 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_ATTR_MOD_CONFIG_info;
 }
 
+struct SG_ATTR_BASE_CONFIG
+{
+	_F32 Base_HP;
+	_F32 Base_ATK;
+	_F32 Base_DEF;
+	_F32 Base_HIT;
+	_F32 Base_Evasion;
+	_F32 Base_CRIT;
+	_F32 Base_SP;
+	_F32 Base_WS;
+	_F32 Base_STR;
+	_F32 Base_INT;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ATTR_BASE_CONFIG>(SG_ATTR_BASE_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_ATTR_BASE_CONFIG>(const SG_ATTR_BASE_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ATTR_BASE_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_ATTR_BASE_CONFIG_info;
+}
+
 struct SG_PAWN_CONFIG
 {
 	SG_ATTR_BASE_CONFIG BaseConfig;
@@ -120,6 +122,86 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_PAWN_CONFIG_info;
 }
 
+struct SG_ITEM_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 item_id;
+	_U32 stack_max;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ITEM_CONFIG>(SG_ITEM_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_ITEM_CONFIG>(const SG_ITEM_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ITEM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_ITEM_CONFIG_info;
+}
+
+struct SG_EQUIPT_ITEM_CONFIG : SG_ITEM_CONFIG
+{
+	SG_ATTR_MOD_CONFIG mod_config;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_EQUIPT_ITEM_CONFIG>(SG_EQUIPT_ITEM_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_EQUIPT_ITEM_CONFIG>(const SG_EQUIPT_ITEM_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_EQUIPT_ITEM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_CONFIG_info;
+}
+
+struct SG_USABLE_ITEM_CONFIG : SG_ITEM_CONFIG
+{
+	DDL::String<100> functional;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_USABLE_ITEM_CONFIG>(SG_USABLE_ITEM_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_USABLE_ITEM_CONFIG>(const SG_USABLE_ITEM_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_USABLE_ITEM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_USABLE_ITEM_CONFIG_info;
+}
+
+struct SG_GEM_ITEM_CONFIG : SG_ITEM_CONFIG
+{
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GEM_ITEM_CONFIG>(SG_GEM_ITEM_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_GEM_ITEM_CONFIG>(const SG_GEM_ITEM_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GEM_ITEM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_GEM_ITEM_CONFIG_info;
+}
+
 struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
 	SG_PAWN_CONFIG PawnConfig;
@@ -138,6 +220,114 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_ENEMY_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_SG_ENEMY_CONFIG_info;
+}
+
+struct SG_SOLDIER_LEVEL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 attr_id;
+	_U32 level;
+	SG_PAWN_CONFIG PawnConfig;
+	_U32 money;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_SOLDIER_LEVEL_CONFIG>(SG_SOLDIER_LEVEL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_SOLDIER_LEVEL_CONFIG>(const SG_SOLDIER_LEVEL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_SOLDIER_LEVEL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_SOLDIER_LEVEL_CONFIG_info;
+}
+
+struct SG_GENERAL_LEVEL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 attr_id;
+	_U32 level;
+	SG_PAWN_CONFIG PawnConfig;
+	_U32 exp;
+	_S32 levelup_money;
+	_U32 levelup_XP;
+	_U16 mod_scale;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GENERAL_LEVEL_CONFIG>(SG_GENERAL_LEVEL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_GENERAL_LEVEL_CONFIG>(const SG_GENERAL_LEVEL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GENERAL_LEVEL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_GENERAL_LEVEL_CONFIG_info;
+}
+
+struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 soldier_id;
+	_U32 attr_id;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_SOLDIER_CONFIG>(SG_SOLDIER_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_SOLDIER_CONFIG>(const SG_SOLDIER_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_SOLDIER_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_SOLDIER_CONFIG_info;
+}
+
+struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 general_id;
+	_U32 attr_id;
+	_U8 type;
+	_S8 classes;
+	_U16 atk_type;
+	_U16 def_type;
+	_S32 gift;
+	_S32 com_atk_skill;
+	_S32 sp_skill;
+	_U32 atk_CD;
+	DDL::String<SG_DESCRIPTION_MAX> description;
+	_U32 space;
+	_S32 req_title;
+	_S32 req_money;
+	_S32 unlock_level;
+	_S32 pre_general_id;
+	_S32 pre_level;
+	_S32 product_consume;
+	_S32 product_time;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GENERAL_CONFIG>(SG_GENERAL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_GENERAL_CONFIG>(const SG_GENERAL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GENERAL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info;
 }
 
 struct SG_EQUIPPED_UNIT_PVE
@@ -182,94 +372,6 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER_PVE>();
 	extern STRUCT_INFO _rfl_struct_SG_PLAYER_PVE_info;
-}
-
-struct SG_SOLDIER_LEVEL_CONFIG : A_CONTENT_OBJECT
-{
-	_U32 attr_id;
-	_U32 level;
-	SG_PAWN_CONFIG PawnConfig;
-	_U32 money;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_SOLDIER_LEVEL_CONFIG>(SG_SOLDIER_LEVEL_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_SOLDIER_LEVEL_CONFIG>(const SG_SOLDIER_LEVEL_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_SOLDIER_LEVEL_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_SOLDIER_LEVEL_CONFIG_info;
-}
-
-struct SG_GENERAL_LEVEL_CONFIG : A_CONTENT_OBJECT
-{
-	_U32 attr_id;
-	_U32 level;
-	SG_PAWN_CONFIG PawnConfig;
-	_U32 exp;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_GENERAL_LEVEL_CONFIG>(SG_GENERAL_LEVEL_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_GENERAL_LEVEL_CONFIG>(const SG_GENERAL_LEVEL_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_GENERAL_LEVEL_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_GENERAL_LEVEL_CONFIG_info;
-}
-
-struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
-{
-	_U32 soldier_id;
-	_U32 attr_id;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_SOLDIER_CONFIG>(SG_SOLDIER_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_SOLDIER_CONFIG>(const SG_SOLDIER_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_SOLDIER_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_SOLDIER_CONFIG_info;
-}
-
-struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
-{
-	_U32 general_id;
-	_U32 attr_id;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_GENERAL_CONFIG>(SG_GENERAL_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_GENERAL_CONFIG>(const SG_GENERAL_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_GENERAL_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info;
 }
 
 struct SG_EQUIP_SLOTS
@@ -360,86 +462,6 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER>();
 	extern STRUCT_INFO _rfl_struct_SG_PLAYER_info;
-}
-
-struct SG_ITEM_CONFIG : A_CONTENT_OBJECT
-{
-	_U32 item_id;
-	_U32 stack_max;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_ITEM_CONFIG>(SG_ITEM_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_ITEM_CONFIG>(const SG_ITEM_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_ITEM_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_ITEM_CONFIG_info;
-}
-
-struct SG_EQUIPT_ITEM_CONFIG : SG_ITEM_CONFIG
-{
-	SG_ATTR_MOD_CONFIG mod_config;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_EQUIPT_ITEM_CONFIG>(SG_EQUIPT_ITEM_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_EQUIPT_ITEM_CONFIG>(const SG_EQUIPT_ITEM_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_EQUIPT_ITEM_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_CONFIG_info;
-}
-
-struct SG_USABLE_ITEM_CONFIG : SG_ITEM_CONFIG
-{
-	DDL::String<100> functional;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_USABLE_ITEM_CONFIG>(SG_USABLE_ITEM_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_USABLE_ITEM_CONFIG>(const SG_USABLE_ITEM_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_USABLE_ITEM_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_USABLE_ITEM_CONFIG_info;
-}
-
-struct SG_GEM_ITEM_CONFIG : SG_ITEM_CONFIG
-{
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_GEM_ITEM_CONFIG>(SG_GEM_ITEM_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_GEM_ITEM_CONFIG>(const SG_GEM_ITEM_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_GEM_ITEM_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_GEM_ITEM_CONFIG_info;
 }
 
 struct SG_ITEM : A_LIVE_OBJECT

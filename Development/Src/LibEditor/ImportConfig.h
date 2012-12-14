@@ -25,7 +25,8 @@ namespace Atlas
 		void SetFieldMap(const char* field, const std::map<std::string, std::string>& fmap);
 
 		bool PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const std::vector<std::string>& keys);
-		bool ProcessSheet(const std::string& name);
+		bool ProcessSheet(const std::string& name, int nStartLine = 1);
+		bool ProcessSheet(const std::string& name, const std::map<std::string, std::string>& fmap, int nStartLine = 1);
 		const char* GetErrorMsg();
 		const char* GetImportInfoMsg();
 
@@ -34,8 +35,7 @@ namespace Atlas
 		bool UpdateCacheData(const A_CONTENT_OBJECT* pObject);//map<column_name, strValue>
 
 	private:
-
-		std::map<std::string, std::map<std::string, std::string>> m_FieldMaps;
+		std::map<std::string, std::map<std::string, std::string>> m_FieldMaps;	//enum field map     map<table_name, map<field, value>>
 
 		const DDLReflect::STRUCT_INFO* m_pStructInfo;
 		std::vector<std::string> m_Keys;

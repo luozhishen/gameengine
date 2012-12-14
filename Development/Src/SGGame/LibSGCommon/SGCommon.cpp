@@ -27,9 +27,25 @@ namespace Atlas
 		ContentObject::Register(DDLReflect::GetStruct<SG_GENERAL_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_SOLDIER_CONFIG>());
 
+		ContentObject::Register(DDLReflect::GetStruct<SG_GENERAL_LEVEL_CONFIG>());
+		ContentObject::Register(DDLReflect::GetStruct<SG_SOLDIER_LEVEL_CONFIG>());
+			
+		ContentObject::Register(DDLReflect::GetStruct<SG_ITEM_CONFIG>());
+		ContentObject::Register(DDLReflect::GetStruct<SG_EQUIPT_ITEM_CONFIG>());
+		ContentObject::Register(DDLReflect::GetStruct<SG_USABLE_ITEM_CONFIG>());
+		ContentObject::Register(DDLReflect::GetStruct<SG_GEM_ITEM_CONFIG>());
+
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_ENEMY_CONFIG>(), "enemy", "enemy.json");
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_GENERAL_CONFIG>(), "general", "general.json");
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_SOLDIER_CONFIG>(), "soldier", "soldier.json");
+
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_GENERAL_LEVEL_CONFIG>(), "general_level", "general_level.json");
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_SOLDIER_LEVEL_CONFIG>(), "soldier_level", "soldier_level.json");
+
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_ITEM_CONFIG>(), "item", "item.json");
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_EQUIPT_ITEM_CONFIG>(), "equipt", "equipt.json");
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_USABLE_ITEM_CONFIG>(), "usable", "usable.json");
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_GEM_ITEM_CONFIG>(), "gem", "gem.json");
 	}
 
 	void InitLiveObjects()

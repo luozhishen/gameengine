@@ -37,6 +37,7 @@
 
 #include "../../LibEditor/ImportConfig.cpp"
 #include "../../LibEditor/OLEAutoExcelWrapper.cpp"
+#include "../../LibEditor/UtilString.cpp"
 
 #define EXCEL_PATH "D:\\SG-document\\"
 #define XML_PATH "E:\\Work\\Atlas\\SGGame\\data_import.xml"
@@ -45,13 +46,14 @@ struct Sheet_info
 {
 	std::string strFile;
 	std::string strType;
+	std::string strSheetName;
+	int nStartLine;
 	std::vector<std::string> vecKeys;
-
-	std::vector<std::string> vecColumns;
+	std::map<std::string, std::string> mapColumns; //<ddl_col, excel_col>
 };
 
+std::map<std::string, std::map<std::string, std::string>> g_FieldMaps;
 std::string g_strExcelPath;
-
 std::vector<Sheet_info> sheets;
 
 bool read_xml()
@@ -65,15 +67,22 @@ bool read_xml()
 	TiXmlElement* pNode = xmldoc.RootElement();
 	
 	g_strExcelPath = pNode->Attribute("input_path");
-	//pNode = pNode->FirstChildElement();//Config 
 		
 	TiXmlElement* pSheetNode = pNode->FirstChildElement();//Sheet
+	int nDefaultStartLine = 1;
 	do 
 	{
 		Sheet_info sheet;
-		sheet.strFile = pSheetNode->Attribute("file");
+		sheet.strFile = pSheetNode->Attribute("file"); 
 		sheet.strType = pSheetNode->Attribute("type");
+		sheet.strSheetName = pSheetNode->Attribute("sheet_name"); 
 		std::string strKeys = pSheetNode->Attribute("key");
+		const char* pStartLine = pSheetNode->Attribute("start_line", &nDefaultStartLine);
+		if(pStartLine)
+			sheet.nStartLine = atoi(pStartLine);
+		else
+			sheet.nStartLine = 1;
+
 		Atlas::StringSplit(strKeys, sheet.vecKeys);
 
 		TiXmlElement* pColNode = pSheetNode->FirstChildElement();
@@ -81,7 +90,31 @@ bool read_xml()
 		do
 		{
 			std::string strColumns = pColNode->Attribute("name");
-			sheet.vecColumns.push_back(strColumns);
+			std::string strRealName = pColNode->Attribute("real_name"); 
+			sheet.mapColumns[strColumns] = strRealName;
+			
+			TiXmlElement* pFieldNode = pColNode->FirstChildElement();//Field
+			std::map<std::string, std::string> fieldMap;
+
+			while(pFieldNode) 
+			{
+				std::string strEnumName = pFieldNode->Attribute("name"); 
+				std::string strEnumValue = pFieldNode->Attribute("value");
+
+				fieldMap[strEnumName] = strEnumValue;
+
+				pFieldNode = pFieldNode->NextSiblingElement();
+			} 
+
+			if(!fieldMap.empty())
+			{
+				std::string strField = sheet.strType;
+				strField += ".";
+				//strField += strColumns;
+				strField += strRealName;
+
+				g_FieldMaps[strField] = fieldMap;
+			}
 
 			pColNode = pColNode->NextSiblingElement();
 		}
@@ -97,22 +130,21 @@ bool read_xml()
 bool import_data()
 {
 	Atlas::CContentExcelImportManager importMgr;
-	
+
+	for(std::map<std::string, std::map<std::string, std::string>>::iterator it = g_FieldMaps.begin(); it != g_FieldMaps.end(); ++it)
+	{
+		importMgr.SetFieldMap(it->first.c_str(), it->second);
+	}
+
 	for(std::vector<Sheet_info>::iterator it = sheets.begin(); it != sheets.end(); ++it)
 	{
 		wxString strPath = wxString::FromUTF8(g_strExcelPath.c_str());
 		strPath += wxString::FromUTF8(it->strFile.c_str());
 		importMgr.Load(strPath);
 		
-		std::vector<wxString> vecSheets;
-		importMgr.GetSheets(vecSheets);
-
-		for(std::vector<wxString>::iterator it_sheet = vecSheets.begin(); it_sheet != vecSheets.end(); ++it_sheet)
-		{
-			const DDLReflect::STRUCT_INFO* pInfo = Atlas::ContentObject::GetType(it->strType.c_str());
-			importMgr.PrepareProcess(pInfo, it->vecKeys);
-			importMgr.ProcessSheet(it_sheet->mb_str().data());
-		}
+		const DDLReflect::STRUCT_INFO* pInfo = Atlas::ContentObject::GetType(it->strType.c_str());
+		importMgr.PrepareProcess(pInfo, it->vecKeys);
+		importMgr.ProcessSheet(it->strSheetName.c_str(), it->mapColumns);
 
 		importMgr.Clear(true);
 	}

@@ -599,11 +599,11 @@ namespace DDLReflect
 			*((_S64*)data) = (_S64)value.asInt();
 			break;
 		case TYPE_F32:
-			if(!value.isDouble()) return false;
+			if(!value.isNumeric()) return false;
 			*((_F32*)data) = (_F32)value.asDouble();
 			break;
 		case TYPE_F64:
-			if(!value.isDouble()) return false;
+			if(!value.isNumeric()) return false;
 			*((_F64*)data) = (_F64)value.asDouble();
 			break;
 		case TYPE_STRING:

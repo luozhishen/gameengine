@@ -1,3 +1,5 @@
+#ifdef _WIN32
+
 #pragma warning(disable:4100)
 #pragma warning(disable:4996)
 
@@ -262,3 +264,5 @@ bool http_request(MOREQUEST* request, INTERNET_STATUS_CALLBACK callback, const c
 	}
 	return false;
 }
+
+#endif

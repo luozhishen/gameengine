@@ -27,17 +27,11 @@
 
 #include "ClientComponentDataView.h"
 #include "SGClient.h"
-//#include "SGClientSoldierComponent.h"
 #include "SGClientPlayerComponent.h"
-//#include "SGClientGeneralComponent.h"
 #include "SGClientSoldierComponent.h"
-#include <SGClientPlayerComponent.h>
 #include "SGClientGeneralComponent.h"
 #include "SGCommon.h"
 #include "SGClient.h"
-//#include "SGClientSoldierComponent.h"
-#include "SGClientPlayerComponent.h"
-//#include "SGClientGeneralComponent.h"
 
 enum
 {

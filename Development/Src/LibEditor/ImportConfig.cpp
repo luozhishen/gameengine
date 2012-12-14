@@ -95,6 +95,16 @@ namespace Atlas
 		return true;
 	}
 
+	void CContentExcelImportManager::ClearFieldMaps()
+	{
+		m_FieldMaps.clear();
+	}
+		
+	void CContentExcelImportManager::SetFieldMap(const char* field, const std::map<std::string, std::string>& fmap)
+	{
+		m_FieldMaps[field] = fmap;
+	}
+
 	bool CContentExcelImportManager::PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const std::vector<std::string>& keys)
 	{
 		//check keys whether all in struct_info
@@ -137,8 +147,15 @@ namespace Atlas
 
 		return true;
 	}
+	
 
-	bool CContentExcelImportManager::ProcessSheet(const std::string& name)
+	bool CContentExcelImportManager::ProcessSheet(const std::string& name, int nStartLine)
+	{
+		std::map<std::string, std::string> fmap;
+		return ProcessSheet(name, fmap);
+	}
+	
+	bool CContentExcelImportManager::ProcessSheet(const std::string& name, const std::map<std::string, std::string>& fmap, int nStartLine)
 	{
 		m_pExcelWrapper->SetFilePath(m_strPath);
 		m_pExcelWrapper->OpenExcelBook(false);
@@ -151,15 +168,21 @@ namespace Atlas
 			return false;
 		}
 
+		if(nStartLine<1)
+		{
+			m_Err = StringFormat("start with invalidate num of line[%d]", nStartLine);
+			return false;
+		}
+
 		std::map<std::string, std::string> columnMap; // <header, column_name>
-		int nRow = 2;//2th row line  
+		int nRow = nStartLine;//row line  
 		int nCol = 1;
 		wxString strRange;
 		wxString strValue;
 		char szTmp[512];
 		bool bExist = false;// whether col:name exist
 
-		do // for 2th line
+		do // start header line
 		{
 			if(!GenerateIndex(nRow, nCol, szTmp, 512))
 			{
@@ -172,28 +195,29 @@ namespace Atlas
 			strValue.clear();
 			m_pExcelWrapper->GetCellValue(strRange, strValue);
 
-			if(strValue.empty()) // the 2th line end
+			if(strValue.empty()) // the line end
 			{
 				break;
 			}
 
-			if(strValue == wxT("name"))
+			GenerateHeader(nCol, szTmp, 512);
+
+			//remove no need column
+			bool bNeed = false;
+			for(std::map<std::string, std::string>::const_iterator it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 			{
-				bExist = true;
+				if(it_find->second == strValue.ToUTF8().data())
+				{
+					bNeed = true;
+					break;
+				}
 			}
 
-			GenerateHeader(nCol, szTmp, 512);
-			columnMap[szTmp] = (char*)strValue.mb_str().data();
+			if(bNeed)
+				columnMap[szTmp] = (char*)strValue.ToUTF8().data();
 
 			++nCol;
 		} while (true);
-
-		if(!bExist)
-		{
-			m_Err = StringFormat("Column[name] not found");
-			m_pExcelWrapper->Quit();
-			return false;
-		}
 	
 		std::map<std::string, std::string>::iterator it_col;
 		//whether all keys exist in excel
@@ -201,7 +225,17 @@ namespace Atlas
 		{
 			for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
 			{
-				if(it_col->second == m_Keys[i])
+				bool bFind = false;
+				for(std::map<std::string, std::string>::const_iterator it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
+				{
+					if(it_col->second == it_find->second)
+					{
+						bFind = true;
+						break;
+					}
+				}
+
+				if(bFind)
 				{
 					break;
 				}
@@ -220,7 +254,16 @@ namespace Atlas
 		{
 			DDLReflect::FIELD_INFO finfo;
 			const void* fdata;
-			if(!DDLReflect::GetStructFieldInfo(m_pStructInfo, it_col->second.c_str(), (const void*)NULL, finfo, fdata))
+			std::map<std::string, std::string>::const_iterator it_find;
+			for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
+			{
+				if(it_col->second == it_find->second)
+				{
+					break;
+				}
+			}
+
+			if(!DDLReflect::GetStructFieldInfo(m_pStructInfo, it_find->first.c_str(), (const void*)NULL, finfo, fdata))
 			{
 				m_Err = StringFormat("column not match in struct:%s\n column:%s", m_pStructInfo->name, it_col->second.c_str()); 
 				m_pExcelWrapper->Quit();
@@ -229,7 +272,7 @@ namespace Atlas
 		}
 
 		A_CONTENT_OBJECT* pObject = (A_CONTENT_OBJECT*)ATLAS_ALIGN_ALLOC(m_pStructInfo->size);
-		nRow = 3;
+		nRow = nStartLine + 1;
 		size_t count;
 		m_nUpdateRowNum = 0;
 		m_nInsertRowNum = 0;
@@ -249,29 +292,42 @@ namespace Atlas
 					count++;
 					continue;
 				}
-
-				std::string fieldvalue = (const char*)strValue.ToUTF8();
-				std::string fieldname = Atlas::StringFormat("%s.%s", m_pStructInfo->name, it_col->second.c_str());
-				if(m_FieldMaps.find(fieldname)!=m_FieldMaps.end())
+	
+				std::string fieldvalue = (const char*)strValue.ToUTF8();	
+				std::map<std::string, std::string>::const_iterator it_find;
+				for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 				{
-					std::map<std::string, std::string>& fmap = m_FieldMaps[fieldname];
-					if(fmap.find(fieldvalue)==fmap.end())
+					if(it_find->second == it_col->second)
 					{
-						m_Err = StringFormat("xxxxxx\n %s", it_col->second.c_str(), it_col->first.c_str());
-						m_pExcelWrapper->Quit();
-						return false;
+						break;
 					}
-					fieldvalue = fmap[fieldvalue];
+				}
+				
+				if(it_find != fmap.end())
+				{
+					std::string fieldname = Atlas::StringFormat("%s.%s", m_pStructInfo->name, it_find->second.c_str());
+					if(m_FieldMaps.find(fieldname)!=m_FieldMaps.end())
+					{
+						std::map<std::string, std::string>& ffmap = m_FieldMaps[fieldname];
+						if(ffmap.find(fieldvalue)==ffmap.end())
+						{
+							m_Err = StringFormat("Invalidate field \n struct %s Column %s ", m_pStructInfo->name, it_col->second.c_str());
+							m_pExcelWrapper->Quit();
+							return false;
+						}
+						fieldvalue = ffmap[fieldvalue];
+					}
 				}
 
 				//fill content 
-				if(!StructParamFromString(m_pStructInfo, it_col->second.c_str(), pObject, fieldvalue.c_str()))
+				if(!StructParamFromString(m_pStructInfo, it_find->first.c_str(), pObject, fieldvalue.c_str()))
 				{
 					m_Err = StringFormat("Get Value %s failed\n %s", it_col->second.c_str(), it_col->first.c_str());
 					m_pExcelWrapper->Quit();
 					return false;	
 				}
 			}
+
 			if(count==columnMap.size())
 			{
 				break;
@@ -316,10 +372,9 @@ namespace Atlas
 		std::map<std::string, A_UUID>::iterator it_obj = m_ObjectMap.find(strKey);
 		if(it_obj == m_ObjectMap.end()) //insert
 		{
-			m_ObjectMap[strKey] = uuid;
-
 			pObject = ContentObject::Create(m_pStructInfo, uuid);
 			pObject->uuid = uuid;
+			m_ObjectMap[strKey] = uuid;
 			m_nInsertRowNum++;
 		}
 		else

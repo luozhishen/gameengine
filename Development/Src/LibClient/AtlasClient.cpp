@@ -13,22 +13,12 @@ namespace Atlas
 	CClient::CClient(CClientApp* pClientApp, _U32 recvsize) : m_pClientApp(pClientApp)
 	{
 		pClientApp->RegisterClient(this);
-
-		m_nLoginDataSize = 0;
-		m_nState = STATE_NA;
-		m_nErrCode = ERRCODE_SUCCESSED;
-		m_pClientConnection = NULL;
 		A_MUTEX_INIT(&m_mtxClient);
-		m_pRecvBuff = (_U8*)ATLAS_ALLOC(recvsize);
-		m_nRecvBuffLen = 0;
-		m_nRecvBuffSize = recvsize;
-		m_bNeedRedirect = false;
-
 #ifndef WITHOUT_ASYNCIO
-		m_pClientConnection = ATLAS_NEW CNonblockConnection(this);
-//		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this);
+		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
+//		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this, recvsize);
 #else
-		m_pClientConnection = ATLAS_NEW CNonblockConnection(this);
+		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
 #endif
 		AddComponent(m_pClientConnection);
 	}
@@ -40,38 +30,24 @@ namespace Atlas
 			ATLAS_DELETE *m_Components.begin();
 			m_Components.erase(m_Components.begin());
 		}
-
-		ATLAS_FREE(m_pRecvBuff);
 		A_MUTEX_DESTROY(&m_mtxClient);
-
 		m_pClientApp->UnregisterClient(this);
 	}
 
-	void CClient::SetErrorCode(_U32 errcode)
+	CClient::CLIENT_STATE CClient::GetState()
 	{
-		if(m_nErrCode==ERRCODE_SUCCESSED) m_nErrCode = errcode;
+		return m_pClientConnection->GetState();
+	}
+
+	_U32 CClient::GetErrorCode()
+	{
+		return m_pClientConnection->GetErrorCode();
 	}
 
 	bool CClient::Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken)
 	{
-		if(m_nState!=STATE_NA && m_nState!=STATE_FAILED) return false;
-
-		m_nErrCode = ERRCODE_SUCCESSED;
-		_U16 len = (_U16)strlen(pToken)+1;
-		*((_U16*)(m_LoginData)) = sizeof(nUID) + len;
-		*((_U32*)(m_LoginData+sizeof(_U16))) = nUID;
-		memcpy(m_LoginData+sizeof(_U16)+sizeof(nUID), pToken, len);
-		m_nLoginDataSize = sizeof(_U16)+sizeof(nUID) + len;
-
-		m_nState = STATE_LOGINING;
-		if(!m_pClientConnection->Connect(sa))
-		{
-			m_nState = STATE_FAILED;
-			SetErrorCode(ERRCODE_NETWORK);
-			return false;
-		}
-
-		return true;
+		if(m_pClientConnection->GetState()!=STATE_NA && m_pClientConnection->GetState()!=STATE_FAILED) return false;
+		return m_pClientConnection->Login(sa, nUID, pToken);
 	}
 
 	bool CClient::LoginForStress(_U32 id)
@@ -86,18 +62,7 @@ namespace Atlas
 
 	void CClient::Logout()
 	{
-		switch(m_nState)
-		{
-		case STATE_NA:
-		case STATE_FAILED:
-			return;
-		case STATE_LOGINED:
-		case STATE_LOGINING:
-			m_pClientConnection->Disconnect();
-			break;
-		default:
-			ATLAS_ASSERT(0);
-		}
+		m_pClientConnection->Logout();
 	}
 
 	void CClient::AddComponent(CClientComponent* pComponent)
@@ -140,22 +105,111 @@ namespace Atlas
 
 	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
-		_U16 code =  iid | (fid<<8);
-		_U16 datalen = sizeof(code) + (_U16)len;
-		m_pClientConnection->SendData(sizeof(datalen), (const _U8*)&datalen, true);
-		m_pClientConnection->SendData(sizeof(code), (const _U8*)&code, true);
-		m_pClientConnection->SendData(len, data);
+		m_pClientConnection->SendData(iid, fid, len, data);
 	}
 
-	void CClient::OnRawConnected()
+	CClientComponent::CClientComponent(CClient* pClient) : m_pClient(pClient)
 	{
-		m_pClientConnection->SendData(m_nLoginDataSize, m_LoginData);
 	}
 
-	void CClient::OnRawData(_U32 len, const _U8* data)
+	CClientComponent::~CClientComponent()
+	{
+	}
+
+	CClientConnectionBase::CClientConnectionBase(CClient* pClient) : CClientComponent(pClient)
+	{
+		m_nErrCode = CClient::ERRCODE_SUCCESSED;
+		m_nState = CClient::STATE_NA;
+	}
+
+	CClientConnectionBase::~CClientConnectionBase()
+	{
+	}
+
+	CClient::CLIENT_STATE CClientConnectionBase::GetState()
+	{
+		return m_nState;
+	}
+
+	_U32 CClientConnectionBase::GetErrorCode()
+	{
+		return m_nErrCode;
+	}
+
+	void CClientConnectionBase::SetErrorCode(_U32 errcode)
+	{
+		if(m_nErrCode!=CClient::ERRCODE_SUCCESSED) m_nErrCode = errcode;
+	}
+
+	CClientConnection::CClientConnection(CClient* pClient, _U32 recvsize) : CClientConnectionBase(pClient)
+	{
+		m_nLoginDataSize = 0;
+		m_nState = CClient::STATE_NA;
+		m_nErrCode = CClient::ERRCODE_SUCCESSED;
+		m_pRecvBuff = (_U8*)ATLAS_ALLOC(recvsize);
+		m_nRecvBuffLen = 0;
+		m_nRecvBuffSize = recvsize;
+		m_bNeedRedirect = false;
+	}
+
+	CClientConnection::~CClientConnection()
+	{
+		ATLAS_FREE(m_pRecvBuff);
+	}
+
+	bool CClientConnection::Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken)
+	{
+		m_nErrCode = CClient::ERRCODE_SUCCESSED;
+		_U16 len = (_U16)strlen(pToken)+1;
+		*((_U16*)(m_LoginData)) = sizeof(nUID) + len;
+		*((_U32*)(m_LoginData+sizeof(_U16))) = nUID;
+		memcpy(m_LoginData+sizeof(_U16)+sizeof(nUID), pToken, len);
+		m_nLoginDataSize = sizeof(_U16)+sizeof(nUID) + len;
+
+		m_nState = CClient::STATE_LOGINING;
+		if(!Connect(sa))
+		{
+			m_nState = CClient::STATE_FAILED;
+			SetErrorCode(CClient::ERRCODE_NETWORK);
+			return false;
+		}
+		return true;
+	}
+
+	void CClientConnection::Logout()
+	{
+		switch(m_nState)
+		{
+		case CClient::STATE_NA:
+		case CClient::STATE_FAILED:
+			return;
+		case CClient::STATE_LOGINED:
+		case CClient::STATE_LOGINING:
+			Disconnect();
+			break;
+		default:
+			ATLAS_ASSERT(0);
+		}
+	}
+
+	void CClientConnection::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	{
+		_U8 header[4];
+		*((_U16*)(header+0)) = (_U16)(sizeof(_U16) + len);
+		*((_U16*)(header+2)) = iid | (fid<<8);
+		SendData(sizeof(header), header, true);
+		SendData(len, data, false);
+	}
+
+	void CClientConnection::OnRawConnected()
+	{
+		SendData(m_nLoginDataSize, m_LoginData);
+	}
+
+	void CClientConnection::OnRawData(_U32 len, const _U8* data)
 	{
 		_U16 pkglen;
-		while(len>0 && m_pClientApp->IsEnableTick())
+		while(len>0 && GetClient()->GetClientApp()->IsEnableTick())
 		{
 			_U32 copylen = len;
 			if(m_nRecvBuffLen+copylen>m_nRecvBuffSize) copylen = m_nRecvBuffSize - m_nRecvBuffLen;
@@ -169,8 +223,8 @@ namespace Atlas
 
 				if(pkglen>m_nRecvBuffSize-sizeof(pkglen))
 				{
-					SetErrorCode(ERRCODE_UNKOWN);
-					m_pClientConnection->Disconnect();
+					SetErrorCode(CClient::ERRCODE_UNKOWN);
+					Disconnect();
 					return;
 				}
 
@@ -185,43 +239,43 @@ namespace Atlas
 		}
 	}
 
-	void CClient::OnRawDisconnected()
+	void CClientConnection::OnRawDisconnected()
 	{
 		if(m_bNeedRedirect)
 		{
 			m_bNeedRedirect = false;
-			if(!m_pClientConnection->Connect(m_saRedirectAddr))
+			if(!Connect(m_saRedirectAddr))
 			{
-				m_nState = STATE_FAILED;
-				m_nErrCode = ERRCODE_NETWORK;
+				m_nState = CClient::STATE_FAILED;
+				m_nErrCode = CClient::ERRCODE_NETWORK;
 				return;	//connect session failed
 			}
 		}
 		else
 		{
-			ATLAS_ASSERT(m_nState!=STATE_NA);
-			if(m_nState==STATE_LOGINED)
+			ATLAS_ASSERT(m_nState!=CClient::STATE_NA);
+			if(m_nState==CClient::STATE_LOGINED)
 			{
-				m_nState = STATE_NA;
-				GetClientApp()->QueueDisconnected(this);
+				m_nState = CClient::STATE_NA;
+				GetClient()->GetClientApp()->QueueDisconnected(GetClient());
 			}
 			else
 			{
-				SetErrorCode(ERRCODE_NETWORK);
-				m_nState = STATE_FAILED;
-				GetClientApp()->QueueLoginFailed(this);
+				SetErrorCode(CClient::ERRCODE_NETWORK);
+				m_nState = CClient::STATE_FAILED;
+				GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
 			}
 		}
 	}
 
-	void CClient::OnRawConnectFailed()
+	void CClientConnection::OnRawConnectFailed()
 	{
-		m_nState = STATE_FAILED;
-		SetErrorCode(ERRCODE_NETWORK);
-		m_pClientApp->QueueLoginFailed(this);
+		m_nState = CClient::STATE_FAILED;
+		SetErrorCode(CClient::ERRCODE_NETWORK);
+		GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
 	}
 
-	void CClient::ProcessPacket(_U32 len, const _U8* data)
+	void CClientConnection::ProcessPacket(_U32 len, const _U8* data)
 	{
 		if(m_nState==CClient::STATE_LOGINING)
 		{
@@ -229,7 +283,7 @@ namespace Atlas
 			if(len<sizeof(code))
 			{
 				SetErrorCode(CClient::ERRCODE_UNKOWN);
-				m_pClientConnection->Disconnect();
+				Disconnect();
 				return;
 			}
 
@@ -238,7 +292,7 @@ namespace Atlas
 			{
 			case 0x0: // login completed
 				m_nState = CClient::STATE_LOGINED;
-				GetClientApp()->QueueLoginDone(this);
+				GetClient()->GetClientApp()->QueueLoginDone(GetClient());
 				break;
 			case 0x1: // redirect
 				if(len<sizeof(code)+sizeof(SOCK_ADDR))
@@ -260,12 +314,12 @@ namespace Atlas
 						m_bNeedRedirect = true;
 					}
 				}
-				m_pClientConnection->Disconnect();
+				Disconnect();
 				break;
 			default:
 				ATLAS_ASSERT(0);
 				SetErrorCode(CClient::ERRCODE_UNKOWN);
-				m_pClientConnection->Disconnect();
+				Disconnect();
 				break;
 			}
 		}
@@ -274,35 +328,19 @@ namespace Atlas
 			_U16 id;
 			if(len<sizeof(id))
 			{
-				SetErrorCode(ERRCODE_UNKOWN);
-				m_pClientConnection->Disconnect();
+				SetErrorCode(CClient::ERRCODE_UNKOWN);
+				Disconnect();
 			}
 			else
 			{
 				id = *((const _U16*)data);
-				GetClientApp()->QueueData(this, id&0xff, id>>8, len-sizeof(id), data+sizeof(id));
+				GetClient()->GetClientApp()->QueueData(GetClient(), id&0xff, id>>8, len-sizeof(id), data+sizeof(id));
 			}
 		}
 		else
 		{
 			ATLAS_ASSERT(!"invalid client state");
 		}
-	}
-
-	CClientComponent::CClientComponent(CClient* pClient) : m_pClient(pClient)
-	{
-	}
-
-	CClientComponent::~CClientComponent()
-	{
-	}
-
-	CClientConnection::CClientConnection(CClient* pClient) : CClientComponent(pClient)
-	{
-	}
-
-	CClientConnection::~CClientConnection()
-	{
 	}
 
 }

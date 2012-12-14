@@ -274,8 +274,8 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 
 	_U8 data[10000];
 	_U32 len = (_U32)sizeof(data);
-	arg.FromUTF8("", 0);
-	if(!DDLReflect::Json2Call(&cls->finfos[fid], (const char*)arg.ToUTF8(), len, data))
+	std::string json = (const char*)arg.ToUTF8();
+	if(!DDLReflect::Json2Call(&cls->finfos[fid], json, len, data))
 	{
 		wxMessageBox(wxT("invalid json"), wxT("error"));
 		return;

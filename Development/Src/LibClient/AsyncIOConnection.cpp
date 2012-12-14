@@ -30,7 +30,7 @@ namespace Atlas
 		FreeIoBufferPool(g_client_iopool);
 	}
 	
-	CAsyncIOConnection::CAsyncIOConnection(CClient* pClient) : CClientConnection(pClient)
+	CAsyncIOConnection::CAsyncIOConnection(CClient* pClient, _U32 recvsize) : CClientConnection(pClient, recvsize)
 	{
 		m_bConnecting = false;
 		m_hConn = NULL;
@@ -122,7 +122,7 @@ namespace Atlas
 		m_bConnecting = false;
 		A_MUTEX_UNLOCK(&m_mtxLock);
 
-		GetClient()->OnRawConnected();
+		CClientConnection::OnRawConnected();
 	}
 
 	void CAsyncIOConnection::OnRawDisconnected()
@@ -136,18 +136,18 @@ namespace Atlas
 		m_hConn = NULL;
 		A_MUTEX_UNLOCK(&m_mtxLock);
 
-		GetClient()->OnRawDisconnected();
+		CClientConnection::OnRawDisconnected();
 	}
 
 	void CAsyncIOConnection::OnRawData(_U32 len, const _U8* data)
 	{
-		GetClient()->OnRawData(len, data);
+		CClientConnection::OnRawData(len, data);
 	}
 
 	void CAsyncIOConnection::OnRawConnectFailed()
 	{
 		m_bConnecting = false;
-		GetClient()->OnRawConnectFailed();
+		CClientConnection::OnRawConnectFailed();
 	}
 
 	bool CLT_ON_CONNECT(HCONNECT hConn)

@@ -6,7 +6,7 @@
 namespace Atlas
 {
 
-	CNonblockConnection::CNonblockConnection(CClient* pClient) : CClientConnection(pClient)
+	CNonblockConnection::CNonblockConnection(CClient* pClient, _U32 recvsize) : CClientConnection(pClient, recvsize)
 	{
 		m_hSocket = SOCK_INVALID_HANDLE;
 	}
@@ -24,14 +24,14 @@ namespace Atlas
 			if(sock_wait_error(m_hSocket, 0)==1)
 			{
 				Clear();
-				GetClient()->OnRawConnectFailed();
+				OnRawConnectFailed();
 				return;
 			}
 
 			if(sock_wait_write(m_hSocket, 0)==1)
 			{
 				m_bConnecting = false;
-				GetClient()->OnRawConnected();
+				OnRawConnected();
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace Atlas
 				if(len==0) break;
 				if(len>0)
 				{
-					GetClient()->OnRawData((_U32)len, buf);
+					OnRawData((_U32)len, buf);
 				}
 				else
 				{
@@ -70,7 +70,7 @@ namespace Atlas
 		if(m_bNeedDisconnect)
 		{
 			Clear();
-			GetClient()->OnRawDisconnected();
+			OnRawDisconnected();
 		}
 	}
 

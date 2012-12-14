@@ -1,0 +1,18 @@
+#ifndef __MOSDK_ERROR_INCLUDE__
+#define __MOSDK_ERROR_INCLUDE__
+
+#define MOERROR_PENDING						-2
+#define MOERROR_NETWORK						-1
+#define MOERROR_NOERROR						0
+#define MOERROR_UNKNOWN						1
+#define MOERROR_INVALID_PARAMETER			2
+#define MOERROR_AUTH_FAILED					3
+#define MOERROR_SYSTEM_ERROR				4
+#define MOERROR_INVALID_TOKEN				5
+#define MOERROR_ALREADY_EXISTED				6
+#define MOERROR_NOT_EXISTED					7
+#define MOERROR_UNDEFINE_METHOD				8
+
+int MOError(const char* str);
+
+#endif // __MOSDK_ERROR_INCLUDE__

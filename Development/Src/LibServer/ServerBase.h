@@ -16,7 +16,6 @@ namespace Atlas
 		virtual const char* GetConfig(const char* pName, const char* pDefault="") = 0;
 	};
 
-	// 1. 管理Server Component
 	class CServerBase : public CNoCopy
 	{
 	public:
@@ -36,7 +35,6 @@ namespace Atlas
 		std::list<CServerComponent*> m_ComponentList;
 	};
 
-	// 1. Server的扩展模式
 	class CServerComponent : public CNoCopy
 	{
 	public:

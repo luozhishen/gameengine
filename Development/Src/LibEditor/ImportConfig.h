@@ -20,6 +20,10 @@ namespace Atlas
 		void Clear(bool bAll = false);
 
 		bool GetSheets(std::vector<wxString>& vSheets);
+
+		void ClearFieldMaps();
+		void SetFieldMap(const char* field, const std::map<std::string, std::string>& fmap);
+
 		bool PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const std::vector<std::string>& keys);
 		bool ProcessSheet(const std::string& name);
 		const char* GetErrorMsg();
@@ -30,6 +34,9 @@ namespace Atlas
 		bool UpdateCacheData(const A_CONTENT_OBJECT* pObject);//map<column_name, strValue>
 
 	private:
+
+		std::map<std::string, std::map<std::string, std::string>> m_FieldMaps;
+
 		const DDLReflect::STRUCT_INFO* m_pStructInfo;
 		std::vector<std::string> m_Keys;
 		std::map<std::string, A_UUID> m_ObjectMap;// map<keys, A_UUID> this map deal with loading data exist and data from excel

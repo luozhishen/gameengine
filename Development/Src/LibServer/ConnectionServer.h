@@ -42,11 +42,19 @@ namespace Atlas
 		virtual void OnRawDisconnected();
 		virtual void OnRawData(_U32 len, const _U8* data);
 
-		virtual void ProcessPacket(_U32 len, const _U8* data);
+		void ProcessPacket(_U32 len, const _U8* data);
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 		void Disconnect();
 
+	protected:
+		void Redirect(_U32 uid, const char* token);
+		void LoginDone(_U32 uid);
+
+		virtual void OnUserToken(_U32 uid, const char* token);
+
 	private:
+		_U32 m_nUID;
+		bool m_bLogining;
 		HCONNECT m_hConn;
 		_U32 m_nNDX;
 		_U8* m_pRecvBuff;

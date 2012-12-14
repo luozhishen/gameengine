@@ -250,8 +250,22 @@ namespace Atlas
 					continue;
 				}
 
+				std::string fieldvalue = (const char*)strValue.ToUTF8();
+				std::string fieldname = Atlas::StringFormat("%s.%s", m_pStructInfo->name, it_col->second.c_str());
+				if(m_FieldMaps.find(fieldname)!=m_FieldMaps.end())
+				{
+					std::map<std::string, std::string>& fmap = m_FieldMaps[fieldname];
+					if(fmap.find(fieldvalue)==fmap.end())
+					{
+						m_Err = StringFormat("xxxxxx\n %s", it_col->second.c_str(), it_col->first.c_str());
+						m_pExcelWrapper->Quit();
+						return false;
+					}
+					fieldvalue = fmap[fieldvalue];
+				}
+
 				//fill content 
-				if(!StructParamFromString(m_pStructInfo, it_col->second.c_str(), pObject, strValue.mb_str().data()))
+				if(!StructParamFromString(m_pStructInfo, it_col->second.c_str(), pObject, fieldvalue.c_str()))
 				{
 					m_Err = StringFormat("Get Value %s failed\n %s", it_col->second.c_str(), it_col->first.c_str());
 					m_pExcelWrapper->Quit();

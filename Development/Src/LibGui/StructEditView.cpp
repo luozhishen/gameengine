@@ -109,16 +109,16 @@ void CStructEditView::OnPropertyGridChange(wxPropertyGridEvent &event)
 			((CPropertyEx<_U64, wxUIntProperty>*)prop)->ModifyValue(value);
 			break;
 		case DDLReflect::TYPE_S8:
-			((CPropertyEx<_S8, wxUIntProperty>*)prop)->ModifyValue(value);
+			((CPropertyEx<_S8, wxIntProperty>*)prop)->ModifyValue(value);
 			break;
 		case DDLReflect::TYPE_S16:
-			((CPropertyEx<_S16, wxUIntProperty>*)prop)->ModifyValue(value);
+			((CPropertyEx<_S16, wxIntProperty>*)prop)->ModifyValue(value);
 			break;
 		case DDLReflect::TYPE_S32:	
-			((CPropertyEx<_S32, wxUIntProperty>*)prop)->ModifyValue(value);
+			((CPropertyEx<_S32, wxIntProperty>*)prop)->ModifyValue(value);
 			break;
 		case DDLReflect::TYPE_S64:
-			((CPropertyEx<_S64, wxUIntProperty>*)prop)->ModifyValue(value);
+			((CPropertyEx<_S64, wxIntProperty>*)prop)->ModifyValue(value);
 			break;
 		case DDLReflect::TYPE_F32:	
 			((CPropertyEx<_F32, wxFloatProperty>*)prop)->ModifyValue(value);

@@ -33,11 +33,23 @@ namespace DDLReflect
 	static bool struct_jsonwrite(const Json::Value& value, const FIELD_INFO* def, _U16 count, _U8* data);
 	static bool struct_jsonwrite(const Json::Value& value, _U8 type, _U16 slen, _U8* data);
 
+	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Json::Value& json)
+	{
+		if(!json.isObject()) return false;
+		DDL::MemoryReader buf(data, len);
+		return call_jsonread(buf, def->finfos, def->fcount, json);
+	}
+
+	bool Json2Call(const FUNCTION_INFO* def, const Json::Value& json, _U32& len, _U8* data)
+	{
+		DDL::MemoryWriter buf(data, len);
+		return call_jsonwrite(buf, def->finfos, def->fcount, json);
+	}
+
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, std::string& json)
 	{
 		Json::Value root(Json::objectValue);
-		DDL::MemoryReader buf(data, len);
-		if(!call_jsonread(buf, def->finfos, def->fcount, root)) return false;
+		if(!Call2Json(def, len, data, root)) return false;
 		Json::FastWriter writer;
 		json = writer.write(root);
 		return true;
@@ -48,10 +60,7 @@ namespace DDLReflect
 		Json::Value root;
 		Json::Reader reader;
 		if(!reader.parse(json, root)) return false;
-		DDL::MemoryWriter buf(data, len);
-		if(!call_jsonwrite(buf, def->finfos, def->fcount, root)) return false;
-		len = buf.GetSize();
-		return true;
+		return Json2Call(def, root, len, data);
 	}
 
 	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Json::Value& Value)

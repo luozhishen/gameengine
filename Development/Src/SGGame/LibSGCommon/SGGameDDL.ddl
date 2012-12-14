@@ -6,83 +6,136 @@ const _U32 SG_ENEMYNAME_LENMAX = 100;
 const _U32 SG_BAGITEM_MAX = 20;
 const _U32 SG_GENERAL_MAX = 10;
 const _U32 SG_SOLDIER_MAX = 10;
+const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 
-struct SG_PAWN_CONFIG : A_CONTENT_OBJECT
+struct SG_ATTR_BASE_CONFIG
 {
-	_F32 BaseHP;
-	_F32 SigmaHPAddition;
-	_F32 SigmaHPPercent;
-	_F32 SigmaExtraHP;
-	_F32 BaseATK;
-	_F32 SigmaATKAddition;
-	_F32 SigmaATKPercent;
-	_F32 SigmaExtraATK;
-	_F32 BaseDEF;
-	_F32 SigmaDEFAddition;
-	_F32 SigmaDEFPercent;
-	_F32 SigmaExtraDEF;
-	_F32 BaseHIT;
-	_F32 SigmaHITAddition;
-	_F32 BaseEvasion;
-	_F32 SigmaEvasionAddition;
-	_F32 BaseCRIT;
-	_F32 SigmaCRITAddition;
-	_F32 BaseSP;
-	_F32 SigmaSPAddition;
-	_F32 BaseWS;
-	_F32 SigmaWSAddition;
-	_F32 SigmaWSPercent;
-	_F32 SigmaExtraWS;
-	_F32 BaseSTR;
-	_F32 SigmaSTRAddition;
-	_F32 SigmaSTRPercent;
-	_F32 SigmaExtraSTR;
-	_F32 BaseINT;
-	_F32 SigmaINTAddition;
-	_F32 SigmaINTPercent;
-	_F32 SigmaExtraINT;
+	_F32								Base_HP;
+	_F32								Base_ATK;
+	_F32								Base_DEF;
+	_F32								Base_HIT;
+	_F32								Base_Evasion;
+	_F32								Base_CRIT;
+	_F32								Base_SP;
+	_F32								Base_WS;
+	_F32								Base_STR;
+	_F32								Base_INT;
+};
+task[GEN_STRUCT_SERIALIZE(SG_ATTR_BASE_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ATTR_BASE_CONFIG)];
+
+struct SG_ATTR_MOD_CONFIG
+{
+	_F32								MOD_HPAddition;
+	_F32								MOD_HPPercent;
+	_F32								MOD_ExtraHP;
+	_F32								MOD_ATKAddition;
+	_F32								MOD_ATKPercent;
+	_F32								MOD_ExtraATK;
+	_F32								MOD_DEFAddition;
+	_F32								MOD_DEFPercent;
+	_F32								MOD_ExtraDEF;
+	_F32								MOD_HITAddition;
+	_F32								MOD_EvasionAddition;
+	_F32								MOD_CRITAddition;
+	_F32								MOD_SPAddition;
+	_F32								MOD_WSAddition;
+	_F32								MOD_WSPercent;
+	_F32								MOD_ExtraWS;
+	_F32								MOD_STRAddition;
+	_F32								MOD_STRPercent;
+	_F32								MOD_ExtraSTR;
+	_F32								MOD_INTAddition;
+	_F32								MOD_INTPercent;
+	_F32								MOD_ExtraINT;
+};
+task[GEN_STRUCT_SERIALIZE(SG_ATTR_MOD_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ATTR_MOD_CONFIG)];
+
+struct SG_PAWN_CONFIG
+{
+	SG_ATTR_BASE_CONFIG					BaseConfig;
+	SG_ATTR_MOD_CONFIG					SigmaConfig;		
 };
 task[GEN_STRUCT_SERIALIZE(SG_PAWN_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_PAWN_CONFIG)];
 
-struct SG_ENEMY_CONFIG : SG_PAWN_CONFIG
+struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
+	// string name;
+	SG_PAWN_CONFIG						PawnConfig;
 };
 task[GEN_STRUCT_SERIALIZE(SG_ENEMY_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_ENEMY_CONFIG)];
 
-struct SG_SOLDIER_CONFIG : SG_PAWN_CONFIG
+struct SG_EQUIPPED_UNIT_PVE
 {
-	_U16 type;
-	_U16 level;
+	string<ARCHETYPE_URL_LENGTH_MAX>	ArchetypeURL;
+	SG_PAWN_CONFIG						PawnConfig;
+};
+task[GEN_STRUCT_SERIALIZE(SG_EQUIPPED_UNIT_PVE)];
+task[GEN_STRUCT_REFLECT(SG_EQUIPPED_UNIT_PVE)];
+
+struct SG_PLAYER_PVE
+{
+	string<ARCHETYPE_URL_LENGTH_MAX>	ArchetypeURL;
+	SG_PAWN_CONFIG						PawnConfig;
+
+	array<SG_EQUIPPED_UNIT_PVE, 2>		EquippedGenerals;
+	array<SG_EQUIPPED_UNIT_PVE, 3>		EquippedSoldiers;
+};
+task[GEN_STRUCT_SERIALIZE(SG_PLAYER_PVE)];
+task[GEN_STRUCT_REFLECT(SG_PLAYER_PVE)];
+
+struct SG_SOLDIER_LEVEL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								attr_id;
+	_U32								level;
+	SG_PAWN_CONFIG						PawnConfig;
+	_U32								money;
+};
+task[GEN_STRUCT_SERIALIZE(SG_SOLDIER_LEVEL_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_SOLDIER_LEVEL_CONFIG)];
+
+struct SG_GENERAL_LEVEL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								attr_id;
+	_U32								level;
+	SG_PAWN_CONFIG						PawnConfig;
+	_U32								exp;
+};
+task[GEN_STRUCT_SERIALIZE(SG_GENERAL_LEVEL_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_GENERAL_LEVEL_CONFIG)];
+
+struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								soldier_id;
+	_U32								attr_id;
 };
 task[GEN_STRUCT_SERIALIZE(SG_SOLDIER_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_SOLDIER_CONFIG)];
 
-struct SG_GENERAL_CONFIG : SG_PAWN_CONFIG
+struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 {
-	_U32 type;
-	_U16 level;
-	_U32 exp;
+	_U32								general_id;
+	_U32								attr_id;
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_GENERAL_CONFIG)];
 
-
-
 struct SG_EQUIP_SLOTS
 {
-	A_UUID							head;
-	A_UUID							hand;
+	A_UUID								head;
+	A_UUID								hand;
 };
 task[GEN_STRUCT_SERIALIZE(SG_EQUIP_SLOTS)];
 task[GEN_STRUCT_REFLECT(SG_EQUIP_SLOTS)];
 
 struct SG_GENERAL : A_LIVE_OBJECT
 {
-	_U32							type;
-	_U16							level;
-	_U32							exp;
+	_U32								type;
+	_U16								level;
+	_U32								exp;
 	SG_EQUIP_SLOTS equip_slots;
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL)];
@@ -90,29 +143,79 @@ task[GEN_STRUCT_REFLECT(SG_GENERAL)];
 
 struct SG_SOLDIER : A_LIVE_OBJECT
 {
-	_U32							type;
-	_U16							level;
+	_U32								type;
+	_U16								level;
 };
 task[GEN_STRUCT_SERIALIZE(SG_SOLDIER)];
 task[GEN_STRUCT_REFLECT(SG_SOLDIER)];
 
 struct SG_PLAYER : A_LIVE_OBJECT
 {
-	string<SG_PLAYERNAME_LENMAX>	nick;
-	_U32							gold;
-	_U32							rmb;
-	_U8								sex;
-	array<_U16, 2>					equip_generals;
-	array<_U16, 3>					equip_soldiers;
+	string<SG_PLAYERNAME_LENMAX>		nick;
+	_U32								gold;
+	_U32								rmb;
+	_U8									sex;
+	array<_U16, 2>						equip_generals;
+	array<_U16, 3>						equip_soldiers;
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];
 
+struct SG_ITEM_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								item_id;
+	_U32								stack_max;
+};
+task[GEN_STRUCT_SERIALIZE(SG_ITEM_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ITEM_CONFIG)];
 
+struct SG_EQUIPT_ITEM_CONFIG : SG_ITEM_CONFIG
+{
+	SG_ATTR_MOD_CONFIG					mod_config;
+};
+task[GEN_STRUCT_SERIALIZE(SG_EQUIPT_ITEM_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_EQUIPT_ITEM_CONFIG)];
 
+struct SG_USABLE_ITEM_CONFIG : SG_ITEM_CONFIG
+{
+	string<100>							functional;
+};
+task[GEN_STRUCT_SERIALIZE(SG_USABLE_ITEM_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_USABLE_ITEM_CONFIG)];
 
+struct SG_GEM_ITEM_CONFIG : SG_ITEM_CONFIG
+{
+};
+task[GEN_STRUCT_SERIALIZE(SG_GEM_ITEM_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_GEM_ITEM_CONFIG)];
 
+struct SG_ITEM : A_LIVE_OBJECT
+{
+	_U32								item_id;
+	_U32								count;
+	_U32								expired_time;
+};
+task[GEN_STRUCT_SERIALIZE(SG_ITEM)];
+task[GEN_STRUCT_REFLECT(SG_ITEM)];
 
+struct SG_EQUIPT_ITEM : SG_ITEM
+{
+	SG_ATTR_MOD_CONFIG					mod_config;
+};
+task[GEN_STRUCT_SERIALIZE(SG_EQUIPT_ITEM)];
+task[GEN_STRUCT_REFLECT(SG_EQUIPT_ITEM)];
+
+struct SG_USABLE_ITEM : SG_ITEM
+{
+};
+task[GEN_STRUCT_SERIALIZE(SG_USABLE_ITEM)];
+task[GEN_STRUCT_REFLECT(SG_USABLE_ITEM)];
+
+struct SG_GEM_ITEM : SG_ITEM
+{
+};
+task[GEN_STRUCT_SERIALIZE(SG_GEM_ITEM)];
+task[GEN_STRUCT_REFLECT(SG_GEM_ITEM)];
 
 class SGGAME_C2S
 {

@@ -12,7 +12,7 @@ namespace Atlas
 		static void Init(_U32 tcount=1);
 		static void Fini();
 
-		CAsyncIOConnection(CClient* pClient);
+		CAsyncIOConnection(CClient* pClient, _U32 recvsize);
 		virtual ~CAsyncIOConnection();
 
 		virtual bool Connect(const SOCK_ADDR& sa);

@@ -19,23 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AsyncIOConnection.cpp" />
-    <ClCompile Include="AtlasClient.cpp" />
-    <ClCompile Include="AtlasClientApp.cpp" />
-    <ClCompile Include="HttpClientConnection.cpp" />
-    <ClCompile Include="NonblockConnection.cpp" />
+    <ClCompile Include="mo_common.cpp" />
+    <ClCompile Include="mo_base_win32.cpp" />
+    <ClCompile Include="mo_client.cpp" />
+    <ClCompile Include="mo_error.cpp" />
+    <ClCompile Include="mo_request_win32.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AsyncIOConnection.h" />
-    <ClInclude Include="AtlasClient.h" />
-    <ClInclude Include="AtlasClientApp.h" />
-    <ClInclude Include="HttpClientConnection.h" />
-    <ClInclude Include="NonblockConnection.h" />
+    <ClInclude Include="mo_common.h" />
+    <ClInclude Include="mosdk.h" />
+    <ClInclude Include="mosdk_base.h" />
+    <ClInclude Include="mosdk_client.h" />
+    <ClInclude Include="mosdk_error.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mo_base_mac.mm" />
+    <None Include="mo_request_mac.mm" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{50D67152-761F-4BE9-8EA8-958CFAF1029A}</ProjectGuid>
+    <ProjectGuid>{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LibClient</RootNamespace>
+    <RootNamespace>LibMoSDK</RootNamespace>
     <SccProjectName>SAK</SccProjectName>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
@@ -45,24 +49,24 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -112,6 +116,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,6 +149,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

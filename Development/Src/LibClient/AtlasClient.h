@@ -5,7 +5,7 @@ namespace Atlas
 {
 
 	class CClientComponent;
-	class CClientConnection;
+	class CClientConnectionBase;
 	class CClient;
 	class CClientApp;
 	class CStressClient;
@@ -36,8 +36,8 @@ namespace Atlas
 		virtual ~CClient();
 
 		CClientApp* GetClientApp() { return m_pClientApp; }
-		CLIENT_STATE GetState() { return m_nState; }
-		void SetErrorCode(_U32 errcode);
+		CLIENT_STATE GetState();
+		_U32 GetErrorCode();
 
 		bool Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken="");
 		bool LoginForStress(_U32 id);
@@ -51,7 +51,7 @@ namespace Atlas
 		virtual void OnLoginFailed();
 		virtual void OnDisconnected();
 		virtual void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
-		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+		void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
 			ATLAS_ASSERT(iid<256 && fid<256);
@@ -64,32 +64,13 @@ namespace Atlas
 		sigslot::signal0<>								_OnDisconnected;
 		sigslot::signal4<_U16, _U16, _U32, const _U8*>	_OnData;
 
-		void OnRawConnected();
-		void OnRawData(_U32 len, const _U8* data);
-		void OnRawDisconnected();
-		void OnRawConnectFailed();
-
-		void ProcessPacket(_U32 len, const _U8* data);
-
 	protected:
 		A_MUTEX m_mtxClient;
 
 	private:
 		CClientApp* m_pClientApp;
-		CClientConnection* m_pClientConnection;
-
+		CClientConnectionBase* m_pClientConnection;
 		std::list<CClientComponent*> m_Components;
-
-		CLIENT_STATE m_nState;
-		_U32 m_nErrCode;
-
-		_U8* m_pRecvBuff;
-		_U32 m_nRecvBuffLen;
-		_U32 m_nRecvBuffSize;
-		bool m_bNeedRedirect;
-		SOCK_ADDR m_saRedirectAddr;
-		_U8 m_LoginData[1024];
-		_U16 m_nLoginDataSize;
 	};
 
 	class CClientComponent : public CNoCopy
@@ -107,15 +88,59 @@ namespace Atlas
 		CClient* m_pClient;
 	};
 
-	class CClientConnection : public CClientComponent
+	class CClientConnectionBase : public CClientComponent
 	{
 	public:
-		CClientConnection(CClient* pClient);
+		CClientConnectionBase(CClient* pClient);
+		virtual ~CClientConnectionBase();
+
+		CClient::CLIENT_STATE GetState();
+		_U32 GetErrorCode();
+
+		virtual bool Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken) = 0;
+		virtual void Logout() = 0;
+		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data) = 0;
+
+	protected:
+		void SetErrorCode(_U32 errcode);
+
+		CClient::CLIENT_STATE m_nState;
+		_U32 m_nErrCode;
+	};
+
+	class CClientConnection : public CClientConnectionBase
+	{
+	public:
+		CClientConnection(CClient* pClient, _U32 recvsize);
 		virtual ~CClientConnection();
+
+		CClient::CLIENT_STATE GetState();
+		_U32 GetErrorCode();
+
+		virtual bool Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken);
+		virtual void Logout();
+		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+
+	protected:
+		void OnRawConnected();
+		void OnRawData(_U32 len, const _U8* data);
+		void OnRawDisconnected();
+		void OnRawConnectFailed();
+
+		void ProcessPacket(_U32 len, const _U8* data);
 
 		virtual bool Connect(const SOCK_ADDR& sa) = 0;
 		virtual void Disconnect() = 0;
 		virtual void SendData(_U32 len, const _U8* data, bool bPending=false) = 0;
+
+	private:
+		_U8* m_pRecvBuff;
+		_U32 m_nRecvBuffLen;
+		_U32 m_nRecvBuffSize;
+		bool m_bNeedRedirect;
+		SOCK_ADDR m_saRedirectAddr;
+		_U8 m_LoginData[1024];
+		_U16 m_nLoginDataSize;
 	};
 
 }

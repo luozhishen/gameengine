@@ -55,9 +55,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SGSessionServer", "SGGame\S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SGDataImportConsole", "SGGame\SGDataImportConsole\SGDataImportConsole.vcxproj", "{57C7F48E-B28A-4F04-B8D2-96488DA772DE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibMoSDK", "LibMoSDK\LibMoSDK.vcxproj", "{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 19
+		SccNumberOfProjects = 20
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -133,6 +135,10 @@ Global
 		SccProjectUniqueName18 = SGGame\\SGDataImportConsole\\SGDataImportConsole.vcxproj
 		SccProjectTopLevelParentUniqueName18 = Atlas.sln
 		SccLocalPath18 = SGGame\\SGDataImportConsole
+		SccProjectUniqueName19 = LibMoSDK\\LibMoSDK.vcxproj
+		SccProjectTopLevelParentUniqueName19 = Atlas.sln
+		SccLocalPath19 = ..
+		SccProjectFilePathRelativizedFromConnection19 = Src\\LibMoSDK\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -285,6 +291,14 @@ Global
 		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Release|Win32.Build.0 = Release|Win32
 		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Release|x64.ActiveCfg = Release|x64
 		{57C7F48E-B28A-4F04-B8D2-96488DA772DE}.Release|x64.Build.0 = Release|x64
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Debug|Win32.Build.0 = Debug|Win32
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Debug|x64.ActiveCfg = Debug|x64
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Debug|x64.Build.0 = Debug|x64
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Release|Win32.ActiveCfg = Release|Win32
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Release|Win32.Build.0 = Release|Win32
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Release|x64.ActiveCfg = Release|x64
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -297,6 +311,7 @@ Global
 		{7F6B584F-7FB3-43DF-B91D-1D182F21635D} = {5DA0A740-D312-4602-96F5-A02B617755A4}
 		{48206A30-7D48-4AB8-B647-413A4EE27AFA} = {5DA0A740-D312-4602-96F5-A02B617755A4}
 		{ED44F362-6B0A-4D84-9089-2E0A89CDBECC} = {5DA0A740-D312-4602-96F5-A02B617755A4}
+		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E} = {5DA0A740-D312-4602-96F5-A02B617755A4}
 		{ADAEFB09-1F84-444E-AB89-E0B91A964AD0} = {243EA744-5506-41C2-A822-B3DD9A8A28F2}
 		{BE02B479-5C9D-4876-92D2-D810A64260D8} = {243EA744-5506-41C2-A822-B3DD9A8A28F2}
 		{36DA92B8-AEC5-43E2-9E84-0DF47CF36732} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}

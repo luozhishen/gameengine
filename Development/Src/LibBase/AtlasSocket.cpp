@@ -362,7 +362,6 @@ int sock_read(SOCK_HANDLE fd, void* buf, int buf_len)
 	for(;;) {
 		ret = recv(fd, (char*)buf, buf_len, 0);
 		if(ret>=0) return ret;
-		DWORD err = WSAGetLastError();
 		switch(WSAGetLastError()) {
 		case WSAEINTR: break;
 		case WSAEWOULDBLOCK: return 0;

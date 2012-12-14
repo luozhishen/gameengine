@@ -93,6 +93,9 @@ namespace DDLReflect
 		return pClassInfo?pClassInfo->iid:(_U16)-1;
 	}
 
+	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Json::Value& json);
+	bool Json2Call(const FUNCTION_INFO* def, const Json::Value& json, _U32& len, _U8* data);
+
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, std::string& json);
 	bool Json2Call(const FUNCTION_INFO* def, const std::string& json, _U32& len, _U8* data);
 

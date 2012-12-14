@@ -30,7 +30,6 @@ namespace Atlas
 	template<>
 	void CObjectLocker<CNodeClient>::Unlock(_U64 ndx);
 
-	// 1. 处理用户逻辑的地方
 	class CNodeServer : public CServerBase
 	{
 	public:
@@ -60,7 +59,6 @@ namespace Atlas
 		_U32 m_nConnCount;
 	};
 
-	// 1. Node Server上表示客户端连接的对象
 	class CNodeClient : public CNoCopy
 	{
 		friend class CNodeServer;

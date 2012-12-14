@@ -64,10 +64,19 @@ namespace Atlas
 
 	CConnectionClient::CConnectionClient(HCONNECT hConn, _U32 ndx, _U32 recvsize)
 	{
+		m_nUID = (_U32)-1;
+		m_bLogining = true;
+		m_hConn = hConn;
+		m_nNDX = ndx;
+		m_pRecvBuff = (_U8*)ATLAS_ALLOC(recvsize);;
+		m_nRecvBuffLen = 0;
+		m_nRecvBuffSize = recvsize;
 	}
 
 	CConnectionClient::~CConnectionClient()
 	{
+		ATLAS_FREE(m_pRecvBuff);
+		m_pRecvBuff = NULL;
 	}
 
 	void CConnectionClient::OnConnected()

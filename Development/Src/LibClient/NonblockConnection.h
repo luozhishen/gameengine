@@ -7,7 +7,7 @@ namespace Atlas
 	class CNonblockConnection : public CClientConnection
 	{
 	public:
-		CNonblockConnection(CClient* pClient);
+		CNonblockConnection(CClient* pClient, _U32 recvsize);
 		virtual ~CNonblockConnection();
 
 		virtual void Tick();

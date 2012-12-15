@@ -10,7 +10,7 @@
 namespace Atlas
 {
 
-	CSGClientApp::CSGClientApp(bool bThread) : CClientApp(bThread)
+	CSGClientApp::CSGClientApp(bool bThread) : CClientApp("SGGame", bThread)
 	{
 	}
 

@@ -1,3 +1,5 @@
+#ifndef WITHOUT_ATLAS_ASYNCIO
+
 #ifndef	__LWRPC__
 #define	__LWRPC__
 
@@ -31,5 +33,7 @@ namespace Atlas {
 	_U16 GetRPCBindPort();
 
 }
+
+#endif
 
 #endif

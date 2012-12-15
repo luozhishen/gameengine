@@ -1,7 +1,7 @@
+#ifndef WITHOUT_ASYNCIO
+
 #ifndef __ASYNCIO_CONNECTION__
 #define __ASYNCIO_CONNECTION__
-
-#ifndef WITHOUT_ASYNCIO
 
 namespace Atlas
 {

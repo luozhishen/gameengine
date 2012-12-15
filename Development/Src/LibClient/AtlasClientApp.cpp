@@ -4,6 +4,8 @@
 #include "AtlasCommon.h"
 #include "AtlasClientApp.h"
 #include "AtlasClient.h"
+#include "mosdk.h"
+#include "ClientConnection.h"
 #include "AsyncIOConnection.h"
 
 namespace Atlas
@@ -11,7 +13,7 @@ namespace Atlas
 
 	static CClientApp* __global_client_app = NULL;
 
-	CClientApp::CClientApp(bool bThread)
+	CClientApp::CClientApp(const char* appname, bool bThread)
 	{
 		ATLAS_ASSERT(!__global_client_app);
 		__global_client_app = this;
@@ -21,11 +23,15 @@ namespace Atlas
 
 		m_nRecvSize = 20*1024;
 		m_nSendSize = 1*1024;
+
+		MOInit(appname);
 	}
 
 	CClientApp::~CClientApp()
 	{
 		A_MUTEX_DESTROY(&m_mtxQueue);
+
+		MOFini();
 	}
 
 	void CClientApp::SetPacketSize(_U32 sendsize, _U32 recvsize)
@@ -83,14 +89,14 @@ namespace Atlas
 		InitContentObjects();
 		InitLiveObjects();
 
-#ifndef WITHOUT_ASYNCIO
-		CAsyncIOConnection::Init();
+#ifndef WITHOUT_ATLAS_ASYNCIO
+		CAsyncIOConnection::Init(1);
 #endif
 	}
 
 	void CClientApp::FiniApp()
 	{
-#ifndef WITHOUT_ASYNCIO
+#ifndef WITHOUT_ATLAS_ASYNCIO
 		CAsyncIOConnection::Fini();
 #endif
 	}

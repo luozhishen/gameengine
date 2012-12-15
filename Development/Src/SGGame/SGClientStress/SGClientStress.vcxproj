@@ -38,6 +38,9 @@
     <ProjectReference Include="..\..\LibGui\LibGui.vcxproj">
       <Project>{ed44f362-6b0a-4d84-9089-2e0a89cdbecc}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\LibMoSDK\LibMoSDK.vcxproj">
+      <Project>{aa9abe8c-4ef6-40c6-bf1f-9ab38054646e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\LibSGClient\LibSGClient.vcxproj">
       <Project>{36da92b8-aec5-43e2-9e84-0df47cf36732}</Project>
     </ProjectReference>

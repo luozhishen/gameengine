@@ -1,3 +1,5 @@
+#ifndef WITHOUT_ATLAS_ASYNCIO
+
 #include <map>
 
 #include "AtlasDefines.h"
@@ -576,3 +578,5 @@ namespace Atlas {
 	}
 
 }
+
+#endif

@@ -1,6 +1,7 @@
 #include <AtlasBase.h>
 #include "AtlasClient.h"
 #include "AtlasClientApp.h"
+#include "ClientConnection.h"
 #include "NonblockConnection.h"
 
 namespace Atlas

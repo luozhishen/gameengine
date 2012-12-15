@@ -1,3 +1,5 @@
+#ifndef WITHOUT_ATLAS_ASYNCIO
+
 #ifndef	__LWRPCIMP__
 #define	__LWRPCIMP__
 
@@ -101,5 +103,7 @@ namespace Atlas {
 	extern LWRPC_CBIF lwrpc_cbinterface_table[RPC_IFTBL_SIZE];
 
 }
+
+#endif
 
 #endif

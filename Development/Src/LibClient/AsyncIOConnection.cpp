@@ -1,8 +1,9 @@
-#ifndef WITHOUT_ASYNCIO
+#ifndef WITHOUT_ATLAS_ASYNCIO
 
 #include "AtlasBase.h"
 #include "AtlasClient.h"
 #include "AtlasClientApp.h"
+#include "ClientConnection.h"
 #include "AsyncIOConnection.h"
 
 namespace Atlas
@@ -18,6 +19,7 @@ namespace Atlas
 
 	void CAsyncIOConnection::Init(_U32 tcount)
 	{
+		ASockIOInit();
 		ATLAS_ASSERT(!g_client_workers);
 		ATLAS_ASSERT(!g_client_iopool);
 		g_client_workers = CreateWorkers(tcount);
@@ -28,6 +30,7 @@ namespace Atlas
 	{
 		KillWorkers(g_client_workers);
 		FreeIoBufferPool(g_client_iopool);
+		ASockIOFini();
 	}
 	
 	CAsyncIOConnection::CAsyncIOConnection(CClient* pClient, _U32 recvsize) : CClientConnection(pClient, recvsize)

@@ -1,3 +1,4 @@
+#ifndef WITHOUT_ATLAS_ASYNCIO
 
 #ifndef WIN32
 
@@ -239,5 +240,7 @@ namespace Atlas
 	}
 
 };
+
+#endif
 
 #endif

@@ -1,3 +1,4 @@
+#ifndef WITHOUT_ATLAS_ASYNCIO
 
 #ifdef WIN32
 
@@ -1075,5 +1076,7 @@ namespace Atlas
 }
 
 #include <poppack.h>
+
+#endif
 
 #endif

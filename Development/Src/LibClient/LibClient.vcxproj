@@ -22,6 +22,7 @@
     <ClCompile Include="AsyncIOConnection.cpp" />
     <ClCompile Include="AtlasClient.cpp" />
     <ClCompile Include="AtlasClientApp.cpp" />
+    <ClCompile Include="ClientConnection.cpp" />
     <ClCompile Include="HttpClientConnection.cpp" />
     <ClCompile Include="NonblockConnection.cpp" />
   </ItemGroup>
@@ -29,6 +30,7 @@
     <ClInclude Include="AsyncIOConnection.h" />
     <ClInclude Include="AtlasClient.h" />
     <ClInclude Include="AtlasClientApp.h" />
+    <ClInclude Include="ClientConnection.h" />
     <ClInclude Include="HttpClientConnection.h" />
     <ClInclude Include="NonblockConnection.h" />
   </ItemGroup>

@@ -32,7 +32,7 @@ namespace Atlas
 	{
 		friend class CClient;
 	public:
-		CClientApp(bool bThread);
+		CClientApp(const char* appname, bool bThread);
 		virtual ~CClientApp();
 
 		void SetPacketSize(_U32 sendsize, _U32 recvsize);

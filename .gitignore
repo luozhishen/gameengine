@@ -9,6 +9,8 @@
 */External/*
 *Binaries/Win32/*
 *Binaries/Win64/*
+*Binaries/*.exe
+*Binaries/*.pdb
 *.ilk
 *.sdf
 *.opensdf

@@ -1,5 +1,9 @@
 #include <stdarg.h>
 
+#include <fstream>
+
+#include <json/jsoncpp.h>
+
 #include "AtlasBase.h"
 #include "AtlasCommon.h"
 #include "AtlasClientApp.h"
@@ -10,7 +14,7 @@
 
 namespace Atlas
 {
-
+	#define DEFAULT_CONFIG_FILE "\\ClientConfig\\ClientConfig.json"
 	static CClientApp* __global_client_app = NULL;
 
 	CClientApp::CClientApp(const char* appname, bool bThread)
@@ -25,6 +29,8 @@ namespace Atlas
 		m_nSendSize = 1*1024;
 
 		MOInit(appname);
+
+		LoadParams();
 	}
 
 	CClientApp::~CClientApp()
@@ -32,6 +38,8 @@ namespace Atlas
 		A_MUTEX_DESTROY(&m_mtxQueue);
 
 		MOFini();
+
+		SaveParams();
 	}
 
 	void CClientApp::SetPacketSize(_U32 sendsize, _U32 recvsize)
@@ -68,13 +76,50 @@ namespace Atlas
 		return m_Params;
 	}
 
-	bool CClientApp::LoadParams(const char* filename)
+	bool CClientApp::LoadParams()
 	{
+		m_Params.clear();
+
+		std::string strXmlFile = Atlas::AtlasGameDir();
+		strXmlFile += DEFAULT_CONFIG_FILE;
+		std::ifstream ifs;
+		ifs.open(strXmlFile);
+		assert(ifs.is_open());
+
+		Json::Reader reader;
+		Json::Value root;
+		if (!reader.parse(ifs, root, false))
+		{
+		    return false;
+		}
+ 
+		m_Params["ServerIP"] = root["ServerIP"].asString();
+		m_Params["ServerPort"] = root["ServerPort"].asString();
+		m_Params["ConnectType"] = root["ConnectType"].asString();
+
+		ifs.close();
+		
 		return true;
 	}
 
-	bool CClientApp::SaveParams(const char* filename)
+	bool CClientApp::SaveParams()
 	{
+		Json::Value root;
+		Json::FastWriter writer;
+		
+		root["ConnectType"] = m_Params["ConnectType"];
+		root["ServerPort"] = m_Params["ServerPort"];
+		root["ServerIP"] = m_Params["ServerIP"];
+
+		std::string json_file = writer.write(root);
+		std::string strXmlFile = Atlas::AtlasGameDir();
+		strXmlFile += DEFAULT_CONFIG_FILE;
+		std::ofstream ofs;
+		ofs.open(strXmlFile);
+		assert(ofs.is_open());
+		ofs<<json_file;
+		ofs.close();
+
 		return true;
 	}
 

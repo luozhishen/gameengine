@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include <string>
 #include <map>
 #include <stdlib.h>
@@ -11,7 +13,9 @@
 #include <sys/socket.h>
 #include <net/if_dl.h>
 #include <net/if.h>
+#import <Foundation/NSString.h>
 #import <CommonCrypto/CommonDigest.h>
+#import <UIKit/UIDevice.h>
 
 static char g_AppName[1000] = "UNKNOWN_APP";
 static char g_UDID[1000] = "UNKNOWN_UDID";
@@ -165,3 +169,5 @@ bool load_from_local(char* addr, int len)
     fclose(fp);
 	return addr!=NULL;
 }
+
+#endif

@@ -25,7 +25,15 @@ namespace Atlas
 		do
 		{
 			memset((void*)c, 0, 2);
-			sprintf_s(c, 2, "%c", nCol%26 - 1 + 'A');
+			if(nCol%26)
+			{
+				sprintf_s(c, 2, "%c", nCol%26 - 1 + 'A');
+			}
+			else
+			{
+				sprintf_s(c, 2, "A");
+			}
+			
 			strcat_s(szIndex, len, c);
 			nCol /= 26;
 		}
@@ -219,6 +227,35 @@ namespace Atlas
 			++nCol;
 		} while (true);
 	
+		//lack of some column
+		if(fmap.size() != columnMap.size())
+		{
+			std::string strLoseInfo;
+			for(std::map<std::string, std::string>::const_iterator it = fmap.begin(); it != fmap.end(); ++it)
+			{
+				std::map<std::string, std::string>::iterator it_colmap;
+				for(it_colmap = columnMap.begin(); it_colmap != columnMap.end(); ++it_colmap)
+				{
+					if(it->second == it_colmap->second)
+					{
+						break;
+					}
+				}
+
+				if(it_colmap == columnMap.end())
+				{
+					strLoseInfo += it->first;
+					strLoseInfo += ":";
+					strLoseInfo += it->second;
+					strLoseInfo += " ";
+				}
+			}
+
+			m_Err = StringFormat("excel lose column \n%s", strLoseInfo.c_str());
+			m_pExcelWrapper->Quit();
+			return false;
+		}
+
 		std::map<std::string, std::string>::iterator it_col;
 		//whether all keys exist in excel
 		for(size_t i = 0; i < m_Keys.size(); ++i)
@@ -265,7 +302,7 @@ namespace Atlas
 
 			if(!DDLReflect::GetStructFieldInfo(m_pStructInfo, it_find->first.c_str(), (const void*)NULL, finfo, fdata))
 			{
-				m_Err = StringFormat("column not match in struct:%s\n column:%s", m_pStructInfo->name, it_col->second.c_str()); 
+				m_Err = StringFormat("column not match in struct:%s\n column:%s\n", m_pStructInfo->name, it_col->second.c_str()); 
 				m_pExcelWrapper->Quit();
 				return false;
 			}
@@ -311,7 +348,7 @@ namespace Atlas
 						std::map<std::string, std::string>& ffmap = m_FieldMaps[fieldname];
 						if(ffmap.find(fieldvalue)==ffmap.end())
 						{
-							m_Err = StringFormat("Invalidate field \n struct %s Column %s ", m_pStructInfo->name, it_col->second.c_str());
+							m_Err = StringFormat("Invalidate enum field \n struct %s Column %s ", m_pStructInfo->name, it_col->second.c_str());
 							m_pExcelWrapper->Quit();
 							return false;
 						}

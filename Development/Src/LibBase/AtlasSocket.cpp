@@ -150,7 +150,7 @@ int sock_wait_read(SOCK_HANDLE handle, int timeout)
 	int ret;
 	struct fd_set fds;
 	FD_ZERO(&fds);
-	FD_SET(handle, &fds);
+	FD_SET((SOCKET)handle, &fds);
 	if(timeout==SOCK_INFINITE) {
 		ret = select(0, &fds, NULL, NULL, NULL);
 	} else {
@@ -179,7 +179,7 @@ int sock_wait_write(SOCK_HANDLE handle, int timeout)
 	int ret;
 	struct fd_set fds;
 	FD_ZERO(&fds);
-	FD_SET(handle, &fds);
+	FD_SET((SOCKET)handle, &fds);
 	if(timeout==SOCK_INFINITE) {
 		ret = select(0, NULL, &fds, NULL, NULL);
 	} else {
@@ -208,7 +208,7 @@ int sock_wait_error(SOCK_HANDLE handle, int timeout)
 	int ret;
 	struct fd_set fds;
 	FD_ZERO(&fds);
-	FD_SET(handle, &fds);
+	FD_SET((SOCKET)handle, &fds);
 	if(timeout==SOCK_INFINITE) {
 		ret = select(0, NULL, NULL, &fds, NULL);
 	} else {

@@ -28,6 +28,14 @@ namespace Atlas
 		_U8* data;
 	};
 
+	enum CONNECT_TYPE
+	{
+		CONNECT_TYPE_UNKOWN		= 0x0,
+		CONNECT_TYPE_ASYNC_IO	= 0x1,
+		CONNECT_TYPE_HTTP		= 0x2,
+		CONNECT_TYPE_NONBLOCK	= 0x4,
+	};
+
 	class CClientApp : public CNoCopy
 	{
 		friend class CClient;
@@ -42,8 +50,8 @@ namespace Atlas
 		void SetParam(const char* name, const char* value);
 		const char* GetParam(const char* name, const char* default_value=NULL);
 		const std::map<std::string, std::string>& GetParams();
-		bool LoadParams(const char* filename);
-		bool SaveParams(const char* filename);
+		bool LoadParams();
+		bool SaveParams();
 
 		static CClientApp* GetDefault();
 		virtual void InitApp();

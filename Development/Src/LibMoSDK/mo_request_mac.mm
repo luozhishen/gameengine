@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include <string>
 #include <map>
 #include "mosdk.h"
@@ -234,3 +236,4 @@ int MORequestGetResultLength(MOREQUEST* request)
 	return [request->request getResultLength];
 }
 
+#endif

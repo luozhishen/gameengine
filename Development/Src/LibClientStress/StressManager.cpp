@@ -163,9 +163,4 @@ namespace Atlas
 		return i->second->GetConfig(data, size);
 	}
 	
-	void CStressManager::SetUIDStart(_U32 nUIDtart)
-	{
-		m_nIDSeq = nUIDtart;
-	}
-
 }

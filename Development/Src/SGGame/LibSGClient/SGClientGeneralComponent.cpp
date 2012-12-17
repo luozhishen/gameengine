@@ -24,7 +24,7 @@ namespace Atlas
 	{
 		for(std::vector<SG_GENERAL>::iterator it = m_vecGenerals.begin(); it != m_vecGenerals.end(); ++it)
 		{
-			genrels.push_back(it->type);
+			genrels.push_back(it->general_id);
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace Atlas
 	{
 		for(std::vector<SG_GENERAL>::iterator it = m_vecGenerals.begin(); it != m_vecGenerals.end(); ++it)
 		{
-			if(type==it->type)
+			if(type==it->general_id)
 			{
 				return &*it;
 			}

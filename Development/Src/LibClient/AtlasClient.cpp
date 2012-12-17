@@ -7,6 +7,7 @@
 #include "ClientConnection.h"
 #include "AsyncIOConnection.h"
 #include "NonblockConnection.h"
+#include "HttpClientConnection.h"
 
 namespace Atlas
 {
@@ -15,12 +16,31 @@ namespace Atlas
 	{
 		pClientApp->RegisterClient(this);
 		A_MUTEX_INIT(&m_mtxClient);
-#ifndef WITHOUT_ASYNCIO
-		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
-//		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this, recvsize);
-#else
-		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
-#endif
+
+//#ifndef WITHOUT_ASYNCIO
+//		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
+////		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this, recvsize);
+//#else
+//		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
+//#endif
+		int nType = atoi(m_pClientApp->GetParam("ConnectType"));
+		if(nType == CONNECT_TYPE_ASYNC_IO)
+		{
+			m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
+		}
+		else if(nType == CONNECT_TYPE_HTTP)
+		{
+			m_pClientConnection = ATLAS_NEW CHttpClientConnection(this);
+		}
+		else if(nType == CONNECT_TYPE_NONBLOCK)
+		{
+			m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
+		}
+		else
+		{
+			ATLAS_ASSERT(0);
+		}
+
 		AddComponent(m_pClientConnection);
 	}
 
@@ -45,18 +65,21 @@ namespace Atlas
 		return m_pClientConnection->GetErrorCode();
 	}
 
-	bool CClient::Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken)
+	bool CClient::Login(const char* pUrl, _U32 nUID, const char* pToken)
 	{
 		if(m_pClientConnection->GetState()!=STATE_NA && m_pClientConnection->GetState()!=STATE_FAILED) return false;
-		return m_pClientConnection->Login(sa, nUID, pToken);
+		return m_pClientConnection->Login(pUrl, nUID, pToken);
 	}
 
 	bool CClient::LoginForStress(_U32 id)
 	{
-		const char* addr = m_pClientApp->GetParam("svraddr", "127.0.0.1:1978");
-
+		192.168.0.1/action/
+		const char* port = m_pClientApp->GetParam("ServerUrl", "1978");
+		const char* addr = m_pClientApp->GetParam("ServerIP", "127.0.0.1");
+		char szAddr[512];
+		sprintf(szAddr, "%s:%s", addr, port);
 		SOCK_ADDR sa;
-		if(!sock_str2addr(addr, &sa)) return false;
+		if(!sock_str2addr(szAddr, &sa)) return false;
 		const char* uid_base = m_pClientApp->GetParam("uid_base", "0");
 		return Login(sa, id+atoi(uid_base));
 	}

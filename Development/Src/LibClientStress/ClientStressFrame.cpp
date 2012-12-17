@@ -43,7 +43,7 @@ enum
 	ID_SELECT_ALL,
 	ID_LOGIN,
 	ID_LOGOUT,
-	ID_SVRADDR,
+	//ID_SVRADDR,
 	ID_SVRPARAM,
 	ID_TIMER,
 	ID_CLIENT_LIST,
@@ -67,7 +67,7 @@ BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_MENU(ID_LOGIN,			CClientStressFrame::OnLogin)
 	EVT_MENU(ID_LOGOUT,			CClientStressFrame::OnLogout)
 	EVT_MENU(ID_CASE_ADD,		CClientStressFrame::OnAddCase)
-	EVT_MENU(ID_SVRADDR,		CClientStressFrame::OnSvrAddr)
+	//EVT_MENU(ID_SVRADDR,		CClientStressFrame::OnSvrAddr)
 	EVT_MENU(ID_SVRPARAM,		CClientStressFrame::OnSvrParam)
 	EVT_MENU(ID_SELECT_ALL,		CClientStressFrame::OnSelectAll)
 	EVT_LISTBOX(ID_CLIENT_LIST,	CClientStressFrame::OnClientSelected)
@@ -91,7 +91,7 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 	m_nViewCount = 0;
 	m_Timer.SetOwner(this, ID_TIMER);
 
-	m_pCmdHistory = ATLAS_NEW CmdHistory(Atlas::AtlasGameDir());
+	m_pCmdHistory = ATLAS_NEW Atlas::CmdHistory(Atlas::AtlasGameDir());
 
 	// create client
 	InitClient();
@@ -153,7 +153,7 @@ void CClientStressFrame::InitMenu()
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
 	GetMenuBar()->GetMenu(0)->Append(ID_PROTOCAL, wxT("Protocal"), wxT("Show protocal dailog"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SVR_PARAM_DLG, wxT("Server Params"), wxT("Set Server Params"));
-	GetMenuBar()->GetMenu(0)->Append(ID_SVRADDR, wxT("Server Address"), wxT("Set Server Address"));
+	//GetMenuBar()->GetMenu(0)->Append(ID_SVRADDR, wxT("Server Address"), wxT("Set Server Address"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SVRPARAM, wxT("Param Address"), wxT("Set Server Param"));
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
@@ -215,7 +215,7 @@ void CClientStressFrame::InitClient()
 	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
 	m_pCmdText = ATLAS_NEW wxComboBox( pPanel, ID_CMDTEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER|wxCB_DROPDOWN|wxCB_SORT);
 	int n = m_pCmdHistory->GetHistoryNum();
-	CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
+	Atlas::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
 	for(int i = 0; i < n; ++i)
 	{
 		m_pCmdText->Append(wxString::FromUTF8(cmds[i].c_str()));
@@ -293,7 +293,7 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	m_pCmdHistory->AddCmd(line);
 	m_pCmdText->Clear();
 	int n = m_pCmdHistory->GetHistoryNum();
-	CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
+	Atlas::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
 	for(int i = 0; i < n; ++i)
 	{
 		wxString tmp(cmds[i].c_str(), wxMBConvUTF8());
@@ -385,24 +385,24 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 	}
 }
 
-void CClientStressFrame::OnSvrAddr(wxCommandEvent& event)
-{
-	wxTextEntryDialog Dialog(this, wxT("Input Server Address"), wxT("Please enter a string"), m_FrameData.svraddr);
-	while(Dialog.ShowModal()==wxID_OK)
-	{
-		SOCK_ADDR sa;
-		if(!sock_str2addr((const char*)Dialog.GetValue().ToUTF8(), &sa))
-		{
-			wxMessageBox(wxT(""), wxT(""));
-			continue;
-		}
-		else
-		{
-			m_FrameData.svraddr = Dialog.GetValue();
-			break;
-		}
-	}
-}
+//void CClientStressFrame::OnSvrAddr(wxCommandEvent& event)
+//{
+//	wxTextEntryDialog Dialog(this, wxT("Input Server Address"), wxT("Please enter a string"), m_FrameData.svraddr);
+//	while(Dialog.ShowModal()==wxID_OK)
+//	{
+//		SOCK_ADDR sa;
+//		if(!sock_str2addr((const char*)Dialog.GetValue().ToUTF8(), &sa))
+//		{
+//			wxMessageBox(wxT(""), wxT(""));
+//			continue;
+//		}
+//		else
+//		{
+//			m_FrameData.svraddr = Dialog.GetValue();
+//			break;
+//		}
+//	}
+//}
 
 void CClientStressFrame::OnSvrParam(wxCommandEvent& event)
 {
@@ -411,7 +411,6 @@ void CClientStressFrame::OnSvrParam(wxCommandEvent& event)
 	if(Dialog.ShowModal() == wxID_OK)
 	{
 		nUIDtart = Dialog.GetValue();
-		Atlas::CStressManager::Get().SetUIDStart(nUIDtart);
 	}
 }
 

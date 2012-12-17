@@ -204,7 +204,26 @@ namespace DDLReflect
 
 struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
+	_U32 enemy_id;
+	_U32 attr_id;
 	SG_PAWN_CONFIG PawnConfig;
+	_U8 type;
+	_S8 classes;
+	_U16 atk_type;
+	_U16 def_type;
+	_S32 gift;
+	_S32 com_atk_skill;
+	_S32 sp_skill;
+	_U32 atk_CD;
+	DDL::String<SG_DESCRIPTION_MAX> description;
+	_S32 req_gold;
+	_S32 req_rmb;
+	_S32 unlock_level;
+	_S32 pre_general_id;
+	_S32 pre_level;
+	_S32 product_consume;
+	_S32 product_time;
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
 };
 
 namespace DDL
@@ -227,7 +246,11 @@ struct SG_SOLDIER_LEVEL_CONFIG : A_CONTENT_OBJECT
 	_U32 attr_id;
 	_U32 level;
 	SG_PAWN_CONFIG PawnConfig;
-	_U32 money;
+	_U32 exp;
+	_S32 levelup_gold;
+	_S32 levelup_rmb;
+	_S32 levelup_XP;
+	_U16 mod_scale;
 };
 
 namespace DDL
@@ -251,8 +274,9 @@ struct SG_GENERAL_LEVEL_CONFIG : A_CONTENT_OBJECT
 	_U32 level;
 	SG_PAWN_CONFIG PawnConfig;
 	_U32 exp;
-	_S32 levelup_money;
-	_U32 levelup_XP;
+	_S32 levelup_gold;
+	_S32 levelup_rmb;
+	_S32 levelup_XP;
 	_U16 mod_scale;
 };
 
@@ -275,6 +299,23 @@ struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 soldier_id;
 	_U32 attr_id;
+	_U8 type;
+	_S8 classes;
+	_U16 atk_type;
+	_U16 def_type;
+	_S32 gift;
+	_S32 com_atk_skill;
+	_S32 sp_skill;
+	_U32 atk_CD;
+	DDL::String<SG_DESCRIPTION_MAX> description;
+	_S32 req_gold;
+	_S32 req_rmb;
+	_S32 unlock_level;
+	_S32 pre_general_id;
+	_S32 pre_level;
+	_S32 product_consume;
+	_S32 product_time;
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
 };
 
 namespace DDL
@@ -307,12 +348,14 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 	DDL::String<SG_DESCRIPTION_MAX> description;
 	_U32 space;
 	_S32 req_title;
-	_S32 req_money;
+	_S32 req_gold;
+	_S32 req_rmb;
 	_S32 unlock_level;
 	_S32 pre_general_id;
 	_S32 pre_level;
 	_S32 product_consume;
 	_S32 product_time;
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
 };
 
 namespace DDL
@@ -397,7 +440,7 @@ namespace DDLReflect
 
 struct SG_GENERAL : A_LIVE_OBJECT
 {
-	_U32 type;
+	_U32 general_id;
 	_U16 level;
 	_U32 exp;
 	SG_EQUIP_SLOTS equip_slots;
@@ -420,7 +463,7 @@ namespace DDLReflect
 
 struct SG_SOLDIER : A_LIVE_OBJECT
 {
-	_U32 type;
+	_U32 soldier_id;
 	_U16 level;
 };
 
@@ -439,12 +482,11 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_SOLDIER_info;
 }
 
-struct SG_PLAYER : A_LIVE_OBJECT
+struct SG_PLAYER : SG_GENERAL
 {
 	DDL::String<SG_PLAYERNAME_LENMAX> nick;
 	_U32 gold;
 	_U32 rmb;
-	_U8 sex;
 	DDL::Array<_U16, 2> equip_generals;
 	DDL::Array<_U16, 3> equip_soldiers;
 };

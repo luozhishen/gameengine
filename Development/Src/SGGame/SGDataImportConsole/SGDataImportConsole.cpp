@@ -5,7 +5,8 @@
 
 #include <vector>
 #include <string>
-
+#include <fstream>
+#include <iostream>
 #include <tinyxml.h>
 
 #include "../../../External/TinyXml/tinystr.cpp"
@@ -39,9 +40,6 @@
 #include "../../LibEditor/OLEAutoExcelWrapper.cpp"
 #include "../../LibEditor/UtilString.cpp"
 
-#define EXCEL_PATH "D:\\SG-document\\"
-#define XML_PATH "E:\\Work\\Atlas\\SGGame\\data_import.xml"
-
 struct Sheet_info
 {
 	std::string strFile;
@@ -60,7 +58,7 @@ bool read_xml()
 {	
 	TiXmlDocument xmldoc;
 	std::string strXmlFile = Atlas::AtlasGameDir();
-	strXmlFile += "\\data_import.xml";
+	strXmlFile += "\\ClientConfig\\data_import.xml";
 	if(!xmldoc.LoadFile(strXmlFile.c_str()))
 		return false;
 
@@ -113,7 +111,15 @@ bool read_xml()
 				//strField += strColumns;
 				strField += strRealName;
 
-				g_FieldMaps[strField] = fieldMap;
+				std::map<std::string, std::map<std::string, std::string>>::iterator it_enum_find = g_FieldMaps.find(strField);
+				if(it_enum_find == g_FieldMaps.end())
+				{
+					g_FieldMaps[strField] = fieldMap;
+				}
+				else
+				{
+					g_FieldMaps[strField].insert(fieldMap.begin(), fieldMap.end());
+				}
 			}
 
 			pColNode = pColNode->NextSiblingElement();
@@ -136,6 +142,13 @@ bool import_data()
 		importMgr.SetFieldMap(it->first.c_str(), it->second);
 	}
 
+
+	std::ofstream ofs;
+	std::string strLogFile = Atlas::AtlasGameDir();
+	strLogFile += "\\import_log.txt";
+	ofs.open(strLogFile, std::ios_base::out|std::ios_base::app);
+	assert(ofs.is_open());
+
 	for(std::vector<Sheet_info>::iterator it = sheets.begin(); it != sheets.end(); ++it)
 	{
 		wxString strPath = wxString::FromUTF8(g_strExcelPath.c_str());
@@ -144,10 +157,29 @@ bool import_data()
 		
 		const DDLReflect::STRUCT_INFO* pInfo = Atlas::ContentObject::GetType(it->strType.c_str());
 		importMgr.PrepareProcess(pInfo, it->vecKeys);
-		importMgr.ProcessSheet(it->strSheetName.c_str(), it->mapColumns);
+
+		if(!importMgr.ProcessSheet(it->strSheetName.c_str(), it->mapColumns))
+		{
+			ofs<<importMgr.GetErrorMsg();
+			ofs<<"in excel:"<< it->strFile <<" sheet:"<<it->strSheetName<<"\n";
+			std::cout<<"excel:"<< it->strFile.c_str() 
+				<<" sheet:"<< it->strSheetName.c_str() <<"\n";
+			//std::cout<<"excel:"<< Atlas::String::MultiByteToUtf8(it->strFile.c_str(), (_U32)it->strFile.size()) 
+			//	<<" sheet:"<< Atlas::String::MultiByteToUtf8(it->strSheetName.c_str(), (_U32)it->strFile.size()) <<" ok!\n";
+		}
+		else
+		{
+			ofs<<"excel:"<< it->strFile <<" sheet:"<< it->strSheetName <<" ok!\n";
+			std::cout<<"excel:"<< it->strFile.c_str() <<" sheet:"
+				<< it->strSheetName.c_str() <<" ok!\n";
+			//std::cout<<"excel:"<< Atlas::String::MultiByteToUtf8(it->strFile.c_str(), (_U32)it->strFile.size()) <<" sheet:"
+			//	<< Atlas::String::MultiByteToUtf8(it->strSheetName.c_str(), (_U32)it->strFile.size())<<" ok!\n";
+		}
 
 		importMgr.Clear(true);
 	}
+
+	ofs.close();
 
 	return true;
 }

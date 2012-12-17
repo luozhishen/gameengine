@@ -39,7 +39,7 @@ namespace Atlas
 		CLIENT_STATE GetState();
 		_U32 GetErrorCode();
 
-		bool Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken="");
+		bool Login(const char* pUrl, _U32 nUID, const char* pToken);
 		bool LoginForStress(_U32 id);
 		void Logout();
 
@@ -97,7 +97,7 @@ namespace Atlas
 		CClient::CLIENT_STATE GetState();
 		_U32 GetErrorCode();
 
-		virtual bool Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken) = 0;
+		virtual bool Login(const char* pUrl, _U32 nUID, const char* pToken) = 0;
 		virtual void Logout() = 0;
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data) = 0;
 

@@ -6,10 +6,10 @@ namespace Atlas
 	class CStressClient;
 	class CStressManager;
 	class CStressCase;
+	class CmdHistory;
 }
 
 class CClientStressFrame;
-class CmdHistory;
 
 class CStressFrameView : public wxPanel
 {
@@ -64,7 +64,7 @@ public:
 	void OnLogin(wxCommandEvent& event);
 	void OnLogout(wxCommandEvent& event);
 	void OnAddCase(wxCommandEvent& event);
-	void OnSvrAddr(wxCommandEvent& event);
+	//void OnSvrAddr(wxCommandEvent& event);
 	void OnSvrParam(wxCommandEvent& event);
 	
 	void OnClientSelected(wxCommandEvent& event);
@@ -104,7 +104,7 @@ private:
 
 	_U32					m_nCurrentIndex;
 
-	CmdHistory*				m_pCmdHistory;
+	Atlas::CmdHistory*				m_pCmdHistory;
 };
 
 #endif

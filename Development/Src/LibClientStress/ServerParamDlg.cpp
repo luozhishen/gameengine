@@ -78,9 +78,11 @@ void ServerParamDlg::OnConfirm(wxCommandEvent& event)
 		wxString strKey = p->GetName();
 		wxString strValue = p->GetValueAsString();
 
-		Atlas::CClientApp::GetDefault()->SetParam((char*)strKey.c_str(), (char*)strValue.c_str());
+		Atlas::CClientApp::GetDefault()->SetParam((char*)strKey.ToUTF8().data(), (char*)strValue.ToUTF8().data());
 	}
 	
+	Atlas::CClientApp::GetDefault()->SaveParams();
+
 	loader.LoadScript((const char*)strPath.c_str());
 	loader.SaveSvrParam();
 

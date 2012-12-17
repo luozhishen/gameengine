@@ -14,13 +14,15 @@ namespace Atlas
 
 		virtual void Tick();
 
-		virtual bool Login(const SOCK_ADDR& sa, _U32 nUID, const char* pToken);
+		virtual bool Login(const char* pUrl, _U32 nUID, const char* pToken);
 		virtual void Logout();
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 
 	private:
+		std::string m_BaseUrl;
 		MOREQUEST* m_pLoginRequest;
 		MOREQUEST* m_pNotifyRequest;
+		MOREQUEST* m_pCurrentRequest;
 		std::string m_SessionKey;
 		std::list<std::string> m_SendQueue;
 	};

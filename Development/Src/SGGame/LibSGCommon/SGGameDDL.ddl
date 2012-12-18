@@ -93,26 +93,7 @@ struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
 	// string name;
 	_U32								enemy_id;			//敌人id
-	_U32								attr_id;			//属性id
 	SG_PAWN_CONFIG						PawnConfig;
-
-	_U8									type;				//英雄类型
-	_S8									classes;			//阶级
-	_U16								atk_type;			//攻击类型
-	_U16								def_type;			//防御类型
-	_S32								gift;				//天赋
-	_S32								com_atk_skill;		//普通攻击技能
-	_S32								sp_skill;			//特殊技能 
-	_U32								atk_CD;				//攻击间隔时间
-	string<SG_DESCRIPTION_MAX>			description;		//描述
-	_S32								req_gold;			//需要的金币
-	_S32								req_rmb;			//需要的人民币
-	_S32								unlock_level;		//解锁等级
-	_S32								pre_general_id;		//前置兵种
-	_S32								pre_level;			//前置等级
-	_S32								product_consume;	//生产消耗
-	_S32								product_time;		//生产CD时间
-	string<ARCHETYPE_URL_LENGTH_MAX>    archetype;			//archetype
 };
 task[GEN_STRUCT_SERIALIZE(SG_ENEMY_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_ENEMY_CONFIG)];
@@ -288,16 +269,24 @@ task[GEN_STRUCT_REFLECT(SG_GEM_ITEM)];
 
 class SGGAME_C2S
 {
-	CreateAvatar(_S8 name[SG_PLAYERNAME_LENMAX]);
 	QueryAvatar();
+	CreateAvatar(_S8 nick[SG_PLAYERNAME_LENMAX], _U32 type);
+	QueryBag();
 
 	Ping();
 };
 
 class SGGAME_S2C
 {
+	QueryAvatarFailed(_U32 code);
+	QueryAvatarResult(SG_PLAYER player);
 	CreatAvatarResult(_U32 code);
-	QueryAvatarResult(_U32 code);
+
+	QueryBagBegin();
+	QueryBagEquipt(SG_EQUIPT_ITEM item);
+	QueryBagUsable(SG_USABLE_ITEM item);
+	QueryBagGen(SG_GEM_ITEM item);
+	QueryBagEnd();
 
 	Pong();
 };

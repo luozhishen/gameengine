@@ -70,6 +70,7 @@ namespace Atlas
 		{
 			delete i->second;
 		}
+		m_mapClients.clear();
 	}
 
 	_U32 CStressManager::NewClient()

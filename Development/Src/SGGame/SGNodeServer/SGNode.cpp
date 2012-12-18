@@ -18,12 +18,17 @@ namespace Atlas
 	{
 	}
 
-	void CSGGameServerComponent::CreateAvatar(CSGNodeClient* pClient, _S8 name[])
+	void CSGGameServerComponent::CreateAvatar(CSGNodeClient* pClient, const _S8 name[], _U32 type)
 	{
 	
 	}
 
 	void CSGGameServerComponent::QueryAvatar(CSGNodeClient* pClient)
+	{
+	
+	}
+
+	void CSGGameServerComponent::QueryBag(CSGNodeClient* pClient)
 	{
 	
 	}

@@ -31,16 +31,15 @@ namespace Atlas
 	{
 		std::ofstream ofs;
 		ofs.open(m_path, std::ios_base::out|std::ios_base::trunc);
-		assert(ofs.is_open());
-
-		for(CMD_SET::iterator it = m_cmds.begin();
-			it != m_cmds.end(); ++it)
+		if(ofs.is_open())
 		{
-			ofs<<*it;
-			ofs<<"\n";
-		}
+			for(CMD_SET::iterator it = m_cmds.begin(); it != m_cmds.end(); ++it)
+			{
+				ofs<<*it<<"\n";
+			}
 
-		ofs.close();
+			ofs.close();
+		}
 	}
 
 	void CmdHistory::FindSimilarCmd( std::string& cmd, CMD_SET& ret)

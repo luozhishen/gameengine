@@ -28,14 +28,6 @@ namespace Atlas
 		_U8* data;
 	};
 
-	enum CONNECT_TYPE
-	{
-		CONNECT_TYPE_UNKOWN		= 0x0,
-		CONNECT_TYPE_ASYNC_IO	= 0x1,
-		CONNECT_TYPE_HTTP		= 0x2,
-		CONNECT_TYPE_NONBLOCK	= 0x4,
-	};
-
 	class CClientApp : public CNoCopy
 	{
 		friend class CClient;

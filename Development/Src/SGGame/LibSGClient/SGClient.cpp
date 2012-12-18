@@ -5,10 +5,6 @@
 #include "SGCommon.h"
 #include "SGClient.h"
 
-#include "SGClientSoldierComponent.h"
-#include "SGClientPlayerComponent.h"
-#include "SGClientGeneralComponent.h"
-
 namespace Atlas
 {
 	
@@ -24,11 +20,5 @@ namespace Atlas
 
 	void CSGClient::InitializeComponents()
 	{
-		m_pPlayerComponent = ATLAS_NEW CSGClientPlayerComponent(this);
-		m_pGeneralComponent = ATLAS_NEW CSGClientGeneralComponent(this);
-		m_pSoldierComponent = ATLAS_NEW CSGClientSoldierComponent(this);
-		AddComponent(m_pPlayerComponent);
-		AddComponent(m_pGeneralComponent);
-		AddComponent(m_pSoldierComponent);
 	}
 }

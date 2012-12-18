@@ -17,24 +17,18 @@ namespace Atlas
 		pClientApp->RegisterClient(this);
 		A_MUTEX_INIT(&m_mtxClient);
 
-//#ifndef WITHOUT_ASYNCIO
-//		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
-////		m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this, recvsize);
-//#else
-//		m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
-//#endif
-		int nType = atoi(m_pClientApp->GetParam("ConnectType"));
-		if(nType == CONNECT_TYPE_ASYNC_IO)
+		const char* szType = m_pClientApp->GetParam("ConnectType");
+		if(strcmp(szType, "nonblock") == 0)
 		{
 			m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
 		}
-		else if(nType == CONNECT_TYPE_HTTP)
+		else if(strcmp(szType, "http") == 0)
 		{
 			m_pClientConnection = ATLAS_NEW CHttpClientConnection(this);
 		}
-		else if(nType == CONNECT_TYPE_NONBLOCK)
+		else if(strcmp(szType, "async") == 0)
 		{
-			m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
+			m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this, recvsize);
 		}
 		else
 		{
@@ -73,15 +67,12 @@ namespace Atlas
 
 	bool CClient::LoginForStress(_U32 id)
 	{
-		192.168.0.1/action/
-		const char* port = m_pClientApp->GetParam("ServerUrl", "1978");
-		const char* addr = m_pClientApp->GetParam("ServerIP", "127.0.0.1");
-		char szAddr[512];
-		sprintf(szAddr, "%s:%s", addr, port);
-		SOCK_ADDR sa;
-		if(!sock_str2addr(szAddr, &sa)) return false;
+		const char* pServerUrl = m_pClientApp->GetParam("ServerUrl");
+		if(!pServerUrl) return false;
 		const char* uid_base = m_pClientApp->GetParam("uid_base", "0");
-		return Login(sa, id+atoi(uid_base));
+		char token[1000];
+		sprintf(token, "%d", id+atoi(uid_base));
+		return Login(pServerUrl, id+atoi(uid_base), token);
 	}
 
 	void CClient::Logout()
@@ -162,7 +153,7 @@ namespace Atlas
 
 	void CClientConnectionBase::SetErrorCode(_U32 errcode)
 	{
-		if(m_nErrCode!=CClient::ERRCODE_SUCCESSED) m_nErrCode = errcode;
+		if(m_nErrCode==CClient::ERRCODE_SUCCESSED) m_nErrCode = errcode;
 	}
 
 }

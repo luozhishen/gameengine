@@ -12,6 +12,8 @@ namespace Atlas
 
 	CSGClientApp::CSGClientApp(bool bThread) : CClientApp("SGGame", bThread)
 	{
+		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://192.168.0.96/Atlas/action/");
+		if(!GetParam("ConnectType")) SetParam("ConnectType", "http");
 	}
 
 	CSGClientApp::~CSGClientApp()

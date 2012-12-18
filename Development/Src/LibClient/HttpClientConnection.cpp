@@ -11,11 +11,14 @@ namespace Atlas
 	{
 		m_pLoginRequest = NULL;
 		m_pNotifyRequest = NULL;
+		m_pCurrentRequest = NULL;
 	}
 
 	CHttpClientConnection::~CHttpClientConnection()
 	{
 		ATLAS_ASSERT(!m_pLoginRequest);
+		ATLAS_ASSERT(!m_pNotifyRequest);
+		ATLAS_ASSERT(!m_pCurrentRequest);
 	}
 
 	void CHttpClientConnection::Tick()
@@ -33,10 +36,10 @@ namespace Atlas
 				}
 				else
 				{
-					const char* MOClientGetResultString(MOREQUEST* request);
+					const char* result = MOClientGetResultString(m_pLoginRequest);
 					Json::Value root;
 					Json::Reader reader;
-					if(!reader.parse(MORequestGetResult(m_pLoginRequest), root))
+					if(!reader.parse(result, root))
 					{
 						SetErrorCode(CClient::ERRCODE_UNKOWN);
 						m_nState = CClient::STATE_FAILED;
@@ -58,6 +61,7 @@ namespace Atlas
 							}
 							else
 							{
+								m_SessionKey = session_key.asString();
 								m_nState = CClient::STATE_LOGINED;
 							}
 						}
@@ -72,6 +76,9 @@ namespace Atlas
 			}
 			MORequestDestory(m_pLoginRequest);
 			m_pLoginRequest = NULL;
+
+			if(m_nState==CClient::STATE_FAILED) GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
+			if(m_nState==CClient::STATE_LOGINED) GetClient()->GetClientApp()->QueueLoginDone(GetClient());
 		}
 
 		if(m_pNotifyRequest)
@@ -92,7 +99,7 @@ namespace Atlas
 			std::map<std::string, std::string> params;
 			params["session_key"] = m_SessionKey;
 			params["request"] = m_SendQueue.front();
-			std::string url = StringFormat("%s/request.php", m_BaseUrl.c_str());
+			std::string url = StringFormat("%srequest.php", m_BaseUrl.c_str());
 			m_pCurrentRequest = MORequestString(url.c_str(), params);
 		}
 	}
@@ -110,7 +117,7 @@ namespace Atlas
 
 		std::map<std::string, std::string> params;
 		params["token"] = pToken;
-		std::string url = StringFormat("%s/login.php");
+		std::string url = StringFormat("%slogin.php", pUrl);
 		m_pLoginRequest = MORequestString(url.c_str(), params);
 		if(!m_pLoginRequest)
 		{

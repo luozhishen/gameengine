@@ -37,8 +37,8 @@
     <Link>
       <AdditionalLibraryDirectories Condition="'$(Platform)' == 'Win32'">$(SolutionDir)..\External\wxWidgets-2.8\lib\Win32</AdditionalLibraryDirectories>
       <AdditionalLibraryDirectories Condition="'$(Platform)' == 'x64'">$(SolutionDir)..\External\wxWidgets-2.8\lib\Win64</AdditionalLibraryDirectories>
-      <AdditionalDependencies Condition="'$(Configuration)' == 'Debug'">rpcrt4.lib;comctl32.lib;wxbase28ud.lib;wxmsw28ud_core.lib;wxmsw28ud_adv.lib;wxmsw28ud_xrc.lib;wxpngd.lib;wxzlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)' == 'Release'">rpcrt4.lib;comctl32.lib;wxbase28u.lib;wxmsw28u_core.lib;wxmsw28u_adv.lib;wxmsw28u_xrc.lib;wxpng.lib;wxzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Debug'">wininet.lib;rpcrt4.lib;comctl32.lib;wxbase28ud.lib;wxmsw28ud_core.lib;wxmsw28ud_adv.lib;wxmsw28ud_xrc.lib;wxpngd.lib;wxzlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Release'">wininet.lib;rpcrt4.lib;comctl32.lib;wxbase28u.lib;wxmsw28u_core.lib;wxmsw28u_adv.lib;wxmsw28u_xrc.lib;wxpng.lib;wxzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

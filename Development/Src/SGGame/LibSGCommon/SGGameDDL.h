@@ -205,25 +205,7 @@ namespace DDLReflect
 struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 enemy_id;
-	_U32 attr_id;
 	SG_PAWN_CONFIG PawnConfig;
-	_U8 type;
-	_S8 classes;
-	_U16 atk_type;
-	_U16 def_type;
-	_S32 gift;
-	_S32 com_atk_skill;
-	_S32 sp_skill;
-	_U32 atk_CD;
-	DDL::String<SG_DESCRIPTION_MAX> description;
-	_S32 req_gold;
-	_S32 req_rmb;
-	_S32 unlock_level;
-	_S32 pre_general_id;
-	_S32 pre_level;
-	_S32 product_consume;
-	_S32 product_time;
-	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
 };
 
 namespace DDL
@@ -605,28 +587,39 @@ namespace DDLStub
 		{
 			if(fid==0)
 			{
-				_U16 __length;
-				_S8* _prefix_name;
-
-				// <_S8> <name> <> <SG_PLAYERNAME_LENMAX>;
-				if(!Buf.Read(__length)) return false;
-				_prefix_name = (_S8*)alloca(sizeof(_prefix_name[0])*__length);
-				if(!_prefix_name) return false;
-				if(!Buf.ReadPointer(_prefix_name, __length)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatar(Caller, _prefix_name);
-				return true;
-			}
-			if(fid==1)
-			{
 
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatar(Caller);
 				return true;
 			}
+			if(fid==1)
+			{
+				_U16 __length;
+				_S8* _prefix_nick;
+				_U32 _prefix_type;
+
+				// <_S8> <nick> <> <SG_PLAYERNAME_LENMAX>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_nick = (_S8*)alloca(sizeof(_prefix_nick[0])*__length);
+				if(!_prefix_nick) return false;
+				if(!Buf.ReadPointer(_prefix_nick, __length)) return false;
+				// <_U32> <type> <> <>;
+				if(!Buf.Read(_prefix_type)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatar(Caller, _prefix_nick, _prefix_type);
+				return true;
+			}
 			if(fid==2)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBag(Caller);
+				return true;
+			}
+			if(fid==3)
 			{
 
 
@@ -657,25 +650,35 @@ namespace DDLProxy
 			return Proxy;
 		}
 
-		bool CreateAvatar(_S8* name)
-		{
-			BUFFER Buf;
-			_U16 __length;
-			// <_S8> <name> <> <SG_PLAYERNAME_LENMAX>
-			__length = (_U16)(SG_PLAYERNAME_LENMAX);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(name, __length)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
-		}
-
 		bool QueryAvatar()
 		{
 			BUFFER Buf;
 
 			// send
+			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+
+		bool CreateAvatar(_S8* nick, _U32 type)
+		{
+			BUFFER Buf;
+			_U16 __length;
+			// <_S8> <nick> <> <SG_PLAYERNAME_LENMAX>
+			__length = (_U16)(SG_PLAYERNAME_LENMAX);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(nick, __length)) return false;
+			// <_U32> <type> <> <>
+			if(!Buf.Write(type)) return false;
+
+			// send
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool QueryBag()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 
 		bool Ping()
@@ -683,7 +686,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
 		}
 	};
 
@@ -716,10 +719,21 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_code)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->CreatAvatarResult(Caller, _prefix_code);
+				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatarFailed(Caller, _prefix_code);
 				return true;
 			}
 			if(fid==1)
+			{
+				SG_PLAYER _prefix_player;
+
+				// <SG_PLAYER> <player> <> <>;
+				if(!Buf.Read(_prefix_player)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatarResult(Caller, _prefix_player);
+				return true;
+			}
+			if(fid==2)
 			{
 				_U32 _prefix_code;
 
@@ -727,10 +741,59 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_code)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatarResult(Caller, _prefix_code);
+				DDLStub<CALLER, CLASS>::GetClass()->CreatAvatarResult(Caller, _prefix_code);
 				return true;
 			}
-			if(fid==2)
+			if(fid==3)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBagBegin(Caller);
+				return true;
+			}
+			if(fid==4)
+			{
+				SG_EQUIPT_ITEM _prefix_item;
+
+				// <SG_EQUIPT_ITEM> <item> <> <>;
+				if(!Buf.Read(_prefix_item)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBagEquipt(Caller, _prefix_item);
+				return true;
+			}
+			if(fid==5)
+			{
+				SG_USABLE_ITEM _prefix_item;
+
+				// <SG_USABLE_ITEM> <item> <> <>;
+				if(!Buf.Read(_prefix_item)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBagUsable(Caller, _prefix_item);
+				return true;
+			}
+			if(fid==6)
+			{
+				SG_GEM_ITEM _prefix_item;
+
+				// <SG_GEM_ITEM> <item> <> <>;
+				if(!Buf.Read(_prefix_item)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBagGen(Caller, _prefix_item);
+				return true;
+			}
+			if(fid==7)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBagEnd(Caller);
+				return true;
+			}
+			if(fid==8)
 			{
 
 
@@ -761,7 +824,7 @@ namespace DDLProxy
 			return Proxy;
 		}
 
-		bool CreatAvatarResult(_U32 code)
+		bool QueryAvatarFailed(_U32 code)
 		{
 			BUFFER Buf;
 			// <_U32> <code> <> <>
@@ -771,14 +834,70 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
 
-		bool QueryAvatarResult(_U32 code)
+		bool QueryAvatarResult(const SG_PLAYER& player)
+		{
+			BUFFER Buf;
+			// <SG_PLAYER> <player> <> <>
+			if(!Buf.Write(player)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool CreatAvatarResult(_U32 code)
 		{
 			BUFFER Buf;
 			// <_U32> <code> <> <>
 			if(!Buf.Write(code)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+		}
+
+		bool QueryBagBegin()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+		}
+
+		bool QueryBagEquipt(const SG_EQUIPT_ITEM& item)
+		{
+			BUFFER Buf;
+			// <SG_EQUIPT_ITEM> <item> <> <>
+			if(!Buf.Write(item)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+		}
+
+		bool QueryBagUsable(const SG_USABLE_ITEM& item)
+		{
+			BUFFER Buf;
+			// <SG_USABLE_ITEM> <item> <> <>
+			if(!Buf.Write(item)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+		}
+
+		bool QueryBagGen(const SG_GEM_ITEM& item)
+		{
+			BUFFER Buf;
+			// <SG_GEM_ITEM> <item> <> <>
+			if(!Buf.Write(item)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+		}
+
+		bool QueryBagEnd()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
 		}
 
 		bool Pong()
@@ -786,7 +905,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
 		}
 	};
 

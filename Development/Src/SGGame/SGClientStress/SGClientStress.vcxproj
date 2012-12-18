@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClientComponentDataView.cpp" />
     <ClCompile Include="SGClientStress.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -47,9 +46,6 @@
     <ProjectReference Include="..\LibSGCommon\LibSGCommon.vcxproj">
       <Project>{9a814d45-3d49-46b6-a21a-ca4e86a915e8}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ClientComponentDataView.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CC86F53D-C844-4FC1-83ED-140CC7C5E18C}</ProjectGuid>

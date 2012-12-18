@@ -118,7 +118,6 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 		Move(m_FrameData.x, m_FrameData.y);
 		SetClientSize(m_FrameData.w, m_FrameData.h);
 		m_FrameData.m = pConfig->Read(wxT("m"), (long)0);
-		m_FrameData.svraddr = pConfig->Read(wxT("svraddr"), wxT("127.0.0.1:1980"));
 	}
 
 	m_Timer.Start(100);
@@ -137,7 +136,6 @@ CClientStressFrame::~CClientStressFrame()
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
 		pConfig->Write(wxT("h"), (long)m_FrameData.h);
 		pConfig->Write(wxT("m"), (long)m_FrameData.m);
-		pConfig->Write(wxT("svraddr"), m_FrameData.svraddr);
 	}
 
 	if(m_pCmdHistory)

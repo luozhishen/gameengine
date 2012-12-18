@@ -83,19 +83,21 @@ namespace Atlas
 		std::string strXmlFile = Atlas::AtlasGameDir();
 		strXmlFile += DEFAULT_CONFIG_FILE;
 		std::ifstream ifs;
-		ifs.open(strXmlFile);
-		assert(ifs.is_open());
+		ifs.open(strXmlFile.c_str());
+		if(!ifs.is_open()) return false;
 
 		Json::Reader reader;
 		Json::Value root;
-		if (!reader.parse(ifs, root, false))
+		if (!reader.parse(ifs, root, false)) return false;
+		
+		for(Json::UInt i = 0; i < root.size(); ++i)
 		{
-		    return false;
+			std::vector<std::string> vec = root.getMemberNames();
+			std::string strKey = vec[i];
+			std::string strValue = root[strKey.c_str()].asString();
+
+			m_Params[strKey] = strValue;
 		}
- 
-		m_Params["ServerIP"] = root["ServerIP"].asString();
-		m_Params["ServerPort"] = root["ServerPort"].asString();
-		m_Params["ConnectType"] = root["ConnectType"].asString();
 
 		ifs.close();
 		
@@ -107,9 +109,10 @@ namespace Atlas
 		Json::Value root;
 		Json::FastWriter writer;
 		
-		root["ConnectType"] = m_Params["ConnectType"];
-		root["ServerPort"] = m_Params["ServerPort"];
-		root["ServerIP"] = m_Params["ServerIP"];
+		for(std::map<std::string, std::string>::const_iterator it = m_Params.begin(); it != m_Params.end(); ++it)
+		{
+			root[it->first] = it->second;
+		}
 
 		std::string json_file = writer.write(root);
 		std::string strXmlFile = Atlas::AtlasGameDir();

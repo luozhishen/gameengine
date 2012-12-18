@@ -53,19 +53,32 @@ struct Sheet_info
 std::map<std::string, std::map<std::string, std::string>> g_FieldMaps;
 std::string g_strExcelPath;
 std::vector<Sheet_info> sheets;
+bool g_useRelativePath = false;
 
 bool read_xml()
 {	
 	TiXmlDocument xmldoc;
 	std::string strXmlFile = Atlas::AtlasGameDir();
+	
 	strXmlFile += "\\ClientConfig\\data_import.xml";
 	if(!xmldoc.LoadFile(strXmlFile.c_str()))
 		return false;
 
 	TiXmlElement* pNode = xmldoc.RootElement();
-	
 	g_strExcelPath = pNode->Attribute("input_path");
-		
+
+	if(g_useRelativePath)
+	{
+		wchar_t szPath[512];
+		GetCurrentDirectory(512, szPath);
+		std::string strPre = Atlas::String::UnicodeToANSI(szPath);
+		strPre += "\\";
+		g_strExcelPath.insert(0, strPre);
+	}
+
+	std::cout<<g_strExcelPath<<"\n";
+	//system("pause");
+
 	TiXmlElement* pSheetNode = pNode->FirstChildElement();//Sheet
 	int nDefaultStartLine = 1;
 	do 
@@ -142,10 +155,9 @@ bool import_data()
 		importMgr.SetFieldMap(it->first.c_str(), it->second);
 	}
 
-
 	std::ofstream ofs;
 	std::string strLogFile = Atlas::AtlasGameDir();
-	strLogFile += "\\import_log.txt";
+	strLogFile += "\\ClientConfig\\import_log.txt";
 	ofs.open(strLogFile, std::ios_base::out|std::ios_base::app);
 	assert(ofs.is_open());
 
@@ -186,6 +198,11 @@ bool import_data()
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	if(argc > 1)
+	{
+		g_useRelativePath = true;
+	}
+
 	Atlas::InitContentObjects();
 	//read xml
 	if(!read_xml())

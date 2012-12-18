@@ -96,7 +96,6 @@ private:
 	struct
 	{
 		int x, y, w, h, m;
-		wxString svraddr;
 	}						m_FrameData;
 
 	CStressFrameView*		m_pViews[100];

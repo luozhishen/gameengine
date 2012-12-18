@@ -319,25 +319,7 @@ namespace DDL
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.enemy_id)) return false;
-		if(!Read<_U32>(Value.attr_id)) return false;
 		if(!Read<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
-		if(!Read<_U8>(Value.type)) return false;
-		if(!Read<_S8>(Value.classes)) return false;
-		if(!Read<_U16>(Value.atk_type)) return false;
-		if(!Read<_U16>(Value.def_type)) return false;
-		if(!Read<_S32>(Value.gift)) return false;
-		if(!Read<_S32>(Value.com_atk_skill)) return false;
-		if(!Read<_S32>(Value.sp_skill)) return false;
-		if(!Read<_U32>(Value.atk_CD)) return false;
-		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
-		if(!Read<_S32>(Value.req_gold)) return false;
-		if(!Read<_S32>(Value.req_rmb)) return false;
-		if(!Read<_S32>(Value.unlock_level)) return false;
-		if(!Read<_S32>(Value.pre_general_id)) return false;
-		if(!Read<_S32>(Value.pre_level)) return false;
-		if(!Read<_S32>(Value.product_consume)) return false;
-		if(!Read<_S32>(Value.product_time)) return false;
-		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
 		return true;
 	}
 	template<>
@@ -345,25 +327,7 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.enemy_id)) return false;
-		if(!Write<_U32>(Value.attr_id)) return false;
 		if(!Write<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
-		if(!Write<_U8>(Value.type)) return false;
-		if(!Write<_S8>(Value.classes)) return false;
-		if(!Write<_U16>(Value.atk_type)) return false;
-		if(!Write<_U16>(Value.def_type)) return false;
-		if(!Write<_S32>(Value.gift)) return false;
-		if(!Write<_S32>(Value.com_atk_skill)) return false;
-		if(!Write<_S32>(Value.sp_skill)) return false;
-		if(!Write<_U32>(Value.atk_CD)) return false;
-		if(!WriteString<SG_DESCRIPTION_MAX>(Value.description)) return false;
-		if(!Write<_S32>(Value.req_gold)) return false;
-		if(!Write<_S32>(Value.req_rmb)) return false;
-		if(!Write<_S32>(Value.unlock_level)) return false;
-		if(!Write<_S32>(Value.pre_general_id)) return false;
-		if(!Write<_S32>(Value.pre_level)) return false;
-		if(!Write<_S32>(Value.product_consume)) return false;
-		if(!Write<_S32>(Value.product_time)) return false;
-		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
 		return true;
 	}
 }
@@ -373,27 +337,9 @@ namespace DDLReflect
 	static FIELD_INFO _struct_SG_ENEMY_CONFIG_fieldinfo[] =
 	{
 		{TYPE_U32, "enemy_id", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, enemy_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "attr_id", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRUCT, "PawnConfig", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
-		{TYPE_U8, "type", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_S8, "classes", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, classes), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
-		{TYPE_U16, "atk_type", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
-		{TYPE_U16, "def_type", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
-		{TYPE_S32, "gift", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, gift), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "com_atk_skill", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, com_atk_skill), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "sp_skill", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, sp_skill), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_U32, "atk_CD", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, atk_CD), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "description", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
-		{TYPE_S32, "req_gold", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "req_rmb", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "unlock_level", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "pre_general_id", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "pre_level", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "product_consume", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, product_consume), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "product_time", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, product_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_STRING, "archetype", 0, ATLAS_OFFSETOF(SG_ENEMY_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_ENEMY_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ENEMY_CONFIG", sizeof(SG_ENEMY_CONFIG), 20, _struct_SG_ENEMY_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_ENEMY_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ENEMY_CONFIG", sizeof(SG_ENEMY_CONFIG), 2, _struct_SG_ENEMY_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_ENEMY_CONFIG>()
 	{
@@ -1036,18 +982,21 @@ namespace DDLReflect
 {
 	static FIELD_INFO _class_SGGAME_C2S_fieldinfos[] = 
 	{
-		// 0 CreateAvatar
-		{TYPE_S8|TYPE_ARRAY, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 1 QueryAvatar
-		// 2 Ping
+		// 0 QueryAvatar
+		// 1 CreateAvatar
+		{TYPE_S8|TYPE_ARRAY, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 QueryBag
+		// 3 Ping
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
-		{"CreateAvatar", 1, _class_SGGAME_C2S_fieldinfos+0},
-		{"QueryAvatar", 0, _class_SGGAME_C2S_fieldinfos+1},
-		{"Ping", 0, _class_SGGAME_C2S_fieldinfos+1},
+		{"QueryAvatar", 0, _class_SGGAME_C2S_fieldinfos+0},
+		{"CreateAvatar", 2, _class_SGGAME_C2S_fieldinfos+0},
+		{"QueryBag", 0, _class_SGGAME_C2S_fieldinfos+2},
+		{"Ping", 0, _class_SGGAME_C2S_fieldinfos+2},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 3, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 4, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -1059,19 +1008,35 @@ namespace DDLReflect
 {
 	static FIELD_INFO _class_SGGAME_S2C_fieldinfos[] = 
 	{
-		// 0 CreatAvatarResult
+		// 0 QueryAvatarFailed
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 1 QueryAvatarResult
+		{TYPE_STRUCT, "player", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 CreatAvatarResult
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 Pong
+		// 3 QueryBagBegin
+		// 4 QueryBagEquipt
+		{TYPE_STRUCT, "item", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 5 QueryBagUsable
+		{TYPE_STRUCT, "item", 0, 0, &_rfl_struct_SG_USABLE_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 6 QueryBagGen
+		{TYPE_STRUCT, "item", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 7 QueryBagEnd
+		// 8 Pong
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
-		{"CreatAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+0},
+		{"QueryAvatarFailed", 1, _class_SGGAME_S2C_fieldinfos+0},
 		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+1},
-		{"Pong", 0, _class_SGGAME_S2C_fieldinfos+2},
+		{"CreatAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+2},
+		{"QueryBagBegin", 0, _class_SGGAME_S2C_fieldinfos+3},
+		{"QueryBagEquipt", 1, _class_SGGAME_S2C_fieldinfos+3},
+		{"QueryBagUsable", 1, _class_SGGAME_S2C_fieldinfos+4},
+		{"QueryBagGen", 1, _class_SGGAME_S2C_fieldinfos+5},
+		{"QueryBagEnd", 0, _class_SGGAME_S2C_fieldinfos+6},
+		{"Pong", 0, _class_SGGAME_S2C_fieldinfos+6},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 3, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 9, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

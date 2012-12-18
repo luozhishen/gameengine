@@ -5,24 +5,23 @@
 
 #include "ddl_parser.h"
 #include "ddl_codegen.h"
+#include "ddl_codegen_php.h"
 
-int update_project(const char* file)
-{
-	return 0;
-}
+static int phpmode = 0;
 
 int main(int argc, char* argv[])
 {
 	char filename[300];
 	char* pos;
 
-	if(argc==3 && strcmp(argv[1], "update")==0)
-	{
-		return update_project(argv[2]);
+	if(argc<2) return 0;
+	if(argc>=3) {
+		phpmode = 1;
+		if(!ddlgen_codephp_open(argv[2])) {
+			printf("can't open %s", argv[2]);
+			return -1;
+		}
 	}
-
-	assert(argc==2);
-	if(argc!=2) return 0;
 
 	strcpy(filename, argv[1]);
 	pos = strrchr(filename, '.');
@@ -44,6 +43,11 @@ int main(int argc, char* argv[])
 		}
 		return -1;
 	}
+
+	if(phpmode) {
+		ddlgen_codephp_close();
+	}
+
 	return 0;
 }
 
@@ -186,6 +190,21 @@ static int code_task(const DDL_TASK* task)
 		}
 		if(!ddlgen_code_task_struct_reflect(str, task)) {
 			return 0;
+		}
+		return 1;
+	}
+
+	if(strcmp(task->type, "GEN_PHP")==0) {
+		if(phpmode) {
+			const DDL_STR* str;
+			str = ddlgen_struct(task->name);
+			if(!str) {
+				printf("not found");
+				return 0;
+			}
+			if(!ddlgen_codephp_task_struct(str, task)) {
+				return 0;
+			}
 		}
 		return 1;
 	}

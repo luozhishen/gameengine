@@ -119,7 +119,7 @@ namespace Atlas
 		strXmlFile += DEFAULT_CONFIG_FILE;
 		std::ofstream ofs;
 		ofs.open(strXmlFile);
-		assert(ofs.is_open());
+		if(!ofs.is_open()) return false;
 		ofs<<json_file;
 		ofs.close();
 

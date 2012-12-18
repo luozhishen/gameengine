@@ -1,3 +1,5 @@
+#ifndef __DDL_CODEGEN__
+#define __DDL_CODEGEN__
 
 int ddlgen_code_open(const char* filename);
 void ddlgen_code_close();
@@ -19,3 +21,5 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task);
 
 void ddlgen_param_clear();
 void ddlgen_param_add(const char* name, const char* value);
+
+#endif

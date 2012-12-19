@@ -17,7 +17,7 @@ namespace Atlas
 		CSGGameServerComponent(CSGNodeServer* pServer);
 		virtual ~CSGGameServerComponent();
 
-		void CreateAvatar(CSGNodeClient* pClient, const _S8 name[], _U32 type);
+		void CreateAvatar(CSGNodeClient* pClient, const char* name, _U32 type);
 		void QueryAvatar(CSGNodeClient* pClient);
 		void QueryBag(CSGNodeClient* pClient);
 		void Ping(CSGNodeClient* pClient);

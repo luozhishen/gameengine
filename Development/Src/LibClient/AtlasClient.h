@@ -39,6 +39,9 @@ namespace Atlas
 		CLIENT_STATE GetState();
 		_U32 GetErrorCode();
 
+		const std::string& GetClientConnectionType();
+		CClientConnectionBase* GetClientConnection();
+
 		bool Login(const char* pUrl, _U32 nUID, const char* pToken);
 		bool LoginForStress(_U32 id);
 		void Logout();
@@ -69,6 +72,7 @@ namespace Atlas
 
 	private:
 		CClientApp* m_pClientApp;
+		std::string m_ClientConnectionType;
 		CClientConnectionBase* m_pClientConnection;
 		std::list<CClientComponent*> m_Components;
 	};

@@ -88,7 +88,10 @@ namespace Atlas
 
 		Json::Reader reader;
 		Json::Value root;
-		if (!reader.parse(ifs, root, false)) return false;
+		if (!reader.parse(ifs, root, false))
+		{
+		    return false;
+		}
 		
 		for(Json::UInt i = 0; i < root.size(); ++i)
 		{
@@ -118,7 +121,7 @@ namespace Atlas
 		std::string strXmlFile = Atlas::AtlasGameDir();
 		strXmlFile += DEFAULT_CONFIG_FILE;
 		std::ofstream ofs;
-		ofs.open(strXmlFile);
+		ofs.open(strXmlFile.c_str());
 		if(!ofs.is_open()) return false;
 		ofs<<json_file;
 		ofs.close();

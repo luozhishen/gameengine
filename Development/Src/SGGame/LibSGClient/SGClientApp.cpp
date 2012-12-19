@@ -22,7 +22,10 @@ namespace Atlas
 
 	Atlas::CClient* CSGClientApp::NewClient()
 	{
-		return ATLAS_NEW CSGClient(this);
+		Atlas::CClient* pClient = ATLAS_NEW CSGClient(this);
+		if(!pClient) return NULL;
+		pClient->InitializeComponents();
+		return pClient;
 	}
 
 }

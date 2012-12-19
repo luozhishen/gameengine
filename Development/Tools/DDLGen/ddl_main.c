@@ -96,6 +96,10 @@ void ddlgen_notify_struct_end(const DDL_STR* str)
 	if(!str->ext && !ddlgen_code_struct(str)) {
 		ddlgen_error_set("error in ddlgen_code_struct");
 	}
+
+	if(phpmode) {
+		ddlgen_codephp_task_struct(str, NULL);
+	}
 }
 
 void ddlgen_notify_class(const DDL_CLS* cls)
@@ -151,6 +155,36 @@ static int code_task(const DDL_TASK* task)
 		}
 		if(!ddlgen_code_task_class_client(cls, task)) {
 			return 0;
+		}
+		return 1;
+	}
+
+	if(strcmp(task->type, "GEN_PHP_STUB")==0) {
+		if(phpmode) {
+			const DDL_CLS* cls;
+			cls = ddlgen_class(task->name);
+			if(!cls) {
+				printf("not found");
+				return 0;
+			}
+			if(!ddlgen_codephp_task_class_stub(cls, task)) {
+				return 0;
+			}
+		}
+		return 1;
+	}
+
+	if(strcmp(task->type, "GEN_PHP_PROXY")==0) {
+		if(phpmode) {
+			const DDL_CLS* cls;
+			cls = ddlgen_class(task->name);
+			if(!cls) {
+				printf("not found");
+				return 0;
+			}
+			if(!ddlgen_codephp_task_class_proxy(cls, task)) {
+				return 0;
+			}
 		}
 		return 1;
 	}

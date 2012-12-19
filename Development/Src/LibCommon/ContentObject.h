@@ -61,6 +61,7 @@ namespace Atlas
 		const char* QueryContentGroupFile(const DDLReflect::STRUCT_INFO* info);
 
 		bool LoadContent();
+		bool LoadContentFromFile(const char* filename);
 		bool SaveContent(const char* file=NULL, bool force=false);
 		bool IsContentDirty();
 

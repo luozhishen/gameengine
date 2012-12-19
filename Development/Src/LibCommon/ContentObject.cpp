@@ -254,62 +254,67 @@ namespace Atlas
 			{
 				char file[1000];
 				sprintf(file, "%s/Content/%s", Atlas::AtlasGameDir(), i->first.c_str());
-				Json::Value root;
-				std::ifstream f(file, std::ifstream::binary);
-				Json::Reader reader;
-				if(!reader.parse(f, root, false))
-				{
-					return false;
-				}
-
-				Json::Value body = root.get("body", Json::Value());
-				if(!body.isArray())
-				{
-					return false;
-				}
-
-				for(Json::Value::UInt index=0; index<body.size(); index++)
-				{
-					Json::Value elem = body.get(index, Json::Value());
-					if(!elem.isObject())
-					{
-						return false;
-					}
-					Json::Value type = elem.get("type", Json::Value());
-					Json::Value data = elem.get("data", Json::Value());
-					if(!type.isString() || !data.isObject())
-					{
-						return false;
-					}
-					Json::Value vuuid = data.get("uuid", Json::Value());
-					if(!vuuid.isString())
-					{
-						return false;
-					}
-					A_UUID uuid;
-					if(!AUuidFromString(vuuid.asString().c_str(), uuid))
-					{
-						return false;
-					}
-					const DDLReflect::STRUCT_INFO* info = GetType(type.asString().c_str());
-					if(!info)
-					{
-						return false;
-					}
-					A_CONTENT_OBJECT* object = Alloc(info, uuid);
-					if(!object)
-					{
-						return false;
-					}
-					if(!DDLReflect::Json2Struct(info, data, (_U8*)object))
-					{
-						return false;
-					}
-				}
-
+				if(!LoadContentFromFile(file)) return false;
 				g_content_file_map[i->first] = false;
 			}
 
+			return true;
+		}
+
+		bool LoadContentFromFile(const char* filename)
+		{
+			Json::Value root;
+			std::ifstream f(filename, std::ifstream::binary);
+			Json::Reader reader;
+			if(!reader.parse(f, root, false))
+			{
+				return false;
+			}
+
+			Json::Value body = root.get("body", Json::Value());
+			if(!body.isArray())
+			{
+				return false;
+			}
+
+			for(Json::Value::UInt index=0; index<body.size(); index++)
+			{
+				Json::Value elem = body.get(index, Json::Value());
+				if(!elem.isObject())
+				{
+					return false;
+				}
+				Json::Value type = elem.get("type", Json::Value());
+				Json::Value data = elem.get("data", Json::Value());
+				if(!type.isString() || !data.isObject())
+				{
+					return false;
+				}
+				Json::Value vuuid = data.get("uuid", Json::Value());
+				if(!vuuid.isString())
+				{
+					return false;
+				}
+				A_UUID uuid;
+				if(!AUuidFromString(vuuid.asString().c_str(), uuid))
+				{
+					return false;
+				}
+				const DDLReflect::STRUCT_INFO* info = GetType(type.asString().c_str());
+				if(!info)
+				{
+					return false;
+				}
+				A_CONTENT_OBJECT* object = Alloc(info, uuid);
+				if(!object)
+				{
+					return false;
+				}
+				if(!DDLReflect::Json2Struct(info, data, (_U8*)object))
+				{
+					return false;
+				}
+			}
 			return true;
 		}
 

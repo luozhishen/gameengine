@@ -1,11 +1,8 @@
 #include <wx/wx.h>
 #include <wx/string.h>
-#include <tinyxml.h>
 
 #include <AtlasBase.h>
 #include <AtlasCommon.h>
-
-#include <algorithm>
 
 #include "ImportConfig.h"
 #include "OLEAutoExcelWrapper.h"
@@ -179,6 +176,7 @@ namespace Atlas
 		if(nStartLine<1)
 		{
 			m_Err = StringFormat("start with invalidate num of line[%d]", nStartLine);
+			m_pExcelWrapper->Quit();
 			return false;
 		}
 

@@ -17,16 +17,16 @@ namespace Atlas
 		pClientApp->RegisterClient(this);
 		A_MUTEX_INIT(&m_mtxClient);
 
-		const char* szType = m_pClientApp->GetParam("ConnectType");
-		if(strcmp(szType, "nonblock") == 0)
+		m_ClientConnectionType = m_pClientApp->GetParam("ConnectType");
+		if(m_ClientConnectionType=="nonblock")
 		{
 			m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
 		}
-		else if(strcmp(szType, "http") == 0)
+		else if(m_ClientConnectionType=="http")
 		{
 			m_pClientConnection = ATLAS_NEW CHttpClientConnection(this);
 		}
-		else if(strcmp(szType, "async") == 0)
+		else if(m_ClientConnectionType=="async")
 		{
 			m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this, recvsize);
 		}
@@ -57,6 +57,16 @@ namespace Atlas
 	_U32 CClient::GetErrorCode()
 	{
 		return m_pClientConnection->GetErrorCode();
+	}
+
+	const std::string& CClient::GetClientConnectionType()
+	{
+		return m_ClientConnectionType;
+	}
+	
+	CClientConnectionBase* CClient::GetClientConnection()
+	{
+		return m_pClientConnection;
 	}
 
 	bool CClient::Login(const char* pUrl, _U32 nUID, const char* pToken)

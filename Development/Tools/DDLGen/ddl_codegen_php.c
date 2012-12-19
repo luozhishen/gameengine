@@ -15,6 +15,7 @@ int ddlgen_codephp_open(const char* filename)
 {
 	_P = fopen(filename, "wt");
 	if(!_P) return 0;
+	OutP(0, "<?php\n");
 	return 1;
 }
 
@@ -28,48 +29,192 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 {
 	unsigned int a;
 	OutP(0, "\n");
-	OutP(0, "struct %s%s%s\n", str->name, str->parent[0]?" : ":"", str->parent);
+	OutP(0, "class %s%s%s\n", str->name, str->parent[0]?" extends ":"", str->parent);
 	OutP(0, "{\n");
 	for(a=0; a<str->args_count; a++) {
 		DDL_ARG* arg = &str->args[a];
 		if(arg->count[0]!='\0') {
-			OutP(1, "public %s = array();\n", arg->name);
+			OutP(1, "public $%s = array(); // array %s\n", arg->name, arg->type);
 		} else {
 			if(is_struct(arg)) {
-				OutP(1, "public %s %s;\n", arg->type, arg->name);
+				OutP(1, "public $%s; // %s;\n", arg->name, arg->type);
 			} else {
-				OutP(1, "public %s %s;\n", get_phptype(arg), arg->name);
+				OutP(1, "public $%s; // %s\n", arg->name, get_phptype(arg));
 			}
 		}
 	}
 
-	OutP(1, "public ToArray(_array)\n");
+	OutP(1, "public function __constuct()\n");
 	OutP(1, "{\n");
-	OutP(1, "	if(_array==nil) _array = array();\n");
+	if(str->parent[0]!='\0') {
+		OutP(2, "parent::__constuct();\n");
+	}
 	for(a=0; a<str->args_count; a++) {
 		DDL_ARG* arg = &str->args[a];
 		if(arg->count[0]!='\0') {
-			OutP(2, "__array = array();\n", arg->name);
-			OutP(2, "for(__i=0; i<count(%s); i++)\n", arg->name);
-			OutP(2, "{\n");
-			if(is_struct(arg)) {
-				OutP(3, "__array[__i] = %s[__i].ToArray(nil);\n");
-			} else {
-				OutP(3, "__array[__i] = %s[__i];\n");
-			}
-			OutP(2, "}\n");
-			OutP(2, "_array['%s'] = __array;\n", arg->name);
 		} else {
 			if(is_struct(arg)) {
-				OutP(2, "_array['%s'] = %s.ToArray(nil);\n", arg->name, arg->name);
+				OutP(2, "$this->%s = new %s;\n", arg->name, arg->type);
 			} else {
-				OutP(2, "_array['%s'] = %s;\n", arg->name, arg->name);
+				if(strcmp(get_phptype(arg), "string")==0) {
+					OutP(2, "$this->%s = '';\n", arg->name);
+				}
+				if(strcmp(get_phptype(arg), "int")==0) {
+					OutP(2, "$this->%s = 0;\n", arg->name);
+				}
+				if(strcmp(get_phptype(arg), "float")==0) {
+					OutP(2, "$this->%s = 0.0;\n", arg->name);
+				}
 			}
 		}
 	}
 	OutP(1, "}\n");
 
+	OutP(1, "public function ToArray($_array=array())\n");
+	OutP(1, "{\n");
+	if(str->parent[0]!='\0')
+	{
+		OutP(2, "$_array = parent::ToArray($_array);\n");
+	}
+	for(a=0; a<str->args_count; a++) {
+		DDL_ARG* arg = &str->args[a];
+		if(arg->count[0]!='\0') {
+			OutP(2, "$_earray = array();\n", arg->name);
+			OutP(2, "for($__i=0; $__i<count($this->%s); $__i++)\n", arg->name);
+			OutP(2, "{\n");
+			if(is_struct(arg)) {
+				OutP(3, "$_earray[$__i] = $this->%s[$__i]->ToArray(null);\n", arg->name);
+			} else {
+				OutP(3, "$_earray[$__i] = $this->%s[$__i];\n", arg->name);
+			}
+			OutP(2, "}\n");
+			OutP(2, "$_array['%s'] = $_earray;\n", arg->name);
+		} else {
+			if(is_struct(arg)) {
+				OutP(2, "$_array['%s'] = $this->%s->ToArray(null);\n", arg->name, arg->name);
+			} else {
+				OutP(2, "$_array['%s'] = $this->%s;\n", arg->name, arg->name);
+			}
+		}
+	}
+	OutP(1, "	return $_array;\n");
+	OutP(1, "}\n");
+
+	OutP(1, "public function FromArray($_array)\n");
+	OutP(1, "{\n");
+	OutP(1, "	if(!is_array($_array)) return false;\n");
+	if(str->parent[0]!='\0')
+	{
+		OutP(2, "if(!parent::FromArray($_array)) return false;\n");
+	}
+	for(a=0; a<str->args_count; a++) {
+		DDL_ARG* arg = &str->args[a];
+		if(arg->count[0]!='\0') {
+			OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
+
+			OutP(2, "$_earray = $_array['%s'];\n", arg->name);
+			OutP(2, "for($__i=0; $__i<count($_earray); $__i++)\n");
+			OutP(2, "{\n");
+			if(is_struct(arg)) {
+				OutP(3, "if(!$this->%s[$__i]->FromArray($_earray[$__i])) return false;\n", arg->name);
+			} else {
+				OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+				OutP(3, "$this->%s[$__i] = $_earray[$__i];\n", arg->name);
+			}
+			OutP(2, "}\n");
+		} else {
+			if(is_struct(arg)) {
+				OutP(2, "if(!$this->%s->FromArray($_array['%s'])) return false;\n", arg->name, arg->name);
+			} else {
+				OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+				OutP(2, "$this->%s = $_array['%s'];\n", arg->name, arg->name);
+			}
+		}
+	}
+	OutP(1, "	return true;\n");
+	OutP(1, "}\n");
+
 	OutP(0, "};\n");
+	return 1;
+}
+
+int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
+{
+	int f, a;
+	OutP(0, "\n");
+	OutP(0, "function %s_Dispatcher($fname, $_array, $_this)\n", cls->name);
+	OutP(0, "{\n");
+	for(f=0; f<(int)cls->funs_count; f++)
+	{
+		DDL_FUN* fun = &cls->funs[f];
+		OutP(1, "if($fname=='%s')\n", fun->name);
+		OutP(1, "{\n");
+		for(a=0; a<(int)fun->args_count; a++)
+		{
+			DDL_ARG* arg = &fun->args[a];
+
+			if(arg->count[0]!='\0') {
+				OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
+				OutP(2, "$__%s = array();\n", arg->name);
+				OutP(2, "$_earray = $_array['%s'];\n", arg->name);
+				OutP(2, "for($__i=0; $__i<count($_earray); $__i++)\n");
+				OutP(2, "{\n");
+				if(is_struct(arg)) {
+					OutP(3, "if(!is_array($_earray[$__i])) return false;\n");
+					OutP(3, "if(!$__%s[$__i]->FromArray($_earray[$__i])) return false;\n", arg->name);
+				} else {
+					OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+					OutP(3, "$__%s[$__i] = $_earray[$__i];\n", arg->name);
+				}
+				OutP(2, "}\n");
+			} else {
+				if(is_struct(arg)) {
+					OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
+					OutP(2, "$__%s = new %s;\n", arg->name, arg->type);
+					OutP(2, "if(!$__%s->FromArray($_array[%s]) return false;\n", arg->name, arg->name);
+				} else {
+					OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+					OutP(2, "$__%s = $_array['%s'];\n", arg->name, arg->name);
+				}
+			}
+		}
+
+		OutP(1, "	$_this->%s(", fun->name);
+		for(a=0; a<(int)fun->args_count; a++)
+		{
+			if(a>0) OutP(0, ", ");
+			OutP(0, "$__%s", fun->args[a].name);
+		}
+		OutP(0, ");\n");
+		OutP(1, "	return true;\n");
+		OutP(1, "}\n");
+	}
+	OutP(0, "	return false;\n");
+	OutP(0, "}\n");
+	return 1;
+}
+
+int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
+{
+	int f, a;
+	OutP(0, "\n");
+	OutP(0, "\n");
+	OutP(0, "class %s\n", cls->name);
+	OutP(0, "{\n");
+	for(f=0; f<(int)cls->funs_count; f++)
+	{
+		DDL_FUN* fun = &cls->funs[f];
+		OutP(1, "public function %s(", fun->name);
+		for(a=0; a<(int)fun->args_count; a++)
+		{
+			DDL_ARG* arg = &fun->args[a];
+		}
+		OutP(0, ")\n");
+		OutP(1, "{\n");
+		OutP(1, "	return true;\n");
+		OutP(1, "}\n");
+	}
+	OutP(0, "}\n");
 	return 1;
 }
 
@@ -93,7 +238,7 @@ const char* get_phptype(const DDL_ARG* arg)
 		return "string";
 	}
 	if(		strcmp(arg->type, "content_ref")==0
-		||	strcmp(arg->type, "uuid")==0) {
+		||	strcmp(arg->type, "A_UUID")==0) {
 		return "string";
 	}
 	if(		strcmp(arg->type, "_U8")==0
@@ -119,7 +264,7 @@ int is_struct(const DDL_ARG* arg)
 {
 	if(strcmp(arg->type, "string")==0
 		||	strcmp(arg->type, "content_ref")==0
-		||	strcmp(arg->type, "uuid")==0
+		||	strcmp(arg->type, "A_UUID")==0
 		||	strcmp(arg->type, "_U8")==0
 		||	strcmp(arg->type, "_U16")==0
 		||	strcmp(arg->type, "_U32")==0

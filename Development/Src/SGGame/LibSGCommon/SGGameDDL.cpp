@@ -409,11 +409,9 @@ namespace DDL
 		if(!Read<_U32>(Value.attr_id)) return false;
 		if(!Read<_U32>(Value.level)) return false;
 		if(!Read<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
-		if(!Read<_U32>(Value.exp)) return false;
 		if(!Read<_S32>(Value.levelup_gold)) return false;
 		if(!Read<_S32>(Value.levelup_rmb)) return false;
 		if(!Read<_S32>(Value.levelup_XP)) return false;
-		if(!Read<_U16>(Value.mod_scale)) return false;
 		return true;
 	}
 	template<>
@@ -423,11 +421,9 @@ namespace DDL
 		if(!Write<_U32>(Value.attr_id)) return false;
 		if(!Write<_U32>(Value.level)) return false;
 		if(!Write<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
-		if(!Write<_U32>(Value.exp)) return false;
 		if(!Write<_S32>(Value.levelup_gold)) return false;
 		if(!Write<_S32>(Value.levelup_rmb)) return false;
 		if(!Write<_S32>(Value.levelup_XP)) return false;
-		if(!Write<_U16>(Value.mod_scale)) return false;
 		return true;
 	}
 }
@@ -439,13 +435,11 @@ namespace DDLReflect
 		{TYPE_U32, "attr_id", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "level", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRUCT, "PawnConfig", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
-		{TYPE_U32, "exp", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_S32, "levelup_gold", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "levelup_rmb", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "levelup_XP", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_XP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_U16, "mod_scale", 0, ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, mod_scale), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_GENERAL_LEVEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_LEVEL_CONFIG", sizeof(SG_GENERAL_LEVEL_CONFIG), 8, _struct_SG_GENERAL_LEVEL_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_GENERAL_LEVEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_LEVEL_CONFIG", sizeof(SG_GENERAL_LEVEL_CONFIG), 6, _struct_SG_GENERAL_LEVEL_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL_LEVEL_CONFIG>()
 	{
@@ -461,22 +455,12 @@ namespace DDL
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.soldier_id)) return false;
 		if(!Read<_U32>(Value.attr_id)) return false;
-		if(!Read<_U8>(Value.type)) return false;
-		if(!Read<_S8>(Value.classes)) return false;
-		if(!Read<_U16>(Value.atk_type)) return false;
-		if(!Read<_U16>(Value.def_type)) return false;
-		if(!Read<_S32>(Value.gift)) return false;
-		if(!Read<_S32>(Value.com_atk_skill)) return false;
-		if(!Read<_S32>(Value.sp_skill)) return false;
-		if(!Read<_U32>(Value.atk_CD)) return false;
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
 		if(!Read<_S32>(Value.req_gold)) return false;
 		if(!Read<_S32>(Value.req_rmb)) return false;
 		if(!Read<_S32>(Value.unlock_level)) return false;
 		if(!Read<_S32>(Value.pre_general_id)) return false;
 		if(!Read<_S32>(Value.pre_level)) return false;
-		if(!Read<_S32>(Value.product_consume)) return false;
-		if(!Read<_S32>(Value.product_time)) return false;
 		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
 		return true;
 	}
@@ -486,22 +470,12 @@ namespace DDL
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.soldier_id)) return false;
 		if(!Write<_U32>(Value.attr_id)) return false;
-		if(!Write<_U8>(Value.type)) return false;
-		if(!Write<_S8>(Value.classes)) return false;
-		if(!Write<_U16>(Value.atk_type)) return false;
-		if(!Write<_U16>(Value.def_type)) return false;
-		if(!Write<_S32>(Value.gift)) return false;
-		if(!Write<_S32>(Value.com_atk_skill)) return false;
-		if(!Write<_S32>(Value.sp_skill)) return false;
-		if(!Write<_U32>(Value.atk_CD)) return false;
 		if(!WriteString<SG_DESCRIPTION_MAX>(Value.description)) return false;
 		if(!Write<_S32>(Value.req_gold)) return false;
 		if(!Write<_S32>(Value.req_rmb)) return false;
 		if(!Write<_S32>(Value.unlock_level)) return false;
 		if(!Write<_S32>(Value.pre_general_id)) return false;
 		if(!Write<_S32>(Value.pre_level)) return false;
-		if(!Write<_S32>(Value.product_consume)) return false;
-		if(!Write<_S32>(Value.product_time)) return false;
 		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
 		return true;
 	}
@@ -513,25 +487,15 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "soldier_id", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, soldier_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "attr_id", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "type", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_S8, "classes", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, classes), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
-		{TYPE_U16, "atk_type", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
-		{TYPE_U16, "def_type", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
-		{TYPE_S32, "gift", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, gift), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "com_atk_skill", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, com_atk_skill), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "sp_skill", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, sp_skill), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_U32, "atk_CD", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, atk_CD), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "description", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
 		{TYPE_S32, "req_gold", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "req_rmb", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "unlock_level", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "pre_general_id", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "pre_level", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "product_consume", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, product_consume), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "product_time", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, product_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_STRING, "archetype", 0, ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_SOLDIER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SOLDIER_CONFIG", sizeof(SG_SOLDIER_CONFIG), 19, _struct_SG_SOLDIER_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_SOLDIER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SOLDIER_CONFIG", sizeof(SG_SOLDIER_CONFIG), 9, _struct_SG_SOLDIER_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_SOLDIER_CONFIG>()
 	{
@@ -547,24 +511,13 @@ namespace DDL
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.general_id)) return false;
 		if(!Read<_U32>(Value.attr_id)) return false;
-		if(!Read<_U8>(Value.type)) return false;
-		if(!Read<_S8>(Value.classes)) return false;
-		if(!Read<_U16>(Value.atk_type)) return false;
-		if(!Read<_U16>(Value.def_type)) return false;
-		if(!Read<_S32>(Value.gift)) return false;
-		if(!Read<_S32>(Value.com_atk_skill)) return false;
-		if(!Read<_S32>(Value.sp_skill)) return false;
-		if(!Read<_U32>(Value.atk_CD)) return false;
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
-		if(!Read<_U32>(Value.space)) return false;
 		if(!Read<_S32>(Value.req_title)) return false;
 		if(!Read<_S32>(Value.req_gold)) return false;
 		if(!Read<_S32>(Value.req_rmb)) return false;
 		if(!Read<_S32>(Value.unlock_level)) return false;
 		if(!Read<_S32>(Value.pre_general_id)) return false;
 		if(!Read<_S32>(Value.pre_level)) return false;
-		if(!Read<_S32>(Value.product_consume)) return false;
-		if(!Read<_S32>(Value.product_time)) return false;
 		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
 		return true;
 	}
@@ -574,24 +527,13 @@ namespace DDL
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.general_id)) return false;
 		if(!Write<_U32>(Value.attr_id)) return false;
-		if(!Write<_U8>(Value.type)) return false;
-		if(!Write<_S8>(Value.classes)) return false;
-		if(!Write<_U16>(Value.atk_type)) return false;
-		if(!Write<_U16>(Value.def_type)) return false;
-		if(!Write<_S32>(Value.gift)) return false;
-		if(!Write<_S32>(Value.com_atk_skill)) return false;
-		if(!Write<_S32>(Value.sp_skill)) return false;
-		if(!Write<_U32>(Value.atk_CD)) return false;
 		if(!WriteString<SG_DESCRIPTION_MAX>(Value.description)) return false;
-		if(!Write<_U32>(Value.space)) return false;
 		if(!Write<_S32>(Value.req_title)) return false;
 		if(!Write<_S32>(Value.req_gold)) return false;
 		if(!Write<_S32>(Value.req_rmb)) return false;
 		if(!Write<_S32>(Value.unlock_level)) return false;
 		if(!Write<_S32>(Value.pre_general_id)) return false;
 		if(!Write<_S32>(Value.pre_level)) return false;
-		if(!Write<_S32>(Value.product_consume)) return false;
-		if(!Write<_S32>(Value.product_time)) return false;
 		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
 		return true;
 	}
@@ -603,27 +545,16 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "general_id", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "attr_id", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "type", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_S8, "classes", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, classes), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
-		{TYPE_U16, "atk_type", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
-		{TYPE_U16, "def_type", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
-		{TYPE_S32, "gift", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, gift), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "com_atk_skill", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, com_atk_skill), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "sp_skill", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, sp_skill), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_U32, "atk_CD", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, atk_CD), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "description", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
-		{TYPE_U32, "space", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, space), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_S32, "req_title", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "req_gold", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "req_rmb", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "unlock_level", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "pre_general_id", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "pre_level", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "product_consume", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, product_consume), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "product_time", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, product_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_STRING, "archetype", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 21, _struct_SG_GENERAL_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 10, _struct_SG_GENERAL_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL_CONFIG>()
 	{
@@ -984,8 +915,8 @@ namespace DDLReflect
 	{
 		// 0 QueryAvatar
 		// 1 CreateAvatar
-		{TYPE_S8|TYPE_ARRAY, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U32, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 2 QueryBag
 		// 3 Ping
 	};

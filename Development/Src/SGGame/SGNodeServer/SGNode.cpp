@@ -18,7 +18,7 @@ namespace Atlas
 	{
 	}
 
-	void CSGGameServerComponent::CreateAvatar(CSGNodeClient* pClient, const _S8 name[], _U32 type)
+	void CSGGameServerComponent::CreateAvatar(CSGNodeClient* pClient, const char* name, _U32 type)
 	{
 	
 	}

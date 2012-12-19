@@ -89,6 +89,17 @@ namespace Atlas
 		{
 			if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_DONE)
 			{
+				m_SendQueue.pop_front();
+
+				int code = MOClientGetResultCode(m_pCurrentRequest);
+				if(code==MOERROR_NOERROR)
+				{
+					const char* result = MOClientGetResultString(m_pCurrentRequest);
+					int i = 0;
+				}
+				else
+				{
+				}
 			}
 			MORequestDestory(m_pCurrentRequest);
 			m_pCurrentRequest = NULL;
@@ -139,7 +150,7 @@ namespace Atlas
 	void CHttpClientConnection::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
 		const DDLReflect::CLASS_INFO* classinfo;
-		bool bRet = GetClientFunctionStub(iid, fid, classinfo);
+		bool bRet = GetServerFunctionStub(iid, fid, classinfo);
 		ATLAS_ASSERT(bRet);
 		if(!bRet) return;
 		Json::Value root(Json::objectValue);

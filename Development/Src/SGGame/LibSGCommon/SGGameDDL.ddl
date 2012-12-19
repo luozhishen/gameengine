@@ -117,11 +117,9 @@ struct SG_GENERAL_LEVEL_CONFIG : A_CONTENT_OBJECT
 	_U32								attr_id;
 	_U32								level;
 	SG_PAWN_CONFIG						PawnConfig;
-	_U32								exp;
 	_S32								levelup_gold;		//升级所需金钱
 	_S32								levelup_rmb;		//升级所需金钱
 	_S32								levelup_XP;			//升级所需经验
-	_U16								mod_scale;			//模型缩放
 };
 
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL_LEVEL_CONFIG)];
@@ -131,23 +129,12 @@ struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
 {
 	_U32								soldier_id;
 	_U32								attr_id;
-
-	_U8									type;				//英雄类型
-	_S8									classes;			//阶级
-	_U16								atk_type;			//攻击类型
-	_U16								def_type;			//防御类型
-	_S32								gift;				//天赋
-	_S32								com_atk_skill;		//普通攻击技能
-	_S32								sp_skill;			//特殊技能 
-	_U32								atk_CD;				//攻击间隔时间
 	string<SG_DESCRIPTION_MAX>			description;		//描述
 	_S32								req_gold;			//需要的金币
 	_S32								req_rmb;			//需要的人民币
 	_S32								unlock_level;		//解锁等级
 	_S32								pre_general_id;		//前置兵种
 	_S32								pre_level;			//前置等级
-	_S32								product_consume;	//生产消耗
-	_S32								product_time;		//生产CD时间
 	string<ARCHETYPE_URL_LENGTH_MAX>    archetype;			//archetype
 };
 task[GEN_STRUCT_SERIALIZE(SG_SOLDIER_CONFIG)];
@@ -158,24 +145,13 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 	_U32								general_id;
 	_U32								attr_id;
 
-	_U8									type;				//英雄类型
-	_S8									classes;			//阶级
-	_U16								atk_type;			//攻击类型
-	_U16								def_type;			//防御类型
-	_S32								gift;				//天赋
-	_S32								com_atk_skill;		//普通攻击技能
-	_S32								sp_skill;			//特殊技能 
-	_U32								atk_CD;				//攻击间隔时间
 	string<SG_DESCRIPTION_MAX>			description;		//描述
-	_U32								space;				//占据格子
 	_S32								req_title;			//要求的官职
 	_S32								req_gold;			//需要的金币
 	_S32								req_rmb;			//需要的人民币
 	_S32								unlock_level;		//解锁等级
 	_S32								pre_general_id;		//前置兵种
 	_S32								pre_level;			//前置等级
-	_S32								product_consume;	//生产消耗
-	_S32								product_time;		//生产CD时间
 	string<ARCHETYPE_URL_LENGTH_MAX>    archetype;			//archetype
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL_CONFIG)];
@@ -270,7 +246,7 @@ task[GEN_STRUCT_REFLECT(SG_GEM_ITEM)];
 class SGGAME_C2S
 {
 	QueryAvatar();
-	CreateAvatar(_S8 nick[SG_PLAYERNAME_LENMAX], _U32 type);
+	CreateAvatar(string nick, _U32 general_id);
 	QueryBag();
 
 	Ping();
@@ -297,3 +273,6 @@ task[GEN_CLASS_REFLECT(SGGAME_C2S)];
 task[GEN_CLASS_STUB(SGGAME_S2C)];
 task[GEN_CLASS_PROXY(SGGAME_S2C)];
 task[GEN_CLASS_REFLECT(SGGAME_S2C)];
+
+task[GEN_PHP_STUB(SGGAME_C2S)];
+task[GEN_PHP_PROXY(SGGAME_S2C)];

@@ -255,11 +255,9 @@ struct SG_GENERAL_LEVEL_CONFIG : A_CONTENT_OBJECT
 	_U32 attr_id;
 	_U32 level;
 	SG_PAWN_CONFIG PawnConfig;
-	_U32 exp;
 	_S32 levelup_gold;
 	_S32 levelup_rmb;
 	_S32 levelup_XP;
-	_U16 mod_scale;
 };
 
 namespace DDL
@@ -281,22 +279,12 @@ struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 soldier_id;
 	_U32 attr_id;
-	_U8 type;
-	_S8 classes;
-	_U16 atk_type;
-	_U16 def_type;
-	_S32 gift;
-	_S32 com_atk_skill;
-	_S32 sp_skill;
-	_U32 atk_CD;
 	DDL::String<SG_DESCRIPTION_MAX> description;
 	_S32 req_gold;
 	_S32 req_rmb;
 	_S32 unlock_level;
 	_S32 pre_general_id;
 	_S32 pre_level;
-	_S32 product_consume;
-	_S32 product_time;
 	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
 };
 
@@ -319,24 +307,13 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 general_id;
 	_U32 attr_id;
-	_U8 type;
-	_S8 classes;
-	_U16 atk_type;
-	_U16 def_type;
-	_S32 gift;
-	_S32 com_atk_skill;
-	_S32 sp_skill;
-	_U32 atk_CD;
 	DDL::String<SG_DESCRIPTION_MAX> description;
-	_U32 space;
 	_S32 req_title;
 	_S32 req_gold;
 	_S32 req_rmb;
 	_S32 unlock_level;
 	_S32 pre_general_id;
 	_S32 pre_level;
-	_S32 product_consume;
-	_S32 product_time;
 	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
 };
 
@@ -596,19 +573,20 @@ namespace DDLStub
 			if(fid==1)
 			{
 				_U16 __length;
-				_S8* _prefix_nick;
-				_U32 _prefix_type;
+				char* _prefix_nick;
+				_U32 _prefix_general_id;
 
-				// <_S8> <nick> <> <SG_PLAYERNAME_LENMAX>;
+				// <string> <nick> <> <>;
 				if(!Buf.Read(__length)) return false;
-				_prefix_nick = (_S8*)alloca(sizeof(_prefix_nick[0])*__length);
+				_prefix_nick = (char*)alloca(sizeof(_prefix_nick[0])*(__length+1));
 				if(!_prefix_nick) return false;
-				if(!Buf.ReadPointer(_prefix_nick, __length)) return false;
-				// <_U32> <type> <> <>;
-				if(!Buf.Read(_prefix_type)) return false;
+				if(!Buf.ReadBuffer(_prefix_nick, (unsigned int)sizeof(_prefix_nick[0])*__length)) return false;
+				_prefix_nick[__length] = '\0';
+				// <_U32> <general_id> <> <>;
+				if(!Buf.Read(_prefix_general_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatar(Caller, _prefix_nick, _prefix_type);
+				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatar(Caller, _prefix_nick, _prefix_general_id);
 				return true;
 			}
 			if(fid==2)
@@ -658,16 +636,16 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
 
-		bool CreateAvatar(_S8* nick, _U32 type)
+		bool CreateAvatar(const char* nick, _U32 general_id)
 		{
 			BUFFER Buf;
 			_U16 __length;
-			// <_S8> <nick> <> <SG_PLAYERNAME_LENMAX>
-			__length = (_U16)(SG_PLAYERNAME_LENMAX);
+			// <string> <nick> <> <>
+			__length = DDL::StringLength(nick);
 			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(nick, __length)) return false;
-			// <_U32> <type> <> <>
-			if(!Buf.Write(type)) return false;
+			if(!Buf.WriteData(nick, (unsigned int)sizeof(nick[0])*__length)) return false;
+			// <_U32> <general_id> <> <>
+			if(!Buf.Write(general_id)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);

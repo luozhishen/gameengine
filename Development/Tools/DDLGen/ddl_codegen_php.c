@@ -198,7 +198,6 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 {
 	int f, a;
 	OutP(0, "\n");
-	OutP(0, "\n");
 	OutP(0, "class %s\n", cls->name);
 	OutP(0, "{\n");
 	for(f=0; f<(int)cls->funs_count; f++)
@@ -208,10 +207,29 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 		for(a=0; a<(int)fun->args_count; a++)
 		{
 			DDL_ARG* arg = &fun->args[a];
+			if(a>0) OutP(0, ", ");
+			OutP(0, "$%s", arg->name);
 		}
 		OutP(0, ")\n");
 		OutP(1, "{\n");
-		OutP(1, "	return true;\n");
+		OutP(1, "	$__result = '';\n");
+		for(a=0; a<(int)fun->args_count; a++)
+		{
+			DDL_ARG* arg = &fun->args[a];
+			if(arg->count[0]!='\0') {
+			} else {
+				if(is_struct(arg)) {
+					OutP(2, "if(!is_object($%s) && get_object($%s)=='%s') return '';\n", arg->name, arg->name, arg->type);
+					OutP(2, "$__earray = $%s->ToString(null);\n", arg->name, arg->type);
+					OutP(2, "if($__earray==null) return '';\n");
+					OutP(2, "$__result = $__result.ToJson($__earray);\n");
+				} else {
+					OutP(2, "if(!is_%s($%s)) return '';\n", get_phptype(arg), arg->name);
+					OutP(2, "$__result = $__result.$%s;\n", arg->name);
+				}
+			}
+		}
+		OutP(1, "	return $__result;\n");
 		OutP(1, "}\n");
 	}
 	OutP(0, "}\n");

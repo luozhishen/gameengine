@@ -11,6 +11,7 @@
 static char g_AppName[1000] = "UNKNOWN_APP";
 static char g_UDID[1000] = "UNKNOWN_UDID";
 static char g_OSName[1000] = "WINDOWS";
+static char g_ResourcePath[1000] = "";
 
 void MOInit(const char* appname)
 {
@@ -22,7 +23,10 @@ void MOInit(const char* appname)
 	DWORD dwBuild = 0;
 	if(dwVersion<0x80000000) dwBuild = (DWORD)(HIWORD(dwVersion));
 	sprintf(g_OSName, "windows0%d0%d0%d", dwMajorVersion, dwMinorVersion, dwBuild);
-
+	GetModuleFileNameA(NULL, g_ResourcePath, sizeof(g_ResourcePath));
+	*(strrchr(g_ResourcePath, '\\')) = '\0';
+	*(strrchr(g_ResourcePath, '\\')) = '\0';
+	*(strrchr(g_ResourcePath, '\\')) = '\0';
 }
 
 void MOFini()
@@ -43,6 +47,11 @@ const char* MOGetAppName()
 const char* MOGetOSName()
 {
 	return g_OSName;
+}
+
+const char* MoGetResourcePath()
+{
+	return g_ResourcePath;
 }
 
 #endif

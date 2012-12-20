@@ -1,6 +1,8 @@
 #ifndef __ATLAS_CLIENT__
 #define __ATLAS_CLIENT__
 
+#define CLIENT_LOG(client, fmt, ...) { if(Atlas::CClient::GetClientLog()) Atlas::CClient::GetClientLog()(client, fmt, ##__VA_ARGS__); }
+
 namespace Atlas
 {
 
@@ -10,6 +12,8 @@ namespace Atlas
 	class CClientApp;
 	class CStressClient;
 	class CStressCase;
+
+	typedef void(*CLIENT_LOG_PROC)(CClient* pClient, const char* fmt, ...);
 
 	class CClient : public CNoCopy
 	{
@@ -31,6 +35,9 @@ namespace Atlas
 			ERRCODE_AUTH_FAILED,
 			ERRCODE_NETWORK,
 		};
+
+		static void SetClientLog(CLIENT_LOG_PROC logproc);
+		static CLIENT_LOG_PROC GetClientLog();
 
 		CClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CClient();

@@ -20,6 +20,7 @@
 static char g_AppName[1000] = "UNKNOWN_APP";
 static char g_UDID[1000] = "UNKNOWN_UDID";
 static char g_OSName[1000] = "APPLE";
+static char g_ResourcePath[1000] = "";
 static const char* get_wifi_mac(char* addr);
 static const char* get_ios_udid(char* addr);
 static const char* get_random_deviceid(char* addr);
@@ -58,6 +59,9 @@ void MOInit(const char* appname)
 #else
 	sprintf(g_OSName, "OSX_%s", [[UIDevice currentDevice].systemVersion UTF8String]);
 #endif
+
+	NSString *respath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@""];
+	strcat(g_ResourcePath, [respath UTF8String]);
 }
 
 void MOFini()
@@ -78,6 +82,11 @@ const char* MOGetAppName()
 const char* MOGetOSName()
 {
 	return g_OSName;
+}
+
+const char* MoGetResourcePath()
+{
+	return g_ResourcePath;
 }
 
 const char* get_wifi_mac(char* addr)

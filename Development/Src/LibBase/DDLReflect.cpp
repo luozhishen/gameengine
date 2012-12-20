@@ -202,20 +202,11 @@ namespace DDLReflect
 			case TYPE_STRUCT:
 				{
 					value = Json::Value(Json::objectValue);
-					int count = 0;
-					const FIELD_INFO* fi_p[100];
-					_U16 fi_c[100];
 					const STRUCT_INFO* pStructDef = def;
 					while(pStructDef)
 					{
-						fi_p[count] = pStructDef->finfos;
-						fi_c[count] = pStructDef->fcount;
-						count++;
+						if(!call_jsonread(buf, pStructDef->finfos, pStructDef->fcount, value)) return false;
 						pStructDef = pStructDef->parent;
-					}
-					for(int i=count-1; i>=0; i--)
-					{
-						if(!call_jsonread(buf, fi_p[i], fi_c[i], value)) return false;
 					}
 					break;
 				}
@@ -346,7 +337,13 @@ namespace DDLReflect
 			case TYPE_STRUCT:
 				{
 					if(!value.isObject()) return false;
-					if(!call_jsonwrite(buf, def->finfos, def->fcount, value)) return false;
+					const STRUCT_INFO* pStructDef = def;
+					while(pStructDef)
+					{
+						if(!call_jsonwrite(buf, pStructDef->finfos, pStructDef->fcount, value)) return false;
+						pStructDef = pStructDef->parent;
+					}
+
 					break;
 				}
 			default:
@@ -924,19 +921,12 @@ namespace DDLReflect
 
 	bool StructParamType(const STRUCT_INFO* info, const char* name, std::string& type)
 	{
-		for(;;)
-		{
-			for(_U16 i=0; i<info->fcount; i++)
-			{
-				if(strcmp(name, info->finfos[i].name)==0)
-				{
-					return StructParamType(&info->finfos[i], type);
-				}
-			}
-			if(!info->parent) break;
-			info = info->parent;
-		}
-		return false;
+		void* data = NULL;
+		void* fdata = NULL;
+		FIELD_INFO finfo;
+		if(!GetStructFieldInfo(info, name, data, finfo, fdata)) return false;
+		if(!StructParamType(&finfo, type)) return false;
+		return true;
 	}
 
 	void* CreateObject(const STRUCT_INFO* info)

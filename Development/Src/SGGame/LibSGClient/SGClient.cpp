@@ -23,6 +23,8 @@ namespace Atlas
 
 	void CSGClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
+		CClient::OnData(iid, fid, len, data);
+
 		if(iid==GetClientStubID<SGGAME_S2C>())
 		{
 			DDL::MemoryReader reader(data, len);

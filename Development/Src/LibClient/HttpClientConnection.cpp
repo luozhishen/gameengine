@@ -33,6 +33,7 @@ namespace Atlas
 				{
 					SetErrorCode(ret==MOERROR_AUTH_FAILED?CClient::ERRCODE_AUTH_FAILED:CClient::ERRCODE_UNKOWN);
 					m_nState = CClient::STATE_FAILED;
+					CLIENT_LOG(GetClient(), "http_connection : login failed, return code = %d", ret);
 				}
 				else
 				{
@@ -43,27 +44,21 @@ namespace Atlas
 					{
 						SetErrorCode(CClient::ERRCODE_UNKOWN);
 						m_nState = CClient::STATE_FAILED;
+						CLIENT_LOG(GetClient(), "http_connection : failed to parse json, %s", result);
 					}
 					else
 					{
-						if(!root.isMember("session_key"))
+						if(!root.isMember("session_key") || !root["session_key"].isString())
 						{
 							SetErrorCode(CClient::ERRCODE_UNKOWN);
 							m_nState = CClient::STATE_FAILED;
+							CLIENT_LOG(GetClient(), "http_connection : invalid session key in response, %s", result);
 						}
 						else
 						{
 							Json::Value session_key = root["session_key"];
-							if(!session_key.isString())
-							{
-								SetErrorCode(CClient::ERRCODE_UNKOWN);
-								m_nState = CClient::STATE_FAILED;
-							}
-							else
-							{
-								m_SessionKey = session_key.asString();
-								m_nState = CClient::STATE_LOGINED;
-							}
+							m_SessionKey = session_key.asString();
+							m_nState = CClient::STATE_LOGINED;
 						}
 					}
 				}
@@ -73,6 +68,7 @@ namespace Atlas
 				ATLAS_ASSERT(m_nState==CClient::STATE_LOGINING);
 				SetErrorCode(CClient::ERRCODE_NETWORK);
 				m_nState = CClient::STATE_FAILED;
+				CLIENT_LOG(GetClient(), "http_connection : http failed");
 			}
 			MORequestDestory(m_pLoginRequest);
 			m_pLoginRequest = NULL;
@@ -81,25 +77,77 @@ namespace Atlas
 			if(m_nState==CClient::STATE_LOGINED) GetClient()->GetClientApp()->QueueLoginDone(GetClient());
 		}
 
-		if(m_pNotifyRequest)
-		{
-		}
-
 		if(m_pCurrentRequest && MORequestStatus(m_pCurrentRequest)!=MOREQUESTSTATE_PENDING)
 		{
 			if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_DONE)
 			{
 				m_SendQueue.pop_front();
 
-				int code = MOClientGetResultCode(m_pCurrentRequest);
-				if(code==MOERROR_NOERROR)
+				int ret = MOClientGetResultCode(m_pCurrentRequest);
+				if(ret!=MOERROR_NOERROR)
 				{
-					const char* result = MOClientGetResultString(m_pCurrentRequest);
-					int i = 0;
+					CLIENT_LOG(GetClient(), "http_connection : login failed, return code = %d", ret);
 				}
 				else
 				{
+					const char* result = MOClientGetResultString(m_pCurrentRequest);
+					Json::Value root;
+					Json::Reader reader;
+					if(!reader.parse(result, result+strlen(result), root) || !root.isMember("response") || !root["response"].isArray())
+					{
+						CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
+					}
+					else
+					{
+						Json::Value& _array = root["response"];
+						Json::Value _default;
+						for(Json::Value::UInt i=0; i<_array.size(); i++)
+						{
+							Json::Value& elm = _array[i];
+							bool error = false;
+
+							if(!elm.isObject()) error = true;
+							if(!elm.isMember("method") || !elm["method"].isString()) error = true;
+							if(!elm.isMember("message") || !elm["message"].isObject()) error = true;
+							if(error)
+							{
+								Json::FastWriter writer;
+								std::string json = writer.write(elm);
+								CLIENT_LOG(GetClient(), "http_connection : invalid data, (%d) %s", json.c_str());
+								continue;
+							}
+
+							const DDLReflect::CLASS_INFO* cls;
+							_U16 fid;
+							if(!GetClientFunctionStub(elm["method"].asCString(), cls, fid))
+							{
+								CLIENT_LOG(GetClient(), "http_connection : invalid method name %s", elm["method"].asCString());
+								error = true;
+								continue;
+							}
+
+							_U32 len = 300*1024;
+							_U8* data = (_U8*)ATLAS_ALLOC(len);
+							if(!DDLReflect::Json2Call(&cls->finfos[fid], elm["message"], len, data))
+							{
+								Json::FastWriter writer;
+								std::string json = writer.write(elm["message"]);
+								CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", json.c_str());
+								error = true;
+							}
+							else
+							{
+								GetClient()->GetClientApp()->QueueData(GetClient(), cls->iid, fid, len, data);
+							}
+
+							ATLAS_FREE(data);
+						}
+					}
 				}
+			}
+			else
+			{
+				CLIENT_LOG(GetClient(), "http_connection : http failed");
 			}
 			MORequestDestory(m_pCurrentRequest);
 			m_pCurrentRequest = NULL;
@@ -145,6 +193,10 @@ namespace Atlas
 
 	void CHttpClientConnection::Logout()
 	{
+		if(m_nState==CClient::STATE_LOGINED)
+		{
+			m_nState = CClient::STATE_NA;
+		}
 	}
 
 	void CHttpClientConnection::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)

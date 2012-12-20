@@ -7,6 +7,7 @@ void MOFini();
 const char* MOGetDeviceUDID();
 const char* MOGetAppName();
 const char* MOGetOSName();
+const char* MoGetResourcePath();
 
 struct MOREQUEST;
 typedef struct MOREQUEST MOREQUEST;

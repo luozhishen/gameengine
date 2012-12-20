@@ -58,9 +58,17 @@ void AUuidToString(const A_UUID& uuid, char* str)
 
 bool AUuidFromString(const char* str, A_UUID& uuid)
 {
-	RPC_STATUS ret = UuidFromStringA((unsigned char*)str, (UUID*)&uuid);
-	DWORD dwError = GetLastError();
-	return RPC_S_OK==ret;
+	if(*str!='\0')
+	{
+		RPC_STATUS ret = UuidFromStringA((unsigned char*)str, (UUID*)&uuid);
+		DWORD dwError = GetLastError();
+		return RPC_S_OK==ret;
+	}
+	else
+	{
+		memset(&uuid, 0, sizeof(uuid));
+		return true;
+	}
 }
 
 void AUuidGenerate(A_UUID& uuid)

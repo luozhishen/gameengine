@@ -11,6 +11,17 @@
 
 namespace Atlas
 {
+	static CLIENT_LOG_PROC _g_clienglog = NULL;
+
+	void CClient::SetClientLog(CLIENT_LOG_PROC logproc)
+	{
+		_g_clienglog = logproc;
+	}
+
+	CLIENT_LOG_PROC CClient::GetClientLog()
+	{
+		return _g_clienglog;
+	}
 
 	CClient::CClient(CClientApp* pClientApp, _U32 recvsize) : m_pClientApp(pClientApp)
 	{

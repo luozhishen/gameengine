@@ -11,12 +11,12 @@
 namespace Atlas
 {
 
-	void StringSplit(const std::string& value, std::vector<std::string>& result)
+	void StringSplit(const std::string& value, char splitchar, std::vector<std::string>& result)
 	{
 		result.clear();
 		std::stringstream sstr(value);
 		std::string tmp;
-	    while(std::getline(sstr, tmp, '.'))
+	    while(std::getline(sstr, tmp, splitchar))
 		{
 			result.push_back(tmp);
 		}

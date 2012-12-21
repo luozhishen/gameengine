@@ -14,8 +14,6 @@
 #include "ClientStressApp.h"
 #include "ClientStressFrame.h"
 #include "ClientLogView.h"
-#include "ProtocalView.h"
-#include "SyncObjectView.h"
 #include "ClientCaseView.h"
 
 CClientStressApp* g_ClientStressApp = NULL;
@@ -60,7 +58,5 @@ int CClientStressApp::OnExit()
 void CClientStressApp::InitClientView(CClientStressFrame* pFrame, wxWindow* pParent)
 {
 	pFrame->AddView(ATLAS_NEW CClientLogView(pFrame, pParent));
-	pFrame->AddView(ATLAS_NEW CProtocalView(pFrame, pParent));
-	pFrame->AddView(ATLAS_NEW CSyncObjectView(pFrame, pParent));
 	pFrame->AddView(ATLAS_NEW CClientCaseView(pFrame, pParent));
 }

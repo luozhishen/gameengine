@@ -17,7 +17,7 @@ namespace Atlas
 
 	const char* GetExeDir();
 
-	void StringSplit(const std::string& value, std::vector<std::string>& result);
+	void StringSplit(const std::string& value, char splitchar, std::vector<std::string>& result);
 	std::string StringFormat(const char* fmt, ...);
 
 	class CNoCopy

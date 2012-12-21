@@ -7,6 +7,138 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_LEVEL_DROP_CONFIG>(SG_LEVEL_DROP_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<100>(Value.level_name)) return false;
+		if(!Read<_U32>(Value.exp)) return false;
+		if(!Read<_U32>(Value.gold)) return false;
+		if(!Read<_U32>(Value.group1_id)) return false;
+		if(!Read<_F32>(Value.group1_rate)) return false;
+		if(!Read<_U32>(Value.group2_id)) return false;
+		if(!Read<_F32>(Value.group2_rate)) return false;
+		if(!Read<_U32>(Value.group3_id)) return false;
+		if(!Read<_F32>(Value.group3_rate)) return false;
+		if(!Read<_U32>(Value.group4_id)) return false;
+		if(!Read<_F32>(Value.group4_rate)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEVEL_DROP_CONFIG>(const SG_LEVEL_DROP_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<100>(Value.level_name)) return false;
+		if(!Write<_U32>(Value.exp)) return false;
+		if(!Write<_U32>(Value.gold)) return false;
+		if(!Write<_U32>(Value.group1_id)) return false;
+		if(!Write<_F32>(Value.group1_rate)) return false;
+		if(!Write<_U32>(Value.group2_id)) return false;
+		if(!Write<_F32>(Value.group2_rate)) return false;
+		if(!Write<_U32>(Value.group3_id)) return false;
+		if(!Write<_F32>(Value.group3_rate)) return false;
+		if(!Write<_U32>(Value.group4_id)) return false;
+		if(!Write<_F32>(Value.group4_rate)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_LEVEL_DROP_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "level_name", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, level_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_U32, "exp", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "gold", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "group1_id", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group1_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group1_rate", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group1_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group2_id", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group2_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group2_rate", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group2_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group3_id", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group3_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group3_rate", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group3_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group4_id", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group4_rate", 0, ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEVEL_DROP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_DROP_CONFIG", sizeof(SG_LEVEL_DROP_CONFIG), 11, _struct_SG_LEVEL_DROP_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEVEL_DROP_CONFIG>()
+	{
+		return &_rfl_struct_SG_LEVEL_DROP_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DROP_GROUP_BASE>(SG_DROP_GROUP_BASE& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.item_id)) return false;
+		if(!Read<_U32>(Value.count)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_DROP_GROUP_BASE>(const SG_DROP_GROUP_BASE& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.item_id)) return false;
+		if(!Write<_U32>(Value.count)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_DROP_GROUP_BASE_fieldinfo[] =
+	{
+		{TYPE_U32, "item_id", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_BASE, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "count", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_BASE, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_DROP_GROUP_BASE_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DROP_GROUP_BASE", sizeof(SG_DROP_GROUP_BASE), 2, _struct_SG_DROP_GROUP_BASE_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DROP_GROUP_BASE>()
+	{
+		return &_rfl_struct_SG_DROP_GROUP_BASE_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DROP_GROUP_CONFIG>(SG_DROP_GROUP_CONFIG& Value)
+	{
+		if(!BufferReader::Read<SG_DROP_GROUP_BASE>(Value)) return false;
+		if(!Read<_U32>(Value.group_id)) return false;
+		if(!Read<_F32>(Value.rate)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_DROP_GROUP_CONFIG>(const SG_DROP_GROUP_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<SG_DROP_GROUP_BASE>(Value)) return false;
+		if(!Write<_U32>(Value.group_id)) return false;
+		if(!Write<_F32>(Value.rate)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_DROP_GROUP_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "group_id", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_CONFIG, group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "rate", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_CONFIG, rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_DROP_GROUP_CONFIG_info = { &_rfl_struct_SG_DROP_GROUP_BASE_info, "SG_DROP_GROUP_CONFIG", sizeof(SG_DROP_GROUP_CONFIG), 2, _struct_SG_DROP_GROUP_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DROP_GROUP_CONFIG>()
+	{
+		return &_rfl_struct_SG_DROP_GROUP_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_ATTR_MOD_CONFIG>(SG_ATTR_MOD_CONFIG& Value)
 	{
 		if(!Read<_F32>(Value.MOD_HPAddition)) return false;
@@ -909,25 +1041,98 @@ namespace DDLReflect
 	}
 }
 
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_SERVER_INFO>(SG_SERVER_INFO& Value)
+	{
+		if(!Read<_U32>(Value.server_id)) return false;
+		if(!ReadString<100>(Value.server_name)) return false;
+		if(!Read<_U32>(Value.server_state)) return false;
+		if(!ReadString<100>(Value.avatar_nick)) return false;
+		if(!Read<_U32>(Value.general_id)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_SERVER_INFO>(const SG_SERVER_INFO& Value)
+	{
+		if(!Write<_U32>(Value.server_id)) return false;
+		if(!WriteString<100>(Value.server_name)) return false;
+		if(!Write<_U32>(Value.server_state)) return false;
+		if(!WriteString<100>(Value.avatar_nick)) return false;
+		if(!Write<_U32>(Value.general_id)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_SERVER_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "server_id", 0, ATLAS_OFFSETOF(SG_SERVER_INFO, server_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "server_name", 0, ATLAS_OFFSETOF(SG_SERVER_INFO, server_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_U32, "server_state", 0, ATLAS_OFFSETOF(SG_SERVER_INFO, server_state), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "avatar_nick", 0, ATLAS_OFFSETOF(SG_SERVER_INFO, avatar_nick), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_U32, "general_id", 0, ATLAS_OFFSETOF(SG_SERVER_INFO, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, ATLAS_OFFSETOF(SG_SERVER_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_SERVER_INFO_info = { NULL, "SG_SERVER_INFO", sizeof(SG_SERVER_INFO), 6, _struct_SG_SERVER_INFO_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_SERVER_INFO>()
+	{
+		return &_rfl_struct_SG_SERVER_INFO_info;
+	}
+}
+
 namespace DDLReflect
 {
 	static FIELD_INFO _class_SGGAME_C2S_fieldinfos[] = 
 	{
-		// 0 QueryAvatar
-		// 1 CreateAvatar
+		// 0 Ping
+		// 1 GetServerList
+		// 2 EnterServer
+		{TYPE_U32, "server_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 3 QueryAvatar
+		// 4 CreateAvatar
 		{TYPE_STRING, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 QueryBag
-		// 3 Ping
+		// 5 DeleteAvatar
+		// 6 EnterGame
+		// 7 LeaveGame
+		// 8 QueryPlayer
+		// 9 QueryGenerals
+		// 10 QuerySoldiers
+		// 11 QueryBag
+		// 12 EquipItem
+		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_UUID, "item_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 13 BeginBattle
+		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 14 EndBattle
+		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
-		{"QueryAvatar", 0, _class_SGGAME_C2S_fieldinfos+0},
-		{"CreateAvatar", 2, _class_SGGAME_C2S_fieldinfos+0},
-		{"QueryBag", 0, _class_SGGAME_C2S_fieldinfos+2},
-		{"Ping", 0, _class_SGGAME_C2S_fieldinfos+2},
+		{"Ping", 0, _class_SGGAME_C2S_fieldinfos+0},
+		{"GetServerList", 0, _class_SGGAME_C2S_fieldinfos+0},
+		{"EnterServer", 1, _class_SGGAME_C2S_fieldinfos+0},
+		{"QueryAvatar", 0, _class_SGGAME_C2S_fieldinfos+1},
+		{"CreateAvatar", 2, _class_SGGAME_C2S_fieldinfos+1},
+		{"DeleteAvatar", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"EnterGame", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"LeaveGame", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"QueryPlayer", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"QueryGenerals", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"QuerySoldiers", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"QueryBag", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"EquipItem", 2, _class_SGGAME_C2S_fieldinfos+3},
+		{"BeginBattle", 1, _class_SGGAME_C2S_fieldinfos+5},
+		{"EndBattle", 2, _class_SGGAME_C2S_fieldinfos+6},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 4, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 15, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -939,35 +1144,63 @@ namespace DDLReflect
 {
 	static FIELD_INFO _class_SGGAME_S2C_fieldinfos[] = 
 	{
-		// 0 QueryAvatarFailed
+		// 0 Pong
+		// 1 GetServerListResult
+		{TYPE_STRUCT|TYPE_ARRAY, "infos", 0, 0, &_rfl_struct_SG_SERVER_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 QueryAvatarFailed
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 1 QueryAvatarResult
+		// 3 QueryAvatarResult
 		{TYPE_STRUCT, "player", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 CreatAvatarResult
+		// 4 CreateAvatarResult
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 3 QueryBagBegin
-		// 4 QueryBagEquipt
-		{TYPE_STRUCT, "item", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 QueryBagUsable
-		{TYPE_STRUCT, "item", 0, 0, &_rfl_struct_SG_USABLE_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 6 QueryBagGen
-		{TYPE_STRUCT, "item", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 7 QueryBagEnd
-		// 8 Pong
+		// 5 QueryPlayerResult
+		{TYPE_STRUCT, "player", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 6 QueryGeneralResult
+		{TYPE_STRUCT|TYPE_ARRAY, "generals", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 7 QuerySoldierResult
+		{TYPE_STRUCT|TYPE_ARRAY, "soldiers", 0, 0, &_rfl_struct_SG_SOLDIER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 8 QueryBagBegin
+		// 9 QueryBagEquipt
+		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 10 QueryBagUsable
+		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_USABLE_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 11 QueryBagGen
+		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 12 QueryBagEnd
+		// 13 BeginBattleResult
+		{TYPE_UUID, "battle", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 14 EndBattleResult
+		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_GROUP_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
-		{"QueryAvatarFailed", 1, _class_SGGAME_S2C_fieldinfos+0},
-		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+1},
-		{"CreatAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+2},
-		{"QueryBagBegin", 0, _class_SGGAME_S2C_fieldinfos+3},
-		{"QueryBagEquipt", 1, _class_SGGAME_S2C_fieldinfos+3},
-		{"QueryBagUsable", 1, _class_SGGAME_S2C_fieldinfos+4},
-		{"QueryBagGen", 1, _class_SGGAME_S2C_fieldinfos+5},
-		{"QueryBagEnd", 0, _class_SGGAME_S2C_fieldinfos+6},
-		{"Pong", 0, _class_SGGAME_S2C_fieldinfos+6},
+		{"Pong", 0, _class_SGGAME_S2C_fieldinfos+0},
+		{"GetServerListResult", 2, _class_SGGAME_S2C_fieldinfos+0},
+		{"QueryAvatarFailed", 1, _class_SGGAME_S2C_fieldinfos+2},
+		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+3},
+		{"CreateAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+4},
+		{"QueryPlayerResult", 1, _class_SGGAME_S2C_fieldinfos+5},
+		{"QueryGeneralResult", 2, _class_SGGAME_S2C_fieldinfos+6},
+		{"QuerySoldierResult", 2, _class_SGGAME_S2C_fieldinfos+8},
+		{"QueryBagBegin", 0, _class_SGGAME_S2C_fieldinfos+10},
+		{"QueryBagEquipt", 2, _class_SGGAME_S2C_fieldinfos+10},
+		{"QueryBagUsable", 2, _class_SGGAME_S2C_fieldinfos+12},
+		{"QueryBagGen", 2, _class_SGGAME_S2C_fieldinfos+14},
+		{"QueryBagEnd", 0, _class_SGGAME_S2C_fieldinfos+16},
+		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+16},
+		{"EndBattleResult", 5, _class_SGGAME_S2C_fieldinfos+17},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 9, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 15, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

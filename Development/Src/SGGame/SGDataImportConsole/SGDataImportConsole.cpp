@@ -94,7 +94,7 @@ bool read_xml()
 		else
 			sheet.nStartLine = 1;
 
-		Atlas::StringSplit(strKeys, sheet.vecKeys);
+		Atlas::StringSplit(strKeys, '.', sheet.vecKeys);
 
 		TiXmlElement* pColNode = pSheetNode->FirstChildElement();
 

@@ -150,7 +150,6 @@ void CClientStressFrame::InitMenu()
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
 	GetMenuBar()->GetMenu(0)->Append(ID_PROTOCAL, wxT("Protocal"), wxT("Show protocal dailog"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SVR_PARAM_DLG, wxT("Server Params"), wxT("Set Server Params"));
-	//GetMenuBar()->GetMenu(0)->Append(ID_SVRADDR, wxT("Server Address"), wxT("Set Server Address"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SVRPARAM, wxT("Param Address"), wxT("Set Server Param"));
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
@@ -270,19 +269,19 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		return;
 	}
 
-	std::string json((const char*)cmd.ToUTF8());
+	std::string json((const char*)arg.ToUTF8());
 	std::vector<std::string> args;
-	Atlas::StringSplit(json, args);
+	Atlas::StringSplit(json, ' ', args);
 	if(cls->finfos[fid].fcount!=(_U16)args.size())
 	{
 		return;
 	}
 	json = "{";
-	for(_U16 i=0; i<cls->finfos[fid].fcount; i++)
+	for(_U16 a=0; a<cls->finfos[fid].fcount; a++)
 	{
-		if(i>0)	json += ",";
-		json += Atlas::StringFormat("\"%s\":", cls->finfos[fid].finfos->name);
-		json += args[i];
+		if(a>0)	json += ",";
+		json += Atlas::StringFormat("\"%s\":", cls->finfos[fid].finfos[a].name);
+		json += args[a];
 	}
 	json += "}";
 

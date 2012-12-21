@@ -280,7 +280,7 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 			DDL_ARG* arg = &fun->args[a];
 			if(arg->count[0]!='\0') {
 				OutP(2, "if(!is_array($%s)) return '';\n", arg->name);
-				OutP(2, "$__result = %s%s'\"%s\":[';\n", a>0?",":"", a>0?"$__result.":"", arg->name);
+				OutP(2, "$__result = %s'%s\"%s\":[';\n", a>0?"$__result.":"", a>0?",":"", arg->name);
 				OutP(2, "for($__i=0; $__i<count($%s); $__i++)\n", arg->name);
 				OutP(2, "{\n");
 				OutP(2, "	if($__i>0) $__result = $__result.',';\n");
@@ -295,7 +295,7 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 					}
 				}
 				OutP(2, "}\n");
-				OutP(2, "$__result = $__result.']'");
+				OutP(2, "$__result = $__result.']';\n");
 			} else {
 				if(is_struct(arg)) {
 					OutP(2, "if(!is_object($%s) || get_class($%s)!='%s') return '';\n", arg->name, arg->name, arg->type);
@@ -303,9 +303,9 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 				} else {
 					OutP(2, "if(!is_%s($%s)) return '';\n", get_phptype(arg), arg->name);
 					if(strcmp(get_phptype(arg), "string")==0) {
-						OutP(2, "$__result = %s%s'\"%s\":\"'.$%s.'\"';\n", a>0?",":"", a>0?"$__result.":"", arg->name, arg->name);
+						OutP(2, "$__result = %s%s'\"%s\":\"'.$%s.'\"';\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 					} else {
-						OutP(2, "$__result = %s%s'\"%s\":'.$%s;\n", a>0?",":"", a>0?"$__result.":"", arg->name, arg->name);
+						OutP(2, "$__result = %s'%s\"%s\":'.$%s;\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 					}
 				}
 			}

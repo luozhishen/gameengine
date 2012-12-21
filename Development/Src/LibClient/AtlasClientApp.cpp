@@ -14,7 +14,6 @@
 
 namespace Atlas
 {
-	#define DEFAULT_CONFIG_FILE "\\ClientConfig\\ClientConfig.json"
 	static CClientApp* __global_client_app = NULL;
 
 	CClientApp::CClientApp(const char* appname, bool bThread)
@@ -81,7 +80,7 @@ namespace Atlas
 		m_Params.clear();
 
 		std::string strXmlFile = Atlas::AtlasGameDir();
-		strXmlFile += DEFAULT_CONFIG_FILE;
+		strXmlFile += "\\Config\\Client.json";
 		std::ifstream ifs;
 		ifs.open(strXmlFile.c_str());
 		if(!ifs.is_open()) return false;
@@ -119,7 +118,7 @@ namespace Atlas
 
 		std::string json_file = writer.write(root);
 		std::string strXmlFile = Atlas::AtlasGameDir();
-		strXmlFile += DEFAULT_CONFIG_FILE;
+		strXmlFile += "\\Config\\Client.json";
 		std::ofstream ofs;
 		ofs.open(strXmlFile.c_str());
 		if(!ofs.is_open()) return false;

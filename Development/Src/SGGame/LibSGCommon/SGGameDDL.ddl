@@ -9,6 +9,40 @@ const _U32 SG_SOLDIER_MAX = 10;
 const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 const _U32 SG_DESCRIPTION_MAX = 512;
 
+struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
+{
+	string<100>							level_name;
+	_U32								exp;
+	_U32								gold;
+	_U32								group1_id;
+	_F32								group1_rate;
+	_U32								group2_id;
+	_F32								group2_rate;
+	_U32								group3_id;
+	_F32								group3_rate;
+	_U32								group4_id;
+	_F32								group4_rate;
+};
+task[GEN_STRUCT_SERIALIZE(SG_LEVEL_DROP_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_LEVEL_DROP_CONFIG)];
+
+
+struct SG_DROP_GROUP_BASE : A_CONTENT_OBJECT
+{
+	_U32								item_id;
+	_U32								count;
+};
+task[GEN_STRUCT_SERIALIZE(SG_DROP_GROUP_BASE)];
+task[GEN_STRUCT_REFLECT(SG_DROP_GROUP_BASE)];
+
+struct SG_DROP_GROUP_CONFIG : SG_DROP_GROUP_BASE
+{
+	_U32								group_id;
+	_F32								rate;
+};
+task[GEN_STRUCT_SERIALIZE(SG_DROP_GROUP_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_DROP_GROUP_CONFIG)];
+
 struct SG_ATTR_MOD_CONFIG
 {
 	_F32								MOD_HPAddition;
@@ -177,7 +211,6 @@ struct SG_PLAYER_PVE
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER_PVE)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER_PVE)];
 
-
 struct SG_EQUIP_SLOTS
 {
 	A_UUID								head;
@@ -243,28 +276,61 @@ struct SG_GEM_ITEM : SG_ITEM
 task[GEN_STRUCT_SERIALIZE(SG_GEM_ITEM)];
 task[GEN_STRUCT_REFLECT(SG_GEM_ITEM)];
 
+struct SG_SERVER_INFO
+{
+	_U32								server_id;
+	string<100>							server_name;
+	_U32								server_state;
+	string<100>							avatar_nick;
+	_U32								general_id;
+	_U32								level;
+};
+task[GEN_STRUCT_SERIALIZE(SG_SERVER_INFO)];
+task[GEN_STRUCT_REFLECT(SG_SERVER_INFO)];
+
 class SGGAME_C2S
 {
+	Ping();
+
+	GetServerList();
+	EnterServer(_U32 server_id);
 	QueryAvatar();
 	CreateAvatar(string nick, _U32 general_id);
+	DeleteAvatar();
+	EnterGame();
+	LeaveGame();
+
+	QueryPlayer();
+	QueryGenerals();
+	QuerySoldiers();
 	QueryBag();
 
-	Ping();
+	EquipItem(_U32 general_id, A_UUID item_uuid);
+
+	BeginBattle(string name);
+	EndBattle(string name, _U32 result);
 };
 
 class SGGAME_S2C
 {
+	Pong();
+
+	GetServerListResult(SG_SERVER_INFO infos[count], _U32 count);
 	QueryAvatarFailed(_U32 code);
 	QueryAvatarResult(SG_PLAYER player);
-	CreatAvatarResult(_U32 code);
+	CreateAvatarResult(_U32 code);
 
+	QueryPlayerResult(SG_PLAYER player);
+	QueryGeneralResult(SG_GENERAL generals[count], _U32 count);
+	QuerySoldierResult(SG_SOLDIER soldiers[count], _U32 count);
 	QueryBagBegin();
-	QueryBagEquipt(SG_EQUIPT_ITEM item);
-	QueryBagUsable(SG_USABLE_ITEM item);
-	QueryBagGen(SG_GEM_ITEM item);
+	QueryBagEquipt(SG_EQUIPT_ITEM items[count], _U32 count);
+	QueryBagUsable(SG_USABLE_ITEM items[count], _U32 count);
+	QueryBagGen(SG_GEM_ITEM items[count], _U32 count);
 	QueryBagEnd();
 
-	Pong();
+	BeginBattleResult(A_UUID battle);
+	EndBattleResult(_U32 level, _U32 exp, _U32 gold, SG_DROP_GROUP_BASE drops[drop_count], _U32 drop_count);
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

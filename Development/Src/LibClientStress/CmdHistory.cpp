@@ -6,13 +6,12 @@
 
 namespace Atlas
 {
-#define CMD_HISTORY_FILE "ClientConfig\\cmd_history.txt"
 
 	CmdHistory::CmdHistory(const char* path)
 	{
 		m_path = path;
 		m_path += "/";
-		m_path += CMD_HISTORY_FILE;
+		m_path += "Config\\StressHistory.txt";
 
 		std::ifstream ifs;
 		ifs.open(m_path, std::ios_base::app|std::ios_base::in);

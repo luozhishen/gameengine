@@ -167,11 +167,7 @@ namespace Atlas
 	void CHttpClientConnection::ProcessQueueRequest()
 	{
 		ATLAS_ASSERT(m_pCurrentRequest);
-
-		if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_PENDING)
-		{
-			return;
-		}
+		if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_PENDING) return;
 
 		if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_FAILED)
 		{
@@ -200,6 +196,20 @@ namespace Atlas
 		}
 
 		const char* result = MOClientGetResultString(m_pCurrentRequest);
+		if(*result=='\0')
+		{
+			MORequestDestory(m_pCurrentRequest);
+			m_pCurrentRequest = NULL;
+
+			m_SendQueue.pop_front();
+			if(m_nHttpState==STATE_RETRY)
+			{
+				m_nHttpState = STATE_RUNNING;
+				m_pStateCallback(m_nHttpState);
+			}
+			return;
+		}
+
 		Json::Value root;
 		Json::Reader reader;
 		if(!reader.parse(result, result+strlen(result), root) || !root.isMember("response") || !root["response"].isArray())

@@ -40,7 +40,7 @@ namespace Atlas
 			if(keys)
 			{
 				std::vector<std::string> vkeys;
-				StringSplit(keys, vkeys);
+				StringSplit(keys, '.', vkeys);
 				if(vkeys.empty()) ATLAS_ASSERT(0);
 				DDLReflect::FIELD_INFO finfo;
 				const void* fdata;

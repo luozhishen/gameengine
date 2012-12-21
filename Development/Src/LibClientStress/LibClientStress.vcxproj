@@ -26,7 +26,6 @@
     <ClCompile Include="ClientStressFrame.cpp" />
     <ClCompile Include="CmdHistory.cpp" />
     <ClCompile Include="ProtocalDlg.cpp" />
-    <ClCompile Include="ProtocalView.cpp" />
     <ClCompile Include="ServerParamDlg.cpp" />
     <ClCompile Include="StressCase.cpp" />
     <ClCompile Include="StressClient.cpp" />
@@ -34,7 +33,6 @@
     <ClCompile Include="StressManager.cpp" />
     <ClCompile Include="StressViewDlg.cpp" />
     <ClCompile Include="StressViewTree.cpp" />
-    <ClCompile Include="SyncObjectView.cpp" />
     <ClCompile Include="TinyXml.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +43,6 @@
     <ClInclude Include="ClientStressFrame.h" />
     <ClInclude Include="CmdHistory.h" />
     <ClInclude Include="ProtocalDlg.h" />
-    <ClInclude Include="ProtocalView.h" />
     <ClInclude Include="ServerParamDlg.h" />
     <ClInclude Include="StressCase.h" />
     <ClInclude Include="StressClient.h" />
@@ -53,7 +50,6 @@
     <ClInclude Include="StressManager.h" />
     <ClInclude Include="StressViewDlg.h" />
     <ClInclude Include="StressViewTree.h" />
-    <ClInclude Include="SyncObjectView.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7F6B584F-7FB3-43DF-B91D-1D182F21635D}</ProjectGuid>

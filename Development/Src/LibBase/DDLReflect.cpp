@@ -642,7 +642,7 @@ namespace DDLReflect
 	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo, void*& fdata)
 	{
 		std::vector<std::string> ns;
-		Atlas::StringSplit(name, ns);
+		Atlas::StringSplit(name, '.', ns);
 		if(ns.empty()) return false;
 		std::string fname;
 		int findex = 0;

@@ -33,6 +33,14 @@ namespace Atlas
 		}
 	}
 
+	void CSGClient::Pong(CSGClient* pClient)
+	{
+	}
+
+	void CSGClient::GetServerListResult(CSGClient* pClient, const SG_SERVER_INFO* infos, _U32 count)
+	{
+	}
+
 	void CSGClient::QueryAvatarFailed(CSGClient* pClient, _U32 code)
 	{
 	}
@@ -41,7 +49,19 @@ namespace Atlas
 	{
 	}
 
-	void CSGClient::CreatAvatarResult(CSGClient* pClient, _U32 code)
+	void CSGClient::CreateAvatarResult(CSGClient* pClient, _U32 code)
+	{
+	}
+
+	void CSGClient::QueryPlayerResult(CSGClient* pClient, const SG_PLAYER& player)
+	{
+	}
+
+	void CSGClient::QueryGeneralResult(CSGClient* pClient, const SG_GENERAL* generals, _U32 count)
+	{
+	}
+
+	void CSGClient::QuerySoldierResult(CSGClient* pClient, const SG_SOLDIER* soldiers, _U32 count)
 	{
 	}
 
@@ -49,15 +69,15 @@ namespace Atlas
 	{
 	}
 
-	void CSGClient::QueryBagEquipt(CSGClient* pClient, const SG_EQUIPT_ITEM& item)
+	void CSGClient::QueryBagEquipt(CSGClient* pClient, const SG_EQUIPT_ITEM* items, _U32 count)
 	{
 	}
 
-	void CSGClient::QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM& item)
+	void CSGClient::QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count)
 	{
 	}
 
-	void CSGClient::QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM& item)
+	void CSGClient::QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count)
 	{
 	}
 
@@ -65,7 +85,11 @@ namespace Atlas
 	{
 	}
 
-	void CSGClient::Pong(CSGClient* pClient)
+	void CSGClient::BeginBattleResult(CSGClient* pClient, const A_UUID& battle)
+	{
+	}
+
+	void CSGClient::EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_GROUP_BASE* drops, _U32 drop_count)
 	{
 	}
 

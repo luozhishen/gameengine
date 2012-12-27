@@ -8,21 +8,34 @@ namespace Atlas
 	{
 	public:
 		virtual ~CSGClientCallback();
-		virtual void Pong() = 0;
+
+		virtual void LoginResult(int LoginResult) = 0;
+		virtual void LogoutDone() = 0;
+		virtual void DisconnectNotify() = 0;
+		virtual void HttpStateNotify(bool IsOnline)= 0;
+
 		virtual void GetServerListResult(const SG_SERVER_INFO* infos, _U32 count) = 0;
 		virtual void QueryAvatarFailed(_U32 code) = 0;
-		virtual void QueryAvatarDone() = 0;
+		virtual void QueryAvatarDone(const SG_PLAYER& player) = 0;
 		virtual void CreateAvatarResult(_U32 code) = 0;
-		virtual void QueryPlayerResult() = 0;
-		virtual void QueryGeneralResult() = 0;
-		virtual void QuerySoldierResult() = 0;
-		virtual void QueryBagDone() = 0;
-		virtual void BeginBattleResult(const A_UUID& battle) = 0;
-		virtual void EndBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_GROUP_BASE* drops, _U32 drop_count) = 0;
+
+		virtual void QueryGeneralsDone(const std::vector<SG_GENERAL>& generals) = 0;
+		virtual void QuerySoldiersDone(const std::vector<SG_SOLDIER>& soldiers) = 0;
+		virtual void QueryBagDone(std::vector<SG_EQUIPT_ITEM>& equipts, std::vector<SG_USABLE_ITEM>& usables, std::vector<SG_GEM_ITEM>& gems) = 0;
+
+		virtual void BeginBattleDone(const SG_PLAYER_PVE& PlayerPVE) = 0;
+		virtual void EndBattleDone(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
 	};
 
 	class CSGClient : public CClient
 	{
+		typedef enum {
+			STATE_NA,
+			STATE_PENDING,
+			STATE_SUCC,
+			STATE_FAILED,
+		} QUERY_STATE;
+
 	public:
 		CSGClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CSGClient();
@@ -38,6 +51,7 @@ namespace Atlas
 
 		// UC server
 		void Ping();
+
 		void GetServerList();
 		void EnterServer(_U32 server_id);
 		void QueryAvatar();
@@ -53,10 +67,9 @@ namespace Atlas
 		void BeginBattle(const char* name);
 		void EndBattle(const char* name, _U32 result);
 
-		// UC data
-
-		//
+		//result
 		void Pong(CSGClient* pClient);
+
 		void GetServerListResult(CSGClient* pClient, const SG_SERVER_INFO* infos, _U32 count);
 		void QueryAvatarFailed(CSGClient* pClient, _U32 code);
 		void QueryAvatarResult(CSGClient* pClient, const SG_PLAYER& player);
@@ -69,8 +82,21 @@ namespace Atlas
 		void QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count);
 		void QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count);
 		void QueryBagEnd(CSGClient* pClient);
-		void BeginBattleResult(CSGClient* pClient, const A_UUID& battle);
-		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_GROUP_BASE* drops, _U32 drop_count);
+		void BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
+		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 drop_count);
+
+	private:
+		CSGClientCallback* m_callback;
+		SG_PLAYER m_player;
+		std::vector<SG_GENERAL> m_generals;
+		std::vector<SG_SOLDIER> m_soldiers;
+		std::vector<SG_EQUIPT_ITEM> m_equipts;
+		std::vector<SG_USABLE_ITEM> m_usables;
+		std::vector<SG_GEM_ITEM> m_gems;
+		QUERY_STATE m_QueryState;
+		_U8 m_nQueryBagRef;
+		std::string m_strUserName;
+		std::string m_strPassword;
 	};
 
 }

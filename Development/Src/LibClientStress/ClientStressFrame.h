@@ -64,7 +64,8 @@ public:
 	void OnLogin(wxCommandEvent& event);
 	void OnLogout(wxCommandEvent& event);
 	void OnAddCase(wxCommandEvent& event);
-	void OnSvrParam(wxCommandEvent& event);
+	//void OnSvrAddr(wxCommandEvent& event);
+	//void OnSvrParam(wxCommandEvent& event);
 	
 	void OnClientSelected(wxCommandEvent& event);
 	void OnStressView(wxCommandEvent& event);
@@ -83,9 +84,6 @@ public:
 
 	void NotifyClientAdd(_U32 index);
 	void NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCase);
-
-protected:
-	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const std::string& json);
 
 private:
 	wxNotebook*				m_pTabView;

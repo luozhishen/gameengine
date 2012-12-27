@@ -69,7 +69,7 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<SG_DROP_GROUP_BASE>(SG_DROP_GROUP_BASE& Value)
+	bool BufferReader::Read<SG_DROP_ITEM_BASE>(SG_DROP_ITEM_BASE& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.item_id)) return false;
@@ -77,7 +77,7 @@ namespace DDL
 		return true;
 	}
 	template<>
-	bool BufferWriter::Write<SG_DROP_GROUP_BASE>(const SG_DROP_GROUP_BASE& Value)
+	bool BufferWriter::Write<SG_DROP_ITEM_BASE>(const SG_DROP_ITEM_BASE& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.item_id)) return false;
@@ -88,33 +88,33 @@ namespace DDL
 
 namespace DDLReflect
 {
-	static FIELD_INFO _struct_SG_DROP_GROUP_BASE_fieldinfo[] =
+	static FIELD_INFO _struct_SG_DROP_ITEM_BASE_fieldinfo[] =
 	{
-		{TYPE_U32, "item_id", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_BASE, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "count", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_BASE, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "item_id", 0, ATLAS_OFFSETOF(SG_DROP_ITEM_BASE, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "count", 0, ATLAS_OFFSETOF(SG_DROP_ITEM_BASE, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_DROP_GROUP_BASE_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DROP_GROUP_BASE", sizeof(SG_DROP_GROUP_BASE), 2, _struct_SG_DROP_GROUP_BASE_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_DROP_ITEM_BASE_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DROP_ITEM_BASE", sizeof(SG_DROP_ITEM_BASE), 2, _struct_SG_DROP_ITEM_BASE_fieldinfo };
 	template<>
-	const STRUCT_INFO* GetStruct<SG_DROP_GROUP_BASE>()
+	const STRUCT_INFO* GetStruct<SG_DROP_ITEM_BASE>()
 	{
-		return &_rfl_struct_SG_DROP_GROUP_BASE_info;
+		return &_rfl_struct_SG_DROP_ITEM_BASE_info;
 	}
 }
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<SG_DROP_GROUP_CONFIG>(SG_DROP_GROUP_CONFIG& Value)
+	bool BufferReader::Read<SG_DROP_ITEM_CONFIG>(SG_DROP_ITEM_CONFIG& Value)
 	{
-		if(!BufferReader::Read<SG_DROP_GROUP_BASE>(Value)) return false;
+		if(!BufferReader::Read<SG_DROP_ITEM_BASE>(Value)) return false;
 		if(!Read<_U32>(Value.group_id)) return false;
 		if(!Read<_F32>(Value.rate)) return false;
 		return true;
 	}
 	template<>
-	bool BufferWriter::Write<SG_DROP_GROUP_CONFIG>(const SG_DROP_GROUP_CONFIG& Value)
+	bool BufferWriter::Write<SG_DROP_ITEM_CONFIG>(const SG_DROP_ITEM_CONFIG& Value)
 	{
-		if(!BufferWriter::Write<SG_DROP_GROUP_BASE>(Value)) return false;
+		if(!BufferWriter::Write<SG_DROP_ITEM_BASE>(Value)) return false;
 		if(!Write<_U32>(Value.group_id)) return false;
 		if(!Write<_F32>(Value.rate)) return false;
 		return true;
@@ -123,16 +123,16 @@ namespace DDL
 
 namespace DDLReflect
 {
-	static FIELD_INFO _struct_SG_DROP_GROUP_CONFIG_fieldinfo[] =
+	static FIELD_INFO _struct_SG_DROP_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "group_id", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_CONFIG, group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "rate", 0, ATLAS_OFFSETOF(SG_DROP_GROUP_CONFIG, rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group_id", 0, ATLAS_OFFSETOF(SG_DROP_ITEM_CONFIG, group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "rate", 0, ATLAS_OFFSETOF(SG_DROP_ITEM_CONFIG, rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_DROP_GROUP_CONFIG_info = { &_rfl_struct_SG_DROP_GROUP_BASE_info, "SG_DROP_GROUP_CONFIG", sizeof(SG_DROP_GROUP_CONFIG), 2, _struct_SG_DROP_GROUP_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_DROP_ITEM_CONFIG_info = { &_rfl_struct_SG_DROP_ITEM_BASE_info, "SG_DROP_ITEM_CONFIG", sizeof(SG_DROP_ITEM_CONFIG), 2, _struct_SG_DROP_ITEM_CONFIG_fieldinfo };
 	template<>
-	const STRUCT_INFO* GetStruct<SG_DROP_GROUP_CONFIG>()
+	const STRUCT_INFO* GetStruct<SG_DROP_ITEM_CONFIG>()
 	{
-		return &_rfl_struct_SG_DROP_GROUP_CONFIG_info;
+		return &_rfl_struct_SG_DROP_ITEM_CONFIG_info;
 	}
 }
 
@@ -1174,12 +1174,12 @@ namespace DDLReflect
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 12 QueryBagEnd
 		// 13 BeginBattleResult
-		{TYPE_UUID, "battle", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 14 EndBattleResult
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_GROUP_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 

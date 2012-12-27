@@ -329,6 +329,12 @@ namespace Atlas
 				}
 	
 				std::string fieldvalue = (const char*)strValue.ToUTF8();	
+				//for float append zero at head
+				if(fieldvalue.find(".") == 0)
+				{
+					fieldvalue = "0" + fieldvalue;
+				}
+
 				std::map<std::string, std::string>::const_iterator it_find;
 				for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 				{

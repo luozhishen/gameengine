@@ -68,7 +68,7 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 	wxBitmap bmpRemove;
 	wxBitmap bmpReflush;
 	bmpAdd.LoadFile(wxT("../wxRes/AtlasEditor/Add.png"),			wxBITMAP_TYPE_PNG);
-	bmpRemove.LoadFile(wxT("../wxRes/AtlasEditor/Remove.png"),	wxBITMAP_TYPE_PNG);
+	bmpRemove.LoadFile(wxT("../wxRes/AtlasEditor/Remove.png"),		wxBITMAP_TYPE_PNG);
 	bmpReflush.LoadFile(wxT("../wxRes/AtlasEditor/Reflush.png"),	wxBITMAP_TYPE_PNG);
 	
 	m_pObjectType = ATLAS_NEW wxComboBox(this, ID_OBJECT_TYPE, wxEmptyString, wxDefaultPosition, wxSize(200, -1), 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);

@@ -23,6 +23,9 @@ namespace Atlas
 	{
 		Atlas::Engine::InitContentObjects();
 
+		ContentObject::Register(DDLReflect::GetStruct<SG_DROP_ITEM_CONFIG>());
+		ContentObject::Register(DDLReflect::GetStruct<SG_LEVEL_DROP_CONFIG>());
+
 		ContentObject::Register(DDLReflect::GetStruct<SG_ENEMY_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_GENERAL_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_SOLDIER_CONFIG>());

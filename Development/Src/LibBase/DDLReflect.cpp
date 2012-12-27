@@ -645,7 +645,7 @@ namespace DDLReflect
 		Atlas::StringSplit(name, '.', ns);
 		if(ns.empty()) return false;
 		std::string fname;
-		int findex = 0;
+		int findex = -1;
 		size_t i=0, old_i=ns.size();
 
 		for(;;)
@@ -664,7 +664,7 @@ namespace DDLReflect
 					if(ns[i].length()<pos+3) return false;
 					if(*(ns[i].c_str()+ns[i].length()-1)!=']') return false;
 					fname = ns[i].substr(0, pos);
-					findex = atoi(ns[i].substr(2, ns[i].length()-pos-2).c_str());
+					findex = atoi(ns[i].substr(pos+1, ns[i].length()-pos-2).c_str());
 				}
 				old_i = i;
 			}
@@ -731,7 +731,7 @@ namespace DDLReflect
 
 				finfo = info->finfos[f];
 				finfo.type &= TYPE_MASK;
-				fdata = (void*)((char*)data + info->finfos[f].offset);
+				fdata = (void*)((char*)data + info->finfos[f].offset + info->finfos[f].prefix + info->finfos[f].elen * findex);
 				break;
 			}
 			else

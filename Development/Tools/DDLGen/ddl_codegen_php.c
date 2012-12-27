@@ -91,13 +91,13 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 			OutP(2, "{\n");
 			OutP(2, "	if($__i>0) $__result = $__result.',';\n");
 			if(is_struct(arg)) {
-				OutP(3, "$__result = $__result.$this->%s->ToString();\n", arg->name);
+				OutP(3, "$__result = $__result.$this->%s[$__i]->ToString();\n", arg->name);
 			} else {
 				OutP(3, "if(!is_%s($this->%s[$__i])) return false;\n", get_phptype(arg), arg->name);
 				if(strcmp(get_phptype(arg), "string")==0) {
-					OutP(3, "$__result = $__result.'\"'.$this->%s.'\"';\n", arg->name);
+					OutP(3, "$__result = $__result.'\"'.$this->%s[$__i].'\"';\n", arg->name);
 				} else {
-					OutP(3, "$__result = $__result.$this->%s;\n", arg->name);
+					OutP(3, "$__result = $__result.$this->%s[$__i];\n", arg->name);
 				}
 			}
 			OutP(2, "}\n");

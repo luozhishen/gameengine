@@ -10,6 +10,7 @@ namespace Atlas
 	const char* AtlasGameDir()
 	{
 		if(_global_game_dir[0]) return _global_game_dir;
+		if(!GetExeDir()) return "";
 		char path[400];
 		char* p;
 		strcpy(path, GetExeDir());

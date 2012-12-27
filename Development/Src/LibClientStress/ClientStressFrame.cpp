@@ -44,7 +44,7 @@ enum
 	ID_LOGIN,
 	ID_LOGOUT,
 	//ID_SVRADDR,
-	ID_SVRPARAM,
+	//ID_SVRPARAM,
 	ID_TIMER,
 	ID_CLIENT_LIST,
 	ID_CASE_LIST,
@@ -67,7 +67,8 @@ BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_MENU(ID_LOGIN,			CClientStressFrame::OnLogin)
 	EVT_MENU(ID_LOGOUT,			CClientStressFrame::OnLogout)
 	EVT_MENU(ID_CASE_ADD,		CClientStressFrame::OnAddCase)
-	EVT_MENU(ID_SVRPARAM,		CClientStressFrame::OnSvrParam)
+	//EVT_MENU(ID_SVRADDR,		CClientStressFrame::OnSvrAddr)
+	//EVT_MENU(ID_SVRPARAM,		CClientStressFrame::OnSvrParam)
 	EVT_MENU(ID_SELECT_ALL,		CClientStressFrame::OnSelectAll)
 	EVT_LISTBOX(ID_CLIENT_LIST,	CClientStressFrame::OnClientSelected)
 	EVT_MENU(ID_STRESS_VIEW,	CClientStressFrame::OnStressView)
@@ -150,7 +151,8 @@ void CClientStressFrame::InitMenu()
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
 	GetMenuBar()->GetMenu(0)->Append(ID_PROTOCAL, wxT("Protocal"), wxT("Show protocal dailog"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SVR_PARAM_DLG, wxT("Server Params"), wxT("Set Server Params"));
-	GetMenuBar()->GetMenu(0)->Append(ID_SVRPARAM, wxT("Param Address"), wxT("Set Server Param"));
+	//GetMenuBar()->GetMenu(0)->Append(ID_SVRADDR, wxT("Server Address"), wxT("Set Server Address"));
+	//GetMenuBar()->GetMenu(0)->Append(ID_SVRPARAM, wxT("Param Address"), wxT("Set Server Param"));
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
 	GetMenuBar()->GetMenu(1)->Append(ID_ABOUT, wxT("&About"), wxT("Show About Dailog"));
@@ -253,9 +255,8 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	wxString val = m_pCmdText->GetValue();
 	val = val.Trim().Trim(false);
 	if(val.size()<=0) return;
-
 	wxString cmd = val.BeforeFirst(wxT(' ')).Trim();
-	wxString arg = wxT("");
+	wxString arg = wxT("{}");
 	if(cmd.size()!=val.size())
 	{
 		arg = val.AfterFirst(wxT(' ')).Trim(false);
@@ -269,23 +270,22 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		return;
 	}
 
-	std::string json((const char*)arg.ToUTF8());
-	std::vector<std::string> args;
-	Atlas::StringSplit(json, ' ', args);
-	if(cls->finfos[fid].fcount!=(_U16)args.size())
+	_U8 data[10000];
+	_U32 len = (_U32)sizeof(data);
+	std::string json = (const char*)arg.ToUTF8();
+	if(!DDLReflect::Json2Call(&cls->finfos[fid], json, len, data))
 	{
+		wxMessageBox(wxT("invalid json"), wxT("error"));
 		return;
 	}
-	json = "{";
-	for(_U16 a=0; a<cls->finfos[fid].fcount; a++)
-	{
-		if(a>0)	json += ",";
-		json += Atlas::StringFormat("\"%s\":", cls->finfos[fid].finfos[a].name);
-		json += args[a];
-	}
-	json += "}";
 
-	if(!ProcessJsonCommand(cls, fid, json)) return;
+	std::vector<_U32> clients;
+	GetSelectClients(clients);
+	if(clients.size()<=0)
+	{
+		wxMessageBox(wxT("no client selected"), wxT("error"));
+		return;
+	}
 
 	std::string line = (const char*)val.ToUTF8();
 	m_pCmdHistory->AddCmd(line);
@@ -298,6 +298,17 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		m_pCmdText->AppendString(tmp);
 		m_pCmdText->SetValue(val);
 	}
+	
+	std::vector<_U32>::iterator i;
+	Atlas::CStressClient* pClient;
+	for(i=clients.begin(); i!=clients.end(); i++)
+	{
+		pClient = Atlas::CStressManager::Get().GetClient(m_nCurrentIndex);
+		if(!pClient) continue;
+		if(pClient->GetClient()->GetState()!=Atlas::CClient::STATE_LOGINED) continue;
+		pClient->GetClient()->SendData(cls->iid, fid, len, data);
+	}
+	
 }
 
 void CClientStressFrame::OnAddClient(wxCommandEvent& event)
@@ -372,15 +383,34 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 	}
 }
 
-void CClientStressFrame::OnSvrParam(wxCommandEvent& event)
-{
-	_U32 nUIDtart = 0;
-	wxNumberEntryDialog Dialog(this, wxT("Input Server Param"), wxT("Please enter a num"), wxT("cpation"), nUIDtart, 0, 10000);
-	if(Dialog.ShowModal() == wxID_OK)
-	{
-		nUIDtart = Dialog.GetValue();
-	}
-}
+//void CClientStressFrame::OnSvrAddr(wxCommandEvent& event)
+//{
+//	wxTextEntryDialog Dialog(this, wxT("Input Server Address"), wxT("Please enter a string"), m_FrameData.svraddr);
+//	while(Dialog.ShowModal()==wxID_OK)
+//	{
+//		SOCK_ADDR sa;
+//		if(!sock_str2addr((const char*)Dialog.GetValue().ToUTF8(), &sa))
+//		{
+//			wxMessageBox(wxT(""), wxT(""));
+//			continue;
+//		}
+//		else
+//		{
+//			m_FrameData.svraddr = Dialog.GetValue();
+//			break;
+//		}
+//	}
+//}
+
+//void CClientStressFrame::OnSvrParam(wxCommandEvent& event)
+//{
+//	_U32 nUIDtart = 0;
+//	wxNumberEntryDialog Dialog(this, wxT("Input Server Param"), wxT("Please enter a num"), wxT("cpation"), nUIDtart, 0, 10000);
+//	if(Dialog.ShowModal() == wxID_OK)
+//	{
+//		nUIDtart = Dialog.GetValue();
+//	}
+//}
 
 void CClientStressFrame::OnClientSelected(wxCommandEvent& event)
 {
@@ -523,35 +553,4 @@ void CClientStressFrame::NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCa
 	{
 		m_pViews[v]->OnNewCase(index, pCase);
 	}
-}
-
-bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const std::string& json)
-{
-	_U8 data[10000];
-	_U32 len = (_U32)sizeof(data);
-	if(!DDLReflect::Json2Call(classinfo->finfos+fid, json, len, data))
-	{
-		wxMessageBox(wxT("invalid json"), wxT("error"));
-		return false;
-	}
-
-	std::vector<_U32> clients;
-	GetSelectClients(clients);
-	if(clients.size()<=0)
-	{
-		wxMessageBox(wxT("no client selected"), wxT("error"));
-		return false;
-	}
-
-	std::vector<_U32>::iterator i;
-	Atlas::CStressClient* pClient;
-	for(i=clients.begin(); i!=clients.end(); i++)
-	{
-		pClient = Atlas::CStressManager::Get().GetClient(m_nCurrentIndex);
-		if(!pClient) continue;
-		if(pClient->GetClient()->GetState()!=Atlas::CClient::STATE_LOGINED) continue;
-		pClient->GetClient()->SendData(classinfo->iid, fid, len, data);
-	}
-
-	return true;
 }

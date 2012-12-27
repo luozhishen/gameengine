@@ -90,7 +90,7 @@ namespace Atlas
 	{
 		const char* pServerUrl = m_pClientApp->GetParam("ServerUrl");
 		if(!pServerUrl) return false;
-		const char* uid_base = m_pClientApp->GetParam("uid_base", "0");
+		const char* uid_base = m_pClientApp->GetParam("UidBase", "0");
 		char token[1000];
 		sprintf(token, "%d", id+atoi(uid_base));
 		return Login(pServerUrl, id+atoi(uid_base), token);

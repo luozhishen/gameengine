@@ -31,6 +31,12 @@ const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 
 const _U32 SG_DESCRIPTION_MAX = 512;
 
+const _U32 SG_GAME_LEVELS_NAME_MAX = 128;
+
+const _U32 SG_GAME_LEVELS_DESC_MAX = 1024;
+
+const _U32 SG_GAME_LEVELS_SCRIPT_MAX = 128;
+
 struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<100> level_name;
@@ -61,7 +67,7 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_LEVEL_DROP_CONFIG_info;
 }
 
-struct SG_DROP_GROUP_BASE : A_CONTENT_OBJECT
+struct SG_DROP_ITEM_BASE : A_CONTENT_OBJECT
 {
 	_U32 item_id;
 	_U32 count;
@@ -70,19 +76,19 @@ struct SG_DROP_GROUP_BASE : A_CONTENT_OBJECT
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<SG_DROP_GROUP_BASE>(SG_DROP_GROUP_BASE& Value);
+	bool BufferReader::Read<SG_DROP_ITEM_BASE>(SG_DROP_ITEM_BASE& Value);
 	template<>
-	bool BufferWriter::Write<SG_DROP_GROUP_BASE>(const SG_DROP_GROUP_BASE& Value);
+	bool BufferWriter::Write<SG_DROP_ITEM_BASE>(const SG_DROP_ITEM_BASE& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<SG_DROP_GROUP_BASE>();
-	extern STRUCT_INFO _rfl_struct_SG_DROP_GROUP_BASE_info;
+	const STRUCT_INFO* GetStruct<SG_DROP_ITEM_BASE>();
+	extern STRUCT_INFO _rfl_struct_SG_DROP_ITEM_BASE_info;
 }
 
-struct SG_DROP_GROUP_CONFIG : SG_DROP_GROUP_BASE
+struct SG_DROP_ITEM_CONFIG : SG_DROP_ITEM_BASE
 {
 	_U32 group_id;
 	_F32 rate;
@@ -91,16 +97,16 @@ struct SG_DROP_GROUP_CONFIG : SG_DROP_GROUP_BASE
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<SG_DROP_GROUP_CONFIG>(SG_DROP_GROUP_CONFIG& Value);
+	bool BufferReader::Read<SG_DROP_ITEM_CONFIG>(SG_DROP_ITEM_CONFIG& Value);
 	template<>
-	bool BufferWriter::Write<SG_DROP_GROUP_CONFIG>(const SG_DROP_GROUP_CONFIG& Value);
+	bool BufferWriter::Write<SG_DROP_ITEM_CONFIG>(const SG_DROP_ITEM_CONFIG& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<SG_DROP_GROUP_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_DROP_GROUP_CONFIG_info;
+	const STRUCT_INFO* GetStruct<SG_DROP_ITEM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_DROP_ITEM_CONFIG_info;
 }
 
 struct SG_ATTR_MOD_CONFIG
@@ -1186,13 +1192,13 @@ namespace DDLStub
 			}
 			if(fid==13)
 			{
-				A_UUID _prefix_battle;
+				SG_PLAYER_PVE _prefix_PlayerPVE;
 
-				// <A_UUID> <battle> <> <>;
-				if(!Buf.Read(_prefix_battle)) return false;
+				// <SG_PLAYER_PVE> <PlayerPVE> <> <>;
+				if(!Buf.Read(_prefix_PlayerPVE)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->BeginBattleResult(Caller, _prefix_battle);
+				DDLStub<CALLER, CLASS>::GetClass()->BeginBattleResult(Caller, _prefix_PlayerPVE);
 				return true;
 			}
 			if(fid==14)
@@ -1201,7 +1207,7 @@ namespace DDLStub
 				_U32 _prefix_level;
 				_U32 _prefix_exp;
 				_U32 _prefix_gold;
-				SG_DROP_GROUP_BASE* _prefix_drops;
+				SG_DROP_ITEM_CONFIG* _prefix_drops;
 				_U32 _prefix_drop_count;
 
 				// <_U32> <level> <> <>;
@@ -1210,9 +1216,9 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_exp)) return false;
 				// <_U32> <gold> <> <>;
 				if(!Buf.Read(_prefix_gold)) return false;
-				// <SG_DROP_GROUP_BASE> <drops> <> <drop_count>;
+				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
 				if(!Buf.Read(__length)) return false;
-				_prefix_drops = (SG_DROP_GROUP_BASE*)alloca(sizeof(_prefix_drops[0])*__length);
+				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
 				if(!_prefix_drops) return false;
 				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
 				// <_U32> <drop_count> <> <>;
@@ -1399,17 +1405,17 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 12, Buf);
 		}
 
-		bool BeginBattleResult(const A_UUID& battle)
+		bool BeginBattleResult(const SG_PLAYER_PVE& PlayerPVE)
 		{
 			BUFFER Buf;
-			// <A_UUID> <battle> <> <>
-			if(!Buf.Write(battle)) return false;
+			// <SG_PLAYER_PVE> <PlayerPVE> <> <>
+			if(!Buf.Write(PlayerPVE)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
 		}
 
-		bool EndBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_GROUP_BASE* drops, _U32 drop_count)
+		bool EndBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
 		{
 			BUFFER Buf;
 			_U16 __length;
@@ -1419,7 +1425,7 @@ namespace DDLProxy
 			if(!Buf.Write(exp)) return false;
 			// <_U32> <gold> <> <>
 			if(!Buf.Write(gold)) return false;
-			// <SG_DROP_GROUP_BASE> <drops> <> <drop_count>
+			// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>
 			__length = (_U16)(drop_count);
 			if(!Buf.Write(__length)) return false;
 			if(!Buf.WritePointer(drops, __length)) return false;

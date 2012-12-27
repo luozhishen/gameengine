@@ -9,6 +9,10 @@ const _U32 SG_SOLDIER_MAX = 10;
 const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 const _U32 SG_DESCRIPTION_MAX = 512;
 
+const _U32 SG_GAME_LEVELS_NAME_MAX = 128;
+const _U32 SG_GAME_LEVELS_DESC_MAX = 1024;
+const _U32 SG_GAME_LEVELS_SCRIPT_MAX = 128;
+
 struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 {
 	string<100>							level_name;
@@ -26,22 +30,21 @@ struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_LEVEL_DROP_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEVEL_DROP_CONFIG)];
 
-
-struct SG_DROP_GROUP_BASE : A_CONTENT_OBJECT
+struct SG_DROP_ITEM_BASE : A_CONTENT_OBJECT
 {
 	_U32								item_id;
 	_U32								count;
 };
-task[GEN_STRUCT_SERIALIZE(SG_DROP_GROUP_BASE)];
-task[GEN_STRUCT_REFLECT(SG_DROP_GROUP_BASE)];
+task[GEN_STRUCT_SERIALIZE(SG_DROP_ITEM_BASE)];
+task[GEN_STRUCT_REFLECT(SG_DROP_ITEM_BASE)];
 
-struct SG_DROP_GROUP_CONFIG : SG_DROP_GROUP_BASE
+struct SG_DROP_ITEM_CONFIG : SG_DROP_ITEM_BASE
 {
 	_U32								group_id;
 	_F32								rate;
 };
-task[GEN_STRUCT_SERIALIZE(SG_DROP_GROUP_CONFIG)];
-task[GEN_STRUCT_REFLECT(SG_DROP_GROUP_CONFIG)];
+task[GEN_STRUCT_SERIALIZE(SG_DROP_ITEM_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_DROP_ITEM_CONFIG)];
 
 struct SG_ATTR_MOD_CONFIG
 {
@@ -125,7 +128,6 @@ task[GEN_STRUCT_REFLECT(SG_GEM_ITEM_CONFIG)];
 
 struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
-	// string name;
 	_U32								enemy_id;			//µ–»Àid
 	SG_PAWN_CONFIG						PawnConfig;
 };
@@ -329,8 +331,8 @@ class SGGAME_S2C
 	QueryBagGen(SG_GEM_ITEM items[count], _U32 count);
 	QueryBagEnd();
 
-	BeginBattleResult(A_UUID battle);
-	EndBattleResult(_U32 level, _U32 exp, _U32 gold, SG_DROP_GROUP_BASE drops[drop_count], _U32 drop_count);
+	BeginBattleResult(SG_PLAYER_PVE PlayerPVE);
+	EndBattleResult(_U32 level, _U32 exp, _U32 gold, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

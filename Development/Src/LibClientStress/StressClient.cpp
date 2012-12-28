@@ -25,6 +25,7 @@ namespace Atlas
 		pClient->_OnLoginFailed.connect(this, &CStressClient::OnLoginFailed);
 		pClient->_OnDisconnected.connect(this, &CStressClient::OnDisconnected);
 		pClient->_OnData.connect(this, &CStressClient::OnData);
+		pClient->SetLogCallback(std::tr1::bind(&CStressClient::OnLogMessage, this, std::tr1::placeholders::_1));
 		SetTitle("NA");
 
 		m_hTimer = NULL;
@@ -150,7 +151,7 @@ namespace Atlas
 	{
 		SetTitle("Login Failed");
 		if(!CClientApp::GetDefault()->IsThread())
-			_OnConnectFailed(m_nIndex);
+			_OnLoginFailed(m_nIndex);
 	}
 
 	void CStressClient::OnDisconnected()
@@ -166,6 +167,11 @@ namespace Atlas
 			_OnData(m_nIndex, iid, fid, len, data);
 	}
 
+	void CStressClient::OnLogMessage(const char* msg)
+	{
+		if(!CClientApp::GetDefault()->IsThread())
+			_OnLogMessage(m_nIndex, msg);
+	}
 
 	bool CStressClient::IsExistCase(const char* name)
 	{

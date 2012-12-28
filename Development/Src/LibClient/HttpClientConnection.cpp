@@ -13,7 +13,6 @@ namespace Atlas
 		m_pNotifyRequest = NULL;
 		m_pCurrentRequest = NULL;
 		m_nHttpState = STATE_RUNNING;
-		m_pStateCallback = NULL;
 	}
 
 	CHttpClientConnection::~CHttpClientConnection()
@@ -102,9 +101,16 @@ namespace Atlas
 		if(m_nHttpState==STATE_PAUSE) m_nHttpState = STATE_RETRY;
 	}
 
+	void CHttpClientConnection::Cancel()
+	{
+		if(m_nHttpState!=STATE_PAUSE) return;
+		m_nHttpState = STATE_RETRY;
+		m_SendQueue.pop_front();
+	}
+
 	void CHttpClientConnection::SetStateCallback(STATE_CALLBACK callback)
 	{
-		m_pStateCallback = callback;
+		m_StateCallback = callback;
 	}
 
 	void CHttpClientConnection::ProcessLoginRequest()
@@ -175,10 +181,10 @@ namespace Atlas
 			MORequestDestory(m_pCurrentRequest);
 			m_pCurrentRequest = NULL;
 
-			if(m_pStateCallback)
+			if(m_StateCallback)
 			{
 				m_nHttpState = STATE_PAUSE;
-				m_pStateCallback(m_nHttpState);
+				m_StateCallback(m_nHttpState);
 			}
 			return;
 		}
@@ -205,7 +211,7 @@ namespace Atlas
 			if(m_nHttpState==STATE_RETRY)
 			{
 				m_nHttpState = STATE_RUNNING;
-				m_pStateCallback(m_nHttpState);
+				m_StateCallback(m_nHttpState);
 			}
 			return;
 		}
@@ -224,7 +230,7 @@ namespace Atlas
 		if(m_nHttpState==STATE_RETRY)
 		{
 			m_nHttpState = STATE_RUNNING;
-			m_pStateCallback(m_nHttpState);
+			m_StateCallback(m_nHttpState);
 		}
 
 		Json::Value& _array = root["response"];

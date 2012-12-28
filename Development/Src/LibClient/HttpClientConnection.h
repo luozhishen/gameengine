@@ -15,7 +15,8 @@ namespace Atlas
 			STATE_RUNNING,
 			STATE_RETRY,
 		};
-		typedef void(*STATE_CALLBACK)(STATE state);
+
+		typedef std::tr1::function<void (STATE)> STATE_CALLBACK;
 
 		CHttpClientConnection(CClient* pClient);
 		virtual ~CHttpClientConnection();
@@ -27,6 +28,7 @@ namespace Atlas
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 
 		void Retry();
+		void Cancel();
 		void SetStateCallback(STATE_CALLBACK callback);
 
 	protected:
@@ -43,7 +45,7 @@ namespace Atlas
 		std::string m_SessionKey;
 		std::list<std::string> m_SendQueue;
 		STATE m_nHttpState;
-		STATE_CALLBACK m_pStateCallback;
+		STATE_CALLBACK m_StateCallback;
 	};
 
 }

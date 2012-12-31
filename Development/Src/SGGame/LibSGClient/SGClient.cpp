@@ -10,8 +10,6 @@ namespace Atlas
 
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), m_C2S(this), m_S2C(this)
 	{
-		m_nQueryBagRef = 0;
-		m_QueryState = STATE_NA;
 		m_callback = NULL;
 	}	
 
@@ -54,33 +52,6 @@ namespace Atlas
 	void CSGClient::GetServerList()
 	{
 		m_C2S.GetServerList();
-		//test data
-	/*	SG_SERVER_INFO infos[4];
-		memset(infos, 0, sizeof(SG_SERVER_INFO)*4);
-		_U32 count = 3;
-
-		infos[0].server_id = 0;
-		infos[0].server_name = "服务器1";
-		infos[0].server_state = 1;
-		infos[0].avatar_nick = "mumu";
-		infos[0].general_id = 11001;
-		infos[0].level = 1;
-
-		infos[1].server_id = 1;
-		infos[1].server_name = "服务器2";
-		infos[1].server_state = 1;
-		infos[1].avatar_nick = "hahah";
-		infos[1].general_id = 11002;
-		infos[1].level = 3;
-
-		infos[2].server_id = 2;
-		infos[2].server_name = "服务器3";
-		infos[2].server_state = 1;
-		infos[2].avatar_nick = "";
-		infos[2].general_id = 0;
-		infos[2].level = 0;
-
-		GetServerListResult(this, infos, count);*/
 	}
 
 	void CSGClient::EnterServer(_U32 server_id)
@@ -90,26 +61,7 @@ namespace Atlas
 
 	void CSGClient::QueryAvatar()
 	{
-		//m_C2S.QueryAvatar();
-
-		SG_PLAYER player;
-		player.nick = "test_nick";
-		player.gold = 999;
-		player.rmb = 1;
-		player.general_id = 11001;
-		player.level = 1;
-	
-		player.equip_generals._Count = 2;
-		player.equip_generals._Array[0] = 21001;
-		player.equip_generals._Array[1] = 21002;
-
-		player.equip_soldiers._Count = 3;
-
-		player.equip_soldiers._Array[0] = 31001;
-		player.equip_soldiers._Array[1] = 31002;
-		player.equip_soldiers._Array[2] = 31003;
-
-		QueryAvatarResult(this, player);
+		m_C2S.QueryAvatar();
 	}
 
 	void CSGClient::CreateAvatar(const char* nick, _U32 general_id)
@@ -119,7 +71,7 @@ namespace Atlas
 
 	void CSGClient::DeleteAvatar()
 	{
-		//m_C2S.DeleteAvatar();
+		m_C2S.DeleteAvatar();
 	}
 
 	void CSGClient::EnterGame()
@@ -140,37 +92,11 @@ namespace Atlas
 	void CSGClient::QueryGenerals()
 	{
 		m_C2S.QueryGenerals();
-
-		SG_GENERAL generals[2];
-		_U32 count = 2;
-
-		//generals[0].general_id = 21001;
-		//generals[0].level = 1;
-		//generals[0].exp = 900;
-		////generals[0].equip_slots;
-
-		//generals[1].general_id = 21002;
-		//generals[1].level = 1;
-		//generals[1].exp = 800;
-
-		//QueryGeneralResult(this, generals, count);
 	}
 
 	void CSGClient::QuerySoldiers()
 	{
 		m_C2S.QuerySoldiers();
-		
-	/*	SG_SOLDIER soldiers[3];
-		_U32 count = 3;
-
-		soldiers[0].soldier_id = 31001;
-		soldiers[0].level = 1;
-		soldiers[0].soldier_id = 31002;
-		soldiers[0].level = 1;
-		soldiers[0].soldier_id = 31003;
-		soldiers[0].level = 1;
-
-		QuerySoldierResult(this, soldiers, count);*/
 	}
 
 	void CSGClient::QueryBag()
@@ -187,106 +113,11 @@ namespace Atlas
 	void CSGClient::BeginBattle(const char* name)
 	{
 		m_C2S.BeginBattle(name);
-		/*
-		//temp return data
-		SG_PLAYER_PVE PlayerPVE;
-		memset(&PlayerPVE, 0, sizeof(SG_PLAYER_PVE));
-
-		const DDLReflect::STRUCT_INFO* struct_info = ContentObject::GetType("SG_GENERAL_LEVEL_CONFIG");
-		std::vector<A_UUID> list;
-		if(!ContentObject::GetList(struct_info, list, true))
-		{
-			ATLAS_ASSERT(0);
-			return;
-		}
-		
-		for(size_t i = 0; i < list.size(); ++i)
-		{
-			SG_GENERAL_LEVEL_CONFIG* config = (SG_GENERAL_LEVEL_CONFIG*)ContentObject::Query(list[i]);
-			if(config)
-			{
-				if(config->attr_id == 11001&& config->level == 1)
-				{
-					PlayerPVE.PawnConfig.BaseConfig = config->PawnConfig.BaseConfig;
-				}
-
-				if(config->attr_id == 21011&& config->level == 1)
-				{
-					PlayerPVE.EquippedGenerals._Array[0].PawnConfig.BaseConfig = config->PawnConfig.BaseConfig;
-				}
-
-				//no 21022 diaochan 21006 instead of it
-				if(config->attr_id == 21006&& config->level == 1)
-				{
-					PlayerPVE.EquippedGenerals._Array[1].PawnConfig.BaseConfig = config->PawnConfig.BaseConfig;
-				}
-			}
-		}
-		
-		PlayerPVE.ArchetypeURL = "Archetypes.FriendlyHeroes.WuSheng";
-		PlayerPVE.EquippedGenerals._Count = 2;
-		PlayerPVE.EquippedGenerals._Array[0].ArchetypeURL = "Archetypes.FriendlyGenerals.ZhangLiao";
-		PlayerPVE.EquippedGenerals._Array[1].ArchetypeURL = "Archetypes.FriendlyGenerals.DiaoChan";
-		PlayerPVE.EquippedSoldiers._Count = 3;
-		PlayerPVE.EquippedSoldiers._Array[0].ArchetypeURL = "Archetypes.FriendlySoldiers.ChangQiangBing";
-		PlayerPVE.EquippedSoldiers._Array[1].ArchetypeURL = "Archetypes.FriendlySoldiers.GongJianBing";
-		PlayerPVE.EquippedSoldiers._Array[2].ArchetypeURL = "Archetypes.FriendlySoldiers.YinShi";
-		
-		struct_info = ContentObject::GetType("SG_SOLDIER_LEVEL_CONFIG");
-		list.clear();
-		if(!ContentObject::GetList(struct_info, list, true))
-		{
-			ATLAS_ASSERT(0);
-			return;
-		}
-		
-		for(size_t i = 0; i < list.size(); ++i)
-		{
-			SG_SOLDIER_LEVEL_CONFIG* config = (SG_SOLDIER_LEVEL_CONFIG*)ContentObject::Query(list[i]);
-			if(config)
-			{
-				if(config->attr_id == 31002&& config->level == 1)
-				{
-					PlayerPVE.EquippedSoldiers._Array[0].PawnConfig.BaseConfig = config->PawnConfig.BaseConfig;
-				}
-
-				if(config->attr_id == 31004&& config->level == 1)
-				{
-					PlayerPVE.EquippedSoldiers._Array[1].PawnConfig.BaseConfig = config->PawnConfig.BaseConfig;
-				}
-
-				//no 21022 diaochan 21006 instead of it
-				if(config->attr_id == 31005&& config->level == 1)
-				{
-					PlayerPVE.EquippedSoldiers._Array[2].PawnConfig.BaseConfig = config->PawnConfig.BaseConfig;
-				}
-			}
-		}
-
-		this->BeginBattleResult(this, PlayerPVE);
-		*/
 	}
 
 	void CSGClient::EndBattle(const char* name, _U32 result)
 	{
-		//temp return data
 		m_C2S.EndBattle(name, result);
-		/*
-		_U32 level = 1;
-		_U32 exp = 500;
-		_U32 gold = 999;
-		SG_DROP_ITEM_BASE drops[4];
-		memset(drops, 0, sizeof(SG_DROP_ITEM_BASE)*4);
-		drops[0].count = 1;
-		drops[0].item_id = 10001;
-
-		drops[1].count = 2;
-		drops[1].item_id = 11001;
-
-		_U32 drop_count = 2;
-
-		this->EndBattleResult(this, level, exp, gold, drops, drop_count);
-		*/
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -311,17 +142,13 @@ namespace Atlas
 
 	void CSGClient::CreateAvatarResult(CSGClient* pClient, _U32 code)
 	{
-		//according to code
+		if(m_callback) m_callback->CreateAvatarResult(code);
 	}
 
 	void CSGClient::QueryPlayerResult(CSGClient* pClient, const SG_PLAYER& player)
 	{
 		m_player = player;
-		m_player.equip_generals._Count = player.equip_generals._Count;
-		m_player.equip_soldiers._Count = player.equip_soldiers._Count;
-
-		memcpy(m_player.equip_generals._Array, player.equip_generals._Array, sizeof(player.equip_generals._Array[0])*player.equip_generals._Count);
-		memcpy(m_player.equip_soldiers._Array, player.equip_soldiers._Array, sizeof(player.equip_soldiers._Array[0])*player.equip_soldiers._Count);
+		if(m_callback) m_callback->QueryPlayerResult(m_player);
 	}
 
 	void CSGClient::QueryGeneralResult(CSGClient* pClient, const SG_GENERAL* generals, _U32 count)
@@ -348,16 +175,10 @@ namespace Atlas
 
 	void CSGClient::QueryBagBegin(CSGClient* pClient)
 	{
-		if(m_QueryState == STATE_NA || m_QueryState == STATE_SUCC || m_QueryState == STATE_FAILED)
-		{
-			m_nQueryBagRef = 0;
-			m_QueryState = STATE_PENDING;
-		}
 	}
 
 	void CSGClient::QueryBagEquipt(CSGClient* pClient, const SG_EQUIPT_ITEM* items, _U32 count)
 	{
-		++m_nQueryBagRef;
 		m_equipts.clear();
 		for(_U32 i = 0; i < count; ++i)
 		{
@@ -367,7 +188,6 @@ namespace Atlas
 
 	void CSGClient::QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count)
 	{
-		++m_nQueryBagRef;
 		m_usables.clear();
 		for(_U32 i = 0; i < count; ++i)
 		{
@@ -377,7 +197,6 @@ namespace Atlas
 
 	void CSGClient::QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count)
 	{
-		++m_nQueryBagRef;
 		m_gems.clear();
 		for(_U32 i = 0; i < count; ++i)
 		{
@@ -387,12 +206,7 @@ namespace Atlas
 
 	void CSGClient::QueryBagEnd(CSGClient* pClient)
 	{
-		if(m_nQueryBagRef == 2)
-		{
-			if(m_callback) m_callback->QueryBagDone(m_equipts, m_usables, m_gems);
-			m_QueryState = STATE_SUCC;
-			m_nQueryBagRef = 0;
-		}
+		if(m_callback) m_callback->QueryBagDone(m_equipts, m_usables, m_gems);
 	}
 
 	void CSGClient::BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE)

@@ -922,8 +922,8 @@ namespace DDL
 		if(!ReadString<SG_PLAYERNAME_LENMAX>(Value.nick)) return false;
 		if(!Read<_U32>(Value.gold)) return false;
 		if(!Read<_U32>(Value.rmb)) return false;
-		if(!ReadArray<_U16, 2>(Value.equip_generals)) return false;
-		if(!ReadArray<_U16, 3>(Value.equip_soldiers)) return false;
+		if(!ReadArray<_U32, 2>(Value.equip_generals)) return false;
+		if(!ReadArray<_U32, 3>(Value.equip_soldiers)) return false;
 		return true;
 	}
 	template<>
@@ -933,8 +933,8 @@ namespace DDL
 		if(!WriteString<SG_PLAYERNAME_LENMAX>(Value.nick)) return false;
 		if(!Write<_U32>(Value.gold)) return false;
 		if(!Write<_U32>(Value.rmb)) return false;
-		if(!WriteArray<_U16, 2>(Value.equip_generals)) return false;
-		if(!WriteArray<_U16, 3>(Value.equip_soldiers)) return false;
+		if(!WriteArray<_U32, 2>(Value.equip_generals)) return false;
+		if(!WriteArray<_U32, 3>(Value.equip_soldiers)) return false;
 		return true;
 	}
 }
@@ -946,8 +946,8 @@ namespace DDLReflect
 		{TYPE_STRING, "nick", 0, ATLAS_OFFSETOF(SG_PLAYER, nick), NULL, (_U16)SG_PLAYERNAME_LENMAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYERNAME_LENMAX>), NULL},
 		{TYPE_U32, "gold", 0, ATLAS_OFFSETOF(SG_PLAYER, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "rmb", 0, ATLAS_OFFSETOF(SG_PLAYER, rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U16|TYPE_ARRAY, "equip_generals", 0, ATLAS_OFFSETOF(SG_PLAYER, equip_generals), NULL, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<_U16, 2>*)NULL)->_Array)), (_U16)sizeof(_U16), NULL},
-		{TYPE_U16|TYPE_ARRAY, "equip_soldiers", 0, ATLAS_OFFSETOF(SG_PLAYER, equip_soldiers), NULL, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<_U16, 3>*)NULL)->_Array)), (_U16)sizeof(_U16), NULL},
+		{TYPE_U32|TYPE_ARRAY, "equip_generals", 0, ATLAS_OFFSETOF(SG_PLAYER, equip_generals), NULL, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<_U32, 2>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U32|TYPE_ARRAY, "equip_soldiers", 0, ATLAS_OFFSETOF(SG_PLAYER, equip_soldiers), NULL, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<_U32, 3>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 5, _struct_SG_PLAYER_fieldinfo };
 	template<>

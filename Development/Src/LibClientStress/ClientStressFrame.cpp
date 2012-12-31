@@ -43,8 +43,6 @@ enum
 	ID_SELECT_ALL,
 	ID_LOGIN,
 	ID_LOGOUT,
-	//ID_SVRADDR,
-	//ID_SVRPARAM,
 	ID_TIMER,
 	ID_CLIENT_LIST,
 	ID_CASE_LIST,
@@ -67,8 +65,6 @@ BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_MENU(ID_LOGIN,			CClientStressFrame::OnLogin)
 	EVT_MENU(ID_LOGOUT,			CClientStressFrame::OnLogout)
 	EVT_MENU(ID_CASE_ADD,		CClientStressFrame::OnAddCase)
-	//EVT_MENU(ID_SVRADDR,		CClientStressFrame::OnSvrAddr)
-	//EVT_MENU(ID_SVRPARAM,		CClientStressFrame::OnSvrParam)
 	EVT_MENU(ID_SELECT_ALL,		CClientStressFrame::OnSelectAll)
 	EVT_LISTBOX(ID_CLIENT_LIST,	CClientStressFrame::OnClientSelected)
 	EVT_MENU(ID_STRESS_VIEW,	CClientStressFrame::OnStressView)
@@ -151,8 +147,6 @@ void CClientStressFrame::InitMenu()
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
 	GetMenuBar()->GetMenu(0)->Append(ID_PROTOCAL, wxT("Protocal"), wxT("Show protocal dailog"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SVR_PARAM_DLG, wxT("Server Params"), wxT("Set Server Params"));
-	//GetMenuBar()->GetMenu(0)->Append(ID_SVRADDR, wxT("Server Address"), wxT("Set Server Address"));
-	//GetMenuBar()->GetMenu(0)->Append(ID_SVRPARAM, wxT("Param Address"), wxT("Set Server Param"));
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
 	GetMenuBar()->GetMenu(1)->Append(ID_ABOUT, wxT("&About"), wxT("Show About Dailog"));
@@ -373,35 +367,6 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 		NotifyClientAddCase(pClient->GetIndex(), pCase);
 	}
 }
-
-//void CClientStressFrame::OnSvrAddr(wxCommandEvent& event)
-//{
-//	wxTextEntryDialog Dialog(this, wxT("Input Server Address"), wxT("Please enter a string"), m_FrameData.svraddr);
-//	while(Dialog.ShowModal()==wxID_OK)
-//	{
-//		SOCK_ADDR sa;
-//		if(!sock_str2addr((const char*)Dialog.GetValue().ToUTF8(), &sa))
-//		{
-//			wxMessageBox(wxT(""), wxT(""));
-//			continue;
-//		}
-//		else
-//		{
-//			m_FrameData.svraddr = Dialog.GetValue();
-//			break;
-//		}
-//	}
-//}
-
-//void CClientStressFrame::OnSvrParam(wxCommandEvent& event)
-//{
-//	_U32 nUIDtart = 0;
-//	wxNumberEntryDialog Dialog(this, wxT("Input Server Param"), wxT("Please enter a num"), wxT("cpation"), nUIDtart, 0, 10000);
-//	if(Dialog.ShowModal() == wxID_OK)
-//	{
-//		nUIDtart = Dialog.GetValue();
-//	}
-//}
 
 void CClientStressFrame::OnClientSelected(wxCommandEvent& event)
 {

@@ -64,8 +64,6 @@ public:
 	void OnLogin(wxCommandEvent& event);
 	void OnLogout(wxCommandEvent& event);
 	void OnAddCase(wxCommandEvent& event);
-	//void OnSvrAddr(wxCommandEvent& event);
-	//void OnSvrParam(wxCommandEvent& event);
 	
 	void OnClientSelected(wxCommandEvent& event);
 	void OnStressView(wxCommandEvent& event);

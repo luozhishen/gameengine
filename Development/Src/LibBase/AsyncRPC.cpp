@@ -3,6 +3,7 @@
 #include <map>
 
 #include "AtlasDefines.h"
+#include "AtlasAtomic.h"
 #include "AtlasSocket.h"
 #include "AsyncSockIO.h"
 #include "MemPool.h"

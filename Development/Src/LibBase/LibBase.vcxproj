@@ -22,6 +22,7 @@
     <ClCompile Include="AsyncRPC.cpp" />
     <ClCompile Include="AsyncSockIO_Unix.cpp" />
     <ClCompile Include="AsyncSockIO_Win32.cpp" />
+    <ClCompile Include="AtlasAtomic.cpp" />
     <ClCompile Include="AtlasBase.cpp" />
     <ClCompile Include="AtlasLog.cpp" />
     <ClCompile Include="AtlasSocket.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="AsyncRPC.h" />
     <ClInclude Include="AsyncRPCImpl.h" />
     <ClInclude Include="AsyncSockIO.h" />
+    <ClInclude Include="AtlasAtomic.h" />
     <ClInclude Include="AtlasBase.h" />
     <ClInclude Include="AtlasDefines.h" />
     <ClInclude Include="AtlasLog.h" />

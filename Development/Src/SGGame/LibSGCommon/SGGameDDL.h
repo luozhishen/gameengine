@@ -534,8 +534,8 @@ struct SG_PLAYER : SG_GENERAL
 	DDL::String<SG_PLAYERNAME_LENMAX> nick;
 	_U32 gold;
 	_U32 rmb;
-	DDL::Array<_U16, 2> equip_generals;
-	DDL::Array<_U16, 3> equip_soldiers;
+	DDL::Array<_U32, 2> equip_generals;
+	DDL::Array<_U32, 3> equip_soldiers;
 };
 
 namespace DDL

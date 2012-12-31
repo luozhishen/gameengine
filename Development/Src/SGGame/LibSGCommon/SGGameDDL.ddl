@@ -246,8 +246,8 @@ struct SG_PLAYER : SG_GENERAL
 	string<SG_PLAYERNAME_LENMAX>		nick;
 	_U32								gold;
 	_U32								rmb;
-	array<_U16, 2>						equip_generals;
-	array<_U16, 3>						equip_soldiers;
+	array<_U32, 2>						equip_generals;
+	array<_U32, 3>						equip_soldiers;
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];

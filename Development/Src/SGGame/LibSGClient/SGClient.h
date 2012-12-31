@@ -18,6 +18,7 @@ namespace Atlas
 		virtual void QueryAvatarFailed(_U32 code) = 0;
 		virtual void QueryAvatarDone(const SG_PLAYER& player) = 0;
 		virtual void CreateAvatarResult(_U32 code) = 0;
+		virtual void QueryPlayerResult(const SG_PLAYER& player) = 0;
 
 		virtual void QueryGeneralsDone(const std::vector<SG_GENERAL>& generals) = 0;
 		virtual void QuerySoldiersDone(const std::vector<SG_SOLDIER>& soldiers) = 0;
@@ -29,13 +30,6 @@ namespace Atlas
 
 	class CSGClient : public CClient
 	{
-		typedef enum {
-			STATE_NA,
-			STATE_PENDING,
-			STATE_SUCC,
-			STATE_FAILED,
-		} QUERY_STATE;
-
 	public:
 		CSGClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CSGClient();
@@ -98,10 +92,6 @@ namespace Atlas
 		std::vector<SG_EQUIPT_ITEM> m_equipts;
 		std::vector<SG_USABLE_ITEM> m_usables;
 		std::vector<SG_GEM_ITEM> m_gems;
-		QUERY_STATE m_QueryState;
-		_U8 m_nQueryBagRef;
-		std::string m_strUserName;
-		std::string m_strPassword;
 	};
 
 }

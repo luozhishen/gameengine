@@ -2,8 +2,14 @@
 #define	__ATLAS_BASE__
 
 #include <string>
+#ifndef _WIN32
+#include <tr1/functional>
+#else
+#include <functional>
+#endif
 
 #include "AtlasDefines.h"
+#include "AtlasAtomic.h"
 #include "AtlasSocket.h"
 #include "AsyncSockIO.h"
 #include "MemPool.h"

@@ -142,6 +142,7 @@ namespace Atlas
 
 	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
+		if(GetState()!=STATE_LOGINED) return;
 		m_pClientConnection->SendData(iid, fid, len, data);
 	}
 

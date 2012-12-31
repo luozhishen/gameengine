@@ -19,6 +19,7 @@ namespace Atlas
 		bool Load(const wxString& szExcelFilePath);
 		void Clear(bool bAll = false);
 
+		bool IsExistSheet(const char* szSheetName);
 		bool GetSheets(std::vector<wxString>& vSheets);
 
 		void ClearFieldMaps();

@@ -170,6 +170,14 @@ bool import_data()
 		const DDLReflect::STRUCT_INFO* pInfo = Atlas::ContentObject::GetType(it->strType.c_str());
 		importMgr.PrepareProcess(pInfo, it->vecKeys);
 
+		if(!importMgr.IsExistSheet(it->strSheetName.c_str()))
+		{
+			ofs<<"in excel:"<< it->strFile <<"on this sheet:"<<it->strSheetName<<"\n";
+			std::cout<<"excel:"<< it->strFile.c_str() 
+				<<" sheet:"<< it->strSheetName.c_str() <<"\n";
+			continue;
+		}
+
 		if(!importMgr.ProcessSheet(it->strSheetName.c_str(), it->mapColumns))
 		{
 			ofs<<importMgr.GetErrorMsg();

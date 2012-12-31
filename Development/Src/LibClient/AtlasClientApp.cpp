@@ -194,7 +194,7 @@ namespace Atlas
 				break;
 			case 3:
 				i.pClient->OnData(i.iid, i.fid, i.len, i.data);
-				delete [] i.data;
+				ATLAS_FREE(i.data);
 				break;
 			}
 		}

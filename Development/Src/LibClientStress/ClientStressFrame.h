@@ -85,6 +85,9 @@ public:
 	void NotifyClientAdd(_U32 index);
 	void NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCase);
 
+protected:
+	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const std::string& json);
+
 private:
 	wxNotebook*				m_pTabView;
 	wxSplitterWindow*		m_pSplitter;

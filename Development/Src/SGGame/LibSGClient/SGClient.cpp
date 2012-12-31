@@ -7,7 +7,7 @@
 
 namespace Atlas
 {
-	
+
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), m_C2S(this), m_S2C(this)
 	{
 		m_nQueryBagRef = 0;
@@ -53,20 +53,34 @@ namespace Atlas
 
 	void CSGClient::GetServerList()
 	{
-		//m_C2S.GetServerList();
+		m_C2S.GetServerList();
 		//test data
-		SG_SERVER_INFO infos[4];
+	/*	SG_SERVER_INFO infos[4];
 		memset(infos, 0, sizeof(SG_SERVER_INFO)*4);
-		_U32 count = 1;
+		_U32 count = 3;
 
 		infos[0].server_id = 0;
-		infos[0].server_name = "test";
+		infos[0].server_name = "服务器1";
 		infos[0].server_state = 1;
 		infos[0].avatar_nick = "mumu";
 		infos[0].general_id = 11001;
 		infos[0].level = 1;
 
-		GetServerListResult(this, infos, 1);
+		infos[1].server_id = 1;
+		infos[1].server_name = "服务器2";
+		infos[1].server_state = 1;
+		infos[1].avatar_nick = "hahah";
+		infos[1].general_id = 11002;
+		infos[1].level = 3;
+
+		infos[2].server_id = 2;
+		infos[2].server_name = "服务器3";
+		infos[2].server_state = 1;
+		infos[2].avatar_nick = "";
+		infos[2].general_id = 0;
+		infos[2].level = 0;
+
+		GetServerListResult(this, infos, count);*/
 	}
 
 	void CSGClient::EnterServer(_U32 server_id)
@@ -76,7 +90,26 @@ namespace Atlas
 
 	void CSGClient::QueryAvatar()
 	{
-		m_C2S.QueryAvatar();
+		//m_C2S.QueryAvatar();
+
+		SG_PLAYER player;
+		player.nick = "test_nick";
+		player.gold = 999;
+		player.rmb = 1;
+		player.general_id = 11001;
+		player.level = 1;
+	
+		player.equip_generals._Count = 2;
+		player.equip_generals._Array[0] = 21001;
+		player.equip_generals._Array[1] = 21002;
+
+		player.equip_soldiers._Count = 3;
+
+		player.equip_soldiers._Array[0] = 31001;
+		player.equip_soldiers._Array[1] = 31002;
+		player.equip_soldiers._Array[2] = 31003;
+
+		QueryAvatarResult(this, player);
 	}
 
 	void CSGClient::CreateAvatar(const char* nick, _U32 general_id)
@@ -86,7 +119,7 @@ namespace Atlas
 
 	void CSGClient::DeleteAvatar()
 	{
-		m_C2S.DeleteAvatar();
+		//m_C2S.DeleteAvatar();
 	}
 
 	void CSGClient::EnterGame()
@@ -107,16 +140,43 @@ namespace Atlas
 	void CSGClient::QueryGenerals()
 	{
 		m_C2S.QueryGenerals();
+
+		SG_GENERAL generals[2];
+		_U32 count = 2;
+
+		//generals[0].general_id = 21001;
+		//generals[0].level = 1;
+		//generals[0].exp = 900;
+		////generals[0].equip_slots;
+
+		//generals[1].general_id = 21002;
+		//generals[1].level = 1;
+		//generals[1].exp = 800;
+
+		//QueryGeneralResult(this, generals, count);
 	}
 
 	void CSGClient::QuerySoldiers()
 	{
 		m_C2S.QuerySoldiers();
+		
+	/*	SG_SOLDIER soldiers[3];
+		_U32 count = 3;
+
+		soldiers[0].soldier_id = 31001;
+		soldiers[0].level = 1;
+		soldiers[0].soldier_id = 31002;
+		soldiers[0].level = 1;
+		soldiers[0].soldier_id = 31003;
+		soldiers[0].level = 1;
+
+		QuerySoldierResult(this, soldiers, count);*/
 	}
 
 	void CSGClient::QueryBag()
 	{
 		m_C2S.QueryBag();
+		QueryBagEnd(this);
 	}
 
 	void CSGClient::EquipItem(_U32 general_id, A_UUID item_uuid)
@@ -126,7 +186,8 @@ namespace Atlas
 
 	void CSGClient::BeginBattle(const char* name)
 	{
-		//m_C2S.BeginBattle(name);
+		m_C2S.BeginBattle(name);
+		/*
 		//temp return data
 		SG_PLAYER_PVE PlayerPVE;
 		memset(&PlayerPVE, 0, sizeof(SG_PLAYER_PVE));
@@ -203,12 +264,14 @@ namespace Atlas
 		}
 
 		this->BeginBattleResult(this, PlayerPVE);
+		*/
 	}
 
 	void CSGClient::EndBattle(const char* name, _U32 result)
 	{
 		//temp return data
-		//m_C2S.EndBattle(name, result);
+		m_C2S.EndBattle(name, result);
+		/*
 		_U32 level = 1;
 		_U32 exp = 500;
 		_U32 gold = 999;
@@ -223,6 +286,7 @@ namespace Atlas
 		_U32 drop_count = 2;
 
 		this->EndBattleResult(this, level, exp, gold, drops, drop_count);
+		*/
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -242,6 +306,7 @@ namespace Atlas
 	void CSGClient::QueryAvatarResult(CSGClient* pClient, const SG_PLAYER& player)
 	{
 		m_player = player;
+		if(m_callback) m_callback->QueryAvatarDone(m_player);
 	}
 
 	void CSGClient::CreateAvatarResult(CSGClient* pClient, _U32 code)
@@ -340,4 +405,21 @@ namespace Atlas
 		if(m_callback) m_callback->EndBattleDone(level, exp, gold, drops, drop_count);
 	}
 
+	void CSGClient::OnLoginDone()
+	{
+		CClient::OnLoginDone();
+		if(m_callback) m_callback->LoginResult(0);
+	}
+	
+	void CSGClient::OnLoginFailed()
+	{
+		CClient::OnLoginFailed();
+		if(m_callback) m_callback->LoginResult(1);
+	}
+
+	void CSGClient::OnDisconnected()
+	{
+		CClient::OnDisconnected();
+		if(m_callback) m_callback->DisconnectNotify();
+	}
 }

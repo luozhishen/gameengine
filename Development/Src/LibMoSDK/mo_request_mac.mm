@@ -42,6 +42,7 @@ struct MOREQUEST
 - (const char*)getResult;
 - (int)getResultLength;
 - (MOREQUESTSTATE)getState;
+- (MOREQUEST*)getStruct;
 
 @end
 
@@ -151,6 +152,11 @@ struct MOREQUEST
     return _state;
 }
 
+- (MOREQUEST*)getStruct
+{
+	return &_struct;
+}
+
 @end
 
 MOREQUEST* MORequestString(const char* url, const std::map<std::string, std::string>& params)
@@ -188,7 +194,7 @@ MOREQUEST* MORequestString(const char* url, const char* postdata)
 		NSString* nurl = [NSString stringWithCString:url encoding:NSUTF8StringEncoding];
 		[request httpGet:nurl savefile:NULL];
 	}
-	return (MOREQUEST*)request;
+	return [request getStruct];
 }
 
 MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path)
@@ -208,7 +214,7 @@ MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* pat
 		NSString* nurl = [NSString stringWithCString:url encoding:NSUTF8StringEncoding];
 		[request httpGet:nurl savefile:fp];
 	}
-	return (MOREQUEST*)request;
+	return [request getStruct];
 }
 
 MOREQUEST* MOUploadFiles(const char* url, const char* postdata, const std::map<std::string, std::string>& files)

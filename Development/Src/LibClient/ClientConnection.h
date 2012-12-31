@@ -13,7 +13,7 @@ namespace Atlas
 		CClient::CLIENT_STATE GetState();
 		_U32 GetErrorCode();
 
-		virtual bool Login(const char* pUrl, _U32 nUID, const char* pToken);
+		virtual bool Login(const char* pUrl, const char* pToken);
 		virtual void Logout();
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 

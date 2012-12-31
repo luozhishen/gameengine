@@ -7,6 +7,44 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_PLAYER_RANDOM_NAME_CONFIG>(SG_PLAYER_RANDOM_NAME_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.family_name)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.male_name)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.female_name)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_PLAYER_RANDOM_NAME_CONFIG>(const SG_PLAYER_RANDOM_NAME_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.family_name)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.male_name)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.female_name)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_PLAYER_RANDOM_NAME_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "family_name", 0, ATLAS_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, family_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "male_name", 0, ATLAS_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, male_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "female_name", 0, ATLAS_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, female_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_PLAYER_RANDOM_NAME_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PLAYER_RANDOM_NAME_CONFIG", sizeof(SG_PLAYER_RANDOM_NAME_CONFIG), 3, _struct_SG_PLAYER_RANDOM_NAME_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_PLAYER_RANDOM_NAME_CONFIG>()
+	{
+		return &_rfl_struct_SG_PLAYER_RANDOM_NAME_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_LEVEL_DROP_CONFIG>(SG_LEVEL_DROP_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;

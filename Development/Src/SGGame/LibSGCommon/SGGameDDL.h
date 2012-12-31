@@ -19,23 +19,33 @@
 
 const _U32 SG_PLAYERNAME_LENMAX = 100;
 
-const _U32 SG_ENEMYNAME_LENMAX = 100;
-
-const _U32 SG_BAGITEM_MAX = 20;
-
-const _U32 SG_GENERAL_MAX = 10;
-
-const _U32 SG_SOLDIER_MAX = 10;
-
 const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 
 const _U32 SG_DESCRIPTION_MAX = 512;
 
-const _U32 SG_GAME_LEVELS_NAME_MAX = 128;
+const _U32 SG_PLAYER_NAME_MAX = 10;
 
-const _U32 SG_GAME_LEVELS_DESC_MAX = 1024;
+struct SG_PLAYER_RANDOM_NAME_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<SG_PLAYER_NAME_MAX> family_name;
+	DDL::String<SG_PLAYER_NAME_MAX> male_name;
+	DDL::String<SG_PLAYER_NAME_MAX> female_name;
+};
 
-const _U32 SG_GAME_LEVELS_SCRIPT_MAX = 128;
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_PLAYER_RANDOM_NAME_CONFIG>(SG_PLAYER_RANDOM_NAME_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_PLAYER_RANDOM_NAME_CONFIG>(const SG_PLAYER_RANDOM_NAME_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_PLAYER_RANDOM_NAME_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_PLAYER_RANDOM_NAME_CONFIG_info;
+}
 
 struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 {

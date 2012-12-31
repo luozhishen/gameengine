@@ -41,7 +41,7 @@ namespace Atlas
 		}
 	}
 
-	bool CHttpClientConnection::Login(const char* pUrl, _U32 nUID, const char* pToken)
+	bool CHttpClientConnection::Login(const char* pUrl, const char* pToken)
 	{
 		ATLAS_ASSERT(m_nState==CClient::STATE_NA || m_nState==CClient::STATE_FAILED);
 		ATLAS_ASSERT(!m_pLoginRequest);

@@ -247,6 +247,16 @@ namespace Atlas
 			return QueryContentGroupFile(info->parent);
 		}
 
+		void GetContentFileList(std::vector<std::string>& list)
+		{
+			list.clear();
+			std::map<std::string, bool>::iterator i;
+			for(i=g_content_file_map.begin(); i!=g_content_file_map.end(); i++)
+			{
+				list.push_back(i->first);
+			}
+		}
+
 		bool LoadContent()
 		{
 			std::map<std::string, bool>::iterator i;

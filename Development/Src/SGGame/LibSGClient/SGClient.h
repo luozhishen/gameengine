@@ -84,6 +84,11 @@ namespace Atlas
 		void QueryBagEnd(CSGClient* pClient);
 		void BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
 		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 drop_count);
+	
+	public:
+		virtual void OnLoginDone();
+		virtual void OnLoginFailed();
+		virtual void OnDisconnected();
 
 	private:
 		CSGClientCallback* m_callback;

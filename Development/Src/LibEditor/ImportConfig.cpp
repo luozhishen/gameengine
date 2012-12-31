@@ -91,6 +91,23 @@ namespace Atlas
 		m_strPath.clear();
 	}
 
+	bool CContentExcelImportManager::IsExistSheet(const char* szSheetName)
+	{
+		std::vector<wxString> vSheets;
+		if(!GetSheets(vSheets)) return false;
+
+		for(std::vector<wxString>::iterator it = vSheets.begin(); it != vSheets.end(); ++it)
+		{
+			wxString strSheetName = wxString::FromUTF8(szSheetName);
+			if(*it == strSheetName)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	bool CContentExcelImportManager::GetSheets(std::vector<wxString>& vSheets)
 	{
 		m_pExcelWrapper->SetFilePath(m_strPath.c_str());

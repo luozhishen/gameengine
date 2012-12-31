@@ -25,7 +25,7 @@ namespace Atlas
 		ATLAS_FREE(m_pRecvBuff);
 	}
 
-	bool CClientConnection::Login(const char* pUrl, _U32 nUID, const char* pToken)
+	bool CClientConnection::Login(const char* pUrl, const char* pToken)
 	{
 		SOCK_ADDR sa;
 		if(!sock_str2addr(pUrl, &sa))
@@ -36,10 +36,9 @@ namespace Atlas
 
 		m_nErrCode = CClient::ERRCODE_SUCCESSED;
 		_U16 len = (_U16)strlen(pToken)+1;
-		*((_U16*)(m_LoginData)) = sizeof(nUID) + len;
-		*((_U32*)(m_LoginData+sizeof(_U16))) = nUID;
-		memcpy(m_LoginData+sizeof(_U16)+sizeof(nUID), pToken, len);
-		m_nLoginDataSize = sizeof(_U16)+sizeof(nUID) + len;
+		*((_U16*)(m_LoginData)) = len;
+		memcpy(m_LoginData+sizeof(_U16), pToken, len);
+		m_nLoginDataSize = sizeof(_U16) + len;
 
 		m_nState = CClient::STATE_LOGINING;
 		if(!Connect(sa))

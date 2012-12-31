@@ -80,10 +80,12 @@ namespace Atlas
 		return m_pClientConnection;
 	}
 
-	bool CClient::Login(const char* pUrl, _U32 nUID, const char* pToken)
+	bool CClient::Login(const char* pUrl, const char* pToken)
 	{
 		if(m_pClientConnection->GetState()!=STATE_NA && m_pClientConnection->GetState()!=STATE_FAILED) return false;
-		return m_pClientConnection->Login(pUrl, nUID, pToken);
+		if(!pUrl) pUrl = m_pClientApp->GetParam("ServerUrl");
+		if(!pUrl) return false;
+		return m_pClientConnection->Login(pUrl, pToken);
 	}
 
 	bool CClient::LoginForStress(_U32 id)
@@ -93,7 +95,7 @@ namespace Atlas
 		const char* uid_base = m_pClientApp->GetParam("UidBase", "0");
 		char token[1000];
 		sprintf(token, "%d", id+atoi(uid_base));
-		return Login(pServerUrl, id+atoi(uid_base), token);
+		return Login(pServerUrl, token);
 	}
 
 	void CClient::Logout()

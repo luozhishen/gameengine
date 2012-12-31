@@ -76,38 +76,33 @@ void AUuidGenerate(A_UUID& uuid)
 	UuidCreate((UUID*)&uuid);
 }
 #else
-#ifndef IPHONE
-#include <uuid.h>
+#include <uuid/uuid.h>
 void AUuidToString(const A_UUID& uuid, char* str)
 {
-	uint32_t status;
-	uuid_to_string(str, (const uuid_t*)&uuid, &status);
+	//uint32_t status;
+	//uuid_to_string(str, (const uuid_t*)&uuid, &status);
+	uuid_t _uuid;
+	memcpy(&_uuid, &uuid, sizeof(_uuid));
+	uuid_unparse(_uuid, str);
 }
 
 bool AUuidFromString(const char* str, A_UUID& uuid)
 {
-	uint32_t status;
-	uuid_from_string((uuid_t*)&uuid, &status);
-	return status==uuid_s_ok;
+	//uint32_t status;
+	//uuid_from_string((uuid_t*)&uuid, &status);
+	//return status==uuid_s_ok;
+	uuid_t _uuid;
+	if(uuid_parse((char*)str, _uuid)!=0) return false;
+	memcpy(&uuid, &_uuid, sizeof(_uuid));
+	return true;
 }
 
 void AUuidGenerate(A_UUID& uuid)
 {
-	uint32_t status
-	uuid_create((uuid_t*)&uuid, &status);
+	//uint32_t status
+	//uuid_create((uuid_t*)&uuid, &status);
+	//uuid_t _uuid;
+	//uuid_generate(uuid);
+	//memcpy(&uuid, &_uuid, sizeof(_uuid));
 }
-#else
-void AUuidToString(const A_UUID& uuid, char* str)
-{
-}
-
-bool AUuidFromString(const char* str, A_UUID& uuid)
-{
-	return false;
-}
-
-void AUuidGenerate(A_UUID& uuid)
-{
-}
-#endif
 #endif

@@ -11,17 +11,6 @@
 
 namespace Atlas
 {
-	static CLIENT_LOG_PROC _g_clienglog = NULL;
-
-	void CClient::SetClientLog(CLIENT_LOG_PROC logproc)
-	{
-		_g_clienglog = logproc;
-	}
-
-	CLIENT_LOG_PROC CClient::GetClientLog()
-	{
-		return _g_clienglog;
-	}
 
 	CClient::CClient(CClientApp* pClientApp, _U32 recvsize) : m_pClientApp(pClientApp)
 	{
@@ -78,6 +67,16 @@ namespace Atlas
 	CClientConnectionBase* CClient::GetClientConnection()
 	{
 		return m_pClientConnection;
+	}
+
+	void CClient::SetLogCallback(CClient::LOG_CALLBACK logproc)
+	{
+		m_LogCallback = logproc;
+	}
+
+	CClient::LOG_CALLBACK CClient::GetLogCallback()
+	{
+		return m_LogCallback;
 	}
 
 	bool CClient::Login(const char* pUrl, const char* pToken)

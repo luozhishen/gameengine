@@ -96,21 +96,21 @@ void CClientLogView::OnNewClient(_U32 index)
 	m_Clients[index];
 	Atlas::CStressClient* pClient = GetFrame()->GetStressClient(index);
 	if(!pClient) return;
-	pClient->_OnConnect.connect(this, &CClientLogView::OnConnected);
-	pClient->_OnDisconnected.connect(this, &CClientLogView::OnDisconnected);
-	pClient->_OnData.connect(this, &CClientLogView::OnData);
-	pClient->_OnConnectFailed.connect(this, &CClientLogView::OnConnectFailed);
 	pClient->_OnLoginDone.connect(this, &CClientLogView::OnLoginDone);
+	pClient->_OnLoginFailed.connect(this, &CClientLogView::OnLoginFailed);
+	pClient->_OnData.connect(this, &CClientLogView::OnData);
+	pClient->_OnDisconnected.connect(this, &CClientLogView::OnDisconnected);
+	pClient->_OnLogMessage.connect(this, &CClientLogView::OnLogMessage);
 }
 
-void CClientLogView::OnConnected(_U32 index)
+void CClientLogView::OnLoginDone(_U32 index)
 {
-	Append(index, "connected");
+	Append(index, "login done");
 }
 
-void CClientLogView::OnDisconnected(_U32 index)
+void CClientLogView::OnLoginFailed(_U32 index)
 {
-	Append(index, "disconnected");
+	Append(index, "login failed");
 }
 
 void CClientLogView::OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8* data)
@@ -130,12 +130,12 @@ void CClientLogView::OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8*
 	Append(index, msg);
 }
 
-void CClientLogView::OnConnectFailed(_U32 index)
+void CClientLogView::OnDisconnected(_U32 index)
 {
-	Append(index, "connect failed");
+	Append(index, "disconnected");
 }
 
-void CClientLogView::OnLoginDone(_U32 index)
+void CClientLogView::OnLogMessage(_U32 index, const char* msg)
 {
-	Append(index, "login done");
+	Append(index, msg);
 }

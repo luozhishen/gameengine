@@ -1,7 +1,14 @@
 #ifndef __ATLAS_CLIENT__
 #define __ATLAS_CLIENT__
 
-#define CLIENT_LOG(client, fmt, ...) { if(Atlas::CClient::GetClientLog()) Atlas::CClient::GetClientLog()(client, fmt, ##__VA_ARGS__); }
+#define CLIENT_LOG(client, fmt, ...)	\
+{	\
+	if(client->GetLogCallback())	\
+	{	\
+		std::string str = Atlas::StringFormat(fmt, ##__VA_ARGS__);	\
+		(client->GetLogCallback())(str.c_str());	\
+	}	\
+}
 
 namespace Atlas
 {
@@ -12,8 +19,6 @@ namespace Atlas
 	class CClientApp;
 	class CStressClient;
 	class CStressCase;
-
-	typedef void(*CLIENT_LOG_PROC)(CClient* pClient, const char* fmt, ...);
 
 	class CClient : public CNoCopy
 	{
@@ -28,6 +33,7 @@ namespace Atlas
 			STATE_LOGINED,
 			STATE_FAILED,
 		} CLIENT_STATE;
+		typedef std::tr1::function<void (const char*)> LOG_CALLBACK;
 
 		enum {
 			ERRCODE_SUCCESSED = 0,
@@ -35,9 +41,6 @@ namespace Atlas
 			ERRCODE_AUTH_FAILED,
 			ERRCODE_NETWORK,
 		};
-
-		static void SetClientLog(CLIENT_LOG_PROC logproc);
-		static CLIENT_LOG_PROC GetClientLog();
 
 		CClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CClient();
@@ -48,6 +51,8 @@ namespace Atlas
 
 		const std::string& GetClientConnectionType();
 		CClientConnectionBase* GetClientConnection();
+		void SetLogCallback(LOG_CALLBACK logproc);
+		LOG_CALLBACK GetLogCallback();
 
 		bool Login(const char* pUrl, const char* pToken);
 		bool LoginForStress(_U32 id);
@@ -82,6 +87,7 @@ namespace Atlas
 		std::string m_ClientConnectionType;
 		CClientConnectionBase* m_pClientConnection;
 		std::list<CClientComponent*> m_Components;
+		LOG_CALLBACK m_LogCallback;
 	};
 
 	class CClientComponent : public CNoCopy

@@ -43,7 +43,9 @@ namespace DDLReflect
 	bool Json2Call(const FUNCTION_INFO* def, const Json::Value& json, _U32& len, _U8* data)
 	{
 		DDL::MemoryWriter buf(data, len);
-		return call_jsonwrite(buf, def->finfos, def->fcount, json);
+		if(!call_jsonwrite(buf, def->finfos, def->fcount, json)) return false;
+		len = buf.GetSize();
+		return true;
 	}
 
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, std::string& json)
@@ -95,10 +97,10 @@ namespace DDLReflect
 	{
 		if(type&TYPE_ARRAY)
 		{
-			_U16 count;
-			if(!buf.Read(count)) return false;
+			DDL::Array<_U8, 1> _array;
+			if(!buf.Read(_array._Count)) return false;
 			value = Json::Value(Json::arrayValue);
-			for(_U16 i=0; i<count; i++)
+			for(_U32 i=0; i<_array._Count; i++)
 			{
 				Json::Value svalue(Json::nullValue);
 				if(!call_jsonread(buf, type&TYPE_MASK, def, svalue)) return false;
@@ -233,9 +235,10 @@ namespace DDLReflect
 		if(type&TYPE_ARRAY)
 		{
 			if(!value.isArray()) return false;
-			_U16 count = (_U16)value.size();
-			if(!buf.Write(count)) return false;
-			for(_U16 i=0; i<count; i++)
+			DDL::Array<_U8, 1> _array;
+			_array._Count = (_U32)value.size();
+			if(!buf.Write(_array._Count)) return false;
+			for(_U32 i=0; i<_array._Count; i++)
 			{
 				if(!call_jsonwrite(buf, type&TYPE_MASK, def, value[i])) return false;
 			}

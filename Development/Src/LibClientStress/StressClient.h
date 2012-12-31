@@ -37,17 +37,18 @@ namespace Atlas
 		void OnLoginFailed();
 		void OnDisconnected();
 		void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+		void OnLogMessage(const char* msg);
 
 		bool IsExistCase(const char* name);
 		CStressCase* GetStressCase(const char* name);
 		void GetStressCases(std::set<CStressCase*>& cases);
 		CStressCase* NewStressCase(const char* name);
 
-		sigslot::signal1<_U32>									_OnConnectFailed;
-		sigslot::signal1<_U32>									_OnConnect;
 		sigslot::signal1<_U32>									_OnLoginDone;
+		sigslot::signal1<_U32>									_OnLoginFailed;
 		sigslot::signal5<_U32, _U16, _U16, _U32, const _U8*>	_OnData;
 		sigslot::signal1<_U32>									_OnDisconnected;
+		sigslot::signal2<_U32, const char*>						_OnLogMessage;
 
 	protected:
 		void CaseAttach(CStressCase* pCase);

@@ -112,12 +112,12 @@ namespace Atlas
 
 	void CSGClient::BeginBattle(const char* name)
 	{
-		m_C2S.BeginBattle(name);
+		//m_C2S.BeginBattle(name);
 	}
 
 	void CSGClient::EndBattle(const char* name, _U32 result)
 	{
-		m_C2S.EndBattle(name, result);
+		//m_C2S.EndBattle(name, result);
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)

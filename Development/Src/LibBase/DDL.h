@@ -76,11 +76,9 @@ namespace DDL
 		template<typename T, _U32 N>
 		bool ReadArray(Array<T, N>& Array)
 		{
-			_U32 Count;
-			if(!Read(Count)) return false;
-			if(Count>N) return false;
-			Array._Count = Count;
-			for(_U32 i=0; i<Count; i++)
+			if(!Read(Array._Count)) return false;
+			if(Array._Count>N) return false;
+			for(_U32 i=0; i<Array._Count; i++)
 			{
 				if(!Read(Array._Array[i])) return false;
 			}
@@ -88,9 +86,9 @@ namespace DDL
 		}
 
 		template<typename T>
-		bool ReadPointer(T* Ptr, _U16 Count)
+		bool ReadPointer(T* Ptr, _U32 Count)
 		{
-			for(_U16 i=0; i<Count; i++)
+			for(_U32 i=0; i<Count; i++)
 			{
 				if(!Read(Ptr[i])) return false;
 			}
@@ -111,10 +109,8 @@ namespace DDL
 		template<size_t N, size_t C>
 		bool ReadStringArray(Array<String<N>, C>& Array)
 		{
-			_U32 Count;
-			if(!Read(Count)) return false;
-			if(Count>N) return false;
-			Array._Count = Count;
+			if(!Read(Array._Count)) return false;
+			if(Array._Count>N) return false;
 			for(_U32 i=0; i<Array._Count; i++)
 			{
 				if(!ReadString(Array._Array[i])) return false;
@@ -156,9 +152,9 @@ namespace DDL
 		}
 		
 		template<typename T>
-		bool WritePointer(const T* Ptr, _U16 Count)
+		bool WritePointer(const T* Ptr, _U32 Count)
 		{
-			for(_U16 i=0; i<Count; i++)
+			for(_U32 i=0; i<Count; i++)
 			{
 				if(!Write(Ptr[i])) return false;
 			}

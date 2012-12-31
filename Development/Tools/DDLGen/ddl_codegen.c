@@ -304,7 +304,7 @@ int ddlgen_code_task_class_server(const DDL_CLS* cls, const DDL_TASK* task)
 		OutH(1, "		{\n");
 		for(a=0; a<cls->funs[f].args_count; a++) {
 			if(is_pointer(&cls->funs[f].args[a])) {
-				OutH(3, "	_U16 __length;\n");
+				OutH(3, "	_U32 __length;\n");
 				break;
 			}
 		}
@@ -408,7 +408,7 @@ int ddlgen_code_task_class_client(const DDL_CLS* cls, const DDL_TASK* task)
 		OutH(1, "	{\n");
 		OutH(1, "		BUFFER Buf;\n");
 		if(need_length) {
-			OutH(2, "	_U16 __length;\n");
+			OutH(2, "	_U32 __length;\n");
 		}
 		for(a=0; a<cls->funs[f].args_count; a++) {
 			OutH(2, "	// <%s> <%s> <%s> <%s>\n", cls->funs[f].args[a].type, cls->funs[f].args[a].name, cls->funs[f].args[a].size, cls->funs[f].args[a].count);

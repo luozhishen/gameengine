@@ -712,7 +712,7 @@ namespace DDLStub
 			}
 			if(fid==4)
 			{
-				_U16 __length;
+				_U32 __length;
 				char* _prefix_nick;
 				_U32 _prefix_general_id;
 
@@ -801,7 +801,7 @@ namespace DDLStub
 			}
 			if(fid==13)
 			{
-				_U16 __length;
+				_U32 __length;
 				char* _prefix_name;
 
 				// <string> <name> <> <>;
@@ -817,7 +817,7 @@ namespace DDLStub
 			}
 			if(fid==14)
 			{
-				_U16 __length;
+				_U32 __length;
 				char* _prefix_name;
 				_U32 _prefix_result;
 
@@ -894,7 +894,7 @@ namespace DDLProxy
 		bool CreateAvatar(const char* nick, _U32 general_id)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <string> <nick> <> <>
 			__length = DDL::StringLength(nick);
 			if(!Buf.Write(__length)) return false;
@@ -977,7 +977,7 @@ namespace DDLProxy
 		bool BeginBattle(const char* name)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <string> <name> <> <>
 			__length = DDL::StringLength(name);
 			if(!Buf.Write(__length)) return false;
@@ -990,7 +990,7 @@ namespace DDLProxy
 		bool EndBattle(const char* name, _U32 result)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <string> <name> <> <>
 			__length = DDL::StringLength(name);
 			if(!Buf.Write(__length)) return false;
@@ -1034,7 +1034,7 @@ namespace DDLStub
 			}
 			if(fid==1)
 			{
-				_U16 __length;
+				_U32 __length;
 				SG_SERVER_INFO* _prefix_infos;
 				_U32 _prefix_count;
 
@@ -1096,7 +1096,7 @@ namespace DDLStub
 			}
 			if(fid==6)
 			{
-				_U16 __length;
+				_U32 __length;
 				SG_GENERAL* _prefix_generals;
 				_U32 _prefix_count;
 
@@ -1114,7 +1114,7 @@ namespace DDLStub
 			}
 			if(fid==7)
 			{
-				_U16 __length;
+				_U32 __length;
 				SG_SOLDIER* _prefix_soldiers;
 				_U32 _prefix_count;
 
@@ -1140,7 +1140,7 @@ namespace DDLStub
 			}
 			if(fid==9)
 			{
-				_U16 __length;
+				_U32 __length;
 				SG_EQUIPT_ITEM* _prefix_items;
 				_U32 _prefix_count;
 
@@ -1158,7 +1158,7 @@ namespace DDLStub
 			}
 			if(fid==10)
 			{
-				_U16 __length;
+				_U32 __length;
 				SG_USABLE_ITEM* _prefix_items;
 				_U32 _prefix_count;
 
@@ -1176,7 +1176,7 @@ namespace DDLStub
 			}
 			if(fid==11)
 			{
-				_U16 __length;
+				_U32 __length;
 				SG_GEM_ITEM* _prefix_items;
 				_U32 _prefix_count;
 
@@ -1213,7 +1213,7 @@ namespace DDLStub
 			}
 			if(fid==14)
 			{
-				_U16 __length;
+				_U32 __length;
 				_U32 _prefix_level;
 				_U32 _prefix_exp;
 				_U32 _prefix_gold;
@@ -1272,7 +1272,7 @@ namespace DDLProxy
 		bool GetServerListResult(const SG_SERVER_INFO* infos, _U32 count)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <SG_SERVER_INFO> <infos> <> <count>
 			__length = (_U16)(count);
 			if(!Buf.Write(__length)) return false;
@@ -1327,7 +1327,7 @@ namespace DDLProxy
 		bool QueryGeneralResult(const SG_GENERAL* generals, _U32 count)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <SG_GENERAL> <generals> <> <count>
 			__length = (_U16)(count);
 			if(!Buf.Write(__length)) return false;
@@ -1342,7 +1342,7 @@ namespace DDLProxy
 		bool QuerySoldierResult(const SG_SOLDIER* soldiers, _U32 count)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <SG_SOLDIER> <soldiers> <> <count>
 			__length = (_U16)(count);
 			if(!Buf.Write(__length)) return false;
@@ -1365,7 +1365,7 @@ namespace DDLProxy
 		bool QueryBagEquipt(const SG_EQUIPT_ITEM* items, _U32 count)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <SG_EQUIPT_ITEM> <items> <> <count>
 			__length = (_U16)(count);
 			if(!Buf.Write(__length)) return false;
@@ -1380,7 +1380,7 @@ namespace DDLProxy
 		bool QueryBagUsable(const SG_USABLE_ITEM* items, _U32 count)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <SG_USABLE_ITEM> <items> <> <count>
 			__length = (_U16)(count);
 			if(!Buf.Write(__length)) return false;
@@ -1395,7 +1395,7 @@ namespace DDLProxy
 		bool QueryBagGen(const SG_GEM_ITEM* items, _U32 count)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <SG_GEM_ITEM> <items> <> <count>
 			__length = (_U16)(count);
 			if(!Buf.Write(__length)) return false;
@@ -1428,7 +1428,7 @@ namespace DDLProxy
 		bool EndBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
 		{
 			BUFFER Buf;
-			_U16 __length;
+			_U32 __length;
 			// <_U32> <level> <> <>
 			if(!Buf.Write(level)) return false;
 			// <_U32> <exp> <> <>

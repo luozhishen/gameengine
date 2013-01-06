@@ -7,9 +7,10 @@
 #include <string>
 #include "mosdk.h"
 #include <windows.h>
+#include <shlobj.h>
 
 static char g_AppName[1000] = "UNKNOWN_APP";
-static char g_UDID[1000] = "UNKNOWN_UDID";
+static char g_UDID[1000] = "";
 static char g_OSName[1000] = "WINDOWS";
 static char g_ResourcePath[1000] = "";
 
@@ -27,6 +28,34 @@ void MOInit(const char* appname)
 	*(strrchr(g_ResourcePath, '\\')) = '\0';
 	*(strrchr(g_ResourcePath, '\\')) = '\0';
 	*(strrchr(g_ResourcePath, '\\')) = '\0';
+
+	LPITEMIDLIST pidl=NULL;
+	char szDocument[MAX_PATH];
+	SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &pidl);   
+	SHGetPathFromIDListA(pidl, szDocument);
+	strcat(szDocument, "\\MO_DEVICE_ID.txt");
+	FILE* fp;
+	fp = fopen(szDocument, "rt");
+	if(fp)
+	{
+		if(fgets(g_UDID, sizeof(g_UDID), fp)==NULL) g_UDID[0] = '\0';
+		fclose(fp);
+	}
+	if(g_UDID[0]=='\0')
+	{
+		UUID uuid;
+		UuidCreate(&uuid);
+		RPC_CSTR val;
+		UuidToStringA((UUID*)&uuid, &val);
+		strcpy(g_UDID, (const char*)val);
+		RpcStringFreeA(&val);
+		fp = fopen(szDocument, "wt");
+		if(fp)
+		{
+			fputs(g_UDID, fp);
+			fclose(fp);
+		}
+	}
 }
 
 void MOFini()

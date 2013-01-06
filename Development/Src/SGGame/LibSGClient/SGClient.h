@@ -57,7 +57,11 @@ namespace Atlas
 		void QueryGenerals();
 		void QuerySoldiers();
 		void QueryBag();
-		void EquipItem(_U32 general_id, A_UUID item_uuid);
+		void EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots);
+		void EquipGenerals(const _U32* generals, _U32 count);
+		void EquipSoldiers(const _U32* soldiers, _U32 count);
+		void EnhanceSoldier(_U32 soldier_id);
+
 		void BeginBattle(const char* name);
 		void EndBattle(const char* name, _U32 result);
 

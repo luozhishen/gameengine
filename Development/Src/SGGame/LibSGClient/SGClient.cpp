@@ -102,22 +102,36 @@ namespace Atlas
 	void CSGClient::QueryBag()
 	{
 		m_C2S.QueryBag();
-		QueryBagEnd(this);
 	}
 
-	void CSGClient::EquipItem(_U32 general_id, A_UUID item_uuid)
+	void CSGClient::EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots)
 	{
-		m_C2S.EquipItem(general_id, item_uuid);
+		m_C2S.EquipItem(general_id, slots);
+	}
+
+	void CSGClient::EquipGenerals(const _U32* generals, _U32 count)
+	{
+		m_C2S.EquipGenerals(generals, count);
+	}
+
+	void CSGClient::EquipSoldiers(const _U32* soldiers, _U32 count)
+	{
+		m_C2S.EquipSoldiers(soldiers, count);
+	}
+
+	void CSGClient::EnhanceSoldier(_U32 soldier_id)
+	{
+		m_C2S.EnhanceSoldier(soldier_id);
 	}
 
 	void CSGClient::BeginBattle(const char* name)
 	{
-		//m_C2S.BeginBattle(name);
+		m_C2S.BeginBattle(name);
 	}
 
 	void CSGClient::EndBattle(const char* name, _U32 result)
 	{
-		//m_C2S.EndBattle(name, result);
+		m_C2S.EndBattle(name, result);
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)

@@ -9,6 +9,37 @@
 
 namespace Atlas
 {
+	static std::map<int, char> g_excelmap;
+
+	static char g_excelMap[26] = 
+	{
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'H',
+		'I',
+		'J',
+		'K',
+		'L',
+		'M',
+		'N',
+		'O',
+		'P',
+		'Q',
+		'R',
+		'S',
+		'T',
+		'U',
+		'V',
+		'W',
+		'X',
+		'Y',
+		'Z',
+	};
 
 	static bool GenerateHeader(int nCol, char szIndex[], int len)
 	{
@@ -17,24 +48,59 @@ namespace Atlas
 		{
 			return false;
 		}
+		
+		char c[4]; 
+		memset((void*)c, 0, 4);
+		bool bAddA = false;
 
-		char c[2]; 
-		do
+		if(nCol > 26)
 		{
-			memset((void*)c, 0, 2);
-			if(nCol%26)
+			sprintf_s(c, 4, "A");
+			strcat_s(szIndex, len, c);
+			bAddA = true;
+		}
+
+		if(nCol%26)
+		{
+			sprintf_s(c, 4, "%c", g_excelMap[nCol%26- 1]);
+			if(bAddA)
 			{
-				sprintf_s(c, 2, "%c", nCol%26 - 1 + 'A');
+				strcat_s(szIndex+1, len-1, c);
 			}
 			else
 			{
-				sprintf_s(c, 2, "A");
+				strcat_s(szIndex, len, c);
 			}
-			
-			strcat_s(szIndex, len, c);
-			nCol /= 26;
 		}
-		while(nCol);
+		else
+		{
+			sprintf_s(c, 4, "Z");
+			strcat_s(szIndex, len, c);
+		}
+
+		//do
+		//{
+		//	memset((void*)c, 0, 4);
+		//	if(nCol%26)
+		//	{
+		//		sprintf_s(c, 4, "%c", g_excelMap[nCol%26- 1]);
+		//	}
+		//	else
+		//	{
+		//		if(nCol / 26 == 1) 
+		//		{
+		//			sprintf_s(c, 4, "Z");
+		//		}
+		//		else
+		//		{
+		//			sprintf_s(c, 4, "A");
+		//		}
+		//	}
+		//	
+		//	strcat_s(szIndex, len, c);
+		//	nCol /= 26;
+		//}
+		//while(nCol);
 
 		return true;
 	}

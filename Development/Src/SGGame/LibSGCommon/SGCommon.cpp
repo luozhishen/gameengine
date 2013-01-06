@@ -23,6 +23,7 @@ namespace Atlas
 	{
 		Atlas::Engine::InitContentObjects();
 		
+		ContentObject::Register(DDLReflect::GetStruct<SG_DIRTY_WORD_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_PLAYER_RANDOM_NAME_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_DROP_ITEM_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_LEVEL_DROP_CONFIG>());
@@ -54,6 +55,7 @@ namespace Atlas
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_DROP_ITEM_CONFIG>(), "drop_group", "drop_group.json");
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_LEVEL_DROP_CONFIG>(), "level_drop", "level_drop.json");
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_PLAYER_RANDOM_NAME_CONFIG>(), "random_name", "random_name.json");
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_DIRTY_WORD_CONFIG>(), "dirty_word", "dirty_word.json");
 	}
 
 	void InitLiveObjects()

@@ -115,7 +115,7 @@ void CClientLogView::OnLoginFailed(_U32 index)
 
 void CClientLogView::OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8* data)
 {
-	char msg[1000];
+	char msg[10000];
 	const DDLReflect::CLASS_INFO* cls;
 	if(Atlas::GetClientFunctionStub(iid, fid, cls))
 	{

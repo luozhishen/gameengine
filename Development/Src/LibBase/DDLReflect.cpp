@@ -185,7 +185,7 @@ namespace DDLReflect
 					if(!buf.Read(len)) return false;
 					const char* str = (const char*)buf.ReadBuffer(len);
 					if(!str) return false;
-					value = Json::Value(str, str+len-1);
+					value = Json::Value(str, str+len);
 					break;
 				}
 			case TYPE_UUID:
@@ -302,14 +302,14 @@ namespace DDLReflect
 				}
 			case TYPE_F32:
 				{
-					if(!value.isDouble()) return false;
+					if(!value.isNumeric()) return false;
 					_F32 v = (_F32)value.asDouble();
 					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_F64:
 				{
-					if(!value.isDouble()) return false;
+					if(!value.isNumeric()) return false;
 					_F64 v = (_F64)value.asDouble();
 					if(!buf.Write(v)) return false;
 					break;

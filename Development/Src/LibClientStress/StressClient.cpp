@@ -112,32 +112,7 @@ namespace Atlas
 
 	void CStressClient::Logout()
 	{
-		if(m_pClient->GetState() != Atlas::CClient::STATE_NA)
-		{
-			//if(m_hTimer)
-			//{
-			//	HANDLE hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-			//	while(!DeleteTimerQueueTimer(CStressManager::Get().GetTimerQueue(), m_hTimer, hEvent))
-			//	{
-			//		if(GetLastError()==ERROR_IO_PENDING)
-			//		{
-			//			Sleep(0);
-			//			break;
-			//		}
-			//		OutputDebugString("in loop\n");
-			//	}
-
-			//	while(WaitForSingleObject(hEvent, INFINITE) != WAIT_OBJECT_0)
-			//	{
-			//		SwitchToThread();
-			//	}
-			//	CloseHandle(hEvent);
-			//	m_hTimer = NULL;
-			//}
-		
-			m_pClient->Logout();
-			//m_pClient->OnDisconnected();
-		}
+		m_pClient->Logout();
 	}
 
 	void CStressClient::OnLoginDone()

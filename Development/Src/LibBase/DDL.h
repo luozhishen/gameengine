@@ -16,6 +16,7 @@ namespace DDL
 		Array()
 		{
 			_Count = 0;
+			memset(_Array, 0, sizeof(_Array));
 		}
 
 		void Resize(_U32 Count)

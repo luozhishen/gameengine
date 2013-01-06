@@ -25,6 +25,30 @@ const _U32 SG_DESCRIPTION_MAX = 512;
 
 const _U32 SG_PLAYER_NAME_MAX = 10;
 
+const _U32 SG_EQUIPT_NAME_MAX = 20;
+
+const _U32 SG_EQUIPT_TEX_MAX = 256;
+
+struct SG_DIRTY_WORD_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<SG_PLAYER_NAME_MAX> dirty_word;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DIRTY_WORD_CONFIG>(SG_DIRTY_WORD_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_DIRTY_WORD_CONFIG>(const SG_DIRTY_WORD_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DIRTY_WORD_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_DIRTY_WORD_CONFIG_info;
+}
+
 struct SG_PLAYER_RANDOM_NAME_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<SG_PLAYER_NAME_MAX> family_name;
@@ -234,6 +258,36 @@ namespace DDLReflect
 struct SG_EQUIPT_ITEM_CONFIG : SG_ITEM_CONFIG
 {
 	SG_ATTR_MOD_CONFIG mod_config;
+	DDL::String<SG_EQUIPT_NAME_MAX> item_name;
+	_U8 item_type;
+	_U8 quanlity;
+	_F32 quanlity_rate;
+	_U32 req_level;
+	_U8 major_attr;
+	_U32 major_attr_num;
+	_F32 turbo_rate;
+	_U8 minor_attr_num;
+	_U32 HP_MAX;
+	_U32 POW_MAX;
+	_U32 ITEM_INT_MAX;
+	_F32 HIT_MAX;
+	_F32 CRIT_MAX;
+	_F32 MISS_MAX;
+	_U32 SLOT_NUM;
+	_U8 HAS_SKILL;
+	_U32 COM_MATERIAL;
+	_U32 COM_REQ_NUM;
+	_U32 KEY_MATERIAL;
+	_U32 KEY_REQ_NUM;
+	_U32 COMBINE_COST;
+	_U32 TURBO_BASE_COST;
+	_U32 RESET_COST;
+	_U32 cost;
+	DDL::String<SG_EQUIPT_TEX_MAX> tex;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
 };
 
 namespace DDL
@@ -367,6 +421,9 @@ struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 soldier_id;
 	_U32 attr_id;
+	_U8 type;
+	_U8 atk_type;
+	_U8 def_type;
 	DDL::String<SG_DESCRIPTION_MAX> description;
 	_S32 req_gold;
 	_S32 req_rmb;
@@ -788,18 +845,65 @@ namespace DDLStub
 			if(fid==12)
 			{
 				_U32 _prefix_general_id;
-				A_UUID _prefix_item_uuid;
+				SG_EQUIP_SLOTS _prefix_slots;
 
 				// <_U32> <general_id> <> <>;
 				if(!Buf.Read(_prefix_general_id)) return false;
-				// <A_UUID> <item_uuid> <> <>;
-				if(!Buf.Read(_prefix_item_uuid)) return false;
+				// <SG_EQUIP_SLOTS> <slots> <> <>;
+				if(!Buf.Read(_prefix_slots)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EquipItem(Caller, _prefix_general_id, _prefix_item_uuid);
+				DDLStub<CALLER, CLASS>::GetClass()->EquipItem(Caller, _prefix_general_id, _prefix_slots);
 				return true;
 			}
 			if(fid==13)
+			{
+				_U32 __length;
+				_U32* _prefix_generals;
+				_U32 _prefix_count;
+
+				// <_U32> <generals> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_generals = (_U32*)alloca(sizeof(_prefix_generals[0])*__length);
+				if(!_prefix_generals) return false;
+				if(!Buf.ReadPointer(_prefix_generals, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EquipGenerals(Caller, _prefix_generals, _prefix_count);
+				return true;
+			}
+			if(fid==14)
+			{
+				_U32 __length;
+				_U32* _prefix_soldiers;
+				_U32 _prefix_count;
+
+				// <_U32> <soldiers> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_soldiers = (_U32*)alloca(sizeof(_prefix_soldiers[0])*__length);
+				if(!_prefix_soldiers) return false;
+				if(!Buf.ReadPointer(_prefix_soldiers, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EquipSoldiers(Caller, _prefix_soldiers, _prefix_count);
+				return true;
+			}
+			if(fid==15)
+			{
+				_U32 _prefix_soldier_id;
+
+				// <_U32> <soldier_id> <> <>;
+				if(!Buf.Read(_prefix_soldier_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceSoldier(Caller, _prefix_soldier_id);
+				return true;
+			}
+			if(fid==16)
 			{
 				_U32 __length;
 				char* _prefix_name;
@@ -815,7 +919,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBattle(Caller, _prefix_name);
 				return true;
 			}
-			if(fid==14)
+			if(fid==17)
 			{
 				_U32 __length;
 				char* _prefix_name;
@@ -962,16 +1066,56 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 11, Buf);
 		}
 
-		bool EquipItem(_U32 general_id, const A_UUID& item_uuid)
+		bool EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots)
 		{
 			BUFFER Buf;
 			// <_U32> <general_id> <> <>
 			if(!Buf.Write(general_id)) return false;
-			// <A_UUID> <item_uuid> <> <>
-			if(!Buf.Write(item_uuid)) return false;
+			// <SG_EQUIP_SLOTS> <slots> <> <>
+			if(!Buf.Write(slots)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 12, Buf);
+		}
+
+		bool EquipGenerals(const _U32* generals, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <generals> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(generals, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
+		}
+
+		bool EquipSoldiers(const _U32* soldiers, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <soldiers> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(soldiers, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
+		}
+
+		bool EnhanceSoldier(_U32 soldier_id)
+		{
+			BUFFER Buf;
+			// <_U32> <soldier_id> <> <>
+			if(!Buf.Write(soldier_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 15, Buf);
 		}
 
 		bool BeginBattle(const char* name)
@@ -984,7 +1128,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
 		}
 
 		bool EndBattle(const char* name, _U32 result)
@@ -999,7 +1143,7 @@ namespace DDLProxy
 			if(!Buf.Write(result)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
 		}
 	};
 

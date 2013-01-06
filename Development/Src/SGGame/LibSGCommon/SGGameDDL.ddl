@@ -5,6 +5,15 @@ const _U32 SG_PLAYERNAME_LENMAX	= 100;
 const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 const _U32 SG_DESCRIPTION_MAX = 512;
 const _U32 SG_PLAYER_NAME_MAX = 10;
+const _U32 SG_EQUIPT_NAME_MAX = 20;
+const _U32 SG_EQUIPT_TEX_MAX = 256;
+
+struct SG_DIRTY_WORD_CONFIG				: A_CONTENT_OBJECT
+{
+	string<SG_PLAYER_NAME_MAX>			dirty_word;
+};
+task[GEN_STRUCT_SERIALIZE(SG_DIRTY_WORD_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_DIRTY_WORD_CONFIG)];
 
 struct SG_PLAYER_RANDOM_NAME_CONFIG : A_CONTENT_OBJECT
 {
@@ -111,6 +120,36 @@ task[GEN_STRUCT_REFLECT(SG_ITEM_CONFIG)];
 struct SG_EQUIPT_ITEM_CONFIG : SG_ITEM_CONFIG				//装备
 {
 	SG_ATTR_MOD_CONFIG					mod_config;
+	string<SG_EQUIPT_NAME_MAX>			item_name;			//装备名称
+	_U8									item_type;			//装备类型
+	_U8									quanlity;			//品质
+	_F32								quanlity_rate;		//品质系数
+	_U32								req_level;			//需求等级
+	_U8									major_attr;			//主属性类型
+	_U32								major_attr_num;		//主属性数量
+	_F32								turbo_rate;			//强化增长率
+	_U8									minor_attr_num;		//副属性数量
+	_U32								HP_MAX;				//体质上限
+	_U32								POW_MAX;			//力量上限
+	_U32								ITEM_INT_MAX;		//智力上限
+	_F32								HIT_MAX;			//命中上限
+	_F32								CRIT_MAX;			//暴击上限
+	_F32								MISS_MAX;			//闪避上限
+	_U32								SLOT_NUM;			//插槽数量
+	_U8									HAS_SKILL;			//携带技能
+	_U32								COM_MATERIAL;		//通用材料ID
+	_U32								COM_REQ_NUM;		//通用材料数量
+	_U32								KEY_MATERIAL;		//关键材料ID
+	_U32								KEY_REQ_NUM;		//关键材料数量
+	_U32								COMBINE_COST;		//合成费用
+	_U32								TURBO_BASE_COST;	//强化基础价格
+	_U32								RESET_COST;			//洗练价格
+	_U32								cost;				//出售基础价格
+	string<SG_EQUIPT_TEX_MAX>			tex;				//纹理
+	_U32								U;					
+	_U32								V;
+	_U32								UL;
+	_U32								VL;
 };
 task[GEN_STRUCT_SERIALIZE(SG_EQUIPT_ITEM_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_EQUIPT_ITEM_CONFIG)];
@@ -167,6 +206,10 @@ struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
 {
 	_U32								soldier_id;
 	_U32								attr_id;
+	
+	_U8									type;				//小兵类型
+	_U8									atk_type;			//攻击类型
+	_U8									def_type;			//防御类型
 	string<SG_DESCRIPTION_MAX>			description;		//描述
 	_S32								req_gold;			//需要的金币
 	_S32								req_rmb;			//需要的人民币
@@ -263,7 +306,8 @@ task[GEN_STRUCT_REFLECT(SG_ITEM)];
 
 struct SG_EQUIPT_ITEM : SG_ITEM
 {
-	SG_ATTR_MOD_CONFIG					mod_config;
+	SG_ATTR_MOD_CONFIG					mod_config;			
+	
 };
 task[GEN_STRUCT_SERIALIZE(SG_EQUIPT_ITEM)];
 task[GEN_STRUCT_REFLECT(SG_EQUIPT_ITEM)];
@@ -309,7 +353,11 @@ class SGGAME_C2S
 	QuerySoldiers();
 	QueryBag();
 
-	EquipItem(_U32 general_id, A_UUID item_uuid);
+	EquipItem(_U32 general_id, SG_EQUIP_SLOTS slots);
+	EquipGenerals(_U32 generals[count], _U32 count);
+	EquipSoldiers(_U32 soldiers[count], _U32 count);
+
+	EnhanceSoldier(_U32 soldier_id);
 
 	BeginBattle(string name);
 	EndBattle(string name, _U32 result);

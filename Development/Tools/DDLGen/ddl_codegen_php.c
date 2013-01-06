@@ -91,13 +91,17 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 			OutP(2, "{\n");
 			OutP(2, "	if($__i>0) $__result = $__result.',';\n");
 			if(is_struct(arg)) {
-				OutP(3, "$__result = $__result.$this->%s->ToString();\n", arg->name);
+				OutP(3, "$__result = $__result.$this->%s[$__i]->ToString();\n", arg->name);
 			} else {
-				OutP(3, "if(!is_%s($this->%s[$__i])) return false;\n", get_phptype(arg), arg->name);
-				if(strcmp(get_phptype(arg), "string")==0) {
-					OutP(3, "$__result = $__result.'\"'.$this->%s.'\"';\n", arg->name);
+				if(strcmp(get_phptype(arg), "float")==0) {
+					OutP(3, "if(!is_numeric($this->%s[$__i])) return false;\n", arg->name);
 				} else {
-					OutP(3, "$__result = $__result.$this->%s;\n", arg->name);
+					OutP(3, "if(!is_%s($this->%s[$__i])) return false;\n", get_phptype(arg), arg->name);
+				}
+				if(strcmp(get_phptype(arg), "string")==0) {
+					OutP(3, "$__result = $__result.'\"'.$this->%s[$__i].'\"';\n", arg->name);
+				} else {
+					OutP(3, "$__result = $__result.$this->%s[$__i];\n", arg->name);
 				}
 			}
 			OutP(2, "}\n");
@@ -107,7 +111,11 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 				OutP(2, "if(!is_object($this->%s) || get_class($this->%s)!='%s') return '';\n", arg->name, arg->name, arg->type);
 				OutP(2, "$__result = $__result.%s\"%s\":'.$this->%s->ToString();\n", a>0?"',":"'", arg->name, arg->name);
 			} else {
-				OutP(2, "if(!is_%s($this->%s)) return '';\n", get_phptype(arg), arg->name);
+				if(strcmp(get_phptype(arg), "float")==0) {
+					OutP(2, "if(!is_numeric($this->%s)) return '';\n", arg->name);
+				} else {
+					OutP(2, "if(!is_%s($this->%s)) return '';\n", get_phptype(arg), arg->name);
+				}
 				if(strcmp(get_phptype(arg), "string")==0) {
 					OutP(2, "$__result = $__result.%s%s\":\"'.$this->%s.'\"';\n", a>0?"',\"":"'\"", arg->name, arg->name);
 				} else {
@@ -175,7 +183,11 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 			if(is_struct(arg)) {
 				OutP(3, "if(!$this->%s[$__i]->FromArray($_earray[$__i])) return false;\n", arg->name);
 			} else {
-				OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+				if(strcmp(get_phptype(arg), "float")==0) {
+					OutP(3, "if(!is_numeric($_earray[$__i])) return false;\n");
+				} else {
+					OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+				}
 				OutP(3, "$this->%s[$__i] = $_earray[$__i];\n", arg->name);
 			}
 			OutP(2, "}\n");
@@ -183,7 +195,11 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 			if(is_struct(arg)) {
 				OutP(2, "if(!$this->%s->FromArray($_array['%s'])) return false;\n", arg->name, arg->name);
 			} else {
-				OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+				if(strcmp(get_phptype(arg), "float")==0) {
+					OutP(2, "if(!is_numeric($_array['%s'])) return false;\n", arg->name);
+				} else {
+					OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+				}
 				OutP(2, "$this->%s = $_array['%s'];\n", arg->name, arg->name);
 			}
 		}
@@ -220,7 +236,11 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 					OutP(3, "if(!is_array($_earray[$__i])) return false;\n");
 					OutP(3, "if(!$__%s[$__i]->FromArray($_earray[$__i])) return false;\n", arg->name);
 				} else {
-					OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+					if(strcmp(get_phptype(arg), "float")==0) {
+						OutP(3, "if(!is_numeric($_earray[$__i])) return false;\n");
+					} else {
+						OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+					}
 					OutP(3, "$__%s[$__i] = $_earray[$__i];\n", arg->name);
 				}
 				OutP(2, "}\n");
@@ -228,9 +248,13 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 				if(is_struct(arg)) {
 					OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
 					OutP(2, "$__%s = new %s;\n", arg->name, arg->type);
-					OutP(2, "if(!$__%s->FromArray($_array[%s]) return false;\n", arg->name, arg->name);
+					OutP(2, "if(!$__%s->FromArray($_array['%s'])) return false;\n", arg->name, arg->name);
 				} else {
-					OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+					if(strcmp(get_phptype(arg), "float")==0) {
+						OutP(2, "if(!is_numeric($_array['%s'])) return false;\n", arg->name);
+					} else {
+						OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+					}
 					OutP(2, "$__%s = $_array['%s'];\n", arg->name, arg->name);
 				}
 			}
@@ -287,7 +311,11 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 				if(is_struct(arg)) {
 					OutP(3, "$__result = $__result.$%s[$__i]->ToString();\n", arg->name);
 				} else {
-					OutP(3, "if(!is_%s($%s[$__i])) return false;\n", get_phptype(arg), arg->name);
+					if(strcmp(get_phptype(arg), "float")==0) {
+						OutP(3, "if(!is_numeric($%s[$__i])) return false;\n", arg->name);
+					} else {
+						OutP(3, "if(!is_%s($%s[$__i])) return false;\n", get_phptype(arg), arg->name);
+					}
 					if(strcmp(get_phptype(arg), "string")==0) {
 						OutP(3, "$__result = $__result.'\"'.$%s.'\"';\n", arg->name);
 					} else {
@@ -301,7 +329,11 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 					OutP(2, "if(!is_object($%s) || get_class($%s)!='%s') return '';\n", arg->name, arg->name, arg->type);
 					OutP(2, "$__result = %s%s'\"%s\":'.$%s->ToString();\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 				} else {
-					OutP(2, "if(!is_%s($%s)) return '';\n", get_phptype(arg), arg->name);
+					if(strcmp(get_phptype(arg), "float")==0) {
+						OutP(2, "if(!is_numeric($%s)) return '';\n", arg->name);
+					} else {
+						OutP(2, "if(!is_%s($%s)) return '';\n", get_phptype(arg), arg->name);
+					}
 					if(strcmp(get_phptype(arg), "string")==0) {
 						OutP(2, "$__result = %s%s'\"%s\":\"'.$%s.'\"';\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 					} else {

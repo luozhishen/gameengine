@@ -194,7 +194,7 @@ namespace Atlas
 		int ret = MOClientGetResultCode(m_pCurrentRequest);
 		if(ret!=MOERROR_NOERROR)
 		{
-			CLIENT_LOG(GetClient(), "http_connection : login failed, return code = %d", ret);
+			CLIENT_LOG(GetClient(), "http_connection : %s, return code = %d", m_SendQueue.front().c_str(), ret);
 			MORequestDestory(m_pCurrentRequest);
 			m_pCurrentRequest = NULL;
 			if(ret==MOERROR_INVALID_SESSION) DoDisconnect();

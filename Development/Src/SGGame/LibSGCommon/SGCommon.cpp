@@ -23,6 +23,8 @@ namespace Atlas
 	{
 		Atlas::Engine::InitContentObjects();
 		
+		ContentObject::Register(DDLReflect::GetStruct<SG_QUEST_INFO_CONFIG>());
+		ContentObject::Register(DDLReflect::GetStruct<SG_LEVEL_INFO_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_DIRTY_WORD_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_PLAYER_RANDOM_NAME_CONFIG>());
 		ContentObject::Register(DDLReflect::GetStruct<SG_DROP_ITEM_CONFIG>());
@@ -56,6 +58,8 @@ namespace Atlas
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_LEVEL_DROP_CONFIG>(), "level_drop", "level_drop.json");
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_PLAYER_RANDOM_NAME_CONFIG>(), "random_name", "random_name.json");
 		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_DIRTY_WORD_CONFIG>(), "dirty_word", "dirty_word.json");
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_LEVEL_INFO_CONFIG>(), "level_info", "level_info.json");
+		ContentObject::CreateContentGroup(DDLReflect::GetStruct<SG_QUEST_INFO_CONFIG>(), "quest_info", "quest_info.json");
 	}
 
 	void InitLiveObjects()

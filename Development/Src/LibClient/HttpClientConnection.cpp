@@ -62,6 +62,8 @@ namespace Atlas
 			return false;
 		}
 
+		CLIENT_LOG(GetClient(), "http_connection : logining to server...");
+
 		m_BaseUrl = pUrl;
 		m_nState = CClient::STATE_LOGINING;
 		m_nErrCode = CClient::ERRCODE_SUCCESSED;
@@ -194,7 +196,7 @@ namespace Atlas
 		int ret = MOClientGetResultCode(m_pCurrentRequest);
 		if(ret!=MOERROR_NOERROR)
 		{
-			CLIENT_LOG(GetClient(), "http_connection : %s, return code = %d", m_SendQueue.front().c_str(), ret);
+			CLIENT_LOG(GetClient(), "http server return error : [%s] [%s], return code = %d", m_SendQueue.front().c_str(), MORequestGetResult(m_pCurrentRequest), ret);
 			MORequestDestory(m_pCurrentRequest);
 			m_pCurrentRequest = NULL;
 			if(ret==MOERROR_INVALID_SESSION) DoDisconnect();
@@ -289,6 +291,7 @@ namespace Atlas
 		params["request"] = m_SendQueue.front();
 		std::string url = StringFormat("%srequest.php", m_BaseUrl.c_str());
 		m_pCurrentRequest = MORequestString(url.c_str(), params);
+		CLIENT_LOG(GetClient(), "http_connection : send request : %s", m_SendQueue.front().c_str());
 	}
 
 	void CHttpClientConnection::DoDisconnect()

@@ -181,7 +181,7 @@ namespace DDLReflect
 				}
 			case TYPE_STRING:
 				{
-					_U16 len;
+					_U32 len;
 					if(!buf.Read(len)) return false;
 					const char* str = (const char*)buf.ReadBuffer(len);
 					if(!str) return false;
@@ -318,7 +318,7 @@ namespace DDLReflect
 				{
 					if(!value.isString()) return false;
 					const char* str = value.asCString();
-					_U16 len = (_U16)strlen(str);
+					_U32 len = (_U32)strlen(str);
 					if(!buf.Write(len)) return false;
 					if(!buf.WriteData(str, len)) return false;
 					break;

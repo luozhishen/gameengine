@@ -29,6 +29,138 @@ const _U32 SG_EQUIPT_NAME_MAX = 20;
 
 const _U32 SG_EQUIPT_TEX_MAX = 256;
 
+const _U32 SG_SOLDIER_NAME_MAX = 12;
+
+const _U32 SG_LEVEL_SOLDIERS_INFO_MAX = 6;
+
+const _U32 SG_SKILL_NAME_MAX = 10;
+
+const _U32 SG_SKILL_DESC_MAX = 256;
+
+const _U32 SG_GEM_NAME_MAX = 32;
+
+const _U32 SG_GEM_DESC_MAX = 256;
+
+const _U32 SG_QUEST_DIALOG_MAX = 512;
+
+const _U32 SG_QUEST_NAME_MAX = 32;
+
+const _U32 SG_QUEST_URL_MAX = 128;
+
+const _U32 SG_QUEST_COND_MAX = 128;
+
+const _U32 SG_QUEST_GOAL_MAX = 128;
+
+const _U32 SG_EUQIPT_GEM_SLOTS_MAX = 8;
+
+struct SG_QUEST_INFO_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 quest_id;
+	DDL::String<SG_QUEST_NAME_MAX> quest_name;
+	DDL::String<SG_QUEST_GOAL_MAX> quest_goal_desc;
+	_U8 trigger_type;
+	DDL::String<SG_QUEST_URL_MAX> giver_url;
+	_U8 submitee_type;
+	DDL::String<SG_QUEST_URL_MAX> submitee_url;
+	_U32 pre_quest_id;
+	_U32 req_level;
+	_U8 condition1_type;
+	DDL::String<SG_QUEST_COND_MAX> condition1_param1;
+	DDL::String<SG_QUEST_COND_MAX> condition1_param2;
+	_U8 condition2_type;
+	DDL::String<SG_QUEST_COND_MAX> condition2_param1;
+	DDL::String<SG_QUEST_COND_MAX> condition2_param2;
+	_U8 quest_goal_type;
+	DDL::String<SG_QUEST_GOAL_MAX> goal_string_param;
+	_U32 goal_int_param;
+	DDL::String<SG_QUEST_GOAL_MAX> goal_string_param2;
+	_U32 goal_int_param2;
+	DDL::String<SG_QUEST_URL_MAX> goal_pathfinding_url;
+	_U32 goal_pathfinding_prority;
+	_U8 req_pack_slot;
+	_U32 reward_xp;
+	_U32 reward_gold;
+	_U32 reward_rmb;
+	_U32 reward_reputaion;
+	_U32 reward_energy;
+	_U32 reward_item1;
+	_U32 reward_item1_num;
+	_U32 reward_item2;
+	_U32 reward_item2_num;
+	_U32 reward_item3;
+	_U32 reward_item3_num;
+	_U32 reward_item4;
+	_U32 reward_item4_num;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_npc1;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_answer1;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_npc2;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_answer2;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_npc3;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_answer3;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_npc4;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_giving_answer4;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_submit_npc1;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_submit_answer1;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_submit_npc2;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_submit_answer2;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_wip_npc;
+	DDL::String<SG_QUEST_DIALOG_MAX> dialog_wip_answer;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_QUEST_INFO_CONFIG>(SG_QUEST_INFO_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_QUEST_INFO_CONFIG>(const SG_QUEST_INFO_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_QUEST_INFO_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_QUEST_INFO_CONFIG_info;
+}
+
+struct SG_LEVEL_INFO_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 level_id;
+	DDL::String<SG_DESCRIPTION_MAX> description;
+	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name1;
+	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name2;
+	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name3;
+	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name4;
+	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name5;
+	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name6;
+	_U8 atk_type1;
+	_U8 atk_type2;
+	_U8 atk_type3;
+	_U8 atk_type4;
+	_U8 atk_type5;
+	_U8 atk_type6;
+	_U8 wpt_type1;
+	_U8 wpt_type2;
+	_U8 wpt_type3;
+	_U8 wpt_type4;
+	_U8 wpt_type5;
+	_U8 wpt_type6;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEVEL_INFO_CONFIG>(SG_LEVEL_INFO_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEVEL_INFO_CONFIG>(const SG_LEVEL_INFO_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEVEL_INFO_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_LEVEL_INFO_CONFIG_info;
+}
+
 struct SG_DIRTY_WORD_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<SG_PLAYER_NAME_MAX> dirty_word;
@@ -238,6 +370,12 @@ struct SG_ITEM_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 item_id;
 	_U32 stack_max;
+	DDL::String<SG_EQUIPT_TEX_MAX> tex;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
+	_U32 price;
 };
 
 namespace DDL
@@ -282,12 +420,6 @@ struct SG_EQUIPT_ITEM_CONFIG : SG_ITEM_CONFIG
 	_U32 COMBINE_COST;
 	_U32 TURBO_BASE_COST;
 	_U32 RESET_COST;
-	_U32 cost;
-	DDL::String<SG_EQUIPT_TEX_MAX> tex;
-	_U32 U;
-	_U32 V;
-	_U32 UL;
-	_U32 VL;
 };
 
 namespace DDL
@@ -327,6 +459,14 @@ namespace DDLReflect
 
 struct SG_GEM_ITEM_CONFIG : SG_ITEM_CONFIG
 {
+	DDL::String<SG_GEM_NAME_MAX> gem_name;
+	DDL::String<SG_GEM_DESC_MAX> desc;
+	_U8 quality;
+	_U8 level;
+	_U8 attri_type;
+	_U32 attri;
+	_U32 compose_next;
+	_U32 compose_num;
 };
 
 namespace DDL
@@ -460,6 +600,10 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 	_S32 pre_general_id;
 	_S32 pre_level;
 	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
+	_U32 gift_id;
+	DDL::String<SG_SKILL_DESC_MAX> skill_name;
+	DDL::String<SG_DESCRIPTION_MAX> skill_desc;
+	_S32 rank;
 };
 
 namespace DDL
@@ -504,6 +648,7 @@ struct SG_PLAYER_PVE
 	SG_PAWN_CONFIG PawnConfig;
 	DDL::Array<SG_EQUIPPED_UNIT_PVE, 2> EquippedGenerals;
 	DDL::Array<SG_EQUIPPED_UNIT_PVE, 3> EquippedSoldiers;
+	DDL::String<SG_PLAYERNAME_LENMAX> Nick;
 };
 
 namespace DDL
@@ -524,7 +669,11 @@ namespace DDLReflect
 struct SG_EQUIP_SLOTS
 {
 	A_UUID head;
-	A_UUID hand;
+	A_UUID weapon;
+	A_UUID shoulder;
+	A_UUID chest;
+	A_UUID leg;
+	A_UUID decoration;
 };
 
 namespace DDL
@@ -547,6 +696,7 @@ struct SG_GENERAL : A_LIVE_OBJECT
 	_U32 general_id;
 	_U16 level;
 	_U32 exp;
+	_U8 status;
 	SG_EQUIP_SLOTS equip_slots;
 };
 
@@ -593,6 +743,7 @@ struct SG_PLAYER : SG_GENERAL
 	_U32 rmb;
 	DDL::Array<_U32, 2> equip_generals;
 	DDL::Array<_U32, 3> equip_soldiers;
+	_U8 increase_equipt_times;
 };
 
 namespace DDL
@@ -635,6 +786,8 @@ namespace DDLReflect
 struct SG_EQUIPT_ITEM : SG_ITEM
 {
 	SG_ATTR_MOD_CONFIG mod_config;
+	_U8 turbo_level;
+	DDL::Array<A_UUID, SG_EUQIPT_GEM_SLOTS_MAX> gems_slots;
 };
 
 namespace DDL
@@ -905,6 +1058,99 @@ namespace DDLStub
 			}
 			if(fid==16)
 			{
+				A_UUID _prefix_uuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceEquipt(Caller, _prefix_uuid);
+				return true;
+			}
+			if(fid==17)
+			{
+				A_UUID _prefix_uuid;
+				A_UUID _prefix_puuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+				// <A_UUID> <puuid> <> <>;
+				if(!Buf.Read(_prefix_puuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->ExtendEquipt(Caller, _prefix_uuid, _prefix_puuid);
+				return true;
+			}
+			if(fid==18)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceCoolDown(Caller);
+				return true;
+			}
+			if(fid==19)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceCoolDownClear(Caller);
+				return true;
+			}
+			if(fid==20)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->IncreaseEquipCoolDown(Caller);
+				return true;
+			}
+			if(fid==21)
+			{
+				A_UUID _prefix_uuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipNormal(Caller, _prefix_uuid);
+				return true;
+			}
+			if(fid==22)
+			{
+				A_UUID _prefix_uuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipProperty(Caller, _prefix_uuid);
+				return true;
+			}
+			if(fid==23)
+			{
+				A_UUID _prefix_uuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipAbility(Caller, _prefix_uuid);
+				return true;
+			}
+			if(fid==24)
+			{
+				A_UUID _prefix_uuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipDecideAccept(Caller, _prefix_uuid);
+				return true;
+			}
+			if(fid==25)
+			{
 				_U32 __length;
 				char* _prefix_name;
 
@@ -919,7 +1165,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBattle(Caller, _prefix_name);
 				return true;
 			}
-			if(fid==17)
+			if(fid==26)
 			{
 				_U32 __length;
 				char* _prefix_name;
@@ -936,6 +1182,60 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->EndBattle(Caller, _prefix_name, _prefix_result);
+				return true;
+			}
+			if(fid==27)
+			{
+				A_UUID _prefix_item_uuid;
+				A_UUID _prefix_gem_uuid;
+
+				// <A_UUID> <item_uuid> <> <>;
+				if(!Buf.Read(_prefix_item_uuid)) return false;
+				// <A_UUID> <gem_uuid> <> <>;
+				if(!Buf.Read(_prefix_gem_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EquipGem(Caller, _prefix_item_uuid, _prefix_gem_uuid);
+				return true;
+			}
+			if(fid==28)
+			{
+				A_UUID _prefix_item_uuid;
+				A_UUID _prefix_gem_uuid;
+
+				// <A_UUID> <item_uuid> <> <>;
+				if(!Buf.Read(_prefix_item_uuid)) return false;
+				// <A_UUID> <gem_uuid> <> <>;
+				if(!Buf.Read(_prefix_gem_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UnequipGem(Caller, _prefix_item_uuid, _prefix_gem_uuid);
+				return true;
+			}
+			if(fid==29)
+			{
+				_U32 __length;
+				A_UUID* _prefix_gems;
+				_U32 _prefix_count;
+
+				// <A_UUID> <gems> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_gems = (A_UUID*)alloca(sizeof(_prefix_gems[0])*__length);
+				if(!_prefix_gems) return false;
+				if(!Buf.ReadPointer(_prefix_gems, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->GemCombine(Caller, _prefix_gems, _prefix_count);
+				return true;
+			}
+			if(fid==30)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryServerTime(Caller);
 				return true;
 			}
 			return false;
@@ -1118,6 +1418,92 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 15, Buf);
 		}
 
+		bool EnhanceEquipt(const A_UUID& uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <uuid> <> <>
+			if(!Buf.Write(uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
+		}
+
+		bool ExtendEquipt(const A_UUID& uuid, const A_UUID& puuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <uuid> <> <>
+			if(!Buf.Write(uuid)) return false;
+			// <A_UUID> <puuid> <> <>
+			if(!Buf.Write(puuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
+		}
+
+		bool EnhanceCoolDown()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 18, Buf);
+		}
+
+		bool EnhanceCoolDownClear()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 19, Buf);
+		}
+
+		bool IncreaseEquipCoolDown()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 20, Buf);
+		}
+
+		bool RefreshEquipNormal(const A_UUID& uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <uuid> <> <>
+			if(!Buf.Write(uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 21, Buf);
+		}
+
+		bool RefreshEquipProperty(const A_UUID& uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <uuid> <> <>
+			if(!Buf.Write(uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 22, Buf);
+		}
+
+		bool RefreshEquipAbility(const A_UUID& uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <uuid> <> <>
+			if(!Buf.Write(uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 23, Buf);
+		}
+
+		bool RefreshEquipDecideAccept(const A_UUID& uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <uuid> <> <>
+			if(!Buf.Write(uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 24, Buf);
+		}
+
 		bool BeginBattle(const char* name)
 		{
 			BUFFER Buf;
@@ -1128,7 +1514,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 25, Buf);
 		}
 
 		bool EndBattle(const char* name, _U32 result)
@@ -1143,7 +1529,54 @@ namespace DDLProxy
 			if(!Buf.Write(result)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 26, Buf);
+		}
+
+		bool EquipGem(const A_UUID& item_uuid, const A_UUID& gem_uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <item_uuid> <> <>
+			if(!Buf.Write(item_uuid)) return false;
+			// <A_UUID> <gem_uuid> <> <>
+			if(!Buf.Write(gem_uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 27, Buf);
+		}
+
+		bool UnequipGem(const A_UUID& item_uuid, const A_UUID& gem_uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <item_uuid> <> <>
+			if(!Buf.Write(item_uuid)) return false;
+			// <A_UUID> <gem_uuid> <> <>
+			if(!Buf.Write(gem_uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 28, Buf);
+		}
+
+		bool GemCombine(const A_UUID* gems, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <A_UUID> <gems> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(gems, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 29, Buf);
+		}
+
+		bool QueryServerTime()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 30, Buf);
 		}
 	};
 
@@ -1346,6 +1779,28 @@ namespace DDLStub
 			}
 			if(fid==13)
 			{
+				_U32 _prefix_time;
+
+				// <_U32> <time> <> <>;
+				if(!Buf.Read(_prefix_time)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceCoolDownResult(Caller, _prefix_time);
+				return true;
+			}
+			if(fid==14)
+			{
+				SG_EQUIPT_ITEM _prefix_euipt;
+
+				// <SG_EQUIPT_ITEM> <euipt> <> <>;
+				if(!Buf.Read(_prefix_euipt)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipDone(Caller, _prefix_euipt);
+				return true;
+			}
+			if(fid==15)
+			{
 				SG_PLAYER_PVE _prefix_PlayerPVE;
 
 				// <SG_PLAYER_PVE> <PlayerPVE> <> <>;
@@ -1355,7 +1810,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBattleResult(Caller, _prefix_PlayerPVE);
 				return true;
 			}
-			if(fid==14)
+			if(fid==16)
 			{
 				_U32 __length;
 				_U32 _prefix_level;
@@ -1380,6 +1835,28 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->EndBattleResult(Caller, _prefix_level, _prefix_exp, _prefix_gold, _prefix_drops, _prefix_drop_count);
+				return true;
+			}
+			if(fid==17)
+			{
+				SG_GEM_ITEM _prefix_gem;
+
+				// <SG_GEM_ITEM> <gem> <> <>;
+				if(!Buf.Read(_prefix_gem)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->GemCombineResult(Caller, _prefix_gem);
+				return true;
+			}
+			if(fid==18)
+			{
+				_U32 _prefix_time;
+
+				// <_U32> <time> <> <>;
+				if(!Buf.Read(_prefix_time)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryServerTimeResult(Caller, _prefix_time);
 				return true;
 			}
 			return false;
@@ -1559,6 +2036,26 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 12, Buf);
 		}
 
+		bool EnhanceCoolDownResult(_U32 time)
+		{
+			BUFFER Buf;
+			// <_U32> <time> <> <>
+			if(!Buf.Write(time)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
+		}
+
+		bool RefreshEquipDone(const SG_EQUIPT_ITEM& euipt)
+		{
+			BUFFER Buf;
+			// <SG_EQUIPT_ITEM> <euipt> <> <>
+			if(!Buf.Write(euipt)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
+		}
+
 		bool BeginBattleResult(const SG_PLAYER_PVE& PlayerPVE)
 		{
 			BUFFER Buf;
@@ -1566,7 +2063,7 @@ namespace DDLProxy
 			if(!Buf.Write(PlayerPVE)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 15, Buf);
 		}
 
 		bool EndBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
@@ -1587,7 +2084,27 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
+		}
+
+		bool GemCombineResult(const SG_GEM_ITEM& gem)
+		{
+			BUFFER Buf;
+			// <SG_GEM_ITEM> <gem> <> <>
+			if(!Buf.Write(gem)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
+		}
+
+		bool QueryServerTimeResult(_U32 time)
+		{
+			BUFFER Buf;
+			// <_U32> <time> <> <>
+			if(!Buf.Write(time)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 18, Buf);
 		}
 	};
 

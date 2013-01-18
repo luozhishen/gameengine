@@ -7,6 +7,274 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_QUEST_INFO_CONFIG>(SG_QUEST_INFO_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.quest_id)) return false;
+		if(!ReadString<SG_QUEST_NAME_MAX>(Value.quest_name)) return false;
+		if(!ReadString<SG_QUEST_GOAL_MAX>(Value.quest_goal_desc)) return false;
+		if(!Read<_U8>(Value.trigger_type)) return false;
+		if(!ReadString<SG_QUEST_URL_MAX>(Value.giver_url)) return false;
+		if(!Read<_U8>(Value.submitee_type)) return false;
+		if(!ReadString<SG_QUEST_URL_MAX>(Value.submitee_url)) return false;
+		if(!Read<_U32>(Value.pre_quest_id)) return false;
+		if(!Read<_U32>(Value.req_level)) return false;
+		if(!Read<_U8>(Value.condition1_type)) return false;
+		if(!ReadString<SG_QUEST_COND_MAX>(Value.condition1_param1)) return false;
+		if(!ReadString<SG_QUEST_COND_MAX>(Value.condition1_param2)) return false;
+		if(!Read<_U8>(Value.condition2_type)) return false;
+		if(!ReadString<SG_QUEST_COND_MAX>(Value.condition2_param1)) return false;
+		if(!ReadString<SG_QUEST_COND_MAX>(Value.condition2_param2)) return false;
+		if(!Read<_U8>(Value.quest_goal_type)) return false;
+		if(!ReadString<SG_QUEST_GOAL_MAX>(Value.goal_string_param)) return false;
+		if(!Read<_U32>(Value.goal_int_param)) return false;
+		if(!ReadString<SG_QUEST_GOAL_MAX>(Value.goal_string_param2)) return false;
+		if(!Read<_U32>(Value.goal_int_param2)) return false;
+		if(!ReadString<SG_QUEST_URL_MAX>(Value.goal_pathfinding_url)) return false;
+		if(!Read<_U32>(Value.goal_pathfinding_prority)) return false;
+		if(!Read<_U8>(Value.req_pack_slot)) return false;
+		if(!Read<_U32>(Value.reward_xp)) return false;
+		if(!Read<_U32>(Value.reward_gold)) return false;
+		if(!Read<_U32>(Value.reward_rmb)) return false;
+		if(!Read<_U32>(Value.reward_reputaion)) return false;
+		if(!Read<_U32>(Value.reward_energy)) return false;
+		if(!Read<_U32>(Value.reward_item1)) return false;
+		if(!Read<_U32>(Value.reward_item1_num)) return false;
+		if(!Read<_U32>(Value.reward_item2)) return false;
+		if(!Read<_U32>(Value.reward_item2_num)) return false;
+		if(!Read<_U32>(Value.reward_item3)) return false;
+		if(!Read<_U32>(Value.reward_item3_num)) return false;
+		if(!Read<_U32>(Value.reward_item4)) return false;
+		if(!Read<_U32>(Value.reward_item4_num)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc1)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer1)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc2)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer2)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc3)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer3)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc4)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer4)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_npc1)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_answer1)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_npc2)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_answer2)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_wip_npc)) return false;
+		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_wip_answer)) return false;
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_QUEST_INFO_CONFIG>(const SG_QUEST_INFO_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.quest_id)) return false;
+		if(!WriteString<SG_QUEST_NAME_MAX>(Value.quest_name)) return false;
+		if(!WriteString<SG_QUEST_GOAL_MAX>(Value.quest_goal_desc)) return false;
+		if(!Write<_U8>(Value.trigger_type)) return false;
+		if(!WriteString<SG_QUEST_URL_MAX>(Value.giver_url)) return false;
+		if(!Write<_U8>(Value.submitee_type)) return false;
+		if(!WriteString<SG_QUEST_URL_MAX>(Value.submitee_url)) return false;
+		if(!Write<_U32>(Value.pre_quest_id)) return false;
+		if(!Write<_U32>(Value.req_level)) return false;
+		if(!Write<_U8>(Value.condition1_type)) return false;
+		if(!WriteString<SG_QUEST_COND_MAX>(Value.condition1_param1)) return false;
+		if(!WriteString<SG_QUEST_COND_MAX>(Value.condition1_param2)) return false;
+		if(!Write<_U8>(Value.condition2_type)) return false;
+		if(!WriteString<SG_QUEST_COND_MAX>(Value.condition2_param1)) return false;
+		if(!WriteString<SG_QUEST_COND_MAX>(Value.condition2_param2)) return false;
+		if(!Write<_U8>(Value.quest_goal_type)) return false;
+		if(!WriteString<SG_QUEST_GOAL_MAX>(Value.goal_string_param)) return false;
+		if(!Write<_U32>(Value.goal_int_param)) return false;
+		if(!WriteString<SG_QUEST_GOAL_MAX>(Value.goal_string_param2)) return false;
+		if(!Write<_U32>(Value.goal_int_param2)) return false;
+		if(!WriteString<SG_QUEST_URL_MAX>(Value.goal_pathfinding_url)) return false;
+		if(!Write<_U32>(Value.goal_pathfinding_prority)) return false;
+		if(!Write<_U8>(Value.req_pack_slot)) return false;
+		if(!Write<_U32>(Value.reward_xp)) return false;
+		if(!Write<_U32>(Value.reward_gold)) return false;
+		if(!Write<_U32>(Value.reward_rmb)) return false;
+		if(!Write<_U32>(Value.reward_reputaion)) return false;
+		if(!Write<_U32>(Value.reward_energy)) return false;
+		if(!Write<_U32>(Value.reward_item1)) return false;
+		if(!Write<_U32>(Value.reward_item1_num)) return false;
+		if(!Write<_U32>(Value.reward_item2)) return false;
+		if(!Write<_U32>(Value.reward_item2_num)) return false;
+		if(!Write<_U32>(Value.reward_item3)) return false;
+		if(!Write<_U32>(Value.reward_item3_num)) return false;
+		if(!Write<_U32>(Value.reward_item4)) return false;
+		if(!Write<_U32>(Value.reward_item4_num)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc1)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer1)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc2)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer2)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc3)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer3)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_npc4)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_giving_answer4)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_npc1)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_answer1)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_npc2)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_answer2)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_wip_npc)) return false;
+		if(!WriteString<SG_QUEST_DIALOG_MAX>(Value.dialog_wip_answer)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_QUEST_INFO_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "quest_id", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "quest_name", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_name), NULL, (_U16)SG_QUEST_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_NAME_MAX>), NULL},
+		{TYPE_STRING, "quest_goal_desc", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_desc), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
+		{TYPE_U8, "trigger_type", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, trigger_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "giver_url", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, giver_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
+		{TYPE_U8, "submitee_type", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, submitee_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "submitee_url", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, submitee_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
+		{TYPE_U32, "pre_quest_id", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, pre_quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_level", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition1_type", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "condition1_param1", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_param1), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_STRING, "condition1_param2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_param2), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_U8, "condition2_type", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "condition2_param1", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_param1), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_STRING, "condition2_param2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_param2), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_U8, "quest_goal_type", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "goal_string_param", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_string_param), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
+		{TYPE_U32, "goal_int_param", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_int_param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "goal_string_param2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_string_param2), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
+		{TYPE_U32, "goal_int_param2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_int_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "goal_pathfinding_url", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_pathfinding_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
+		{TYPE_U32, "goal_pathfinding_prority", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_pathfinding_prority), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "req_pack_slot", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, req_pack_slot), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "reward_xp", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_xp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputaion", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_reputaion), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_energy", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1_num", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item1_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2_num", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item2_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3_num", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item3_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item4", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item4_num", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item4_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "dialog_giving_npc1", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer1", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_npc2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_npc3", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc3), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer3", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer3), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_npc4", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc4), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer4", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer4), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_npc1", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_npc1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_answer1", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_answer1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_npc2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_npc2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_answer2", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_answer2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_wip_npc", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_wip_npc), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_wip_answer", 0, ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_wip_answer), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_QUEST_INFO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_QUEST_INFO_CONFIG", sizeof(SG_QUEST_INFO_CONFIG), 50, _struct_SG_QUEST_INFO_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_QUEST_INFO_CONFIG>()
+	{
+		return &_rfl_struct_SG_QUEST_INFO_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEVEL_INFO_CONFIG>(SG_LEVEL_INFO_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.level_id)) return false;
+		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name1)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name2)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name3)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name4)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name5)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name6)) return false;
+		if(!Read<_U8>(Value.atk_type1)) return false;
+		if(!Read<_U8>(Value.atk_type2)) return false;
+		if(!Read<_U8>(Value.atk_type3)) return false;
+		if(!Read<_U8>(Value.atk_type4)) return false;
+		if(!Read<_U8>(Value.atk_type5)) return false;
+		if(!Read<_U8>(Value.atk_type6)) return false;
+		if(!Read<_U8>(Value.wpt_type1)) return false;
+		if(!Read<_U8>(Value.wpt_type2)) return false;
+		if(!Read<_U8>(Value.wpt_type3)) return false;
+		if(!Read<_U8>(Value.wpt_type4)) return false;
+		if(!Read<_U8>(Value.wpt_type5)) return false;
+		if(!Read<_U8>(Value.wpt_type6)) return false;
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEVEL_INFO_CONFIG>(const SG_LEVEL_INFO_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.level_id)) return false;
+		if(!WriteString<SG_DESCRIPTION_MAX>(Value.description)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name1)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name2)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name3)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name4)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name5)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name6)) return false;
+		if(!Write<_U8>(Value.atk_type1)) return false;
+		if(!Write<_U8>(Value.atk_type2)) return false;
+		if(!Write<_U8>(Value.atk_type3)) return false;
+		if(!Write<_U8>(Value.atk_type4)) return false;
+		if(!Write<_U8>(Value.atk_type5)) return false;
+		if(!Write<_U8>(Value.atk_type6)) return false;
+		if(!Write<_U8>(Value.wpt_type1)) return false;
+		if(!Write<_U8>(Value.wpt_type2)) return false;
+		if(!Write<_U8>(Value.wpt_type3)) return false;
+		if(!Write<_U8>(Value.wpt_type4)) return false;
+		if(!Write<_U8>(Value.wpt_type5)) return false;
+		if(!Write<_U8>(Value.wpt_type6)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_LEVEL_INFO_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "level_id", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "description", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
+		{TYPE_STRING, "soldier_name1", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name1), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name2", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name2), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name3", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name3), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name4", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name4), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name5", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name5), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name6", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name6), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_U8, "atk_type1", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type2", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type3", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type4", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type5", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type6", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type1", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type2", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type3", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type4", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type5", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type6", 0, ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEVEL_INFO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_INFO_CONFIG", sizeof(SG_LEVEL_INFO_CONFIG), 20, _struct_SG_LEVEL_INFO_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEVEL_INFO_CONFIG>()
+	{
+		return &_rfl_struct_SG_LEVEL_INFO_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_DIRTY_WORD_CONFIG>(SG_DIRTY_WORD_CONFIG& Value)
 	{
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.dirty_word)) return false;
@@ -396,6 +664,12 @@ namespace DDL
 	{
 		if(!Read<_U32>(Value.item_id)) return false;
 		if(!Read<_U32>(Value.stack_max)) return false;
+		if(!ReadString<SG_EQUIPT_TEX_MAX>(Value.tex)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
+		if(!Read<_U32>(Value.price)) return false;
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
@@ -405,6 +679,12 @@ namespace DDL
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.item_id)) return false;
 		if(!Write<_U32>(Value.stack_max)) return false;
+		if(!WriteString<SG_EQUIPT_TEX_MAX>(Value.tex)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
+		if(!Write<_U32>(Value.price)) return false;
 		return true;
 	}
 }
@@ -415,8 +695,14 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "item_id", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "stack_max", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, stack_max), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, tex), NULL, (_U16)SG_EQUIPT_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_EQUIPT_TEX_MAX>), NULL},
+		{TYPE_U32, "U", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "price", 0, ATLAS_OFFSETOF(SG_ITEM_CONFIG, price), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_ITEM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ITEM_CONFIG", sizeof(SG_ITEM_CONFIG), 2, _struct_SG_ITEM_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_ITEM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ITEM_CONFIG", sizeof(SG_ITEM_CONFIG), 8, _struct_SG_ITEM_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_ITEM_CONFIG>()
 	{
@@ -454,12 +740,6 @@ namespace DDL
 		if(!Read<_U32>(Value.COMBINE_COST)) return false;
 		if(!Read<_U32>(Value.TURBO_BASE_COST)) return false;
 		if(!Read<_U32>(Value.RESET_COST)) return false;
-		if(!Read<_U32>(Value.cost)) return false;
-		if(!ReadString<SG_EQUIPT_TEX_MAX>(Value.tex)) return false;
-		if(!Read<_U32>(Value.U)) return false;
-		if(!Read<_U32>(Value.V)) return false;
-		if(!Read<_U32>(Value.UL)) return false;
-		if(!Read<_U32>(Value.VL)) return false;
 		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
 		return true;
 	}
@@ -492,12 +772,6 @@ namespace DDL
 		if(!Write<_U32>(Value.COMBINE_COST)) return false;
 		if(!Write<_U32>(Value.TURBO_BASE_COST)) return false;
 		if(!Write<_U32>(Value.RESET_COST)) return false;
-		if(!Write<_U32>(Value.cost)) return false;
-		if(!WriteString<SG_EQUIPT_TEX_MAX>(Value.tex)) return false;
-		if(!Write<_U32>(Value.U)) return false;
-		if(!Write<_U32>(Value.V)) return false;
-		if(!Write<_U32>(Value.UL)) return false;
-		if(!Write<_U32>(Value.VL)) return false;
 		return true;
 	}
 }
@@ -531,14 +805,8 @@ namespace DDLReflect
 		{TYPE_U32, "COMBINE_COST", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, COMBINE_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "TURBO_BASE_COST", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, TURBO_BASE_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "RESET_COST", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, RESET_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "cost", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, cost), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tex", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, tex), NULL, (_U16)SG_EQUIPT_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_EQUIPT_TEX_MAX>), NULL},
-		{TYPE_U32, "U", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_EQUIPT_ITEM_CONFIG", sizeof(SG_EQUIPT_ITEM_CONFIG), 31, _struct_SG_EQUIPT_ITEM_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_EQUIPT_ITEM_CONFIG", sizeof(SG_EQUIPT_ITEM_CONFIG), 25, _struct_SG_EQUIPT_ITEM_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_EQUIPT_ITEM_CONFIG>()
 	{
@@ -583,6 +851,14 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GEM_ITEM_CONFIG>(SG_GEM_ITEM_CONFIG& Value)
 	{
+		if(!ReadString<SG_GEM_NAME_MAX>(Value.gem_name)) return false;
+		if(!ReadString<SG_GEM_DESC_MAX>(Value.desc)) return false;
+		if(!Read<_U8>(Value.quality)) return false;
+		if(!Read<_U8>(Value.level)) return false;
+		if(!Read<_U8>(Value.attri_type)) return false;
+		if(!Read<_U32>(Value.attri)) return false;
+		if(!Read<_U32>(Value.compose_next)) return false;
+		if(!Read<_U32>(Value.compose_num)) return false;
 		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
 		return true;
 	}
@@ -590,13 +866,32 @@ namespace DDL
 	bool BufferWriter::Write<SG_GEM_ITEM_CONFIG>(const SG_GEM_ITEM_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<SG_ITEM_CONFIG>(Value)) return false;
+		if(!WriteString<SG_GEM_NAME_MAX>(Value.gem_name)) return false;
+		if(!WriteString<SG_GEM_DESC_MAX>(Value.desc)) return false;
+		if(!Write<_U8>(Value.quality)) return false;
+		if(!Write<_U8>(Value.level)) return false;
+		if(!Write<_U8>(Value.attri_type)) return false;
+		if(!Write<_U32>(Value.attri)) return false;
+		if(!Write<_U32>(Value.compose_next)) return false;
+		if(!Write<_U32>(Value.compose_num)) return false;
 		return true;
 	}
 }
 
 namespace DDLReflect
 {
-	STRUCT_INFO _rfl_struct_SG_GEM_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_GEM_ITEM_CONFIG", sizeof(SG_GEM_ITEM_CONFIG), 0, NULL };
+	static FIELD_INFO _struct_SG_GEM_ITEM_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "gem_name", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, gem_name), NULL, (_U16)SG_GEM_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GEM_NAME_MAX>), NULL},
+		{TYPE_STRING, "desc", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, desc), NULL, (_U16)SG_GEM_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GEM_DESC_MAX>), NULL},
+		{TYPE_U8, "quality", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, quality), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "level", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "attri_type", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "attri", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, attri), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "compose_next", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, compose_next), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "compose_num", 0, ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, compose_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_GEM_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_GEM_ITEM_CONFIG", sizeof(SG_GEM_ITEM_CONFIG), 8, _struct_SG_GEM_ITEM_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GEM_ITEM_CONFIG>()
 	{
@@ -819,6 +1114,10 @@ namespace DDL
 		if(!Read<_S32>(Value.pre_general_id)) return false;
 		if(!Read<_S32>(Value.pre_level)) return false;
 		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
+		if(!Read<_U32>(Value.gift_id)) return false;
+		if(!ReadString<SG_SKILL_DESC_MAX>(Value.skill_name)) return false;
+		if(!ReadString<SG_DESCRIPTION_MAX>(Value.skill_desc)) return false;
+		if(!Read<_S32>(Value.rank)) return false;
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
@@ -836,6 +1135,10 @@ namespace DDL
 		if(!Write<_S32>(Value.pre_general_id)) return false;
 		if(!Write<_S32>(Value.pre_level)) return false;
 		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
+		if(!Write<_U32>(Value.gift_id)) return false;
+		if(!WriteString<SG_SKILL_DESC_MAX>(Value.skill_name)) return false;
+		if(!WriteString<SG_DESCRIPTION_MAX>(Value.skill_desc)) return false;
+		if(!Write<_S32>(Value.rank)) return false;
 		return true;
 	}
 }
@@ -854,8 +1157,12 @@ namespace DDLReflect
 		{TYPE_S32, "pre_general_id", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "pre_level", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_STRING, "archetype", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_U32, "gift_id", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, gift_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "skill_name", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, skill_name), NULL, (_U16)SG_SKILL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_DESC_MAX>), NULL},
+		{TYPE_STRING, "skill_desc", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, skill_desc), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
+		{TYPE_S32, "rank", 0, ATLAS_OFFSETOF(SG_GENERAL_CONFIG, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 10, _struct_SG_GENERAL_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 14, _struct_SG_GENERAL_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL_CONFIG>()
 	{
@@ -905,6 +1212,7 @@ namespace DDL
 		if(!Read<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
 		if(!ReadArray<SG_EQUIPPED_UNIT_PVE, 2>(Value.EquippedGenerals)) return false;
 		if(!ReadArray<SG_EQUIPPED_UNIT_PVE, 3>(Value.EquippedSoldiers)) return false;
+		if(!ReadString<SG_PLAYERNAME_LENMAX>(Value.Nick)) return false;
 		return true;
 	}
 	template<>
@@ -914,6 +1222,7 @@ namespace DDL
 		if(!Write<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
 		if(!WriteArray<SG_EQUIPPED_UNIT_PVE, 2>(Value.EquippedGenerals)) return false;
 		if(!WriteArray<SG_EQUIPPED_UNIT_PVE, 3>(Value.EquippedSoldiers)) return false;
+		if(!WriteString<SG_PLAYERNAME_LENMAX>(Value.Nick)) return false;
 		return true;
 	}
 }
@@ -926,8 +1235,9 @@ namespace DDLReflect
 		{TYPE_STRUCT, "PawnConfig", 0, ATLAS_OFFSETOF(SG_PLAYER_PVE, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "EquippedGenerals", 0, ATLAS_OFFSETOF(SG_PLAYER_PVE, EquippedGenerals), &_rfl_struct_SG_EQUIPPED_UNIT_PVE_info, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<SG_EQUIPPED_UNIT_PVE, 2>*)NULL)->_Array)), (_U16)sizeof(SG_EQUIPPED_UNIT_PVE), NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "EquippedSoldiers", 0, ATLAS_OFFSETOF(SG_PLAYER_PVE, EquippedSoldiers), &_rfl_struct_SG_EQUIPPED_UNIT_PVE_info, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<SG_EQUIPPED_UNIT_PVE, 3>*)NULL)->_Array)), (_U16)sizeof(SG_EQUIPPED_UNIT_PVE), NULL},
+		{TYPE_STRING, "Nick", 0, ATLAS_OFFSETOF(SG_PLAYER_PVE, Nick), NULL, (_U16)SG_PLAYERNAME_LENMAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYERNAME_LENMAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_PVE_info = { NULL, "SG_PLAYER_PVE", sizeof(SG_PLAYER_PVE), 4, _struct_SG_PLAYER_PVE_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_PVE_info = { NULL, "SG_PLAYER_PVE", sizeof(SG_PLAYER_PVE), 5, _struct_SG_PLAYER_PVE_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER_PVE>()
 	{
@@ -941,14 +1251,22 @@ namespace DDL
 	bool BufferReader::Read<SG_EQUIP_SLOTS>(SG_EQUIP_SLOTS& Value)
 	{
 		if(!Read<A_UUID>(Value.head)) return false;
-		if(!Read<A_UUID>(Value.hand)) return false;
+		if(!Read<A_UUID>(Value.weapon)) return false;
+		if(!Read<A_UUID>(Value.shoulder)) return false;
+		if(!Read<A_UUID>(Value.chest)) return false;
+		if(!Read<A_UUID>(Value.leg)) return false;
+		if(!Read<A_UUID>(Value.decoration)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<SG_EQUIP_SLOTS>(const SG_EQUIP_SLOTS& Value)
 	{
 		if(!Write<A_UUID>(Value.head)) return false;
-		if(!Write<A_UUID>(Value.hand)) return false;
+		if(!Write<A_UUID>(Value.weapon)) return false;
+		if(!Write<A_UUID>(Value.shoulder)) return false;
+		if(!Write<A_UUID>(Value.chest)) return false;
+		if(!Write<A_UUID>(Value.leg)) return false;
+		if(!Write<A_UUID>(Value.decoration)) return false;
 		return true;
 	}
 }
@@ -958,9 +1276,13 @@ namespace DDLReflect
 	static FIELD_INFO _struct_SG_EQUIP_SLOTS_fieldinfo[] =
 	{
 		{TYPE_UUID, "head", 0, ATLAS_OFFSETOF(SG_EQUIP_SLOTS, head), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
-		{TYPE_UUID, "hand", 0, ATLAS_OFFSETOF(SG_EQUIP_SLOTS, hand), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "weapon", 0, ATLAS_OFFSETOF(SG_EQUIP_SLOTS, weapon), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "shoulder", 0, ATLAS_OFFSETOF(SG_EQUIP_SLOTS, shoulder), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "chest", 0, ATLAS_OFFSETOF(SG_EQUIP_SLOTS, chest), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "leg", 0, ATLAS_OFFSETOF(SG_EQUIP_SLOTS, leg), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "decoration", 0, ATLAS_OFFSETOF(SG_EQUIP_SLOTS, decoration), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_EQUIP_SLOTS_info = { NULL, "SG_EQUIP_SLOTS", sizeof(SG_EQUIP_SLOTS), 2, _struct_SG_EQUIP_SLOTS_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_EQUIP_SLOTS_info = { NULL, "SG_EQUIP_SLOTS", sizeof(SG_EQUIP_SLOTS), 6, _struct_SG_EQUIP_SLOTS_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_EQUIP_SLOTS>()
 	{
@@ -976,6 +1298,7 @@ namespace DDL
 		if(!Read<_U32>(Value.general_id)) return false;
 		if(!Read<_U16>(Value.level)) return false;
 		if(!Read<_U32>(Value.exp)) return false;
+		if(!Read<_U8>(Value.status)) return false;
 		if(!Read<SG_EQUIP_SLOTS>(Value.equip_slots)) return false;
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
@@ -987,6 +1310,7 @@ namespace DDL
 		if(!Write<_U32>(Value.general_id)) return false;
 		if(!Write<_U16>(Value.level)) return false;
 		if(!Write<_U32>(Value.exp)) return false;
+		if(!Write<_U8>(Value.status)) return false;
 		if(!Write<SG_EQUIP_SLOTS>(Value.equip_slots)) return false;
 		return true;
 	}
@@ -999,9 +1323,10 @@ namespace DDLReflect
 		{TYPE_U32, "general_id", 0, ATLAS_OFFSETOF(SG_GENERAL, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U16, "level", 0, ATLAS_OFFSETOF(SG_GENERAL, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
 		{TYPE_U32, "exp", 0, ATLAS_OFFSETOF(SG_GENERAL, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, ATLAS_OFFSETOF(SG_GENERAL, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_STRUCT, "equip_slots", 0, ATLAS_OFFSETOF(SG_GENERAL, equip_slots), &_rfl_struct_SG_EQUIP_SLOTS_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_EQUIP_SLOTS), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_GENERAL_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_GENERAL", sizeof(SG_GENERAL), 4, _struct_SG_GENERAL_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_GENERAL_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_GENERAL", sizeof(SG_GENERAL), 5, _struct_SG_GENERAL_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL>()
 	{
@@ -1054,6 +1379,7 @@ namespace DDL
 		if(!Read<_U32>(Value.rmb)) return false;
 		if(!ReadArray<_U32, 2>(Value.equip_generals)) return false;
 		if(!ReadArray<_U32, 3>(Value.equip_soldiers)) return false;
+		if(!Read<_U8>(Value.increase_equipt_times)) return false;
 		if(!BufferReader::Read<SG_GENERAL>(Value)) return false;
 		return true;
 	}
@@ -1066,6 +1392,7 @@ namespace DDL
 		if(!Write<_U32>(Value.rmb)) return false;
 		if(!WriteArray<_U32, 2>(Value.equip_generals)) return false;
 		if(!WriteArray<_U32, 3>(Value.equip_soldiers)) return false;
+		if(!Write<_U8>(Value.increase_equipt_times)) return false;
 		return true;
 	}
 }
@@ -1079,8 +1406,9 @@ namespace DDLReflect
 		{TYPE_U32, "rmb", 0, ATLAS_OFFSETOF(SG_PLAYER, rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32|TYPE_ARRAY, "equip_generals", 0, ATLAS_OFFSETOF(SG_PLAYER, equip_generals), NULL, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<_U32, 2>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
 		{TYPE_U32|TYPE_ARRAY, "equip_soldiers", 0, ATLAS_OFFSETOF(SG_PLAYER, equip_soldiers), NULL, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<_U32, 3>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "increase_equipt_times", 0, ATLAS_OFFSETOF(SG_PLAYER, increase_equipt_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 5, _struct_SG_PLAYER_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 6, _struct_SG_PLAYER_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER>()
 	{
@@ -1132,6 +1460,8 @@ namespace DDL
 	bool BufferReader::Read<SG_EQUIPT_ITEM>(SG_EQUIPT_ITEM& Value)
 	{
 		if(!Read<SG_ATTR_MOD_CONFIG>(Value.mod_config)) return false;
+		if(!Read<_U8>(Value.turbo_level)) return false;
+		if(!ReadArray<A_UUID, SG_EUQIPT_GEM_SLOTS_MAX>(Value.gems_slots)) return false;
 		if(!BufferReader::Read<SG_ITEM>(Value)) return false;
 		return true;
 	}
@@ -1140,6 +1470,8 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<SG_ITEM>(Value)) return false;
 		if(!Write<SG_ATTR_MOD_CONFIG>(Value.mod_config)) return false;
+		if(!Write<_U8>(Value.turbo_level)) return false;
+		if(!WriteArray<A_UUID, SG_EUQIPT_GEM_SLOTS_MAX>(Value.gems_slots)) return false;
 		return true;
 	}
 }
@@ -1149,8 +1481,10 @@ namespace DDLReflect
 	static FIELD_INFO _struct_SG_EQUIPT_ITEM_fieldinfo[] =
 	{
 		{TYPE_STRUCT, "mod_config", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM, mod_config), &_rfl_struct_SG_ATTR_MOD_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_MOD_CONFIG), NULL},
+		{TYPE_U8, "turbo_level", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_UUID|TYPE_ARRAY, "gems_slots", 0, ATLAS_OFFSETOF(SG_EQUIPT_ITEM, gems_slots), NULL, (_U16)-1, (_U16)SG_EUQIPT_GEM_SLOTS_MAX, (_U16)((size_t)(&((DDL::Array<A_UUID, SG_EUQIPT_GEM_SLOTS_MAX>*)NULL)->_Array)), (_U16)sizeof(A_UUID), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_info = { &_rfl_struct_SG_ITEM_info, "SG_EQUIPT_ITEM", sizeof(SG_EQUIPT_ITEM), 1, _struct_SG_EQUIPT_ITEM_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_info = { &_rfl_struct_SG_ITEM_info, "SG_EQUIPT_ITEM", sizeof(SG_EQUIPT_ITEM), 3, _struct_SG_EQUIPT_ITEM_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_EQUIPT_ITEM>()
 	{
@@ -1285,11 +1619,37 @@ namespace DDLReflect
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 15 EnhanceSoldier
 		{TYPE_U32, "soldier_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 16 BeginBattle
+		// 16 EnhanceEquipt
+		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 17 ExtendEquipt
+		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_UUID, "puuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 18 EnhanceCoolDown
+		// 19 EnhanceCoolDownClear
+		// 20 IncreaseEquipCoolDown
+		// 21 RefreshEquipNormal
+		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 22 RefreshEquipProperty
+		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 23 RefreshEquipAbility
+		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 24 RefreshEquipDecideAccept
+		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 25 BeginBattle
 		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 17 EndBattle
+		// 26 EndBattle
 		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 27 EquipGem
+		{TYPE_UUID, "item_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_UUID, "gem_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 28 UnequipGem
+		{TYPE_UUID, "item_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_UUID, "gem_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 29 GemCombine
+		{TYPE_UUID|TYPE_ARRAY, "gems", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 30 QueryServerTime
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -1309,10 +1669,23 @@ namespace DDLReflect
 		{"EquipGenerals", 2, _class_SGGAME_C2S_fieldinfos+5},
 		{"EquipSoldiers", 2, _class_SGGAME_C2S_fieldinfos+7},
 		{"EnhanceSoldier", 1, _class_SGGAME_C2S_fieldinfos+9},
-		{"BeginBattle", 1, _class_SGGAME_C2S_fieldinfos+10},
-		{"EndBattle", 2, _class_SGGAME_C2S_fieldinfos+11},
+		{"EnhanceEquipt", 1, _class_SGGAME_C2S_fieldinfos+10},
+		{"ExtendEquipt", 2, _class_SGGAME_C2S_fieldinfos+11},
+		{"EnhanceCoolDown", 0, _class_SGGAME_C2S_fieldinfos+13},
+		{"EnhanceCoolDownClear", 0, _class_SGGAME_C2S_fieldinfos+13},
+		{"IncreaseEquipCoolDown", 0, _class_SGGAME_C2S_fieldinfos+13},
+		{"RefreshEquipNormal", 1, _class_SGGAME_C2S_fieldinfos+13},
+		{"RefreshEquipProperty", 1, _class_SGGAME_C2S_fieldinfos+14},
+		{"RefreshEquipAbility", 1, _class_SGGAME_C2S_fieldinfos+15},
+		{"RefreshEquipDecideAccept", 1, _class_SGGAME_C2S_fieldinfos+16},
+		{"BeginBattle", 1, _class_SGGAME_C2S_fieldinfos+17},
+		{"EndBattle", 2, _class_SGGAME_C2S_fieldinfos+18},
+		{"EquipGem", 2, _class_SGGAME_C2S_fieldinfos+20},
+		{"UnequipGem", 2, _class_SGGAME_C2S_fieldinfos+22},
+		{"GemCombine", 2, _class_SGGAME_C2S_fieldinfos+24},
+		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+26},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 18, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 31, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -1353,14 +1726,22 @@ namespace DDLReflect
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 12 QueryBagEnd
-		// 13 BeginBattleResult
+		// 13 EnhanceCoolDownResult
+		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 14 RefreshEquipDone
+		{TYPE_STRUCT, "euipt", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 15 BeginBattleResult
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 14 EndBattleResult
+		// 16 EndBattleResult
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 17 GemCombineResult
+		{TYPE_STRUCT, "gem", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 18 QueryServerTimeResult
+		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
@@ -1377,10 +1758,14 @@ namespace DDLReflect
 		{"QueryBagUsable", 2, _class_SGGAME_S2C_fieldinfos+12},
 		{"QueryBagGen", 2, _class_SGGAME_S2C_fieldinfos+14},
 		{"QueryBagEnd", 0, _class_SGGAME_S2C_fieldinfos+16},
-		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+16},
-		{"EndBattleResult", 5, _class_SGGAME_S2C_fieldinfos+17},
+		{"EnhanceCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+16},
+		{"RefreshEquipDone", 1, _class_SGGAME_S2C_fieldinfos+17},
+		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+18},
+		{"EndBattleResult", 5, _class_SGGAME_S2C_fieldinfos+19},
+		{"GemCombineResult", 1, _class_SGGAME_S2C_fieldinfos+24},
+		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+25},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 15, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 19, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

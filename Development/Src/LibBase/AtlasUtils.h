@@ -1,11 +1,6 @@
 #ifndef	__ATLAS_UTILS__
 #define	__ATLAS_UTILS__
 
-#include <string>
-#include <vector>
-#include <map>
-#include <functional>
-
 #ifdef WIN32
 	#define ATLAS_PATH_SLASH		'\\'
 #else

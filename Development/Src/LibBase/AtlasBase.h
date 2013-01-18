@@ -1,7 +1,10 @@
 #ifndef	__ATLAS_BASE__
 #define	__ATLAS_BASE__
 
+#include <vector>
 #include <string>
+#include <map>
+
 #ifndef _WIN32
 #include <tr1/functional>
 #else

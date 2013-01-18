@@ -91,9 +91,16 @@ bool AUuidFromString(const char* str, A_UUID& uuid)
 	//uint32_t status;
 	//uuid_from_string((uuid_t*)&uuid, &status);
 	//return status==uuid_s_ok;
-	uuid_t _uuid;
-	if(uuid_parse((char*)str, _uuid)!=0) return false;
-	memcpy(&uuid, &_uuid, sizeof(_uuid));
+	if(str[0]=='\0')
+	{
+		memset(&uuid, 0, sizeof(uuid));
+	}
+	else
+	{
+		uuid_t _uuid;
+		if(uuid_parse((char*)str, _uuid)!=0) return false;
+		memcpy(&uuid, &_uuid, sizeof(_uuid));
+	}
 	return true;
 }
 

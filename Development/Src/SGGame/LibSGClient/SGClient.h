@@ -23,9 +23,14 @@ namespace Atlas
 		virtual void QueryGeneralsDone(const std::vector<SG_GENERAL>& generals) = 0;
 		virtual void QuerySoldiersDone(const std::vector<SG_SOLDIER>& soldiers) = 0;
 		virtual void QueryBagDone(std::vector<SG_EQUIPT_ITEM>& equipts, std::vector<SG_USABLE_ITEM>& usables, std::vector<SG_GEM_ITEM>& gems) = 0;
+		virtual void EnhanceCoolDownResult(_U32 time) = 0;
+		virtual void RefreshEquipDone(SG_EQUIPT_ITEM& euipt) = 0;
+		virtual void GemCombineResult(const SG_GEM_ITEM& gem) = 0;
 
 		virtual void BeginBattleDone(const SG_PLAYER_PVE& PlayerPVE) = 0;
 		virtual void EndBattleDone(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+
+		virtual void QueryServerTimeResult(_U32 time) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -61,9 +66,25 @@ namespace Atlas
 		void EquipGenerals(const _U32* generals, _U32 count);
 		void EquipSoldiers(const _U32* soldiers, _U32 count);
 		void EnhanceSoldier(_U32 soldier_id);
+		void EnhanceEquipt(A_UUID& uuid);
+
+		void ExtendEquipt(A_UUID& uuid, A_UUID& puuid);
+		void EnhanceCoolDown();
+		void EnhanceCoolDownClear();
+		void IncreaseEquipCoolDown();
+
+		void RefreshEquipNormal(A_UUID& uuid);
+		void RefreshEquipProperty(A_UUID& uuid);
+		void RefreshEquipAbility(A_UUID& uuid);
+		void RefreshEquipDecideAccept(A_UUID& uuid);
 
 		void BeginBattle(const char* name);
 		void EndBattle(const char* name, _U32 result);
+		void QueryServerTime();
+
+		void EquipGem(const A_UUID& item_uuid, const A_UUID& gem_uuid);
+		void UnequipGem(const A_UUID& item_uuid, const A_UUID& gem_uuid);
+		void GemCombine(A_UUID* gems, _U32 count);
 
 		//result
 		void Pong(CSGClient* pClient);
@@ -81,12 +102,20 @@ namespace Atlas
 		void QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count);
 		void QueryBagEnd(CSGClient* pClient);
 		void BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
-		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 drop_count);
-	
+		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void EnhanceCoolDownResult(CSGClient* pClient, _U32 time);
+		void RefreshEquipDone(CSGClient* pClient, SG_EQUIPT_ITEM& euipt);
+		void GemCombineResult(CSGClient* pClient, const SG_GEM_ITEM& gem);
+
+		void QueryServerTimeResult(CSGClient* pClient, _U32 time);
+
 	public:
 		virtual void OnLoginDone();
 		virtual void OnLoginFailed();
 		virtual void OnDisconnected();
+
+	protected:
+		void SetRightLocation(const A_CONTENT_OBJECT* content_obj, const SG_EQUIP_SLOTS& slots, const A_UUID& uuid);
 
 	private:
 		CSGClientCallback* m_callback;

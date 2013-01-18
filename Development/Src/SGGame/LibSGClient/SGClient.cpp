@@ -106,7 +106,44 @@ namespace Atlas
 
 	void CSGClient::EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots)
 	{
-		m_C2S.EquipItem(general_id, slots);
+		SG_EQUIP_SLOTS tidy_slots;
+		for(std::vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
+		{
+			const DDLReflect::STRUCT_INFO* struct_info = Atlas::ContentObject::GetType("SG_EQUIPT_ITEM_CONFIG");
+			A_UUID uuid; 
+			if(it->uuid == slots.head
+				||it->uuid == slots.weapon
+				||it->uuid == slots.weapon
+				||it->uuid == slots.shoulder
+				||it->uuid == slots.chest
+				||it->uuid == slots.leg
+				||it->uuid == slots.decoration)
+			{
+				uuid = it->uuid;
+			}
+
+			if(uuid.isEmpty())
+				continue;
+
+			const A_CONTENT_OBJECT* content_obj = NULL;
+			std::vector<A_UUID> content_list;
+			if(!Atlas::ContentObject::GetList(struct_info, content_list, true))
+			{
+				continue;
+			}
+
+			for(std::vector<A_UUID>::iterator it_uuid = content_list.begin(); it_uuid != content_list.end(); ++it_uuid)
+			{
+				content_obj = Atlas::ContentObject::Query(*it_uuid, struct_info);
+				if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_id == it->item_id)
+				{
+					SetRightLocation(content_obj, tidy_slots, uuid);	
+					break;
+				}
+			}
+		}
+
+		m_C2S.EquipItem(general_id, tidy_slots);
 	}
 
 	void CSGClient::EquipGenerals(const _U32* generals, _U32 count)
@@ -124,6 +161,51 @@ namespace Atlas
 		m_C2S.EnhanceSoldier(soldier_id);
 	}
 
+	void CSGClient::EnhanceEquipt(A_UUID& uuid)
+	{
+		m_C2S.EnhanceEquipt(uuid);
+	}
+
+	void CSGClient::ExtendEquipt(A_UUID& uuid, A_UUID& puuid)
+	{
+		m_C2S.ExtendEquipt(uuid, puuid);
+	}
+
+	void CSGClient::EnhanceCoolDown()
+	{
+		m_C2S.EnhanceCoolDown();
+	}
+
+	void CSGClient::EnhanceCoolDownClear()
+	{
+		m_C2S.EnhanceCoolDownClear();
+	}
+
+	void CSGClient::IncreaseEquipCoolDown()
+	{
+		m_C2S.IncreaseEquipCoolDown();
+	}
+
+	void CSGClient::RefreshEquipNormal(A_UUID& uuid)
+	{
+		m_C2S.RefreshEquipNormal(uuid);
+	}
+	
+	void CSGClient::RefreshEquipProperty(A_UUID& uuid)
+	{
+		m_C2S.RefreshEquipProperty(uuid);
+	}
+
+	void CSGClient::RefreshEquipAbility(A_UUID& uuid)
+	{
+		m_C2S.RefreshEquipAbility(uuid);
+	}
+	
+	void CSGClient::RefreshEquipDecideAccept(A_UUID& uuid)
+	{
+		m_C2S.RefreshEquipDecideAccept(uuid);
+	}
+
 	void CSGClient::BeginBattle(const char* name)
 	{
 		m_C2S.BeginBattle(name);
@@ -132,6 +214,26 @@ namespace Atlas
 	void CSGClient::EndBattle(const char* name, _U32 result)
 	{
 		m_C2S.EndBattle(name, result);
+	}
+
+	void CSGClient::QueryServerTime()
+	{
+		m_C2S.QueryServerTime();
+	}
+
+	void CSGClient::EquipGem(const A_UUID& item_uuid, const A_UUID& gem_uuid)
+	{
+		m_C2S.EquipGem(item_uuid, gem_uuid);
+	}
+
+	void CSGClient::UnequipGem(const A_UUID& item_uuid, const A_UUID& gem_uuid)
+	{
+		m_C2S.UnequipGem(item_uuid, gem_uuid);
+	}
+
+	void CSGClient::GemCombine(A_UUID* gems, _U32 count)
+	{
+		m_C2S.GemCombine(gems, count);
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -189,6 +291,7 @@ namespace Atlas
 
 	void CSGClient::QueryBagBegin(CSGClient* pClient)
 	{
+		QueryBag();
 	}
 
 	void CSGClient::QueryBagEquipt(CSGClient* pClient, const SG_EQUIPT_ITEM* items, _U32 count)
@@ -198,6 +301,7 @@ namespace Atlas
 		{
 			m_equipts.push_back(items[i]);
 		}
+		QueryBag();
 	}
 
 	void CSGClient::QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count)
@@ -207,6 +311,7 @@ namespace Atlas
 		{
 			m_usables.push_back(items[i]);
 		}
+		QueryBag();
 	}
 
 	void CSGClient::QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count)
@@ -216,6 +321,7 @@ namespace Atlas
 		{
 			m_gems.push_back(items[i]);
 		}
+		QueryBag();
 	}
 
 	void CSGClient::QueryBagEnd(CSGClient* pClient)
@@ -228,9 +334,55 @@ namespace Atlas
 		if(m_callback) m_callback->BeginBattleDone(PlayerPVE);
 	}
 
-	void CSGClient::EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 drop_count)
+	void CSGClient::EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
 	{
-		if(m_callback) m_callback->EndBattleDone(level, exp, gold, drops, drop_count);
+		SG_DROP_ITEM_BASE drop_lists[10];
+		memset(drop_lists, 0, sizeof(drop_lists));
+		
+		for(_U32 i = 0; i < drop_count; ++i)
+		{
+			drop_lists[i].uuid = drops[i].uuid;
+			drop_lists[i].name = drops[i].name;
+			drop_lists[i].item_id = drops[i].item_id;
+			drop_lists[i].count = drops[i].count;
+		}
+
+		if(m_callback)
+		{
+			m_callback->EndBattleDone(level, exp, gold, drop_lists, drop_count);
+		}
+	}
+	
+	void CSGClient::EnhanceCoolDownResult(CSGClient* pClient, _U32 time)
+	{
+		if(m_callback)
+		{
+			m_callback->EnhanceCoolDownResult(time);
+		}
+	}
+
+	void CSGClient::RefreshEquipDone(CSGClient* pClient, SG_EQUIPT_ITEM& euipt)
+	{
+		if(m_callback)
+		{
+			m_callback->RefreshEquipDone(euipt);
+		}
+	}
+	
+	void CSGClient::GemCombineResult(CSGClient* pClient, const SG_GEM_ITEM& gem)
+	{
+		if(m_callback)
+		{
+			m_callback->GemCombineResult(gem);
+		}
+	}
+
+	void CSGClient::QueryServerTimeResult(CSGClient* pClient, _U32 time)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryServerTimeResult(time);
+		}
 	}
 
 	void CSGClient::OnLoginDone()
@@ -249,5 +401,40 @@ namespace Atlas
 	{
 		CClient::OnDisconnected();
 		if(m_callback) m_callback->DisconnectNotify();
+	}
+
+	void CSGClient::SetRightLocation(const A_CONTENT_OBJECT* content_obj, const SG_EQUIP_SLOTS& slots, const A_UUID& uuid)
+	{
+		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 0
+			||((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 1
+			||((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 2)
+		{
+			memcpy((void*)(&slots.weapon), &uuid, sizeof(A_UUID));
+		}
+		
+		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 3)
+		{
+			memcpy((void*)(&slots.head), &uuid, sizeof(A_UUID));
+		}
+
+		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 4)
+		{
+			memcpy((void*)&slots.shoulder, &uuid, sizeof(A_UUID));
+		}
+
+		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 5)
+		{
+			memcpy((void*)&slots.chest, &uuid, sizeof(A_UUID));
+		}
+
+		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 6)
+		{
+			memcpy((void*)&slots.leg, &uuid, sizeof(A_UUID));
+		}
+
+		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == 7)
+		{
+			memcpy((void*)&slots.decoration, &uuid, sizeof(A_UUID));
+		}
 	}
 }

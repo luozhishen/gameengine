@@ -99,7 +99,7 @@ namespace DDL
 		template<size_t N>
 		bool ReadString(String<N>& Value)
 		{
-			_U16 length;
+			_U32 length;
 			if(!Read(length)) return false;
 			if(length>N) return false;
 			if(!ReadBuffer(Value._Value, sizeof(Value._Value[0])*length)) return false;
@@ -120,7 +120,7 @@ namespace DDL
 		}
 
 		template<size_t S>
-		bool ReadStringPointer(String<S>* Ptr, _U16 Count)
+		bool ReadStringPointer(String<S>* Ptr, _U32 Count)
 		{
 			for(_U16 i=0; i<Count; i++)
 			{
@@ -165,7 +165,7 @@ namespace DDL
 		template<size_t S>
 		bool WriteString(const String<S>& Value)
 		{
-			_U16 length = (_U16)strlen(Value._Value);
+			_U32 length = (_U32)strlen(Value._Value);
 			if(length>S) return false;
 			if(!Write(length)) return false;
 			if(!WriteData(Value._Value, sizeof(Value._Value[0])*length)) return false;
@@ -184,9 +184,9 @@ namespace DDL
 		}
 
 		template<size_t S>
-		bool WriteStringPointer(const String<S>* Ptr, _U16 Count)
+		bool WriteStringPointer(const String<S>* Ptr, _U32 Count)
 		{
-			for(_U16 i=0; i<Count; i++)
+			for(_U32 i=0; i<Count; i++)
 			{
 				if(!WriteString(Ptr[i])) return false;
 			}

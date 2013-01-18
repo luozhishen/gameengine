@@ -38,35 +38,30 @@ static void CALLBACK requeststring_callback(HINTERNET hInternet, DWORD_PTR dwCon
 		return;
 	}
 
-	DWORD len;
-	if(!InternetQueryDataAvailable(request->_request, &len, NULL, NULL))
-	{
+	DWORD total = 0, bsize = 100, len;
+	request->_result = (char*)malloc(bsize);
+
+	if(!InternetQueryDataAvailable(request->_request, &len, NULL, NULL)) {
 		request->_state = MOREQUESTSTATE_FAILED;
 		return;
 	}
+	if(len==0) Sleep(100);
 
-	DWORD total = 0, got = len, bsize = len + 1;
-	request->_result = (char*)malloc(bsize);
-	while(got)
+	for(;;)
 	{
-		if(!InternetReadFile(request->_request, request->_result+total, bsize-total, &got))
+		if(total==bsize)
 		{
-			request->_state = MOREQUESTSTATE_FAILED;
-			return;
-		}
-		if(got==0) break;
-
-		total += got;
-		if(!InternetQueryDataAvailable(request->_request, &len, NULL, NULL)) {
-			request->_state = MOREQUESTSTATE_FAILED;
-			return;
-		}
-
-		if(len>=bsize-total)
-		{
-			bsize = total + len + 1;
+			bsize = total + 100;
 			request->_result = (char*)realloc(request->_result, bsize);
 		}
+
+		if(!InternetReadFile(request->_request, request->_result+total, bsize-total-1, &len))
+		{
+			request->_state = MOREQUESTSTATE_FAILED;
+			return;
+		}
+		if(len==0) break;
+		total += len;
 	}
 
 	request->_result[total] = '\0';

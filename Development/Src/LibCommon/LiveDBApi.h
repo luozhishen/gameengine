@@ -40,7 +40,7 @@ namespace Atlas
 		virtual bool Get(DDLReflect::STRUCT_INFO* pInfo, _U32 id, const void* data) = 0;
 		virtual bool Del(DDLReflect::STRUCT_INFO* pInfo, _U32 id) = 0;
 
-		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, std::vector<A_LIVE_OBJECT>& list) = 0;
+		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, Atlas::Vector<A_LIVE_OBJECT>& list) = 0;
 
 	};
 
@@ -54,7 +54,7 @@ namespace Atlas
 		virtual bool Del(DDLReflect::STRUCT_INFO* pInfo, _U32 id, const A_UUID& uuid) = 0;
 		virtual bool Del(DDLReflect::STRUCT_INFO* pInfo, _U32 id) = 0;
 
-		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, std::vector<A_LIVE_OBJECT>& list) = 0;
+		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, Atlas::Vector<A_LIVE_OBJECT>& list) = 0;
 	};
 
 	class CLiveDBProvider

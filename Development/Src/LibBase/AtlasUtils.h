@@ -1,6 +1,11 @@
 #ifndef	__ATLAS_UTILS__
 #define	__ATLAS_UTILS__
 
+#include <string>
+#include <vector>
+#include <map>
+#include <functional>
+
 #ifdef WIN32
 	#define ATLAS_PATH_SLASH		'\\'
 #else
@@ -12,8 +17,8 @@ namespace Atlas
 
 	const char* GetExeDir();
 
-	void StringSplit(const std::string& value, char splitchar, std::vector<std::string>& result);
-	std::string StringFormat(const char* fmt, ...);
+	void StringSplit(const Atlas::String& value, char splitchar, Atlas::Vector<Atlas::String>& result);
+	Atlas::String StringFormat(const char* fmt, ...);
 
 	class CNoCopy
 	{
@@ -77,34 +82,6 @@ namespace Atlas
 		}
 		pool_t htpools[LVL_MAX-LVL_MIN+1];
 	};
-
-	template <>
-	inline
-	HMEMPOOL AllocPool<HMEMPOOL>(_U32 size, _U32 count)
-	{
-		return AllocMemoryPool(size, count);
-	}
-
-	template <>
-	inline
-	void FreePool(HMEMPOOL pool)
-	{
-		FreeMemoryPool(pool);
-	}
-
-	template <>
-	inline
-	_U8* LockBuffer(HMEMPOOL pool)
-	{
-		return (_U8*)LockMemoryPoolBuffer(pool);
-	}
-
-	template <>
-	inline
-	void UnlockBuffer(HMEMPOOL, _U8* buf)
-	{
-		UnlockMemoryPoolBuffer(buf);
-	}
 
 	template <>
 	inline

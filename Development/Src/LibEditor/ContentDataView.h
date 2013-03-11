@@ -54,7 +54,7 @@ private:
 	long m_nSelectIndex;
 	const DDLReflect::STRUCT_INFO* m_pCurInfo;
 	const A_CONTENT_OBJECT* m_pCurData;
-	std::map<std::string, const DDLReflect::STRUCT_INFO*> m_mapTypes;
+	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*> m_mapTypes;
 
 	A_UUID m_copyUUID;
 };

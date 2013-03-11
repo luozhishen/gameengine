@@ -59,7 +59,7 @@ namespace Atlas
 		return m_pClientConnection->GetErrorCode();
 	}
 
-	const std::string& CClient::GetClientConnectionType()
+	const Atlas::String& CClient::GetClientConnectionType()
 	{
 		return m_ClientConnectionType;
 	}
@@ -113,7 +113,7 @@ namespace Atlas
 
 	void CClient::Tick()
 	{
-		std::list<CClientComponent*>::iterator i;
+		Atlas::List<CClientComponent*>::iterator i;
 		for(i=m_Components.begin(); i!=m_Components.end(); i++)
 		{
 			(*i)->Tick();

@@ -265,8 +265,8 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		return;
 	}
 
-	std::string json((const char*)arg.ToUTF8());
-	std::vector<std::string> args;
+	Atlas::String json((const char*)arg.ToUTF8());
+	Atlas::Vector<Atlas::String> args;
 	Atlas::StringSplit(json, ' ', args);
 	if(cls->finfos[fid].fcount!=(_U16)args.size())
 	{
@@ -283,7 +283,7 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 
 	if(!ProcessJsonCommand(cls, fid, json)) return;
 
-	std::string line = (const char*)val.ToUTF8();
+	Atlas::String line = (const char*)val.ToUTF8();
 	m_pCmdHistory->AddCmd(line);
 	m_pCmdText->Clear();
 	int n = m_pCmdHistory->GetHistoryNum();
@@ -325,7 +325,7 @@ void CClientStressFrame::OnSelectAll(wxCommandEvent& event)
 
 void CClientStressFrame::OnLogin(wxCommandEvent& event)
 {
-	std::vector<_U32> clients;
+	Atlas::Vector<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
@@ -338,7 +338,7 @@ void CClientStressFrame::OnLogin(wxCommandEvent& event)
 
 void CClientStressFrame::OnLogout(wxCommandEvent& event)
 {
-	std::vector<_U32> clients;
+	Atlas::Vector<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
@@ -354,7 +354,7 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 	CCaseConfigDlg dlg(this);
 	if(dlg.ShowModal()==wxID_CANCEL) return;
 
-	std::vector<_U32> clients;
+	Atlas::Vector<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
@@ -444,7 +444,7 @@ void CClientStressFrame::OnTimer(wxTimerEvent& event)
 		UpdateClientList();	
 	}
 
-	std::vector<_U32> clients;
+	Atlas::Vector<_U32> clients;
 	Atlas::CStressManager::Get().GetClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
@@ -471,7 +471,7 @@ void CClientStressFrame::UpdateClientList()
 	}
 }
 
-void CClientStressFrame::GetSelectClients(std::vector<_U32>& clients)
+void CClientStressFrame::GetSelectClients(Atlas::Vector<_U32>& clients)
 {
 	clients.clear();
 
@@ -511,7 +511,7 @@ void CClientStressFrame::NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCa
 	}
 }
 
-bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const std::string& json)
+bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Atlas::String& json)
 {
 	_U8 data[10000];
 	_U32 len = (_U32)sizeof(data);
@@ -521,7 +521,7 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 		return false;
 	}
 
-	std::vector<_U32> clients;
+	Atlas::Vector<_U32> clients;
 	GetSelectClients(clients);
 	if(clients.size()<=0)
 	{
@@ -529,7 +529,7 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 		return false;
 	}
 
-	std::vector<_U32>::iterator i;
+	Atlas::Vector<_U32>::iterator i;
 	Atlas::CStressClient* pClient;
 
 	for(i=clients.begin(); i!=clients.end(); i++)

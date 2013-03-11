@@ -21,8 +21,12 @@
   <ItemGroup>
     <ClCompile Include="SGClient.cpp" />
     <ClCompile Include="SGClientApp.cpp" />
+    <ClCompile Include="SGClientUtil.cpp" />
+    <ClCompile Include="SGSyncDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SGClientUtil.h" />
+    <ClInclude Include="SGSyncDataManager.h" />
     <ClInclude Include="SGClient.h" />
     <ClInclude Include="SGClientApp.h" />
   </ItemGroup>

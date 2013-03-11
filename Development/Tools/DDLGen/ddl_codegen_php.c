@@ -317,9 +317,9 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 						OutP(3, "if(!is_%s($%s[$__i])) return false;\n", get_phptype(arg), arg->name);
 					}
 					if(strcmp(get_phptype(arg), "string")==0) {
-						OutP(3, "$__result = $__result.'\"'.$%s.'\"';\n", arg->name);
+						OutP(3, "$__result = $__result.'\"'.$%s[$__i].'\"';\n", arg->name);
 					} else {
-						OutP(3, "$__result = $__result.$%s;\n", arg->name);
+						OutP(3, "$__result = $__result.$%s[$__i];\n", arg->name);
 					}
 				}
 				OutP(2, "}\n");

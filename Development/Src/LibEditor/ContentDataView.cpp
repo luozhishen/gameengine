@@ -122,9 +122,9 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 	pSizerAll->Add(pSplitter, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizerAll);
 
-	std::vector<const DDLReflect::STRUCT_INFO*> list;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
 	Atlas::ContentObject::GetTypeList(list);
-	std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		const DDLReflect::STRUCT_INFO* p = *i;
@@ -137,7 +137,7 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 			p = p->parent;
 		}
 	}
-	std::map<std::string, const DDLReflect::STRUCT_INFO*>::iterator in;
+	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*>::iterator in;
 	int nTypeIndex = -1;
 	for(in=m_mapTypes.begin(); in!=m_mapTypes.end(); in++)
 	{
@@ -177,7 +177,7 @@ void CContentDataView::OnObjectActived(wxListEvent& event)
 	wxUIntPtr pData = m_pList->GetItemData(nSelectIndex);
 	A_UUID& uuid = *(A_UUID*)pData;
 	const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetType(uuid);
-	const A_CONTENT_OBJECT* object = Atlas::ContentObject::Query(uuid, info);
+	const A_CONTENT_OBJECT* object = Atlas::ContentObject::QueryByUUID(uuid, info);
 	SetCurrentObject(nSelectIndex, info, object);
 }
 
@@ -258,7 +258,7 @@ void CContentDataView::OnMenuCopy(wxCommandEvent& event)
 
 void CContentDataView::OnMenuPaste(wxCommandEvent& event)
 {
-	const A_CONTENT_OBJECT* pSrc = Atlas::ContentObject::Query(m_copyUUID);
+	const A_CONTENT_OBJECT* pSrc = Atlas::ContentObject::QueryByUUID(m_copyUUID);
 	if(!pSrc)
 	{
 		wxMessageBox(wxT("no copy instance exists"));
@@ -435,25 +435,10 @@ void CContentDataView::FlashList()
 	SetCurrentObjectNULL();
 
 	const DDLReflect::STRUCT_INFO* info = m_mapTypes[(const char*)m_pObjectType->GetValue().ToUTF8()];
-	std::vector<A_UUID> list;
-	Atlas::ContentObject::GetList(info, list, false);
-
-	std::string name((const char*)m_pSearchText->GetValue().Trim().ToUTF8());
-	std::vector<A_UUID>::iterator i;
-	for(i=list.begin(); i!=list.end(); i++)
+	const A_CONTENT_OBJECT* object = Atlas::ContentObject::FindFirst(info, false);
+	while(object)
 	{
-		const A_CONTENT_OBJECT* object = Atlas::ContentObject::Query(*i);
-		const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetType(*i);
-		if(!object || !info) continue;
-		//if(!name.empty() && !strstr(object->name._Value, name.c_str())) continue;
-		if(!name.empty())
-		{
-			std::string val;
-			if(!DDLReflect::StructParamToString(info, name.c_str(), object, val)) ATLAS_ASSERT(0);
-			val += "\n";
-			OutputDebugStringA(val.c_str());
-		}
-
-		AppendObject(info, object);
+		AppendObject(Atlas::ContentObject::GetType(object->uuid), object);
+		object = Atlas::ContentObject::FindNext(info, false, object);
 	}
 }

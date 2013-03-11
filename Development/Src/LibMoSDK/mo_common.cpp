@@ -1,5 +1,4 @@
-#include <string>
-#include <map>
+#include <AtlasSTL.h>
 #include "mo_common.h"
 
 static const char HEXCHARS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -26,9 +25,9 @@ static char* urlencode(const char* in, char* out)
 	return ret;
 }
 
-void build_http_param(std::string& value, const std::map<std::string, std::string>& params)
+void build_http_param(Atlas::String& value, const Atlas::Map<Atlas::String, Atlas::String>& params)
 {
-	std::map<std::string, std::string>::const_iterator i;
+	Atlas::Map<Atlas::String, Atlas::String>::const_iterator i;
 	char txt[1024*10];
 	value = "";
 

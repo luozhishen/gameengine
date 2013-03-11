@@ -8,8 +8,9 @@
 class CClientLogItem
 {
 public:
-	CClientLogItem() : m_Logs(2000)
+	CClientLogItem()
 	{
+		m_Logs.resize(2000);
 		m_nStart = 0;
 		m_nCount = 0;
 		m_bEnable = true;
@@ -35,7 +36,7 @@ public:
 		m_Logs[index] = msg;
 	}
 
-	std::vector<std::string> m_Logs;
+	Atlas::Vector<Atlas::String> m_Logs;
 	size_t m_nStart, m_nCount;
 	bool m_bEnable;
 };
@@ -66,7 +67,7 @@ private:
 	wxCheckBox*			m_pEnable;
 	wxCheckBox*			m_pAutoReflush;
 	wxTextCtrl*			m_pLog;
-	std::map<_U32, CClientLogItem> m_Clients;
+	Atlas::Map<_U32, CClientLogItem> m_Clients;
 };
 
 #endif

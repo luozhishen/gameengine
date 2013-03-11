@@ -21,14 +21,14 @@ class StreesViewItemData : wxTreeItemData
 {
 public:
 	StreesViewItemData(_U32 uid);
-	StreesViewItemData(std::string& strItem, _U32 uid);
+	StreesViewItemData(Atlas::String& strItem, _U32 uid);
 	
 	_U32 GetUid();
-	std::string& GetCaseName();
+	Atlas::String& GetCaseName();
 
 private:
 	_U32 m_uid;
-	std::string m_strCaseName;
+	Atlas::String m_strCaseName;
 };
 
 class CStressViewTree :	public wxTreeCtrl

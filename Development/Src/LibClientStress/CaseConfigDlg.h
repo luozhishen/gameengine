@@ -14,15 +14,15 @@ public:
 	void OnCaseSelect(wxCommandEvent& event);
 	void OnConfirm(wxCommandEvent& event);
 
-	const std::string& GetCaseName() { return m_CaseName; }
+	const Atlas::String& GetCaseName() { return m_CaseName; }
 	const DDLReflect::STRUCT_INFO* GetCaseType() { return m_pCaseType; }
 	_U8* GetCaseData() { return m_pCaseData; }
 
 private:
 	wxComboBox* m_pCaseList;
 	wxTextCtrl* m_pConfigText;
-	std::map<std::string, int> m_CaseMap;
-	std::string m_CaseName;
+	Atlas::Map<Atlas::String, int> m_CaseMap;
+	Atlas::String m_CaseName;
 	const DDLReflect::STRUCT_INFO* m_pCaseType;
 	_U8* m_pCaseData;
 };

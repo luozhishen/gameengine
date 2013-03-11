@@ -23,7 +23,7 @@ namespace Atlas
 			_U64 nWorkCapacity;
 		};
 
-		typedef std::vector<WORKLOAD_INFO> SESSION_WORKLOADS;
+		typedef Atlas::Vector<WORKLOAD_INFO> SESSION_WORKLOADS;
 
 	public:
 		CLoginServer(CServerApp* pServerApp);

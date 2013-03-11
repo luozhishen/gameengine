@@ -32,7 +32,7 @@ bool wxObjectRefProperty::OnButtonClick(wxPropertyGrid* propGrid, wxString& strV
 
 void wxObjectRefProperty::UpdateValue()
 {
-	const A_CONTENT_OBJECT* obj = Atlas::ContentObject::Query(*((A_UUID*)m_data));
+	const A_CONTENT_OBJECT* obj = Atlas::ContentObject::QueryByUUID(*((A_UUID*)m_data));
 	if(obj)
 	{
 		char name[100];

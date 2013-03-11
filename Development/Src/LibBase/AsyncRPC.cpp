@@ -1,15 +1,6 @@
 #ifndef WITHOUT_ATLAS_ASYNCIO
 
-#include <map>
-
-#include "AtlasDefines.h"
-#include "AtlasAtomic.h"
-#include "AtlasSocket.h"
-#include "AsyncSockIO.h"
-#include "MemPool.h"
-#include "DDL.h"
-#include "AtlasUtils.h"
-#include "AsyncRPC.h"
+#include "AtlasBase.h"
 #include "AsyncRPCImpl.h"
 
 namespace Atlas {
@@ -160,7 +151,7 @@ namespace Atlas {
 		TURBO_ALLOCATOR<HIOPOOL> allocator;
 		HWORKERS hworkers;
 		A_MUTEX maplock;
-		std::map<_U64, RPC_SERVER*> servers;
+		Atlas::Map<_U64, RPC_SERVER*> servers;
 
 		RPC_ENGINE() {
 			ASockIOInit();
@@ -169,7 +160,7 @@ namespace Atlas {
 			ATLAS_ASSERT(hworkers);
 		}
 		~RPC_ENGINE() {
-			for(std::map<_U64, RPC_SERVER*>::const_iterator citer=servers.begin(); citer!=servers.end(); ++citer) {
+			for(Atlas::Map<_U64, RPC_SERVER*>::const_iterator citer=servers.begin(); citer!=servers.end(); ++citer) {
 				if(citer->second) {
 					citer->second->fini();
 					ATLAS_ALIGN_FREE(citer->second);
@@ -358,7 +349,7 @@ namespace Atlas {
 		HWORKERS hworkers;
 		HTCPEP hep;
 		A_MUTEX maplock;
-		std::map<HCONNECT, RPC_CLIENT*> conns;
+		Atlas::Map<HCONNECT, RPC_CLIENT*> conns;
 		SOCK_ADDR sockaddr;
 
 		bool Add(HCONNECT hConn, RPC_CLIENT* pclt) {
@@ -443,7 +434,7 @@ namespace Atlas {
 			StopEP(hep);
 			do {
 				A_MUTEX_LOCK(&maplock);
-				for(std::map<HCONNECT, RPC_CLIENT*>::const_iterator citer=conns.begin(); citer!=conns.end(); ++citer) {
+				for(Atlas::Map<HCONNECT, RPC_CLIENT*>::const_iterator citer=conns.begin(); citer!=conns.end(); ++citer) {
 					Disconnect(citer->first);
 				}
 				A_MUTEX_UNLOCK(&maplock);

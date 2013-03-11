@@ -32,7 +32,7 @@ namespace Atlas
 
 	private:
 		CServerApp* m_pServerApp;
-		std::list<CServerComponent*> m_ComponentList;
+		Atlas::List<CServerComponent*> m_ComponentList;
 	};
 
 	class CServerComponent : public CNoCopy

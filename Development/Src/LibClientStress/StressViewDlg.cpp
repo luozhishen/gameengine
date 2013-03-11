@@ -63,7 +63,7 @@ CStressViewDlg::~CStressViewDlg()
 void CStressViewDlg::InitClients()
 {
 	Atlas::CStressManager& stressMgr = Atlas::CStressManager::Get();
-	std::vector<_U32> clients;
+	Atlas::Vector<_U32> clients;
 	stressMgr.GetClients(clients);
 
 	if(clients.empty())
@@ -84,16 +84,16 @@ void CStressViewDlg::InitClients()
 		//data.SetId(clientItem);
 		m_pClientTree->SetItemData(clientItem, (wxTreeItemData*)data);
 
-		std::set<Atlas::CStressCase*> cases;
+		Atlas::Set<Atlas::CStressCase*> cases;
 		pClient->GetStressCases(cases);
 
 		if(cases.empty())
 			continue;
 
-		std::set<Atlas::CStressCase*>::iterator it = cases.begin();
+		Atlas::Set<Atlas::CStressCase*>::iterator it = cases.begin();
 		for( ; it != cases.end(); ++it)
 		{
-			std::string strCaseName = (*it)->GetName();
+			Atlas::String strCaseName = (*it)->GetName();
 
 			wxTreeItemId caseItem = m_pClientTree->AppendItem(clientItem, wxString::FromUTF8((*it)->GetName().c_str()), -1, -1);
 			StreesViewItemData* castData = ATLAS_NEW StreesViewItemData(strCaseName, pClient->GetIndex());
@@ -103,7 +103,7 @@ void CStressViewDlg::InitClients()
 	}
 }
 
-void CStressViewDlg::DisplayInfo(_U32 uid, std::string& strCaseName)
+void CStressViewDlg::DisplayInfo(_U32 uid, Atlas::String& strCaseName)
 {	
 	m_pClientInfo->Clear();
 	m_pClientCase->Clear();

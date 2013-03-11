@@ -20,7 +20,7 @@ namespace Atlas
 		HRESULT Save();
 		HRESULT Quit();
 		void SetFilePath( const wxString& sFilePath );
-		HRESULT GetExcelSheets( std::vector<wxString>& vSheets );
+		HRESULT GetExcelSheets( Atlas::Vector<wxString>& vSheets );
 		HRESULT SetActiveSheet( const wxString& sSheetName );
 		HRESULT SetCellValue( const wxString& sRange, const wxString& sValue );
 		HRESULT GetCellValue( const wxString& sRange, wxString& sValue );

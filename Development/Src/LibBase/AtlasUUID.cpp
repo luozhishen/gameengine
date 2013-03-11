@@ -54,6 +54,10 @@ void AUuidToString(const A_UUID& uuid, char* str)
 	UuidToStringA((UUID*)&uuid, &val);
 	strcpy(str, (const char*)val);
 	RpcStringFreeA(&val);
+	for(char* i=str; *i!='\0'; i++)
+	{
+		if(*i>='A' && *i<='Z') *i = (*i - 'A') + 'a';
+	}
 }
 
 bool AUuidFromString(const char* str, A_UUID& uuid)
@@ -84,6 +88,10 @@ void AUuidToString(const A_UUID& uuid, char* str)
 	uuid_t _uuid;
 	memcpy(&_uuid, &uuid, sizeof(_uuid));
 	uuid_unparse(_uuid, str);
+	for(char* i=str; *i!='\0'; i++)
+	{
+		if(*i>='A' && *i<='Z') *i = (*i - 'A') + 'a';
+	}
 }
 
 bool AUuidFromString(const char* str, A_UUID& uuid)

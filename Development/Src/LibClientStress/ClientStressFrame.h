@@ -75,7 +75,7 @@ public:
 	void OnTimer(wxTimerEvent& event);
 
 	void UpdateClientList();
-	void GetSelectClients(std::vector<_U32>& clients);
+	void GetSelectClients(Atlas::Vector<_U32>& clients);
 
 	void AddView(CStressFrameView* pView);
 	Atlas::CStressClient* GetStressClient(_U32 id);
@@ -84,7 +84,7 @@ public:
 	void NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCase);
 
 protected:
-	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const std::string& json);
+	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Atlas::String& json);
 
 private:
 	wxNotebook*				m_pTabView;

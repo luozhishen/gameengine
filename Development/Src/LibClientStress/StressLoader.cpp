@@ -100,7 +100,7 @@ namespace Atlas
 				CStressClient* pClient = stressMgr.GetClient(uid);
 				_OnNewClient(uid);
 
-				std::vector<Script_Case>::iterator script_it = (*it).scripts.begin();
+				Atlas::Vector<Script_Case>::iterator script_it = (*it).scripts.begin();
 				for(; script_it != (*it).scripts.end(); ++script_it)
 				{
 					CStressCase* pCase = pClient->NewStressCase((*script_it).case_name.c_str());
@@ -141,8 +141,8 @@ namespace Atlas
 		TiXmlElement* ParamElem = ATLAS_NEW TiXmlElement("SERVER_PARAM");
 		rootElem->LinkEndChild(ParamElem);
 		
-		std::map<std::string, std::string> params = Atlas::CClientApp::GetDefault()->GetParams();
-		std::map<std::string, std::string>::iterator it = params.begin();
+		Atlas::Map<Atlas::String, Atlas::String> params = Atlas::CClientApp::GetDefault()->GetParams();
+		Atlas::Map<Atlas::String, Atlas::String>::iterator it = params.begin();
 		for(int i = 0; it != params.end(); ++it, ++i)
 		{
 			TiXmlElement* elem = ATLAS_NEW TiXmlElement("PARAM");

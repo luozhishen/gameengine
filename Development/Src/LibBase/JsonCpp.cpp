@@ -1,5 +1,7 @@
 #if 1
 
+#include "AtlasBase.h"
+
 #include <json/config.h>
 #include <json/jsoncpp.h>
 #include <json/autolink.h>

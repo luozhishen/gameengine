@@ -1,27 +1,24 @@
 #ifndef _CMD_HISTORY_H__
 #define _CMD_HISTORY_H__
 
-#include <string>
-#include <vector>
-
 namespace Atlas
 {
 	class CmdHistory
 	{
 	public:
-		typedef std::vector<std::string> CMD_SET;
+		typedef Atlas::Vector<Atlas::String> CMD_SET;
 	public:
 		CmdHistory(const char* path = "./");
 		~CmdHistory();
 
-		void FindSimilarCmd(std::string& cmd, CMD_SET& ret);
+		void FindSimilarCmd(Atlas::String& cmd, CMD_SET& ret);
 		int GetHistoryNum();
 		CMD_SET& GetHistorySet();
-		std::string GetHistory(int index);
-		void AddCmd(std::string& cmd);
+		Atlas::String GetHistory(int index);
+		void AddCmd(Atlas::String& cmd);
 	private:
 		CMD_SET m_cmds;
-		std::string m_path;
+		Atlas::String m_path;
 	};
 }
 

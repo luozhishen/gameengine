@@ -1,10 +1,7 @@
 #ifndef	__ATLAS_BASE__
 #define	__ATLAS_BASE__
 
-#include <vector>
 #include <string>
-#include <map>
-
 #ifndef _WIN32
 #include <tr1/functional>
 #else
@@ -12,10 +9,9 @@
 #endif
 
 #include "AtlasDefines.h"
-#include "AtlasAtomic.h"
+#include "AtlasSTL.h"
 #include "AtlasSocket.h"
 #include "AsyncSockIO.h"
-#include "MemPool.h"
 #include "DDL.h"
 #include "DDLReflect.h"
 #include "AtlasUtils.h"

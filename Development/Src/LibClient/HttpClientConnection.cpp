@@ -51,9 +51,9 @@ namespace Atlas
 		if(m_pNotifyRequest) return false;
 		if(m_pCurrentRequest) return false;
 
-		std::map<std::string, std::string> params;
+		Atlas::Map<Atlas::String, Atlas::String> params;
 		params["token"] = pToken;
-		std::string url = StringFormat("%slogin.php", pUrl);
+		String url = StringFormat("%slogin.php", pUrl);
 		m_pLoginRequest = MORequestString(url.c_str(), params);
 		if(!m_pLoginRequest)
 		{
@@ -61,8 +61,6 @@ namespace Atlas
 			m_nErrCode = CClient::ERRCODE_NETWORK;
 			return false;
 		}
-
-		CLIENT_LOG(GetClient(), "http_connection : logining to server...");
 
 		m_BaseUrl = pUrl;
 		m_nState = CClient::STATE_LOGINING;
@@ -94,7 +92,8 @@ namespace Atlas
 		root["method"] = StringFormat("%s.%s", classinfo->name, classinfo->finfos[fid].name);
 		root["message"] = message;
 		Json::FastWriter writer;
-		std::string json = writer.write(root);
+		String json = writer.write(root);
+		CLIENT_LOG(GetClient(), "send request : %s", json.c_str());
 		m_SendQueue.push_back(json);
 	}
 
@@ -204,6 +203,7 @@ namespace Atlas
 		}
 
 		const char* result = MOClientGetResultString(m_pCurrentRequest);
+		CLIENT_LOG(GetClient(), "recv response: %s", result);
 		if(*result=='\0')
 		{
 			MORequestDestory(m_pCurrentRequest);
@@ -248,7 +248,7 @@ namespace Atlas
 			if(error)
 			{
 				Json::FastWriter writer;
-				std::string json = writer.write(elm);
+				String json = writer.write(elm);
 				CLIENT_LOG(GetClient(), "http_connection : invalid data, (%d) %s", json.c_str());
 				continue;
 			}
@@ -267,7 +267,7 @@ namespace Atlas
 			if(!DDLReflect::Json2Call(&cls->finfos[fid], elm["message"], len, data))
 			{
 				Json::FastWriter writer;
-				std::string json = writer.write(elm["message"]);
+				String json = writer.write(elm["message"]);
 				CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", json.c_str());
 				error = true;
 			}
@@ -286,12 +286,11 @@ namespace Atlas
 	void CHttpClientConnection::SendRequest()
 	{
 		ATLAS_ASSERT(!m_pCurrentRequest);
-		std::map<std::string, std::string> params;
+		Atlas::Map<Atlas::String, Atlas::String> params;
 		params["session_key"] = m_SessionKey;
 		params["request"] = m_SendQueue.front();
-		std::string url = StringFormat("%srequest.php", m_BaseUrl.c_str());
+		String url = StringFormat("%srequest.php", m_BaseUrl.c_str());
 		m_pCurrentRequest = MORequestString(url.c_str(), params);
-		CLIENT_LOG(GetClient(), "http_connection : send request : %s", m_SendQueue.front().c_str());
 	}
 
 	void CHttpClientConnection::DoDisconnect()

@@ -1,3 +1,4 @@
+#include <AtlasSTL.h>
 #include "CmdHistory.h"
 
 #include <fstream>
@@ -14,10 +15,10 @@ namespace Atlas
 		m_path += "Config\\StressHistory.txt";
 
 		std::ifstream ifs;
-		ifs.open(m_path, std::ios_base::app|std::ios_base::in);
+		ifs.open(m_path.c_str(), std::ios_base::app|std::ios_base::in);
 		if(ifs.is_open())
 		{
-			std::string line;
+			Atlas::String line;
 			while(getline(ifs, line))
 			{
 				m_cmds.push_back(line);
@@ -29,7 +30,7 @@ namespace Atlas
 	CmdHistory::~CmdHistory()
 	{
 		std::ofstream ofs;
-		ofs.open(m_path, std::ios_base::out|std::ios_base::trunc);
+		ofs.open(m_path.c_str(), std::ios_base::out|std::ios_base::trunc);
 		if(ofs.is_open())
 		{
 			for(CMD_SET::iterator it = m_cmds.begin(); it != m_cmds.end(); ++it)
@@ -41,12 +42,12 @@ namespace Atlas
 		}
 	}
 
-	void CmdHistory::FindSimilarCmd( std::string& cmd, CMD_SET& ret)
+	void CmdHistory::FindSimilarCmd( Atlas::String& cmd, CMD_SET& ret)
 	{
 		for(CMD_SET::iterator it = m_cmds.begin();
 			it != m_cmds.end(); ++it)
 		{
-			if((*it).find(cmd) != std::string::npos)
+			if((*it).find(cmd) != Atlas::String::npos)
 			{
 				ret.push_back((*it));
 			}
@@ -58,12 +59,12 @@ namespace Atlas
 		return m_cmds;
 	}
 
-	std::string CmdHistory::GetHistory( int index )
+	Atlas::String CmdHistory::GetHistory( int index )
 	{
 		return m_cmds[index];
 	}
 
-	void CmdHistory::AddCmd( std::string& cmd )
+	void CmdHistory::AddCmd( Atlas::String& cmd )
 	{
 		//std::unique(m_cmds.begin(), m_cmds.end());
 		CMD_SET::iterator it = find(m_cmds.begin(), m_cmds.end(), cmd);

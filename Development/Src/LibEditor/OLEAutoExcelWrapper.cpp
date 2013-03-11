@@ -4,13 +4,12 @@
 
 #include <wx/wx.h>
 #include <wx/string.h>
-
+#include <AtlasSTL.h>
 #include "OLEAutoExcelWrapper.h"
-#include "UtilString.h"
 
 namespace Atlas
 {
-	HRESULT OLEWrap(WORD autoType, VARIANT *pvResult, IDispatch *pDispatch, LPOLESTR ptName, _U32 cArgs...)
+	HRESULT OLEWrap(WORD autoType, VARIANT *pvResult, IDispatch *pDispatch, LPOLESTR ptName, DWORD cArgs...)
 	{
 		if ( !pDispatch )
 		{
@@ -36,7 +35,7 @@ namespace Atlas
 
 		VARIANT *pArgs = new VARIANT[cArgs+1];
 
-		for ( _U32 ii = 0; ii < cArgs; ++ii )
+		for ( DWORD ii = 0; ii < cArgs; ++ii )
 		{
 			pArgs[ii] = va_arg(marker, VARIANT);
 		}
@@ -234,14 +233,14 @@ namespace Atlas
 		m_sFilePath = sFilePath;
 	}
 
-	HRESULT COLEAutoExcelWrapper::GetExcelSheets( std::vector<wxString>& vSheets )
+	HRESULT COLEAutoExcelWrapper::GetExcelSheets( Atlas::Vector<wxString>& vSheets )
 	{
 		if ( !m_pExcelSheets )
 		{
 			return E_FAIL;
 		}
 
-		_U32 iSheetCount;
+		DWORD iSheetCount;
 		{
 			VARIANT result;
 			VariantInit(&result);
@@ -253,7 +252,7 @@ namespace Atlas
 			iSheetCount = result.iVal;
 		}
 
-		for ( _U32 ii = 0; ii < iSheetCount; ++ii )
+		for ( DWORD ii = 0; ii < iSheetCount; ++ii )
 		{
 			IDispatch *pSheet;
 			{
@@ -279,7 +278,7 @@ namespace Atlas
 					return m_hRes;
 				}
 
-				UINT uiResultLen = SysStringLen( result.bstrVal );
+				//UINT uiResultLen = (UINT)SysStringLen( result.bstrVal );
 				vSheets.push_back(result.bstrVal);
 			}
 
@@ -397,7 +396,7 @@ namespace Atlas
 				}
 			}
 
-			UINT uiResultLen = SysStringLen( result.bstrVal );
+			//UINT uiResultLen = SysStringLen( result.bstrVal );
 			sValue = result.bstrVal;
 		}
 

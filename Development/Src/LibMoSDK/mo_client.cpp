@@ -1,17 +1,15 @@
 #pragma warning(disable:4100)
 #pragma warning(disable:4996)
 
-#include <map>
-#include <string>
-
+#include <AtlasSTL.h>
 #include "mosdk.h"
 #include "mo_common.h"
 
 struct MOCLIENT
 {
-	std::string baseurl;
-	std::string prefix;
-	std::string session_key;
+	Atlas::String baseurl;
+	Atlas::String prefix;
+	Atlas::String session_key;
 	MOREQUEST* login_request;
 	MOCLIENTSTATE state;
 };
@@ -35,11 +33,11 @@ void MODestoryClient(MOCLIENT* client)
 bool MOLoginByDeviceID(MOCLIENT* client)
 {
 	if(client->login_request) return false;
-	std::map<std::string, std::string> params;
+	Atlas::Map<Atlas::String, Atlas::String> params;
 	params["app"] = MOGetAppName();
 	params["os"] = MOGetOSName();
 	params["device"] = MOGetDeviceUDID();
-	std::string url;
+	Atlas::String url;
 	url = client->baseurl + "login" + client->prefix;
 	client->login_request = MORequestString(url.c_str(), params);
 	if(client->login_request==NULL)
@@ -59,12 +57,12 @@ bool MOLoginByToken(MOCLIENT* client, const char* token)
 bool MOLoginByUsername(MOCLIENT* client, const char* username, const char* password)
 {
 	if(client->login_request) return false;
-	std::map<std::string, std::string> params;
+	Atlas::Map<Atlas::String, Atlas::String> params;
 	params["app"] = MOGetAppName();
 	params["os"] = MOGetOSName();
 	params["username"] = username;
 	params["password"] = password;
-	std::string url;
+	Atlas::String url;
 	url = client->baseurl + "login" + client->prefix;
 	client->login_request = MORequestString(url.c_str(), params);
 	if(client->login_request)
@@ -84,9 +82,9 @@ void MOLogout(MOCLIENT* client)
 	if(client->login_request) MORequestDestory(client->login_request);
 	client->login_request = NULL;
 	if(client->session_key.empty()) return;
-	std::map<std::string, std::string> params;
+	Atlas::Map<Atlas::String, Atlas::String> params;
 	params["token"] = client->session_key;
-	std::string url;
+	Atlas::String url;
 	url = client->baseurl + "login" + client->prefix;
 	client->login_request = MORequestString(url.c_str(), params);
 	client->session_key = "";
@@ -144,56 +142,56 @@ const char* MOGetClientBaseUrl(MOCLIENT* client)
 	return client->baseurl.c_str();
 }
 
-MOREQUEST* MOClientRequestString(MOCLIENT* client, const char* method, const std::map<std::string, std::string>& params)
+MOREQUEST* MOClientRequestString(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params)
 {
 	if(MOGetClientState(client)!=MOCLIENTSTATE_AUTH) return NULL;
 
-	std::string postdata;
+	Atlas::String postdata;
 	build_http_param(postdata, params);
 	if(!postdata.empty()) postdata += "&";
 	postdata += "token=";
 	postdata += client->session_key;
-	std::string url;
+	Atlas::String url;
 	url = client->baseurl + method + client->prefix;
 	return MORequestString(url.c_str(), postdata.c_str());
 }
 
-MOREQUEST* MOClientDownloadFile(MOCLIENT* client, const char* method, const std::map<std::string, std::string>& params, const char* path)
+MOREQUEST* MOClientDownloadFile(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path)
 {
 	if(MOGetClientState(client)!=MOCLIENTSTATE_AUTH) return NULL;
 
-	std::string postdata;
+	Atlas::String postdata;
 	build_http_param(postdata, params);
 	if(!postdata.empty()) postdata += "&";
 	postdata += "token=";
 	postdata += client->session_key;
-	std::string url;
+	Atlas::String url;
 	url = client->baseurl + method + client->prefix;
 	return MODownloadFile(url.c_str(), postdata.c_str(), path);
 }
 
-MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const std::map<std::string, std::string>& files)
+MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& files)
 {
 	if(MOGetClientState(client)!=MOCLIENTSTATE_AUTH) return NULL;
 
-	std::string postdata;
+	Atlas::String postdata;
 	postdata = "token=";
 	postdata += client->session_key;
-	std::string url;
+	Atlas::String url;
 	url = client->baseurl + method + client->prefix;
 	return MOUploadFiles(url.c_str(), postdata.c_str(), files);
 }
 
-MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const std::map<std::string, std::string>& params, const std::map<std::string, std::string>& files)
+MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params, const Atlas::Map<Atlas::String, Atlas::String>& files)
 {
 	if(MOGetClientState(client)!=MOCLIENTSTATE_AUTH) return NULL;
 
-	std::string postdata;
+	Atlas::String postdata;
 	build_http_param(postdata, params);
 	if(!postdata.empty()) postdata += "&";
 	postdata += "token=";
 	postdata += client->session_key;
-	std::string url;
+	Atlas::String url;
 	url = client->baseurl + method + client->prefix;
 	return MOUploadFiles(url.c_str(), postdata.c_str(), files);
 }

@@ -5,7 +5,7 @@
 {	\
 	if(client->GetLogCallback())	\
 	{	\
-		std::string str = Atlas::StringFormat(fmt, ##__VA_ARGS__);	\
+		Atlas::String str = Atlas::StringFormat(fmt, ##__VA_ARGS__);	\
 		(client->GetLogCallback())(str.c_str());	\
 	}	\
 }
@@ -49,7 +49,7 @@ namespace Atlas
 		CLIENT_STATE GetState();
 		_U32 GetErrorCode();
 
-		const std::string& GetClientConnectionType();
+		const Atlas::String& GetClientConnectionType();
 		CClientConnectionBase* GetClientConnection();
 		void SetLogCallback(LOG_CALLBACK logproc);
 		LOG_CALLBACK GetLogCallback();
@@ -84,9 +84,9 @@ namespace Atlas
 
 	private:
 		CClientApp* m_pClientApp;
-		std::string m_ClientConnectionType;
+		Atlas::String m_ClientConnectionType;
 		CClientConnectionBase* m_pClientConnection;
-		std::list<CClientComponent*> m_Components;
+		Atlas::List<CClientComponent*> m_Components;
 		LOG_CALLBACK m_LogCallback;
 	};
 

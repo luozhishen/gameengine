@@ -119,7 +119,7 @@ void CClientLogView::OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8*
 	const DDLReflect::CLASS_INFO* cls;
 	if(Atlas::GetClientFunctionStub(iid, fid, cls))
 	{
-		std::string json;
+		Atlas::String json;
 		DDLReflect::Call2Json(&cls->finfos[fid], len, data, json);
 		sprintf(msg, "ondata : %s.%s %s", cls->name, cls->finfos[fid].name, json.c_str());
 	}

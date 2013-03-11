@@ -1,9 +1,3 @@
-#include <stdarg.h>
-
-#include <fstream>
-
-#include <json/jsoncpp.h>
-
 #include "AtlasBase.h"
 #include "AtlasCommon.h"
 #include "AtlasClientApp.h"
@@ -11,6 +5,7 @@
 #include "mosdk.h"
 #include "ClientConnection.h"
 #include "AsyncIOConnection.h"
+#include <fstream>
 
 namespace Atlas
 {
@@ -64,13 +59,13 @@ namespace Atlas
 	
 	const char* CClientApp::GetParam(const char* name, const char* default_value)
 	{
-		std::map<std::string, std::string>::iterator i;
+		Atlas::Map<Atlas::String, Atlas::String>::iterator i;
 		i = m_Params.find(name);
 		if(i==m_Params.end()) return default_value;
 		return i->second.c_str();
 	}
 	
-	const std::map<std::string, std::string>& CClientApp::GetParams()
+	const Atlas::Map<Atlas::String, Atlas::String>& CClientApp::GetParams()
 	{
 		return m_Params;
 	}
@@ -79,7 +74,7 @@ namespace Atlas
 	{
 		m_Params.clear();
 
-		std::string strXmlFile = Atlas::AtlasGameDir();
+		Atlas::String strXmlFile = Atlas::AtlasGameDir();
 		strXmlFile += "\\Config\\Client.json";
 		std::ifstream ifs;
 		ifs.open(strXmlFile.c_str());
@@ -94,9 +89,9 @@ namespace Atlas
 		
 		for(Json::UInt i = 0; i < root.size(); ++i)
 		{
-			std::vector<std::string> vec = root.getMemberNames();
-			std::string strKey = vec[i];
-			std::string strValue = root[strKey.c_str()].asString();
+			Atlas::Vector<Atlas::String> vec = root.getMemberNames();
+			Atlas::String strKey = vec[i];
+			Atlas::String strValue = root[strKey.c_str()].asString();
 
 			m_Params[strKey] = strValue;
 		}
@@ -111,13 +106,13 @@ namespace Atlas
 		Json::Value root;
 		Json::FastWriter writer;
 		
-		for(std::map<std::string, std::string>::const_iterator it = m_Params.begin(); it != m_Params.end(); ++it)
+		for(Atlas::Map<Atlas::String, Atlas::String>::const_iterator it = m_Params.begin(); it != m_Params.end(); ++it)
 		{
 			root[it->first] = it->second;
 		}
 
-		std::string json_file = writer.write(root);
-		std::string strXmlFile = Atlas::AtlasGameDir();
+		Atlas::String json_file = writer.write(root);
+		Atlas::String strXmlFile = Atlas::AtlasGameDir();
 		strXmlFile += "\\Config\\Client.json";
 		std::ofstream ofs;
 		ofs.open(strXmlFile.c_str());
@@ -138,6 +133,11 @@ namespace Atlas
 		InitDDLStub();
 		InitContentObjects();
 		InitLiveObjects();
+
+		if(!ContentObject::BuildIndex())
+		{
+			ATLAS_ASSERT(0);
+		}
 
 #ifndef WITHOUT_ATLAS_ASYNCIO
 		CAsyncIOConnection::Init(1);
@@ -199,7 +199,7 @@ namespace Atlas
 			}
 		}
 
-		std::set<CClient*>::iterator it;
+		Atlas::Set<CClient*>::iterator it;
 		for(it=m_Clients.begin(); it!=m_Clients.end(); it++)
 		{
 			(*it)->Tick();

@@ -9,36 +9,95 @@
 
 namespace Atlas
 {
-	static std::map<int, char> g_excelmap;
+	static Atlas::Map<int, char> g_excelmap;
 
-	static char g_excelMap[26] = 
+	struct EXCEL_INDEX 
 	{
-		'A',
-		'B',
-		'C',
-		'D',
-		'E',
-		'F',
-		'G',
-		'H',
-		'I',
-		'J',
-		'K',
-		'L',
-		'M',
-		'N',
-		'O',
-		'P',
-		'Q',
-		'R',
-		'S',
-		'T',
-		'U',
-		'V',
-		'W',
-		'X',
-		'Y',
-		'Z',
+		int i;
+		char* szHead;
+	};
+
+	static EXCEL_INDEX g_excelMap[] = {
+		{ 1, "A"},
+		{ 2, "B"},
+		{ 3, "C"},
+		{ 4, "D"},
+		{ 5, "E"},
+		{ 6, "F"},
+		{ 7, "G"},
+		{ 8, "H"},
+		{ 9, "I"},
+		{ 10, "J"},
+		{ 11, "K"},
+		{ 12, "L"},
+		{ 13, "M"},
+		{ 14, "N"},
+		{ 15, "O"},
+		{ 16, "P"},
+		{ 17, "Q"},
+		{ 18, "R"},
+		{ 19, "S"},
+		{ 20, "T"},
+		{ 21, "U"},
+		{ 22, "V"},
+		{ 23, "W"},
+		{ 24, "X"},
+		{ 25, "Y"},
+		{ 26, "Z"},
+
+		{ 27, "AA"},
+		{ 28, "AB"},
+		{ 29, "AC"},
+		{ 30, "AD"},
+		{ 31, "AE"},
+		{ 32, "AF"},
+		{ 33, "AG"},
+		{ 34, "AH"},
+		{ 35, "AI"},
+		{ 36, "AJ"},
+		{ 37, "AK"},
+		{ 38, "AL"},
+		{ 39, "AM"},
+		{ 40, "AN"},
+		{ 41, "AO"},
+		{ 42, "AP"},
+		{ 43, "AQ"},
+		{ 44, "AR"},
+		{ 45, "AS"},
+		{ 46, "AT"},
+		{ 47, "AU"},
+		{ 48, "AV"},
+		{ 49, "AW"},
+		{ 50, "AX"},
+		{ 51, "AY"},
+		{ 52, "AZ"},
+		
+		{ 53, "BA"},
+		{ 54, "BB"},
+		{ 55, "BC"},
+		{ 56, "BD"},
+		{ 57, "BE"},
+		{ 58, "BF"},
+		{ 59, "BG"},
+		{ 60, "BH"},
+		{ 61, "BI"},
+		{ 62, "BJ"},
+		{ 63, "BK"},
+		{ 64, "BL"},
+		{ 65, "BM"},
+		{ 66, "BN"},
+		{ 67, "BO"},
+		{ 68, "BP"},
+		{ 69, "BQ"},
+		{ 70, "BR"},
+		{ 71, "BS"},
+		{ 72, "BT"},
+		{ 73, "BU"},
+		{ 74, "BV"},
+		{ 75, "BW"},
+		{ 76, "BX"},
+		{ 77, "BY"},
+		{ 78, "BZ"},
 	};
 
 	static bool GenerateHeader(int nCol, char szIndex[], int len)
@@ -51,57 +110,18 @@ namespace Atlas
 		
 		char c[4]; 
 		memset((void*)c, 0, 4);
-		bool bAddA = false;
 
-		if(nCol > 26)
+		for(int i=0; i<sizeof(g_excelMap)/sizeof(g_excelMap[0]); ++i)
 		{
-			sprintf_s(c, 4, "A");
-			strcat_s(szIndex, len, c);
-			bAddA = true;
-		}
-
-		if(nCol%26)
-		{
-			sprintf_s(c, 4, "%c", g_excelMap[nCol%26- 1]);
-			if(bAddA)
+			if(nCol==g_excelMap[i].i)
 			{
-				strcat_s(szIndex+1, len-1, c);
-			}
-			else
-			{
-				strcat_s(szIndex, len, c);
+				memcpy(c, g_excelMap[i].szHead, strlen(g_excelMap[i].szHead));
+				break;
 			}
 		}
-		else
-		{
-			sprintf_s(c, 4, "Z");
-			strcat_s(szIndex, len, c);
-		}
 
-		//do
-		//{
-		//	memset((void*)c, 0, 4);
-		//	if(nCol%26)
-		//	{
-		//		sprintf_s(c, 4, "%c", g_excelMap[nCol%26- 1]);
-		//	}
-		//	else
-		//	{
-		//		if(nCol / 26 == 1) 
-		//		{
-		//			sprintf_s(c, 4, "Z");
-		//		}
-		//		else
-		//		{
-		//			sprintf_s(c, 4, "A");
-		//		}
-		//	}
-		//	
-		//	strcat_s(szIndex, len, c);
-		//	nCol /= 26;
-		//}
-		//while(nCol);
-
+		strcat_s(szIndex, len, c);
+		
 		return true;
 	}
 
@@ -159,10 +179,10 @@ namespace Atlas
 
 	bool CContentExcelImportManager::IsExistSheet(const char* szSheetName)
 	{
-		std::vector<wxString> vSheets;
+		Atlas::Vector<wxString> vSheets;
 		if(!GetSheets(vSheets)) return false;
 
-		for(std::vector<wxString>::iterator it = vSheets.begin(); it != vSheets.end(); ++it)
+		for(Atlas::Vector<wxString>::iterator it = vSheets.begin(); it != vSheets.end(); ++it)
 		{
 			wxString strSheetName = wxString::FromUTF8(szSheetName);
 			if(*it == strSheetName)
@@ -174,7 +194,7 @@ namespace Atlas
 		return false;
 	}
 
-	bool CContentExcelImportManager::GetSheets(std::vector<wxString>& vSheets)
+	bool CContentExcelImportManager::GetSheets(Atlas::Vector<wxString>& vSheets)
 	{
 		m_pExcelWrapper->SetFilePath(m_strPath.c_str());
 		m_pExcelWrapper->OpenExcelBook(false);
@@ -188,12 +208,12 @@ namespace Atlas
 		m_FieldMaps.clear();
 	}
 		
-	void CContentExcelImportManager::SetFieldMap(const char* field, const std::map<std::string, std::string>& fmap)
+	void CContentExcelImportManager::SetFieldMap(const char* field, const Atlas::Map<Atlas::String, Atlas::String>& fmap)
 	{
 		m_FieldMaps[field] = fmap;
 	}
 
-	bool CContentExcelImportManager::PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const std::vector<std::string>& keys)
+	bool CContentExcelImportManager::PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const Atlas::Vector<Atlas::String>& keys)
 	{
 		//check keys whether all in struct_info
 		for(size_t j = 0; j < keys.size(); ++j)
@@ -210,19 +230,11 @@ namespace Atlas
 		m_pStructInfo = pInfo;
 		m_Keys = keys;
 
-		std::vector<A_UUID> list;
-		if(!ContentObject::GetList(pInfo, list, true))
-		{
-			m_Err = StringFormat("Get Object list failed");
-			return false;
-		}
-
 		//generate key map
-		const A_CONTENT_OBJECT* pObject = NULL;
-		std::string strKey;
-		for(size_t i = 0; i < list.size(); ++i)
+		const A_CONTENT_OBJECT* pObject = Atlas::ContentObject::FindFirst(pInfo, true);
+		Atlas::String strKey;
+		while(pObject)
 		{
-			pObject = ContentObject::Query(list[i]);
 			strKey.clear();
 			if(!GetObjectUnqiueID(pObject, strKey))
 			{
@@ -230,20 +242,22 @@ namespace Atlas
 				return false;
 			}
 
-			m_ObjectMap[strKey] = list[i];
+			m_ObjectMap[strKey] = pObject->uuid;
+
+			pObject = Atlas::ContentObject::FindNext(pInfo, true, pObject);
 		}
 
 		return true;
 	}
 	
 
-	bool CContentExcelImportManager::ProcessSheet(const std::string& name, int nStartLine)
+	bool CContentExcelImportManager::ProcessSheet(const Atlas::String& name, int nStartLine)
 	{
-		std::map<std::string, std::string> fmap;
+		Atlas::Map<Atlas::String, Atlas::String> fmap;
 		return ProcessSheet(name, fmap);
 	}
 	
-	bool CContentExcelImportManager::ProcessSheet(const std::string& name, const std::map<std::string, std::string>& fmap, int nStartLine)
+	bool CContentExcelImportManager::ProcessSheet(const Atlas::String& name, const Atlas::Map<Atlas::String, Atlas::String>& fmap, int nStartLine)
 	{
 		m_pExcelWrapper->SetFilePath(m_strPath);
 		m_pExcelWrapper->OpenExcelBook(false);
@@ -263,7 +277,7 @@ namespace Atlas
 			return false;
 		}
 
-		std::map<std::string, std::string> columnMap; // <header, column_name>
+		Atlas::Map<Atlas::String, Atlas::String> columnMap; // <header, column_name>
 		int nRow = nStartLine;//row line  
 		int nCol = 1;
 		wxString strRange;
@@ -293,7 +307,7 @@ namespace Atlas
 
 			//remove no need column
 			bool bNeed = false;
-			for(std::map<std::string, std::string>::const_iterator it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
+			for(Atlas::Map<Atlas::String, Atlas::String>::const_iterator it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 			{
 				if(it_find->second == strValue.ToUTF8().data())
 				{
@@ -311,10 +325,10 @@ namespace Atlas
 		//lack of some column
 		if(fmap.size() != columnMap.size())
 		{
-			std::string strLoseInfo;
-			for(std::map<std::string, std::string>::const_iterator it = fmap.begin(); it != fmap.end(); ++it)
+			Atlas::String strLoseInfo;
+			for(Atlas::Map<Atlas::String, Atlas::String>::const_iterator it = fmap.begin(); it != fmap.end(); ++it)
 			{
-				std::map<std::string, std::string>::iterator it_colmap;
+				Atlas::Map<Atlas::String, Atlas::String>::iterator it_colmap;
 				for(it_colmap = columnMap.begin(); it_colmap != columnMap.end(); ++it_colmap)
 				{
 					if(it->second == it_colmap->second)
@@ -337,14 +351,14 @@ namespace Atlas
 			return false;
 		}
 
-		std::map<std::string, std::string>::iterator it_col;
+		Atlas::Map<Atlas::String, Atlas::String>::iterator it_col;
 		//whether all keys exist in excel
 		for(size_t i = 0; i < m_Keys.size(); ++i)
 		{
 			for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
 			{
 				bool bFind = false;
-				for(std::map<std::string, std::string>::const_iterator it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
+				for(Atlas::Map<Atlas::String, Atlas::String>::const_iterator it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 				{
 					if(it_col->second == it_find->second)
 					{
@@ -372,7 +386,7 @@ namespace Atlas
 		{
 			DDLReflect::FIELD_INFO finfo;
 			const void* fdata;
-			std::map<std::string, std::string>::const_iterator it_find;
+			Atlas::Map<Atlas::String, Atlas::String>::const_iterator it_find;
 			for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 			{
 				if(it_col->second == it_find->second)
@@ -411,14 +425,14 @@ namespace Atlas
 					continue;
 				}
 	
-				std::string fieldvalue = (const char*)strValue.ToUTF8();	
+				Atlas::String fieldvalue = (const char*)strValue.ToUTF8();	
 				//for float append zero at head
 				if(fieldvalue.find(".") == 0)
 				{
 					fieldvalue = "0" + fieldvalue;
 				}
 
-				std::map<std::string, std::string>::const_iterator it_find;
+				Atlas::Map<Atlas::String, Atlas::String>::const_iterator it_find;
 				for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 				{
 					if(it_find->second == it_col->second)
@@ -429,10 +443,10 @@ namespace Atlas
 				
 				if(it_find != fmap.end())
 				{
-					std::string fieldname = Atlas::StringFormat("%s.%s", m_pStructInfo->name, it_find->second.c_str());
+					Atlas::String fieldname = Atlas::StringFormat("%s.%s", m_pStructInfo->name, it_find->second.c_str());
 					if(m_FieldMaps.find(fieldname)!=m_FieldMaps.end())
 					{
-						std::map<std::string, std::string>& ffmap = m_FieldMaps[fieldname];
+						Atlas::Map<Atlas::String, Atlas::String>& ffmap = m_FieldMaps[fieldname];
 						if(ffmap.find(fieldvalue)==ffmap.end())
 						{
 							m_Err = StringFormat("Invalidate enum field \n struct %s Column %s ", m_pStructInfo->name, it_col->second.c_str());
@@ -485,7 +499,7 @@ namespace Atlas
 	bool CContentExcelImportManager::UpdateCacheData(const A_CONTENT_OBJECT* pTmpObject)
 	{
 		bool bRet = false;
-		std::string strKey;
+		Atlas::String strKey;
 		if(!GetObjectUnqiueID(pTmpObject, strKey))
 		{
 			return false;
@@ -493,7 +507,7 @@ namespace Atlas
 
 		A_UUID uuid;
 		A_CONTENT_OBJECT* pObject = NULL;
-		std::map<std::string, A_UUID>::iterator it_obj = m_ObjectMap.find(strKey);
+		Atlas::Map<Atlas::String, A_UUID>::iterator it_obj = m_ObjectMap.find(strKey);
 		if(it_obj == m_ObjectMap.end()) //insert
 		{
 			pObject = ContentObject::Create(m_pStructInfo, uuid);
@@ -504,7 +518,7 @@ namespace Atlas
 		else
 		{
 			uuid = it_obj->second;
-			pObject = (A_CONTENT_OBJECT*)ContentObject::Query(uuid);
+			pObject = (A_CONTENT_OBJECT*)ContentObject::QueryByUUID(uuid);
 			m_nUpdateRowNum++;
 		}
 
@@ -514,9 +528,9 @@ namespace Atlas
 		return true;
 	}
 
-	bool CContentExcelImportManager::GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, std::string& id)
+	bool CContentExcelImportManager::GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, Atlas::String& id)
 	{
-		std::string strTmp;
+		Atlas::String strTmp;
 		for(size_t i = 0; i < m_Keys.size(); ++i)
 		{
 			if(!DDLReflect::StructParamToString(m_pStructInfo, m_Keys[i].c_str(), pObejct, strTmp)) 

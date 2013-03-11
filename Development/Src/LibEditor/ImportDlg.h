@@ -20,10 +20,10 @@ protected:
 	bool ProcessImport();
 
 protected:
-	bool GetSelectSheets(std::vector<std::string>& vSheets);
-	bool GetKeyCols(std::vector<std::string>& vec);
+	bool GetSelectSheets(Atlas::Vector<Atlas::String>& vSheets);
+	bool GetKeyCols(Atlas::Vector<Atlas::String>& vec);
 	void OnSelectAll(wxCommandEvent& event);
-	bool CheckKeyCols(std::vector<std::string>& vec);
+	bool CheckKeyCols(Atlas::Vector<Atlas::String>& vec);
 
 protected:
 	wxComboBox* m_cbType;

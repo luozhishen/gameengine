@@ -20,7 +20,7 @@ namespace Atlas
 
 	CServerBase::~CServerBase()
 	{
-		std::list<CServerComponent*>::iterator i;
+		Atlas::List<CServerComponent*>::iterator i;
 		for(i=m_ComponentList.begin(); i!=m_ComponentList.end(); i++)
 		{
 			delete *i;
@@ -30,7 +30,7 @@ namespace Atlas
 
 	bool CServerBase::Start()
 	{
-		std::list<CServerComponent*>::iterator i;
+		Atlas::List<CServerComponent*>::iterator i;
 		for(i=m_ComponentList.begin(); i!=m_ComponentList.end(); i++)
 		{
 			(*i)->InitComponent();

@@ -22,10 +22,10 @@
     <ClCompile Include="AsyncRPC.cpp" />
     <ClCompile Include="AsyncSockIO_Unix.cpp" />
     <ClCompile Include="AsyncSockIO_Win32.cpp" />
-    <ClCompile Include="AtlasAtomic.cpp" />
     <ClCompile Include="AtlasBase.cpp" />
     <ClCompile Include="AtlasLog.cpp" />
     <ClCompile Include="AtlasSocket.cpp" />
+    <ClCompile Include="AtlasSTL.cpp" />
     <ClCompile Include="AtlasUUID.cpp" />
     <ClCompile Include="AtlasUtils.cpp" />
     <ClCompile Include="DDLReflect.cpp" />
@@ -39,24 +39,22 @@
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ClCompile Include="MemPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncRPC.h" />
     <ClInclude Include="AsyncRPCImpl.h" />
     <ClInclude Include="AsyncSockIO.h" />
-    <ClInclude Include="AtlasAtomic.h" />
     <ClInclude Include="AtlasBase.h" />
     <ClInclude Include="AtlasDefines.h" />
     <ClInclude Include="AtlasLog.h" />
     <ClInclude Include="AtlasSocket.h" />
+    <ClInclude Include="AtlasSTL.h" />
     <ClInclude Include="AtlasUUID.h" />
     <ClInclude Include="AtlasUtils.h" />
     <ClInclude Include="DDL.h" />
     <ClInclude Include="DDLProxy.h" />
     <ClInclude Include="DDLReflect.h" />
     <ClInclude Include="DDLStub.h" />
-    <ClInclude Include="MemPool.h" />
     <ClInclude Include="sigslot.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

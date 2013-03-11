@@ -43,9 +43,9 @@ namespace Atlas
 		return bRet;
 	}
 
-	const std::string CStressCase::GetInfo()
+	const Atlas::String CStressCase::GetInfo()
 	{
-		std::string info;
+		Atlas::String info;
 		A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
 		_GetInfo(info);
 		A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);

@@ -61,9 +61,9 @@ void CClientCaseView::Flush(bool full)
 	{
 		m_pListCtrl->DeleteAllItems();
 
-		std::set<Atlas::CStressCase*> cases;
+		Atlas::Set<Atlas::CStressCase*> cases;
 		m_pCurrentClient->GetStressCases(cases);
-		std::set<Atlas::CStressCase*>::iterator i;
+		Atlas::Set<Atlas::CStressCase*>::iterator i;
 		for(i=cases.begin(); i!=cases.end(); i++)
 		{
 			int n = m_pListCtrl->InsertItem(m_pListCtrl->GetItemCount(), wxString::FromUTF8((*i)->GetName().c_str()));

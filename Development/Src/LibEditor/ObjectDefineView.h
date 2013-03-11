@@ -9,7 +9,7 @@ public:
 	CObjectDefineView(wxWindow* pParent);
 	virtual ~CObjectDefineView();
 
-	void Add(const DDLReflect::STRUCT_INFO* root, std::map<int, const DDLReflect::STRUCT_INFO*>& list);
+	void Add(const DDLReflect::STRUCT_INFO* root, Atlas::Map<int, const DDLReflect::STRUCT_INFO*>& list);
 
 	void OnObjectActived(wxTreeEvent& event);
 
@@ -20,7 +20,7 @@ protected:
 	void ShowObject(const DDLReflect::STRUCT_INFO* info);
 
 private:
-	std::map<std::string, wxTreeItemId> m_mapItems;
+	Atlas::Map<Atlas::String, wxTreeItemId> m_mapItems;
 
 	wxTextCtrl* m_pSearchText;
 	wxTreeCtrl* m_pTree;

@@ -1,9 +1,7 @@
 #ifndef __DDL_REFLECT_INCLUDE__
 #define __DDL_REFLECT_INCLUDE__
 
-#include <string>
 #include <json/jsoncpp.h>
-#include "DDL.h"
 
 namespace DDLReflect
 {
@@ -96,23 +94,23 @@ namespace DDLReflect
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Json::Value& json);
 	bool Json2Call(const FUNCTION_INFO* def, const Json::Value& json, _U32& len, _U8* data);
 
-	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, std::string& json);
-	bool Json2Call(const FUNCTION_INFO* def, const std::string& json, _U32& len, _U8* data);
+	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Atlas::String& json);
+	bool Json2Call(const FUNCTION_INFO* def, const Atlas::String& json, _U32& len, _U8* data);
 
 	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Json::Value& Value);
 	bool Json2Struct(const STRUCT_INFO* def, const Json::Value& Value, _U8* data);
 
-	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, std::string& json);
-	bool Json2Struct(const STRUCT_INFO* def, const std::string& json, _U8* data);
+	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Atlas::String& json);
+	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data);
 
 	template<typename T>
-	inline bool Struct2Json(const T& data, std::string& json)
+	inline bool Struct2Json(const T& data, Atlas::String& json)
 	{
 		return Struct2Json(GetStruct<T>(), (const _U8*)&data, json);
 	}
 
 	template<typename T>
-	inline bool Json2Struct(const std::string& json, T& data)
+	inline bool Json2Struct(const Atlas::String& json, T& data)
 	{
 		return Json2Struct(GetStruct<T>(), json, (_U8*)&data);
 	}
@@ -123,14 +121,14 @@ namespace DDLReflect
 	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo, void*& fdata);
 	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, const void* data, FIELD_INFO& finfo, const void*& fdata);
 
-	bool StructParamToString(const FIELD_INFO* finfo, const void* data, std::string& str);
+	bool StructParamToString(const FIELD_INFO* finfo, const void* data, Atlas::String& str);
 	bool StructParamFromString(const FIELD_INFO* finfo, void* data, const char* str);
-	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, std::string& str);
+	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Atlas::String& str);
 	bool StructParamFromString(const STRUCT_INFO* info, const char* name, void* data, const char* str);
 
-	bool StructParamType(const FIELD_INFO* finfo, std::string& type);
-	bool StructParamType(const STRUCT_INFO* info, _U16 index, std::string& type);
-	bool StructParamType(const STRUCT_INFO* info, const char* name, std::string& type);
+	bool StructParamType(const FIELD_INFO* finfo, Atlas::String& type);
+	bool StructParamType(const STRUCT_INFO* info, _U16 index, Atlas::String& type);
+	bool StructParamType(const STRUCT_INFO* info, const char* name, Atlas::String& type);
 
 	void* CreateObject(const STRUCT_INFO* info);
 	void DestoryObject(void* data);

@@ -54,46 +54,34 @@ CRefSelDlg::~CRefSelDlg()
 
 void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 {
-	std::vector<const DDLReflect::STRUCT_INFO*> list;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
 	Atlas::ContentObject::GetTypeList(list);
-	std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
-	const DDLReflect::STRUCT_INFO* p = NULL;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	const DDLReflect::STRUCT_INFO* info = NULL;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
-		p = *i;
-		while(p)
+		info = *i;
+		while(info)
 		{
-			if(wxRefType==wxString::FromUTF8(p->name))
+			if(wxRefType==wxString::FromUTF8(info->name))
 			{
 				break;
 			}
 
-			p = p->parent;
+			info = info->parent;
 		}
 
-		if(p && wxRefType.c_str()==wxString::FromUTF8(p->name))
+		if(info && wxRefType.c_str()==wxString::FromUTF8(info->name))
 		{
 			break;
 		}
 	}
 
-	if(p == NULL)
+	if(info == NULL) return;
+
+	const A_CONTENT_OBJECT* object = Atlas::ContentObject::FindFirst(info, true);
+	while(object)
 	{
-		return;
-	}
-
-	const DDLReflect::STRUCT_INFO* info = p;
-	std::vector<A_UUID> uuid_list;
-	Atlas::ContentObject::GetList(info, uuid_list, true);
-
-	std::vector<A_UUID>::iterator i_uid;
-	long idx = 0;
-	for(i_uid=uuid_list.begin(); i_uid!=uuid_list.end(); i_uid++)
-	{
-		const A_CONTENT_OBJECT* object = Atlas::ContentObject::Query(*i_uid);
-		const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetType(*i_uid);
-		if(!object || !info) continue;
-
 		wxString strNameValue(object->name._Value, wxMBConvUTF8());
 		if(!strInput.empty() && strNameValue.find(strInput) == wxNOT_FOUND)
 		{
@@ -107,8 +95,9 @@ void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 		m_pUUIDList->SetItem(item_id, 1, wxString::FromUTF8(szUUID));
 
 		wxUIntPtr itemData = (wxUIntPtr)(&(object->uuid));
-		m_pUUIDList->SetItemPtrData(idx, itemData);
-		++idx;
+		m_pUUIDList->SetItemPtrData(item_id, itemData);
+
+		object = Atlas::ContentObject::FindNext(info, true, object);
 	}
 }
 

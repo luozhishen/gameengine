@@ -3,9 +3,10 @@
 #pragma warning(disable:4100)
 #pragma warning(disable:4996)
 
-#include <map>
-#include <string>
+#include <AtlasSTL.h>
 #include "mosdk.h"
+
+#pragma warning(disable:4121)
 #include <windows.h>
 #include <shlobj.h>
 

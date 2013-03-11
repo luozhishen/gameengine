@@ -21,7 +21,7 @@ namespace Atlas
 
 	CStressManager::~CStressManager()
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		for(i=m_mapCases.begin(); i!=m_mapCases.end(); i++)
 		{
 			delete i->second;
@@ -46,7 +46,7 @@ namespace Atlas
 
 	void CStressManager::DisconnectAll()
 	{	
-		std::map<_U32, CStressClient*>::iterator i;
+		Atlas::Map<_U32, CStressClient*>::iterator i;
 		_U32 count = 1;
 		while(count>0)
 		{
@@ -91,7 +91,7 @@ namespace Atlas
 	CStressClient* CStressManager::GetClient(_U32 id)
 	{
 		CStressClient* pClient;
-		std::map<_U32, CStressClient*>::iterator i;
+		Atlas::Map<_U32, CStressClient*>::iterator i;
 		A_MUTEX_LOCK(&m_mtxLocker);
 		i = m_mapClients.find(id);
 		pClient = (i==m_mapClients.end()?NULL:i->second);
@@ -99,10 +99,10 @@ namespace Atlas
 		return pClient;
 	}
 
-	void CStressManager::GetClients(std::vector<_U32>& clients)
+	void CStressManager::GetClients(Atlas::Vector<_U32>& clients)
 	{
 		clients.clear();
-		std::map<_U32, CStressClient*>::iterator i;
+		Atlas::Map<_U32, CStressClient*>::iterator i;
 		A_MUTEX_LOCK(&m_mtxLocker);
 		for(i=m_mapClients.begin(); i!=m_mapClients.end(); i++)
 		{
@@ -115,7 +115,7 @@ namespace Atlas
 	{
 		A_MUTEX_LOCK(&m_mtxLocker);
 		
-		std::map<_U32, CStressClient*>::iterator it = m_mapClients.begin();
+		Atlas::Map<_U32, CStressClient*>::iterator it = m_mapClients.begin();
 		while(it != m_mapClients.end())
 		{
 			it->second->Tick();
@@ -130,9 +130,9 @@ namespace Atlas
 		m_mapCases[pCase->GetName()] = pCase;
 	}
 
-	void CStressManager::GetCases(std::vector<std::string>& cases)
+	void CStressManager::GetCases(Atlas::Vector<Atlas::String>& cases)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		cases.clear();
 		for(i=m_mapCases.begin(); i!=m_mapCases.end(); i++)
 		{
@@ -142,7 +142,7 @@ namespace Atlas
 
 	CStressCase* CStressManager::CreateCase(const char* name)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return NULL;
 		return i->second->Create();
@@ -150,7 +150,7 @@ namespace Atlas
 
 	const DDLReflect::STRUCT_INFO* CStressManager::GetCaseConfigType(const char* name)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return NULL;
 		return i->second->GetConfigType();
@@ -158,7 +158,7 @@ namespace Atlas
 
 	bool CStressManager::GetCaseConfigDefault(const char* name, void* data, _U32 size)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return NULL;
 		return i->second->GetConfig(data, size);

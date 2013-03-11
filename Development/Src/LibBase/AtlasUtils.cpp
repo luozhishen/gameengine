@@ -11,21 +11,21 @@
 namespace Atlas
 {
 
-	void StringSplit(const std::string& value, char splitchar, std::vector<std::string>& result)
+	void StringSplit(const Atlas::String& value, char splitchar, Atlas::Vector<Atlas::String>& result)
 	{
 		result.clear();
-		std::stringstream sstr(value);
-		std::string tmp;
+		Atlas::StringStream sstr(value);
+		Atlas::String tmp;
 	    while(std::getline(sstr, tmp, splitchar))
 		{
 			result.push_back(tmp);
 		}
 	}
 
-	std::string StringFormat(const char* fmt, ...)
+	Atlas::String StringFormat(const char* fmt, ...)
 	{
 		size_t size=10;
-		std::string str;
+		Atlas::String str;
 		va_list ap;
 		for(;;)
 		{

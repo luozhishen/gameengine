@@ -27,7 +27,6 @@
     <ClInclude Include="ImportDlg.h" />
     <ClInclude Include="ObjectDefineView.h" />
     <ClInclude Include="OLEAutoExcelWrapper.h" />
-    <ClInclude Include="UtilString.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EditorApp.cpp" />
@@ -38,7 +37,6 @@
     <ClCompile Include="ImportDlg.cpp" />
     <ClCompile Include="ObjectDefineView.cpp" />
     <ClCompile Include="OLEAutoExcelWrapper.cpp" />
-    <ClCompile Include="UtilString.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{48206A30-7D48-4AB8-B647-413A4EE27AFA}</ProjectGuid>

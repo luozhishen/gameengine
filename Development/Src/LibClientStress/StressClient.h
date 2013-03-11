@@ -22,8 +22,8 @@ namespace Atlas
 
 		_U32 GetIndex() { return m_nIndex; }
 		CClient* GetClient() { return m_pClient; }
-		const std::string GetTitle();
-		const std::string GetInfo();
+		const Atlas::String GetTitle();
+		const Atlas::String GetInfo();
 
 		void SetTitle(const char* title);
 		void SetInfo(const char* info);
@@ -41,7 +41,7 @@ namespace Atlas
 
 		bool IsExistCase(const char* name);
 		CStressCase* GetStressCase(const char* name);
-		void GetStressCases(std::set<CStressCase*>& cases);
+		void GetStressCases(Atlas::Set<CStressCase*>& cases);
 		CStressCase* NewStressCase(const char* name);
 
 		sigslot::signal1<_U32>									_OnLoginDone;
@@ -57,9 +57,9 @@ namespace Atlas
 	private:
 		_U32 m_nIndex;
 		CClient* m_pClient;
-		std::string m_Title;
-		std::string m_Info;
-		std::map<std::string, CStressCase*> m_Cases;
+		Atlas::String m_Title;
+		Atlas::String m_Info;
+		Atlas::Map<Atlas::String, CStressCase*> m_Cases;
 		HANDLE m_hTimer;
 	};
 

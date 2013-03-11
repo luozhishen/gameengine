@@ -61,7 +61,7 @@ struct { char* name; char* rtype; } basetypes[] = {
 
 const char* get_ctype(const DDL_ARG* arg, int is_class)
 {
-	static char ret[100];
+	static char ret[400];
 
 	if(strcmp(arg->type, "string")==0) {
 		if(is_class) {
@@ -160,13 +160,13 @@ void get_arg_structinfo(const DDL_ARG* arg, char* sinfo)
 
 int ddlgen_code_open(const char* filename)
 {
-	char sz[200];
+	char sz[400];
 	char* p1;
 	char* p2;
 	int i;
 
-	char fhpp[300];
-	char fcpp[300];
+	char fhpp[400];
+	char fcpp[400];
 	sprintf(fhpp, "%s.h",   filename);
 	sprintf(fcpp, "%s.cpp", filename);
 	_H = fopen(fhpp, "wt");
@@ -215,6 +215,7 @@ int ddlgen_code_open(const char* filename)
 	OutH(0, "#define __%s_DDL_CODEGEN__\n", p1);
 	OutH(0, "\n");
 	OutH(0, "#include <AtlasDefines.h>\n");
+	OutH(0, "#include <AtlasSTL.h>\n");
 	OutH(0, "#include <AtlasUUID.h>\n");
 	OutH(0, "#include <DDL.h>\n");
 	OutH(0, "#include <DDLProxy.h>\n");
@@ -240,7 +241,7 @@ void ddlgen_code_close()
 
 int ddlgen_code_include(const char* filename)
 {
-	char fn[200];
+	char fn[400];
 	char* p;
 	strcpy(fn, filename);
 	p = strrchr(fn, '.');
@@ -455,7 +456,7 @@ int ddlgen_code_task_class_client(const DDL_CLS* cls, const DDL_TASK* task)
 int ddlgen_code_task_class_reflect(const DDL_CLS* cls, const DDL_TASK* task)
 {
 	unsigned int a, f;
-	int fidx[300];
+	int fidx[400];
 
 	OutH(0, "namespace DDLReflect\n");
 	OutH(0, "{\n");
@@ -474,8 +475,8 @@ int ddlgen_code_task_class_reflect(const DDL_CLS* cls, const DDL_TASK* task)
 	OutC(0, "		// %d %s\n", f, cls->funs[f].name);
 	for(a=0; a<cls->funs[f].args_count; a++)
 	{
-		char type[100];
-		char sinfo[100];
+		char type[400];
+		char sinfo[400];
 		get_arg_reflecttype(&cls->funs[f].args[a], type);
 		get_arg_structinfo(&cls->funs[f].args[a], sinfo);
 		OutC(1, "	{%s, \"%s\", 0, 0, %s, (_U16)%s,(_U16) %s, 0, 0, NULL},\n", type, cls->funs[f].args[a].name, sinfo,
@@ -595,7 +596,7 @@ int ddlgen_code_task_struct_serialize(const DDL_STR* str, const DDL_TASK* task)
 int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 {
 	unsigned int a;
-	char ss[100] = "NULL";
+	char ss[400] = "NULL";
 
 	if(str->parent[0]) sprintf(ss, "&_rfl_struct_%s_info", str->parent);
 
@@ -613,12 +614,12 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 		OutC(1, "static FIELD_INFO _struct_%s_fieldinfo[] =\n", str->name);
 		OutC(1, "{\n");
 		for(a=0; a<str->args_count; a++) {
-			char type[100];
-			char sinfo[100];
-			char prefix[100];
-			char elen[100];
-			char ref_type[100];
-			char ref_flags[300] = "0";
+			char type[400];
+			char sinfo[400];
+			char prefix[400];
+			char elen[400];
+			char ref_type[400];
+			char ref_flags[400] = "0";
 			if(str->args[a].count[0]) {
 				if(strcmp(str->args[a].type, "content_ref")==0) {
 				sprintf(prefix, "((size_t)(&((DDL::Array<A_UUID, %s>*)NULL)->_Array))", str->args[a].count);
@@ -655,7 +656,7 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 			{
 				strcat(ref_flags, "|FLAG_NOTNULL");
 			}
-			OutC(2, "{%s, \"%s\", %s, ATLAS_OFFSETOF(%s, %s), %s, (_U16)%s, (_U16)%s, (_U16)%s, (_U16)%s, %s},\n", type, str->args[a].name, ref_flags, str->name, str->args[a].name, sinfo,
+			OutC(2, "{%s, \"%s\", %s, (_U16)ATLAS_OFFSETOF(%s, %s), %s, (_U16)%s, (_U16)%s, (_U16)%s, (_U16)%s, %s},\n", type, str->args[a].name, ref_flags, str->name, str->args[a].name, sinfo,
 				strcmp(str->args[a].type, "string")!=0?"-1":str->args[a].size,
 				str->args[a].count[0]=='\0'?"-1":str->args[a].count,
 				prefix, elen, ref_type

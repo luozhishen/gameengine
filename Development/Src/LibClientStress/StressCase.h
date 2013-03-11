@@ -18,12 +18,12 @@ namespace Atlas
 
 		CClient* GetClient();
 		CStressClient* GetStressClient() { return m_pClient; }
-		const std::string& GetName() { return m_strName; }
+		const Atlas::String& GetName() { return m_strName; }
 
 		virtual const DDLReflect::STRUCT_INFO* GetConfigType() { return NULL; }
 		bool GetConfig(void* pConfig, _U32 size);
 		bool SetConfig(const void* pConfig, _U32 size);
-		const std::string GetInfo();
+		const Atlas::String GetInfo();
 
 		virtual void OnAttach()	{}
 		virtual void OnTick()	{}
@@ -35,10 +35,10 @@ namespace Atlas
 		void Detach(CStressClient* pClient);
 		virtual bool _GetConfig(void* pConfig, _U32 size) { return false; }
 		virtual bool _SetConfig(const void* pConfig, _U32 size) { return false; }
-		virtual void _GetInfo(std::string& info) { }
+		virtual void _GetInfo(Atlas::String& info) { }
 
 	private:
-		std::string m_strName;
+		Atlas::String m_strName;
 		CStressClient* m_pClient;
 	};
 

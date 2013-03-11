@@ -38,12 +38,12 @@ namespace Atlas
 		void DoDisconnect();
 
 	private:
-		std::string m_BaseUrl;
+		Atlas::String m_BaseUrl;
 		MOREQUEST* m_pLoginRequest;
 		MOREQUEST* m_pNotifyRequest;
 		MOREQUEST* m_pCurrentRequest;
-		std::string m_SessionKey;
-		std::list<std::string> m_SendQueue;
+		Atlas::String m_SessionKey;
+		Atlas::List<Atlas::String> m_SendQueue;
 		STATE m_nHttpState;
 		STATE_CALLBACK m_StateCallback;
 	};

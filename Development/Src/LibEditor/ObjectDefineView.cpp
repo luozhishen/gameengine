@@ -59,14 +59,14 @@ CObjectDefineView::~CObjectDefineView()
 {
 }
 
-void CObjectDefineView::Add(const DDLReflect::STRUCT_INFO* root, std::map<int, const DDLReflect::STRUCT_INFO*>& list)
+void CObjectDefineView::Add(const DDLReflect::STRUCT_INFO* root, Atlas::Map<int, const DDLReflect::STRUCT_INFO*>& list)
 {
 	wxString title;
 	GetObjectTitle(root, title);
 	wxTreeItemId tid = m_pTree->AppendItem(m_TreeRoot, title, -1, -1, ATLAS_NEW CObjectData(GetObjectId(root->name), root));
 	m_mapItems[root->name] = tid;
 
-	std::map<int, const DDLReflect::STRUCT_INFO*>::iterator i;
+	Atlas::Map<int, const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		AddObject(i->second);
@@ -110,7 +110,7 @@ void CObjectDefineView::AddObject(const DDLReflect::STRUCT_INFO* info)
 		AddObject(info->parent);
 	}
 
-	std::map<std::string, wxTreeItemId>::iterator i;
+	Atlas::Map<Atlas::String, wxTreeItemId>::iterator i;
 	i = m_mapItems.find(info->parent->name);
 	wxString title;
 	GetObjectTitle(info, title);
@@ -133,7 +133,7 @@ void CObjectDefineView::ShowObject(const DDLReflect::STRUCT_INFO* info)
 	
 	for(_U16 i=0; i<info->fcount; i++)
 	{
-		std::string type;
+		Atlas::String type;
 		DDLReflect::StructParamType(info, i, type);
 		s += wxT("\t");
 		s += wxString(type.c_str(), conv);

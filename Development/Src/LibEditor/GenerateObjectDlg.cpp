@@ -85,11 +85,11 @@ CGenerateObjectDlg::~CGenerateObjectDlg()
 
 void CGenerateObjectDlg::InitCombox()
 {
-	std::map<std::string, const DDLReflect::STRUCT_INFO*> mapTypes;
+	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*> mapTypes;
 
-	std::vector<const DDLReflect::STRUCT_INFO*> list;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
 	Atlas::ContentObject::GetTypeList(list);
-	std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		m_comboBoxType->Insert(wxString::FromUTF8((*i)->name), m_comboBoxType->GetCount());

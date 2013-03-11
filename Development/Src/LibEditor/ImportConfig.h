@@ -20,30 +20,30 @@ namespace Atlas
 		void Clear(bool bAll = false);
 
 		bool IsExistSheet(const char* szSheetName);
-		bool GetSheets(std::vector<wxString>& vSheets);
+		bool GetSheets(Atlas::Vector<wxString>& vSheets);
 
 		void ClearFieldMaps();
-		void SetFieldMap(const char* field, const std::map<std::string, std::string>& fmap);
+		void SetFieldMap(const char* field, const Atlas::Map<Atlas::String, Atlas::String>& fmap);
 
-		bool PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const std::vector<std::string>& keys);
-		bool ProcessSheet(const std::string& name, int nStartLine = 1);
-		bool ProcessSheet(const std::string& name, const std::map<std::string, std::string>& fmap, int nStartLine = 1);
+		bool PrepareProcess(const DDLReflect::STRUCT_INFO* pInfo, const Atlas::Vector<Atlas::String>& keys);
+		bool ProcessSheet(const Atlas::String& name, int nStartLine = 1);
+		bool ProcessSheet(const Atlas::String& name, const Atlas::Map<Atlas::String, Atlas::String>& fmap, int nStartLine = 1);
 		const char* GetErrorMsg();
 		const char* GetImportInfoMsg();
 
 	protected:
-		bool GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, std::string& id);
+		bool GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, Atlas::String& id);
 		bool UpdateCacheData(const A_CONTENT_OBJECT* pObject);//map<column_name, strValue>
 
 	private:
-		std::map<std::string, std::map<std::string, std::string>> m_FieldMaps;	//enum field map     map<table_name, map<field, value>>
+		Atlas::Map<Atlas::String, Atlas::Map<Atlas::String, Atlas::String>> m_FieldMaps;	//enum field map     map<table_name, map<field, value>>
 
 		const DDLReflect::STRUCT_INFO* m_pStructInfo;
-		std::vector<std::string> m_Keys;
-		std::map<std::string, A_UUID> m_ObjectMap;// map<keys, A_UUID> this map deal with loading data exist and data from excel
+		Atlas::Vector<Atlas::String> m_Keys;
+		Atlas::Map<Atlas::String, A_UUID> m_ObjectMap;// map<keys, A_UUID> this map deal with loading data exist and data from excel
 		COLEAutoExcelWrapper* m_pExcelWrapper;
 		wxString m_strPath;
-		std::string m_Err;
+		Atlas::String m_Err;
 		int m_nUpdateRowNum;
 		int m_nInsertRowNum;
 	};

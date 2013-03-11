@@ -57,9 +57,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SGDataImportConsole", "SGGa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibMoSDK", "LibMoSDK\LibMoSDK.vcxproj", "{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KnightGame", "KnightGame", "{A0F91F79-029E-4EF9-8202-685C4AEE9A95}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibKnightClient", "KnightGame\LibKnightClient\LibKnightClient.vcxproj", "{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KnightClientStress", "KnightGame\KnightClientStress\KnightClientStress.vcxproj", "{24A47AE5-3272-479C-9C6E-9AB78D4060AE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KnightDataImportConsole", "KnightGame\KnightDataImportConsole\KnightDataImportConsole.vcxproj", "{35971424-8E03-47B6-B23E-B036EE66D122}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibKnightCommon", "KnightGame\LibKnightCommon\LibKnightCommon.vcxproj", "{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KnightEditor", "KnightGame\KnightEditor\KnightEditor.vcxproj", "{3FC55A22-248F-4AE0-B584-0794544D1B24}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 20
+		SccNumberOfProjects = 25
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -139,6 +151,26 @@ Global
 		SccProjectTopLevelParentUniqueName19 = Atlas.sln
 		SccLocalPath19 = ..
 		SccProjectFilePathRelativizedFromConnection19 = Src\\LibMoSDK\\
+		SccProjectUniqueName20 = KnightGame\\LibKnightClient\\LibKnightClient.vcxproj
+		SccProjectTopLevelParentUniqueName20 = Atlas.sln
+		SccLocalPath20 = KnightGame
+		SccProjectFilePathRelativizedFromConnection20 = LibKnightClient\\
+		SccProjectUniqueName21 = KnightGame\\KnightClientStress\\KnightClientStress.vcxproj
+		SccProjectTopLevelParentUniqueName21 = Atlas.sln
+		SccLocalPath21 = KnightGame
+		SccProjectFilePathRelativizedFromConnection21 = KnightClientStress\\
+		SccProjectUniqueName22 = KnightGame\\KnightDataImportConsole\\KnightDataImportConsole.vcxproj
+		SccProjectTopLevelParentUniqueName22 = Atlas.sln
+		SccLocalPath22 = KnightGame
+		SccProjectFilePathRelativizedFromConnection22 = KnightDataImportConsole\\
+		SccProjectUniqueName23 = KnightGame\\LibKnightCommon\\LibKnightCommon.vcxproj
+		SccProjectTopLevelParentUniqueName23 = Atlas.sln
+		SccLocalPath23 = KnightGame
+		SccProjectFilePathRelativizedFromConnection23 = LibKnightCommon\\
+		SccProjectUniqueName24 = KnightGame\\KnightEditor\\KnightEditor.vcxproj
+		SccProjectTopLevelParentUniqueName24 = Atlas.sln
+		SccLocalPath24 = KnightGame
+		SccProjectFilePathRelativizedFromConnection24 = KnightEditor\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -283,6 +315,46 @@ Global
 		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Release|Win32.Build.0 = Release|Win32
 		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Release|x64.ActiveCfg = Release|x64
 		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E}.Release|x64.Build.0 = Release|x64
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Debug|Win32.Build.0 = Debug|Win32
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Debug|x64.ActiveCfg = Debug|x64
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Debug|x64.Build.0 = Debug|x64
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Release|Win32.ActiveCfg = Release|Win32
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Release|Win32.Build.0 = Release|Win32
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Release|x64.ActiveCfg = Release|x64
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC}.Release|x64.Build.0 = Release|x64
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Debug|Win32.Build.0 = Debug|Win32
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Debug|x64.ActiveCfg = Debug|x64
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Debug|x64.Build.0 = Debug|x64
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Release|Win32.ActiveCfg = Release|Win32
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Release|Win32.Build.0 = Release|Win32
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Release|x64.ActiveCfg = Release|x64
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE}.Release|x64.Build.0 = Release|x64
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Debug|Win32.ActiveCfg = Debug|Win32
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Debug|Win32.Build.0 = Debug|Win32
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Debug|x64.ActiveCfg = Debug|x64
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Debug|x64.Build.0 = Debug|x64
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Release|Win32.ActiveCfg = Release|Win32
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Release|Win32.Build.0 = Release|Win32
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Release|x64.ActiveCfg = Release|x64
+		{35971424-8E03-47B6-B23E-B036EE66D122}.Release|x64.Build.0 = Release|x64
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Debug|Win32.Build.0 = Debug|Win32
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Debug|x64.ActiveCfg = Debug|x64
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Debug|x64.Build.0 = Debug|x64
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Release|Win32.ActiveCfg = Release|Win32
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Release|Win32.Build.0 = Release|Win32
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Release|x64.ActiveCfg = Release|x64
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}.Release|x64.Build.0 = Release|x64
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Debug|Win32.Build.0 = Debug|Win32
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Debug|x64.ActiveCfg = Debug|x64
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Debug|x64.Build.0 = Debug|x64
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|Win32.ActiveCfg = Release|Win32
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|Win32.Build.0 = Release|Win32
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|x64.ActiveCfg = Release|x64
+		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -307,5 +379,10 @@ Global
 		{3717A396-6C94-48A7-BB05-88DED0064FE7} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
 		{D1022F99-EB34-4EAA-B6AB-04508C767864} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
 		{57C7F48E-B28A-4F04-B8D2-96488DA772DE} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
+		{325CBDF1-53A8-40A0-8BF5-BD810E5B54CC} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
+		{24A47AE5-3272-479C-9C6E-9AB78D4060AE} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
+		{35971424-8E03-47B6-B23E-B036EE66D122} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
+		{3FC55A22-248F-4AE0-B584-0794544D1B24} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
 	EndGlobalSection
 EndGlobal

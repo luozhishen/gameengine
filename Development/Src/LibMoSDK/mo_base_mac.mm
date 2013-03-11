@@ -1,9 +1,6 @@
 #ifndef _WIN32
 
-#include <string>
-#include <map>
-#include <stdlib.h>
-#include <string.h>
+#include <AtlasSTL.h>
 #include "mosdk.h"
 
 #include <sys/ioctl.h>

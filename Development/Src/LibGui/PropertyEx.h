@@ -106,7 +106,7 @@ public:
 	virtual bool ModifyValue(const wxVariant& value);
 
 	DDLReflect::FIELD_INFO m_static_finfo;
-	std::vector<wxPGProperty*> m_items;
+	Atlas::Vector<wxPGProperty*> m_items;
 };
 
 #endif //_PROPERTY_EX_H__

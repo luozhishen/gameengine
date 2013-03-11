@@ -1,9 +1,4 @@
-#include "AtlasDefines.h"
-#include "AtlasUUID.h"
-#include "DDL.h"
-#include "DDLReflect.h"
 #include "AtlasBase.h"
-#include <json/jsoncpp.h>
 
 namespace DDL
 {
@@ -46,7 +41,7 @@ namespace DDLReflect
 		return call_jsonwrite(buf, def->finfos, def->fcount, json);
 	}
 
-	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, std::string& json)
+	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Atlas::String& json)
 	{
 		Json::Value root(Json::objectValue);
 		if(!Call2Json(def, len, data, root)) return false;
@@ -55,7 +50,7 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool Json2Call(const FUNCTION_INFO* def, const std::string& json, _U32& len, _U8* data)
+	bool Json2Call(const FUNCTION_INFO* def, const Atlas::String& json, _U32& len, _U8* data)
 	{
 		Json::Value root;
 		Json::Reader reader;
@@ -73,7 +68,7 @@ namespace DDLReflect
 		return struct_jsonwrite(Value, def, data);
 	}
 
-	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, std::string& json)
+	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Atlas::String& json)
 	{
 		Json::Value root(Json::objectValue);
 		if(!struct_jsonread(data, def, root)) return false;
@@ -82,7 +77,7 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool Json2Struct(const STRUCT_INFO* def, const std::string& json, _U8* data)
+	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data)
 	{
 		Json::Value root;
 		Json::Reader reader;
@@ -605,7 +600,7 @@ namespace DDLReflect
 			break;
 		case TYPE_STRING:
 			{
-				std::string v = value.asString();
+				Atlas::String v = value.asString();
 				if(v.size()>slen) return false;
 				memcpy(data, v.c_str(), v.size()+1);
 			}
@@ -613,7 +608,7 @@ namespace DDLReflect
 		case TYPE_UUID:
 		case TYPE_UUID_REF:
 			{
-				std::string v = value.asString();
+				Atlas::String v = value.asString();
 				if(!AUuidFromString(v.c_str(), *((A_UUID*)data))) return false;
 			}
 			break;
@@ -641,10 +636,10 @@ namespace DDLReflect
 
 	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo, void*& fdata)
 	{
-		std::vector<std::string> ns;
+		Atlas::Vector<Atlas::String> ns;
 		Atlas::StringSplit(name, '.', ns);
 		if(ns.empty()) return false;
-		std::string fname;
+		Atlas::String fname;
 		int findex = -1;
 		size_t i=0, old_i=ns.size();
 
@@ -768,12 +763,12 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool StructParamToString(const FIELD_INFO* finfo, const void* data, std::string& str)
+	bool StructParamToString(const FIELD_INFO* finfo, const void* data, Atlas::String& str)
 	{
 		if(finfo->type&TYPE_ARRAY)
 		{
 			str = "[";
-			std::string item;
+			Atlas::String item;
 			FIELD_INFO _finfo = *finfo;
 			_finfo.type &= TYPE_MASK;
 			for(_U32 i=0; i<*(_U32*)data; i++)
@@ -851,7 +846,7 @@ namespace DDLReflect
 		FIELD_INFO _finfo = *finfo;
 		STRUCT_INFO _sinfo = { NULL, "_sinfo", 0, 1, &_finfo };
 		_finfo.offset = 0;
-		std::string json;
+		Atlas::String json;
 		if(finfo->type==TYPE_STRING || finfo->type==TYPE_UUID || finfo->type==TYPE_UUID_REF)
 		{
 			json = Atlas::StringFormat("{\"%s\":\"%s\"}", finfo->name, str);
@@ -863,7 +858,7 @@ namespace DDLReflect
 		return Json2Struct(&_sinfo, json, (_U8*)data);
 	}
 
-	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, std::string& str)
+	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Atlas::String& str)
 	{
 		FIELD_INFO finfo;
 		const void* fdata;
@@ -881,7 +876,7 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool StructParamType(const FIELD_INFO* finfo, std::string& type)
+	bool StructParamType(const FIELD_INFO* finfo, Atlas::String& type)
 	{
 		char name[100];
 		switch(finfo->type&TYPE_MASK)
@@ -913,13 +908,13 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool StructParamType(const STRUCT_INFO* info, _U16 index, std::string& type)
+	bool StructParamType(const STRUCT_INFO* info, _U16 index, Atlas::String& type)
 	{
 		if(index>=info->fcount) return false;
 		return StructParamType(&info->finfos[index], type);
 	}
 
-	bool StructParamType(const STRUCT_INFO* info, const char* name, std::string& type)
+	bool StructParamType(const STRUCT_INFO* info, const char* name, Atlas::String& type)
 	{
 		void* data = NULL;
 		void* fdata = NULL;

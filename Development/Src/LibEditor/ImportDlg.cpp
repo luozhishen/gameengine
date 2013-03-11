@@ -19,7 +19,6 @@
 #include <AtlasCommon.h>
 
 #include "ImportDlg.h"
-#include "UtilString.h"
 
 enum
 {
@@ -157,11 +156,11 @@ CImportDlg::~CImportDlg()
 
 void CImportDlg::InitCombox()
 {
-	std::map<std::string, const DDLReflect::STRUCT_INFO*> m_mapTypes;
+	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*> m_mapTypes;
 
-	std::vector<const DDLReflect::STRUCT_INFO*> list;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
 	Atlas::ContentObject::GetTypeList(list);
-	std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		const DDLReflect::STRUCT_INFO* p = *i;
@@ -171,7 +170,7 @@ void CImportDlg::InitCombox()
 		}
 	}
 
-	std::map<std::string, const DDLReflect::STRUCT_INFO*>::iterator in;
+	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*>::iterator in;
 	int nTypeIndex = -1;
 	for(in=m_mapTypes.begin(); in!=m_mapTypes.end(); in++)
 	{
@@ -199,7 +198,7 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 	wxString strFilePath = m_pFilePicker->GetPath();
 	m_pImportManger->Load(strFilePath);
 
-	std::vector<wxString> vSheets;
+	Atlas::Vector<wxString> vSheets;
 	m_pImportManger->GetSheets(vSheets);
 	for(unsigned int i = 0; i < vSheets.size(); ++i)
 	{
@@ -217,7 +216,7 @@ void CImportDlg::OnSelectAll(wxCommandEvent& event)
 	}
 }
 
-bool CImportDlg::GetSelectSheets(std::vector<std::string>& vSheets)
+bool CImportDlg::GetSelectSheets(Atlas::Vector<Atlas::String>& vSheets)
 {
 	if(m_checkList->GetCount()==0)
 	{
@@ -234,12 +233,12 @@ bool CImportDlg::GetSelectSheets(std::vector<std::string>& vSheets)
 	return true;
 }
 
-bool CImportDlg::GetKeyCols(std::vector<std::string>& vec)
+bool CImportDlg::GetKeyCols(Atlas::Vector<Atlas::String>& vec)
 {
 	wxString strKeyCol = m_textCtrlKey->GetValue().Trim();
-	std::string strKeyColCopy = (const char*)strKeyCol.ToUTF8();
-	std::stringstream ss(strKeyColCopy);
-	std::string item;
+	Atlas::String strKeyColCopy = (const char*)strKeyCol.ToUTF8();
+	Atlas::StringStream ss(strKeyColCopy);
+	Atlas::String item;
 	while(std::getline(ss, item, ',')) {
 		vec.push_back(item);
 	}
@@ -283,7 +282,7 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-	std::vector<std::string> vCol;
+	Atlas::Vector<Atlas::String> vCol;
 	if(!GetKeyCols(vCol))
 	{	
 		wxMessageBox(wxT("input key Column repeat!"));
@@ -296,7 +295,7 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-	std::vector<std::string> vSheets;
+	Atlas::Vector<Atlas::String> vSheets;
 	if(!GetSelectSheets(vSheets))
 	{
 		return false;
@@ -332,7 +331,7 @@ bool CImportDlg::ProcessImport()
 	return true;
 }
 
-bool CImportDlg::CheckKeyCols( std::vector<std::string>& vec )
+bool CImportDlg::CheckKeyCols( Atlas::Vector<Atlas::String>& vec )
 {
 	for(size_t i = 0; i < vec.size(); ++i)
 	{

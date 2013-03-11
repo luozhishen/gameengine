@@ -47,8 +47,8 @@ void ServerParamDlg::InitCtrls()
 	m_pPropGrid = ATLAS_NEW wxPropertyGrid(this, ID_PROPERTY_GRID, wxDefaultPosition, wxDefaultSize, 
             wxPG_AUTO_SORT | wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
 	
-	std::map<std::string, std::string> params = Atlas::CClientApp::GetDefault()->GetParams();
-	std::map<std::string, std::string>::iterator it = params.begin();
+	Atlas::Map<Atlas::String, Atlas::String> params = Atlas::CClientApp::GetDefault()->GetParams();
+	Atlas::Map<Atlas::String, Atlas::String>::iterator it = params.begin();
 
 	for(int i = 0; it != params.end(); ++it, ++i)
 	{
@@ -64,13 +64,13 @@ void ServerParamDlg::InitCtrls()
 void ServerParamDlg::OnConfirm(wxCommandEvent& event)
 {
 	Atlas::CStressLoader loader;
-	wxFileDialog dlg(this, wxT("save script file"), wxT(""), wxT(""), wxT("xml files (*.xml) | *.xml"), wxFD_OPEN|wxFD_FILE_MUST_EXIST);
-	if(dlg.ShowModal() == wxID_CANCEL)
-	{
-		return;
-	}
+	//wxFileDialog dlg(this, wxT("save script file"), wxT(""), wxT(""), wxT("xml files (*.xml) | *.xml"), wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+	//if(dlg.ShowModal() == wxID_CANCEL)
+	//{
+	//	return;
+	//}
 
-	wxString strPath = dlg.GetPath();
+	//wxString strPath = dlg.GetPath();
 	wxPropertyGridIterator it;
 	for(it = m_pPropGrid->GetIterator(); !it.AtEnd(); ++it)
 	{
@@ -83,8 +83,9 @@ void ServerParamDlg::OnConfirm(wxCommandEvent& event)
 	
 	Atlas::CClientApp::GetDefault()->SaveParams();
 
-	loader.LoadScript((const char*)strPath.c_str());
-	loader.SaveSvrParam();
+
+	//loader.LoadScript((const char*)strPath.c_str());
+	//loader.SaveSvrParam();
 
 	this->EndModal(wxID_OK);
 }

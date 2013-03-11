@@ -10,26 +10,26 @@ namespace Atlas
 	{
 		struct Script_Case
 		{
-			std::string case_name;
-			std::string param1;
-			std::string param2;
-			std::string param3;
+			Atlas::String case_name;
+			Atlas::String param1;
+			Atlas::String param2;
+			Atlas::String param3;
 		};
 
 		struct Stress_Case
 		{
 			_U32 count;
-			std::vector<Script_Case> scripts;
+			Atlas::Vector<Script_Case> scripts;
 		};
 
 		struct Server_Param
 		{
-			std::string key;
-			std::string value;
+			Atlas::String key;
+			Atlas::String value;
 		};
 
-		typedef std::vector<Server_Param> SERVER_PARAMS;
-		typedef std::vector<Stress_Case> SERVER_CASES;
+		typedef Atlas::Vector<Server_Param> SERVER_PARAMS;
+		typedef Atlas::Vector<Stress_Case> SERVER_CASES;
 	public:
 		CStressLoader();
 		~CStressLoader();
@@ -48,7 +48,7 @@ namespace Atlas
 	private:
 		SERVER_CASES m_ServerCases;
 		SERVER_PARAMS m_ServerParams;
-		std::string m_strPath;
+		Atlas::String m_strPath;
 	};
 
 }

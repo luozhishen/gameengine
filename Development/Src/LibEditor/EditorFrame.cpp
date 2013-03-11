@@ -103,10 +103,10 @@ void CEditorFrame::InitClient()
 {
 	wxNotebook* pTab = ATLAS_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
 
-	std::map<int, const DDLReflect::STRUCT_INFO*> content;
-	std::map<int, const DDLReflect::STRUCT_INFO*> live;
-	std::vector<const DDLReflect::STRUCT_INFO*> list;
-	std::vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Atlas::Map<int, const DDLReflect::STRUCT_INFO*> content;
+	Atlas::Map<int, const DDLReflect::STRUCT_INFO*> live;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 
 	Atlas::ContentObject::GetTypeList(list);
 	for(i=list.begin(); i!=list.end(); i++)

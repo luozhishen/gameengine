@@ -8,62 +8,40 @@ namespace Atlas
 	namespace ContentObject
 	{
 
-		bool Register(const DDLReflect::STRUCT_INFO* info, const char* keys=NULL);
-		void GetTypeList(std::vector<const DDLReflect::STRUCT_INFO*>& list);
+		bool Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch=true, const char* keys=NULL);
+		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list);
 		_U16 GetTypeId(const char* name);
 		const DDLReflect::STRUCT_INFO* GetType(const char* name);
 		const DDLReflect::STRUCT_INFO* GetType(_U16 id);
-		const char* GetContentTypeKeys(const char* name);
 
 		A_CONTENT_OBJECT* Create(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid);
 		A_CONTENT_OBJECT* Alloc(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid);
 		void Delete(const A_UUID& uuid);
 
 		const DDLReflect::STRUCT_INFO* GetType(const A_UUID& uuid);
-		const A_CONTENT_OBJECT* Query(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info=NULL);
-		const A_CONTENT_OBJECT* Query(const char* name, const DDLReflect::STRUCT_INFO* info=NULL);
 		A_CONTENT_OBJECT* Modify(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info=NULL);
+		const A_CONTENT_OBJECT* QueryByUUID(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info=NULL);
+		const A_CONTENT_OBJECT* QueryByName(const char* name, const DDLReflect::STRUCT_INFO* info=NULL);
+		const A_CONTENT_OBJECT* QueryByKey(const DDLReflect::STRUCT_INFO* info, const char* value1, const char* value2=NULL, const char* value3=NULL, const char* value4=NULL);
 
-		bool GetList(const DDLReflect::STRUCT_INFO* info, std::vector<A_UUID>& list, bool bExactMatch);
+		bool BuildIndex(const DDLReflect::STRUCT_INFO* info=NULL);
+		const Atlas::String& BuildIndexGetErrorMsg();
 
-		template<typename T>
-		T* Create(A_UUID& uuid)
-		{
-			return (T*)Create(DDLReflect::GetStruct<T>(), uuid);
-		}
+		// will remove this function.
+		bool GetList(const DDLReflect::STRUCT_INFO* info, Atlas::Vector<A_UUID>& list, bool bExactMatch);
 
-		template<typename T>
-		T* Alloc(const A_UUID& uuid)
-		{
-			return (T*)Alloc(DDLReflect::GetStruct<T>(), uuid);
-		}
-
-		template<typename T>
-		const T* Query(const A_UUID& uuid)
-		{
-			return (const T*)Query(uuid, DDLReflect::GetStruct<T>());
-		}
-
-		template<typename T>
-		const T* Query(const char* name)
-		{
-			return (const T*)Query(name, DDLReflect::GetStruct<T>());
-		}
-
-		template<typename T>
-		T* Modify(const A_UUID& uuid)
-		{
-			return (T*)Modify(uuid, DDLReflect::GetStruct<T>());
-		}
+		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
+		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object);
 
 		void CreateContentGroup(const DDLReflect::STRUCT_INFO* info, const char* name, const char* file);
 		const char* QueryContentGroupName(const DDLReflect::STRUCT_INFO* info);
 		const char* QueryContentGroupFile(const DDLReflect::STRUCT_INFO* info);
-		void GetContentFileList(std::vector<std::string>& list);
+		void GetContentFileList(Atlas::Vector<Atlas::String>& list);
 
-		bool LoadContent();
+		bool LoadContent(const char* path=NULL);
 		bool LoadContentFromFile(const char* filename);
 		bool SaveContent(const char* file=NULL, bool force=false);
+		void ClearContent();
 		bool IsContentDirty();
 
 	}

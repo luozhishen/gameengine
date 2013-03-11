@@ -59,18 +59,18 @@ namespace Atlas
 		m_pClient = NULL;
 	}
 
-	const std::string CStressClient::GetTitle()
+	const Atlas::String CStressClient::GetTitle()
 	{
-		std::string ret;
+		Atlas::String ret;
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 		ret = m_Title;
 		A_MUTEX_UNLOCK(&m_pClient->m_mtxClient);
 		return ret;
 	}
 	
-	const std::string CStressClient::GetInfo()
+	const Atlas::String CStressClient::GetInfo()
 	{
-		std::string ret;
+		Atlas::String ret;
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 		ret = m_Info;
 		A_MUTEX_UNLOCK(&m_pClient->m_mtxClient);
@@ -93,7 +93,7 @@ namespace Atlas
 	{
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		for(i=m_Cases.begin(); i!=m_Cases.end(); i++)
 		{
 			i->second->OnTick();
@@ -150,23 +150,23 @@ namespace Atlas
 
 	bool CStressClient::IsExistCase(const char* name)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_Cases.find(name);
 		return i!=m_Cases.end();
 	}
 
 	CStressCase* CStressClient::GetStressCase(const char* name)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_Cases.find(name);
 		if(i==m_Cases.end()) return NULL;
 		return i->second;
 	}
 
-	void CStressClient::GetStressCases( std::set<CStressCase*>& cases )
+	void CStressClient::GetStressCases( Atlas::Set<CStressCase*>& cases )
 	{
 		cases.clear();
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		for(i=m_Cases.begin(); i!=m_Cases.end(); i++)
 		{
 			cases.insert(i->second);
@@ -179,7 +179,7 @@ namespace Atlas
 
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_Cases.find(name);
 		if(i==m_Cases.end())
 		{
@@ -197,7 +197,7 @@ namespace Atlas
 
 	void CStressClient::CaseAttach(CStressCase* pCase)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_Cases.find(pCase->GetName());
 		ATLAS_ASSERT(i==m_Cases.end());
 		if(i!=m_Cases.end()) return;
@@ -207,7 +207,7 @@ namespace Atlas
 
 	void CStressClient::CaseDetach(CStressCase* pCase)
 	{
-		std::map<std::string, CStressCase*>::iterator i;
+		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
 		i = m_Cases.find(pCase->GetName());
 		ATLAS_ASSERT(i!=m_Cases.end());
 		if(i==m_Cases.end()) return;

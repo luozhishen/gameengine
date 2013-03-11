@@ -41,7 +41,7 @@ namespace Atlas
 
 		void SetParam(const char* name, const char* value);
 		const char* GetParam(const char* name, const char* default_value=NULL);
-		const std::map<std::string, std::string>& GetParams();
+		const Atlas::Map<Atlas::String, Atlas::String>& GetParams();
 		bool LoadParams();
 		bool SaveParams();
 
@@ -67,13 +67,13 @@ namespace Atlas
 		void UnregisterClient(CClient* pClient);
 
 	private:
-		std::map<std::string, std::string> m_Params;
+		Atlas::Map<Atlas::String, Atlas::String> m_Params;
 		A_MUTEX m_mtxQueue;
-		std::list<CLIENTAPP_ITEM> m_Queue;
+		Atlas::List<CLIENTAPP_ITEM> m_Queue;
 		bool m_bThread;
 		bool m_bEnableTick;
 		_U32 m_nRecvSize, m_nSendSize;
-		std::set<CClient*> m_Clients;
+		Atlas::Set<CClient*> m_Clients;
 	};
 
 }

@@ -18,8 +18,9 @@ public:
 	void OnSave(wxCommandEvent& event);
 	void OnImport(wxCommandEvent& event);
 	void OnQuit(wxCommandEvent& event);
+	void OnGenDESKey(wxCommandEvent& event);
+	void OnBuildIndex(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
-	void OnDebug(wxCommandEvent& event);
 	void OnSize(wxSizeEvent& event);
 	void OnShow(wxShowEvent& event);
 

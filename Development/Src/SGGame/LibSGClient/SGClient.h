@@ -48,13 +48,22 @@ namespace Atlas
 		virtual void PVPRecordResult(const SG_PVP_RECORD_ITEM* record, _U32 count) = 0;				
 		virtual void PVPHeroListRecord(const SG_PLAYER* players, _U32 count) = 0;					
 		virtual void PVPDailyReward(_U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count) = 0;
-		virtual void PVPBattleResult(_U32 reputation) = 0;
+		//virtual void PVPBattleResult(_U32 reputation) = 0;
+		virtual void PVPBattleBeginResult(const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo) = 0;
+		virtual void PVPBattleEndResult(_U32 reputation) = 0;																
 
 		virtual void QueryInstanceResult(const SG_INSTANCE_INFO* instances, _U32 count) = 0;					
 		virtual void BeginInstanceBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;								
 		virtual void EnterInstanceResult(const SG_INSTANCE_INFO& instance) = 0;			
 		virtual void EndInstanceBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count) = 0;
 		virtual void ResetInstanceResult(_U8 result, _U32 gold, const SG_INSTANCE_INFO& instance) = 0;
+
+		virtual void CreateLeagueResult(_U8 ret, const SG_LEAGUE& league) = 0;							//0-succ other-failed
+		virtual void QueryLeagueApplyListResult(const SG_LEAGUE_APPLYER* applyers, _U32 count) = 0;
+		virtual void QueryLeagueResult(const SG_LEAGUE& league) = 0;							
+		virtual void QueryLeagueListResult(const SG_LEAGUE* league_list, _U32 count) = 0;
+		virtual void QueryLeagueMemberListResult(const SG_LEAGUE_MEMBER* league_members, _U32 count) = 0;
+		virtual void QueryLeagueMemberInfoResult() = 0;
 	};
 
 	class CSGClient : public CClient
@@ -134,13 +143,23 @@ namespace Atlas
 		void PVPRecord();														//对战记录		
 		void PVPHeroList();														//英雄榜			
 		void PVPDailyReward();													//pvp每日奖励之类
-		void PVPBattle(_U32 defender, _U8 result);								//pvp战斗 0-succ 1-failed
+		//void PVPBattle(_U32 defender, _U8 result);							//pvp战斗 0-succ 1-failed
+		void PVPBattleBegin(_U32 defender);										//pvp战斗开始 
+		void PVPBattleEnd(_U32 defender, _U8 ret);								//pvp战斗结束 0-succ 1-failed
 
 		void QueryInstance();													//副本
 		void EnterInstance(_U32 instance_id, _U8 difficulty);					//进入副本 0-普通 1-困难
-		void BeginInstanceBattle(_U32 instance_id, const char* map_url);				//开始副本战斗
-		void EndInstanceBattle(const char* map_url, _U32 result);					//结束副本战斗
+		void BeginInstanceBattle(_U32 instance_id, const char* map_url);		//开始副本战斗
+		void EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result);				//结束副本战斗
 		void ResetInstance(_U32 instance_id);									//重置副本
+
+		void CreateLeague(const char* league_name);								//战盟 创建
+		void ApplyJoinLeague(_U32 league_id);									//申请加入战盟		
+		void QueryLeagueApplyList();											//查询当前申请加入战盟的人
+		void QueryLeague(_U32 league_id);										//查询league_id战盟信息
+		void QueryLeagueList();													//查询当前所有战盟的列表
+		void QueryLeagueMemberList(_U32 league_id);								//查询league_id战盟当前成员
+		void QueryLeagueMemberInfo(_U32 member_id);								//显示成员选中tips
 		
 		//result
 		void Pong(CSGClient* pClient);
@@ -179,13 +198,22 @@ namespace Atlas
 		void PVPRecordResult(CSGClient* pClient, const SG_PVP_RECORD_ITEM* record, _U32 count);					//对战记录			
 		void PVPHeroListRecord(CSGClient* pClient, const SG_PLAYER* players, _U32 count);						//英雄榜				
 		void PVPDailyReward(CSGClient* pClient, _U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count);	//pvp每日奖励 增量
-		void PVPBattleResult(CSGClient* pClient, _U32 reputation);												//pvp战斗结果返回
+		//void PVPBattleResult(CSGClient* pClient, _U32 reputation);											//pvp战斗结果返回
+		void PVPBattleBeginResult(CSGClient* pClient, const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo);	//pvp战斗
+		void PVPBattleEndResult(CSGClient* pClient, _U32 reputation);																//pvp战斗结束 
 
 		void QueryInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO* instances, _U32 count);			//副本
-		void BeginInstanceBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);								//开始副本战斗
+		void BeginInstanceBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);						//开始副本战斗
 		void EnterInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO& instance);			
 		void EndInstanceBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
 		void ResetInstanceResult(CSGClient* pClient, _U8 result, _U32 gold, const SG_INSTANCE_INFO& instance);	//result 0-succ 1-failed
+
+		void CreateLeagueResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE& league);							//0-succ 1-failed
+		void QueryLeagueApplyListResult(CSGClient* pClient, const SG_LEAGUE_APPLYER* applyers, _U32 count);
+		void QueryLeagueResult(CSGClient* pClient, const SG_LEAGUE& league);							
+		void QueryLeagueListResult(CSGClient* pClient, const SG_LEAGUE* league_list, _U32 count);
+		void QueryLeagueMemberListResult(CSGClient* pClient, const SG_LEAGUE_MEMBER* league_members, _U32 count);	
+		void QueryLeagueMemberInfoResult(CSGClient* pClient);
 
 	public:
 		virtual void OnLoginDone();

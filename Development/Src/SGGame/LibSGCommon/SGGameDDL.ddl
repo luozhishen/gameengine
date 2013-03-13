@@ -101,6 +101,11 @@ const _U32 SG_LEAGUE_LOG_MAX = 256;
 const _U32 SG_GOODS_GROUP_NAME_MAX = 128;
 const _U32 SG_INSTANCE_REWARD_DES_MAX = 128;
 
+//league
+const _U32 SG_LEAGUE_APPLY_MAX = 10;
+const _U8 SG_LEAGUE_CREATE_SUCC = 0;
+const _U8 SG_LEAGUE_CREATE_FAILED = 1;
+
 //instance
 struct SG_INSTANCE_CONFIG : A_CONTENT_OBJECT
 {
@@ -111,6 +116,7 @@ struct SG_INSTANCE_CONFIG : A_CONTENT_OBJECT
 	string<SG_INSTANCE_REWARD_DES_MAX>	reward_hard1;			//困难难度小关奖励信息
 	string<SG_INSTANCE_REWARD_DES_MAX>	reward_hard2;			//困难难度大关奖励信息
 	_U32								reset_gold;				//重置的花费
+	_U32								awake_pt;				//觉醒点
 };
 task[GEN_STRUCT_SERIALIZE(SG_INSTANCE_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_INSTANCE_CONFIG)];
@@ -119,7 +125,7 @@ struct SG_INSTANCE_INFO : A_LIVE_OBJECT
 {
 	_U32								instance_id;			//副本ID
 	_U8									difficulty;				//难度 0-普通 1-困难
-	_U8									progress;				//进度
+	_S8									progress;				//进度 -1 - 未进入副本 0-进入副本未完成任意小关 1-已完成小关数目
 	_U8									num_today;				//今日已经挑战次数
 	_U8									normal_completed;		//普通难度是否已过 0-未过 1-已过
 };
@@ -132,10 +138,10 @@ struct SG_LEAGUE_CONFIG : A_CONTENT_OBJECT
 	_U32								league_level;			//战盟等级
 	_U32								XP;						//战盟经验
 	_U32								members_count;			//成员数
-	_U32								rmb_xp_rate;			//金币经验比
-	_U32								rmb_contribution_rate;	//金币贡献比
-	_F32								energy_xp_rate;			//体力经验比
-	_F32								energy_contribution_rate;//体力贡献比
+	_F32								rmb_xp_rate;			//1金币兑换战盟经验数
+	_F32								rmb_contribution_rate;	//1金币兑换战盟贡献数
+	_F32								energy_xp_rate;			//1体力兑换战盟经验数
+	_F32								energy_contribution_rate;///1体力兑换战盟贡献数
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_CONFIG)];
@@ -233,7 +239,7 @@ struct SG_LEAGUE : A_LIVE_OBJECT
 {
 	_U32								league_id;				//战盟ID
 
-	string<SG_LEAGUE_NAME_MAX>			name;					//战盟名称
+	string<SG_LEAGUE_NAME_MAX>			league_name;			//战盟名称
 	_U32								rank;					//战盟排名
 	_U32								member_num;				//目前成员数量
 	_U32								level;					//等级
@@ -248,10 +254,10 @@ task[GEN_STRUCT_REFLECT(SG_LEAGUE)];
 struct SG_LEAGUE_MEMBER : A_LIVE_OBJECT
 {
 	_U32								league_id;				//所在战盟ID
-	_U32								member_id;				//成员ID
-	_U32								avatar_id;				
+	_U32								member_id;				//成员ID avatar_id
 	_U8									position;				//所在战盟职位 0-普通成员 1-副团长 2-团长
 	_U32								contribution_value;		//贡献值
+	_U32								total_contribution_value;//总贡献值
 	_U32								last_ol_time;			//上次用户活动的最后时间 表示是否在线
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_MEMBER)];
@@ -259,10 +265,9 @@ task[GEN_STRUCT_REFLECT(SG_LEAGUE_MEMBER)];
 
 struct SG_LEAGUE_APPLYER : A_LIVE_OBJECT
 {
-	_U32								applyer_id;				//申请者ID
-	_U32								league_id;				//申请加入战盟的ID
-	_U32								avatar_id;
-	_U8									reason;
+	_U32								applyer_id;				//申请者ID avatar_id
+	_U32								league_id;				//申请加入战盟的ID 
+	_U8									reason;					//?
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_APPLYER)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_APPLYER)];
@@ -416,6 +421,7 @@ struct SG_LEVEL_INFO_CONFIG				: A_CONTENT_OBJECT
 	_U32								next_level;				//下一关的关卡配置id
 	string<SG_DESCRIPTION_MAX>			description;			//关卡描述
 	_U32								req_player_level;		//可解锁要求的玩家等级
+	_U32								awake_pt;				//觉醒点
 	
 	string<SG_SOLDIER_NAME_MAX>			soldier_name1;			//兵种名称
 	string<SG_SOLDIER_NAME_MAX>			soldier_name2;			//兵种名称
@@ -476,6 +482,7 @@ struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 	_F32								group3_rate;
 	_U32								group4_id;
 	_F32								group4_rate;
+	_U32								awake_pt;				//觉醒点
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEVEL_DROP_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEVEL_DROP_CONFIG)];
@@ -790,6 +797,9 @@ struct SG_PLAYER : SG_GENERAL
 	_U32								next_level;				//下一个通过的关卡ID 初始值10001
 	_U32								rank;					//排行榜排名
 	_U32								vip_level;				//vip等级
+	
+	_U32								league_id;				//所在战盟ID
+	array<_U32, SG_LEAGUE_APPLY_MAX>	league_apply_list;		//申请
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];
@@ -910,15 +920,24 @@ class SGGAME_C2S
 	PVPCoolDown();													//挑战冷却时间
 	PVPGetRestTime();												//挑战剩余次数
 	PVPRecord();													//对战记录			
-	PVPHeroList();													//英雄榜				
+	PVPHeroList();													//英雄榜			
 	PVPDailyReward();												//pvp每日奖励之类
-	PVPBattle(_U32 defender, _U8 result);							//pvp战斗结果 0-succ 1-failed
+	PVPBattleBegin(_U32 defender);									//pvp战斗开始 
+	PVPBattleEnd(_U32 defender, _U8 ret);							//pvp战斗结束 0-succ 1-failed
 
 	QueryInstance();												//副本
 	EnterInstance(_U32 instance_id, _U8 difficulty);				//进入副本 0-普通 1-困难
 	BeginInstanceBattle(_U32 instance_id, string map_url);			//开始副本战斗
-	EndInstanceBattle(string map_url, _U32 result);					//结束副本战斗
+	EndInstanceBattle(_U32 instance_id, string map_url, _U32 result);//结束副本战斗
 	ResetInstance(_U32 instance_id);
+
+	CreateLeague(string league_name);								//战盟 创建
+	ApplyJoinLeague(_U32 league_id);								//申请加入战盟		
+	QueryLeagueApplyList();											//查询当前申请加入战盟的人
+	QueryLeague(_U32 league_id);									//查询league_id战盟信息
+	QueryLeagueList();												//查询当前所有战盟的列表
+	QueryLeagueMemberList(_U32 league_id);							//查询league_id战盟当前成员
+	QueryLeagueMemberInfo(_U32 member_id);							//显示成员选中tips
 
 	QueryServerTime();												//查询服务器时间
 };
@@ -964,13 +983,21 @@ class SGGAME_S2C
 	PVPRecordResult(SG_PVP_RECORD_ITEM record[count], _U32 count);					//对战记录			
 	PVPHeroListRecord(SG_PLAYER players[count], _U32 count);						//英雄榜				
 	PVPDailyReward(_U32 gold, _U32 reputation, SG_ITEM items[count], _U32 count);	//pvp每日奖励 增量
-	PVPBattleResult(_U32 reputation);												//pvp战斗结果返回
+	PVPBattleBeginResult(SG_PLAYER_PVE SelfPVE, SG_PLAYER_PVE DefenderPVE, SG_PLAYER DefenderPlayerInfo);//pvp战斗
+	PVPBattleEndResult(_U32 reputation);											//pvp战斗结束 
 
-	QueryInstanceResult(SG_INSTANCE_INFO instances[count], _U32 count);		//副本
-	BeginInstanceBattleResult(SG_PLAYER_PVE PlayerPVE);						//开始副本战斗
+	QueryInstanceResult(SG_INSTANCE_INFO instances[count], _U32 count);				//副本
+	BeginInstanceBattleResult(SG_PLAYER_PVE PlayerPVE);								//开始副本战斗
 	EnterInstanceResult(SG_INSTANCE_INFO instance);			
 	EndInstanceBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
-	ResetInstanceResult(_U8 result, _U32 gold, SG_INSTANCE_INFO instance);	//result 0-succ 1-failed
+	ResetInstanceResult(_U8 result, _U32 gold, SG_INSTANCE_INFO instance);			//result 0-succ 1-failed
+
+	CreateLeagueResult(_U8 ret, SG_LEAGUE league);									//0-succ other-failed
+	QueryLeagueApplyListResult(SG_LEAGUE_APPLYER applyer[count], _U32 count);
+	QueryLeagueResult(SG_LEAGUE league);							
+	QueryLeagueListResult(SG_LEAGUE league_list[count], _U32 count);
+	QueryLeagueMemberListResult(SG_LEAGUE_MEMBER league_members[count], _U32 count);	
+	QueryLeagueMemberInfoResult();
 
 	QueryServerTimeResult(_U32 time);
 };

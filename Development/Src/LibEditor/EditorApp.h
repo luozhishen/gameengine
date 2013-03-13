@@ -7,6 +7,8 @@ public:
 	CEditorApp();
 	~CEditorApp();
 
+	virtual int OnRun();
+
 	virtual bool OnInit();
 	virtual int OnExit();
 };

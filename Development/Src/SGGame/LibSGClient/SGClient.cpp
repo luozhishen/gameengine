@@ -481,9 +481,19 @@ namespace Atlas
 		m_C2S.PVPDailyReward();
 	}
 
-	void CSGClient::PVPBattle(_U32 defender, _U8 result)
+	//void CSGClient::PVPBattle(_U32 defender, _U8 result)
+	//{
+	//	m_C2S.PVPBattle(defender, result);
+	//}
+
+	void CSGClient::PVPBattleBegin(_U32 defender)
 	{
-		m_C2S.PVPBattle(defender, result);
+		m_C2S.PVPBattleBegin(defender);
+	}
+
+	void CSGClient::PVPBattleEnd(_U32 defender, _U8 ret)
+	{
+		m_C2S.PVPBattleEnd(defender, ret);
 	}
 
 	void CSGClient::QueryInstance()
@@ -501,14 +511,49 @@ namespace Atlas
 		m_C2S.BeginInstanceBattle(instance_id, map_url);
 	}
 
-	void CSGClient::EndInstanceBattle(const char* map_url, _U32 result)
+	void CSGClient::EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result)
 	{
-		m_C2S.EndInstanceBattle(map_url, result);
+		m_C2S.EndInstanceBattle(instance_id, map_url, result);
 	}
 
 	void CSGClient::ResetInstance(_U32 instance_id)
 	{
 		m_C2S.ResetInstance(instance_id);
+	}
+
+	void CSGClient::CreateLeague(const char* league_name)
+	{
+		m_C2S.CreateLeague(league_name);
+	}
+
+	void CSGClient::ApplyJoinLeague(_U32 league_id)
+	{
+		m_C2S.ApplyJoinLeague(league_id);
+	}
+
+	void CSGClient::QueryLeagueApplyList()
+	{
+		m_C2S.QueryLeagueApplyList();
+	}
+
+	void CSGClient::QueryLeague(_U32 league_id)
+	{
+		m_C2S.QueryLeague(league_id);
+	}
+
+	void CSGClient::QueryLeagueList()
+	{
+		m_C2S.QueryLeagueList();
+	}
+
+	void CSGClient::QueryLeagueMemberList(_U32 league_id)
+	{
+		m_C2S.QueryLeagueMemberList(league_id);
+	}
+
+	void CSGClient::QueryLeagueMemberInfo(_U32 member_id)
+	{
+		m_C2S.QueryLeagueMemberInfo(member_id);
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -973,11 +1018,31 @@ namespace Atlas
 		}
 	}
 
+	void CSGClient::PVPBattleBeginResult(CSGClient* pClient, const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo)
+	{
+		if(m_callback)
+		{
+			m_callback->PVPBattleBeginResult(SelfPVE, DefenderPVE, DefenderPlayerInfo);
+		}
+	}
+	void CSGClient::PVPBattleEndResult(CSGClient* pClient, _U32 reputation)
+	{
+		if(m_callback)
+		{
+			if(reputation)
+			{
+				m_player.reputation += reputation;
+			}
+
+			m_callback->PVPBattleEndResult(reputation);
+		}
+	}
+
 	void CSGClient::QueryInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO* instances, _U32 count)
 	{
 		if(m_callback)
 		{
-			
+			m_callback->QueryInstanceResult(instances, count);
 		}
 	}
 
@@ -1048,21 +1113,73 @@ namespace Atlas
 		}
 	}
 
-
-	void CSGClient::PVPBattleResult(CSGClient* pClient, _U32 reputation)
+	void CSGClient::CreateLeagueResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE& league)
 	{
-		//help to sync data
-		Atlas::Vector<_U8> vecSync;
-		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
-		SyncSet(vecSync);
-
 		if(m_callback)
 		{
-			m_player.reputation += reputation;
+			if(ret == SG_LEAGUE_CREATE_SUCC)
+			{
+				m_player.league_id = league.league_id;
+			}
 
-			m_callback->PVPBattleResult(reputation);
+			m_callback->CreateLeagueResult(ret, league);
 		}
 	}
+
+	void CSGClient::QueryLeagueApplyListResult(CSGClient* pClient, const SG_LEAGUE_APPLYER* applyers, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueApplyListResult(applyers, count);
+		}
+	}
+
+	void CSGClient::QueryLeagueResult(CSGClient* pClient, const SG_LEAGUE& league)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueResult(league);
+		}
+	}
+
+	void CSGClient::QueryLeagueListResult(CSGClient* pClient, const SG_LEAGUE* league_list, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueListResult(league_list, count);
+		}
+	}
+
+	void CSGClient::QueryLeagueMemberListResult(CSGClient* pClient, const SG_LEAGUE_MEMBER* league_members, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueMemberListResult(league_members, count);
+		}
+	}
+
+	void CSGClient::QueryLeagueMemberInfoResult(CSGClient* pClient)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueMemberInfoResult();
+		}
+	}
+
+	//void CSGClient::PVPBattleResult(CSGClient* pClient, _U32 reputation)
+	//{
+	//	//help to sync data
+	//	Atlas::Vector<_U8> vecSync;
+	//	vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+	//	SyncSet(vecSync);
+
+	//	if(m_callback)
+	//	{
+	//		m_player.reputation += reputation;
+
+	//		m_callback->PVPBattleResult(reputation);
+	//	}
+	//}
 
 	void CSGClient::OnLoginDone()
 	{

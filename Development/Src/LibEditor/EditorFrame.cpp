@@ -8,6 +8,7 @@
 #include <wx/listctrl.h>
 #include <wx/config.h>
 #include <wx/utils.h>
+#include <wx/clipbrd.h>
 
 #include <AtlasBase.h>
 #include <AtlasCommon.h>
@@ -21,21 +22,29 @@
 enum
 {
 	ID_QUIT = wxID_HIGHEST + 1,
-	ID_DEBUG_MODEL,
 	ID_ABOUT,
 	ID_SAVE,
 	ID_SAVE_FORCE,
+	ID_COOK_SAVE,
+	ID_COOK_LOAD,
 	ID_IMPORT,
+	ID_GEN_DESKEY,
+	ID_BUILD_INDEX,
 };
 
 BEGIN_EVENT_TABLE(CEditorFrame, wxFrame)
 	EVT_CLOSE(CEditorFrame::OnFrameQuit)
 	EVT_MENU(ID_SAVE, CEditorFrame::OnSave)
 	EVT_MENU(ID_SAVE_FORCE, CEditorFrame::OnSave)
+
+	EVT_MENU(ID_COOK_SAVE, CEditorFrame::OnSave)
+	EVT_MENU(ID_COOK_LOAD, CEditorFrame::OnSave)
+
 	EVT_MENU(ID_IMPORT, CEditorFrame::OnImport)
 	EVT_MENU(ID_QUIT, CEditorFrame::OnQuit)
+	EVT_MENU(ID_GEN_DESKEY, CEditorFrame::OnGenDESKey)
+	EVT_MENU(ID_BUILD_INDEX, CEditorFrame::OnBuildIndex)
 	EVT_MENU(ID_ABOUT, CEditorFrame::OnAbout)
-	EVT_MENU(ID_DEBUG_MODEL, CEditorFrame::OnDebug)
 	EVT_SIZE(CEditorFrame::OnSize)
 	EVT_SHOW(CEditorFrame::OnShow)
 END_EVENT_TABLE()
@@ -71,7 +80,6 @@ CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Atlas Editor - "))
 
 CEditorFrame::~CEditorFrame()
 {
-	// save the frame position
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
@@ -91,12 +99,19 @@ void CEditorFrame::InitMenu()
 	GetMenuBar()->GetMenu(0)->Append(ID_SAVE, wxT("&Save Content\tAlt-S"), wxT("Save content to file"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SAVE_FORCE, wxT("&Save Content(force)\tAlt-F"), wxT("Force save content to file"));
 	GetMenuBar()->GetMenu(0)->AppendSeparator();
+	GetMenuBar()->GetMenu(0)->Append(ID_COOK_SAVE, wxT("Save cooked content file"), wxT("Save content to file"));
+	GetMenuBar()->GetMenu(0)->Append(ID_COOK_LOAD, wxT("Load cooked content file"), wxT("Save content to file"));
+	GetMenuBar()->GetMenu(0)->AppendSeparator();
 	GetMenuBar()->GetMenu(0)->Append(ID_IMPORT, wxT("&Import From Excel...\tAlt-I"), wxT("Import from excel"));
 	GetMenuBar()->GetMenu(0)->AppendSeparator();
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
+
+	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Tools"));
+	GetMenuBar()->GetMenu(1)->Append(ID_GEN_DESKEY, wxT("&Generate DESKEY..."), wxT("Generate DESKEY"));
+	GetMenuBar()->GetMenu(1)->Append(ID_BUILD_INDEX, wxT("&Build Index"), wxT("Build index for Content Object"));
+
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
-	GetMenuBar()->GetMenu(1)->Append(ID_DEBUG_MODEL, wxT("&Debug"), wxT("Show Debug Text"));
-	GetMenuBar()->GetMenu(1)->Append(ID_ABOUT, wxT("&About"), wxT("Show About Dailog"));
+	GetMenuBar()->GetMenu(2)->Append(ID_ABOUT, wxT("&About"), wxT("Show About Dailog"));
 }
 
 void CEditorFrame::InitClient()
@@ -135,14 +150,20 @@ void CEditorFrame::OnFrameQuit(wxCloseEvent& event)
 
 void CEditorFrame::OnSave(wxCommandEvent& event)
 {
-	if(event.GetId()==ID_SAVE_FORCE)
+	switch(event.GetId())
 	{
-		if(Atlas::ContentObject::SaveContent()) return;
+	case ID_SAVE_FORCE:
+	case ID_SAVE:
+		if(Atlas::ContentObject::SaveContent(NULL, event.GetId()!=ID_SAVE_FORCE)) return;
 		wxMessageBox(wxT("Save content failed"), wxT("!!!"));
-	}
-	else
-	{
-		SaveContent(false);
+		break;
+	case ID_COOK_SAVE:
+		Atlas::ContentObject::SaveContentToBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9");
+		break;
+	case ID_COOK_LOAD:
+		Atlas::ContentObject::ClearContents();
+		Atlas::ContentObject::LoadContentFromBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9");
+		break;
 	}
 }
 
@@ -157,15 +178,33 @@ void CEditorFrame::OnQuit(wxCommandEvent&)
 	Close(true);
 }
 
+#include <des64.h>
+
+void CEditorFrame::OnGenDESKey(wxCommandEvent& event)
+{
+	DES_KEY key1;
+	char s1[20];
+	DES_GenKey(key1);
+	DES_KeyToString(key1, s1);
+	wxOpenClipboard();
+	wxEmptyClipboard();
+	wxSetClipboardData(wxDataFormat(wxDF_TEXT), s1);
+	wxCloseClipboard();
+}
+
+void CEditorFrame::OnBuildIndex(wxCommandEvent& event)
+{
+	if(!Atlas::ContentObject::BuildIndex())
+	{
+		wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("BUILD INDEX ERROR"));
+	}
+}
+
 void CEditorFrame::OnAbout(wxCommandEvent&)
 {
 	wxString txt;
 	txt.Printf(wxT("Atlas Editor for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Atlas::AtlasGameName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
-}
-
-void CEditorFrame::OnDebug(wxCommandEvent& event)
-{
 }
 
 void CEditorFrame::OnSize(wxSizeEvent& event)

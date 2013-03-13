@@ -8,7 +8,17 @@ namespace Atlas
 	namespace ContentObject
 	{
 
-		bool Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch=true, const char* keys=NULL);
+		class IContentGroup
+		{
+		public:
+			virtual ~IContentGroup() {}
+			virtual IContentGroup* Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch=true, const char* keys=NULL) = 0;
+			virtual bool GetCookFlag() = NULL;
+			virtual void SetCookFlag(bool cook) = NULL;
+		};
+		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook);
+		IContentGroup* GetContentGroup(const char* name);
+
 		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list);
 		_U16 GetTypeId(const char* name);
 		const DDLReflect::STRUCT_INFO* GetType(const char* name);
@@ -33,15 +43,11 @@ namespace Atlas
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object);
 
-		void CreateContentGroup(const DDLReflect::STRUCT_INFO* info, const char* name, const char* file);
-		const char* QueryContentGroupName(const DDLReflect::STRUCT_INFO* info);
-		const char* QueryContentGroupFile(const DDLReflect::STRUCT_INFO* info);
-		void GetContentFileList(Atlas::Vector<Atlas::String>& list);
-
 		bool LoadContent(const char* path=NULL);
-		bool LoadContentFromFile(const char* filename);
-		bool SaveContent(const char* file=NULL, bool force=false);
-		void ClearContent();
+		bool LoadContentFromBinaryFile(const char* filename, const char* deskey);
+		bool SaveContent(const char* path=NULL, bool force=false);
+		bool SaveContentToBinaryFile(const char* file, const char* deskey);
+		void ClearContents();
 		bool IsContentDirty();
 
 	}

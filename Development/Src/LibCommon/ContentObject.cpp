@@ -8,6 +8,7 @@
 #include <json/reader.h>
 #include <json/writer.h>
 #include <fstream>
+#include "des64.h"
 
 namespace Atlas
 {
@@ -16,6 +17,39 @@ namespace Atlas
 
 	namespace ContentObject
 	{
+
+		// content group
+		class CContentGroup : public IContentGroup
+		{
+		public:
+			CContentGroup()
+			{
+			}
+			CContentGroup(const CContentGroup& group)
+			{
+				_name = group._name;
+				_file = group._file;
+				_cook = group._cook;
+				_dirty = group._dirty;
+			}
+			CContentGroup(const char* name, const char* file, bool cook)
+			{
+				_name = name;
+				_file = file;
+				_cook = cook;
+				_dirty = true;
+			}
+			virtual IContentGroup* Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const char* keys);
+			virtual bool GetCookFlag() { return _cook; }
+			virtual void SetCookFlag(bool cook) { _cook = cook; }
+
+			const char* _name;
+			const char* _file;
+			bool _cook;
+			bool _dirty;
+		};
+		static Atlas::Map<Atlas::String, CContentGroup> g_content_group_map;
+		// content object type
 		struct STRUCT_INTERNAL_INFO
 		{
 			_U16							type_id;
@@ -23,91 +57,12 @@ namespace Atlas
 			bool							bExactMatch;
 			Atlas::Vector<Atlas::String>	keys;
 			Atlas::Map<Atlas::String, A_CONTENT_OBJECT*> key_map;
+			CContentGroup*					group;
 		};
-		// name to typeid
-		static Atlas::Map<Atlas::String, _U16>		g_map_byname;
-		static Atlas::Vector<STRUCT_INTERNAL_INFO>	g_array;
 		const _U16 g_typeid_base = 0x1000;
-
-		bool Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const char* keys)
-		{
-			if(!DDLReflect::IsParent(info, DDLReflect::GetStruct<A_CONTENT_OBJECT>()))
-			{
-				ATLAS_ASSERT(0);
-				return false;
-			}
-
-			Atlas::Vector<Atlas::String> vkeys;
-			if(keys)
-			{
-				StringSplit(keys, ',', vkeys);
-				if(vkeys.size()>4 || vkeys.empty())
-				{
-					ATLAS_ASSERT(0);
-					return false;
-				}
-				DDLReflect::FIELD_INFO finfo;
-				const void* fdata;
-				for(size_t i=0; i<vkeys.size(); i++)
-				{
-					if(!DDLReflect::GetStructFieldInfo(info, vkeys[i].c_str(), (const void*)NULL, finfo, fdata))
-					{
-						ATLAS_ASSERT(0);
-					}
-				}
-			}
-
-			ATLAS_ASSERT(g_map_byname.find(info->name)==g_map_byname.end());
-			if(g_map_byname.find(info->name)!=g_map_byname.end()) return false;
-
-			STRUCT_INTERNAL_INFO internal_info;
-			internal_info.type_id = g_typeid_base + (_U16)g_array.size();
-			internal_info.info = info;
-			internal_info.bExactMatch = bExactMatch;
-			internal_info.keys = vkeys;
-
-			g_map_byname[info->name] = internal_info.type_id;
-			g_array.push_back(internal_info);
-
-			return true;
-		}
-
-		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list)
-		{
-			list.resize(g_array.size());
-			for(size_t i=0; i<g_array.size(); i++)
-			{
-				list[i] = g_array[i].info;
-			}
-		}
-
-		_U16 GetTypeId(const char* name)
-		{
-			Atlas::Map<Atlas::String, _U16>::const_iterator i;
-			i = g_map_byname.find(name);
-			if(i==g_map_byname.end()) return (_U16)-1;
-			return i->second;
-		}
-
-		const DDLReflect::STRUCT_INFO* GetType(const char* name)
-		{
-			Atlas::Map<Atlas::String, _U16>::const_iterator i;
-			i = g_map_byname.find(name);
-			if(i==g_map_byname.end()) return NULL;
-			return g_array[i->second-g_typeid_base].info;
-		}
-
-		const DDLReflect::STRUCT_INFO* GetType(_U16 id)
-		{
-			if(id<g_typeid_base) return NULL;
-			if(id>=g_typeid_base+(_U16)g_array.size()) return NULL;
-			return g_array[id-g_typeid_base].info;
-		}
-
-		static Atlas::Map<Atlas::String, bool> g_content_file_map;
-		static const char* g_default_name = "default";
-		static const char* g_default_file = "default.json";
-
+		Atlas::Map<Atlas::String, _U16>		g_contentobject_typemap;
+		Atlas::Vector<STRUCT_INTERNAL_INFO>	g_contentobject_typearray;
+		// content object
 		class CContentObjectManager
 		{
 		public:
@@ -127,10 +82,148 @@ namespace Atlas
 				}
 				m_object_map.clear();
 			}
-
 			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>> m_object_map;
 		};
 		static CContentObjectManager g_objct_manager;
+		static bool LoadContentFromJsonFile(const char* filename);
+
+		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook)
+		{
+			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
+			{
+				ATLAS_ASSERT(strcmp(i->second._name, name)!=0);
+				ATLAS_ASSERT(strcmp(i->second._file, file)!=0);
+			}
+
+			CContentGroup group(name, file, cook);
+			g_content_group_map[name] = group;
+			return &g_content_group_map[name];
+		}
+
+		IContentGroup* GetContentGroup(const char* name)
+		{
+			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			i = g_content_group_map.find(name);
+			if(i==g_content_group_map.end()) return NULL;
+			return &i->second;
+		}
+
+		static CContentGroup* QueryContentGroup(const DDLReflect::STRUCT_INFO* info)
+		{
+			Atlas::Map<Atlas::String, _U16>::iterator i;
+			while(info)
+			{
+				i = g_contentobject_typemap.find(info->name);
+				if(i!=g_contentobject_typemap.end())
+				{
+					return g_contentobject_typearray[i->second-g_typeid_base].group;
+				}
+				info = info->parent;
+			}
+			return NULL;
+		}
+
+		const char* QueryContentGroupName(const DDLReflect::STRUCT_INFO* info)
+		{
+			CContentGroup* group = QueryContentGroup(info);
+			if(!group) return NULL;
+			return group->_name;
+		}
+
+		const char* QueryContentGroupFile(const DDLReflect::STRUCT_INFO* info)
+		{
+			CContentGroup* group = QueryContentGroup(info);
+			if(!group) return NULL;
+			return group->_file;
+		}
+
+		void GetContentFileList(Atlas::Vector<Atlas::String>& list)
+		{
+			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			list.clear();
+			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
+			{
+				list.push_back(i->second._file);
+			}
+		}
+
+		IContentGroup* CContentGroup::Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const char* keys)
+		{
+			if(!DDLReflect::IsParent(info, DDLReflect::GetStruct<A_CONTENT_OBJECT>()))
+			{
+				ATLAS_ASSERT(0);
+				return NULL;
+			}
+
+			Atlas::Vector<Atlas::String> vkeys;
+			if(keys)
+			{
+				StringSplit(keys, ',', vkeys);
+				if(vkeys.size()>4 || vkeys.empty())
+				{
+					ATLAS_ASSERT(0);
+					return false;
+				}
+				DDLReflect::FIELD_INFO finfo;
+				const void* fdata;
+				for(size_t i=0; i<vkeys.size(); i++)
+				{
+					if(!DDLReflect::GetStructFieldInfo(info, vkeys[i].c_str(), (const void*)NULL, finfo, fdata))
+					{
+						ATLAS_ASSERT(0);
+						return false;
+					}
+				}
+			}
+
+			ATLAS_ASSERT(g_contentobject_typemap.find(info->name)==g_contentobject_typemap.end());
+			if(g_contentobject_typemap.find(info->name)!=g_contentobject_typemap.end()) return false;
+
+			STRUCT_INTERNAL_INFO internal_info;
+			internal_info.type_id = g_typeid_base + (_U16)g_contentobject_typearray.size();
+			internal_info.info = info;
+			internal_info.bExactMatch = bExactMatch;
+			internal_info.keys = vkeys;
+			internal_info.group = this;
+
+			g_contentobject_typemap[info->name] = internal_info.type_id;
+			g_contentobject_typearray.push_back(internal_info);
+
+			return this;
+		}
+
+		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list)
+		{
+			list.resize(g_contentobject_typearray.size());
+			for(size_t i=0; i<g_contentobject_typearray.size(); i++)
+			{
+				list[i] = g_contentobject_typearray[i].info;
+			}
+		}
+
+		_U16 GetTypeId(const char* name)
+		{
+			Atlas::Map<Atlas::String, _U16>::const_iterator i;
+			i = g_contentobject_typemap.find(name);
+			if(i==g_contentobject_typemap.end()) return (_U16)-1;
+			return i->second;
+		}
+
+		const DDLReflect::STRUCT_INFO* GetType(const char* name)
+		{
+			Atlas::Map<Atlas::String, _U16>::const_iterator i;
+			i = g_contentobject_typemap.find(name);
+			if(i==g_contentobject_typemap.end()) return NULL;
+			return g_contentobject_typearray[i->second-g_typeid_base].info;
+		}
+
+		const DDLReflect::STRUCT_INFO* GetType(_U16 id)
+		{
+			if(id<g_typeid_base) return NULL;
+			if(id>=g_typeid_base+(_U16)g_contentobject_typearray.size()) return NULL;
+			return g_contentobject_typearray[id-g_typeid_base].info;
+		}
 
 		A_CONTENT_OBJECT* Create(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid)
 		{
@@ -140,10 +233,11 @@ namespace Atlas
 
 		A_CONTENT_OBJECT* Alloc(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
 		{
+			CContentGroup* group = QueryContentGroup(info);
 			A_CONTENT_OBJECT* object = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(info);
 			if(!object) return NULL;
 			g_objct_manager.m_object_map[uuid] = std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>(info, object);
-			g_content_file_map[QueryContentGroupFile(info)] = true;
+			group->_dirty = true;
 			object->uuid = uuid;
 			return object;
 		}
@@ -154,7 +248,7 @@ namespace Atlas
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return;
 			DDLReflect::DestoryObject(i->second.second);
-			g_content_file_map[QueryContentGroupFile(i->second.first)] = true;
+			QueryContentGroup(i->second.first)->_dirty = true;
 			g_objct_manager.m_object_map.erase(i);
 		}
 
@@ -172,7 +266,7 @@ namespace Atlas
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			if(info!=NULL && i->second.first!=info) return NULL;
-			g_content_file_map[QueryContentGroupFile(info)] = true;
+			QueryContentGroup(i->second.first)->_dirty = true;
 			return i->second.second;
 		}
 
@@ -201,12 +295,12 @@ namespace Atlas
 		const A_CONTENT_OBJECT* QueryByKey(const DDLReflect::STRUCT_INFO* info, const char* v1, const char* v2, const char* v3, const char* v4)
 		{
 			ATLAS_ASSERT(info && v1);
-			if(!info || v1) return NULL;
+			if(!info || !v1) return NULL;
 
 			_U16 type_id = GetTypeId(info->name);
 			if(type_id==(_U16)-1) return NULL;
 
-			STRUCT_INTERNAL_INFO& internal_info = g_array[type_id-g_typeid_base];
+			STRUCT_INTERNAL_INFO& internal_info = g_contentobject_typearray[type_id-g_typeid_base];
 
 			if(internal_info.keys.empty())
 			{
@@ -255,10 +349,10 @@ namespace Atlas
 		{
 			if(info==NULL)
 			{
-				for(size_t i=0; i<g_array.size(); i++)
+				for(size_t i=0; i<g_contentobject_typearray.size(); i++)
 				{
-					if(g_array[i].keys.size()==0) continue;
-					if(!BuildIndex(g_array[i].info)) return false;
+					if(g_contentobject_typearray[i].keys.size()==0) continue;
+					if(!BuildIndex(g_contentobject_typearray[i].info)) return false;
 				}
 				return true;
 			}
@@ -270,7 +364,7 @@ namespace Atlas
 				return false;
 			}
 
-			STRUCT_INTERNAL_INFO& internal_info = g_array[type_id-g_typeid_base];
+			STRUCT_INTERNAL_INFO& internal_info = g_contentobject_typearray[type_id-g_typeid_base];
 			internal_info.key_map.clear();
 			if(internal_info.keys.size()==0) return true;
 
@@ -352,69 +446,60 @@ namespace Atlas
 			return NULL;
 		}
 
-		struct CONTENT_GROUP
-		{
-			const DDLReflect::STRUCT_INFO* info;
-			const char* name;
-			const char* file;
-		};
-		static Atlas::Map<const DDLReflect::STRUCT_INFO*, CONTENT_GROUP> g_content_group_map;
-
-		void CreateContentGroup(const DDLReflect::STRUCT_INFO* info, const char* name, const char* file)
-		{
-			ATLAS_ASSERT(g_content_group_map.find(info)==g_content_group_map.end());
-			CONTENT_GROUP group = { info, name, file };
-			g_content_group_map[info] = group;
-			if(g_content_file_map.find(file)==g_content_file_map.end())
-			{
-				g_content_file_map[file] = true;
-			}
-		}
-
-		const char* QueryContentGroupName(const DDLReflect::STRUCT_INFO* info)
-		{
-			ATLAS_ASSERT(info);
-			if(info==DDLReflect::GetStruct<A_CONTENT_OBJECT>()) return g_default_name;
-			Atlas::Map<const DDLReflect::STRUCT_INFO*, CONTENT_GROUP>::iterator i;
-			i = g_content_group_map.find(info);
-			if(i!=g_content_group_map.end()) return i->second.name;
-			return QueryContentGroupName(info);
-		}
-
-		const char* QueryContentGroupFile(const DDLReflect::STRUCT_INFO* info)
-		{
-			ATLAS_ASSERT(info);
-			Atlas::Map<const DDLReflect::STRUCT_INFO*, CONTENT_GROUP>::iterator i;
-			i = g_content_group_map.find(info);
-			if(i!=g_content_group_map.end()) return i->second.file;
-			return QueryContentGroupFile(info->parent);
-		}
-
-		void GetContentFileList(Atlas::Vector<Atlas::String>& list)
-		{
-			list.clear();
-			Atlas::Map<Atlas::String, bool>::iterator i;
-			for(i=g_content_file_map.begin(); i!=g_content_file_map.end(); i++)
-			{
-				list.push_back(i->first);
-			}
-		}
-
 		bool LoadContent(const char* path)
 		{
-			Atlas::Map<Atlas::String, bool>::iterator i;
-			for(i=g_content_file_map.begin(); i!=g_content_file_map.end(); i++)
+			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				char file[1000];
 				sprintf(file, "%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/",i->first.c_str());
-				if(!LoadContentFromFile(file)) return false;
-				g_content_file_map[i->first] = false;
+				if(!LoadContentFromJsonFile(file)) return false;
+				i->second._dirty = false;
 			}
 
 			return true;
 		}
 
-		bool LoadContentFromFile(const char* filename)
+		static bool CreateContentObject(Json::Value elem)
+		{
+			if(!elem.isObject())
+			{
+				return false;
+			}
+			Json::Value type = elem.get("type", Json::Value());
+			Json::Value data = elem.get("data", Json::Value());
+			if(!type.isString() || !data.isObject())
+			{
+				return false;
+			}
+			Json::Value vuuid = data.get("uuid", Json::Value());
+			if(!vuuid.isString())
+			{
+				return false;
+			}
+			A_UUID uuid;
+			if(!AUuidFromString(vuuid.asString().c_str(), uuid))
+			{
+				return false;
+			}
+			const DDLReflect::STRUCT_INFO* info = GetType(type.asString().c_str());
+			if(!info)
+			{
+				return false;
+			}
+			A_CONTENT_OBJECT* object = Alloc(info, uuid);
+			if(!object)
+			{
+				return false;
+			}
+			if(!DDLReflect::Json2Struct(info, data, (_U8*)object))
+			{
+				return false;
+			}
+			return true;
+		}
+
+		bool LoadContentFromJsonFile(const char* filename)
 		{
 			Json::Value root;
 			std::ifstream f(filename, std::ifstream::binary);
@@ -432,139 +517,184 @@ namespace Atlas
 
 			for(Json::Value::UInt index=0; index<body.size(); index++)
 			{
-				Json::Value elem = body.get(index, Json::Value());
-				if(!elem.isObject())
-				{
-					return false;
-				}
-				Json::Value type = elem.get("type", Json::Value());
-				Json::Value data = elem.get("data", Json::Value());
-				if(!type.isString() || !data.isObject())
-				{
-					return false;
-				}
-				Json::Value vuuid = data.get("uuid", Json::Value());
-				if(!vuuid.isString())
-				{
-					return false;
-				}
-				A_UUID uuid;
-				if(!AUuidFromString(vuuid.asString().c_str(), uuid))
-				{
-					return false;
-				}
-				const DDLReflect::STRUCT_INFO* info = GetType(type.asString().c_str());
-				if(!info)
-				{
-					return false;
-				}
-				A_CONTENT_OBJECT* object = Alloc(info, uuid);
-				if(!object)
-				{
-					return false;
-				}
-				if(!DDLReflect::Json2Struct(info, data, (_U8*)object))
-				{
-					return false;
-				}
+				if(!CreateContentObject(body.get(index, Json::Value()))) return false;
 			}
 			return true;
 		}
 
-		bool SaveContent(const char* file, bool force)
+		bool LoadContentFromBinaryFile(const char* filename, const char* deskey)
+		{
+			DES_KEY key;
+			DES_KEY_S keys;
+			if(!DES_KeyFromString(key, deskey)) return false;
+			DES_SetKey(key, keys);
+
+			FILE* fp = fopen(filename, "rb");
+			Atlas::String line;
+			for(;;)
+			{
+				char src[8], buf[9];
+				if(fread(src, 1, 8, fp)!=8) break;
+				DES_Decrypt(keys, buf, src);
+				buf[8] = '\0';
+				line.append(buf);
+				if(strlen(buf)<8)
+				{
+					Json::Value elm;
+					Json::Reader reader;
+					if(!reader.parse(line.c_str(), line.c_str()+line.size(), elm, false)) break;
+					if(!CreateContentObject(elm))
+					{
+						fclose(fp);
+						return false;
+					}
+					line = "";
+				}
+				if(feof(fp))
+				{
+					if(line.size()==0)
+					{
+						fclose(fp);
+						return true;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+			fclose(fp);
+			return true;
+		}
+
+		bool SaveContent(const char* path, bool force)
 		{
 			Atlas::Map<Atlas::String, std::ofstream*> vmap;
 			Atlas::Map<Atlas::String, bool> vmap_a;
 
+			Atlas::Map<Atlas::String, CContentGroup>::iterator gi;
+			for(gi=g_content_group_map.begin(); gi!=g_content_group_map.end(); gi++)
 			{
-				Atlas::Map<Atlas::String, bool>::iterator i;
-				for(i=g_content_file_map.begin(); i!=g_content_file_map.end(); i++)
+				if(!gi->second._dirty && !force) continue;
+
+				char filepath[1000];
+				sprintf(filepath, "%s/%s", path, gi->first.c_str());
+				vmap_a[gi->first.c_str()] = true;
+				vmap[gi->first.c_str()] = ATLAS_NEW std::ofstream();
+				std::ofstream& f = *(vmap[gi->first.c_str()]);
+				f.open(filepath, std::ifstream::binary);
+				if(!f.is_open())
 				{
-					if(!i->second && !force) continue;
-					if(file && i->first!=file) continue;
-
-					char filepath[1000];
-					sprintf(filepath, "%s/Content/%s", Atlas::AtlasGameDir(), i->first.c_str());
-					vmap_a[i->first.c_str()] = true;
-					vmap[i->first.c_str()] = ATLAS_NEW std::ofstream();
-					std::ofstream& f = *(vmap[i->first.c_str()]);
-					f.open(filepath, std::ifstream::binary);
-					if(!f.is_open())
-					{
-						Atlas::Map<Atlas::String, std::ofstream*>::iterator fi;
-						for(fi=vmap.begin(); fi!=vmap.end(); fi++) delete fi->second;
-						vmap.clear();
-						return false;
-					}
-					f << "{" << std::endl;
-					f << "\t\"head\":\"json\"," << std::endl;
-					f << "\t\"body\":" << std::endl;
-					f << "\t[" << std::endl;
+					Atlas::Map<Atlas::String, std::ofstream*>::iterator fi;
+					for(fi=vmap.begin(); fi!=vmap.end(); fi++) delete fi->second;
+					vmap.clear();
+					return false;
 				}
-				if(vmap.size()==0) return true;
+				f << "{" << std::endl;
+				f << "\t\"head\":\"json\"," << std::endl;
+				f << "\t\"body\":" << std::endl;
+				f << "\t[" << std::endl;
 			}
+			if(vmap.size()==0) return true;
 
+			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator oi;
+			for(oi=g_objct_manager.m_object_map.begin(); oi!=g_objct_manager.m_object_map.end(); oi++)
 			{
-				Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
-				for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
+				const char* file = QueryContentGroupName(oi->second.first);
+				if(vmap.find(file)==vmap.end()) continue;
+
+				std::ofstream& f = *(vmap[file]);
+				Atlas::String va;
+				DDLReflect::Struct2Json(oi->second.first, (const _U8*)(oi->second.second), va);
+
+				if(vmap_a[file])
 				{
-					const char* file = QueryContentGroupFile(i->second.first);
-					if(vmap.find(file)==vmap.end()) continue;
-
-					std::ofstream& f = *(vmap[file]);
-					Atlas::String va;
-					DDLReflect::Struct2Json(i->second.first, (const _U8*)(i->second.second), va);
-
-					if(vmap_a[file])
-					{
-						vmap_a[file] = false;
-					}
-					else
-					{
-					f << "\t\t}," << std::endl;
-					}
-					f << "\t\t{" << std::endl;
-					f << "\t\t\t" << "\"type\":\"" << i->second.first->name << "\"," << std::endl;
-					f << "\t\t\t" << "\"data\":" << va;
+					vmap_a[file] = false;
 				}
-			}
-
-			{
-				Atlas::Map<Atlas::String, std::ofstream*>::iterator fi;
-				for(fi=vmap.begin(); fi!=vmap.end(); fi++)
+				else
 				{
-					std::ofstream& f = *(fi->second);
-					if(!vmap_a[fi->first])
-					{
-					f << "\t\t}" << std::endl;
-					}
-					f << "\t]" << std::endl;
-					f << "}" << std::endl;
-
-					g_content_file_map[fi->first] = false;
+				f << "\t\t}," << std::endl;
 				}
+				f << "\t\t{" << std::endl;
+				f << "\t\t\t" << "\"type\":\"" << oi->second.first->name << "\"," << std::endl;
+				f << "\t\t\t" << "\"data\":" << va;
 			}
+
+			Atlas::Map<Atlas::String, std::ofstream*>::iterator fi;
+			for(fi=vmap.begin(); fi!=vmap.end(); fi++)
 			{
-				Atlas::Map<Atlas::String, std::ofstream*>::iterator fi;
-				for(fi=vmap.begin(); fi!=vmap.end(); fi++) delete fi->second;
-				vmap.clear();
+				std::ofstream& f = *(fi->second);
+				if(!vmap_a[fi->first])
+				{
+				f << "\t\t}" << std::endl;
+				}
+				f << "\t]" << std::endl;
+				f << "}" << std::endl;
+				f.close();
+				delete fi->second;
+				((CContentGroup*)GetContentGroup(fi->first.c_str()))->_dirty = false;
 			}
+			vmap.clear();
 
 			return true;
 		}
 
-		void ClearContent()
+		bool SaveContentToBinaryFile(const char* file, const char* deskey)
+		{
+			DES_KEY key;
+			DES_KEY_S keys;
+			if(!DES_KeyFromString(key, deskey)) return false;
+			DES_SetKey(key, keys);
+
+			FILE* fp = fopen(file, "wb");
+			if(!fp) return false;
+
+			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
+			{
+				CContentGroup* group = QueryContentGroup(i->second.first);
+				if(!group->_cook) continue;
+				Atlas::String va;
+				DDLReflect::Struct2Json(i->second.first, (const _U8*)(i->second.second), va);
+				Atlas::String line = StringFormat("{\"type\":\"%s\",\"data\":%s}", i->second.first->name, va.c_str());
+				const char* pos = line.c_str();
+				size_t size = line.size() + 1;
+				char buf[8];
+				while(size>8)
+				{
+					DES_Encrypt(keys, buf, pos);
+					fwrite(buf, 1, 8, fp);
+					pos += 8;
+					size -= 8;
+				}
+				char buf1[8];
+				memset(buf1, 0, sizeof(buf));
+				memcpy(buf1, pos, size);
+				DES_Encrypt(keys, buf, buf1);
+				fwrite(buf, 1, 8, fp);
+			}
+
+			fclose(fp);
+			return true;
+		}
+
+		void ClearContents()
 		{
 			g_objct_manager.Clear();
 			BuildIndex();
+			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
+			{
+				i->second._dirty = true;
+			}
 		}
 
 		bool IsContentDirty()
 		{
-			Atlas::Map<Atlas::String, bool>::iterator i;
-			for(i=g_content_file_map.begin(); i!=g_content_file_map.end(); i++)
+			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
-				if(i->second) return true;
+				if(i->second._dirty) return true;
 			}
 			return false;
 		}

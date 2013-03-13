@@ -19,7 +19,19 @@ namespace Atlas
 	void InitContentObjects()
 	{
 		Atlas::Engine::InitContentObjects();
-		ContentObject::Register(DDLReflect::GetStruct<KNIGHT_SKILL_CONFIG>());
+
+		ContentObject::CreateContentGroup("AtlasDataTest", "AtlasDataTest.json", true)
+			->Register(DDLReflect::GetStruct<DATATEST_BASE_CONFIG>(),true,"name");
+
+		//ContentObject::Register(DDLReflect::GetStruct<KNIGHT_SKILL_CONFIG>(),true,"name");
+		//ContentObject::Register(DDLReflect::GetStruct<KNIGHT_SKILL_ACTIVE_CONFIG>(),true,"name");
+		//ContentObject::Register(DDLReflect::GetStruct<KNIGHT_ITEM_CONFIG>(),true,"name");
+		//ContentObject::Register(DDLReflect::GetStruct<KNIGHT_ATTR_MOD_CONFIG>(),true,"name");
+		//ContentObject::Register(DDLReflect::GetStruct<KNIGHT_SKILL_BUNDLE_CONFIG>(),true,"name");
+		//ContentObject::Register(DDLReflect::GetStruct<KNIGHT_EQUIPMENT_CONFIG>(),true,"name");
+
+		//ContentObject::CreateContentGroup(DDLReflect::GetStruct<KNIGHT_SKILL_CONFIG>(), "skill", "skill.json");
+		//ContentObject::CreateContentGroup(DDLReflect::GetStruct<KNIGHT_SKILL_ACTIVE_CONFIG>(), "skill", "skill.json");
 	}
 
 	void InitLiveObjects()

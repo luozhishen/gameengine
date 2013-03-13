@@ -7,59 +7,125 @@
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<KNIGHT_SKILL_CONFIG>(KNIGHT_SKILL_CONFIG& Value)
+	bool BufferReader::Read<DATATEST_INNER_OBJECT_CONFIG>(DATATEST_INNER_OBJECT_CONFIG& Value)
 	{
-		if(!ReadString<KNIGHT_SKILL_NAME_MAX>(Value.SkillName)) return false;
-		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.SkillDesc)) return false;
-		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
-		if(!Read<_U32>(Value.Element)) return false;
-		if(!Read<_U32>(Value.FormulaType)) return false;
-		if(!Read<_U32>(Value.Target)) return false;
-		if(!Read<_U32>(Value.Range)) return false;
-		if(!Read<_U32>(Value.AveValue)) return false;
-		if(!Read<_F32>(Value.Probability)) return false;
-		if(!ReadStringArray<KNIGHT_RESOURCE_URL_MAX, KNIGHT_SKILL_BUFF_MAX>(Value.BuffPaths)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.IntValue)) return false;
+		if(!Read<_F32>(Value.FloatValue)) return false;
+		if(!ReadString<DATATEST_RESOURCE_URL_MAX>(Value.StrValue)) return false;
 		return true;
 	}
 	template<>
-	bool BufferWriter::Write<KNIGHT_SKILL_CONFIG>(const KNIGHT_SKILL_CONFIG& Value)
+	bool BufferWriter::Write<DATATEST_INNER_OBJECT_CONFIG>(const DATATEST_INNER_OBJECT_CONFIG& Value)
 	{
-		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
-		if(!WriteString<KNIGHT_SKILL_NAME_MAX>(Value.SkillName)) return false;
-		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.SkillDesc)) return false;
-		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
-		if(!Write<_U32>(Value.Element)) return false;
-		if(!Write<_U32>(Value.FormulaType)) return false;
-		if(!Write<_U32>(Value.Target)) return false;
-		if(!Write<_U32>(Value.Range)) return false;
-		if(!Write<_U32>(Value.AveValue)) return false;
-		if(!Write<_F32>(Value.Probability)) return false;
-		if(!WriteStringArray<KNIGHT_RESOURCE_URL_MAX, KNIGHT_SKILL_BUFF_MAX>(Value.BuffPaths)) return false;
+		if(!Write<_U32>(Value.IntValue)) return false;
+		if(!Write<_F32>(Value.FloatValue)) return false;
+		if(!WriteString<DATATEST_RESOURCE_URL_MAX>(Value.StrValue)) return false;
 		return true;
 	}
 }
 
 namespace DDLReflect
 {
-	static FIELD_INFO _struct_KNIGHT_SKILL_CONFIG_fieldinfo[] =
+	static FIELD_INFO _struct_DATATEST_INNER_OBJECT_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "SkillName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, SkillName), NULL, (_U16)KNIGHT_SKILL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_SKILL_NAME_MAX>), NULL},
-		{TYPE_STRING, "SkillDesc", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, SkillDesc), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
-		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
-		{TYPE_U32, "Element", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, Element), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "FormulaType", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, FormulaType), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "Target", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, Target), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "Range", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, Range), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "AveValue", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, AveValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "Probability", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, Probability), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_STRING|TYPE_ARRAY, "BuffPaths", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, BuffPaths), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)KNIGHT_SKILL_BUFF_MAX, (_U16)((size_t)(&((DDL::Array<DDL::String<KNIGHT_RESOURCE_URL_MAX>, KNIGHT_SKILL_BUFF_MAX>*)NULL)->_Array)), (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
+		{TYPE_U32, "IntValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_INNER_OBJECT_CONFIG, IntValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "FloatValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_INNER_OBJECT_CONFIG, FloatValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_STRING, "StrValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_INNER_OBJECT_CONFIG, StrValue), NULL, (_U16)DATATEST_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<DATATEST_RESOURCE_URL_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_KNIGHT_SKILL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_SKILL_CONFIG", sizeof(KNIGHT_SKILL_CONFIG), 10, _struct_KNIGHT_SKILL_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_DATATEST_INNER_OBJECT_CONFIG_info = { NULL, "DATATEST_INNER_OBJECT_CONFIG", sizeof(DATATEST_INNER_OBJECT_CONFIG), 3, _struct_DATATEST_INNER_OBJECT_CONFIG_fieldinfo };
 	template<>
-	const STRUCT_INFO* GetStruct<KNIGHT_SKILL_CONFIG>()
+	const STRUCT_INFO* GetStruct<DATATEST_INNER_OBJECT_CONFIG>()
 	{
-		return &_rfl_struct_KNIGHT_SKILL_CONFIG_info;
+		return &_rfl_struct_DATATEST_INNER_OBJECT_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<DATATEST_INNER_STRUCT_CONFIG>(DATATEST_INNER_STRUCT_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.StructIntValue)) return false;
+		if(!ReadArray<_F32, DATATEST_ARRAY_ELEMENT_MAX>(Value.StructArrFloatValue)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<DATATEST_INNER_STRUCT_CONFIG>(const DATATEST_INNER_STRUCT_CONFIG& Value)
+	{
+		if(!Write<_U32>(Value.StructIntValue)) return false;
+		if(!WriteArray<_F32, DATATEST_ARRAY_ELEMENT_MAX>(Value.StructArrFloatValue)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_DATATEST_INNER_STRUCT_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "StructIntValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_INNER_STRUCT_CONFIG, StructIntValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32|TYPE_ARRAY, "StructArrFloatValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_INNER_STRUCT_CONFIG, StructArrFloatValue), NULL, (_U16)-1, (_U16)DATATEST_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<_F32, DATATEST_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(_F32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_DATATEST_INNER_STRUCT_CONFIG_info = { NULL, "DATATEST_INNER_STRUCT_CONFIG", sizeof(DATATEST_INNER_STRUCT_CONFIG), 2, _struct_DATATEST_INNER_STRUCT_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<DATATEST_INNER_STRUCT_CONFIG>()
+	{
+		return &_rfl_struct_DATATEST_INNER_STRUCT_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<DATATEST_BASE_CONFIG>(DATATEST_BASE_CONFIG& Value)
+	{
+		if(!ReadString<DATATEST_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!Read<_U32>(Value.IntValue)) return false;
+		if(!Read<_F32>(Value.FloatValue)) return false;
+		if(!Read<_U8>(Value.EnumValue)) return false;
+		if(!ReadString<DATATEST_RESOURCE_URL_MAX>(Value.StrValue)) return false;
+		if(!Read<DATATEST_INNER_OBJECT_CONFIG>(Value.ObjectInnerValue)) return false;
+		if(!Read<DATATEST_INNER_STRUCT_CONFIG>(Value.StructValue)) return false;
+		if(!ReadArray<_U32, DATATEST_ARRAY_ELEMENT_MAX>(Value.ArrIntValue)) return false;
+		if(!ReadArray<DATATEST_INNER_STRUCT_CONFIG, DATATEST_ARRAY_ELEMENT_MAX>(Value.ArrStructValue)) return false;
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<DATATEST_BASE_CONFIG>(const DATATEST_BASE_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<DATATEST_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!Write<_U32>(Value.IntValue)) return false;
+		if(!Write<_F32>(Value.FloatValue)) return false;
+		if(!Write<_U8>(Value.EnumValue)) return false;
+		if(!WriteString<DATATEST_RESOURCE_URL_MAX>(Value.StrValue)) return false;
+		if(!Write<DATATEST_INNER_OBJECT_CONFIG>(Value.ObjectInnerValue)) return false;
+		if(!Write<DATATEST_INNER_STRUCT_CONFIG>(Value.StructValue)) return false;
+		if(!WriteArray<_U32, DATATEST_ARRAY_ELEMENT_MAX>(Value.ArrIntValue)) return false;
+		if(!WriteArray<DATATEST_INNER_STRUCT_CONFIG, DATATEST_ARRAY_ELEMENT_MAX>(Value.ArrStructValue)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_DATATEST_BASE_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, ResourceURL), NULL, (_U16)DATATEST_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<DATATEST_RESOURCE_URL_MAX>), NULL},
+		{TYPE_U32, "IntValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, IntValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "FloatValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, FloatValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U8, "EnumValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, EnumValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "StrValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, StrValue), NULL, (_U16)DATATEST_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<DATATEST_RESOURCE_URL_MAX>), NULL},
+		{TYPE_STRUCT, "ObjectInnerValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, ObjectInnerValue), &_rfl_struct_DATATEST_INNER_OBJECT_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(DATATEST_INNER_OBJECT_CONFIG), NULL},
+		{TYPE_STRUCT, "StructValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, StructValue), &_rfl_struct_DATATEST_INNER_STRUCT_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(DATATEST_INNER_STRUCT_CONFIG), NULL},
+		{TYPE_U32|TYPE_ARRAY, "ArrIntValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, ArrIntValue), NULL, (_U16)-1, (_U16)DATATEST_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<_U32, DATATEST_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "ArrStructValue", 0, (_U16)ATLAS_OFFSETOF(DATATEST_BASE_CONFIG, ArrStructValue), &_rfl_struct_DATATEST_INNER_STRUCT_CONFIG_info, (_U16)-1, (_U16)DATATEST_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<DATATEST_INNER_STRUCT_CONFIG, DATATEST_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(DATATEST_INNER_STRUCT_CONFIG), NULL},
+	};
+	STRUCT_INFO _rfl_struct_DATATEST_BASE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "DATATEST_BASE_CONFIG", sizeof(DATATEST_BASE_CONFIG), 9, _struct_DATATEST_BASE_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<DATATEST_BASE_CONFIG>()
+	{
+		return &_rfl_struct_DATATEST_BASE_CONFIG_info;
 	}
 }
 

@@ -16,7 +16,7 @@ namespace Atlas
 		strcpy(path, GetExeDir());
 		p = strrchr(path, ATLAS_PATH_SLASH);
 		if(!p) return NULL;
-		sprintf(p, "%c..%c..%c%s", ATLAS_PATH_SLASH, ATLAS_PATH_SLASH, ATLAS_PATH_SLASH, AtlasGameName());
+		sprintf(p, "%c..%c..%c%s%c", ATLAS_PATH_SLASH, ATLAS_PATH_SLASH, ATLAS_PATH_SLASH, AtlasGameName(), ATLAS_PATH_SLASH);
 		strcpy(_global_game_dir, path);
 		return _global_game_dir;
 	}
@@ -216,7 +216,6 @@ namespace Atlas
 
 		void InitContentObjects()
 		{
-			ContentObject::CreateContentGroup(DDLReflect::GetStruct<A_CONTENT_OBJECT>(), "default", "default.json");
 		}
 
 		void InitLiveObjects()

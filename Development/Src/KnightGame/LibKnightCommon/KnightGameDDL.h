@@ -18,42 +18,84 @@
 
 #include "../../LibCommon/CommonDDL.h"
 
-const _U32 KNIGHT_DESCRIPTION_MAX = 256;
+const _U32 DATATEST_RESOURCE_URL_MAX = 128;
 
-const _U32 KNIGHT_RESOURCE_URL_MAX = 128;
+const _U32 DATATEST_ARRAY_ELEMENT_MAX = 16;
 
-const _U32 KNIGHT_SKILL_NAME_MAX = 16;
-
-const _U32 KNIGHT_SKILL_BUFF_MAX = 8;
-
-struct KNIGHT_SKILL_CONFIG : A_CONTENT_OBJECT
+struct DATATEST_INNER_OBJECT_CONFIG
 {
-	DDL::String<KNIGHT_SKILL_NAME_MAX> SkillName;
-	DDL::String<KNIGHT_DESCRIPTION_MAX> SkillDesc;
-	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
-	_U32 Element;
-	_U32 FormulaType;
-	_U32 Target;
-	_U32 Range;
-	_U32 AveValue;
-	_F32 Probability;
-	DDL::Array<DDL::String<KNIGHT_RESOURCE_URL_MAX>,KNIGHT_SKILL_BUFF_MAX> BuffPaths;
+	_U32 IntValue;
+	_F32 FloatValue;
+	DDL::String<DATATEST_RESOURCE_URL_MAX> StrValue;
 };
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<KNIGHT_SKILL_CONFIG>(KNIGHT_SKILL_CONFIG& Value);
+	bool BufferReader::Read<DATATEST_INNER_OBJECT_CONFIG>(DATATEST_INNER_OBJECT_CONFIG& Value);
 	template<>
-	bool BufferWriter::Write<KNIGHT_SKILL_CONFIG>(const KNIGHT_SKILL_CONFIG& Value);
+	bool BufferWriter::Write<DATATEST_INNER_OBJECT_CONFIG>(const DATATEST_INNER_OBJECT_CONFIG& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<KNIGHT_SKILL_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_KNIGHT_SKILL_CONFIG_info;
+	const STRUCT_INFO* GetStruct<DATATEST_INNER_OBJECT_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_DATATEST_INNER_OBJECT_CONFIG_info;
 }
+
+struct DATATEST_INNER_STRUCT_CONFIG
+{
+	_U32 StructIntValue;
+	DDL::Array<_F32, DATATEST_ARRAY_ELEMENT_MAX> StructArrFloatValue;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<DATATEST_INNER_STRUCT_CONFIG>(DATATEST_INNER_STRUCT_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<DATATEST_INNER_STRUCT_CONFIG>(const DATATEST_INNER_STRUCT_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<DATATEST_INNER_STRUCT_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_DATATEST_INNER_STRUCT_CONFIG_info;
+}
+
+struct DATATEST_BASE_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<DATATEST_RESOURCE_URL_MAX> ResourceURL;
+	_U32 IntValue;
+	_F32 FloatValue;
+	_U8 EnumValue;
+	DDL::String<DATATEST_RESOURCE_URL_MAX> StrValue;
+	DATATEST_INNER_OBJECT_CONFIG ObjectInnerValue;
+	DATATEST_INNER_STRUCT_CONFIG StructValue;
+	DDL::Array<_U32, DATATEST_ARRAY_ELEMENT_MAX> ArrIntValue;
+	DDL::Array<DATATEST_INNER_STRUCT_CONFIG, DATATEST_ARRAY_ELEMENT_MAX> ArrStructValue;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<DATATEST_BASE_CONFIG>(DATATEST_BASE_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<DATATEST_BASE_CONFIG>(const DATATEST_BASE_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<DATATEST_BASE_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_DATATEST_BASE_CONFIG_info;
+}
+
+const _U32 KNIGHT_DESCRIPTION_MAX = 256;
+
+const _U32 KNIGHT_RESOURCE_URL_MAX = 128;
 
 
 #pragma pack(pop)

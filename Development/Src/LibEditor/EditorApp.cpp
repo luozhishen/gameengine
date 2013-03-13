@@ -23,6 +23,34 @@ CEditorApp::~CEditorApp()
 {
 }
 
+int CEditorApp::OnRun()
+{
+	if(__argc>1)
+	{
+		if(strcmp(__argv[1], "Cook")==0)
+		{
+			if(__argc!=4)
+			{
+				wxMessageBox(wxT("invalid command line"), wxT("ERROR"));
+				return 1;
+			}
+			if(!Atlas::ContentObject::BuildIndex())
+			{
+				wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("Error in BuildIndex"));
+				return 1;
+			}
+			if(!Atlas::ContentObject::SaveContentToBinaryFile(__argv[2], __argv[3]))
+			{
+				wxMessageBox(wxT(""), wxT("Error in SaveContent"));
+				return 1;
+			}
+			return 0;
+		}
+	}
+
+	return wxApp::OnRun();
+}
+
 bool CEditorApp::OnInit()
 {
 	Atlas::InitDDLStub();

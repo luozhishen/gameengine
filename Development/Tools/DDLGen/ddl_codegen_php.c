@@ -10,6 +10,9 @@ static FILE* _P = NULL;
 static void OutP(int tab, const char* fmt, ...);
 static const char* get_phptype(const DDL_ARG* arg);
 static int is_struct(const DDL_ARG* arg);
+static int need_range(const DDL_ARG* arg);
+static const char* range_min(const DDL_ARG* arg);
+static const char* range_max(const DDL_ARG* arg);
 
 int ddlgen_codephp_open(const char* filename)
 {
@@ -97,6 +100,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 					OutP(3, "if(!is_numeric($this->%s[$__i])) return false;\n", arg->name);
 				} else {
 					OutP(3, "if(!is_%s($this->%s[$__i])) return false;\n", get_phptype(arg), arg->name);
+					if(need_range(arg)) {
+						OutP(3, "if($this->%s[$__i]<%s || $this->%s[$__i]>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
+					}
 				}
 				if(strcmp(get_phptype(arg), "string")==0) {
 					OutP(3, "$__result = $__result.'\"'.$this->%s[$__i].'\"';\n", arg->name);
@@ -115,6 +121,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 					OutP(2, "if(!is_numeric($this->%s)) return '';\n", arg->name);
 				} else {
 					OutP(2, "if(!is_%s($this->%s)) return '';\n", get_phptype(arg), arg->name);
+					if(need_range(arg)) {
+						OutP(2, "if($this->%s<%s || $this->%s>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
+					}
 				}
 				if(strcmp(get_phptype(arg), "string")==0) {
 					OutP(2, "$__result = $__result.%s%s\":\"'.$this->%s.'\"';\n", a>0?"',\"":"'\"", arg->name, arg->name);
@@ -187,6 +196,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 					OutP(3, "if(!is_numeric($_earray[$__i])) return false;\n");
 				} else {
 					OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+					if(need_range(arg)) {
+						OutP(3, "if($_earray[$__i]<%s || $_earray[$__i]>%s) return false;\n", range_min(arg), range_max(arg));
+					}
 				}
 				OutP(3, "$this->%s[$__i] = $_earray[$__i];\n", arg->name);
 			}
@@ -199,6 +211,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 					OutP(2, "if(!is_numeric($_array['%s'])) return false;\n", arg->name);
 				} else {
 					OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+					if(need_range(arg)) {
+						OutP(2, "if($_array['%s']<%s || $_array['%s']>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
+					}
 				}
 				OutP(2, "$this->%s = $_array['%s'];\n", arg->name, arg->name);
 			}
@@ -240,6 +255,9 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 						OutP(3, "if(!is_numeric($_earray[$__i])) return false;\n");
 					} else {
 						OutP(3, "if(!is_%s($_earray[$__i])) return false;\n", get_phptype(arg));
+						if(need_range(arg)) {
+							OutP(3, "if($_earray[$__i]<%s || $_earray[$__i]>%s) return false;\n", range_min(arg), range_max(arg));
+						}
 					}
 					OutP(3, "$__%s[$__i] = $_earray[$__i];\n", arg->name);
 				}
@@ -254,6 +272,9 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 						OutP(2, "if(!is_numeric($_array['%s'])) return false;\n", arg->name);
 					} else {
 						OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+						if(need_range(arg)) {
+							OutP(2, "if($_array['%s']<%s || $_array['%s']>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
+						}
 					}
 					OutP(2, "$__%s = $_array['%s'];\n", arg->name, arg->name);
 				}
@@ -315,6 +336,9 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 						OutP(3, "if(!is_numeric($%s[$__i])) return false;\n", arg->name);
 					} else {
 						OutP(3, "if(!is_%s($%s[$__i])) return false;\n", get_phptype(arg), arg->name);
+						if(need_range(arg)) {
+							OutP(3, "if($%s[$__i]<%s || $%s[$__i]>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
+						}
 					}
 					if(strcmp(get_phptype(arg), "string")==0) {
 						OutP(3, "$__result = $__result.'\"'.$%s[$__i].'\"';\n", arg->name);
@@ -327,15 +351,18 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 			} else {
 				if(is_struct(arg)) {
 					OutP(2, "if(!is_object($%s) || get_class($%s)!='%s') return '';\n", arg->name, arg->name, arg->type);
-					OutP(2, "$__result = %s%s'\"%s\":'.$%s->ToString();\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
+					OutP(2, "$__result = %s'%s\"%s\":'.$%s->ToString();\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 				} else {
 					if(strcmp(get_phptype(arg), "float")==0) {
 						OutP(2, "if(!is_numeric($%s)) return '';\n", arg->name);
 					} else {
 						OutP(2, "if(!is_%s($%s)) return '';\n", get_phptype(arg), arg->name);
+						if(need_range(arg)) {
+							OutP(2, "if($%s<%s || $%s>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
+						}
 					}
 					if(strcmp(get_phptype(arg), "string")==0) {
-						OutP(2, "$__result = %s%s'\"%s\":\"'.$%s.'\"';\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
+						OutP(2, "$__result = %s'%s\"%s\":\"'.$%s.'\"';\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 					} else {
 						OutP(2, "$__result = %s'%s\"%s\":'.$%s;\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 					}
@@ -409,4 +436,36 @@ int is_struct(const DDL_ARG* arg)
 			return 0;
 	}
 	return 1;
+}
+
+int need_range(const DDL_ARG* arg)
+{
+	return	strcmp(arg->type, "_U8")==0
+		||	strcmp(arg->type, "_U16")==0
+		||	strcmp(arg->type, "_U32")==0
+		||	strcmp(arg->type, "_U64")==0
+		||	strcmp(arg->type, "_S8")==0
+		||	strcmp(arg->type, "_S16")==0;
+}
+
+const char* range_min(const DDL_ARG* arg)
+{
+	if(strcmp(arg->type, "_U8")==0)		return "0";
+	if(strcmp(arg->type, "_U16")==0)		return "0";
+	if(strcmp(arg->type, "_U32")==0)		return "0";
+	if(strcmp(arg->type, "_U64")==0)		return "0";
+	if(strcmp(arg->type, "_S8")==0)		return "-127";
+	if(strcmp(arg->type, "_S16")==0)		return "-32767";
+	return NULL;
+}
+
+const char* range_max(const DDL_ARG* arg)
+{
+	if(strcmp(arg->type, "_U8")==0)		return "255";
+	if(strcmp(arg->type, "_U16")==0)		return "65535";
+	if(strcmp(arg->type, "_U32")==0)		return "4294967295";
+	if(strcmp(arg->type, "_U64")==0)		return "4294967295";
+	if(strcmp(arg->type, "_S8")==0)		return "127";
+	if(strcmp(arg->type, "_S16")==0)		return "32767";
+	return NULL;
 }

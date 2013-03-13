@@ -4,6 +4,7 @@
 #include <AtlasBase.h>
 #include <AtlasCommon.h>
 
+#include <fstream>
 #include "ExcelImportor.h"
 #include "OLEAutoExcelWrapper.h"
 
@@ -12,15 +13,18 @@ namespace Atlas
 
 	struct CONTENT_EXECEL_FIELDINFO
 	{
-		String name;
-		CONTENT_EXCEL_ENUM val_map;
+		String field;
+		String colum;
+		CONTENT_EXCEL_ENUM* val_map;
 	};
 
 	struct CONTENT_EXCEL_TEMPLATE
 	{
-		Map<String, CONTENT_EXECEL_FIELDINFO> m_field_map;
+		String name;
+		String dispname;
 		int m_nTitleLine;
 		int m_nStartLine;
+		Map<String, CONTENT_EXCEL_ENUM*> m_field_map;
 	};
 
 	void CContentExcelImportor::ClearTemplateDefine()
@@ -45,6 +49,81 @@ namespace Atlas
 	bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 	{
 		ClearTemplateDefine();
+
+		Json::Value root;
+		Json::Reader reader;
+		std::ifstream f(filename, std::ifstream::binary);
+		if(!f.is_open()) return true;
+		if(!reader.parse(f, root, false)) return false;
+		Json::Value enums = root.get("enums", Json::Value());
+		Json::Value tmpls = root.get("templates", Json::Value());
+		if(!enums.isArray() || !tmpls.isArray()) return false;
+
+		for(int e=0; e<(int)enums.size(); e++)
+		{
+			Json::Value _enum = enums[e];
+			if(!_enum.isObject()) return false;
+			Json::Value name = _enum.get("name", Json::Value());
+			if(!name.isString()) return false;
+			Json::Value items = _enum.get("map", Json::Value());
+			if(!items.isArray()) return false;
+
+			if(m_enum_map.find(name.asString().c_str())!=m_enum_map.end()) return false;
+			m_enum_map[name.asString().c_str()] = new CONTENT_EXCEL_ENUM;
+			CONTENT_EXCEL_ENUM& _map = *m_enum_map[name.asString().c_str()];
+
+			for(int i=0; i<(int)items.size(); i++)
+			{
+				Json::Value item = items[i];
+				if(!item.isObject()) return false;
+				Json::Value key = item.get("k", Json::Value());
+				Json::Value val = item.get("v", Json::Value());
+				if(!key.isString() || !val.isString()) return false;
+				if(_map.find(key.asString().c_str())!=_map.end()) return false;
+				_map[key.asString().c_str()] = val.asString().c_str();
+			}
+		}
+
+		for(int e=0; e<(int)enums.size(); e++)
+		{
+			Json::Value _enum = enums[e];
+			if(!_enum.isObject()) return false;
+			Json::Value name = _enum.get("name", Json::Value());
+			if(!name.isString()) return false;
+			Json::Value dispname = _enum.get("dispname", Json::Value());
+			if(!dispname.isString()) return false;
+			Json::Value items = _enum.get("map", Json::Value());
+			if(!items.isArray()) return false;
+			Json::Value titleline = _enum.get("title", Json::Value());
+			Json::Value startline = _enum.get("start", Json::Value());
+			if(!titleline.isInt() || !startline.isInt()) return false;
+
+			if(m_tmpl_map.find(name.asCString())!=m_tmpl_map.end()) return false;
+
+			m_tmpl_map[name.asCString()] = new CONTENT_EXCEL_TEMPLATE;
+			CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[name.asCString()];
+			tmpl.name = name.asCString();
+			tmpl.dispname = dispname.asCString();
+			tmpl.m_nTitleLine = titleline.asInt();
+			tmpl.m_nStartLine = startline.asInt();
+			Map<String, CONTENT_EXECEL_FIELDINFO>& field_map = tmpl.m_field_map;
+
+			for(int i=0; i<(int)items.size(); i++)
+			{
+				Json::Value item = items[i];
+				if(!item.isObject()) return false;
+				Json::Value key = item.get("k", Json::Value());
+				Json::Value val = item.get("v", Json::Value());
+				if(!key.isString() || !val.isString()) return false;
+				if(field_map.find(key.asString().c_str())!=field_map.end()) return false;
+				CONTENT_EXECEL_FIELDINFO fieldinfo;
+				fieldinfo.field = key.asCString();
+
+				fieldinfo.val_map
+				field_map[key.asCString()] = val.asString().c_str();
+			}
+		}
+
 		return true;
 	}
 

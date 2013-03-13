@@ -1,8 +1,6 @@
 #ifndef _IMPORT_DLG_H__
 #define _IMPORT_DLG_H__
 
-#include "ImportConfig.h"
-
 class wxFilePickerCtrl;
 class wxFileDirPickerEvent;
 
@@ -32,8 +30,6 @@ protected:
 	wxCheckBox* m_checkBoxSelAll;
 	wxTextCtrl* m_textCtrlKey;
 	wxButton* m_btnOK;
-
-	Atlas::CContentExcelImportManager* m_pImportManger;
 };
 
 #endif //_IMPORT_DLG_H__

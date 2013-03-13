@@ -22,8 +22,8 @@
     <ClInclude Include="EditorApp.h" />
     <ClInclude Include="EditorFrame.h" />
     <ClInclude Include="ContentDataView.h" />
+    <ClInclude Include="ExcelImportor.h" />
     <ClInclude Include="GenerateObjectDlg.h" />
-    <ClInclude Include="ImportConfig.h" />
     <ClInclude Include="ImportDlg.h" />
     <ClInclude Include="ObjectDefineView.h" />
     <ClInclude Include="OLEAutoExcelWrapper.h" />
@@ -32,8 +32,8 @@
     <ClCompile Include="EditorApp.cpp" />
     <ClCompile Include="EditorFrame.cpp" />
     <ClCompile Include="ContentDataView.cpp" />
+    <ClCompile Include="ExcelImportor.cpp" />
     <ClCompile Include="GenerateObjectDlg.cpp" />
-    <ClCompile Include="ImportConfig.cpp" />
     <ClCompile Include="ImportDlg.cpp" />
     <ClCompile Include="ObjectDefineView.cpp" />
     <ClCompile Include="OLEAutoExcelWrapper.cpp" />

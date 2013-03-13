@@ -34,9 +34,9 @@
 #include <DDLProxy.h>
 #include <DDLStub.h>
 #include <DDLReflect.h>
-#include <ImportConfig.h>
 
-#include "../../LibEditor/ImportConfig.cpp"
+#include "../../SGGame/SGDataImportConsole/ImportConfig.h"
+#include "../../SGGame/SGDataImportConsole/ImportConfig.cpp"
 #include "../../LibEditor/OLEAutoExcelWrapper.cpp"
 
 void display_start();

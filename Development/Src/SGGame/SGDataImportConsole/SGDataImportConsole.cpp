@@ -34,9 +34,8 @@
 #include <DDLProxy.h>
 #include <DDLStub.h>
 #include <DDLReflect.h>
-#include <ImportConfig.h>
+#include "ImportConfig.h"
 
-#include "../../LibEditor/ImportConfig.cpp"
 #include "../../LibEditor/OLEAutoExcelWrapper.cpp"
 
 std::wstring Utf8ToUtf16( const Atlas::String& sSrc );

@@ -137,21 +137,14 @@ CImportDlg::CImportDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Impor
 
 	m_btnOK = ATLAS_NEW wxButton( this, wxID_OK, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_mainSizer->Add( m_btnOK, 0, wxALL|wxALIGN_RIGHT, 5 );
-	this->SetSizer( m_mainSizer );
-	this->Layout();
+	SetSizer( m_mainSizer );
+	Layout();
 
 	InitCombox();
-
-	m_pImportManger = ATLAS_NEW Atlas::CContentExcelImportManager();
 }
 
 CImportDlg::~CImportDlg()
 {
-	if(m_pImportManger)
-	{
-		delete m_pImportManger;
-		m_pImportManger = NULL;
-	}
 }
 
 void CImportDlg::InitCombox()
@@ -194,6 +187,7 @@ void CImportDlg::InitCombox()
 
 void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 {
+/*
 	m_checkList->Clear();
 	wxString strFilePath = m_pFilePicker->GetPath();
 	m_pImportManger->Load(strFilePath);
@@ -205,6 +199,7 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 		wxString val(vSheets[i].c_str(), wxMBConvUTF8());
 		m_checkList->InsertItems(1, &val, i);
 	}
+*/
 }
 
 void CImportDlg::OnSelectAll(wxCommandEvent& event)
@@ -255,8 +250,10 @@ void CImportDlg::EndModal(int retCode)
 	}
 	else
 	{
+		/*
 		wxString strErr = wxString::FromUTF8(m_pImportManger->GetErrorMsg());
 		if(!strErr.IsEmpty()) wxMessageBox(strErr);
+		*/
 	}
 }
 
@@ -307,7 +304,7 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-
+	/*
 	m_pImportManger->Load(strPath);
 
 	const DDLReflect::STRUCT_INFO* pInfo = NULL;
@@ -327,7 +324,7 @@ bool CImportDlg::ProcessImport()
 
 	wxString strUpdateInfo = wxString::FromUTF8(m_pImportManger->GetImportInfoMsg());
 	wxMessageBox(strUpdateInfo, wxT("Import Info"));
-
+*/
 	return true;
 }
 

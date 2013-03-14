@@ -37,7 +37,7 @@
 
 #include "../../SGGame/SGDataImportConsole/ImportConfig.h"
 #include "../../SGGame/SGDataImportConsole/ImportConfig.cpp"
-#include "../../LibEditor/OLEAutoExcelWrapper.cpp"
+#include "../../SGGame/SGDataImportConsole/OLEAutoExcelWrapper.cpp"
 
 void display_start();
 void display_end();

@@ -34,6 +34,8 @@ namespace Atlas
 		const A_CONTENT_OBJECT* QueryByUUID(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info=NULL);
 		const A_CONTENT_OBJECT* QueryByName(const char* name, const DDLReflect::STRUCT_INFO* info=NULL);
 		const A_CONTENT_OBJECT* QueryByKey(const DDLReflect::STRUCT_INFO* info, const char* value1, const char* value2=NULL, const char* value3=NULL, const char* value4=NULL);
+		const A_CONTENT_OBJECT* QueryByUniqueId(const DDLReflect::STRUCT_INFO* info, const char* value1);
+		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Atlas::String& uid);
 
 		bool BuildIndex(const DDLReflect::STRUCT_INFO* info=NULL);
 		const Atlas::String& BuildIndexGetErrorMsg();

@@ -155,15 +155,15 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 	m_checkList->Clear();
 
 	wxString strFilePath = m_pFilePicker->GetPath();
-	m_pExcel->SetFilePath(strFilePath);
+	m_pExcel->SetFilePath((const char*)strFilePath.ToUTF8());
 	if(FAILED(m_pExcel->OpenExcelBook(false)))
 	{
 		wxMessageBox(wxT("Failed to open excel file"), wxT("Error"));
 		return;
 	}
 
-	Atlas::Vector<wxString> vSheets;
-	if(FAILED(m_pExcel->GetExcelSheets(vSheets)))
+	Atlas::Vector<Atlas::String> vSheets;
+	if(!m_pExcel->GetExcelSheets(vSheets))
 	{
 		wxMessageBox(wxT("Failed to read excel file"), wxT("Error"));
 		return;
@@ -171,7 +171,7 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 
 	for(unsigned int i = 0; i < vSheets.size(); ++i)
 	{
-		wxString val(vSheets[i].c_str(), wxMBConvUTF8());
+		wxString val = wxString::FromUTF8(vSheets[i].c_str());
 		m_checkList->InsertItems(1, &val, i);
 	}
 }

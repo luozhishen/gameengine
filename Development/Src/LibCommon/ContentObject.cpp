@@ -233,9 +233,16 @@ namespace Atlas
 			_U16 id = GetTypeId(name);
 			if(id==(_U16)-1) return false;
 			Atlas::Vector<Atlas::String>& karray = g_contentobject_typearray[id-g_typeid_base].keys;
-			for(size_t i=0; i<karray.size(); i++)
+			if(karray.empty())
 			{
-				keys.insert(karray[i]);
+				keys.insert("uuid");
+			}
+			else
+			{
+				for(size_t i=0; i<karray.size(); i++)
+				{
+					keys.insert(karray[i]);
+				}
 			}
 			return true;
 		}
@@ -358,6 +365,32 @@ namespace Atlas
 			return i->second;
 		}
 
+		const A_CONTENT_OBJECT* QueryByUniqueId(const DDLReflect::STRUCT_INFO* info, const char* value1)
+		{
+			return NULL;
+		}
+
+		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Atlas::String& uid)
+		{
+			if(id<g_typeid_base) return false;
+			if(id>=g_typeid_base+(_U16)g_contentobject_typearray.size()) return false;
+			STRUCT_INTERNAL_INFO& info = g_contentobject_typearray[id-g_typeid_base];
+
+			uid.clear();
+			for(size_t f=0; f<info.keys.size(); f++)
+			{
+				Atlas::String value;
+				if(!DDLReflect::StructParamToString(info.info, info.keys[f].c_str(), obj, value))
+				{
+					return false;
+				}
+				if(f>0) uid.append(".$$.");
+				uid.append(value);
+			}
+
+			return true;
+		}
+
 		static Atlas::String g_buildindex_errmsg;
 
 		bool BuildIndex(const DDLReflect::STRUCT_INFO* info)
@@ -389,17 +422,12 @@ namespace Atlas
 				if(info!=i->second.first || (!internal_info.bExactMatch && IsParent(i->second.first, info))) continue;
 
 				Atlas::String keys_value;
-				for(size_t f=0; f<internal_info.keys.size(); f++)
+				if(!GenContentObjectUniqueId(type_id, i->second.second, keys_value))
 				{
-					Atlas::String value;
-					if(!StructParamToString(info, internal_info.keys[f].c_str(), i->second.second, value))
-					{
-						g_buildindex_errmsg = StringFormat("error in StructParamToString(%s)", internal_info.keys[f].c_str());
-						return false;
-					}
-					if(f>0) keys_value.append(".$$.");
-					keys_value.append(value);
+					g_buildindex_errmsg = StringFormat("error in GenContentObjectUniqueId");
+					return false;
 				}
+
 				if(internal_info.key_map.find(keys_value)!=internal_info.key_map.end())
 				{
 					char o1[60], o2[60];

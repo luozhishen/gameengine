@@ -34,10 +34,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImportConfig.cpp" />
+    <ClCompile Include="OLEAutoExcelWrapper.cpp" />
     <ClCompile Include="SGDataImportConsole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImportConfig.h" />
+    <ClInclude Include="OLEAutoExcelWrapper.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{57C7F48E-B28A-4F04-B8D2-96488DA772DE}</ProjectGuid>

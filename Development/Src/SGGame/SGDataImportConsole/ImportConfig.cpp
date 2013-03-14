@@ -145,7 +145,7 @@ namespace Atlas
 	CContentExcelImportManager::CContentExcelImportManager()
 	{
 		Clear();
-		m_pExcelWrapper = ATLAS_NEW COLEAutoExcelWrapper();
+		m_pExcelWrapper = ATLAS_NEW COLEAutoExcelWrapper2();
 	}
 
 	CContentExcelImportManager::~CContentExcelImportManager()

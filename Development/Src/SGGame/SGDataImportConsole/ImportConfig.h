@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-class COLEAutoExcelWrapper;
+class COLEAutoExcelWrapper2;
 
 namespace Atlas
 {
@@ -42,7 +42,7 @@ namespace Atlas
 		const DDLReflect::STRUCT_INFO* m_pStructInfo;
 		Atlas::Vector<Atlas::String> m_Keys;
 		Atlas::Map<Atlas::String, A_UUID> m_ObjectMap;// map<keys, A_UUID> this map deal with loading data exist and data from excel
-		COLEAutoExcelWrapper* m_pExcelWrapper;
+		COLEAutoExcelWrapper2* m_pExcelWrapper;
 		wxString m_strPath;
 		Atlas::String m_Err;
 		int m_nUpdateRowNum;

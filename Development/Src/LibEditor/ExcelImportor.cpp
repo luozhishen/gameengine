@@ -196,16 +196,23 @@ Atlas::String GetColumnName(unsigned int col)
 	}
 }
 
-wxString GetCellName(unsigned int col, unsigned int row)
+Atlas::String GetCellName(unsigned int col, unsigned int row)
 {
 	if(col>=26)
 	{
-		return wxString::Format(wxT("%c%c:%d"), wxT('A')+col/26-1, wxT('A')+col%26, row+1);
+		return Atlas::StringFormat("%c%c:%d", 'A'+col/26-1, 'A'+col%26, row+1);
 	}
 	else
 	{
-		return wxString::Format(wxT("%c:%d"), wxT('A')+col, row+1);
+		return Atlas::StringFormat("%c:%d", 'A'+col, row+1);
 	}
+}
+
+static bool PrimaryKeyIsUUID(const char* name)
+{
+	Atlas::Set<Atlas::String> keys;
+	if(!Atlas::ContentObject::GetTypePrimaryKey(name, keys)) ATLAS_ASSERT(0);
+	return keys.size()==1 && (*keys.begin())=="uuid";
 }
 
 bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper* excel)
@@ -226,13 +233,11 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 	{
 		for(unsigned int col=0; col<200; col++)
 		{
-			wxString sValue;
-			if(FAILED(excel->GetCellValue(GetCellName(0, tmpl.title_line), sValue)))
+			Atlas::String ColName;
+			if(!excel->GetCellValue(GetCellName(0, tmpl.title_line), ColName))
 			{
 				return false;
 			}
-
-			Atlas::String ColName = (const char*)sValue.ToUTF8();
 			if(tmpl.m_fields.find(ColName)==tmpl.m_fields.end()) continue;
 			Atlas::String FieldName = tmpl.m_fields[ColName].field;
 			if(field_map.find(FieldName)!=field_map.end())
@@ -247,6 +252,58 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		{
 			return false;
 		}
+	}
+
+	bool bUUID = PrimaryKeyIsUUID(tmpl.info->name);
+	_U16 type_id = Atlas::ContentObject::GetTypeId(tmpl.info->name);
+
+	for(unsigned int row=tmpl.start_line-1; row<65536; row++)
+	{
+		A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)malloc(tmpl.info->size);
+		if(!obj)
+		{
+			return false;
+		}
+		memset(obj, 0, tmpl.info->size);
+
+		Atlas::Map<Atlas::String, Atlas::String>::iterator i;
+		for(i=field_map.begin(); i!=field_map.end(); i++)
+		{
+			Atlas::String val;
+			if(!excel->GetCellValue(Atlas::StringFormat("%s:%d", i->second.c_str(), i), val))
+			{
+				free(obj);
+				return false;
+			}
+			if(!DDLReflect::StructParamFromString(tmpl.info, i->first.c_str(), obj, val.c_str()))
+			{
+				free(obj);
+				return false;
+			}
+		}
+
+		Atlas::String pkey;
+		if(!Atlas::ContentObject::GenContentObjectUniqueId(type_id, obj, pkey))
+		{
+			free(obj);
+			return false;
+		}
+
+		A_CONTENT_OBJECT* old_obj = (A_CONTENT_OBJECT*)Atlas::ContentObject::QueryByUniqueId(tmpl.info, pkey.c_str());
+		if(old_obj)
+		{
+			old_obj = Atlas::ContentObject::Modify(old_obj->uuid, tmpl.info);
+			ATLAS_ASSERT(old_obj);
+			obj->uuid = old_obj->uuid;
+		}
+		else
+		{
+			old_obj = Atlas::ContentObject::Create(tmpl.info, obj->uuid);
+			ATLAS_ASSERT(old_obj);
+		}
+
+		memcpy(old_obj, obj, tmpl.info->size);
+		free(obj);
 	}
 
 	return true;

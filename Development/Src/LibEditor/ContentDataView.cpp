@@ -155,8 +155,6 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 	m_pList->InsertColumn(0, wxT("Name"), 0, 60);
 	m_pList->InsertColumn(1, wxT("Type"), 0, 60);
 	m_pList->InsertColumn(2, wxT("UUID"), 0, 200);
-
-	FlashList();
 }
 
 CContentDataView::~CContentDataView()
@@ -436,9 +434,20 @@ void CContentDataView::FlashList()
 
 	const DDLReflect::STRUCT_INFO* info = m_mapTypes[(const char*)m_pObjectType->GetValue().ToUTF8()];
 	const A_CONTENT_OBJECT* object = Atlas::ContentObject::FindFirst(info, false);
+	unsigned int count = 0;
 	while(object)
 	{
 		AppendObject(Atlas::ContentObject::GetObjectType(object->uuid), object);
 		object = Atlas::ContentObject::FindNext(info, false, object);
+		count++;
+	}
+
+	if(count>0)
+	{
+		m_pSearchResult->SetLabel(wxString::Format(wxT("Found %d Object"), count));
+	}
+	else
+	{
+		m_pSearchResult->SetLabel(wxT("Not found"));
 	}
 }

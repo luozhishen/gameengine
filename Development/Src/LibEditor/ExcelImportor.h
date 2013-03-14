@@ -22,7 +22,7 @@ public:
 	void ClearTemplateDefine();
 	bool LoadTemplateDefine(const char* filename);
 
-	bool ImportSheet(const char* tmplate, const char* sheet);
+	bool ImportSheet(const char* tmpl, COLEAutoExcelWrapper* excel);
 
 private:
 	Atlas::Map<Atlas::String, CONTENT_EXCEL_ENUM*>		m_enum_map;

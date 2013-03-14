@@ -19,9 +19,10 @@ struct CONTENT_EXCEL_TEMPLATE
 {
 	Atlas::String name;
 	const DDLReflect::STRUCT_INFO* info;
-	int m_nTitleLine;
-	int m_nStartLine;
-	Atlas::Vector<CONTENT_EXECEL_FIELDINFO> m_fields;
+	unsigned int title_line;
+	unsigned int start_line;
+	bool clear_data;
+	Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO> m_fields;
 };
 
 CContentExcelImportor::CContentExcelImportor()
@@ -107,35 +108,50 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 		if(!name.isString()) return false;
 		Json::Value type = jtmpl.get("type", Json::Value());
 		if(!type.isString()) return false;
-		if(!Atlas::ContentObject::GetType(type.asCString())) return false;
+		Json::Value clear = jtmpl.get("clear", Json::Value());
+		if(!type.isBool()) return false;
 		Json::Value titleline = jtmpl.get("title", Json::Value());
 		Json::Value startline = jtmpl.get("start", Json::Value());
 		if(!titleline.isInt() || !startline.isInt()) return false;
 		Json::Value fields = jtmpl.get("fields", Json::Value());
 		if(!fields.isArray()) return false;
 
+		Atlas::Set<Atlas::String> pkey;
+		if(!Atlas::ContentObject::GetTypePrimaryKey(type.asCString(), pkey)) return false;
 		if(m_tmpl_map.find(name.asCString())!=m_tmpl_map.end()) return false;
 
 		m_tmpl_map[name.asCString()] = new CONTENT_EXCEL_TEMPLATE;
 		CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[name.asCString()];
 		tmpl.name = name.asCString();
 		tmpl.info = Atlas::ContentObject::GetType(type.asCString());
-		tmpl.m_nTitleLine = titleline.asInt();
-		tmpl.m_nStartLine = startline.asInt();
+		tmpl.clear_data = clear.asBool();
+		tmpl.title_line = (unsigned int)titleline.asInt();
+		tmpl.start_line = (unsigned int)startline.asInt();
 
 		for(int i=0; i<(int)fields.size(); i++)
 		{
 			Json::Value item = fields[i];
 			if(!item.isObject()) return false;
+
 			Json::Value col = item.get("c", Json::Value());
 			Json::Value fld = item.get("f", Json::Value());
 			Json::Value enu = item.get("e", Json::Value(""));
 			if(!col.isString() || !fld.isString() || !enu.isString()) return false;
-			for(size_t f=0; f<tmpl.m_fields.size(); f++)
+
+			DDLReflect::FIELD_INFO finfo;
+			const void* fdata;
+			if(!DDLReflect::GetStructFieldInfo(tmpl.info, fld.asCString(), (const void*)NULL, finfo, fdata))
 			{
-				if(tmpl.m_fields[f].colum==col.asCString()) return false;
-				if(tmpl.m_fields[f].field==fld.asCString()) return false;
+				return false;
 			}
+
+			Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
+			for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
+			{
+				if(fi->second.colum==col.asCString()) return false;
+				if(fi->second.field==fld.asCString()) return false;
+			}
+
 			CONTENT_EXECEL_FIELDINFO fieldinfo;
 			fieldinfo.colum = col.asCString();
 			fieldinfo.field = fld.asCString();
@@ -150,7 +166,86 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 				if(i==m_enum_map.end()) return false;
 				fieldinfo._enum = i->second;
 			}
-			tmpl.m_fields.push_back(fieldinfo);
+
+			if(pkey.find(fld.asCString())!=pkey.end())
+			{
+				pkey.erase(fld.asCString());
+			}
+
+			tmpl.m_fields[col.asCString()] = fieldinfo;
+		}
+
+		if(!pkey.empty())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+Atlas::String GetColumnName(unsigned int col)
+{
+	if(col>=26)
+	{
+		return Atlas::StringFormat("%c%c", 'A'+col/26-1, 'A'+col%26);
+	}
+	else
+	{
+		return Atlas::StringFormat("%c:%d", 'A'+col);
+	}
+}
+
+wxString GetCellName(unsigned int col, unsigned int row)
+{
+	if(col>=26)
+	{
+		return wxString::Format(wxT("%c%c:%d"), wxT('A')+col/26-1, wxT('A')+col%26, row+1);
+	}
+	else
+	{
+		return wxString::Format(wxT("%c:%d"), wxT('A')+col, row+1);
+	}
+}
+
+bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper* excel)
+{
+	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end()) return false;
+	CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
+
+	Atlas::Map<Atlas::String, Atlas::String> field_map;
+	if(tmpl.title_line<0)
+	{
+		Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
+		for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
+		{
+			field_map[fi->second.field] = fi->second.colum;
+		}
+	}
+	else
+	{
+		for(unsigned int col=0; col<200; col++)
+		{
+			wxString sValue;
+			if(FAILED(excel->GetCellValue(GetCellName(0, tmpl.title_line), sValue)))
+			{
+				return false;
+			}
+
+			Atlas::String ColName = (const char*)sValue.ToUTF8();
+			if(tmpl.m_fields.find(ColName)==tmpl.m_fields.end()) continue;
+			Atlas::String FieldName = tmpl.m_fields[ColName].field;
+			if(field_map.find(FieldName)!=field_map.end())
+			{
+				return false;
+			}
+
+			field_map[FieldName] = GetColumnName(col);
+		}
+
+		if(field_map.size()!=tmpl.m_fields.size())
+		{
+			return false;
 		}
 	}
 

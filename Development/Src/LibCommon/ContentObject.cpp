@@ -159,6 +159,18 @@ namespace Atlas
 				const void* fdata;
 				for(size_t i=0; i<vkeys.size(); i++)
 				{
+					if(vkeys[i]=="uuid")
+					{
+						if(vkeys.size()!=1)
+						{
+							return false;
+						}
+						else
+						{
+							vkeys.clear();
+							break;
+						}
+					}
 					if(!DDLReflect::GetStructFieldInfo(info, vkeys[i].c_str(), (const void*)NULL, finfo, fdata))
 					{
 						ATLAS_ASSERT(0);
@@ -215,6 +227,19 @@ namespace Atlas
 			return g_contentobject_typearray[id-g_typeid_base].info;
 		}
 
+		bool GetTypePrimaryKey(const char* name, Atlas::Set<Atlas::String>& keys)
+		{
+			keys.clear();
+			_U16 id = GetTypeId(name);
+			if(id==(_U16)-1) return false;
+			Atlas::Vector<Atlas::String>& karray = g_contentobject_typearray[id-g_typeid_base].keys;
+			for(size_t i=0; i<karray.size(); i++)
+			{
+				keys.insert(karray[i]);
+			}
+			return true;
+		}
+
 		A_CONTENT_OBJECT* Create(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid)
 		{
 			AUuidGenerate(uuid);
@@ -242,7 +267,7 @@ namespace Atlas
 			g_objct_manager.m_object_map.erase(i);
 		}
 
-		const DDLReflect::STRUCT_INFO* GetType(const A_UUID& uuid)
+		const DDLReflect::STRUCT_INFO* GetObjectType(const A_UUID& uuid)
 		{
 			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
@@ -442,7 +467,7 @@ namespace Atlas
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				char file[1000];
-				sprintf(file, "%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/",i->first.c_str());
+				sprintf(file, "%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
 				if(!LoadContentFromJsonFile(file)) return false;
 				i->second._dirty = false;
 			}
@@ -493,17 +518,12 @@ namespace Atlas
 		{
 			Json::Value root;
 			std::ifstream f(filename, std::ifstream::binary);
+			if(!f.is_open()) return true;
 			Json::Reader reader;
-			if(!reader.parse(f, root, false))
-			{
-				return false;
-			}
+			if(!reader.parse(f, root, false)) return false;
 
 			Json::Value body = root.get("body", Json::Value());
-			if(!body.isArray())
-			{
-				return false;
-			}
+			if(!body.isArray()) return false;
 
 			for(Json::Value::UInt index=0; index<body.size(); index++)
 			{
@@ -578,7 +598,7 @@ namespace Atlas
 				if(!gi->second._dirty && !force) continue;
 
 				char filepath[1000];
-				sprintf(filepath, "%s%s", realpath.c_str(), gi->first.c_str());
+				sprintf(filepath, "%s%s", realpath.c_str(), gi->second._file);
 				vmap_a[gi->first.c_str()] = true;
 				vmap[gi->first.c_str()] = ATLAS_NEW std::ofstream();
 				std::ofstream& f = *(vmap[gi->first.c_str()]);

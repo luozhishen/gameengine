@@ -176,7 +176,7 @@ void CContentDataView::OnObjectActived(wxListEvent& event)
 
 	wxUIntPtr pData = m_pList->GetItemData(nSelectIndex);
 	A_UUID& uuid = *(A_UUID*)pData;
-	const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetType(uuid);
+	const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetObjectType(uuid);
 	const A_CONTENT_OBJECT* object = Atlas::ContentObject::QueryByUUID(uuid, info);
 	SetCurrentObject(nSelectIndex, info, object);
 }
@@ -265,7 +265,7 @@ void CContentDataView::OnMenuPaste(wxCommandEvent& event)
 		return;
 	}
 
-	const DDLReflect::STRUCT_INFO* pInfo = Atlas::ContentObject::GetType(m_copyUUID);
+	const DDLReflect::STRUCT_INFO* pInfo = Atlas::ContentObject::GetObjectType(m_copyUUID);
 	if(!pInfo) return;
 
 	A_UUID uuid;
@@ -438,7 +438,7 @@ void CContentDataView::FlashList()
 	const A_CONTENT_OBJECT* object = Atlas::ContentObject::FindFirst(info, false);
 	while(object)
 	{
-		AppendObject(Atlas::ContentObject::GetType(object->uuid), object);
+		AppendObject(Atlas::ContentObject::GetObjectType(object->uuid), object);
 		object = Atlas::ContentObject::FindNext(info, false, object);
 	}
 }

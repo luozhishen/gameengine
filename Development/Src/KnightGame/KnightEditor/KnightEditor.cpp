@@ -10,4 +10,20 @@
 
 #include <EditorApp.h>
 
-IMPLEMENT_APP(CEditorApp)
+class CKnightEditorApp : public CEditorApp
+{
+public:
+
+	virtual bool OnInit()
+	{
+		if(!CEditorApp::OnInit()) return false;
+		Atlas::String path = Atlas::StringFormat("%s../../../../%s/", Atlas::AtlasGameDir(), Atlas::AtlasGameName());
+		if(_access(path.c_str(), 0)!=-1)
+		{
+			Atlas::AtlasSetGameDir(path.c_str());
+		}
+		return true;
+	}
+};
+
+IMPLEMENT_APP(CKnightEditorApp)

@@ -170,7 +170,11 @@ void CEditorFrame::OnSave(wxCommandEvent& event)
 void CEditorFrame::OnImport(wxCommandEvent& event)
 {
 	CImportDlg dlg(this);
-	dlg.ShowModal();
+	Atlas::String path = Atlas::StringFormat("%s%s", Atlas::AtlasGameDir(), "Config/ContentTemplate.json");
+	if(dlg.LoadTemplateDefine(path.c_str()))
+	{
+		dlg.ShowModal();
+	}
 }
 
 void CEditorFrame::OnQuit(wxCommandEvent&)

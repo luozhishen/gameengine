@@ -21,6 +21,11 @@ namespace Atlas
 		return _global_game_dir;
 	}
 
+	void AtlasSetGameDir(const char* path)
+	{
+		strcpy(_global_game_dir, path);
+	}
+
 	static struct {
 		const DDLReflect::CLASS_INFO* classinfo;
 		bool is_client_stub;

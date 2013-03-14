@@ -496,6 +496,16 @@ namespace Atlas
 		m_C2S.PVPBattleEnd(defender, ret);
 	}
 
+	void CSGClient::PVPCoolDownClear()
+	{
+		m_C2S.PVPCoolDownClear();
+	}
+
+	void CSGClient::PVPIncreateBattleTimes()
+	{
+		m_C2S.PVPIncreateBattleTimes();
+	}
+
 	void CSGClient::QueryInstance()
 	{
 		m_C2S.QueryInstance();
@@ -1035,6 +1045,22 @@ namespace Atlas
 			}
 
 			m_callback->PVPBattleEndResult(reputation);
+		}
+	}
+
+	void CSGClient::PVPCoolDownClearResult(CSGClient* pClient)
+	{
+		if(m_callback)
+		{
+			m_callback->PVPCoolDownClearResult();
+		}
+	}
+
+	void CSGClient::PVPIncreateBattleTimesResult(CSGClient* pClient, _U32 rest_times)
+	{
+		if(m_callback)
+		{
+			m_callback->PVPIncreateBattleTimesResult(rest_times);
 		}
 	}
 

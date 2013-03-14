@@ -5,10 +5,11 @@
 #include <vector>
 #include <utility>
 
+class COLEAutoExcelWrapper;
+
 namespace Atlas
 {
 	class CContentExcelImportManager;
-	class COLEAutoExcelWrapper;
 
 	class CContentExcelImportManager
 	{

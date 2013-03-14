@@ -10,6 +10,7 @@ namespace Atlas
 
 	const char* AtlasGameName();
 	const char* AtlasGameDir();
+	void AtlasSetGameDir(const char* path);
 
 	_U16 RegisterClientStub(const DDLReflect::CLASS_INFO* pClassInfo);
 	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo, _U32 nodeid);

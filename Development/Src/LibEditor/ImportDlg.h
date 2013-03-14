@@ -3,6 +3,8 @@
 
 class wxFilePickerCtrl;
 class wxFileDirPickerEvent;
+class CContentExcelImportor;
+class COLEAutoExcelWrapper;
 
 class CImportDlg : public wxDialog
 {
@@ -10,26 +12,27 @@ public:
 	CImportDlg(wxWindow* parent);
 	virtual ~CImportDlg();
 
+	bool LoadTemplateDefine(const char* filename);
+
 protected:
 	DECLARE_EVENT_TABLE()
-	void InitCombox();
+	void InitClient();
 	void OnFilePicker(wxFileDirPickerEvent& event);
 	virtual void  EndModal(int retCode);
 	bool ProcessImport();
 
-protected:
 	bool GetSelectSheets(Atlas::Vector<Atlas::String>& vSheets);
-	bool GetKeyCols(Atlas::Vector<Atlas::String>& vec);
 	void OnSelectAll(wxCommandEvent& event);
 	bool CheckKeyCols(Atlas::Vector<Atlas::String>& vec);
 
-protected:
+public:
 	wxComboBox* m_cbType;
 	wxFilePickerCtrl* m_pFilePicker;
 	wxCheckListBox* m_checkList;
 	wxCheckBox* m_checkBoxSelAll;
-	wxTextCtrl* m_textCtrlKey;
 	wxButton* m_btnOK;
+	CContentExcelImportor* m_pImporter;
+	COLEAutoExcelWrapper* m_pExcel;
 };
 
 #endif //_IMPORT_DLG_H__

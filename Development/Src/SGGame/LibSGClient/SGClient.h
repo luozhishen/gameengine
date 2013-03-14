@@ -50,7 +50,9 @@ namespace Atlas
 		virtual void PVPDailyReward(_U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count) = 0;
 		//virtual void PVPBattleResult(_U32 reputation) = 0;
 		virtual void PVPBattleBeginResult(const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo) = 0;
-		virtual void PVPBattleEndResult(_U32 reputation) = 0;																
+		virtual void PVPBattleEndResult(_U32 reputation) = 0;	
+		virtual void PVPCoolDownClearResult() = 0;						
+		virtual void PVPIncreateBattleTimesResult(_U32 rest_times) = 0;
 
 		virtual void QueryInstanceResult(const SG_INSTANCE_INFO* instances, _U32 count) = 0;					
 		virtual void BeginInstanceBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;								
@@ -146,6 +148,8 @@ namespace Atlas
 		//void PVPBattle(_U32 defender, _U8 result);							//pvp战斗 0-succ 1-failed
 		void PVPBattleBegin(_U32 defender);										//pvp战斗开始 
 		void PVPBattleEnd(_U32 defender, _U8 ret);								//pvp战斗结束 0-succ 1-failed
+		void PVPCoolDownClear();												//pvp清楚挑战冷却时间
+		void PVPIncreateBattleTimes();											//pvp增加挑战次数
 
 		void QueryInstance();													//副本
 		void EnterInstance(_U32 instance_id, _U8 difficulty);					//进入副本 0-普通 1-困难
@@ -200,7 +204,9 @@ namespace Atlas
 		void PVPDailyReward(CSGClient* pClient, _U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count);	//pvp每日奖励 增量
 		//void PVPBattleResult(CSGClient* pClient, _U32 reputation);											//pvp战斗结果返回
 		void PVPBattleBeginResult(CSGClient* pClient, const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo);	//pvp战斗
-		void PVPBattleEndResult(CSGClient* pClient, _U32 reputation);																//pvp战斗结束 
+		void PVPBattleEndResult(CSGClient* pClient, _U32 reputation);											//pvp战斗结束 
+		void PVPCoolDownClearResult(CSGClient* pClient);														//pvp清楚挑战冷却时间
+		void PVPIncreateBattleTimesResult(CSGClient* pClient, _U32 rest_times);									//pvp增加挑战次数
 
 		void QueryInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO* instances, _U32 count);			//副本
 		void BeginInstanceBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);						//开始副本战斗

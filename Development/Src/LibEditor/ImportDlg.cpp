@@ -19,6 +19,8 @@
 #include <AtlasCommon.h>
 
 #include "ImportDlg.h"
+#include "ExcelImportor.h"
+#include "OLEAutoExcelWrapper.h"
 
 enum
 {
@@ -35,7 +37,41 @@ END_EVENT_TABLE()
 
 CImportDlg::CImportDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Import Excel"), wxDefaultPosition, wxSize(400, 400), wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	m_pImporter = new CContentExcelImportor();
+	m_pExcel = new COLEAutoExcelWrapper();
+
+	InitClient();
+}
+
+CImportDlg::~CImportDlg()
+{
+	delete m_pImporter;
+	delete m_pExcel;
+}
+
+bool CImportDlg::LoadTemplateDefine(const char* filename)
+{
+	if(!m_pImporter->LoadTemplateDefine(filename))
+	{
+		wxMessageBox(wxT("Failed to load template define file"), wxT("Error"));
+		return false;
+	}
+
+	Atlas::Vector<Atlas::String> list;
+	m_pImporter->GetTemplateList(list);
+
+	for(size_t i=0; list.size(); i++)
+	{
+		m_cbType->Insert(wxString::FromUTF8(list[i].c_str()), m_cbType->GetCount());
+	}
+
+	if(list.size()>0) m_cbType->SetSelection(0);
+	return true;
+}
+
+void CImportDlg::InitClient()
+{
+	SetSizeHints( wxDefaultSize, wxDefaultSize );
 
 	wxBoxSizer* m_mainSizer;
 	m_mainSizer = ATLAS_NEW wxBoxSizer( wxVERTICAL );
@@ -105,33 +141,6 @@ CImportDlg::CImportDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Impor
 	bSizer3->Fit( panel3 );
 	m_mainSizer->Add( panel3, 1, wxEXPAND | wxALL, 5 );
 
-	wxPanel* panel4 = ATLAS_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer4;
-	bSizer4 = ATLAS_NEW wxBoxSizer( wxHORIZONTAL );
-
-	wxStaticText* staticTextKey = ATLAS_NEW wxStaticText( panel4, wxID_ANY, wxT("Key"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	staticTextKey->Wrap( -1 );
-	staticTextKey->SetMinSize( wxSize( 50,-1 ) );
-
-	bSizer4->Add( staticTextKey, 0, wxALL, 5 );
-
-	wxBoxSizer* bSizer8;
-	bSizer8 = ATLAS_NEW wxBoxSizer( wxVERTICAL );
-
-	m_textCtrlKey = ATLAS_NEW wxTextCtrl( panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer8->Add( m_textCtrlKey, 1, wxALL|wxEXPAND, 5 );
-
-	wxStaticText* staticTextExample = ATLAS_NEW wxStaticText( panel4, wxID_ANY, wxT("input example: column1,column2,column3"), wxDefaultPosition, wxDefaultSize, 0 );
-	staticTextExample->Wrap( -1 );
-	bSizer8->Add( staticTextExample, 0, wxALL, 5 );
-
-	bSizer4->Add( bSizer8, 1, wxEXPAND, 5 );
-
-	panel4->SetSizer( bSizer4 );
-	panel4->Layout();
-	bSizer4->Fit( panel4 );
-	m_mainSizer->Add( panel4, 0, wxEXPAND | wxALL, 5 );
-
 	wxStaticLine *m_staticline1 = ATLAS_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	m_mainSizer->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
 
@@ -139,67 +148,32 @@ CImportDlg::CImportDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Impor
 	m_mainSizer->Add( m_btnOK, 0, wxALL|wxALIGN_RIGHT, 5 );
 	SetSizer( m_mainSizer );
 	Layout();
-
-	InitCombox();
-}
-
-CImportDlg::~CImportDlg()
-{
-}
-
-void CImportDlg::InitCombox()
-{
-	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*> m_mapTypes;
-
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
-	Atlas::ContentObject::GetTypeList(list);
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
-	for(i=list.begin(); i!=list.end(); i++)
-	{
-		const DDLReflect::STRUCT_INFO* p = *i;
-		if(m_mapTypes.find(p->name)==m_mapTypes.end())
-		{
-			m_mapTypes[p->name] = p;
-		}
-	}
-
-	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*>::iterator in;
-	int nTypeIndex = -1;
-	for(in=m_mapTypes.begin(); in!=m_mapTypes.end(); in++)
-	{
-		if(in->first=="A_CONTENT_OBJECT")
-		{
-			continue;
-		}
-
-		if(nTypeIndex==-1)
-		{
-			nTypeIndex = m_cbType->Insert(wxString::FromUTF8(in->first.c_str()), m_cbType->GetCount());
-		}
-		else
-		{
-			m_cbType->Insert(wxString::FromUTF8(in->first.c_str()), m_cbType->GetCount());
-		}
-	}
-
-	m_cbType->SetSelection(nTypeIndex);
 }
 
 void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 {
-/*
 	m_checkList->Clear();
+
 	wxString strFilePath = m_pFilePicker->GetPath();
-	m_pImportManger->Load(strFilePath);
+	m_pExcel->SetFilePath(strFilePath);
+	if(FAILED(m_pExcel->OpenExcelBook(false)))
+	{
+		wxMessageBox(wxT("Failed to open excel file"), wxT("Error"));
+		return;
+	}
 
 	Atlas::Vector<wxString> vSheets;
-	m_pImportManger->GetSheets(vSheets);
+	if(FAILED(m_pExcel->GetExcelSheets(vSheets)))
+	{
+		wxMessageBox(wxT("Failed to read excel file"), wxT("Error"));
+		return;
+	}
+
 	for(unsigned int i = 0; i < vSheets.size(); ++i)
 	{
 		wxString val(vSheets[i].c_str(), wxMBConvUTF8());
 		m_checkList->InsertItems(1, &val, i);
 	}
-*/
 }
 
 void CImportDlg::OnSelectAll(wxCommandEvent& event)
@@ -228,18 +202,6 @@ bool CImportDlg::GetSelectSheets(Atlas::Vector<Atlas::String>& vSheets)
 	return true;
 }
 
-bool CImportDlg::GetKeyCols(Atlas::Vector<Atlas::String>& vec)
-{
-	wxString strKeyCol = m_textCtrlKey->GetValue().Trim();
-	Atlas::String strKeyColCopy = (const char*)strKeyCol.ToUTF8();
-	Atlas::StringStream ss(strKeyColCopy);
-	Atlas::String item;
-	while(std::getline(ss, item, ',')) {
-		vec.push_back(item);
-	}
-	return CheckKeyCols(vec);
-}
-
 void CImportDlg::EndModal(int retCode)
 {
 	if(retCode!=wxID_OK) return wxDialog::EndModal(retCode);
@@ -248,21 +210,13 @@ void CImportDlg::EndModal(int retCode)
 	{
 		wxDialog::EndModal(retCode);
 	}
-	else
-	{
-		/*
-		wxString strErr = wxString::FromUTF8(m_pImportManger->GetErrorMsg());
-		if(!strErr.IsEmpty()) wxMessageBox(strErr);
-		*/
-	}
 }
 
 bool CImportDlg::ProcessImport()
 {
-	wxString strPath = m_pFilePicker->GetPath();
-	if(strPath.empty())
+	if(!Atlas::ContentObject::SaveContent())
 	{
-		wxMessageBox(wxT("invaild excel file path"));
+		wxMessageBox(wxT("Failed to save content"));
 		return false;
 	}
 
@@ -273,83 +227,24 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-	if(!Atlas::ContentObject::SaveContent())
-	{
-		wxMessageBox(wxT("Failed to save content"));
-		return false;
-	}
-
-	Atlas::Vector<Atlas::String> vCol;
-	if(!GetKeyCols(vCol))
-	{	
-		wxMessageBox(wxT("input key Column repeat!"));
-		return false;	
-	}
-
-	if(vCol.empty())
-	{
-		wxMessageBox(wxT("input key Column invalidate!"));
-		return false;
-	}
-
 	Atlas::Vector<Atlas::String> vSheets;
-	if(!GetSelectSheets(vSheets))
-	{
-		return false;
-	}
-
-	if(vSheets.empty())
+	if(!GetSelectSheets(vSheets) || vSheets.empty())
 	{
 		wxMessageBox(wxT("no sheet select!"));
 		return false;
 	}
 
-	/*
-	m_pImportManger->Load(strPath);
-
-	const DDLReflect::STRUCT_INFO* pInfo = NULL;
-	for(unsigned int i = 0; i < vSheets.size(); ++i)
 	{
-		pInfo = Atlas::ContentObject::GetType(m_cbType->GetStringSelection().mb_str().data());
-		if(!m_pImportManger->PrepareProcess(pInfo, vCol))
-		{
-			return false;
-		}
-		
-		if(!m_pImportManger->ProcessSheet(vSheets[i]))
-		{
-			return false;
-		}
+		/*
+		wxString strErr = wxString::FromUTF8(m_pImportManger->GetErrorMsg());
+		if(!strErr.IsEmpty()) wxMessageBox(strErr);
+		*/
 	}
 
+
+/*
 	wxString strUpdateInfo = wxString::FromUTF8(m_pImportManger->GetImportInfoMsg());
 	wxMessageBox(strUpdateInfo, wxT("Import Info"));
 */
-	return true;
-}
-
-bool CImportDlg::CheckKeyCols( Atlas::Vector<Atlas::String>& vec )
-{
-	for(size_t i = 0; i < vec.size(); ++i)
-	{
-		int nTime = 0;
-		for(size_t j = i; j < vec.size(); ++j)
-		{
-			if(vec[i]==vec[j])
-			{
-				++nTime;
-			}
-
-			if(nTime > 1)
-			{
-				wxString strError;
-				strError.Printf(wxT("column:%s repeat"), vec[i]);
-				wxLogDebug(strError);
-				vec.clear();
-				return false;
-			}
-		}
-	}
-
 	return true;
 }

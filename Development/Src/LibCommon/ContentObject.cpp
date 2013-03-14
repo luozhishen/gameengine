@@ -138,16 +138,6 @@ namespace Atlas
 			return group->_file;
 		}
 
-		void GetContentFileList(Atlas::Vector<Atlas::String>& list)
-		{
-			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
-			list.clear();
-			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
-			{
-				list.push_back(i->second._file);
-			}
-		}
-
 		IContentGroup* CContentGroup::Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const char* keys)
 		{
 			if(!DDLReflect::IsParent(info, DDLReflect::GetStruct<A_CONTENT_OBJECT>()))
@@ -163,7 +153,7 @@ namespace Atlas
 				if(vkeys.size()>4 || vkeys.empty())
 				{
 					ATLAS_ASSERT(0);
-					return false;
+					return NULL;
 				}
 				DDLReflect::FIELD_INFO finfo;
 				const void* fdata;
@@ -172,13 +162,13 @@ namespace Atlas
 					if(!DDLReflect::GetStructFieldInfo(info, vkeys[i].c_str(), (const void*)NULL, finfo, fdata))
 					{
 						ATLAS_ASSERT(0);
-						return false;
+						return NULL;
 					}
 				}
 			}
 
 			ATLAS_ASSERT(g_contentobject_typemap.find(info->name)==g_contentobject_typemap.end());
-			if(g_contentobject_typemap.find(info->name)!=g_contentobject_typemap.end()) return false;
+			if(g_contentobject_typemap.find(info->name)!=g_contentobject_typemap.end()) return NULL;
 
 			STRUCT_INTERNAL_INFO internal_info;
 			internal_info.type_id = g_typeid_base + (_U16)g_contentobject_typearray.size();
@@ -452,7 +442,7 @@ namespace Atlas
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				char file[1000];
-				sprintf(file, "%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/",i->first.c_str());
+				sprintf(file, "%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/",i->first.c_str());
 				if(!LoadContentFromJsonFile(file)) return false;
 				i->second._dirty = false;
 			}
@@ -569,6 +559,16 @@ namespace Atlas
 
 		bool SaveContent(const char* path, bool force)
 		{
+			Atlas::String realpath;
+			if(path)
+			{
+				realpath = path;
+			}
+			else
+			{
+				realpath = StringFormat("%s/Content/Json/", AtlasGameDir());
+			}
+
 			Atlas::Map<Atlas::String, std::ofstream*> vmap;
 			Atlas::Map<Atlas::String, bool> vmap_a;
 
@@ -578,7 +578,7 @@ namespace Atlas
 				if(!gi->second._dirty && !force) continue;
 
 				char filepath[1000];
-				sprintf(filepath, "%s/%s", path, gi->first.c_str());
+				sprintf(filepath, "%s%s", realpath.c_str(), gi->first.c_str());
 				vmap_a[gi->first.c_str()] = true;
 				vmap[gi->first.c_str()] = ATLAS_NEW std::ofstream();
 				std::ofstream& f = *(vmap[gi->first.c_str()]);

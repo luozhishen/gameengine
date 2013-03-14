@@ -106,6 +106,37 @@ const _U32 SG_LEAGUE_APPLY_MAX = 10;
 const _U8 SG_LEAGUE_CREATE_SUCC = 0;
 const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 
+//Vip 还未使用
+struct SG_VIP_CONFIG : A_CONTENT_OBJECT
+{
+	_U32						vip_level;						//vip等级
+	_U32						recharge_rmb;					//所需充值rmb
+	_U32						pay_times;						//可领取军饷次数
+	_U32						energy_times;					//可购买体力次数
+	_U32						energy_upper;					//体力上限
+	_U32						reset_instance_times;			//可充值副本次数
+};
+task[GEN_STRUCT_SERIALIZE(SG_VIP_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_VIP_CONFIG)];
+
+//Pay 
+struct SG_PAY_CONSUME_CONFIG : A_CONTENT_OBJECT
+{
+	_U32						apply_times;					//领取次数 从101到最后都是一样数据
+	_U32						consume_rmb;					//花费rmb
+	_F32						reward_rate;					//系数
+};
+task[GEN_STRUCT_SERIALIZE(SG_PAY_CONSUME_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_PAY_CONSUME_CONFIG)];
+
+struct SG_PAY_REWARD_CONFIG : A_CONTENT_OBJECT
+{
+	_U32						player_level;					//玩家等级
+	_U32						reward_gold;					//每次获得金币
+};
+task[GEN_STRUCT_SERIALIZE(SG_PAY_REWARD_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_PAY_REWARD_CONFIG)];
+
 //instance
 struct SG_INSTANCE_CONFIG : A_CONTENT_OBJECT
 {
@@ -924,6 +955,8 @@ class SGGAME_C2S
 	PVPDailyReward();												//pvp每日奖励之类
 	PVPBattleBegin(_U32 defender);									//pvp战斗开始 
 	PVPBattleEnd(_U32 defender, _U8 ret);							//pvp战斗结束 0-succ 1-failed
+	PVPCoolDownClear();												//pvp清除挑战冷却时间
+	PVPIncreateBattleTimes();										//pvp增加挑战次数
 
 	QueryInstance();												//副本
 	EnterInstance(_U32 instance_id, _U8 difficulty);				//进入副本 0-普通 1-困难
@@ -985,6 +1018,8 @@ class SGGAME_S2C
 	PVPDailyReward(_U32 gold, _U32 reputation, SG_ITEM items[count], _U32 count);	//pvp每日奖励 增量
 	PVPBattleBeginResult(SG_PLAYER_PVE SelfPVE, SG_PLAYER_PVE DefenderPVE, SG_PLAYER DefenderPlayerInfo);//pvp战斗
 	PVPBattleEndResult(_U32 reputation);											//pvp战斗结束 
+	PVPCoolDownClearResult();														//pvp清除挑战冷却时间
+	PVPIncreateBattleTimesResult(_U32 rest_times);									//pvp增加挑战次数
 
 	QueryInstanceResult(SG_INSTANCE_INFO instances[count], _U32 count);				//副本
 	BeginInstanceBattleResult(SG_PLAYER_PVE PlayerPVE);								//开始副本战斗

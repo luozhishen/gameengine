@@ -7,6 +7,126 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_VIP_CONFIG>(SG_VIP_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.vip_level)) return false;
+		if(!Read<_U32>(Value.recharge_rmb)) return false;
+		if(!Read<_U32>(Value.pay_times)) return false;
+		if(!Read<_U32>(Value.energy_times)) return false;
+		if(!Read<_U32>(Value.energy_upper)) return false;
+		if(!Read<_U32>(Value.reset_instance_times)) return false;
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_VIP_CONFIG>(const SG_VIP_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.vip_level)) return false;
+		if(!Write<_U32>(Value.recharge_rmb)) return false;
+		if(!Write<_U32>(Value.pay_times)) return false;
+		if(!Write<_U32>(Value.energy_times)) return false;
+		if(!Write<_U32>(Value.energy_upper)) return false;
+		if(!Write<_U32>(Value.reset_instance_times)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_VIP_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "vip_level", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "recharge_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, recharge_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "pay_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, pay_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "energy_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, energy_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "energy_upper", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, energy_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_instance_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, reset_instance_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 6, _struct_SG_VIP_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_VIP_CONFIG>()
+	{
+		return &_rfl_struct_SG_VIP_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_PAY_CONSUME_CONFIG>(SG_PAY_CONSUME_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.apply_times)) return false;
+		if(!Read<_U32>(Value.consume_rmb)) return false;
+		if(!Read<_F32>(Value.reward_rate)) return false;
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_PAY_CONSUME_CONFIG>(const SG_PAY_CONSUME_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.apply_times)) return false;
+		if(!Write<_U32>(Value.consume_rmb)) return false;
+		if(!Write<_F32>(Value.reward_rate)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_PAY_CONSUME_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "apply_times", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_CONSUME_CONFIG, apply_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_CONSUME_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_rate", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_CONSUME_CONFIG, reward_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_PAY_CONSUME_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PAY_CONSUME_CONFIG", sizeof(SG_PAY_CONSUME_CONFIG), 3, _struct_SG_PAY_CONSUME_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_PAY_CONSUME_CONFIG>()
+	{
+		return &_rfl_struct_SG_PAY_CONSUME_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_PAY_REWARD_CONFIG>(SG_PAY_REWARD_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.player_level)) return false;
+		if(!Read<_U32>(Value.reward_gold)) return false;
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_PAY_REWARD_CONFIG>(const SG_PAY_REWARD_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.player_level)) return false;
+		if(!Write<_U32>(Value.reward_gold)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_PAY_REWARD_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "player_level", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_REWARD_CONFIG, player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_REWARD_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_PAY_REWARD_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PAY_REWARD_CONFIG", sizeof(SG_PAY_REWARD_CONFIG), 2, _struct_SG_PAY_REWARD_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_PAY_REWARD_CONFIG>()
+	{
+		return &_rfl_struct_SG_PAY_REWARD_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_INSTANCE_CONFIG>(SG_INSTANCE_CONFIG& Value)
 	{
 		if(!Read<_U32>(Value.instance_id)) return false;
@@ -2740,32 +2860,34 @@ namespace DDLReflect
 		// 49 PVPBattleEnd
 		{TYPE_U32, "defender", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 50 QueryInstance
-		// 51 EnterInstance
+		// 50 PVPCoolDownClear
+		// 51 PVPIncreateBattleTimes
+		// 52 QueryInstance
+		// 53 EnterInstance
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "difficulty", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 52 BeginInstanceBattle
+		// 54 BeginInstanceBattle
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "map_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 53 EndInstanceBattle
+		// 55 EndInstanceBattle
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "map_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 54 ResetInstance
+		// 56 ResetInstance
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 55 CreateLeague
+		// 57 CreateLeague
 		{TYPE_STRING, "league_name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 56 ApplyJoinLeague
+		// 58 ApplyJoinLeague
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 57 QueryLeagueApplyList
-		// 58 QueryLeague
+		// 59 QueryLeagueApplyList
+		// 60 QueryLeague
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 59 QueryLeagueList
-		// 60 QueryLeagueMemberList
+		// 61 QueryLeagueList
+		// 62 QueryLeagueMemberList
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 61 QueryLeagueMemberInfo
+		// 63 QueryLeagueMemberInfo
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 62 QueryServerTime
+		// 64 QueryServerTime
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -2819,6 +2941,8 @@ namespace DDLReflect
 		{"PVPDailyReward", 0, _class_SGGAME_C2S_fieldinfos+40},
 		{"PVPBattleBegin", 1, _class_SGGAME_C2S_fieldinfos+40},
 		{"PVPBattleEnd", 2, _class_SGGAME_C2S_fieldinfos+41},
+		{"PVPCoolDownClear", 0, _class_SGGAME_C2S_fieldinfos+43},
+		{"PVPIncreateBattleTimes", 0, _class_SGGAME_C2S_fieldinfos+43},
 		{"QueryInstance", 0, _class_SGGAME_C2S_fieldinfos+43},
 		{"EnterInstance", 2, _class_SGGAME_C2S_fieldinfos+43},
 		{"BeginInstanceBattle", 2, _class_SGGAME_C2S_fieldinfos+45},
@@ -2833,7 +2957,7 @@ namespace DDLReflect
 		{"QueryLeagueMemberInfo", 1, _class_SGGAME_C2S_fieldinfos+55},
 		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+56},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 63, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 65, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -2942,40 +3066,43 @@ namespace DDLReflect
 		{TYPE_STRUCT, "DefenderPlayerInfo", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 31 PVPBattleEndResult
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 32 QueryInstanceResult
+		// 32 PVPCoolDownClearResult
+		// 33 PVPIncreateBattleTimesResult
+		{TYPE_U32, "rest_times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 34 QueryInstanceResult
 		{TYPE_STRUCT|TYPE_ARRAY, "instances", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 33 BeginInstanceBattleResult
+		// 35 BeginInstanceBattleResult
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 34 EnterInstanceResult
+		// 36 EnterInstanceResult
 		{TYPE_STRUCT, "instance", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 35 EndInstanceBattleResult
+		// 37 EndInstanceBattleResult
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 36 ResetInstanceResult
+		// 38 ResetInstanceResult
 		{TYPE_U8, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "instance", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 37 CreateLeagueResult
+		// 39 CreateLeagueResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "league", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 38 QueryLeagueApplyListResult
+		// 40 QueryLeagueApplyListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "applyer", 0, 0, &_rfl_struct_SG_LEAGUE_APPLYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 39 QueryLeagueResult
+		// 41 QueryLeagueResult
 		{TYPE_STRUCT, "league", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 40 QueryLeagueListResult
+		// 42 QueryLeagueListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "league_list", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 41 QueryLeagueMemberListResult
+		// 43 QueryLeagueMemberListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "league_members", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 42 QueryLeagueMemberInfoResult
-		// 43 QueryServerTimeResult
+		// 44 QueryLeagueMemberInfoResult
+		// 45 QueryServerTimeResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
@@ -3012,20 +3139,22 @@ namespace DDLReflect
 		{"PVPDailyReward", 4, _class_SGGAME_S2C_fieldinfos+57},
 		{"PVPBattleBeginResult", 3, _class_SGGAME_S2C_fieldinfos+61},
 		{"PVPBattleEndResult", 1, _class_SGGAME_S2C_fieldinfos+64},
-		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+65},
-		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+67},
-		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+68},
-		{"EndInstanceBattleResult", 6, _class_SGGAME_S2C_fieldinfos+69},
-		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+75},
-		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+78},
-		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+80},
-		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+82},
-		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+83},
-		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+85},
-		{"QueryLeagueMemberInfoResult", 0, _class_SGGAME_S2C_fieldinfos+87},
-		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+87},
+		{"PVPCoolDownClearResult", 0, _class_SGGAME_S2C_fieldinfos+65},
+		{"PVPIncreateBattleTimesResult", 1, _class_SGGAME_S2C_fieldinfos+65},
+		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+66},
+		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+68},
+		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+69},
+		{"EndInstanceBattleResult", 6, _class_SGGAME_S2C_fieldinfos+70},
+		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+76},
+		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+79},
+		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+81},
+		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+83},
+		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+84},
+		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+86},
+		{"QueryLeagueMemberInfoResult", 0, _class_SGGAME_S2C_fieldinfos+88},
+		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+88},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 44, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 46, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

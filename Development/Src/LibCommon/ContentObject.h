@@ -13,8 +13,8 @@ namespace Atlas
 		public:
 			virtual ~IContentGroup() {}
 			virtual IContentGroup* Register(const DDLReflect::STRUCT_INFO* info, bool bExactMatch=true, const char* keys=NULL) = 0;
-			virtual bool GetCookFlag() = NULL;
-			virtual void SetCookFlag(bool cook) = NULL;
+			virtual bool GetCookFlag() = 0;
+			virtual void SetCookFlag(bool cook) = 0;
 		};
 		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook);
 		IContentGroup* GetContentGroup(const char* name);

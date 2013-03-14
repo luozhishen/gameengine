@@ -115,8 +115,8 @@ void DES_GenKey(DES_KEY key)
 
 bool DES_KeyFromString(DES_KEY key, const char* s)
 {
-	memset(key, 0, sizeof(key));
-	for(size_t i=0; i<sizeof(key)*2; i++)
+	memset(key, 0, sizeof(DES_KEY));
+	for(size_t i=0; i<sizeof(DES_KEY)*2; i++)
 	{
 		char v;
 		if(s[i]>='0' && s[i]<='9')
@@ -142,12 +142,12 @@ bool DES_KeyFromString(DES_KEY key, const char* s)
 
 void DES_KeyToString(const DES_KEY key, char* s)
 {
-	for(size_t i=0; i<sizeof(key)*2; i++)
+	for(size_t i=0; i<sizeof(DES_KEY)*2; i++)
 	{
 		char v = (key[i/2] >> (i%2==0?4:0)) & 0x0f;
 		s[i] = v + (v<10?'0':'a'-10);
 	}
-	s[sizeof(key)*2] = '\0';
+	s[sizeof(DES_KEY)*2] = '\0';
 }
 
 void DES_SetKey(const DES_KEY key, DES_KEY_S keys)

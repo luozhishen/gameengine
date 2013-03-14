@@ -48,8 +48,6 @@ bool CEditorApp::OnInit()
 
 int CEditorApp::OnExit()
 {
-	Atlas::ContentObject::SaveContent();
-
 	delete wxConfigBase::Set(NULL);
 	return 0;
 }

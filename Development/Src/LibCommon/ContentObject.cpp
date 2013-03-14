@@ -489,15 +489,21 @@ namespace Atlas
 			return NULL;
 		}
 
-		bool LoadContent(const char* path)
+		bool LoadContent(const char* path, bool ignore)
 		{
 			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				char file[1000];
 				sprintf(file, "%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
-				if(!LoadContentFromJsonFile(file)) return false;
-				i->second._dirty = false;
+				if(LoadContentFromJsonFile(file))
+				{
+					i->second._dirty = false;
+				}
+				else
+				{
+					if(!ignore) return false;
+				}
 			}
 
 			return true;
@@ -614,7 +620,7 @@ namespace Atlas
 			}
 			else
 			{
-				realpath = StringFormat("%s/Content/Json/", AtlasGameDir());
+				realpath = StringFormat("%sContent/Json/", AtlasGameDir());
 			}
 
 			Atlas::Map<Atlas::String, std::ofstream*> vmap;

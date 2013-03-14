@@ -154,7 +154,7 @@ void CEditorFrame::OnSave(wxCommandEvent& event)
 	{
 	case ID_SAVE_FORCE:
 	case ID_SAVE:
-		if(Atlas::ContentObject::SaveContent(NULL, event.GetId()!=ID_SAVE_FORCE)) return;
+		if(Atlas::ContentObject::SaveContent(NULL, event.GetId()==ID_SAVE_FORCE)) return;
 		wxMessageBox(wxT("Save content failed"), wxT("!!!"));
 		break;
 	case ID_COOK_SAVE:

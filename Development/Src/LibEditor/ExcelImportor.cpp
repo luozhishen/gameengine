@@ -69,34 +69,52 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 	Json::Value root;
 	Json::Reader reader;
 	std::ifstream f(filename, std::ifstream::binary);
-	if(!f.is_open()) return true;
-	if(!reader.parse(f, root, false)) return false;
+	if(!f.is_open() || !reader.parse(f, root, false))
+	{
+		m_errmsg = "can't open file or parse failed";
+		return false;
+	}
 	Json::Value enums = root.get("enums", Json::Value());
 	Json::Value tmpls = root.get("templates", Json::Value());
-	if(!enums.isArray() || !tmpls.isArray()) return false;
-
-	for(int e=0; e<(int)enums.size(); e++)
+	if(!enums.isArray() || !tmpls.isArray())
 	{
-		Json::Value _enum = enums[e];
-		if(!_enum.isObject()) return false;
-		Json::Value name = _enum.get("name", Json::Value());
-		if(!name.isString()) return false;
-		Json::Value items = _enum.get("map", Json::Value());
-		if(!items.isArray()) return false;
+		m_errmsg = "enums or templates not found";
+		return false;
+	}
 
-		if(m_enum_map.find(name.asString().c_str())!=m_enum_map.end()) return false;
-		m_enum_map[name.asString().c_str()] = new CONTENT_EXCEL_ENUM;
-		CONTENT_EXCEL_ENUM& _map = *m_enum_map[name.asString().c_str()];
-
-		for(int i=0; i<(int)items.size(); i++)
+	Json::Value::Members names = enums.getMemberNames();
+	for(size_t ei=0; ei<names.size(); ei++)
+	{
+		Json::Value _enum = enums.get(names[ei], Json::Value());
+		if(!_enum.isObject())
 		{
-			Json::Value item = items[i];
-			if(!item.isObject()) return false;
-			Json::Value key = item.get("k", Json::Value());
-			Json::Value val = item.get("v", Json::Value());
-			if(!key.isString() || !val.isString()) return false;
-			if(_map.find(key.asString().c_str())!=_map.end()) return false;
-			_map[key.asString().c_str()] = val.asString().c_str();
+			m_errmsg = Atlas::StringFormat("enum [%s] not object", names[ei].c_str());
+			return false;
+		}
+
+		if(m_enum_map.find(names[ei])!=m_enum_map.end())
+		{
+			m_errmsg = Atlas::StringFormat("enum [%s] duplicate", names[ei].c_str());
+			return false;
+		}
+
+		m_enum_map[names[ei]] = new CONTENT_EXCEL_ENUM;
+		CONTENT_EXCEL_ENUM& _map = *m_enum_map[names[ei]];
+
+		Json::Value::Members keys = _enum.getMemberNames();
+		for(size_t i=0; i<keys.size(); i++)
+		{
+			Json::Value val = _enum.get(keys[i], Json::Value());
+			if(!val.isString())
+			{
+				m_errmsg = Atlas::StringFormat("enum [%s] array index %d invalid type", names[ei].c_str(), i);
+				return false;
+			}
+			if(_map.find(keys[i])!=_map.end())
+			{
+				return false;
+			}
+			_map[keys[i]] = val.asString();
 		}
 	}
 
@@ -112,7 +130,7 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 		if(!type.isBool()) return false;
 		Json::Value titleline = jtmpl.get("title", Json::Value());
 		Json::Value startline = jtmpl.get("start", Json::Value());
-		if(!titleline.isInt() || !startline.isInt()) return false;
+		if(!titleline.isUInt() || !startline.isUInt() || startline.asUInt()==0) return false;
 		Json::Value fields = jtmpl.get("fields", Json::Value());
 		if(!fields.isArray()) return false;
 
@@ -125,8 +143,8 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 		tmpl.name = name.asCString();
 		tmpl.info = Atlas::ContentObject::GetType(type.asCString());
 		tmpl.clear_data = clear.asBool();
-		tmpl.title_line = (unsigned int)titleline.asInt();
-		tmpl.start_line = (unsigned int)startline.asInt();
+		tmpl.title_line = titleline.asUInt();
+		tmpl.start_line = startline.asUInt();
 
 		for(int i=0; i<(int)fields.size(); i++)
 		{
@@ -221,7 +239,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 	CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
 
 	Atlas::Map<Atlas::String, Atlas::String> field_map;
-	if(tmpl.title_line<0)
+	if(tmpl.title_line==0)
 	{
 		Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
 		for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
@@ -234,14 +252,16 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		for(unsigned int col=0; col<200; col++)
 		{
 			Atlas::String ColName;
-			if(!excel->GetCellValue(GetCellName(0, tmpl.title_line), ColName))
+			if(!excel->GetCellValue(GetCellName(0, tmpl.title_line-1), ColName))
 			{
+				m_errmsg = "error in GetCellValue";
 				return false;
 			}
 			if(tmpl.m_fields.find(ColName)==tmpl.m_fields.end()) continue;
 			Atlas::String FieldName = tmpl.m_fields[ColName].field;
 			if(field_map.find(FieldName)!=field_map.end())
 			{
+				m_errmsg = Atlas::StringFormat("field duplicate %s", FieldName.c_str());
 				return false;
 			}
 
@@ -250,6 +270,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 
 		if(field_map.size()!=tmpl.m_fields.size())
 		{
+			m_errmsg = "field count not match template field count";
 			return false;
 		}
 	}
@@ -262,6 +283,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)malloc(tmpl.info->size);
 		if(!obj)
 		{
+			m_errmsg = "malloc error";
 			return false;
 		}
 		memset(obj, 0, tmpl.info->size);
@@ -272,11 +294,13 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			Atlas::String val;
 			if(!excel->GetCellValue(Atlas::StringFormat("%s:%d", i->second.c_str(), i), val))
 			{
+				m_errmsg = "error in GetCellValue";
 				free(obj);
 				return false;
 			}
 			if(!DDLReflect::StructParamFromString(tmpl.info, i->first.c_str(), obj, val.c_str()))
 			{
+				m_errmsg = Atlas::StringFormat("error in StructParamFromString(%s, %s, %s)", tmpl.info->name, i->first.c_str(), val.c_str());
 				free(obj);
 				return false;
 			}
@@ -285,6 +309,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		Atlas::String pkey;
 		if(!Atlas::ContentObject::GenContentObjectUniqueId(type_id, obj, pkey))
 		{
+			m_errmsg = "error in GenContentObjectUniqueId";
 			free(obj);
 			return false;
 		}

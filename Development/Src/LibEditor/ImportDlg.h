@@ -31,7 +31,7 @@ public:
 	wxCheckListBox* m_checkList;
 	wxCheckBox* m_checkBoxSelAll;
 	wxButton* m_btnOK;
-	CContentExcelImportor* m_pImporter;
+	CContentExcelImportor* m_pImportor;
 	COLEAutoExcelWrapper* m_pExcel;
 };
 

@@ -1,5 +1,5 @@
-#ifndef _IMPORT_MANAGER_H__
-#define _IMPORT_MANAGER_H__
+#ifndef _EXCEL_IMPORTOR_H__
+#define _EXCEL_IMPORTOR_H__
 
 #include <string>
 #include <vector>
@@ -30,4 +30,4 @@ private:
 	Atlas::String m_errmsg;
 };
 
-#endif	//_IMPORT_MANAGER_H__
+#endif	// _EXCEL_IMPORTOR_H__

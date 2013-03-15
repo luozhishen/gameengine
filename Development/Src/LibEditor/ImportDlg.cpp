@@ -37,7 +37,7 @@ END_EVENT_TABLE()
 
 CImportDlg::CImportDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Import Excel"), wxDefaultPosition, wxSize(400, 400), wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-	m_pImporter = new CContentExcelImportor();
+	m_pImportor = new CContentExcelImportor();
 	m_pExcel = new COLEAutoExcelWrapper();
 
 	InitClient();
@@ -45,20 +45,20 @@ CImportDlg::CImportDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Impor
 
 CImportDlg::~CImportDlg()
 {
-	delete m_pImporter;
+	delete m_pImportor;
 	delete m_pExcel;
 }
 
 bool CImportDlg::LoadTemplateDefine(const char* filename)
 {
-	if(!m_pImporter->LoadTemplateDefine(filename))
+	if(!m_pImportor->LoadTemplateDefine(filename))
 	{
 		wxMessageBox(wxT("Failed to load template define file"), wxT("Error"));
 		return false;
 	}
 
 	Atlas::Vector<Atlas::String> list;
-	m_pImporter->GetTemplateList(list);
+	m_pImportor->GetTemplateList(list);
 
 	for(size_t i=0; list.size(); i++)
 	{
@@ -156,7 +156,7 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 
 	wxString strFilePath = m_pFilePicker->GetPath();
 	m_pExcel->SetFilePath((const char*)strFilePath.ToUTF8());
-	if(FAILED(m_pExcel->OpenExcelBook(false)))
+	if(!m_pExcel->OpenExcelBook(false))
 	{
 		wxMessageBox(wxT("Failed to open excel file"), wxT("Error"));
 		return;
@@ -227,24 +227,32 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-	Atlas::Vector<Atlas::String> vSheets;
-	if(!GetSelectSheets(vSheets) || vSheets.empty())
+	Atlas::Vector<Atlas::String> sheets;
+	if(!GetSelectSheets(sheets) || sheets.empty())
 	{
-		wxMessageBox(wxT("no sheet select!"));
+		wxMessageBox(wxT("no sheet selected!"));
 		return false;
 	}
 
+	size_t i;
+	for(i=0; i<sheets.size(); i++)
 	{
-		/*
-		wxString strErr = wxString::FromUTF8(m_pImportManger->GetErrorMsg());
-		if(!strErr.IsEmpty()) wxMessageBox(strErr);
-		*/
+		if(!m_pExcel->SetActiveSheet(sheets[i]))
+		{
+			wxMessageBox(wxString::Format(wxT("error in SetActiveSheet(%s)"), wxString::FromUTF8(sheets[i].c_str()).c_str()), wxT("Error"));
+			break;
+		}
+
+		if(!m_pImportor->ImportSheet((const char*)strType.ToUTF8(), m_pExcel))
+		{
+			wxMessageBox(wxString::FromUTF8(m_pImportor->GetErrorInfo()), wxT("Error"));
+			break;
+		}
+	}
+	if(i!=sheets.size())
+	{
+		Atlas::ContentObject::LoadContent();
 	}
 
-
-/*
-	wxString strUpdateInfo = wxString::FromUTF8(m_pImportManger->GetImportInfoMsg());
-	wxMessageBox(strUpdateInfo, wxT("Import Info"));
-*/
 	return true;
 }

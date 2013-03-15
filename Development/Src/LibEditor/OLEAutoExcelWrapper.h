@@ -12,11 +12,9 @@ class COLEAutoExcelWrapper
 public:
 	COLEAutoExcelWrapper();
 	~COLEAutoExcelWrapper();
-	bool SetVisible(bool bVisible = true);
-	bool OpenExcelBook(bool bVisible = true);
+	bool Open(const Atlas::String& sFileName, bool bVisible);
 	bool Save();
 	bool Quit();
-	void SetFilePath(const Atlas::String& sFilePath);
 	bool GetExcelSheets(Atlas::Vector<Atlas::String>& vSheets);
 	bool SetActiveSheet(const Atlas::String& sSheetName);
 	bool SetCellValue(const Atlas::String& sRange, const Atlas::String& sValue);
@@ -31,7 +29,6 @@ private:
 	IDispatch* m_pActiveBook;
 	IDispatch* m_pExcelSheets;
 	IDispatch* m_pActiveSheet;
-	Atlas::String m_sFilePath;
 };
 
 #endif // _OLEAUTOEXCELWRAPPER_H_

@@ -154,9 +154,8 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 {
 	m_checkList->Clear();
 
-	wxString strFilePath = m_pFilePicker->GetPath();
-	m_pExcel->SetFilePath((const char*)strFilePath.ToUTF8());
-	if(!m_pExcel->OpenExcelBook(false))
+	Atlas::String strFilePath = (const char*)m_pFilePicker->GetPath().ToUTF8();
+	if(!m_pExcel->Open(strFilePath, false))
 	{
 		wxMessageBox(wxT("Failed to open excel file"), wxT("Error"));
 		return;

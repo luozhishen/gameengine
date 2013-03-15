@@ -145,22 +145,7 @@ bool COLEAutoExcelWrapper::Initialize()
 	return SUCCEEDED(m_hRes);
 }
 
-bool COLEAutoExcelWrapper::SetVisible(bool bVisible)
-{
-	if(!m_pExcelApp)
-	{
-		return false;
-	}
-
-	VARIANT param1;
-	param1.vt = VT_I4;
-	param1.lVal = bVisible;
-	m_hRes = OLEWrap(DISPATCH_PROPERTYPUT, NULL, m_pExcelApp, L"Visible", 1, param1);
-
-	return SUCCEEDED(m_hRes);
-}
-
-bool COLEAutoExcelWrapper::OpenExcelBook(bool bVisible)
+bool COLEAutoExcelWrapper::Open(const Atlas::String& sFileName, bool bVisible)
 {
 	if(!m_pExcelApp) 
 	{
@@ -169,7 +154,11 @@ bool COLEAutoExcelWrapper::OpenExcelBook(bool bVisible)
 			return false;
 		}
 
-		if(FAILED(m_hRes = SetVisible(bVisible)))
+		VARIANT param1;
+		param1.vt = VT_I4;
+		param1.lVal = bVisible;
+		m_hRes = OLEWrap(DISPATCH_PROPERTYPUT, NULL, m_pExcelApp, L"Visible", 1, param1);
+		if(FAILED(m_hRes))
 		{
 			return false;
 		}
@@ -192,10 +181,9 @@ bool COLEAutoExcelWrapper::OpenExcelBook(bool bVisible)
 		VariantInit(&result);
 		VARIANT param1;
 		param1.vt = VT_BSTR;
-		param1.bstrVal = SysAllocString((OLECHAR*)m_sFilePath.c_str());
+		param1.bstrVal = SysAllocString(wxString::FromUTF8(sFileName.c_str()).c_str());
 		m_hRes = OLEWrap(DISPATCH_PROPERTYGET, &result, m_pExcelBooks, L"Open", 1, param1);
 		SysFreeString(param1.bstrVal);
-
 		if(FAILED(m_hRes))
 		{
 			return false;
@@ -206,7 +194,6 @@ bool COLEAutoExcelWrapper::OpenExcelBook(bool bVisible)
 	{
 		VARIANT result;
 		VariantInit(&result);
-
 		m_hRes = OLEWrap(DISPATCH_PROPERTYGET, &result, m_pActiveBook, L"Sheets", 0);
 		if(FAILED(m_hRes))
 		{
@@ -226,13 +213,7 @@ bool COLEAutoExcelWrapper::Save()
 	}
 
 	m_hRes = OLEWrap(DISPATCH_METHOD, NULL, m_pActiveBook, L"Save", 0);
-
 	return SUCCEEDED(m_hRes);
-}
-
-void COLEAutoExcelWrapper::SetFilePath(const Atlas::String& sFilePath)
-{
-	m_sFilePath = sFilePath;
 }
 
 bool COLEAutoExcelWrapper::GetExcelSheets(Atlas::Vector<Atlas::String>& vSheets)

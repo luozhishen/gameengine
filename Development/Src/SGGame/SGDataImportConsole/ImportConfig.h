@@ -9,7 +9,6 @@ class COLEAutoExcelWrapper2;
 
 namespace Atlas
 {
-	class CContentExcelImportManager;
 
 	class CContentExcelImportManager
 	{

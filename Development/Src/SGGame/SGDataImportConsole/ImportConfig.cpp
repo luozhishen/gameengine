@@ -9,6 +9,7 @@
 
 namespace Atlas
 {
+
 	static Atlas::Map<int, char> g_excelmap;
 
 	struct EXCEL_INDEX 
@@ -510,7 +511,7 @@ namespace Atlas
 		Atlas::Map<Atlas::String, A_UUID>::iterator it_obj = m_ObjectMap.find(strKey);
 		if(it_obj == m_ObjectMap.end()) //insert
 		{
-			pObject = ContentObject::Create(m_pStructInfo, uuid);
+			pObject = ContentObject::CreateObject(m_pStructInfo, uuid);
 			pObject->uuid = uuid;
 			m_ObjectMap[strKey] = uuid;
 			m_nInsertRowNum++;

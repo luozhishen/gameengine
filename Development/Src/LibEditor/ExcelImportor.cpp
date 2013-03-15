@@ -346,7 +346,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		}
 		else
 		{
-			old_obj = Atlas::ContentObject::Create(tmpl.info, obj->uuid);
+			old_obj = Atlas::ContentObject::CreateObject(tmpl.info, obj->uuid);
 			ATLAS_ASSERT(old_obj);
 			if(bUUID)
 			{

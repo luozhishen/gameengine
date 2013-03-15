@@ -186,7 +186,7 @@ void CContentDataView::OnObjectAdd(wxCommandEvent& event)
 	if(m_dlgGenerateObject.ShowModal()!=wxID_OK) return;
 	const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetType(m_dlgGenerateObject.GetType().ToUTF8());
 	A_UUID uuid;
-	A_CONTENT_OBJECT* pObject = Atlas::ContentObject::Create(info, uuid);
+	A_CONTENT_OBJECT* pObject = Atlas::ContentObject::CreateObject(info, uuid);
 	if(!pObject) return;
 
 	pObject->name = (const char*)m_dlgGenerateObject.GetName().ToUTF8();
@@ -267,7 +267,7 @@ void CContentDataView::OnMenuPaste(wxCommandEvent& event)
 	if(!pInfo) return;
 
 	A_UUID uuid;
-	A_CONTENT_OBJECT* pDest = Atlas::ContentObject::Create(pInfo, uuid);
+	A_CONTENT_OBJECT* pDest = Atlas::ContentObject::CreateObject(pInfo, uuid);
 	if(!pDest)
 	{
 		wxMessageBox(wxT("no copy instance exists"));
@@ -386,7 +386,7 @@ void CContentDataView::RemoveObject(const A_UUID& uuid)
 		}
 	}
 	
-	Atlas::ContentObject::Delete(uuid);
+	Atlas::ContentObject::DeleteObject(uuid);
 }
 
 void CContentDataView::SelectObject(const A_UUID& uuid)

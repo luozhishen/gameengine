@@ -25,9 +25,9 @@ namespace Atlas
 		const DDLReflect::STRUCT_INFO* GetType(_U16 id);
 		bool GetTypePrimaryKey(const char* name, Atlas::Set<Atlas::String>& keys);
 
-		A_CONTENT_OBJECT* Create(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid);
-		A_CONTENT_OBJECT* Alloc(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid);
-		void Delete(const A_UUID& uuid);
+		A_CONTENT_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid);
+		A_CONTENT_OBJECT* AllocObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid);
+		void DeleteObject(const A_UUID& uuid);
 
 		const DDLReflect::STRUCT_INFO* GetObjectType(const A_UUID& uuid);
 		A_CONTENT_OBJECT* Modify(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info=NULL);

@@ -60,8 +60,8 @@ namespace Atlas
 			CContentGroup*					group;
 		};
 		const _U16 g_typeid_base = 0x1000;
-		Atlas::Map<Atlas::String, _U16>		g_contentobject_typemap;
-		Atlas::Vector<STRUCT_INTERNAL_INFO>	g_contentobject_typearray;
+		Atlas::Map<Atlas::String, _U16>		g_typemap;
+		Atlas::Vector<STRUCT_INTERNAL_INFO>	g_typearray;
 		// content object
 		class CContentObjectManager
 		{
@@ -114,10 +114,10 @@ namespace Atlas
 			Atlas::Map<Atlas::String, _U16>::iterator i;
 			while(info)
 			{
-				i = g_contentobject_typemap.find(info->name);
-				if(i!=g_contentobject_typemap.end())
+				i = g_typemap.find(info->name);
+				if(i!=g_typemap.end())
 				{
-					return g_contentobject_typearray[i->second-g_typeid_base].group;
+					return g_typearray[i->second-g_typeid_base].group;
 				}
 				info = info->parent;
 			}
@@ -163,7 +163,8 @@ namespace Atlas
 					{
 						if(vkeys.size()!=1)
 						{
-							return false;
+							ATLAS_ASSERT(0);
+							return NULL;
 						}
 						else
 						{
@@ -179,52 +180,52 @@ namespace Atlas
 				}
 			}
 
-			ATLAS_ASSERT(g_contentobject_typemap.find(info->name)==g_contentobject_typemap.end());
-			if(g_contentobject_typemap.find(info->name)!=g_contentobject_typemap.end()) return NULL;
+			ATLAS_ASSERT(g_typemap.find(info->name)==g_typemap.end());
+			if(g_typemap.find(info->name)!=g_typemap.end()) return NULL;
 
 			STRUCT_INTERNAL_INFO internal_info;
-			internal_info.type_id = g_typeid_base + (_U16)g_contentobject_typearray.size();
+			internal_info.type_id = g_typeid_base + (_U16)g_typearray.size();
 			internal_info.info = info;
 			internal_info.bExactMatch = bExactMatch;
 			internal_info.keys = vkeys;
 			internal_info.group = this;
 
-			g_contentobject_typemap[info->name] = internal_info.type_id;
-			g_contentobject_typearray.push_back(internal_info);
+			g_typemap[info->name] = internal_info.type_id;
+			g_typearray.push_back(internal_info);
 
 			return this;
 		}
 
 		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list)
 		{
-			list.resize(g_contentobject_typearray.size());
-			for(size_t i=0; i<g_contentobject_typearray.size(); i++)
+			list.resize(g_typearray.size());
+			for(size_t i=0; i<g_typearray.size(); i++)
 			{
-				list[i] = g_contentobject_typearray[i].info;
+				list[i] = g_typearray[i].info;
 			}
 		}
 
 		_U16 GetTypeId(const char* name)
 		{
 			Atlas::Map<Atlas::String, _U16>::const_iterator i;
-			i = g_contentobject_typemap.find(name);
-			if(i==g_contentobject_typemap.end()) return (_U16)-1;
+			i = g_typemap.find(name);
+			if(i==g_typemap.end()) return (_U16)-1;
 			return i->second;
 		}
 
 		const DDLReflect::STRUCT_INFO* GetType(const char* name)
 		{
 			Atlas::Map<Atlas::String, _U16>::const_iterator i;
-			i = g_contentobject_typemap.find(name);
-			if(i==g_contentobject_typemap.end()) return NULL;
-			return g_contentobject_typearray[i->second-g_typeid_base].info;
+			i = g_typemap.find(name);
+			if(i==g_typemap.end()) return NULL;
+			return g_typearray[i->second-g_typeid_base].info;
 		}
 
 		const DDLReflect::STRUCT_INFO* GetType(_U16 id)
 		{
 			if(id<g_typeid_base) return NULL;
-			if(id>=g_typeid_base+(_U16)g_contentobject_typearray.size()) return NULL;
-			return g_contentobject_typearray[id-g_typeid_base].info;
+			if(id>=g_typeid_base+(_U16)g_typearray.size()) return NULL;
+			return g_typearray[id-g_typeid_base].info;
 		}
 
 		bool GetTypePrimaryKey(const char* name, Atlas::Set<Atlas::String>& keys)
@@ -232,7 +233,7 @@ namespace Atlas
 			keys.clear();
 			_U16 id = GetTypeId(name);
 			if(id==(_U16)-1) return false;
-			Atlas::Vector<Atlas::String>& karray = g_contentobject_typearray[id-g_typeid_base].keys;
+			Atlas::Vector<Atlas::String>& karray = g_typearray[id-g_typeid_base].keys;
 			if(karray.empty())
 			{
 				keys.insert("uuid");
@@ -247,13 +248,13 @@ namespace Atlas
 			return true;
 		}
 
-		A_CONTENT_OBJECT* Create(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid)
+		A_CONTENT_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid)
 		{
 			AUuidGenerate(uuid);
-			return Alloc(info, uuid);
+			return AllocObject(info, uuid);
 		}
 
-		A_CONTENT_OBJECT* Alloc(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
+		A_CONTENT_OBJECT* AllocObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
 		{
 			CContentGroup* group = QueryContentGroup(info);
 			A_CONTENT_OBJECT* object = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(info);
@@ -264,7 +265,7 @@ namespace Atlas
 			return object;
 		}
 
-		void Delete(const A_UUID& uuid)
+		void DeleteObject(const A_UUID& uuid)
 		{
 			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
@@ -322,7 +323,7 @@ namespace Atlas
 			_U16 type_id = GetTypeId(info->name);
 			if(type_id==(_U16)-1) return NULL;
 
-			STRUCT_INTERNAL_INFO& internal_info = g_contentobject_typearray[type_id-g_typeid_base];
+			STRUCT_INTERNAL_INFO& internal_info = g_typearray[type_id-g_typeid_base];
 
 			if(internal_info.keys.empty())
 			{
@@ -373,8 +374,8 @@ namespace Atlas
 		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Atlas::String& uid)
 		{
 			if(id<g_typeid_base) return false;
-			if(id>=g_typeid_base+(_U16)g_contentobject_typearray.size()) return false;
-			STRUCT_INTERNAL_INFO& info = g_contentobject_typearray[id-g_typeid_base];
+			if(id>=g_typeid_base+(_U16)g_typearray.size()) return false;
+			STRUCT_INTERNAL_INFO& info = g_typearray[id-g_typeid_base];
 
 			uid.clear();
 			for(size_t f=0; f<info.keys.size(); f++)
@@ -397,10 +398,10 @@ namespace Atlas
 		{
 			if(info==NULL)
 			{
-				for(size_t i=0; i<g_contentobject_typearray.size(); i++)
+				for(size_t i=0; i<g_typearray.size(); i++)
 				{
-					if(g_contentobject_typearray[i].keys.size()==0) continue;
-					if(!BuildIndex(g_contentobject_typearray[i].info)) return false;
+					if(g_typearray[i].keys.size()==0) continue;
+					if(!BuildIndex(g_typearray[i].info)) return false;
 				}
 				return true;
 			}
@@ -412,7 +413,7 @@ namespace Atlas
 				return false;
 			}
 
-			STRUCT_INTERNAL_INFO& internal_info = g_contentobject_typearray[type_id-g_typeid_base];
+			STRUCT_INTERNAL_INFO& internal_info = g_typearray[type_id-g_typeid_base];
 			internal_info.key_map.clear();
 			if(internal_info.keys.size()==0) return true;
 
@@ -536,7 +537,7 @@ namespace Atlas
 			{
 				return false;
 			}
-			A_CONTENT_OBJECT* object = Alloc(info, uuid);
+			A_CONTENT_OBJECT* object = AllocObject(info, uuid);
 			if(!object)
 			{
 				return false;
@@ -658,17 +659,22 @@ namespace Atlas
 				if(vmap.find(file)==vmap.end()) continue;
 
 				std::ofstream& f = *(vmap[file]);
-				Atlas::String va;
-				DDLReflect::Struct2Json(oi->second.first, (const _U8*)(oi->second.second), va);
-
+	
 				if(vmap_a[file])
 				{
 					vmap_a[file] = false;
 				}
 				else
 				{
-				f << "\t\t}," << std::endl;
+					f << "\t\t}," << std::endl;
 				}
+	
+				Atlas::String va;
+				if(!DDLReflect::Struct2Json(oi->second.first, (const _U8*)(oi->second.second), va))
+				{
+					ATLAS_ASSERT(0);
+				}
+
 				f << "\t\t{" << std::endl;
 				f << "\t\t\t" << "\"type\":\"" << oi->second.first->name << "\"," << std::endl;
 				f << "\t\t\t" << "\"data\":" << va;
@@ -680,7 +686,7 @@ namespace Atlas
 				std::ofstream& f = *(fi->second);
 				if(!vmap_a[fi->first])
 				{
-				f << "\t\t}" << std::endl;
+					f << "\t\t}" << std::endl;
 				}
 				f << "\t]" << std::endl;
 				f << "}" << std::endl;

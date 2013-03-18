@@ -168,6 +168,8 @@ const _U8 SG_LEAGUE_CREATE_SUCC = 0;
 
 const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 
+const _U32 SG_VIP_ICON_MAX = 256;
+
 struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 vip_level;
@@ -176,6 +178,13 @@ struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 	_U32 energy_times;
 	_U32 energy_upper;
 	_U32 reset_instance_times;
+	_U8 hangup_free;
+	_U8 enhance_free;
+	DDL::String<SG_VIP_ICON_MAX> res;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
 };
 
 namespace DDL
@@ -244,7 +253,7 @@ struct SG_INSTANCE_CONFIG : A_CONTENT_OBJECT
 	DDL::String<SG_INSTANCE_REWARD_DES_MAX> reward_normal2;
 	DDL::String<SG_INSTANCE_REWARD_DES_MAX> reward_hard1;
 	DDL::String<SG_INSTANCE_REWARD_DES_MAX> reward_hard2;
-	_U32 reset_gold;
+	_U32 reset_rmb;
 	_U32 awake_pt;
 };
 
@@ -413,6 +422,26 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_PVP_INFO_CONFIG_info;
 }
 
+struct SG_PVP_SETTING_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 increase_pay_rmb;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_PVP_SETTING_CONFIG>(SG_PVP_SETTING_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_PVP_SETTING_CONFIG>(const SG_PVP_SETTING_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_PVP_SETTING_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_PVP_SETTING_CONFIG_info;
+}
+
 struct SG_GOODS_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 good_id;
@@ -498,6 +527,7 @@ struct SG_LEAGUE : A_LIVE_OBJECT
 	_U32 exp;
 	_U32 create_time;
 	_U32 owner_id;
+	DDL::String<SG_PLAYER_NAME_MAX> owner_name;
 	DDL::String<SG_LEAGUE_POST_MAX> post_content;
 };
 
@@ -520,6 +550,8 @@ struct SG_LEAGUE_MEMBER : A_LIVE_OBJECT
 {
 	_U32 league_id;
 	_U32 member_id;
+	DDL::String<SG_PLAYER_NAME_MAX> member_name;
+	_U32 member_level;
 	_U8 position;
 	_U32 contribution_value;
 	_U32 total_contribution_value;
@@ -1450,6 +1482,7 @@ struct SG_PLAYER : SG_GENERAL
 	_U32 vip_level;
 	_U32 league_id;
 	DDL::Array<_U32, SG_LEAGUE_APPLY_MAX> league_apply_list;
+	_U32 last_operation_time;
 };
 
 namespace DDL

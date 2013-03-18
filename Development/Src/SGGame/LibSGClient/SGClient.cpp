@@ -479,6 +479,12 @@ namespace Atlas
 	void CSGClient::PVPDailyReward()
 	{
 		m_C2S.PVPDailyReward();
+
+		
+		//sync player and bag
+		Atlas::Vector<_U8> vecSync;
+		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+		SyncSet(vecSync);
 	}
 
 	//void CSGClient::PVPBattle(_U32 defender, _U8 result)
@@ -499,6 +505,11 @@ namespace Atlas
 	void CSGClient::PVPCoolDownClear()
 	{
 		m_C2S.PVPCoolDownClear();
+
+		//sync player and bag
+		Atlas::Vector<_U8> vecSync;
+		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+		SyncSet(vecSync);
 	}
 
 	void CSGClient::PVPIncreateBattleTimes()
@@ -982,6 +993,11 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			SyncSet(vecSync);
+
 			m_callback->PVPCoolDownResult(time);
 		}
 	}
@@ -1024,7 +1040,6 @@ namespace Atlas
 				m_newItemList.push_back(items->uuid);
 			}
 
-			//sync player and bag
 		}
 	}
 
@@ -1045,6 +1060,11 @@ namespace Atlas
 			}
 
 			m_callback->PVPBattleEndResult(reputation);
+
+			//sync player and bag
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			SyncSet(vecSync);
 		}
 	}
 
@@ -1060,6 +1080,11 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			//sync player and bag
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			SyncSet(vecSync);
+
 			m_callback->PVPIncreateBattleTimesResult(rest_times);
 		}
 	}

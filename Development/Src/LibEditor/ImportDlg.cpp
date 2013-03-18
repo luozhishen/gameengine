@@ -60,7 +60,7 @@ bool CImportDlg::LoadTemplateDefine(const char* filename)
 	Atlas::Vector<Atlas::String> list;
 	m_pImportor->GetTemplateList(list);
 
-	for(size_t i=0; list.size(); i++)
+	for(size_t i=0; i<list.size(); i++)
 	{
 		m_cbType->Insert(wxString::FromUTF8(list[i].c_str()), m_cbType->GetCount());
 	}
@@ -213,6 +213,12 @@ void CImportDlg::EndModal(int retCode)
 
 bool CImportDlg::ProcessImport()
 {
+	if(!Atlas::ContentObject::BuildIndex())
+	{
+		wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("Build Index Error"));
+		return false;
+	}
+
 	if(!Atlas::ContentObject::SaveContent())
 	{
 		wxMessageBox(wxT("Failed to save content"));

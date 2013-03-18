@@ -368,7 +368,17 @@ namespace Atlas
 
 		const A_CONTENT_OBJECT* QueryByUniqueId(const DDLReflect::STRUCT_INFO* info, const char* value1)
 		{
-			return NULL;
+			ATLAS_ASSERT(info);
+			if(!info) return NULL;
+
+			_U16 type_id = GetTypeId(info->name);
+			if(type_id==(_U16)-1) return NULL;
+
+			STRUCT_INTERNAL_INFO& internal_info = g_typearray[type_id-g_typeid_base];
+			Atlas::Map<Atlas::String, A_CONTENT_OBJECT*>::iterator i;
+			i = internal_info.key_map.find(value1);
+			if(i==internal_info.key_map.end()) return NULL;
+			return i->second;
 		}
 
 		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Atlas::String& uid)

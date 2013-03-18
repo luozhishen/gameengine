@@ -38,9 +38,177 @@ struct DATATEST_BASE_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(DATATEST_BASE_CONFIG)];
 task[GEN_STRUCT_REFLECT(DATATEST_BASE_CONFIG)];
 
+//************************KNIGHT**************************//
 // Basic
 const _U32 KNIGHT_DESCRIPTION_MAX = 256;
 const _U32 KNIGHT_RESOURCE_URL_MAX = 128;
+const _U32 KNIGHT_ARRAY_ELEMENT_MAX = 16;
+const _U32 KNIGHT_ID_MAX = 16;
 
-// Skills
+//**********************COMMON STRUCTS********************//
+struct KNIGHT_ATTRIBUTE_MODIFY_SETTING
+{
+	_U8														AttributeType;
+	_F32													Value;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_ATTRIBUTE_MODIFY_SETTING)];
+task[GEN_STRUCT_REFLECT(KNIGHT_ATTRIBUTE_MODIFY_SETTING)];
 
+//************************SKILL**************************//                                                          
+// Skill Base
+struct KNIGHT_SKILL_CONFIG : A_CONTENT_OBJECT
+{
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;	
+	string<KNIGHT_ID_MAX>									ID;
+	string<KNIGHT_DESCRIPTION_MAX>							SkillName;
+	string<KNIGHT_DESCRIPTION_MAX>							Desc;
+	_U32													Level;
+	_U8														Target;
+	array<string<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX>	BuffIDs;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_SKILL_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_SKILL_CONFIG)];
+
+//Skill Active
+struct KNIGHT_SKILL_ACTIVE_CONFIG : KNIGHT_SKILL_CONFIG
+{
+	_U8														Element;
+	_U8														FormulaType;
+	_U32													AveValue;
+	_U32													Range;
+	_U32													FormulaRatio;
+	_F32													Probability;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_SKILL_ACTIVE_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_SKILL_ACTIVE_CONFIG)];
+
+//Skill Passive
+struct KNIGHT_SKILL_PASSIVE_CONFIG : KNIGHT_SKILL_CONFIG
+{
+
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_SKILL_PASSIVE_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_SKILL_PASSIVE_CONFIG)];
+
+//************************BUFF**************************//
+//Buff
+struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
+{
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;	
+	string<KNIGHT_ID_MAX>									ID;
+	string<KNIGHT_DESCRIPTION_MAX>							BuffName;
+	string<KNIGHT_DESCRIPTION_MAX>							Desc;
+	_U32													Duration;					
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_CONFIG)];
+
+//************************BUFF_STATS**************************//
+struct KNIGHT_BUFF_STATS : KNIGHT_BUFF_CONFIG
+{
+	array<KNIGHT_ATTRIBUTE_MODIFY_SETTING,KNIGHT_ARRAY_ELEMENT_MAX>		AttrModSetting;
+	_U8																	AddForever;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_STATS)];
+task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_STATS)];
+
+//************************BUFF_DAMAGE_CORRECTION**************************//
+struct KNIGHT_ELEM_DAMAGE_CORRECTION
+{
+	_U8														ElementType;
+	_F32													Ratio;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_ELEM_DAMAGE_CORRECTION)];
+task[GEN_STRUCT_REFLECT(KNIGHT_ELEM_DAMAGE_CORRECTION)];
+
+struct KNIGHT_WEAPON_CORRECTION
+{
+	_U8														WeaponType;
+	_F32													Ratio;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_WEAPON_CORRECTION)];
+task[GEN_STRUCT_REFLECT(KNIGHT_WEAPON_CORRECTION)];
+
+struct KNIGHT_BUFF_DAMAGE_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	array<KNIGHT_ELEM_DAMAGE_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>		ElementCorrection;
+	array<KNIGHT_WEAPON_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>			WeaponCorrection;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_DAMAGE_CORRECTION)];
+task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_DAMAGE_CORRECTION)];
+
+//************************BUFF_MAGIC_CORRECTION**************************//
+struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	array<_U8,KNIGHT_ARRAY_ELEMENT_MAX>									ElementType;
+	_U8																	ElementDefMode;
+	_U32																ElementLevel;
+	_U32																ElementStrengthen;
+	_U8																	ElementSeal;
+	_U8																	ElementMiss;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_MAGIC_CORRECTION)];
+task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_MAGIC_CORRECTION)];
+
+//************************BUFF_BUFF_CORRECTION**************************//
+struct KNIGHT_BUFF_BUFF_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	array<string<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX>				IDs;
+	_U8																	Type;
+	_F32																MissRate;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_BUFF_CORRECTION)];
+task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_BUFF_CORRECTION)];
+
+//************************ITEM**************************//    
+//Item
+struct KNIGHT_ITEM_CONFIG : A_CONTENT_OBJECT
+{
+	string<KNIGHT_ID_MAX>									ID;
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_ITEM_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_ITEM_CONFIG)];
+
+//Equipment
+struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
+{
+	_U32								Level;
+	_U32								Rank;
+
+	array<KNIGHT_ATTRIBUTE_MODIFY_SETTING,KNIGHT_ARRAY_ELEMENT_MAX>	InitialValue;
+	array<KNIGHT_ATTRIBUTE_MODIFY_SETTING,KNIGHT_ARRAY_ELEMENT_MAX>	GrowthValue;
+
+	array<string<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX>	SkillIDs;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_EQUIPMENT_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_EQUIPMENT_CONFIG)];
+
+//Armor
+struct KNIGHT_ARMOR_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_ARMOR_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_ARMOR_CONFIG)];
+
+//Helmet
+struct KNIGHT_HELMET_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_HELMET_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_HELMET_CONFIG)];
+
+//Shield
+struct KNIGHT_SHIELD_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_SHIELD_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_SHIELD_CONFIG)];
+
+//Weapon
+struct KNIGHT_WEAPON_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+	_U8								Type;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_WEAPON_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_WEAPON_CONFIG)];

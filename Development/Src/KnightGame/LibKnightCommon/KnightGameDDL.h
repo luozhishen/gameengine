@@ -97,6 +97,378 @@ const _U32 KNIGHT_DESCRIPTION_MAX = 256;
 
 const _U32 KNIGHT_RESOURCE_URL_MAX = 128;
 
+const _U32 KNIGHT_ARRAY_ELEMENT_MAX = 16;
+
+const _U32 KNIGHT_ID_MAX = 16;
+
+struct KNIGHT_ATTRIBUTE_MODIFY_SETTING
+{
+	_U8 AttributeType;
+	_F32 Value;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ATTRIBUTE_MODIFY_SETTING>(KNIGHT_ATTRIBUTE_MODIFY_SETTING& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_ATTRIBUTE_MODIFY_SETTING>(const KNIGHT_ATTRIBUTE_MODIFY_SETTING& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ATTRIBUTE_MODIFY_SETTING>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_ATTRIBUTE_MODIFY_SETTING_info;
+}
+
+struct KNIGHT_SKILL_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
+	DDL::String<KNIGHT_ID_MAX> ID;
+	DDL::String<KNIGHT_DESCRIPTION_MAX> SkillName;
+	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
+	_U32 Level;
+	_U8 Target;
+	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> BuffIDs;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_SKILL_CONFIG>(KNIGHT_SKILL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_SKILL_CONFIG>(const KNIGHT_SKILL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_SKILL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_SKILL_CONFIG_info;
+}
+
+struct KNIGHT_SKILL_ACTIVE_CONFIG : KNIGHT_SKILL_CONFIG
+{
+	_U8 Element;
+	_U8 FormulaType;
+	_U32 AveValue;
+	_U32 Range;
+	_U32 FormulaRatio;
+	_F32 Probability;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_SKILL_ACTIVE_CONFIG>(KNIGHT_SKILL_ACTIVE_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_SKILL_ACTIVE_CONFIG>(const KNIGHT_SKILL_ACTIVE_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_SKILL_ACTIVE_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_SKILL_ACTIVE_CONFIG_info;
+}
+
+struct KNIGHT_SKILL_PASSIVE_CONFIG : KNIGHT_SKILL_CONFIG
+{
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_SKILL_PASSIVE_CONFIG>(KNIGHT_SKILL_PASSIVE_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_SKILL_PASSIVE_CONFIG>(const KNIGHT_SKILL_PASSIVE_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_SKILL_PASSIVE_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_SKILL_PASSIVE_CONFIG_info;
+}
+
+struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
+	DDL::String<KNIGHT_ID_MAX> ID;
+	DDL::String<KNIGHT_DESCRIPTION_MAX> BuffName;
+	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
+	_U32 Duration;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_CONFIG>(KNIGHT_BUFF_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_CONFIG>(const KNIGHT_BUFF_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_CONFIG_info;
+}
+
+struct KNIGHT_BUFF_STATS : KNIGHT_BUFF_CONFIG
+{
+	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> AttrModSetting;
+	_U8 AddForever;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_STATS>(KNIGHT_BUFF_STATS& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_STATS>(const KNIGHT_BUFF_STATS& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_STATS>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_STATS_info;
+}
+
+struct KNIGHT_ELEM_DAMAGE_CORRECTION
+{
+	_U8 ElementType;
+	_F32 Ratio;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ELEM_DAMAGE_CORRECTION>(KNIGHT_ELEM_DAMAGE_CORRECTION& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_ELEM_DAMAGE_CORRECTION>(const KNIGHT_ELEM_DAMAGE_CORRECTION& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ELEM_DAMAGE_CORRECTION>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_ELEM_DAMAGE_CORRECTION_info;
+}
+
+struct KNIGHT_WEAPON_CORRECTION
+{
+	_U8 WeaponType;
+	_F32 Ratio;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_WEAPON_CORRECTION>(KNIGHT_WEAPON_CORRECTION& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_WEAPON_CORRECTION>(const KNIGHT_WEAPON_CORRECTION& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_WEAPON_CORRECTION>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CORRECTION_info;
+}
+
+struct KNIGHT_BUFF_DAMAGE_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	DDL::Array<KNIGHT_ELEM_DAMAGE_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> ElementCorrection;
+	DDL::Array<KNIGHT_WEAPON_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> WeaponCorrection;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_DAMAGE_CORRECTION>(KNIGHT_BUFF_DAMAGE_CORRECTION& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_DAMAGE_CORRECTION>(const KNIGHT_BUFF_DAMAGE_CORRECTION& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_DAMAGE_CORRECTION>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_DAMAGE_CORRECTION_info;
+}
+
+struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX> ElementType;
+	_U8 ElementDefMode;
+	_U32 ElementLevel;
+	_U32 ElementStrengthen;
+	_U8 ElementSeal;
+	_U8 ElementMiss;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_MAGIC_CORRECTION>(KNIGHT_BUFF_MAGIC_CORRECTION& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_MAGIC_CORRECTION>(const KNIGHT_BUFF_MAGIC_CORRECTION& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_MAGIC_CORRECTION>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_MAGIC_CORRECTION_info;
+}
+
+struct KNIGHT_BUFF_BUFF_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> IDs;
+	_U8 Type;
+	_F32 MissRate;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_BUFF_CORRECTION>(KNIGHT_BUFF_BUFF_CORRECTION& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_BUFF_CORRECTION>(const KNIGHT_BUFF_BUFF_CORRECTION& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_BUFF_CORRECTION>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_BUFF_CORRECTION_info;
+}
+
+struct KNIGHT_ITEM_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<KNIGHT_ID_MAX> ID;
+	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ITEM_CONFIG>(KNIGHT_ITEM_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_ITEM_CONFIG>(const KNIGHT_ITEM_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ITEM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_ITEM_CONFIG_info;
+}
+
+struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
+{
+	_U32 Level;
+	_U32 Rank;
+	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> InitialValue;
+	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> GrowthValue;
+	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> SkillIDs;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_EQUIPMENT_CONFIG>(KNIGHT_EQUIPMENT_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_EQUIPMENT_CONFIG>(const KNIGHT_EQUIPMENT_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_EQUIPMENT_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_EQUIPMENT_CONFIG_info;
+}
+
+struct KNIGHT_ARMOR_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ARMOR_CONFIG>(KNIGHT_ARMOR_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_ARMOR_CONFIG>(const KNIGHT_ARMOR_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ARMOR_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_ARMOR_CONFIG_info;
+}
+
+struct KNIGHT_HELMET_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_HELMET_CONFIG>(KNIGHT_HELMET_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_HELMET_CONFIG>(const KNIGHT_HELMET_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_HELMET_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_HELMET_CONFIG_info;
+}
+
+struct KNIGHT_SHIELD_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_SHIELD_CONFIG>(KNIGHT_SHIELD_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_SHIELD_CONFIG>(const KNIGHT_SHIELD_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_SHIELD_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_SHIELD_CONFIG_info;
+}
+
+struct KNIGHT_WEAPON_CONFIG : KNIGHT_EQUIPMENT_CONFIG
+{
+	_U8 Type;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_WEAPON_CONFIG>(KNIGHT_WEAPON_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_WEAPON_CONFIG>(const KNIGHT_WEAPON_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_WEAPON_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CONFIG_info;
+}
+
 
 #pragma pack(pop)
 

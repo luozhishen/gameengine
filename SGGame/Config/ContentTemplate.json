@@ -1,0 +1,35 @@
+
+{
+	"enums" :
+	{
+		"enum_reset_rmb" :
+		{
+			"RMB100" : "1000",
+			"RMB101" : "1100",
+			"RMB102" : "1200"
+		},
+		"enum_awake_pt" :
+		{
+			"RMB200" : "1020",
+			"RMB201" : "1110",
+			"RMB202" : "1200",
+			"$$default$$" : "1980"
+		}	
+	},
+	"templates" :
+	{
+		"instance_table" :
+		{
+			"type" : "SG_INSTANCE_CONFIG",
+			"clear" : true,
+			"title" : 1,
+			"start" : 2,
+			"fields" :
+			[
+				{ "c" : "FUBEN_ID", "f" : "instance_id" },
+				{ "c" : "RMB_RESET", "f" : "reset_rmb", "e" : "enum_reset_rmb" },
+				{ "c" : "PT_AWAKE", "f" : "awake_pt", "e" : "enum_awake_pt" }
+			]
+		}
+	}
+}

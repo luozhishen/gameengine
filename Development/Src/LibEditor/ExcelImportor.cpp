@@ -77,7 +77,7 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 
 	Json::Value enums = root.get("enums", Json::Value());
 	Json::Value tmpls = root.get("templates", Json::Value());
-	if(!enums.isArray() || !tmpls.isArray())
+	if(!enums.isObject() || !tmpls.isObject())
 	{
 		m_errmsg = "enums or templates not found";
 		return false;
@@ -120,25 +120,24 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 		}
 	}
 
-	for(int t=0; t<(int)tmpls.size(); t++)
+	names = tmpls.getMemberNames();
+	for(size_t t=0; t<names.size(); t++)
 	{
-		Json::Value jtmpl = tmpls[t];
+		Json::Value jtmpl = tmpls.get(names[t], Json::Value());
 		if(!jtmpl.isObject()) return false;
-		Json::Value name = jtmpl.get("name", Json::Value());
 		Json::Value type = jtmpl.get("type", Json::Value());
 		Json::Value clear = jtmpl.get("clear", Json::Value());
 		Json::Value titleline = jtmpl.get("title", Json::Value());
 		Json::Value startline = jtmpl.get("start", Json::Value());
 		Json::Value fields = jtmpl.get("fields", Json::Value());
-		if(!name.isString()) return false;
 		if(!type.isString()) return false;
-		if(!type.isBool()) return false;
-		if(!titleline.isUInt() || !startline.isUInt() || startline.asUInt()==0) return false;
+		if(!clear.isBool()) return false;
+		if(!titleline.isInt() || !startline.isInt() || titleline.asInt()<0 || startline.asInt()<=0) return false;
 		if(!fields.isArray()) return false;
 
-		if(m_tmpl_map.find(name.asString())!=m_tmpl_map.end())
+		if(m_tmpl_map.find(names[t])!=m_tmpl_map.end())
 		{
-			m_errmsg = Atlas::StringFormat("duplicate template [%s]", name.asCString());
+			m_errmsg = Atlas::StringFormat("duplicate template [%s]", names[t].c_str());
 			return false;
 		}
 
@@ -149,9 +148,9 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			return false;
 		}
 
-		m_tmpl_map[name.asCString()] = new CONTENT_EXCEL_TEMPLATE;
-		CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[name.asCString()];
-		tmpl.name = name.asCString();
+		m_tmpl_map[names[t]] = new CONTENT_EXCEL_TEMPLATE;
+		CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[names[t]];
+		tmpl.name = names[t];
 		tmpl.info = Atlas::ContentObject::GetType(type.asCString());
 		tmpl.clear_data = clear.asBool();
 		tmpl.title_line = titleline.asUInt();
@@ -162,6 +161,7 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			Json::Value item = fields[i];
 			if(!item.isObject())
 			{
+				m_errmsg = Atlas::StringFormat("error in GetTypePrimaryKey(%s)", type.asCString());
 				return false;
 			}
 
@@ -174,18 +174,21 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			const void* fdata;
 			if(!DDLReflect::GetStructFieldInfo(tmpl.info, fld.asCString(), (const void*)NULL, finfo, fdata))
 			{
+				m_errmsg = Atlas::StringFormat("error in GetTypePrimaryKey(%s)", type.asCString());
 				return false;
 			}
 
 			Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
 			for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
 			{
-				if(fi->second.colum==col.asCString())
+				if(fi->second.colum==col.asString())
 				{
+					m_errmsg = Atlas::StringFormat("error in GetTypePrimaryKey(%s)", type.asCString());
 					return false;
 				}
-				if(fi->second.field==fld.asCString())
+				if(fi->second.field==fld.asString())
 				{
+					m_errmsg = Atlas::StringFormat("error in GetTypePrimaryKey(%s)", type.asCString());
 					return false;
 				}
 			}
@@ -203,21 +206,23 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 				i = m_enum_map.find(enu.asCString());
 				if(i==m_enum_map.end())
 				{
+					m_errmsg = Atlas::StringFormat("error in GetTypePrimaryKey(%s)", type.asCString());
 					return false;
 				}
 				fieldinfo._enum = i->second;
 			}
 
-			if(pkey.find(fld.asCString())!=pkey.end())
+			if(pkey.find(fld.asString())!=pkey.end())
 			{
 				pkey.erase(fld.asCString());
 			}
 
-			tmpl.m_fields[col.asCString()] = fieldinfo;
+			tmpl.m_fields[col.asString()] = fieldinfo;
 		}
 
 		if(!pkey.empty())
 		{
+			m_errmsg = Atlas::StringFormat("error in GetTypePrimaryKey(%s)", type.asCString());
 			return false;
 		}
 	}
@@ -233,7 +238,7 @@ Atlas::String GetColumnName(unsigned int col)
 	}
 	else
 	{
-		return Atlas::StringFormat("%c:%d", 'A'+col);
+		return Atlas::StringFormat("%c", 'A'+col);
 	}
 }
 
@@ -241,19 +246,12 @@ Atlas::String GetCellName(unsigned int col, unsigned int row)
 {
 	if(col>=26)
 	{
-		return Atlas::StringFormat("%c%c:%d", 'A'+col/26-1, 'A'+col%26, row+1);
+		return Atlas::StringFormat("%c%c%d", 'A'+col/26-1, 'A'+col%26, row+1);
 	}
 	else
 	{
-		return Atlas::StringFormat("%c:%d", 'A'+col, row+1);
+		return Atlas::StringFormat("%c%d", 'A'+col, row+1);
 	}
-}
-
-static bool PrimaryKeyIsUUID(const char* name)
-{
-	Atlas::Set<Atlas::String> keys;
-	if(!Atlas::ContentObject::GetTypePrimaryKey(name, keys)) ATLAS_ASSERT(0);
-	return keys.size()==1 && (*keys.begin())=="uuid";
 }
 
 bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper* excel)
@@ -261,13 +259,15 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end()) return false;
 	CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
 
-	Atlas::Map<Atlas::String, Atlas::String> field_map;
+	Atlas::String sUUID;
+
+	Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO*> field_map;
 	if(tmpl.title_line==0)
 	{
 		Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
 		for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
 		{
-			field_map[fi->second.field] = fi->second.colum;
+			field_map[fi->second.colum] = &fi->second;
 		}
 	}
 	else
@@ -275,7 +275,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		for(unsigned int col=0; col<200; col++)
 		{
 			Atlas::String ColName;
-			if(!excel->GetCellValue(GetCellName(0, tmpl.title_line-1), ColName))
+			if(!excel->GetCellValue(GetCellName(col, tmpl.title_line-1), ColName))
 			{
 				m_errmsg = "error in GetCellValue";
 				return false;
@@ -288,7 +288,12 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				return false;
 			}
 
-			field_map[FieldName] = GetColumnName(col);
+			field_map[GetColumnName(col)] = &tmpl.m_fields[ColName];
+
+			if(tmpl.m_fields[ColName].field=="uuid")
+			{
+				sUUID = GetColumnName(col);
+			}
 		}
 
 		if(field_map.size()!=tmpl.m_fields.size())
@@ -298,11 +303,55 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		}
 	}
 
-	bool bUUID = PrimaryKeyIsUUID(tmpl.info->name);
 	_U16 type_id = Atlas::ContentObject::GetTypeId(tmpl.info->name);
 
-	for(unsigned int row=tmpl.start_line-1; row<65536; row++)
+	for(unsigned int row=tmpl.start_line; row<65536; row++)
 	{
+		Atlas::Map<Atlas::String, Atlas::String> val_map;
+		bool bExit = true, bError = false;
+
+		Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO*>::iterator i;
+		for(i=field_map.begin(); i!=field_map.end(); i++)
+		{
+			Atlas::String val;
+			if(!excel->GetCellValue(Atlas::StringFormat("%s%d", i->first.c_str(), row), val))
+			{
+				m_errmsg = "error in GetCellValue";
+				return false;
+			}
+			if(!val.empty())
+			{
+				bExit = false;
+			}
+
+			if(i->second->_enum)
+			{
+				if(i->second->_enum->find(val)!=i->second->_enum->end())
+				{
+					val_map[i->second->field] = (*i->second->_enum)[val];
+				}
+				else
+				{
+					if(i->second->_enum->find("$$default$$")!=i->second->_enum->end())
+					{
+						val_map[i->second->field] = (*i->second->_enum)["$$default$$"];
+					}
+					else
+					{
+						m_errmsg = "error in GetCellValue";
+						bError = true;
+					}
+				}
+			}
+			else
+			{
+				val_map[i->second->field] = val;
+			}
+
+		}
+		if(bExit) break;
+		if(bError) return false;
+
 		A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)malloc(tmpl.info->size);
 		if(!obj)
 		{
@@ -311,21 +360,20 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		}
 		memset(obj, 0, tmpl.info->size);
 
-		Atlas::Map<Atlas::String, Atlas::String>::iterator i;
-		for(i=field_map.begin(); i!=field_map.end(); i++)
+		Atlas::Map<Atlas::String, Atlas::String>::iterator i1;
+		for(i1=val_map.begin(); i1!=val_map.end(); i1++)
 		{
-			Atlas::String val;
-			if(!excel->GetCellValue(Atlas::StringFormat("%s:%d", i->second.c_str(), i), val))
+			if(i1->first=="uuid" && i1->second.empty())
 			{
-				m_errmsg = "error in GetCellValue";
-				free(obj);
-				return false;
 			}
-			if(!DDLReflect::StructParamFromString(tmpl.info, i->first.c_str(), obj, val.c_str()))
+			else
 			{
-				m_errmsg = Atlas::StringFormat("error in StructParamFromString(%s, %s, %s)", tmpl.info->name, i->first.c_str(), val.c_str());
-				free(obj);
-				return false;
+				if(!DDLReflect::StructParamFromString(tmpl.info, i1->first.c_str(), obj, i1->second.c_str()))
+				{
+					m_errmsg = Atlas::StringFormat("error in StructParamFromString(%s, %s, %s)", tmpl.info->name, i1->first.c_str(), i1->second.c_str());
+					free(obj);
+					return false;
+				}
 			}
 		}
 
@@ -348,12 +396,17 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		{
 			old_obj = Atlas::ContentObject::CreateObject(tmpl.info, obj->uuid);
 			ATLAS_ASSERT(old_obj);
-			if(bUUID)
+			if(!sUUID.empty())
 			{
-				Atlas::String range = Atlas::StringFormat("%s:%d", field_map["uuid"].c_str(), row);
+				Atlas::String range = Atlas::StringFormat("%s%d", sUUID.c_str(), row);
 				char suuid[60];
 				AUuidToString(old_obj->uuid, suuid);
-				excel->SetCellValue(range, Atlas::String(suuid));
+				if(!excel->SetCellValue(range, Atlas::String(suuid)))
+				{
+					m_errmsg = "error in GenContentObjectUniqueId";
+					free(obj);
+					return false;
+				}
 			}
 		}
 

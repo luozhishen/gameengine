@@ -15,6 +15,13 @@ namespace DDL
 		if(!Read<_U32>(Value.energy_times)) return false;
 		if(!Read<_U32>(Value.energy_upper)) return false;
 		if(!Read<_U32>(Value.reset_instance_times)) return false;
+		if(!Read<_U8>(Value.hangup_free)) return false;
+		if(!Read<_U8>(Value.enhance_free)) return false;
+		if(!ReadString<SG_VIP_ICON_MAX>(Value.res)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
@@ -28,6 +35,13 @@ namespace DDL
 		if(!Write<_U32>(Value.energy_times)) return false;
 		if(!Write<_U32>(Value.energy_upper)) return false;
 		if(!Write<_U32>(Value.reset_instance_times)) return false;
+		if(!Write<_U8>(Value.hangup_free)) return false;
+		if(!Write<_U8>(Value.enhance_free)) return false;
+		if(!WriteString<SG_VIP_ICON_MAX>(Value.res)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
 		return true;
 	}
 }
@@ -42,8 +56,15 @@ namespace DDLReflect
 		{TYPE_U32, "energy_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, energy_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "energy_upper", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, energy_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "reset_instance_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, reset_instance_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "hangup_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, hangup_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "enhance_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, enhance_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "res", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, res), NULL, (_U16)SG_VIP_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_VIP_ICON_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 6, _struct_SG_VIP_CONFIG_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 13, _struct_SG_VIP_CONFIG_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_VIP_CONFIG>()
 	{
@@ -135,7 +156,7 @@ namespace DDL
 		if(!ReadString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_normal2)) return false;
 		if(!ReadString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_hard1)) return false;
 		if(!ReadString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_hard2)) return false;
-		if(!Read<_U32>(Value.reset_gold)) return false;
+		if(!Read<_U32>(Value.reset_rmb)) return false;
 		if(!Read<_U32>(Value.awake_pt)) return false;
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
@@ -150,7 +171,7 @@ namespace DDL
 		if(!WriteString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_normal2)) return false;
 		if(!WriteString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_hard1)) return false;
 		if(!WriteString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_hard2)) return false;
-		if(!Write<_U32>(Value.reset_gold)) return false;
+		if(!Write<_U32>(Value.reset_rmb)) return false;
 		if(!Write<_U32>(Value.awake_pt)) return false;
 		return true;
 	}
@@ -166,7 +187,7 @@ namespace DDLReflect
 		{TYPE_STRING, "reward_normal2", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reward_normal2), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
 		{TYPE_STRING, "reward_hard1", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reward_hard1), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
 		{TYPE_STRING, "reward_hard2", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reward_hard2), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
-		{TYPE_U32, "reset_gold", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reset_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reset_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "awake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, awake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_INSTANCE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_INSTANCE_CONFIG", sizeof(SG_INSTANCE_CONFIG), 8, _struct_SG_INSTANCE_CONFIG_fieldinfo };
@@ -462,6 +483,38 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_PVP_SETTING_CONFIG>(SG_PVP_SETTING_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.increase_pay_rmb)) return false;
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_PVP_SETTING_CONFIG>(const SG_PVP_SETTING_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.increase_pay_rmb)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_PVP_SETTING_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "increase_pay_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_SETTING_CONFIG, increase_pay_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_PVP_SETTING_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PVP_SETTING_CONFIG", sizeof(SG_PVP_SETTING_CONFIG), 1, _struct_SG_PVP_SETTING_CONFIG_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_PVP_SETTING_CONFIG>()
+	{
+		return &_rfl_struct_SG_PVP_SETTING_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_GOODS_CONFIG>(SG_GOODS_CONFIG& Value)
 	{
 		if(!Read<_U32>(Value.good_id)) return false;
@@ -613,6 +666,7 @@ namespace DDL
 		if(!Read<_U32>(Value.exp)) return false;
 		if(!Read<_U32>(Value.create_time)) return false;
 		if(!Read<_U32>(Value.owner_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.owner_name)) return false;
 		if(!ReadString<SG_LEAGUE_POST_MAX>(Value.post_content)) return false;
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
@@ -629,6 +683,7 @@ namespace DDL
 		if(!Write<_U32>(Value.exp)) return false;
 		if(!Write<_U32>(Value.create_time)) return false;
 		if(!Write<_U32>(Value.owner_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.owner_name)) return false;
 		if(!WriteString<SG_LEAGUE_POST_MAX>(Value.post_content)) return false;
 		return true;
 	}
@@ -646,9 +701,10 @@ namespace DDLReflect
 		{TYPE_U32, "exp", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "create_time", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, create_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "owner_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, owner_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "owner_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, owner_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
 		{TYPE_STRING, "post_content", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, post_content), NULL, (_U16)SG_LEAGUE_POST_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_POST_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_LEAGUE_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE", sizeof(SG_LEAGUE), 9, _struct_SG_LEAGUE_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE", sizeof(SG_LEAGUE), 10, _struct_SG_LEAGUE_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_LEAGUE>()
 	{
@@ -663,6 +719,8 @@ namespace DDL
 	{
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!Read<_U32>(Value.member_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.member_name)) return false;
+		if(!Read<_U32>(Value.member_level)) return false;
 		if(!Read<_U8>(Value.position)) return false;
 		if(!Read<_U32>(Value.contribution_value)) return false;
 		if(!Read<_U32>(Value.total_contribution_value)) return false;
@@ -676,6 +734,8 @@ namespace DDL
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.league_id)) return false;
 		if(!Write<_U32>(Value.member_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.member_name)) return false;
+		if(!Write<_U32>(Value.member_level)) return false;
 		if(!Write<_U8>(Value.position)) return false;
 		if(!Write<_U32>(Value.contribution_value)) return false;
 		if(!Write<_U32>(Value.total_contribution_value)) return false;
@@ -690,12 +750,14 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "member_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, member_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "member_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, member_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "member_level", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, member_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U8, "position", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, position), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U32, "contribution_value", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, contribution_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "total_contribution_value", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, total_contribution_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "last_ol_time", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, last_ol_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_LEAGUE_MEMBER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_MEMBER", sizeof(SG_LEAGUE_MEMBER), 6, _struct_SG_LEAGUE_MEMBER_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_MEMBER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_MEMBER", sizeof(SG_LEAGUE_MEMBER), 8, _struct_SG_LEAGUE_MEMBER_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_LEAGUE_MEMBER>()
 	{
@@ -2487,6 +2549,7 @@ namespace DDL
 		if(!Read<_U32>(Value.vip_level)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!ReadArray<_U32, SG_LEAGUE_APPLY_MAX>(Value.league_apply_list)) return false;
+		if(!Read<_U32>(Value.last_operation_time)) return false;
 		if(!BufferReader::Read<SG_GENERAL>(Value)) return false;
 		return true;
 	}
@@ -2511,6 +2574,7 @@ namespace DDL
 		if(!Write<_U32>(Value.vip_level)) return false;
 		if(!Write<_U32>(Value.league_id)) return false;
 		if(!WriteArray<_U32, SG_LEAGUE_APPLY_MAX>(Value.league_apply_list)) return false;
+		if(!Write<_U32>(Value.last_operation_time)) return false;
 		return true;
 	}
 }
@@ -2536,8 +2600,9 @@ namespace DDLReflect
 		{TYPE_U32, "vip_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32|TYPE_ARRAY, "league_apply_list", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, league_apply_list), NULL, (_U16)-1, (_U16)SG_LEAGUE_APPLY_MAX, (_U16)((size_t)(&((DDL::Array<_U32, SG_LEAGUE_APPLY_MAX>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "last_operation_time", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_operation_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 17, _struct_SG_PLAYER_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 18, _struct_SG_PLAYER_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER>()
 	{

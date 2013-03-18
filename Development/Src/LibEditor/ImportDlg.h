@@ -18,7 +18,7 @@ protected:
 	DECLARE_EVENT_TABLE()
 	void InitClient();
 	void OnFilePicker(wxFileDirPickerEvent& event);
-	virtual void  EndModal(int retCode);
+	virtual void EndModal(int retCode);
 	bool ProcessImport();
 
 	bool GetSelectSheets(Atlas::Vector<Atlas::String>& vSheets);

@@ -106,7 +106,10 @@ const _U32 SG_LEAGUE_APPLY_MAX = 10;
 const _U8 SG_LEAGUE_CREATE_SUCC = 0;
 const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 
-//Vip 还未使用
+//vip
+const _U32 SG_VIP_ICON_MAX = 256;
+
+//Vip
 struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 {
 	_U32						vip_level;						//vip等级
@@ -114,7 +117,16 @@ struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 	_U32						pay_times;						//可领取军饷次数
 	_U32						energy_times;					//可购买体力次数
 	_U32						energy_upper;					//体力上限
-	_U32						reset_instance_times;			//可充值副本次数
+	_U32						reset_instance_times;			//可重置副本次数
+	_U8							hangup_free;					//挂机免费 0-否 1-是
+	_U8							enhance_free;					//强化免费 0-否 1-是
+
+
+	string<SG_VIP_ICON_MAX>				res;					//图标资源
+	_U32								U;					
+	_U32								V;
+	_U32								UL;
+	_U32								VL;
 };
 task[GEN_STRUCT_SERIALIZE(SG_VIP_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_VIP_CONFIG)];
@@ -146,7 +158,7 @@ struct SG_INSTANCE_CONFIG : A_CONTENT_OBJECT
 	string<SG_INSTANCE_REWARD_DES_MAX>	reward_normal2;			//普通难度大关奖励信息
 	string<SG_INSTANCE_REWARD_DES_MAX>	reward_hard1;			//困难难度小关奖励信息
 	string<SG_INSTANCE_REWARD_DES_MAX>	reward_hard2;			//困难难度大关奖励信息
-	_U32								reset_gold;				//重置的花费
+	_U32								reset_rmb;				//重置的花费
 	_U32								awake_pt;				//觉醒点
 };
 task[GEN_STRUCT_SERIALIZE(SG_INSTANCE_CONFIG)];
@@ -228,6 +240,13 @@ struct SG_PVP_INFO_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_PVP_INFO_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_PVP_INFO_CONFIG)];
 
+struct SG_PVP_SETTING_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								increase_pay_rmb;		//提升次数所需元宝
+};
+task[GEN_STRUCT_SERIALIZE(SG_PVP_SETTING_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_PVP_SETTING_CONFIG)];
+
 //Shop
 struct SG_GOODS_CONFIG : A_CONTENT_OBJECT
 {
@@ -277,6 +296,7 @@ struct SG_LEAGUE : A_LIVE_OBJECT
 	_U32								exp;					//战盟经验
 	_U32								create_time;			//创建时间
 	_U32								owner_id;				//团长ID
+	string<SG_PLAYER_NAME_MAX>			owner_name;				//团长名字
 	string<SG_LEAGUE_POST_MAX>			post_content;			//战盟公告
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE)];
@@ -286,6 +306,9 @@ struct SG_LEAGUE_MEMBER : A_LIVE_OBJECT
 {
 	_U32								league_id;				//所在战盟ID
 	_U32								member_id;				//成员ID avatar_id
+	string<SG_PLAYER_NAME_MAX>			member_name;			//成员名字
+	_U32								member_level;			//成员Level
+
 	_U8									position;				//所在战盟职位 0-普通成员 1-副团长 2-团长
 	_U32								contribution_value;		//贡献值
 	_U32								total_contribution_value;//总贡献值
@@ -831,6 +854,7 @@ struct SG_PLAYER : SG_GENERAL
 	
 	_U32								league_id;				//所在战盟ID
 	array<_U32, SG_LEAGUE_APPLY_MAX>	league_apply_list;		//申请
+	_U32								last_operation_time;	//最后一次操作时间
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];

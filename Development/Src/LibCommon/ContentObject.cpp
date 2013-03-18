@@ -505,9 +505,8 @@ namespace Atlas
 			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
-				char file[1000];
-				sprintf(file, "%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
-				if(LoadContentFromJsonFile(file))
+				String file = Atlas::StringFormat("%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
+				if(LoadContentFromJsonFile(file.c_str()))
 				{
 					i->second._dirty = false;
 				}

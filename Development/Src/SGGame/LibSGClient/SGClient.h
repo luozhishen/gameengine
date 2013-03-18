@@ -58,7 +58,7 @@ namespace Atlas
 		virtual void BeginInstanceBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;								
 		virtual void EnterInstanceResult(const SG_INSTANCE_INFO& instance) = 0;			
 		virtual void EndInstanceBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count) = 0;
-		virtual void ResetInstanceResult(_U8 result, _U32 gold, const SG_INSTANCE_INFO& instance) = 0;
+		virtual void ResetInstanceResult(_U8 result, _U32 rmb, const SG_INSTANCE_INFO& instance) = 0;
 
 		virtual void CreateLeagueResult(_U8 ret, const SG_LEAGUE& league) = 0;							//0-succ other-failed
 		virtual void QueryLeagueApplyListResult(const SG_LEAGUE_APPLYER* applyers, _U32 count) = 0;
@@ -66,6 +66,9 @@ namespace Atlas
 		virtual void QueryLeagueListResult(const SG_LEAGUE* league_list, _U32 count) = 0;
 		virtual void QueryLeagueMemberListResult(const SG_LEAGUE_MEMBER* league_members, _U32 count) = 0;
 		virtual void QueryLeagueMemberInfoResult() = 0;
+
+		virtual void SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold) = 0;				
+		virtual void SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -159,12 +162,15 @@ namespace Atlas
 
 		void CreateLeague(const char* league_name);								//战盟 创建
 		void ApplyJoinLeague(_U32 league_id);									//申请加入战盟		
-		void QueryLeagueApplyList();											//查询当前申请加入战盟的人
+		void QueryLeagueApplyList(_U32 league_id);								//查询当前申请加入战盟的人
 		void QueryLeague(_U32 league_id);										//查询league_id战盟信息
 		void QueryLeagueList();													//查询当前所有战盟的列表
 		void QueryLeagueMemberList(_U32 league_id);								//查询league_id战盟当前成员
 		void QueryLeagueMemberInfo(_U32 member_id);								//显示成员选中tips
 		
+		void SalaryGet();														//获取每日军饷
+		void SalaryGetBat();													//批量获取 max = 10
+
 		//result
 		void Pong(CSGClient* pClient);
 
@@ -212,7 +218,7 @@ namespace Atlas
 		void BeginInstanceBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);						//开始副本战斗
 		void EnterInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO& instance);			
 		void EndInstanceBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
-		void ResetInstanceResult(CSGClient* pClient, _U8 result, _U32 gold, const SG_INSTANCE_INFO& instance);	//result 0-succ 1-failed
+		void ResetInstanceResult(CSGClient* pClient, _U8 result, _U32 rmb, const SG_INSTANCE_INFO& instance);	//result 0-succ 1-failed
 
 		void CreateLeagueResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE& league);							//0-succ 1-failed
 		void QueryLeagueApplyListResult(CSGClient* pClient, const SG_LEAGUE_APPLYER* applyers, _U32 count);
@@ -220,6 +226,9 @@ namespace Atlas
 		void QueryLeagueListResult(CSGClient* pClient, const SG_LEAGUE* league_list, _U32 count);
 		void QueryLeagueMemberListResult(CSGClient* pClient, const SG_LEAGUE_MEMBER* league_members, _U32 count);	
 		void QueryLeagueMemberInfoResult(CSGClient* pClient);
+		
+		void SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold);									//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
+		void SalaryGetBatResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold, _U32 times);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
 
 	public:
 		virtual void OnLoginDone();

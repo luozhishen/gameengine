@@ -109,6 +109,33 @@ const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 //vip
 const _U32 SG_VIP_ICON_MAX = 256;
 
+//turbo
+const _U32 SG_TURBO_CHARPTER_NAME_MAX = 128;
+
+//turbo 无双
+struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
+{
+	_U8							general_profession;					//0-武圣 1-法圣
+	_U32						turbo_level;						//无双等级
+	string<SG_SKILL_NAME_MAX>	skill_name;							//无双技能名称
+	_U8							belong_to_charpter_id;				//所属篇章ID
+	string<SG_TURBO_CHARPTER_NAME_MAX>	belong_to_charpter_name;	//所属篇章名称
+	_U32						req_wake_pt;						//所需觉醒点
+	_U8							skill_type;							//技能类型 0-被动 1-主动
+	_U32						HP;									//生命加成
+	_U32						POW;								//力量加成
+	_U32						INT;								//智力加成
+	_F32						ATK;								//攻击力加成%
+	_F32						DEF;								//护甲加成%
+	_F32						HIT;								//命中加成%
+	_F32						EVASION;							//闪避加成%
+	_F32						CRIT;								//暴击率加成%
+	string<ARCHETYPE_URL_LENGTH_MAX>	skill_archetype;			//主动解锁技能archettype
+	string<SG_SKILL_DESC_MAX>			skill_desc;					//解锁技能描述
+};
+task[GEN_STRUCT_SERIALIZE(SG_TURBO_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_TURBO_CONFIG)];
+
 //Vip
 struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 {
@@ -320,6 +347,7 @@ task[GEN_STRUCT_REFLECT(SG_LEAGUE_MEMBER)];
 struct SG_LEAGUE_APPLYER : A_LIVE_OBJECT
 {
 	_U32								applyer_id;				//申请者ID avatar_id
+	string<SG_PLAYER_NAME_MAX>			applyer_name;			//申请者名字
 	_U32								league_id;				//申请加入战盟的ID 
 	_U8									reason;					//?
 };
@@ -825,9 +853,9 @@ task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_CONFIG)];
 
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
-	_U8									type;					//0-俸禄 1-每日关卡可进行 2-pvp 3-每日奖励
-	_U32								times;					//0-剩余可领取俸禄 1-每日可进行关卡剩余次数 2-pvp剩余次数 3-每日奖励可领次数
-	_U32								reset_time;				//0-俸禄冷却时间 1-重置的时间标签 2-重置的时间标签 3-重置的时间标签 
+	_U8									type;					//0-俸禄 1-每日关卡可进行 2-pvp 3-pvp每日奖励 4-每日军饷
+	_U32								times;					//0-剩余可领取俸禄 1-每日可进行关卡剩余次数 2-pvp剩余次数 3-pvp每日奖励可领次数 4-每日军饷可领次数
+	_U32								reset_time;				//0-俸禄冷却时间 1-重置的时间标签 2-重置的时间标签 3-重置的时间标签 4-重置的时间标签
 };
 task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_INFO)];
 task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_INFO)];
@@ -836,8 +864,8 @@ struct SG_PLAYER : SG_GENERAL
 {
 	string<SG_PLAYER_NAME_MAX>			nick;
 	_U32								avatar_id;				
-	_U32								gold;
-	_U32								rmb;
+	_U32								gold;					
+	_U32								rmb;					//元宝
 	array<_U32, 2>						equip_generals;
 	array<_U32, 3>						equip_soldiers;
 	_U8									increase_equipt_times;	//提高过冷却时间次数
@@ -898,7 +926,8 @@ struct SG_SERVER_INFO
 	_U32								server_state;
 	string<100>							avatar_nick;
 	_U32								general_id;
-	_U32								level;
+	_U32								level;						//角色在本服等级
+	_U32								server_level;				//本服等级 与人数和pvp相关
 };
 task[GEN_STRUCT_SERIALIZE(SG_SERVER_INFO)];
 task[GEN_STRUCT_REFLECT(SG_SERVER_INFO)];
@@ -990,11 +1019,14 @@ class SGGAME_C2S
 
 	CreateLeague(string league_name);								//战盟 创建
 	ApplyJoinLeague(_U32 league_id);								//申请加入战盟		
-	QueryLeagueApplyList();											//查询当前申请加入战盟的人
+	QueryLeagueApplyList(_U32 league_id);							//查询当前申请加入战盟的人
 	QueryLeague(_U32 league_id);									//查询league_id战盟信息
 	QueryLeagueList();												//查询当前所有战盟的列表
 	QueryLeagueMemberList(_U32 league_id);							//查询league_id战盟当前成员
 	QueryLeagueMemberInfo(_U32 member_id);							//显示成员选中tips
+
+	SalaryGet();													//获取每日军饷
+	SalaryGetBat();													//批量获取 max = 10
 
 	QueryServerTime();												//查询服务器时间
 };
@@ -1049,7 +1081,7 @@ class SGGAME_S2C
 	BeginInstanceBattleResult(SG_PLAYER_PVE PlayerPVE);								//开始副本战斗
 	EnterInstanceResult(SG_INSTANCE_INFO instance);			
 	EndInstanceBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
-	ResetInstanceResult(_U8 result, _U32 gold, SG_INSTANCE_INFO instance);			//result 0-succ 1-failed
+	ResetInstanceResult(_U8 result, _U32 rmb, SG_INSTANCE_INFO instance);			//result 0-succ 1-failed
 
 	CreateLeagueResult(_U8 ret, SG_LEAGUE league);									//0-succ other-failed
 	QueryLeagueApplyListResult(SG_LEAGUE_APPLYER applyer[count], _U32 count);
@@ -1057,6 +1089,9 @@ class SGGAME_S2C
 	QueryLeagueListResult(SG_LEAGUE league_list[count], _U32 count);
 	QueryLeagueMemberListResult(SG_LEAGUE_MEMBER league_members[count], _U32 count);	
 	QueryLeagueMemberInfoResult();
+
+	SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
+	SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times);   //0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
 
 	QueryServerTimeResult(_U32 time);
 };

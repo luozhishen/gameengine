@@ -545,16 +545,26 @@ namespace Atlas
 	void CSGClient::CreateLeague(const char* league_name)
 	{
 		m_C2S.CreateLeague(league_name);
+
+		//help to sync data
+		Atlas::Vector<_U8> vecSync;
+		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+		SyncSet(vecSync);
 	}
 
 	void CSGClient::ApplyJoinLeague(_U32 league_id)
 	{
 		m_C2S.ApplyJoinLeague(league_id);
+
+		//help to sync data
+		Atlas::Vector<_U8> vecSync;
+		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+		SyncSet(vecSync);
 	}
 
-	void CSGClient::QueryLeagueApplyList()
+	void CSGClient::QueryLeagueApplyList(_U32 league_id)
 	{
-		m_C2S.QueryLeagueApplyList();
+		m_C2S.QueryLeagueApplyList(league_id);
 	}
 
 	void CSGClient::QueryLeague(_U32 league_id)
@@ -575,6 +585,16 @@ namespace Atlas
 	void CSGClient::QueryLeagueMemberInfo(_U32 member_id)
 	{
 		m_C2S.QueryLeagueMemberInfo(member_id);
+	}
+
+	void CSGClient::SalaryGet()
+	{
+		m_C2S.SalaryGet();
+	}
+	
+	void CSGClient::SalaryGetBat()
+	{
+		m_C2S.SalaryGetBat();
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -1145,7 +1165,7 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::ResetInstanceResult(CSGClient* pClient, _U8 result, _U32 gold, const SG_INSTANCE_INFO& instance)
+	void CSGClient::ResetInstanceResult(CSGClient* pClient, _U8 result, _U32 rmb, const SG_INSTANCE_INFO& instance)
 	{
 		if(m_callback)
 		{
@@ -1158,9 +1178,9 @@ namespace Atlas
 				}
 			}
 
-			m_player.gold += gold;
+			m_player.rmb -= rmb;
 
-			m_callback->ResetInstanceResult(result, gold, instance);
+			m_callback->ResetInstanceResult(result, rmb, instance);
 		}
 	}
 
@@ -1214,6 +1234,34 @@ namespace Atlas
 		if(m_callback)
 		{
 			m_callback->QueryLeagueMemberInfoResult();
+		}
+	}
+
+	void CSGClient::SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold)
+	{
+		if(m_callback)
+		{
+			if(!ret)
+			{
+				m_player.rmb -= rmb;
+				m_player.gold += gold;
+			}
+
+			m_callback->SalaryGetResult(ret, rmb, gold);
+		}
+	}
+	
+	void CSGClient::SalaryGetBatResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold, _U32 times)
+	{
+		if(m_callback)
+		{
+			if(!ret)
+			{
+				m_player.rmb -= rmb;
+				m_player.gold += gold;
+			}
+
+			m_callback->SalaryGetBatResult(ret, rmb, gold, times);
 		}
 	}
 

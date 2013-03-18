@@ -170,6 +170,44 @@ const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 
 const _U32 SG_VIP_ICON_MAX = 256;
 
+const _U32 SG_TURBO_CHARPTER_NAME_MAX = 128;
+
+struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
+{
+	_U8 general_profession;
+	_U32 turbo_level;
+	DDL::String<SG_SKILL_NAME_MAX> skill_name;
+	_U8 belong_to_charpter_id;
+	DDL::String<SG_TURBO_CHARPTER_NAME_MAX> belong_to_charpter_name;
+	_U32 req_wake_pt;
+	_U8 skill_type;
+	_U32 HP;
+	_U32 POW;
+	_U32 INT;
+	_F32 ATK;
+	_F32 DEF;
+	_F32 HIT;
+	_F32 EVASION;
+	_F32 CRIT;
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> skill_archetype;
+	DDL::String<SG_SKILL_DESC_MAX> skill_desc;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_TURBO_CONFIG>(SG_TURBO_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_TURBO_CONFIG>(const SG_TURBO_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_TURBO_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_TURBO_CONFIG_info;
+}
+
 struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 vip_level;
@@ -576,6 +614,7 @@ namespace DDLReflect
 struct SG_LEAGUE_APPLYER : A_LIVE_OBJECT
 {
 	_U32 applyer_id;
+	DDL::String<SG_PLAYER_NAME_MAX> applyer_name;
 	_U32 league_id;
 	_U8 reason;
 };
@@ -1591,6 +1630,7 @@ struct SG_SERVER_INFO
 	DDL::String<100> avatar_nick;
 	_U32 general_id;
 	_U32 level;
+	_U32 server_level;
 };
 
 namespace DDL
@@ -2319,10 +2359,13 @@ namespace DDLStub
 			}
 			if(fid==59)
 			{
+				_U32 _prefix_league_id;
 
+				// <_U32> <league_id> <> <>;
+				if(!Buf.Read(_prefix_league_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueApplyList(Caller);
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueApplyList(Caller, _prefix_league_id);
 				return true;
 			}
 			if(fid==60)
@@ -2367,6 +2410,22 @@ namespace DDLStub
 				return true;
 			}
 			if(fid==64)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SalaryGet(Caller);
+				return true;
+			}
+			if(fid==65)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SalaryGetBat(Caller);
+				return true;
+			}
+			if(fid==66)
 			{
 
 
@@ -2999,9 +3058,11 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 58, Buf);
 		}
 
-		bool QueryLeagueApplyList()
+		bool QueryLeagueApplyList(_U32 league_id)
 		{
 			BUFFER Buf;
+			// <_U32> <league_id> <> <>
+			if(!Buf.Write(league_id)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 59, Buf);
@@ -3045,12 +3106,28 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 63, Buf);
 		}
 
-		bool QueryServerTime()
+		bool SalaryGet()
 		{
 			BUFFER Buf;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
+		}
+
+		bool SalaryGetBat()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
+		}
+
+		bool QueryServerTime()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
 		}
 	};
 
@@ -3674,18 +3751,18 @@ namespace DDLStub
 			if(fid==38)
 			{
 				_U8 _prefix_result;
-				_U32 _prefix_gold;
+				_U32 _prefix_rmb;
 				SG_INSTANCE_INFO _prefix_instance;
 
 				// <_U8> <result> <> <>;
 				if(!Buf.Read(_prefix_result)) return false;
-				// <_U32> <gold> <> <>;
-				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
 				// <SG_INSTANCE_INFO> <instance> <> <>;
 				if(!Buf.Read(_prefix_instance)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->ResetInstanceResult(Caller, _prefix_result, _prefix_gold, _prefix_instance);
+				DDLStub<CALLER, CLASS>::GetClass()->ResetInstanceResult(Caller, _prefix_result, _prefix_rmb, _prefix_instance);
 				return true;
 			}
 			if(fid==39)
@@ -3776,6 +3853,43 @@ namespace DDLStub
 				return true;
 			}
 			if(fid==45)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_rmb;
+				_U32 _prefix_gold;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SalaryGetResult(Caller, _prefix_ret, _prefix_rmb, _prefix_gold);
+				return true;
+			}
+			if(fid==46)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_rmb;
+				_U32 _prefix_gold;
+				_U32 _prefix_times;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <times> <> <>;
+				if(!Buf.Read(_prefix_times)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SalaryGetBatResult(Caller, _prefix_ret, _prefix_rmb, _prefix_gold, _prefix_times);
+				return true;
+			}
+			if(fid==47)
 			{
 				_U32 _prefix_time;
 
@@ -4313,13 +4427,13 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 37, Buf);
 		}
 
-		bool ResetInstanceResult(_U8 result, _U32 gold, const SG_INSTANCE_INFO& instance)
+		bool ResetInstanceResult(_U8 result, _U32 rmb, const SG_INSTANCE_INFO& instance)
 		{
 			BUFFER Buf;
 			// <_U8> <result> <> <>
 			if(!Buf.Write(result)) return false;
-			// <_U32> <gold> <> <>
-			if(!Buf.Write(gold)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
 			// <SG_INSTANCE_INFO> <instance> <> <>
 			if(!Buf.Write(instance)) return false;
 
@@ -4402,6 +4516,36 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 44, Buf);
 		}
 
+		bool SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 45, Buf);
+		}
+
+		bool SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <times> <> <>
+			if(!Buf.Write(times)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 46, Buf);
+		}
+
 		bool QueryServerTimeResult(_U32 time)
 		{
 			BUFFER Buf;
@@ -4409,7 +4553,7 @@ namespace DDLProxy
 			if(!Buf.Write(time)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 45, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 47, Buf);
 		}
 	};
 

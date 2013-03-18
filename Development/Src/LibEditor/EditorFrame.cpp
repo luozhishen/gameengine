@@ -22,7 +22,6 @@
 enum
 {
 	ID_QUIT = wxID_HIGHEST + 1,
-	ID_ABOUT,
 	ID_SAVE,
 	ID_SAVE_FORCE,
 	ID_COOK_SAVE,
@@ -30,21 +29,24 @@ enum
 	ID_IMPORT,
 	ID_GEN_DESKEY,
 	ID_BUILD_INDEX,
+	ID_ABOUT,
 };
 
 BEGIN_EVENT_TABLE(CEditorFrame, wxFrame)
 	EVT_CLOSE(CEditorFrame::OnFrameQuit)
-	EVT_MENU(ID_SAVE, CEditorFrame::OnSave)
-	EVT_MENU(ID_SAVE_FORCE, CEditorFrame::OnSave)
 
-	EVT_MENU(ID_COOK_SAVE, CEditorFrame::OnSave)
-	EVT_MENU(ID_COOK_LOAD, CEditorFrame::OnSave)
+	EVT_MENU(ID_SAVE,			CEditorFrame::OnFileMenu)
+	EVT_MENU(ID_SAVE_FORCE,		CEditorFrame::OnFileMenu)
+	EVT_MENU(ID_QUIT,			CEditorFrame::OnFileMenu)
 
-	EVT_MENU(ID_IMPORT, CEditorFrame::OnImport)
-	EVT_MENU(ID_QUIT, CEditorFrame::OnQuit)
-	EVT_MENU(ID_GEN_DESKEY, CEditorFrame::OnGenDESKey)
-	EVT_MENU(ID_BUILD_INDEX, CEditorFrame::OnBuildIndex)
-	EVT_MENU(ID_ABOUT, CEditorFrame::OnAbout)
+//	EVT_MENU(ID_COOK_SAVE,		CEditorFrame::OnToolMenu)
+//	EVT_MENU(ID_COOK_LOAD,		CEditorFrame::OnToolMenu)
+	EVT_MENU(ID_IMPORT,			CEditorFrame::OnToolMenu)
+	EVT_MENU(ID_GEN_DESKEY,		CEditorFrame::OnToolMenu)
+	EVT_MENU(ID_BUILD_INDEX,	CEditorFrame::OnToolMenu)
+
+	EVT_MENU(ID_ABOUT,			CEditorFrame::OnHelpMenu)
+
 	EVT_SIZE(CEditorFrame::OnSize)
 	EVT_SHOW(CEditorFrame::OnShow)
 END_EVENT_TABLE()
@@ -99,14 +101,10 @@ void CEditorFrame::InitMenu()
 	GetMenuBar()->GetMenu(0)->Append(ID_SAVE, wxT("&Save Content\tAlt-S"), wxT("Save content to file"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SAVE_FORCE, wxT("&Save Content(force)\tAlt-F"), wxT("Force save content to file"));
 	GetMenuBar()->GetMenu(0)->AppendSeparator();
-	GetMenuBar()->GetMenu(0)->Append(ID_COOK_SAVE, wxT("Save cooked content file"), wxT("Save content to file"));
-	GetMenuBar()->GetMenu(0)->Append(ID_COOK_LOAD, wxT("Load cooked content file"), wxT("Save content to file"));
-	GetMenuBar()->GetMenu(0)->AppendSeparator();
-	GetMenuBar()->GetMenu(0)->Append(ID_IMPORT, wxT("&Import From Excel...\tAlt-I"), wxT("Import from excel"));
-	GetMenuBar()->GetMenu(0)->AppendSeparator();
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Tools"));
+	GetMenuBar()->GetMenu(1)->Append(ID_IMPORT, wxT("&Import From Excel...\tAlt-I"), wxT("Import from excel"));
 	GetMenuBar()->GetMenu(1)->Append(ID_GEN_DESKEY, wxT("&Generate DESKEY..."), wxT("Generate DESKEY"));
 	GetMenuBar()->GetMenu(1)->Append(ID_BUILD_INDEX, wxT("&Build Index"), wxT("Build index for Content Object"));
 
@@ -148,7 +146,7 @@ void CEditorFrame::OnFrameQuit(wxCloseEvent& event)
 	if(SaveContent()) event.Skip();
 }
 
-void CEditorFrame::OnSave(wxCommandEvent& event)
+void CEditorFrame::OnFileMenu(wxCommandEvent& event)
 {
 	switch(event.GetId())
 	{
@@ -156,6 +154,9 @@ void CEditorFrame::OnSave(wxCommandEvent& event)
 	case ID_SAVE:
 		if(Atlas::ContentObject::SaveContent(NULL, event.GetId()==ID_SAVE_FORCE)) return;
 		wxMessageBox(wxT("Save content failed"), wxT("!!!"));
+		break;
+	case ID_QUIT:
+		Close(true);
 		break;
 	case ID_COOK_SAVE:
 		Atlas::ContentObject::SaveContentToBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9");
@@ -167,44 +168,43 @@ void CEditorFrame::OnSave(wxCommandEvent& event)
 	}
 }
 
-void CEditorFrame::OnImport(wxCommandEvent& event)
-{
-	CImportDlg dlg(this);
-	Atlas::String path = Atlas::StringFormat("%s%s", Atlas::AtlasGameDir(), "Config/ContentTemplate.json");
-	if(dlg.LoadTemplateDefine(path.c_str()))
-	{
-		dlg.ShowModal();
-	}
-}
-
-void CEditorFrame::OnQuit(wxCommandEvent&)
-{
-	Close(true);
-}
-
 #include <des64.h>
 
-void CEditorFrame::OnGenDESKey(wxCommandEvent& event)
+void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 {
-	DES_KEY key1;
-	char s1[20];
-	DES_GenKey(key1);
-	DES_KeyToString(key1, s1);
-	wxOpenClipboard();
-	wxEmptyClipboard();
-	wxSetClipboardData(wxDataFormat(wxDF_TEXT), s1);
-	wxCloseClipboard();
-}
-
-void CEditorFrame::OnBuildIndex(wxCommandEvent& event)
-{
-	if(!Atlas::ContentObject::BuildIndex())
+	switch(event.GetId())
 	{
-		wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("BUILD INDEX ERROR"));
+	case ID_IMPORT:
+		{
+			CImportDlg dlg(this);
+			Atlas::String path = Atlas::StringFormat("%s%s", Atlas::AtlasGameDir(), "Config/ContentTemplate.json");
+			if(dlg.LoadTemplateDefine(path.c_str()))
+			{
+				dlg.ShowModal();
+			}
+		}
+		break;
+	case ID_GEN_DESKEY:
+		{
+			DES_KEY key1;
+			char s1[20];
+			DES_GenKey(key1);
+			DES_KeyToString(key1, s1);
+			wxOpenClipboard();
+			wxEmptyClipboard();
+			wxSetClipboardData(wxDataFormat(wxDF_TEXT), s1);
+			wxCloseClipboard();
+		}
+		break;
+	case ID_BUILD_INDEX:
+		if(!Atlas::ContentObject::BuildIndex())
+		{
+			wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("BUILD INDEX ERROR"));
+		}
 	}
 }
 
-void CEditorFrame::OnAbout(wxCommandEvent&)
+void CEditorFrame::OnHelpMenu(wxCommandEvent&)
 {
 	wxString txt;
 	txt.Printf(wxT("Atlas Editor for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Atlas::AtlasGameName()));

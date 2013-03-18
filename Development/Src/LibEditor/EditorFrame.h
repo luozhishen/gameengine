@@ -15,12 +15,10 @@ public:
 	void InitClient();
 
 	void OnFrameQuit(wxCloseEvent& event);
-	void OnSave(wxCommandEvent& event);
-	void OnImport(wxCommandEvent& event);
-	void OnQuit(wxCommandEvent& event);
-	void OnGenDESKey(wxCommandEvent& event);
-	void OnBuildIndex(wxCommandEvent& event);
-	void OnAbout(wxCommandEvent& event);
+	void OnFileMenu(wxCommandEvent& event);
+	void OnToolMenu(wxCommandEvent& event);
+	void OnHelpMenu(wxCommandEvent& event);
+
 	void OnSize(wxSizeEvent& event);
 	void OnShow(wxShowEvent& event);
 

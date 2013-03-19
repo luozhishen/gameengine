@@ -338,7 +338,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 					}
 					else
 					{
-						m_errmsg = "error in GetCellValue";
+						m_errmsg = Atlas::StringFormat("invalid value %s", Atlas::StringFormat("%s%d", i->first.c_str(), row).c_str());
 						bError = true;
 					}
 				}
@@ -403,7 +403,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				AUuidToString(old_obj->uuid, suuid);
 				if(!excel->SetCellValue(range, Atlas::String(suuid)))
 				{
-					m_errmsg = "error in GenContentObjectUniqueId";
+					m_errmsg = "error in SetCellValue";
 					free(obj);
 					return false;
 				}

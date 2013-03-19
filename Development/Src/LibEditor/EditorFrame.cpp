@@ -106,7 +106,7 @@ void CEditorFrame::InitMenu()
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Tools"));
 	GetMenuBar()->GetMenu(1)->Append(ID_COOK_SAVE, wxT("Save Cook Data"), wxT("Import from excel"));
 	GetMenuBar()->GetMenu(1)->Append(ID_COOK_LOAD, wxT("Load Cook Data"), wxT("Import from excel"));
-	GetMenuBar()->GetMenu(0)->AppendSeparator();
+	GetMenuBar()->GetMenu(1)->AppendSeparator();
 
 	GetMenuBar()->GetMenu(1)->Append(ID_IMPORT, wxT("&Import From Excel...\tAlt-I"), wxT("Import from excel"));
 	GetMenuBar()->GetMenu(1)->Append(ID_GEN_DESKEY, wxT("&Generate DESKEY..."), wxT("Generate DESKEY"));
@@ -155,7 +155,7 @@ void CEditorFrame::OnFileMenu(wxCommandEvent& event)
 	switch(event.GetId())
 	{
 	case ID_RELOAD:
-		if(!m_pContentDataView->CheckModify())
+		if(m_pContentDataView->CheckModify(true))
 		{
 			if(!Atlas::ContentObject::LoadContent(NULL, false))
 			{
@@ -179,19 +179,26 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 	switch(event.GetId())
 	{
 	case ID_COOK_SAVE:
-		if(!Atlas::ContentObject::SaveContentToBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+		if(m_pContentDataView->CheckModify(false))
 		{
-			wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
+			if(!Atlas::ContentObject::SaveContentToBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+			{
+				wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
+			}
 		}
 		break;
 	case ID_COOK_LOAD:
-		Atlas::ContentObject::ClearContents();
-		if(!Atlas::ContentObject::LoadContentFromBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+		if(m_pContentDataView->CheckModify(true))
 		{
-			wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
+			Atlas::ContentObject::ClearContents();
+			if(!Atlas::ContentObject::LoadContentFromBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+			{
+				wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
+			}
 		}
 		break;
 	case ID_IMPORT:
+		if(m_pContentDataView->CheckModify(true))
 		{
 			CImportDlg dlg(this);
 			Atlas::String path = Atlas::StringFormat("%s%s", Atlas::AtlasGameDir(), "Config/ContentTemplate.json");
@@ -254,7 +261,7 @@ void CEditorFrame::OnShow(wxShowEvent& event)
 
 bool CEditorFrame::SaveContent(bool exit)
 {
-	if(!m_pContentDataView->CheckModify()) return false;
+	if(!m_pContentDataView->CheckModify(false)) return false;
 
 	if(exit)
 	{

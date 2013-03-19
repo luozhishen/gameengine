@@ -170,7 +170,7 @@ void CContentDataView::OnObjectActived(wxListEvent& event)
 {
 	long nSelectIndex = event.GetIndex();
 	if(nSelectIndex==m_nSelectIndex) return;
-	if(!CheckModify()) return;
+	if(!CheckModify(false)) return;
 
 	wxUIntPtr pData = m_pList->GetItemData(nSelectIndex);
 	A_UUID& uuid = *(A_UUID*)pData;
@@ -181,7 +181,7 @@ void CContentDataView::OnObjectActived(wxListEvent& event)
 
 void CContentDataView::OnObjectAdd(wxCommandEvent& event)
 {
-	if(!CheckModify()) return;
+	if(!CheckModify(false)) return;
 
 	if(m_dlgGenerateObject.ShowModal()!=wxID_OK) return;
 	const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetType(m_dlgGenerateObject.GetType().ToUTF8());
@@ -328,7 +328,7 @@ void CContentDataView::UpdateItemName(wxString& strItemValue, A_UUID& uuid)
 	}
 }
 
-bool CContentDataView::CheckModify()
+bool CContentDataView::CheckModify(bool bClear)
 {
 	if(!m_pCurInfo || !m_pCurData) return true;
 	ATLAS_ASSERT(m_pCurInfo && m_pCurData);
@@ -356,6 +356,12 @@ bool CContentDataView::CheckModify()
 	{
 		wxMessageBox(wxT("xxxx"));
 		return false;
+	}
+
+	if(bClear)
+	{
+		m_pList->ClearAll();
+		SetCurrentObjectNULL();
 	}
 
 	return true;

@@ -22,7 +22,7 @@ public:
 	void OnContextMenu(wxContextMenuEvent& event);
 
 	void UpdateItemName(wxString& strItemValue, A_UUID& uuid);
-	bool CheckModify();
+	bool CheckModify(bool bClear);
 
 protected:
 	void AppendObject(const DDLReflect::STRUCT_INFO* info, const A_CONTENT_OBJECT* data);

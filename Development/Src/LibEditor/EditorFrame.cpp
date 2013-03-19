@@ -179,14 +179,14 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 	switch(event.GetId())
 	{
 	case ID_COOK_SAVE:
-		if(!Atlas::ContentObject::SaveContentToBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9"))
+		if(!Atlas::ContentObject::SaveContentToBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
 		{
 			wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
 		}
 		break;
 	case ID_COOK_LOAD:
 		Atlas::ContentObject::ClearContents();
-		if(!Atlas::ContentObject::LoadContentFromBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9"))
+		if(!Atlas::ContentObject::LoadContentFromBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
 		{
 			wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
 		}

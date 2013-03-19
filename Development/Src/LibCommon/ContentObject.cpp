@@ -586,9 +586,23 @@ namespace Atlas
 			FILE* fp = fopen(filename, "rb");
 			Atlas::String line;
 			_U8 rawdata[300*1024];
+
+			if(fread(rawdata, 1, 4, fp)!=4 || memcmp(rawdata, "DBNN", 4)!=0)
+			{
+				fclose(fp);
+				return false;
+			}
+
+			_U32 object_count;
+			if(fread(&object_count, 1, sizeof(object_count), fp)!=4)
+			{
+				fclose(fp);
+				return false;
+			}
+
 			for(;;)
 			{
-				if(feof(fp))
+				if((object_count--)==0)
 				{
 					fclose(fp);
 					return true;
@@ -725,6 +739,10 @@ namespace Atlas
 
 			FILE* fp = fopen(file, "wb");
 			if(!fp) return false;
+
+			fwrite("DBNN", 1, 4, fp);
+			_U32 object_count = (_U32)g_objct_manager.m_object_map.size();
+			fwrite(&object_count, 1, sizeof(object_count), fp);
 
 			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)

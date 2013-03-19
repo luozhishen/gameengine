@@ -75,6 +75,7 @@ namespace Atlas
 	void CSGClient::EnterServer(_U32 server_id)
 	{
 		m_C2S.EnterServer(server_id);
+		m_lastServerID = server_id;
 	}
 
 	void CSGClient::QueryAvatar()
@@ -595,6 +596,16 @@ namespace Atlas
 	void CSGClient::SalaryGetBat()
 	{
 		m_C2S.SalaryGetBat();
+	}
+
+	void CSGClient::EnhanceTurbo()
+	{
+		m_C2S.EnhanceTurbo();
+	}
+		
+	void CSGClient::EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot)
+	{
+		m_C2S.EquipTurboSkill(skill_slot);
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -1245,8 +1256,13 @@ namespace Atlas
 			{
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
+			
+				//help to sync data
+				Atlas::Vector<_U8> vecSync;
+				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+				SyncSet(vecSync);
 			}
-
+			
 			m_callback->SalaryGetResult(ret, rmb, gold);
 		}
 	}
@@ -1259,9 +1275,35 @@ namespace Atlas
 			{
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
+
+				//help to sync data
+				Atlas::Vector<_U8> vecSync;
+				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+				SyncSet(vecSync);
 			}
 
 			m_callback->SalaryGetBatResult(ret, rmb, gold, times);
+		}
+	}
+
+	void CSGClient::EnhanceTurboResult(CSGClient* pClient, _U8 ret, _U32 turbo_level,  _U32 wake_pt)
+	{
+		if(m_callback)
+		{
+			m_player.turbo_level = turbo_level;
+			m_player.wake_pt -= wake_pt;
+			
+			Atlas::String skill_archetype;
+			SGClientUtil::GetUnlockTurboSkill(turbo_level, skill_archetype);
+
+			if(!skill_archetype.empty())
+			{
+				DDL::String<ARCHETYPE_URL_LENGTH_MAX> unlock_archetype;
+				unlock_archetype.Assign(skill_archetype.c_str());
+				m_player.skills._Array[m_player.skills._Count] = unlock_archetype;
+			}
+
+			m_callback->EnhanceTurboResult(ret, turbo_level, wake_pt);
 		}
 	}
 

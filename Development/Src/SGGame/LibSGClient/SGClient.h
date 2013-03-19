@@ -69,6 +69,8 @@ namespace Atlas
 
 		virtual void SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold) = 0;				
 		virtual void SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times) = 0;
+
+		virtual void EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -171,6 +173,9 @@ namespace Atlas
 		void SalaryGet();														//获取每日军饷
 		void SalaryGetBat();													//批量获取 max = 10
 
+		void EnhanceTurbo();
+		void EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot);			//装备无双技能
+
 		//result
 		void Pong(CSGClient* pClient);
 
@@ -229,6 +234,8 @@ namespace Atlas
 		
 		void SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold);									//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
 		void SalaryGetBatResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold, _U32 times);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
+
+		void EnhanceTurboResult(CSGClient* pClient, _U8 ret, _U32 turbo_level,  _U32 wake_pt);							//返回新的无双等级和消耗的觉醒点 
 
 	public:
 		virtual void OnLoginDone();

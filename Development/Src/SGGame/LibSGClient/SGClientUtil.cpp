@@ -48,38 +48,54 @@ namespace Atlas
 
 	void SGClientUtil::GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Atlas::Vector<_U32>& soldierVec, Atlas::Vector<SG_SOLDIER>& curSoldierVec)
 	{
-		const DDLReflect::STRUCT_INFO* struct_info = Atlas::ContentObject::GetType("SG_SOLDIER_CONFIG");
-		Atlas::Vector<A_UUID> uuid_list;
-		if(Atlas::ContentObject::GetList(struct_info, uuid_list, true))
+		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_SOLDIER_CONFIG >();
+		
+		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		while(content_obj)
 		{
-			for(Atlas::Vector<A_UUID>::iterator it = uuid_list.begin(); it != uuid_list.end(); ++it)
+			SG_SOLDIER_CONFIG* config = (SG_SOLDIER_CONFIG*)content_obj;
+
+			bool bFind = false;
+			for(Atlas::Vector<SG_SOLDIER>::iterator it_loop = curSoldierVec.begin(); it_loop != curSoldierVec.end(); ++it_loop)
 			{
-				const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::QueryByUUID(*it, struct_info);
-				SG_SOLDIER_CONFIG* config = (SG_SOLDIER_CONFIG*)content_obj;
-
-				bool bFind = false;
-				for(Atlas::Vector<SG_SOLDIER>::iterator it_loop = curSoldierVec.begin(); it_loop != curSoldierVec.end(); ++it_loop)
+				if(it_loop->soldier_id == config->soldier_id)
 				{
-					if(it_loop->soldier_id == config->soldier_id)
-					{
-						bFind = true;
-						break;
-					}
-				}
-
-				if(!bFind 
-					&& config->unlock_level <= (_S32)upperLevel
-					&& config->unlock_level > (_S32)lowerLevel)
-				{
-					soldierVec.push_back(config->soldier_id);
+					bFind = true;
+					break;
 				}
 			}
 
+			if(!bFind 
+				&& config->unlock_level <= (_S32)upperLevel
+				&& config->unlock_level > (_S32)lowerLevel)
+			{
+				soldierVec.push_back(config->soldier_id);
+			}
+
+			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 
 		std::unique(soldierVec.begin(), soldierVec.end());
 	}
 	
+	void SGClientUtil::GetUnlockTurboSkill(_U32 turbo_level, Atlas::String& skill_archetype)
+	{
+		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_TURBO_CONFIG >();
+		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		while(content_obj)
+		{
+			SG_TURBO_CONFIG* config = (SG_TURBO_CONFIG*)content_obj;
+			if(	config->turbo_level == turbo_level
+				&& strlen(*(config->skill_archetype)) != 0)
+			{
+				skill_archetype += *(config->skill_archetype);
+				return;
+			}
+		
+			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+		}
+	}
+
 	bool SGClientUtil::DiffPlayerInfo(const SG_PLAYER& player_old, const SG_PLAYER& player_new)
 	{
 		char* pOldAddress = (char*)&player_old;

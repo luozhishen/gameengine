@@ -9,11 +9,11 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_TURBO_CONFIG>(SG_TURBO_CONFIG& Value)
 	{
-		if(!Read<_U8>(Value.general_profession)) return false;
+		if(!Read<_U32>(Value.general_id)) return false;
 		if(!Read<_U32>(Value.turbo_level)) return false;
 		if(!ReadString<SG_SKILL_NAME_MAX>(Value.skill_name)) return false;
-		if(!Read<_U8>(Value.belong_to_charpter_id)) return false;
-		if(!ReadString<SG_TURBO_CHARPTER_NAME_MAX>(Value.belong_to_charpter_name)) return false;
+		if(!Read<_U8>(Value.charpter_id)) return false;
+		if(!ReadString<SG_TURBO_CHARPTER_NAME_MAX>(Value.charpter_name)) return false;
 		if(!Read<_U32>(Value.req_wake_pt)) return false;
 		if(!Read<_U8>(Value.skill_type)) return false;
 		if(!Read<_U32>(Value.HP)) return false;
@@ -33,11 +33,11 @@ namespace DDL
 	bool BufferWriter::Write<SG_TURBO_CONFIG>(const SG_TURBO_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
-		if(!Write<_U8>(Value.general_profession)) return false;
+		if(!Write<_U32>(Value.general_id)) return false;
 		if(!Write<_U32>(Value.turbo_level)) return false;
 		if(!WriteString<SG_SKILL_NAME_MAX>(Value.skill_name)) return false;
-		if(!Write<_U8>(Value.belong_to_charpter_id)) return false;
-		if(!WriteString<SG_TURBO_CHARPTER_NAME_MAX>(Value.belong_to_charpter_name)) return false;
+		if(!Write<_U8>(Value.charpter_id)) return false;
+		if(!WriteString<SG_TURBO_CHARPTER_NAME_MAX>(Value.charpter_name)) return false;
 		if(!Write<_U32>(Value.req_wake_pt)) return false;
 		if(!Write<_U8>(Value.skill_type)) return false;
 		if(!Write<_U32>(Value.HP)) return false;
@@ -58,11 +58,11 @@ namespace DDLReflect
 {
 	static FIELD_INFO _struct_SG_TURBO_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U8, "general_profession", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, general_profession), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "turbo_level", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "skill_name", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_name), NULL, (_U16)SG_SKILL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_NAME_MAX>), NULL},
-		{TYPE_U8, "belong_to_charpter_id", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, belong_to_charpter_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "belong_to_charpter_name", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, belong_to_charpter_name), NULL, (_U16)SG_TURBO_CHARPTER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TURBO_CHARPTER_NAME_MAX>), NULL},
+		{TYPE_U8, "charpter_id", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, charpter_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "charpter_name", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, charpter_name), NULL, (_U16)SG_TURBO_CHARPTER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TURBO_CHARPTER_NAME_MAX>), NULL},
 		{TYPE_U32, "req_wake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, req_wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U8, "skill_type", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U32, "HP", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
@@ -81,6 +81,42 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<SG_TURBO_CONFIG>()
 	{
 		return &_rfl_struct_SG_TURBO_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_TURBO_SKILL_SLOT>(SG_TURBO_SKILL_SLOT& Value)
+	{
+		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype1)) return false;
+		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype2)) return false;
+		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype3)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_TURBO_SKILL_SLOT>(const SG_TURBO_SKILL_SLOT& Value)
+	{
+		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype1)) return false;
+		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype2)) return false;
+		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype3)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _struct_SG_TURBO_SKILL_SLOT_fieldinfo[] =
+	{
+		{TYPE_STRING, "skill_archetype1", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype1), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRING, "skill_archetype2", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype2), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRING, "skill_archetype3", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype3), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_TURBO_SKILL_SLOT_info = { NULL, "SG_TURBO_SKILL_SLOT", sizeof(SG_TURBO_SKILL_SLOT), 3, _struct_SG_TURBO_SKILL_SLOT_fieldinfo };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_TURBO_SKILL_SLOT>()
+	{
+		return &_rfl_struct_SG_TURBO_SKILL_SLOT_info;
 	}
 }
 
@@ -2629,9 +2665,14 @@ namespace DDL
 		if(!ReadArray<SG_DAILY_ACTION_INFO, 12>(Value.daily_actions)) return false;
 		if(!Read<_U32>(Value.next_level)) return false;
 		if(!Read<_U32>(Value.rank)) return false;
+		if(!Read<_U32>(Value.last_rank)) return false;
 		if(!Read<_U32>(Value.vip_level)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!ReadArray<_U32, SG_LEAGUE_APPLY_MAX>(Value.league_apply_list)) return false;
+		if(!Read<_U32>(Value.wake_pt)) return false;
+		if(!Read<_U32>(Value.turbo_level)) return false;
+		if(!ReadStringArray<ARCHETYPE_URL_LENGTH_MAX, SG_TURBO_UNLOCK_SKILL_MAX>(Value.skills)) return false;
+		if(!Read<SG_TURBO_SKILL_SLOT>(Value.turbo_skill_slot)) return false;
 		if(!Read<_U32>(Value.last_operation_time)) return false;
 		if(!BufferReader::Read<SG_GENERAL>(Value)) return false;
 		return true;
@@ -2654,9 +2695,14 @@ namespace DDL
 		if(!WriteArray<SG_DAILY_ACTION_INFO, 12>(Value.daily_actions)) return false;
 		if(!Write<_U32>(Value.next_level)) return false;
 		if(!Write<_U32>(Value.rank)) return false;
+		if(!Write<_U32>(Value.last_rank)) return false;
 		if(!Write<_U32>(Value.vip_level)) return false;
 		if(!Write<_U32>(Value.league_id)) return false;
 		if(!WriteArray<_U32, SG_LEAGUE_APPLY_MAX>(Value.league_apply_list)) return false;
+		if(!Write<_U32>(Value.wake_pt)) return false;
+		if(!Write<_U32>(Value.turbo_level)) return false;
+		if(!WriteStringArray<ARCHETYPE_URL_LENGTH_MAX, SG_TURBO_UNLOCK_SKILL_MAX>(Value.skills)) return false;
+		if(!Write<SG_TURBO_SKILL_SLOT>(Value.turbo_skill_slot)) return false;
 		if(!Write<_U32>(Value.last_operation_time)) return false;
 		return true;
 	}
@@ -2680,12 +2726,17 @@ namespace DDLReflect
 		{TYPE_STRUCT|TYPE_ARRAY, "daily_actions", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, daily_actions), &_rfl_struct_SG_DAILY_ACTION_INFO_info, (_U16)-1, (_U16)12, (_U16)((size_t)(&((DDL::Array<SG_DAILY_ACTION_INFO, 12>*)NULL)->_Array)), (_U16)sizeof(SG_DAILY_ACTION_INFO), NULL},
 		{TYPE_U32, "next_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, next_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "last_rank", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "vip_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32|TYPE_ARRAY, "league_apply_list", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, league_apply_list), NULL, (_U16)-1, (_U16)SG_LEAGUE_APPLY_MAX, (_U16)((size_t)(&((DDL::Array<_U32, SG_LEAGUE_APPLY_MAX>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "wake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "turbo_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING|TYPE_ARRAY, "skills", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, skills), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)SG_TURBO_UNLOCK_SKILL_MAX, (_U16)((size_t)(&((DDL::Array<DDL::String<ARCHETYPE_URL_LENGTH_MAX>, SG_TURBO_UNLOCK_SKILL_MAX>*)NULL)->_Array)), (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRUCT, "turbo_skill_slot", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, turbo_skill_slot), &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_TURBO_SKILL_SLOT), NULL},
 		{TYPE_U32, "last_operation_time", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_operation_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 18, _struct_SG_PLAYER_fieldinfo };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 23, _struct_SG_PLAYER_fieldinfo };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER>()
 	{
@@ -3041,7 +3092,10 @@ namespace DDLReflect
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 64 SalaryGet
 		// 65 SalaryGetBat
-		// 66 QueryServerTime
+		// 66 EnhanceTurbo
+		// 67 EquipTurboSkill
+		{TYPE_STRUCT, "skill_slot", 0, 0, &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 68 QueryServerTime
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -3111,9 +3165,11 @@ namespace DDLReflect
 		{"QueryLeagueMemberInfo", 1, _class_SGGAME_C2S_fieldinfos+56},
 		{"SalaryGet", 0, _class_SGGAME_C2S_fieldinfos+57},
 		{"SalaryGetBat", 0, _class_SGGAME_C2S_fieldinfos+57},
-		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+57},
+		{"EnhanceTurbo", 0, _class_SGGAME_C2S_fieldinfos+57},
+		{"EquipTurboSkill", 1, _class_SGGAME_C2S_fieldinfos+57},
+		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+58},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 67, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 69, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -3267,7 +3323,11 @@ namespace DDLReflect
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 47 QueryServerTimeResult
+		// 47 EnhanceTurboResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "turbo_level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 48 QueryServerTimeResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
@@ -3319,9 +3379,10 @@ namespace DDLReflect
 		{"QueryLeagueMemberInfoResult", 0, _class_SGGAME_S2C_fieldinfos+88},
 		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+88},
 		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+91},
-		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+95},
+		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+95},
+		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+98},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 48, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 49, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

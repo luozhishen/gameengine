@@ -111,15 +111,17 @@ const _U32 SG_VIP_ICON_MAX = 256;
 
 //turbo
 const _U32 SG_TURBO_CHARPTER_NAME_MAX = 128;
+const _U32 SG_TURBO_UNLOCK_SKILL_MAX = 15;
+const _U32 SG_TURBO_EQUIP_SKILL_MAX = 3;
 
 //turbo 无双
 struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 {
-	_U8							general_profession;					//0-武圣 1-法圣
+	_U32						general_id;							//General_ID
 	_U32						turbo_level;						//无双等级
 	string<SG_SKILL_NAME_MAX>	skill_name;							//无双技能名称
-	_U8							belong_to_charpter_id;				//所属篇章ID
-	string<SG_TURBO_CHARPTER_NAME_MAX>	belong_to_charpter_name;	//所属篇章名称
+	_U8							charpter_id;						//所属篇章ID
+	string<SG_TURBO_CHARPTER_NAME_MAX>	charpter_name;				//所属篇章名称
 	_U32						req_wake_pt;						//所需觉醒点
 	_U8							skill_type;							//技能类型 0-被动 1-主动
 	_U32						HP;									//生命加成
@@ -135,6 +137,15 @@ struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 };
 task[GEN_STRUCT_SERIALIZE(SG_TURBO_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_TURBO_CONFIG)];
+
+struct SG_TURBO_SKILL_SLOT
+{
+	string<ARCHETYPE_URL_LENGTH_MAX>	skill_archetype1;
+	string<ARCHETYPE_URL_LENGTH_MAX>	skill_archetype2;
+	string<ARCHETYPE_URL_LENGTH_MAX>	skill_archetype3;
+};
+task[GEN_STRUCT_SERIALIZE(SG_TURBO_SKILL_SLOT)];
+task[GEN_STRUCT_REFLECT(SG_TURBO_SKILL_SLOT)];
 
 //Vip
 struct SG_VIP_CONFIG : A_CONTENT_OBJECT
@@ -862,9 +873,9 @@ task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_INFO)];
 
 struct SG_PLAYER : SG_GENERAL
 {
-	string<SG_PLAYER_NAME_MAX>			nick;
-	_U32								avatar_id;				
-	_U32								gold;					
+	string<SG_PLAYER_NAME_MAX>			nick;					//昵称
+	_U32								avatar_id;				//相当于userid
+	_U32								gold;					//游戏币
 	_U32								rmb;					//元宝
 	array<_U32, 2>						equip_generals;
 	array<_U32, 3>						equip_soldiers;
@@ -878,10 +889,17 @@ struct SG_PLAYER : SG_GENERAL
 	array<SG_DAILY_ACTION_INFO, 12>		daily_actions;			//日常行为
 	_U32								next_level;				//下一个通过的关卡ID 初始值10001
 	_U32								rank;					//排行榜排名
+	_U32								last_rank;				//结算时候的排名
 	_U32								vip_level;				//vip等级
 	
 	_U32								league_id;				//所在战盟ID
 	array<_U32, SG_LEAGUE_APPLY_MAX>	league_apply_list;		//申请
+
+	_U32								wake_pt;				//觉醒点
+	_U32								turbo_level;			//无双等级
+	array<string<ARCHETYPE_URL_LENGTH_MAX>, SG_TURBO_UNLOCK_SKILL_MAX>					skills;					//已经解锁的技能 最多15
+	SG_TURBO_SKILL_SLOT																	turbo_skill_slot;		//目前已经选中的技能 最多3
+
 	_U32								last_operation_time;	//最后一次操作时间
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
@@ -1028,6 +1046,9 @@ class SGGAME_C2S
 	SalaryGet();													//获取每日军饷
 	SalaryGetBat();													//批量获取 max = 10
 
+	EnhanceTurbo();													//提升无双技能
+	EquipTurboSkill(SG_TURBO_SKILL_SLOT skill_slot);				//装备无双技能
+
 	QueryServerTime();												//查询服务器时间
 };
 
@@ -1092,6 +1113,8 @@ class SGGAME_S2C
 
 	SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
 	SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times);   //0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
+
+	EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt);			//返回新的无双等级和消耗的觉醒点 ret 0-成功 other-failed
 
 	QueryServerTimeResult(_U32 time);
 };

@@ -172,13 +172,17 @@ const _U32 SG_VIP_ICON_MAX = 256;
 
 const _U32 SG_TURBO_CHARPTER_NAME_MAX = 128;
 
+const _U32 SG_TURBO_UNLOCK_SKILL_MAX = 15;
+
+const _U32 SG_TURBO_EQUIP_SKILL_MAX = 3;
+
 struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 {
-	_U8 general_profession;
+	_U32 general_id;
 	_U32 turbo_level;
 	DDL::String<SG_SKILL_NAME_MAX> skill_name;
-	_U8 belong_to_charpter_id;
-	DDL::String<SG_TURBO_CHARPTER_NAME_MAX> belong_to_charpter_name;
+	_U8 charpter_id;
+	DDL::String<SG_TURBO_CHARPTER_NAME_MAX> charpter_name;
 	_U32 req_wake_pt;
 	_U8 skill_type;
 	_U32 HP;
@@ -206,6 +210,28 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_TURBO_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_SG_TURBO_CONFIG_info;
+}
+
+struct SG_TURBO_SKILL_SLOT
+{
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> skill_archetype1;
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> skill_archetype2;
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> skill_archetype3;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_TURBO_SKILL_SLOT>(SG_TURBO_SKILL_SLOT& Value);
+	template<>
+	bool BufferWriter::Write<SG_TURBO_SKILL_SLOT>(const SG_TURBO_SKILL_SLOT& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_TURBO_SKILL_SLOT>();
+	extern STRUCT_INFO _rfl_struct_SG_TURBO_SKILL_SLOT_info;
 }
 
 struct SG_VIP_CONFIG : A_CONTENT_OBJECT
@@ -1518,9 +1544,14 @@ struct SG_PLAYER : SG_GENERAL
 	DDL::Array<SG_DAILY_ACTION_INFO, 12> daily_actions;
 	_U32 next_level;
 	_U32 rank;
+	_U32 last_rank;
 	_U32 vip_level;
 	_U32 league_id;
 	DDL::Array<_U32, SG_LEAGUE_APPLY_MAX> league_apply_list;
+	_U32 wake_pt;
+	_U32 turbo_level;
+	DDL::Array<DDL::String<ARCHETYPE_URL_LENGTH_MAX>,SG_TURBO_UNLOCK_SKILL_MAX> skills;
+	SG_TURBO_SKILL_SLOT turbo_skill_slot;
 	_U32 last_operation_time;
 };
 
@@ -2430,6 +2461,25 @@ namespace DDLStub
 
 
 				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceTurbo(Caller);
+				return true;
+			}
+			if(fid==67)
+			{
+				SG_TURBO_SKILL_SLOT _prefix_skill_slot;
+
+				// <SG_TURBO_SKILL_SLOT> <skill_slot> <> <>;
+				if(!Buf.Read(_prefix_skill_slot)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EquipTurboSkill(Caller, _prefix_skill_slot);
+				return true;
+			}
+			if(fid==68)
+			{
+
+
+				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->QueryServerTime(Caller);
 				return true;
 			}
@@ -3122,12 +3172,30 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
 		}
 
-		bool QueryServerTime()
+		bool EnhanceTurbo()
 		{
 			BUFFER Buf;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
+		}
+
+		bool EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot)
+		{
+			BUFFER Buf;
+			// <SG_TURBO_SKILL_SLOT> <skill_slot> <> <>
+			if(!Buf.Write(skill_slot)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
+		}
+
+		bool QueryServerTime()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
 		}
 	};
 
@@ -3891,6 +3959,23 @@ namespace DDLStub
 			}
 			if(fid==47)
 			{
+				_U8 _prefix_ret;
+				_U32 _prefix_turbo_level;
+				_U32 _prefix_wake_pt;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <turbo_level> <> <>;
+				if(!Buf.Read(_prefix_turbo_level)) return false;
+				// <_U32> <wake_pt> <> <>;
+				if(!Buf.Read(_prefix_wake_pt)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceTurboResult(Caller, _prefix_ret, _prefix_turbo_level, _prefix_wake_pt);
+				return true;
+			}
+			if(fid==48)
+			{
 				_U32 _prefix_time;
 
 				// <_U32> <time> <> <>;
@@ -4546,6 +4631,20 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 46, Buf);
 		}
 
+		bool EnhanceTurboResult(_U8 ret, _U32 turbo_level, _U32 wake_pt)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <turbo_level> <> <>
+			if(!Buf.Write(turbo_level)) return false;
+			// <_U32> <wake_pt> <> <>
+			if(!Buf.Write(wake_pt)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 47, Buf);
+		}
+
 		bool QueryServerTimeResult(_U32 time)
 		{
 			BUFFER Buf;
@@ -4553,7 +4652,7 @@ namespace DDLProxy
 			if(!Buf.Write(time)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 47, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 48, Buf);
 		}
 	};
 

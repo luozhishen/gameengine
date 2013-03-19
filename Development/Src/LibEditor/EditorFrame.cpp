@@ -22,8 +22,8 @@
 enum
 {
 	ID_QUIT = wxID_HIGHEST + 1,
+	ID_RELOAD,
 	ID_SAVE,
-	ID_SAVE_FORCE,
 	ID_COOK_SAVE,
 	ID_COOK_LOAD,
 	ID_IMPORT,
@@ -35,12 +35,12 @@ enum
 BEGIN_EVENT_TABLE(CEditorFrame, wxFrame)
 	EVT_CLOSE(CEditorFrame::OnFrameQuit)
 
+	EVT_MENU(ID_RELOAD,			CEditorFrame::OnFileMenu)
 	EVT_MENU(ID_SAVE,			CEditorFrame::OnFileMenu)
-	EVT_MENU(ID_SAVE_FORCE,		CEditorFrame::OnFileMenu)
 	EVT_MENU(ID_QUIT,			CEditorFrame::OnFileMenu)
 
-//	EVT_MENU(ID_COOK_SAVE,		CEditorFrame::OnToolMenu)
-//	EVT_MENU(ID_COOK_LOAD,		CEditorFrame::OnToolMenu)
+	EVT_MENU(ID_COOK_SAVE,		CEditorFrame::OnToolMenu)
+	EVT_MENU(ID_COOK_LOAD,		CEditorFrame::OnToolMenu)
 	EVT_MENU(ID_IMPORT,			CEditorFrame::OnToolMenu)
 	EVT_MENU(ID_GEN_DESKEY,		CEditorFrame::OnToolMenu)
 	EVT_MENU(ID_BUILD_INDEX,	CEditorFrame::OnToolMenu)
@@ -98,12 +98,16 @@ void CEditorFrame::InitMenu()
 {
 	SetMenuBar(ATLAS_NEW wxMenuBar);
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
+	GetMenuBar()->GetMenu(0)->Append(ID_RELOAD, wxT("&Reload Content\tAlt-F"), wxT("Discard current modify"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SAVE, wxT("&Save Content\tAlt-S"), wxT("Save content to file"));
-	GetMenuBar()->GetMenu(0)->Append(ID_SAVE_FORCE, wxT("&Save Content(force)\tAlt-F"), wxT("Force save content to file"));
 	GetMenuBar()->GetMenu(0)->AppendSeparator();
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 
 	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Tools"));
+	GetMenuBar()->GetMenu(1)->Append(ID_COOK_SAVE, wxT("Save Cook Data"), wxT("Import from excel"));
+	GetMenuBar()->GetMenu(1)->Append(ID_COOK_LOAD, wxT("Load Cook Data"), wxT("Import from excel"));
+	GetMenuBar()->GetMenu(0)->AppendSeparator();
+
 	GetMenuBar()->GetMenu(1)->Append(ID_IMPORT, wxT("&Import From Excel...\tAlt-I"), wxT("Import from excel"));
 	GetMenuBar()->GetMenu(1)->Append(ID_GEN_DESKEY, wxT("&Generate DESKEY..."), wxT("Generate DESKEY"));
 	GetMenuBar()->GetMenu(1)->Append(ID_BUILD_INDEX, wxT("&Build Index"), wxT("Build index for Content Object"));
@@ -150,20 +154,20 @@ void CEditorFrame::OnFileMenu(wxCommandEvent& event)
 {
 	switch(event.GetId())
 	{
-	case ID_SAVE_FORCE:
+	case ID_RELOAD:
+		if(!m_pContentDataView->CheckModify())
+		{
+			if(!Atlas::ContentObject::LoadContent(NULL, false))
+			{
+				wxMessageBox(wxT("Failed to load content"), wxT("Error"));
+			}
+		}
+		break;
 	case ID_SAVE:
-		if(Atlas::ContentObject::SaveContent(NULL, event.GetId()==ID_SAVE_FORCE)) return;
-		wxMessageBox(wxT("Save content failed"), wxT("!!!"));
+		SaveContent(false);
 		break;
 	case ID_QUIT:
 		Close(true);
-		break;
-	case ID_COOK_SAVE:
-		Atlas::ContentObject::SaveContentToBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9");
-		break;
-	case ID_COOK_LOAD:
-		Atlas::ContentObject::ClearContents();
-		Atlas::ContentObject::LoadContentFromBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9");
 		break;
 	}
 }
@@ -174,6 +178,19 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 {
 	switch(event.GetId())
 	{
+	case ID_COOK_SAVE:
+		if(!Atlas::ContentObject::SaveContentToBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9"))
+		{
+			wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
+		}
+		break;
+	case ID_COOK_LOAD:
+		Atlas::ContentObject::ClearContents();
+		if(!Atlas::ContentObject::LoadContentFromBinaryFile("E:\\aaaa.xxxx", "e80cb90fe7042fd9"))
+		{
+			wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
+		}
+		break;
 	case ID_IMPORT:
 		{
 			CImportDlg dlg(this);
@@ -248,7 +265,11 @@ bool CEditorFrame::SaveContent(bool exit)
 		if(ret==wxNO) return true;
 	}
 
-	if(Atlas::ContentObject::SaveContent()) return true;
-	wxMessageBox(wxT("Save content failed"), wxT("!!!"));
+	if(!Atlas::ContentObject::SaveContent(NULL, true))
+	{
+		wxMessageBox(wxT("Save content failed"), wxT("!!!"));
+		return false;
+	}
+
 	return false;
 }

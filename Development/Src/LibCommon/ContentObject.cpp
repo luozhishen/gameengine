@@ -585,40 +585,48 @@ namespace Atlas
 
 			FILE* fp = fopen(filename, "rb");
 			Atlas::String line;
+			_U8 rawdata[300*1024];
 			for(;;)
 			{
-				char src[8], buf[9];
-				if(fread(src, 1, 8, fp)!=8) break;
-				DES_Decrypt(keys, buf, src);
-				buf[8] = '\0';
-				line.append(buf);
-				if(strlen(buf)<8)
-				{
-					Json::Value elm;
-					Json::Reader reader;
-					if(!reader.parse(line.c_str(), line.c_str()+line.size(), elm, false)) break;
-					if(!CreateContentObject(elm))
-					{
-						fclose(fp);
-						return false;
-					}
-					line = "";
-				}
 				if(feof(fp))
 				{
-					if(line.size()==0)
+					fclose(fp);
+					return true;
+				}
+
+				_U16 tid;
+				_U32 size, i, count;
+
+				if(fread(&tid, 1, sizeof(tid), fp)!=sizeof(tid)) break;
+				if(fread(&size, 1, sizeof(size), fp)!=sizeof(size)) break;
+				if(size>sizeof(rawdata)) break;
+
+				const DDLReflect::STRUCT_INFO* info = GetType(tid);
+				if(!info) break;
+
+				count = (size==0?0:(size-1)/7+1);
+				for(i=0; i<count; i++)
+				{
+					char buf[8], sbuf[8];
+					if(fread(buf, 1, sizeof(buf), fp)!=sizeof(buf)) break;
+					DES_Decrypt(keys, sbuf, buf);
+					for(size_t x=0; x<7; x++)
 					{
-						fclose(fp);
-						return true;
-					}
-					else
-					{
-						break;
+						rawdata[i*7+x] = (_U8)(sbuf[x]&0x7f);
+						if(sbuf[7]&(1<<x)) rawdata[i*7+x] |= 0x8f;
 					}
 				}
+				if(i!=count) break;
+
+				A_CONTENT_OBJECT* obj = AllocObject(info, *((A_UUID*)rawdata));
+				if(!obj) break;
+
+				DDL::MemoryReader reader(rawdata, size);
+				if(!info->read_proc(reader, obj)) break;
 			}
+
 			fclose(fp);
-			return true;
+			return false;
 		}
 
 		bool SaveContent(const char* path, bool force)
@@ -723,24 +731,45 @@ namespace Atlas
 			{
 				CContentGroup* group = QueryContentGroup(i->second.first);
 				if(!group->_cook) continue;
-				Atlas::String va;
-				DDLReflect::Struct2Json(i->second.first, (const _U8*)(i->second.second), va);
-				Atlas::String line = StringFormat("{\"type\":\"%s\",\"data\":%s}", i->second.first->name, va.c_str());
-				const char* pos = line.c_str();
-				size_t size = line.size() + 1;
-				char buf[8];
-				while(size>8)
+
+				_U8 rawdata[300*1024];
+				DDL::MemoryWriter writer(rawdata, sizeof(rawdata));
+				if(!i->second.first->write_proc(writer, i->second.second))
 				{
-					DES_Encrypt(keys, buf, pos);
-					fwrite(buf, 1, 8, fp);
-					pos += 8;
-					size -= 8;
+					fclose(fp);
+					return false;
 				}
-				char buf1[8];
-				memset(buf1, 0, sizeof(buf));
-				memcpy(buf1, pos, size);
-				DES_Encrypt(keys, buf, buf1);
-				fwrite(buf, 1, 8, fp);
+
+				_U8* src = rawdata;
+				char buf[8], sbuf[8];
+				_U32 size = writer.GetSize();
+				_U16 tid = Atlas::ContentObject::GetTypeId(i->second.first->name);
+				fwrite(&tid, 1, sizeof(tid), fp);
+				fwrite(&size, 1, sizeof(size), fp);
+				while(size>7)
+				{
+					sbuf[7] = 0;
+					for(size_t i=0; i<7; i++)
+					{
+						sbuf[i] = (char)(src[i]&0x7f);
+						if(src[i]&0x80) sbuf[7] |= 1 << i;
+					}
+					DES_Encrypt(keys, buf, sbuf);
+					fwrite(buf, 1, 8, fp);
+					src += 7;
+					size -= 7;
+				}
+				if(size>0)
+				{
+					memset(sbuf, 0, sizeof(sbuf));
+					for(size_t i=0; i<size; i++)
+					{
+						sbuf[i] = (char)(src[i]&0x7f);
+						if(src[i]&0x80) sbuf[7] |= 1 << i;
+					}
+					DES_Encrypt(keys, buf, sbuf);
+					fwrite(buf, 1, 8, fp);
+				}
 			}
 
 			fclose(fp);

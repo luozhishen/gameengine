@@ -168,6 +168,18 @@ const _U8 SG_LEAGUE_CREATE_SUCC = 0;
 
 const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 
+const _U32 SG_DAILY_ACTION_TYPE_MAX = 12;
+
+const _U8 SG_DAILY_ACTION_TYPE_PAID = 0;
+
+const _U8 SG_DAILY_ACTION_TYPE_PVP_LEVEL = 1;
+
+const _U8 SG_DAILY_ACTION_TYPE_PVP_BATTLE = 2;
+
+const _U8 SG_DAILY_ACTION_TYPE_PVP_REWARD = 3;
+
+const _U8 SG_DAILY_ACTION_TYPE_SALARY = 4;
+
 const _U32 SG_VIP_ICON_MAX = 256;
 
 const _U32 SG_TURBO_CHARPTER_NAME_MAX = 128;
@@ -318,7 +330,7 @@ struct SG_INSTANCE_CONFIG : A_CONTENT_OBJECT
 	DDL::String<SG_INSTANCE_REWARD_DES_MAX> reward_hard1;
 	DDL::String<SG_INSTANCE_REWARD_DES_MAX> reward_hard2;
 	_U32 reset_rmb;
-	_U32 awake_pt;
+	_U32 wake_pt;
 };
 
 namespace DDL
@@ -870,7 +882,7 @@ struct SG_LEVEL_INFO_CONFIG : A_CONTENT_OBJECT
 	_U32 next_level;
 	DDL::String<SG_DESCRIPTION_MAX> description;
 	_U32 req_player_level;
-	_U32 awake_pt;
+	_U32 wake_pt;
 	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name1;
 	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name2;
 	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name3;
@@ -963,7 +975,7 @@ struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 	_F32 group3_rate;
 	_U32 group4_id;
 	_F32 group4_rate;
-	_U32 awake_pt;
+	_U32 wake_pt;
 };
 
 namespace DDL
@@ -1532,6 +1544,7 @@ struct SG_PLAYER : SG_GENERAL
 {
 	DDL::String<SG_PLAYER_NAME_MAX> nick;
 	_U32 avatar_id;
+	_U32 total_rmb;
 	_U32 gold;
 	_U32 rmb;
 	DDL::Array<_U32, 2> equip_generals;
@@ -1541,7 +1554,7 @@ struct SG_PLAYER : SG_GENERAL
 	_U32 reputation;
 	_U32 halo_level;
 	_U32 halo_exp;
-	DDL::Array<SG_DAILY_ACTION_INFO, 12> daily_actions;
+	DDL::Array<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX> daily_actions;
 	_U32 next_level;
 	_U32 rank;
 	_U32 last_rank;

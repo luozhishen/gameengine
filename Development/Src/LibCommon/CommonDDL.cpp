@@ -24,12 +24,23 @@ namespace DDL
 
 namespace DDLReflect
 {
+
+	static bool _struct_A_CONTENT_OBJECT_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<A_CONTENT_OBJECT>(*((A_CONTENT_OBJECT*)data));
+	}
+
+	static bool _struct_A_CONTENT_OBJECT_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<A_CONTENT_OBJECT>(*((const A_CONTENT_OBJECT*)data));
+	}
+
 	static FIELD_INFO _struct_A_CONTENT_OBJECT_fieldinfo[] =
 	{
 		{TYPE_UUID, "uuid", 0|FLAG_READONLY, (_U16)ATLAS_OFFSETOF(A_CONTENT_OBJECT, uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
 		{TYPE_STRING, "name", 0|FLAG_NOTNULL, (_U16)ATLAS_OFFSETOF(A_CONTENT_OBJECT, name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_A_CONTENT_OBJECT_info = { NULL, "A_CONTENT_OBJECT", sizeof(A_CONTENT_OBJECT), 2, _struct_A_CONTENT_OBJECT_fieldinfo };
+	STRUCT_INFO _rfl_struct_A_CONTENT_OBJECT_info = { NULL, "A_CONTENT_OBJECT", sizeof(A_CONTENT_OBJECT), 2, _struct_A_CONTENT_OBJECT_fieldinfo, _struct_A_CONTENT_OBJECT_readproc, _struct_A_CONTENT_OBJECT_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<A_CONTENT_OBJECT>()
 	{
@@ -55,11 +66,22 @@ namespace DDL
 
 namespace DDLReflect
 {
+
+	static bool _struct_A_LIVE_OBJECT_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<A_LIVE_OBJECT>(*((A_LIVE_OBJECT*)data));
+	}
+
+	static bool _struct_A_LIVE_OBJECT_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<A_LIVE_OBJECT>(*((const A_LIVE_OBJECT*)data));
+	}
+
 	static FIELD_INFO _struct_A_LIVE_OBJECT_fieldinfo[] =
 	{
 		{TYPE_UUID, "uuid", 0, (_U16)ATLAS_OFFSETOF(A_LIVE_OBJECT, uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
 	};
-	STRUCT_INFO _rfl_struct_A_LIVE_OBJECT_info = { NULL, "A_LIVE_OBJECT", sizeof(A_LIVE_OBJECT), 1, _struct_A_LIVE_OBJECT_fieldinfo };
+	STRUCT_INFO _rfl_struct_A_LIVE_OBJECT_info = { NULL, "A_LIVE_OBJECT", sizeof(A_LIVE_OBJECT), 1, _struct_A_LIVE_OBJECT_fieldinfo, _struct_A_LIVE_OBJECT_readproc, _struct_A_LIVE_OBJECT_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<A_LIVE_OBJECT>()
 	{

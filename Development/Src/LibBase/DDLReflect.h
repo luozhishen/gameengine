@@ -34,18 +34,21 @@ namespace DDLReflect
 	struct FUNCTION_INFO;
 	struct CLASS_INFO;
 
+	typedef bool (*READ_PROC)(DDL::BufferReader& buf, void* data);
+	typedef bool (*WRITE_PROC)(DDL::BufferWriter& buf, const void* data);
+
 	struct FIELD_INFO
 	{
-		_U8				type;
-		char			name[NAME_MAXLEN+1];
-		_U32			flags;
-		_U16			offset;
-		STRUCT_INFO*	sinfo;
-		_U16			slen;
-		_U16			alen;
-		_U16			prefix;
-		_U16			elen;
-		const char*		ref_type;
+		_U8					type;
+		char				name[NAME_MAXLEN+1];
+		_U32				flags;
+		_U16				offset;
+		STRUCT_INFO*		sinfo;
+		_U16				slen;
+		_U16				alen;
+		_U16				prefix;
+		_U16				elen;
+		const char*			ref_type;
 	};
 
 	struct STRUCT_INFO
@@ -55,21 +58,23 @@ namespace DDLReflect
 		_U32				size;
 		_U16				fcount;
 		const FIELD_INFO*	finfos;
+		READ_PROC			read_proc;
+		WRITE_PROC			write_proc;
 	};
 
 	struct FUNCTION_INFO
 	{
-		char			name[NAME_MAXLEN+1];
-		_U16			fcount;
-		FIELD_INFO*		finfos;
+		char				name[NAME_MAXLEN+1];
+		_U16				fcount;
+		FIELD_INFO*			finfos;
 	};
 
 	struct CLASS_INFO
 	{
-		_U16			iid;
-		char			name[NAME_MAXLEN+1];
-		_U16			fcount;
-		FUNCTION_INFO*	finfos;
+		_U16				iid;
+		char				name[NAME_MAXLEN+1];
+		_U16				fcount;
+		FUNCTION_INFO*		finfos;
 	};
 
 	template<typename T>

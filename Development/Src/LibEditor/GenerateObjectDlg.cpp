@@ -22,7 +22,7 @@ END_EVENT_TABLE()
 
 CGenerateObjectDlg::CGenerateObjectDlg() : wxDialog(NULL, wxID_ANY, wxT("Create Content Object"), wxDefaultPosition, wxSize(365, 200), wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	SetSizeHints( wxDefaultSize, wxDefaultSize );
 
 	wxBoxSizer* bMainSizer;
 	bMainSizer = ATLAS_NEW wxBoxSizer( wxVERTICAL );

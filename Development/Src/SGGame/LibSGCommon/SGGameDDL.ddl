@@ -106,6 +106,14 @@ const _U32 SG_LEAGUE_APPLY_MAX = 10;
 const _U8 SG_LEAGUE_CREATE_SUCC = 0;
 const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 
+//daily action type
+const _U32 SG_DAILY_ACTION_TYPE_MAX = 12;		//目前日常活动最大值
+const _U8 SG_DAILY_ACTION_TYPE_PAID = 0;		//0-俸禄
+const _U8 SG_DAILY_ACTION_TYPE_PVP_LEVEL = 1;	//1-每日关卡可进行
+const _U8 SG_DAILY_ACTION_TYPE_PVP_BATTLE = 2;	//2-pvp挑战次数
+const _U8 SG_DAILY_ACTION_TYPE_PVP_REWARD = 3;	//3-pvp每日奖励
+const _U8 SG_DAILY_ACTION_TYPE_SALARY = 4;		//4-每日军饷可领次数
+
 //vip
 const _U32 SG_VIP_ICON_MAX = 256;
 
@@ -197,7 +205,7 @@ struct SG_INSTANCE_CONFIG : A_CONTENT_OBJECT
 	string<SG_INSTANCE_REWARD_DES_MAX>	reward_hard1;			//困难难度小关奖励信息
 	string<SG_INSTANCE_REWARD_DES_MAX>	reward_hard2;			//困难难度大关奖励信息
 	_U32								reset_rmb;				//重置的花费
-	_U32								awake_pt;				//觉醒点
+	_U32								wake_pt;				//觉醒点
 };
 task[GEN_STRUCT_SERIALIZE(SG_INSTANCE_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_INSTANCE_CONFIG)];
@@ -514,7 +522,7 @@ struct SG_LEVEL_INFO_CONFIG				: A_CONTENT_OBJECT
 	_U32								next_level;				//下一关的关卡配置id
 	string<SG_DESCRIPTION_MAX>			description;			//关卡描述
 	_U32								req_player_level;		//可解锁要求的玩家等级
-	_U32								awake_pt;				//觉醒点
+	_U32								wake_pt;				//觉醒点
 	
 	string<SG_SOLDIER_NAME_MAX>			soldier_name1;			//兵种名称
 	string<SG_SOLDIER_NAME_MAX>			soldier_name2;			//兵种名称
@@ -575,7 +583,7 @@ struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 	_F32								group3_rate;
 	_U32								group4_id;
 	_F32								group4_rate;
-	_U32								awake_pt;				//觉醒点
+	_U32								wake_pt;				//觉醒点
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEVEL_DROP_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEVEL_DROP_CONFIG)];
@@ -875,6 +883,7 @@ struct SG_PLAYER : SG_GENERAL
 {
 	string<SG_PLAYER_NAME_MAX>			nick;					//昵称
 	_U32								avatar_id;				//相当于userid
+	_U32								total_rmb;				//总充值点数
 	_U32								gold;					//游戏币
 	_U32								rmb;					//元宝
 	array<_U32, 2>						equip_generals;
@@ -886,7 +895,7 @@ struct SG_PLAYER : SG_GENERAL
 	_U32								halo_level;				//光环等级
 	_U32								halo_exp;				//光环经验
 
-	array<SG_DAILY_ACTION_INFO, 12>		daily_actions;			//日常行为
+	array<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX>		daily_actions;			//日常行为
 	_U32								next_level;				//下一个通过的关卡ID 初始值10001
 	_U32								rank;					//排行榜排名
 	_U32								last_rank;				//结算时候的排名

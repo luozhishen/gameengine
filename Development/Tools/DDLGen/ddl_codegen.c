@@ -610,6 +610,19 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 
 	OutC(0, "namespace DDLReflect\n");
 	OutC(0, "{\n");
+
+	OutC(0, "\n");
+	OutC(0, "	static bool _struct_%s_readproc(DDL::BufferReader& buf, void* data)\n", str->name);
+	OutC(0, "	{\n");
+	OutC(0, "		return buf.Read<%s>(*((%s*)data));\n", str->name, str->name);
+	OutC(0, "	}\n");
+	OutC(0, "\n");
+	OutC(0, "	static bool _struct_%s_writeproc(DDL::BufferWriter& buf, const void* data)\n", str->name);
+	OutC(0, "	{\n");
+	OutC(0, "		return buf.Write<%s>(*((const %s*)data));\n", str->name, str->name);
+	OutC(0, "	}\n");
+	OutC(0, "\n");
+
 	if(str->args_count>0) {
 		OutC(1, "static FIELD_INFO _struct_%s_fieldinfo[] =\n", str->name);
 		OutC(1, "{\n");
@@ -663,9 +676,9 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 			);
 		}
 		OutC(1, "};\n");
-		OutC(1, "STRUCT_INFO _rfl_struct_%s_info = { %s, \"%s\", sizeof(%s), %d, _struct_%s_fieldinfo };\n", str->name, ss, str->name, str->name, str->args_count, str->name);
+		OutC(1, "STRUCT_INFO _rfl_struct_%s_info = { %s, \"%s\", sizeof(%s), %d, _struct_%s_fieldinfo, _struct_%s_readproc, _struct_%s_writeproc };\n", str->name, ss, str->name, str->name, str->args_count, str->name, str->name, str->name);
 	} else {
-		OutC(1, "STRUCT_INFO _rfl_struct_%s_info = { %s, \"%s\", sizeof(%s), 0, NULL };\n", str->name, ss, str->name, str->name);
+		OutC(1, "STRUCT_INFO _rfl_struct_%s_info = { %s, \"%s\", sizeof(%s), 0, NULL, _struct_%s_readproc, _struct_%s_writeproc };\n", str->name, ss, str->name, str->name, str->name, str->name);
 	}
 	OutC(0, "	template<>\n");
 	OutC(0, "	const STRUCT_INFO* GetStruct<%s>()\n", str->name);

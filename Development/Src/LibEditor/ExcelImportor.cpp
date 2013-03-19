@@ -256,10 +256,29 @@ Atlas::String GetCellName(unsigned int col, unsigned int row)
 
 bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper* excel)
 {
-	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end()) return false;
-	CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
+	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end())
+	{
+		m_errmsg = Atlas::StringFormat("template [%s] not found", _tmpl);
+		return false;
+	}
 
+	CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
 	Atlas::String sUUID;
+
+	if(tmpl.clear_data)
+	{
+		Atlas::Vector<A_UUID> list;
+		if(!Atlas::ContentObject::GetList(tmpl.info, list, false))
+		{
+			m_errmsg = "error in Atlas::ContentObject::GetList";
+			return false;
+		}
+
+		for(size_t i=0; i<list.size(); i++)
+		{
+			Atlas::ContentObject::DeleteObject(list[i]);
+		}
+	}
 
 	Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO*> field_map;
 	if(tmpl.title_line==0)
@@ -388,6 +407,13 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		A_CONTENT_OBJECT* old_obj = (A_CONTENT_OBJECT*)Atlas::ContentObject::QueryByUniqueId(tmpl.info, pkey.c_str());
 		if(old_obj)
 		{
+			const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetObjectType(old_obj->uuid);
+			if(info==tmpl.info)
+			{
+				m_errmsg = Atlas::StringFormat("content object type [%s - %s] not match uniqueid:{%s}", tmpl.info->name, info?info->name:"unknown", pkey.c_str()), 
+				free(obj);
+				return false;
+			}
 			old_obj = Atlas::ContentObject::Modify(old_obj->uuid, tmpl.info);
 			ATLAS_ASSERT(old_obj);
 			obj->uuid = old_obj->uuid;

@@ -100,6 +100,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<DATATEST_BASE_CONFIG>(DATATEST_BASE_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<DATATEST_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
 		if(!Read<_U32>(Value.IntValue)) return false;
 		if(!Read<_F32>(Value.FloatValue)) return false;
@@ -109,7 +110,6 @@ namespace DDL
 		if(!Read<DATATEST_INNER_STRUCT_CONFIG>(Value.StructValue)) return false;
 		if(!ReadArray<_U32, DATATEST_ARRAY_ELEMENT_MAX>(Value.ArrIntValue)) return false;
 		if(!ReadArray<DATATEST_INNER_STRUCT_CONFIG, DATATEST_ARRAY_ELEMENT_MAX>(Value.ArrStructValue)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -211,6 +211,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_SKILL_CONFIG>(KNIGHT_SKILL_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
 		if(!ReadString<KNIGHT_ID_MAX>(Value.ID)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.SkillName)) return false;
@@ -218,7 +219,6 @@ namespace DDL
 		if(!Read<_U32>(Value.Level)) return false;
 		if(!Read<_U8>(Value.Target)) return false;
 		if(!ReadStringArray<KNIGHT_ID_MAX, KNIGHT_ARRAY_ELEMENT_MAX>(Value.BuffIDs)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -272,13 +272,13 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_SKILL_ACTIVE_CONFIG>(KNIGHT_SKILL_ACTIVE_CONFIG& Value)
 	{
+		if(!BufferReader::Read<KNIGHT_SKILL_CONFIG>(Value)) return false;
 		if(!Read<_U8>(Value.Element)) return false;
 		if(!Read<_U8>(Value.FormulaType)) return false;
 		if(!Read<_U32>(Value.AveValue)) return false;
 		if(!Read<_U32>(Value.Range)) return false;
 		if(!Read<_U32>(Value.FormulaRatio)) return false;
 		if(!Read<_F32>(Value.Probability)) return false;
-		if(!BufferReader::Read<KNIGHT_SKILL_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -367,12 +367,12 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_BUFF_CONFIG>(KNIGHT_BUFF_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
 		if(!ReadString<KNIGHT_ID_MAX>(Value.ID)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.BuffName)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Read<_U32>(Value.Duration)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -422,9 +422,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_BUFF_STATS>(KNIGHT_BUFF_STATS& Value)
 	{
+		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		if(!ReadArray<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>(Value.AttrModSetting)) return false;
 		if(!Read<_U8>(Value.AddForever)) return false;
-		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -556,9 +556,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_BUFF_DAMAGE_CORRECTION>(KNIGHT_BUFF_DAMAGE_CORRECTION& Value)
 	{
+		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		if(!ReadArray<KNIGHT_ELEM_DAMAGE_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX>(Value.ElementCorrection)) return false;
 		if(!ReadArray<KNIGHT_WEAPON_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX>(Value.WeaponCorrection)) return false;
-		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -602,13 +602,13 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_BUFF_MAGIC_CORRECTION>(KNIGHT_BUFF_MAGIC_CORRECTION& Value)
 	{
+		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		if(!ReadArray<_U8, KNIGHT_ARRAY_ELEMENT_MAX>(Value.ElementType)) return false;
 		if(!Read<_U8>(Value.ElementDefMode)) return false;
 		if(!Read<_U32>(Value.ElementLevel)) return false;
 		if(!Read<_U32>(Value.ElementStrengthen)) return false;
 		if(!Read<_U8>(Value.ElementSeal)) return false;
 		if(!Read<_U8>(Value.ElementMiss)) return false;
-		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -660,10 +660,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_BUFF_BUFF_CORRECTION>(KNIGHT_BUFF_BUFF_CORRECTION& Value)
 	{
+		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		if(!ReadStringArray<KNIGHT_ID_MAX, KNIGHT_ARRAY_ELEMENT_MAX>(Value.IDs)) return false;
 		if(!Read<_U8>(Value.Type)) return false;
 		if(!Read<_F32>(Value.MissRate)) return false;
-		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -709,9 +709,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_ITEM_CONFIG>(KNIGHT_ITEM_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<KNIGHT_ID_MAX>(Value.ID)) return false;
 		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -755,12 +755,12 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_EQUIPMENT_CONFIG>(KNIGHT_EQUIPMENT_CONFIG& Value)
 	{
+		if(!BufferReader::Read<KNIGHT_ITEM_CONFIG>(Value)) return false;
 		if(!Read<_U32>(Value.Level)) return false;
 		if(!Read<_U32>(Value.Rank)) return false;
 		if(!ReadArray<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>(Value.InitialValue)) return false;
 		if(!ReadArray<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>(Value.GrowthValue)) return false;
 		if(!ReadStringArray<KNIGHT_ID_MAX, KNIGHT_ARRAY_ELEMENT_MAX>(Value.SkillIDs)) return false;
-		if(!BufferReader::Read<KNIGHT_ITEM_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -921,8 +921,8 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<KNIGHT_WEAPON_CONFIG>(KNIGHT_WEAPON_CONFIG& Value)
 	{
-		if(!Read<_U8>(Value.Type)) return false;
 		if(!BufferReader::Read<KNIGHT_EQUIPMENT_CONFIG>(Value)) return false;
+		if(!Read<_U8>(Value.Type)) return false;
 		return true;
 	}
 	template<>

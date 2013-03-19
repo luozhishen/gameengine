@@ -196,13 +196,16 @@ namespace DDLReflect
 				break;
 			case TYPE_STRUCT:
 				{
-					value = Json::Value(Json::objectValue);
-					const STRUCT_INFO* pStructDef = def;
-					while(pStructDef)
+					if(def->parent)
 					{
-						if(!call_jsonread(buf, pStructDef->finfos, pStructDef->fcount, value)) return false;
-						pStructDef = pStructDef->parent;
+						if(!call_jsonread(buf, type, def->parent, value)) return false;
 					}
+					else
+					{
+						value = Json::Value(Json::objectValue);
+					}
+
+					if(!call_jsonread(buf, def->finfos, def->fcount, value)) return false;
 					break;
 				}
 			default:
@@ -332,13 +335,13 @@ namespace DDLReflect
 			case TYPE_STRUCT:
 				{
 					if(!value.isObject()) return false;
-					const STRUCT_INFO* pStructDef = def;
-					while(pStructDef)
+
+					if(def->parent)
 					{
-						if(!call_jsonwrite(buf, pStructDef->finfos, pStructDef->fcount, value)) return false;
-						pStructDef = pStructDef->parent;
+						if(!call_jsonwrite(buf, type, def->parent, value)) return false;
 					}
 
+					if(!call_jsonwrite(buf, def->finfos, def->fcount, value)) return false;
 					break;
 				}
 			default:

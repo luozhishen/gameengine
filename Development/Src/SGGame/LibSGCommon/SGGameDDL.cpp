@@ -9,6 +9,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_TURBO_CONFIG>(SG_TURBO_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.general_id)) return false;
 		if(!Read<_U32>(Value.turbo_level)) return false;
 		if(!ReadString<SG_SKILL_NAME_MAX>(Value.skill_name)) return false;
@@ -26,7 +27,6 @@ namespace DDL
 		if(!Read<_F32>(Value.CRIT)) return false;
 		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype)) return false;
 		if(!ReadString<SG_SKILL_DESC_MAX>(Value.skill_desc)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -147,6 +147,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_VIP_CONFIG>(SG_VIP_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.vip_level)) return false;
 		if(!Read<_U32>(Value.recharge_rmb)) return false;
 		if(!Read<_U32>(Value.pay_times)) return false;
@@ -160,7 +161,6 @@ namespace DDL
 		if(!Read<_U32>(Value.V)) return false;
 		if(!Read<_U32>(Value.UL)) return false;
 		if(!Read<_U32>(Value.VL)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -226,10 +226,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PAY_CONSUME_CONFIG>(SG_PAY_CONSUME_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.apply_times)) return false;
 		if(!Read<_U32>(Value.consume_rmb)) return false;
 		if(!Read<_F32>(Value.reward_rate)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -275,9 +275,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PAY_REWARD_CONFIG>(SG_PAY_REWARD_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.player_level)) return false;
 		if(!Read<_U32>(Value.reward_gold)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -321,6 +321,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_INSTANCE_CONFIG>(SG_INSTANCE_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.instance_id)) return false;
 		if(!Read<_U8>(Value.total_maps)) return false;
 		if(!ReadString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_normal1)) return false;
@@ -329,7 +330,6 @@ namespace DDL
 		if(!ReadString<SG_INSTANCE_REWARD_DES_MAX>(Value.reward_hard2)) return false;
 		if(!Read<_U32>(Value.reset_rmb)) return false;
 		if(!Read<_U32>(Value.wake_pt)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -385,12 +385,12 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_INSTANCE_INFO>(SG_INSTANCE_INFO& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.instance_id)) return false;
 		if(!Read<_U8>(Value.difficulty)) return false;
 		if(!Read<_S8>(Value.progress)) return false;
 		if(!Read<_U8>(Value.num_today)) return false;
 		if(!Read<_U8>(Value.normal_completed)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -440,6 +440,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEAGUE_CONFIG>(SG_LEAGUE_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.league_level)) return false;
 		if(!Read<_U32>(Value.XP)) return false;
 		if(!Read<_U32>(Value.members_count)) return false;
@@ -447,7 +448,6 @@ namespace DDL
 		if(!Read<_F32>(Value.rmb_contribution_rate)) return false;
 		if(!Read<_F32>(Value.energy_xp_rate)) return false;
 		if(!Read<_F32>(Value.energy_contribution_rate)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -501,11 +501,11 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEAGUE_POW_CONFIG>(SG_LEAGUE_POW_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U8>(Value.pow_type)) return false;
 		if(!Read<_U8>(Value.master_pow)) return false;
 		if(!Read<_U8>(Value.vice_master_pow)) return false;
 		if(!Read<_U8>(Value.member_pow)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -553,10 +553,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEAGUE_MEMBER_SETTING_CONFIG>(SG_LEAGUE_MEMBER_SETTING_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.master_num)) return false;
 		if(!Read<_U32>(Value.vice_master_num)) return false;
 		if(!Read<_U32>(Value.member_num)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -602,13 +602,13 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PVP_RECORD_ITEM>(SG_PVP_RECORD_ITEM& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.challenger)) return false;
 		if(!Read<_U32>(Value.defender)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.defender_name)) return false;
 		if(!Read<_U8>(Value.type)) return false;
 		if(!Read<_U32>(Value.time)) return false;
 		if(!Read<_U32>(Value.param)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -660,6 +660,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PVP_INFO_CONFIG>(SG_PVP_INFO_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.server_level_lower)) return false;
 		if(!Read<_U32>(Value.server_level_upper)) return false;
 		if(!Read<_U32>(Value.lower)) return false;
@@ -671,7 +672,6 @@ namespace DDL
 		if(!Read<_U32>(Value.reward_item_count)) return false;
 		if(!Read<_U32>(Value.succ_reputation)) return false;
 		if(!Read<_U32>(Value.failed_reputation)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -733,8 +733,8 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PVP_SETTING_CONFIG>(SG_PVP_SETTING_CONFIG& Value)
 	{
-		if(!Read<_U32>(Value.increase_pay_rmb)) return false;
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.increase_pay_rmb)) return false;
 		return true;
 	}
 	template<>
@@ -776,6 +776,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GOODS_CONFIG>(SG_GOODS_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.good_id)) return false;
 		if(!Read<_U8>(Value.display_condition)) return false;
 		if(!Read<_U32>(Value.display_param1)) return false;
@@ -789,7 +790,6 @@ namespace DDL
 		if(!Read<_U32>(Value.price_param1)) return false;
 		if(!Read<_U32>(Value.price_param2)) return false;
 		if(!Read<_U32>(Value.price_discount)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -855,9 +855,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GOODS_GROUP_CONFIG>(SG_GOODS_GROUP_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.goods_group_id)) return false;
 		if(!Read<_U32>(Value.good_id)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -901,10 +901,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_SHOP_CONFIG>(SG_SHOP_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.shop_id)) return false;
 		if(!ReadString<SG_GOODS_GROUP_NAME_MAX>(Value.goods_group_name)) return false;
 		if(!Read<_U32>(Value.goods_group_id)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -950,6 +950,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEAGUE>(SG_LEAGUE& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!ReadString<SG_LEAGUE_NAME_MAX>(Value.league_name)) return false;
 		if(!Read<_U32>(Value.rank)) return false;
@@ -960,7 +961,6 @@ namespace DDL
 		if(!Read<_U32>(Value.owner_id)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.owner_name)) return false;
 		if(!ReadString<SG_LEAGUE_POST_MAX>(Value.post_content)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1020,6 +1020,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEAGUE_MEMBER>(SG_LEAGUE_MEMBER& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!Read<_U32>(Value.member_id)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.member_name)) return false;
@@ -1028,7 +1029,6 @@ namespace DDL
 		if(!Read<_U32>(Value.contribution_value)) return false;
 		if(!Read<_U32>(Value.total_contribution_value)) return false;
 		if(!Read<_U32>(Value.last_ol_time)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1084,11 +1084,11 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEAGUE_APPLYER>(SG_LEAGUE_APPLYER& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.applyer_id)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.applyer_name)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!Read<_U8>(Value.reason)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1136,11 +1136,11 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEAGUE_LOG>(SG_LEAGUE_LOG& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!Read<_U32>(Value.result_time)) return false;
 		if(!Read<_U8>(Value.type)) return false;
 		if(!ReadString<SG_LEAGUE_LOG_MAX>(Value.log)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1188,6 +1188,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_HALO_CONFIG>(SG_HALO_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.halo_level)) return false;
 		if(!Read<_U32>(Value.EXP)) return false;
 		if(!Read<_F32>(Value.ATK)) return false;
@@ -1195,7 +1196,6 @@ namespace DDL
 		if(!Read<_F32>(Value.HIT)) return false;
 		if(!Read<_F32>(Value.EVASION)) return false;
 		if(!Read<_F32>(Value.CRIT)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1249,10 +1249,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_HALO_LEVELUP_CONFIG>(SG_HALO_LEVELUP_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.level)) return false;
 		if(!Read<_U32>(Value.EXP)) return false;
 		if(!Read<_U32>(Value.CD)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1298,6 +1298,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PLAYER_TITLE_CONFIG>(SG_PLAYER_TITLE_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U8>(Value.title_level)) return false;
 		if(!ReadString<SG_PLAYER_TITLE_NAME_MAX>(Value.title_name)) return false;
 		if(!Read<_U8>(Value.title_star)) return false;
@@ -1319,7 +1320,6 @@ namespace DDL
 		if(!ReadString<SG_TITLE_ACRHTYPE_MAX>(Value.junshi_female)) return false;
 		if(!ReadString<SG_TITLE_ACRHTYPE_MAX>(Value.jianshen_male)) return false;
 		if(!ReadString<SG_TITLE_ACRHTYPE_MAX>(Value.jianshen_female)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1401,10 +1401,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_QUEST_LIVE_INFO>(SG_QUEST_LIVE_INFO& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.quest_id)) return false;
 		if(!Read<_U32>(Value.counter)) return false;
 		if(!Read<_U8>(Value.status)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1450,6 +1450,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_QUEST_INFO_CONFIG>(SG_QUEST_INFO_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.quest_id)) return false;
 		if(!Read<_U8>(Value.quest_type)) return false;
 		if(!ReadString<SG_QUEST_NAME_MAX>(Value.quest_name)) return false;
@@ -1502,7 +1503,6 @@ namespace DDL
 		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_submit_answer2)) return false;
 		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_wip_npc)) return false;
 		if(!ReadString<SG_QUEST_DIALOG_MAX>(Value.dialog_wip_answer)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1646,6 +1646,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEVEL_INFO_CONFIG>(SG_LEVEL_INFO_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.level_id)) return false;
 		if(!Read<_U32>(Value.next_level)) return false;
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
@@ -1669,7 +1670,6 @@ namespace DDL
 		if(!Read<_U8>(Value.wpt_type4)) return false;
 		if(!Read<_U8>(Value.wpt_type5)) return false;
 		if(!Read<_U8>(Value.wpt_type6)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1755,8 +1755,8 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_DIRTY_WORD_CONFIG>(SG_DIRTY_WORD_CONFIG& Value)
 	{
-		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.dirty_word)) return false;
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.dirty_word)) return false;
 		return true;
 	}
 	template<>
@@ -1798,10 +1798,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PLAYER_RANDOM_NAME_CONFIG>(SG_PLAYER_RANDOM_NAME_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.family_name)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.male_name)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.female_name)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1847,6 +1847,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_LEVEL_DROP_CONFIG>(SG_LEVEL_DROP_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<100>(Value.level_name)) return false;
 		if(!Read<_U32>(Value.exp)) return false;
 		if(!Read<_U32>(Value.gold)) return false;
@@ -1861,7 +1862,6 @@ namespace DDL
 		if(!Read<_U32>(Value.group4_id)) return false;
 		if(!Read<_F32>(Value.group4_rate)) return false;
 		if(!Read<_U32>(Value.wake_pt)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1929,9 +1929,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_DROP_ITEM_BASE>(SG_DROP_ITEM_BASE& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.item_id)) return false;
 		if(!Read<_U32>(Value.count)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -1975,9 +1975,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_DROP_ITEM_CONFIG>(SG_DROP_ITEM_CONFIG& Value)
 	{
+		if(!BufferReader::Read<SG_DROP_ITEM_BASE>(Value)) return false;
 		if(!Read<_U32>(Value.group_id)) return false;
 		if(!Read<_F32>(Value.rate)) return false;
-		if(!BufferReader::Read<SG_DROP_ITEM_BASE>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2237,6 +2237,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_ITEM_CONFIG>(SG_ITEM_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.item_id)) return false;
 		if(!Read<_U32>(Value.stack_max)) return false;
 		if(!Read<_U32>(Value.price)) return false;
@@ -2247,7 +2248,6 @@ namespace DDL
 		if(!ReadString<SG_EQUIPT_TEX_MAX>(Value.tex)) return false;
 		if(!ReadString<SG_ITEM_NAME_MAX>(Value.item_name)) return false;
 		if(!Read<_U8>(Value.quality)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2307,6 +2307,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_EQUIPT_ITEM_CONFIG>(SG_EQUIPT_ITEM_CONFIG& Value)
 	{
+		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
 		if(!Read<SG_ATTR_MOD_CONFIG>(Value.mod_config)) return false;
 		if(!Read<_U8>(Value.item_type)) return false;
 		if(!Read<_F32>(Value.quality_rate)) return false;
@@ -2330,7 +2331,6 @@ namespace DDL
 		if(!Read<_U32>(Value.COMBINE_COST)) return false;
 		if(!Read<_U32>(Value.TURBO_BASE_COST)) return false;
 		if(!Read<_U32>(Value.RESET_COST)) return false;
-		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2416,8 +2416,8 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_USABLE_ITEM_CONFIG>(SG_USABLE_ITEM_CONFIG& Value)
 	{
-		if(!ReadString<100>(Value.functional)) return false;
 		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
+		if(!ReadString<100>(Value.functional)) return false;
 		return true;
 	}
 	template<>
@@ -2459,13 +2459,13 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GEM_ITEM_CONFIG>(SG_GEM_ITEM_CONFIG& Value)
 	{
+		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
 		if(!ReadString<SG_GEM_DESC_MAX>(Value.desc)) return false;
 		if(!Read<_U8>(Value.level)) return false;
 		if(!Read<_U8>(Value.attri_type)) return false;
 		if(!Read<_F32>(Value.attri)) return false;
 		if(!Read<_U32>(Value.compose_next)) return false;
 		if(!Read<_U32>(Value.compose_num)) return false;
-		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2517,9 +2517,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_ENEMY_CONFIG>(SG_ENEMY_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.enemy_id)) return false;
 		if(!Read<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2563,6 +2563,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_SOLDIER_LEVEL_CONFIG>(SG_SOLDIER_LEVEL_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.attr_id)) return false;
 		if(!Read<_U32>(Value.level)) return false;
 		if(!Read<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
@@ -2571,7 +2572,6 @@ namespace DDL
 		if(!Read<_S32>(Value.levelup_rmb)) return false;
 		if(!Read<_S32>(Value.levelup_XP)) return false;
 		if(!Read<_U16>(Value.mod_scale)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2627,13 +2627,13 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GENERAL_LEVEL_CONFIG>(SG_GENERAL_LEVEL_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.attr_id)) return false;
 		if(!Read<_U32>(Value.level)) return false;
 		if(!Read<SG_PAWN_CONFIG>(Value.PawnConfig)) return false;
 		if(!Read<_S32>(Value.levelup_gold)) return false;
 		if(!Read<_S32>(Value.levelup_rmb)) return false;
 		if(!Read<_S32>(Value.levelup_XP)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2685,6 +2685,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_SOLDIER_CONFIG>(SG_SOLDIER_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.soldier_id)) return false;
 		if(!Read<_U32>(Value.attr_id)) return false;
 		if(!Read<_U8>(Value.type)) return false;
@@ -2697,7 +2698,6 @@ namespace DDL
 		if(!Read<_S32>(Value.pre_general_id)) return false;
 		if(!Read<_S32>(Value.pre_level)) return false;
 		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2761,6 +2761,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GENERAL_CONFIG>(SG_GENERAL_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.general_id)) return false;
 		if(!Read<_U32>(Value.attr_id)) return false;
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
@@ -2775,7 +2776,6 @@ namespace DDL
 		if(!ReadString<SG_SKILL_DESC_MAX>(Value.skill_name)) return false;
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.skill_desc)) return false;
 		if(!Read<_S32>(Value.rank)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -2999,12 +2999,12 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GENERAL>(SG_GENERAL& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.general_id)) return false;
 		if(!Read<_U16>(Value.level)) return false;
 		if(!Read<_U32>(Value.exp)) return false;
 		if(!Read<_U8>(Value.status)) return false;
 		if(!Read<SG_EQUIP_SLOTS>(Value.equip_slots)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -3054,9 +3054,9 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_SOLDIER>(SG_SOLDIER& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.soldier_id)) return false;
 		if(!Read<_U16>(Value.level)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -3100,11 +3100,11 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_DAILY_ACTION_CONFIG>(SG_DAILY_ACTION_CONFIG& Value)
 	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U8>(Value.type)) return false;
 		if(!Read<_U32>(Value.hour)) return false;
 		if(!Read<_U32>(Value.min)) return false;
 		if(!Read<_U32>(Value.times)) return false;
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -3152,10 +3152,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_DAILY_ACTION_INFO>(SG_DAILY_ACTION_INFO& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U8>(Value.type)) return false;
 		if(!Read<_U32>(Value.times)) return false;
 		if(!Read<_U32>(Value.reset_time)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -3201,6 +3201,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_PLAYER>(SG_PLAYER& Value)
 	{
+		if(!BufferReader::Read<SG_GENERAL>(Value)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
 		if(!Read<_U32>(Value.avatar_id)) return false;
 		if(!Read<_U32>(Value.total_rmb)) return false;
@@ -3225,7 +3226,6 @@ namespace DDL
 		if(!ReadStringArray<ARCHETYPE_URL_LENGTH_MAX, SG_TURBO_UNLOCK_SKILL_MAX>(Value.skills)) return false;
 		if(!Read<SG_TURBO_SKILL_SLOT>(Value.turbo_skill_slot)) return false;
 		if(!Read<_U32>(Value.last_operation_time)) return false;
-		if(!BufferReader::Read<SG_GENERAL>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -3313,10 +3313,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_ITEM>(SG_ITEM& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.item_id)) return false;
 		if(!Read<_U32>(Value.count)) return false;
 		if(!Read<_U32>(Value.expired_time)) return false;
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -3362,10 +3362,10 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_EQUIPT_ITEM>(SG_EQUIPT_ITEM& Value)
 	{
+		if(!BufferReader::Read<SG_ITEM>(Value)) return false;
 		if(!Read<SG_ATTR_MOD_CONFIG>(Value.mod_config)) return false;
 		if(!Read<_U8>(Value.turbo_level)) return false;
 		if(!ReadArray<_U32, SG_EUQIPT_GEM_SLOTS_MAX>(Value.gems_slots)) return false;
-		if(!BufferReader::Read<SG_ITEM>(Value)) return false;
 		return true;
 	}
 	template<>
@@ -3448,8 +3448,8 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_GEM_ITEM>(SG_GEM_ITEM& Value)
 	{
-		if(!Read<_U8>(Value.status)) return false;
 		if(!BufferReader::Read<SG_ITEM>(Value)) return false;
+		if(!Read<_U8>(Value.status)) return false;
 		return true;
 	}
 	template<>

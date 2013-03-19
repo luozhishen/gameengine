@@ -532,6 +532,9 @@ int ddlgen_code_task_struct_serialize(const DDL_STR* str, const DDL_TASK* task)
 	OutC(0, "	template<>\n");
 	OutC(0, "	bool BufferReader::Read<%s>(%s& Value)\n", str->name, str->name);
 	OutC(0, "	{\n");
+	if(str->parent[0]) {
+		OutC(1, "	if(!BufferReader::Read<%s>(Value)) return false;\n", str->parent);
+	}
 	for(a=0; a<str->args_count; a++) {
 		if(strcmp(str->args[a].type, "content_ref")==0) {
 			if(!str->args[a].count[0]) {
@@ -552,9 +555,6 @@ int ddlgen_code_task_struct_serialize(const DDL_STR* str, const DDL_TASK* task)
 			OutC(2, "if(!ReadArray<%s, %s>(Value.%s)) return false;\n", str->args[a].type, str->args[a].count, str->args[a].name);
 			}
 		}
-	}
-	if(str->parent[0]) {
-		OutC(1, "	if(!BufferReader::Read<%s>(Value)) return false;\n", str->parent);
 	}
 	OutC(0, "		return true;\n");
 	OutC(0, "	}\n");

@@ -345,17 +345,22 @@ bool CContentDataView::CheckModify(bool bClear)
 	if(memcmp(m_pCurData, obj, (size_t)m_pCurInfo->size)==0)
 	{
 		ATLAS_FREE(obj);
-		return true;
 	}
-	ATLAS_FREE(obj);
-
-	if(wxMessageBox(wxT("save data?"), wxT("!!!"), wxYES_NO)!=wxYES) return true;
-
-	A_CONTENT_OBJECT* data = Atlas::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
-	if(!m_pInfo->Get(m_pCurInfo, data))
+	else
 	{
-		wxMessageBox(wxT("xxxx"));
-		return false;
+		ATLAS_FREE(obj);
+
+		if(wxMessageBox(wxT("save data?"), wxT("!!!"), wxYES_NO)!=wxYES)
+		{
+			return false;
+		}
+
+		A_CONTENT_OBJECT* data = Atlas::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
+		if(!m_pInfo->Get(m_pCurInfo, data))
+		{
+			wxMessageBox(wxT("xxxx"));
+			return false;
+		}
 	}
 
 	if(bClear)

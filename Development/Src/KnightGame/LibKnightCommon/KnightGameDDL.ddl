@@ -58,8 +58,7 @@ task[GEN_STRUCT_REFLECT(KNIGHT_ATTRIBUTE_MODIFY_SETTING)];
 // Skill Base
 struct KNIGHT_SKILL_CONFIG : A_CONTENT_OBJECT
 {
-	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;	
-	string<KNIGHT_ID_MAX>									ID;
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
 	string<KNIGHT_DESCRIPTION_MAX>							SkillName;
 	string<KNIGHT_DESCRIPTION_MAX>							Desc;
 	_U32													Level;
@@ -94,8 +93,7 @@ task[GEN_STRUCT_REFLECT(KNIGHT_SKILL_PASSIVE_CONFIG)];
 //Buff
 struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 {
-	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;	
-	string<KNIGHT_ID_MAX>									ID;
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
 	string<KNIGHT_DESCRIPTION_MAX>							BuffName;
 	string<KNIGHT_DESCRIPTION_MAX>							Desc;
 	_U32													Duration;					
@@ -164,7 +162,6 @@ task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_BUFF_CORRECTION)];
 //Item
 struct KNIGHT_ITEM_CONFIG : A_CONTENT_OBJECT
 {
-	string<KNIGHT_ID_MAX>									ID;
 	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
 };
 task[GEN_STRUCT_SERIALIZE(KNIGHT_ITEM_CONFIG)];

@@ -125,7 +125,6 @@ namespace DDLReflect
 struct KNIGHT_SKILL_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
-	DDL::String<KNIGHT_ID_MAX> ID;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> SkillName;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
 	_U32 Level;
@@ -195,7 +194,6 @@ namespace DDLReflect
 struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
-	DDL::String<KNIGHT_ID_MAX> ID;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> BuffName;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
 	_U32 Duration;
@@ -349,7 +347,6 @@ namespace DDLReflect
 
 struct KNIGHT_ITEM_CONFIG : A_CONTENT_OBJECT
 {
-	DDL::String<KNIGHT_ID_MAX> ID;
 	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
 };
 

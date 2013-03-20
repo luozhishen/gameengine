@@ -603,7 +603,23 @@ namespace DDLReflect
 			break;
 		case TYPE_STRING:
 			{
-				Atlas::String v = value.asString();
+				Atlas::String v;
+				if(value.isString())
+				{
+					v = value.asString();
+				}
+				else if(value.isIntegral())
+				{
+					v = Atlas::StringFormat("%d", value.asInt());
+				}
+				else if(value.isDouble())
+				{
+					v = Atlas::StringFormat("%f", value.asDouble());
+				}
+				else
+				{
+					return false;
+				}
 				if(v.size()>slen) return false;
 				memcpy(data, v.c_str(), v.size()+1);
 			}
@@ -611,6 +627,7 @@ namespace DDLReflect
 		case TYPE_UUID:
 		case TYPE_UUID_REF:
 			{
+				if(!value.isString()) return false;
 				Atlas::String v = value.asString();
 				if(!AUuidFromString(v.c_str(), *((A_UUID*)data))) return false;
 			}

@@ -627,8 +627,13 @@ namespace Atlas
 					for(size_t x=0; x<7; x++)
 					{
 						rawdata[i*7+x] = (_U8)(sbuf[x]&0x7f);
-						if(sbuf[7]&(1<<x)) rawdata[i*7+x] |= 0x8f;
+						if(sbuf[7]&(1<<x)) rawdata[i*7+x] |= 0x80;
 					}
+					/*
+					char buf[8];
+					if(fread(buf, 1, sizeof(buf), fp)!=sizeof(buf)) break;
+					memcpy(&rawdata[i*7], buf, 7);
+					*/
 				}
 				if(i!=count) break;
 
@@ -773,6 +778,10 @@ namespace Atlas
 						if(src[i]&0x80) sbuf[7] |= 1 << i;
 					}
 					DES_Encrypt(keys, buf, sbuf);
+					/*
+					memcpy(buf, src, 7);
+					buf[7] = 0;
+					*/
 					fwrite(buf, 1, 8, fp);
 					src += 7;
 					size -= 7;
@@ -786,6 +795,10 @@ namespace Atlas
 						if(src[i]&0x80) sbuf[7] |= 1 << i;
 					}
 					DES_Encrypt(keys, buf, sbuf);
+					/*
+					memset(buf, 0, sizeof(buf));
+					memcpy(buf, src, size);
+					*/
 					fwrite(buf, 1, 8, fp);
 				}
 			}

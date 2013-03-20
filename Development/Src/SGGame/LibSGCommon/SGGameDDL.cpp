@@ -1087,6 +1087,8 @@ namespace DDL
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.applyer_id)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.applyer_name)) return false;
+		if(!Read<_U32>(Value.general_id)) return false;
+		if(!Read<_U32>(Value.level)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!Read<_U8>(Value.reason)) return false;
 		return true;
@@ -1097,6 +1099,8 @@ namespace DDL
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.applyer_id)) return false;
 		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.applyer_name)) return false;
+		if(!Write<_U32>(Value.general_id)) return false;
+		if(!Write<_U32>(Value.level)) return false;
 		if(!Write<_U32>(Value.league_id)) return false;
 		if(!Write<_U8>(Value.reason)) return false;
 		return true;
@@ -1120,10 +1124,12 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "applyer_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, applyer_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "applyer_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, applyer_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U8, "reason", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, reason), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_LEAGUE_APPLYER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_APPLYER", sizeof(SG_LEAGUE_APPLYER), 4, _struct_SG_LEAGUE_APPLYER_fieldinfo, _struct_SG_LEAGUE_APPLYER_readproc, _struct_SG_LEAGUE_APPLYER_writeproc };
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_APPLYER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_APPLYER", sizeof(SG_LEAGUE_APPLYER), 6, _struct_SG_LEAGUE_APPLYER_fieldinfo, _struct_SG_LEAGUE_APPLYER_readproc, _struct_SG_LEAGUE_APPLYER_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_LEAGUE_APPLYER>()
 	{
@@ -3101,20 +3107,58 @@ namespace DDL
 	bool BufferReader::Read<SG_DAILY_ACTION_CONFIG>(SG_DAILY_ACTION_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.action_id)) return false;
+		if(!ReadString<SG_DAILY_ACTION_NAME_MAX>(Value.action_name)) return false;
+		if(!Read<_U8>(Value.display_position)) return false;
 		if(!Read<_U8>(Value.type)) return false;
+		if(!Read<_U32>(Value.req_league_level)) return false;
+		if(!Read<_U32>(Value.req_level)) return false;
+		if(!Read<_U8>(Value.condition1_type)) return false;
+		if(!Read<_U32>(Value.condition1_param1)) return false;
+		if(!Read<_U8>(Value.condition2_type)) return false;
+		if(!Read<_U32>(Value.condition2_param1)) return false;
 		if(!Read<_U32>(Value.hour)) return false;
 		if(!Read<_U32>(Value.min)) return false;
+		if(!Read<_U32>(Value.end_hour)) return false;
+		if(!Read<_U32>(Value.end_min)) return false;
 		if(!Read<_U32>(Value.times)) return false;
+		if(!Read<_U32>(Value.prepare_min)) return false;
+		if(!Read<_U32>(Value.reset_hour)) return false;
+		if(!Read<_U32>(Value.reset_min)) return false;
+		if(!ReadString<SG_ICON_MAX>(Value.icon)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<SG_DAILY_ACTION_CONFIG>(const SG_DAILY_ACTION_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.action_id)) return false;
+		if(!WriteString<SG_DAILY_ACTION_NAME_MAX>(Value.action_name)) return false;
+		if(!Write<_U8>(Value.display_position)) return false;
 		if(!Write<_U8>(Value.type)) return false;
+		if(!Write<_U32>(Value.req_league_level)) return false;
+		if(!Write<_U32>(Value.req_level)) return false;
+		if(!Write<_U8>(Value.condition1_type)) return false;
+		if(!Write<_U32>(Value.condition1_param1)) return false;
+		if(!Write<_U8>(Value.condition2_type)) return false;
+		if(!Write<_U32>(Value.condition2_param1)) return false;
 		if(!Write<_U32>(Value.hour)) return false;
 		if(!Write<_U32>(Value.min)) return false;
+		if(!Write<_U32>(Value.end_hour)) return false;
+		if(!Write<_U32>(Value.end_min)) return false;
 		if(!Write<_U32>(Value.times)) return false;
+		if(!Write<_U32>(Value.prepare_min)) return false;
+		if(!Write<_U32>(Value.reset_hour)) return false;
+		if(!Write<_U32>(Value.reset_min)) return false;
+		if(!WriteString<SG_ICON_MAX>(Value.icon)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
 		return true;
 	}
 }
@@ -3134,12 +3178,31 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DAILY_ACTION_CONFIG_fieldinfo[] =
 	{
+		{TYPE_U32, "action_id", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "action_name", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, action_name), NULL, (_U16)SG_DAILY_ACTION_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_NAME_MAX>), NULL},
+		{TYPE_U8, "display_position", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, display_position), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "req_league_level", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, req_league_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition1_type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition1_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition1_param1", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition1_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition2_type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition2_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition2_param1", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition2_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "hour", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "end_hour", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, end_hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "end_min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, end_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "times", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "prepare_min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, prepare_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_hour", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, reset_hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, reset_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "icon", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_DAILY_ACTION_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_ACTION_CONFIG", sizeof(SG_DAILY_ACTION_CONFIG), 4, _struct_SG_DAILY_ACTION_CONFIG_fieldinfo, _struct_SG_DAILY_ACTION_CONFIG_readproc, _struct_SG_DAILY_ACTION_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_DAILY_ACTION_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_ACTION_CONFIG", sizeof(SG_DAILY_ACTION_CONFIG), 23, _struct_SG_DAILY_ACTION_CONFIG_fieldinfo, _struct_SG_DAILY_ACTION_CONFIG_readproc, _struct_SG_DAILY_ACTION_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_DAILY_ACTION_CONFIG>()
 	{
@@ -3153,7 +3216,7 @@ namespace DDL
 	bool BufferReader::Read<SG_DAILY_ACTION_INFO>(SG_DAILY_ACTION_INFO& Value)
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
-		if(!Read<_U8>(Value.type)) return false;
+		if(!Read<_U32>(Value.action_id)) return false;
 		if(!Read<_U32>(Value.times)) return false;
 		if(!Read<_U32>(Value.reset_time)) return false;
 		return true;
@@ -3162,7 +3225,7 @@ namespace DDL
 	bool BufferWriter::Write<SG_DAILY_ACTION_INFO>(const SG_DAILY_ACTION_INFO& Value)
 	{
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
-		if(!Write<_U8>(Value.type)) return false;
+		if(!Write<_U32>(Value.action_id)) return false;
 		if(!Write<_U32>(Value.times)) return false;
 		if(!Write<_U32>(Value.reset_time)) return false;
 		return true;
@@ -3184,7 +3247,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DAILY_ACTION_INFO_fieldinfo[] =
 	{
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_INFO, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "action_id", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_INFO, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "times", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_INFO, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_INFO, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};

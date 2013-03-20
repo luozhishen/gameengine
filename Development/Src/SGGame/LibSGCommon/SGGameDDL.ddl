@@ -16,6 +16,8 @@ const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
 const _U32 SG_DESCRIPTION_MAX = 512;
 const _U32 SG_INVALID_SERVER_ID = 255;
 
+const _U32 SG_ICON_MAX = 256;
+
 //Sync data
 const _U8 SG_SYNC_NONE = 0;
 const _U8 SG_SYNC_PLAYER = 1;
@@ -113,6 +115,7 @@ const _U8 SG_DAILY_ACTION_TYPE_PVP_LEVEL = 1;	//1-每日关卡可进行
 const _U8 SG_DAILY_ACTION_TYPE_PVP_BATTLE = 2;	//2-pvp挑战次数
 const _U8 SG_DAILY_ACTION_TYPE_PVP_REWARD = 3;	//3-pvp每日奖励
 const _U8 SG_DAILY_ACTION_TYPE_SALARY = 4;		//4-每日军饷可领次数
+const _U32 SG_DAILY_ACTION_NAME_MAX = 128;		
 
 //vip
 const _U32 SG_VIP_ICON_MAX = 256;
@@ -367,6 +370,8 @@ struct SG_LEAGUE_APPLYER : A_LIVE_OBJECT
 {
 	_U32								applyer_id;				//申请者ID avatar_id
 	string<SG_PLAYER_NAME_MAX>			applyer_name;			//申请者名字
+	_U32								general_id;				//申请者职业(主将ID)
+	_U32								level;					//申请者等级
 	_U32								league_id;				//申请加入战盟的ID 
 	_U8									reason;					//?
 };
@@ -375,7 +380,7 @@ task[GEN_STRUCT_REFLECT(SG_LEAGUE_APPLYER)];
 
 struct SG_LEAGUE_LOG	: A_LIVE_OBJECT
 {
-	_U32								league_id;
+	_U32								league_id;				
 	_U32								result_time;			//该条log记录时间
 	_U8									type;					//该条log的事件类型
 	string<SG_LEAGUE_LOG_MAX>			log;					//log内容
@@ -860,19 +865,53 @@ struct SG_SOLDIER : A_LIVE_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_SOLDIER)];
 task[GEN_STRUCT_REFLECT(SG_SOLDIER)];
 
+//daily action
 struct SG_DAILY_ACTION_CONFIG			: A_CONTENT_OBJECT
 {
-	_U8									type;					
-	_U32								hour;					
-	_U32								min;					
+	_U32								action_id;
+	string<SG_DAILY_ACTION_NAME_MAX>	action_name;			//活动名称
+	_U8									display_position;		//右上角显示位置
+
+	_U8									type;					//活动类型 0-日常玩法 世界活动 战盟活动
+	_U32								req_league_level;		//要求的战盟等级
+	_U32								req_level;				//要求的玩家等级
+
+	_U8									condition1_type;		//条件一类型
+	_U32								condition1_param1;		//条件一参数一
+	
+	_U8									condition2_type;        //条件二类型
+	_U32								condition2_param1;		//条件二参数一
+
+
+	_U32								hour;					//开启时间
+	_U32								min;					//开启时间
+
+	_U32								end_hour;				//结束时间
+	_U32								end_min;				//结束时间
+
+
 	_U32								times;					//次数
+
+	_U32								prepare_min;			//准备时间min
+
+	_U32								reset_hour;				//重置时间
+	_U32								reset_min;				//重置时间
+
+	string<SG_ICON_MAX>					icon;					//图标资源文件
+	_U32								U;					
+	_U32								V;
+	_U32								UL;
+	_U32								VL;
+
+
 };
 task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_CONFIG)];
 
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
-	_U8									type;					//0-俸禄 1-每日关卡可进行 2-pvp 3-pvp每日奖励 4-每日军饷
+	//_U8									type;					//0-俸禄 1-每日关卡可进行 2-pvp 3-pvp每日奖励 4-每日军饷
+	_U32								action_id;				//
 	_U32								times;					//0-剩余可领取俸禄 1-每日可进行关卡剩余次数 2-pvp剩余次数 3-pvp每日奖励可领次数 4-每日军饷可领次数
 	_U32								reset_time;				//0-俸禄冷却时间 1-重置的时间标签 2-重置的时间标签 3-重置的时间标签 4-重置的时间标签
 };

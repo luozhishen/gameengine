@@ -22,7 +22,7 @@ namespace Atlas
 		{"SG_LEAGUE_POW_CONFIG", "SG_LEAGUE_POW_CONFIG.json", "pow_type"},
 
 		{"SG_LEAGUE_MEMBER_SETTING_CONFIG", "SG_LEAGUE_MEMBER_SETTING_CONFIG.json", "master_num"},
-		{"SG_DAILY_ACTION_CONFIG", "SG_DAILY_ACTION_CONFIG.json", "type"},
+		{"SG_DAILY_ACTION_CONFIG", "SG_DAILY_ACTION_CONFIG.json", "action_id"},
 		{"SG_HALO_CONFIG", "SG_HALO_CONFIG.json", "halo_level"},
 		{"SG_HALO_LEVELUP_CONFIG", "SG_HALO_LEVELUP_CONFIG.json", "level"},
 		{"SG_PLAYER_TITLE_CONFIG", "SG_PLAYER_TITLE_CONFIG.json", "title_level"},

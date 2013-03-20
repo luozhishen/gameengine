@@ -268,7 +268,7 @@ namespace Atlas
 			{
 				Json::FastWriter writer;
 				String json = writer.write(elm["message"]);
-				CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", json.c_str());
+				CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", fid, json.c_str());
 				error = true;
 			}
 			else

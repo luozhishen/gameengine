@@ -38,6 +38,8 @@ const _U32 SG_DESCRIPTION_MAX = 512;
 
 const _U32 SG_INVALID_SERVER_ID = 255;
 
+const _U32 SG_ICON_MAX = 256;
+
 const _U8 SG_SYNC_NONE = 0;
 
 const _U8 SG_SYNC_PLAYER = 1;
@@ -179,6 +181,8 @@ const _U8 SG_DAILY_ACTION_TYPE_PVP_BATTLE = 2;
 const _U8 SG_DAILY_ACTION_TYPE_PVP_REWARD = 3;
 
 const _U8 SG_DAILY_ACTION_TYPE_SALARY = 4;
+
+const _U32 SG_DAILY_ACTION_NAME_MAX = 128;
 
 const _U32 SG_VIP_ICON_MAX = 256;
 
@@ -653,6 +657,8 @@ struct SG_LEAGUE_APPLYER : A_LIVE_OBJECT
 {
 	_U32 applyer_id;
 	DDL::String<SG_PLAYER_NAME_MAX> applyer_name;
+	_U32 general_id;
+	_U32 level;
 	_U32 league_id;
 	_U8 reason;
 };
@@ -1497,10 +1503,29 @@ namespace DDLReflect
 
 struct SG_DAILY_ACTION_CONFIG : A_CONTENT_OBJECT
 {
+	_U32 action_id;
+	DDL::String<SG_DAILY_ACTION_NAME_MAX> action_name;
+	_U8 display_position;
 	_U8 type;
+	_U32 req_league_level;
+	_U32 req_level;
+	_U8 condition1_type;
+	_U32 condition1_param1;
+	_U8 condition2_type;
+	_U32 condition2_param1;
 	_U32 hour;
 	_U32 min;
+	_U32 end_hour;
+	_U32 end_min;
 	_U32 times;
+	_U32 prepare_min;
+	_U32 reset_hour;
+	_U32 reset_min;
+	DDL::String<SG_ICON_MAX> icon;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
 };
 
 namespace DDL
@@ -1520,7 +1545,7 @@ namespace DDLReflect
 
 struct SG_DAILY_ACTION_INFO : A_LIVE_OBJECT
 {
-	_U8 type;
+	_U32 action_id;
 	_U32 times;
 	_U32 reset_time;
 };

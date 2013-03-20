@@ -226,18 +226,16 @@ namespace DDLReflect
 		return true;
 	}
 
-	int error_line = -1;
-
 	bool call_jsonwrite(DDL::MemoryWriter& buf, _U8 type, const STRUCT_INFO* def, const Json::Value& value)
 	{
 		if(type&TYPE_ARRAY)
 		{
-			if(!value.isArray()) { error_line = __LINE__; return false; }
+			if(!value.isArray()) return false;
 			_U32 count = (_U32)value.size();
-			if(!buf.Write(count)) { error_line = __LINE__; return false; }
+			if(!buf.Write(count)) return false;
 			for(_U32 i=0; i<count; i++)
 			{
-				if(!call_jsonwrite(buf, type&TYPE_MASK, def, value[i])) { error_line = __LINE__; return false; }
+				if(!call_jsonwrite(buf, type&TYPE_MASK, def, value[i])) return false;
 			}
 		}
 		else
@@ -246,108 +244,108 @@ namespace DDLReflect
 			{
 			case TYPE_U8:
 				{
-					if(!value.isUInt() && !value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isUInt() && !value.isInt()) return false;
 					_U8 v = (_U8)value.asUInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_U16:
 				{
-					if(!value.isUInt() && !value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isUInt() && !value.isInt()) return false;
 					_U16 v = (_U16)value.asUInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_U32:
 				{
-					if(!value.isUInt() && !value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isUInt() && !value.isInt()) return false;
 					_U32 v = (_U32)value.asUInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_U64:
 				{
-					if(!value.isUInt() && !value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isUInt() && !value.isInt()) return false;
 					_U64 v = (_U64)value.asUInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_S8:
 				{
-					if(!value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isInt()) return false;
 					_S8 v = (_S8)value.asInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_S16:
 				{
-					if(!value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isInt()) return false;
 					_S16 v = (_S16)value.asInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_S32:
 				{
-					if(!value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isInt()) return false;
 					_S32 v = (_S32)value.asInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_S64:
 				{
-					if(!value.isInt()) { error_line = __LINE__; return false; }
+					if(!value.isInt()) return false;
 					_S64 v = (_S64)value.asInt();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_F32:
 				{
-					if(!value.isNumeric()) { error_line = __LINE__; return false; }
+					if(!value.isNumeric()) return false;
 					_F32 v = (_F32)value.asDouble();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_F64:
 				{
-					if(!value.isNumeric()) { error_line = __LINE__; return false; }
+					if(!value.isNumeric()) return false;
 					_F64 v = (_F64)value.asDouble();
-					if(!buf.Write(v)) { error_line = __LINE__; return false; }
+					if(!buf.Write(v)) return false;
 					break;
 				}
 			case TYPE_STRING:
 				{
-					if(!value.isString()) { error_line = __LINE__; return false; }
+					if(!value.isString()) return false;
 					const char* str = value.asCString();
 					_U32 len = (_U32)strlen(str);
-					if(!buf.Write(len)) { error_line = __LINE__; return false; }
-					if(!buf.WriteData(str, len)) { error_line = __LINE__; return false; }
+					if(!buf.Write(len)) return false;
+					if(!buf.WriteData(str, len)) return false;
 					break;
 				}
 			case TYPE_UUID:
 			case TYPE_UUID_REF:
 				{
-					if(!value.isString()) { error_line = __LINE__; return false; }
+					if(!value.isString()) return false;
 					A_UUID uuid;
 					const char* str = value.asCString();
-					if(!AUuidFromString(str, uuid)) { error_line = __LINE__; return false; }
-					if(!buf.Write(uuid)) { error_line = __LINE__; return false; }
+					if(!AUuidFromString(str, uuid)) return false;
+					if(!buf.Write(uuid)) return false;
 					break;
 				}
 				break;
 			case TYPE_STRUCT:
 				{
-					if(!value.isObject()) { error_line = __LINE__; return false; }
+					if(!value.isObject()) return false;
 
 					if(def->parent)
 					{
-						if(!call_jsonwrite(buf, type, def->parent, value)) { error_line = __LINE__; return false; }
+						if(!call_jsonwrite(buf, type, def->parent, value)) return false;
 					}
 
-					if(!call_jsonwrite(buf, def->finfos, def->fcount, value)) { error_line = __LINE__; return false; }
+					if(!call_jsonwrite(buf, def->finfos, def->fcount, value)) return false;
 					break;
 				}
 			default:
-				{ error_line = __LINE__; return false; }
+				return false;
 			}
 		}
 		return true;

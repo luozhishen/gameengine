@@ -430,7 +430,7 @@ namespace Atlas
 			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
-				if(info!=i->second.first || (!internal_info.bExactMatch && IsParent(i->second.first, info))) continue;
+				if(info!=i->second.first && (internal_info.bExactMatch || !IsParent(i->second.first, info))) continue;
 
 				Atlas::String keys_value;
 				if(!GenContentObjectUniqueId(type_id, i->second.second, keys_value))

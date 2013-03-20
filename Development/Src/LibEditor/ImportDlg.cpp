@@ -53,7 +53,7 @@ bool CImportDlg::LoadTemplateDefine(const char* filename)
 {
 	if(!m_pImportor->LoadTemplateDefine(filename))
 	{
-		wxMessageBox(wxT("Failed to load template define file"), wxT("Error"));
+		wxMessageBox(wxString::FromUTF8(m_pImportor->GetErrorInfo()), wxT("Error"));
 		return false;
 	}
 

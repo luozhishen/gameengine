@@ -654,7 +654,7 @@ namespace DDLReflect
 		return IsParent(child, parent);
 	}
 
-	_U32 GetStructFieldOffset(const STRUCT_INFO* info, const char* name, FIELD_INFO* finfo=NULL)
+	_U32 GetStructFieldOffset(const STRUCT_INFO* info, const char* name, FIELD_INFO* finfo)
 	{
 		Atlas::Vector<Atlas::String> ns;
 		Atlas::StringSplit(name, '.', ns);
@@ -703,7 +703,7 @@ namespace DDLReflect
 					if(i+1==ns.size())
 					{
 						if(finfo) *finfo = info->finfos[f];
-						offset += info->finfos[f].offset);
+						offset += info->finfos[f].offset;
 						break;
 					}
 					if(i+2==ns.size())

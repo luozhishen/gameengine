@@ -292,13 +292,6 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 
 	if(tmpl.clear_data)
 	{
-		Atlas::Vector<A_UUID> list;
-		if(!Atlas::ContentObject::GetList(tmpl.info, list, false))
-		{
-			m_errmsg = "error in Atlas::ContentObject::GetList";
-			return false;
-		}
-
 		const A_CONTENT_OBJECT* it = Atlas::ContentObject::FindFirst(tmpl.info, true);
 		while(it)
 		{

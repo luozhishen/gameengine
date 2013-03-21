@@ -654,6 +654,133 @@ namespace DDLReflect
 		return IsParent(child, parent);
 	}
 
+	_U32 GetStructFieldOffset(const STRUCT_INFO* info, const char* name, FIELD_INFO* finfo=NULL)
+	{
+		Atlas::Vector<Atlas::String> ns;
+		Atlas::StringSplit(name, '.', ns);
+		if(ns.empty()) return false;
+		Atlas::String fname;
+		int findex = -1;
+		size_t i=0, old_i=ns.size();
+		_U32 offset = 0;
+		for(;;)
+		{
+			if(old_i!=i)
+			{
+				size_t pos = ns[i].find_first_of('[');
+				if(pos==(size_t)-1)
+				{
+					fname = ns[i];
+					findex = -1;
+				}
+				else
+				{
+					if(pos<1) return false;
+					if(ns[i].length()<pos+3) return false;
+					if(*(ns[i].c_str()+ns[i].length()-1)!=']') return false;
+					fname = ns[i].substr(0, pos);
+					findex = atoi(ns[i].substr(pos+1, ns[i].length()-pos-2).c_str());
+				}
+				old_i = i;
+			}
+
+			_U16 f;
+			for(f=0; f<info->fcount; f++)
+			{
+				if(strcmp(info->finfos[f].name, fname.c_str())==0) break;
+			}
+			if(f==info->fcount)
+			{
+				if(!info->parent) return false;
+				info = info->parent;
+				continue;
+			}
+
+			if(info->finfos[f].type&TYPE_ARRAY)
+			{
+				if(findex<0)
+				{
+					if(i+1==ns.size())
+					{
+						if(finfo) *finfo = info->finfos[f];
+						offset += info->finfos[f].offset);
+						break;
+					}
+					if(i+2==ns.size())
+					{
+						if(ns[i+1]=="length")
+						{
+							if(finfo)
+							{
+								finfo->type = TYPE_U32;
+								strcpy(finfo->name, "length");
+								finfo->flags = 0;
+								finfo->offset = 0;
+								finfo->sinfo = NULL;
+								finfo->slen = 0;
+								finfo->alen = 0;
+								finfo->prefix = 0;
+								finfo->elen = 0;
+								finfo->ref_type = 0;
+							}
+							offset += info->finfos[f].offset;
+							break;
+						}
+					}
+					return false;
+				}
+
+				if((_U32)findex>=info->finfos[f].alen) return false;
+
+				if((info->finfos[f].type&TYPE_MASK)==TYPE_STRUCT)
+				{
+					if(i+1<ns.size())
+					{
+						offset += info->finfos[f].offset + info->finfos[f].prefix + info->finfos[f].sinfo->size * findex;
+						info = info->finfos[f].sinfo;
+						i++;
+						continue;
+					}
+				}
+				else
+				{
+					if(i+1!=ns.size()) return false;
+				}
+
+				if(finfo)
+				{
+					*finfo = info->finfos[f];
+					finfo->type &= TYPE_MASK;
+				}
+				offset += info->finfos[f].offset + info->finfos[f].prefix + info->finfos[f].elen * findex;
+				break;
+			}
+			else
+			{
+				if(findex>=0) return false;
+				if(info->finfos[f].type==TYPE_STRUCT)
+				{
+					if(i+1<ns.size())
+					{
+						offset += info->finfos[f].offset;
+						info = info->finfos[f].sinfo;
+						i++;
+						continue;
+					}
+				}
+				else
+				{
+					if(i+1<ns.size()) return false;
+				}
+				if(finfo) *finfo = info->finfos[f];
+				offset += info->finfos[f].offset;
+				break;
+			}
+		}
+
+		return offset;
+	}
+
 	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo, void*& fdata)
 	{
 		Atlas::Vector<Atlas::String> ns;

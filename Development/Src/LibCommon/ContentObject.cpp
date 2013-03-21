@@ -500,6 +500,67 @@ namespace Atlas
 			return NULL;
 		}
 
+		bool FindFirstEx(const DDLReflect::STRUCT_INFO* info, const Map<String, String>& cond, const A_CONTENT_OBJECT*& object)
+		{
+			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			i = g_objct_manager.m_object_map.begin();
+			object = NULL;
+			while(i!=g_objct_manager.m_object_map.end())
+			{
+				if(i->second.first==info || IsParent(i->second.first, info))
+				{
+					Map<String, String>::const_iterator fi;
+					for(fi=cond.cbegin(); fi!=cond.cend(); fi++)
+					{
+						String val;
+						if(!DDLReflect::StructParamToString(info, fi->first.c_str(), i->second.second, val))
+						{
+							return false;
+						}
+						if(val!=fi->second) break;
+					}
+					if(fi==cond.cend())
+					{
+						object = i->second.second;
+						break;
+					}
+				}
+				i++;
+			}
+			return true;
+		}
+
+		bool FindNextEx(const DDLReflect::STRUCT_INFO* info, const Map<String, String>& cond, const A_CONTENT_OBJECT*& object)
+		{
+			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			i = g_objct_manager.m_object_map.find(object->uuid);
+			if(i==g_objct_manager.m_object_map.end()) return false;
+			object = NULL;
+			while(i!=g_objct_manager.m_object_map.end())
+			{
+				if(i->second.first==info || IsParent(i->second.first, info))
+				{
+					Map<String, String>::const_iterator fi;
+					for(fi=cond.cbegin(); fi!=cond.cend(); fi++)
+					{
+						String val;
+						if(!DDLReflect::StructParamToString(info, fi->first.c_str(), i->second.second, val))
+						{
+							return false;
+						}
+						if(val!=fi->second) break;
+					}
+					if(fi==cond.cend())
+					{
+						object = i->second.second;
+						break;
+					}
+				}
+				i++;
+			}
+			return true;
+		}
+
 		bool LoadContent(const char* path, bool ignore)
 		{
 			Atlas::Map<Atlas::String, CContentGroup>::iterator i;

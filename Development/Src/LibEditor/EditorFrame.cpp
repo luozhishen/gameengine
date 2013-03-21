@@ -147,7 +147,10 @@ void CEditorFrame::InitClient()
 
 void CEditorFrame::OnFrameQuit(wxCloseEvent& event)
 {
-	if(SaveContent()) event.Skip();
+	if(SaveContent())
+	{
+		event.Skip();
+	}
 }
 
 void CEditorFrame::OnFileMenu(wxCommandEvent& event)
@@ -160,6 +163,10 @@ void CEditorFrame::OnFileMenu(wxCommandEvent& event)
 			if(!Atlas::ContentObject::LoadContent(NULL, false))
 			{
 				wxMessageBox(wxT("Failed to load content"), wxT("Error"));
+			}
+			else
+			{
+				wxMessageBox(wxT("Load content completed."), wxT("Notify"));
 			}
 		}
 		break;
@@ -185,6 +192,10 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 			{
 				wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
 			}
+			else
+			{
+				wxMessageBox(wxT("Save contont to binary file completed."), wxT("Notify"));
+			}
 		}
 		break;
 	case ID_COOK_LOAD:
@@ -194,6 +205,10 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 			if(!Atlas::ContentObject::LoadContentFromBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
 			{
 				wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
+			}
+			else
+			{
+				wxMessageBox(wxT("Load contont from binary file completed."), wxT("Notify"));
 			}
 		}
 		break;
@@ -224,6 +239,10 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		if(!Atlas::ContentObject::BuildIndex())
 		{
 			wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("BUILD INDEX ERROR"));
+		}
+		else
+		{
+			wxMessageBox(wxT("Build index completed."), wxT("Notify"));
 		}
 	}
 }
@@ -261,11 +280,17 @@ void CEditorFrame::OnShow(wxShowEvent& event)
 
 bool CEditorFrame::SaveContent(bool exit)
 {
-	if(!m_pContentDataView->CheckModify(false)) return false;
+	if(!m_pContentDataView->CheckModify(false))
+	{
+		return false;
+	}
 
 	if(exit)
 	{
-		if(!Atlas::ContentObject::IsContentDirty()) return true;
+		if(!Atlas::ContentObject::IsContentDirty())
+		{
+			return true;
+		}
 
 		int ret = wxMessageBox(wxT("The file has not been saved... save...?"), wxT("Please confirm"), wxICON_QUESTION | wxYES_NO | wxCANCEL);
 		if(ret==wxCANCEL) return false;

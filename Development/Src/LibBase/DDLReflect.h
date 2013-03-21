@@ -123,6 +123,8 @@ namespace DDLReflect
 	bool IsParent(const STRUCT_INFO* child, const STRUCT_INFO* parent);
 	bool IsChild(const STRUCT_INFO* parent, const STRUCT_INFO* child);
 
+	_U32 GetStructFieldOffset(const STRUCT_INFO* info, const char* name, FIELD_INFO* finfo=NULL);
+
 	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo, void*& fdata);
 	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, const void* data, FIELD_INFO& finfo, const void*& fdata);
 

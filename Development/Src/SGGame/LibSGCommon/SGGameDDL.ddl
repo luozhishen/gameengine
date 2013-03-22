@@ -10,6 +10,7 @@ const _U8 SG_CLIENT_STATUS_TERMINED		= 4;
 const _U8 SG_CLIENT_STATUS_UNKOWN		= 5;
 
 const _U8 SG_CLIENT_PING_TIMEOUT  = 10;
+const _U8 SG_CLIENT_EVENT_POLL_TIMEOUT = 10;
 
 //Basic
 const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
@@ -17,6 +18,7 @@ const _U32 SG_DESCRIPTION_MAX = 512;
 const _U32 SG_INVALID_SERVER_ID = 255;
 
 const _U32 SG_ICON_MAX = 256;
+const _U32 SG_MAP_URL_MAX = 256;
 
 //Sync data
 const _U8 SG_SYNC_NONE = 0;
@@ -96,7 +98,7 @@ const _U32 SG_TITLE_ACRHTYPE_MAX = 256;
 
 //League
 const _U32 SG_LEAGUE_NAME_MAX = 32;
-const _U32 SG_LEAGUE_POST_MAX = 512;
+const _U32 SG_LEAGUE_NOTICE_MAX = 512;
 const _U32 SG_LEAGUE_LOG_MAX = 256;
 
 //shop
@@ -346,7 +348,7 @@ struct SG_LEAGUE : A_LIVE_OBJECT
 	_U32								create_time;			//创建时间
 	_U32								owner_id;				//团长ID
 	string<SG_PLAYER_NAME_MAX>			owner_name;				//团长名字
-	string<SG_LEAGUE_POST_MAX>			post_content;			//战盟公告
+	string<SG_LEAGUE_NOTICE_MAX>		post_content;			//战盟公告
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE)];
@@ -882,13 +884,11 @@ struct SG_DAILY_ACTION_CONFIG			: A_CONTENT_OBJECT
 	_U8									condition2_type;        //条件二类型
 	_U32								condition2_param1;		//条件二参数一
 
-
 	_U32								hour;					//开启时间
 	_U32								min;					//开启时间
 
 	_U32								end_hour;				//结束时间
 	_U32								end_min;				//结束时间
-
 
 	_U32								times;					//次数
 
@@ -910,10 +910,9 @@ task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_CONFIG)];
 
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
-	//_U8									type;					//0-俸禄 1-每日关卡可进行 2-pvp 3-pvp每日奖励 4-每日军饷
-	_U32								action_id;				//
-	_U32								times;					//0-剩余可领取俸禄 1-每日可进行关卡剩余次数 2-pvp剩余次数 3-pvp每日奖励可领次数 4-每日军饷可领次数
-	_U32								reset_time;				//0-俸禄冷却时间 1-重置的时间标签 2-重置的时间标签 3-重置的时间标签 4-重置的时间标签
+	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1003-pvp每日奖励 1004-每日军饷
+	_U32								times;					//剩余可领取俸禄 1-每日可进行关卡剩余次数 -pvp剩余次数 -pvp每日奖励可领次数 -每日军饷可领次数
+	_U32								reset_time;				//俸禄冷却时间 1-重置的时间标签 -重置的时间标签 -重置的时间标签 -重置的时间标签
 };
 task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_INFO)];
 task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_INFO)];
@@ -949,6 +948,7 @@ struct SG_PLAYER : SG_GENERAL
 	SG_TURBO_SKILL_SLOT																	turbo_skill_slot;		//目前已经选中的技能 最多3
 
 	_U32								last_operation_time;	//最后一次操作时间
+	string<SG_MAP_URL_MAX>				last_town_map;			//最后一次的地图url
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];
@@ -1019,8 +1019,9 @@ class SGGAME_C2S
 	DeleteAvatar();
 	EnterGame();
 	LeaveGame();
+	QueryServerTime();												//查询服务器时间
 
-	QueryPlayer(_U8 nSync);										//0-nSync 该query是一次查询，返回时直接调用callback 1-是同步操作视所有同步操作情况选择是否callback通知
+	QueryPlayer(_U8 nSync);											//0-nSync 该query是一次查询，返回时直接调用callback 1-是同步操作视所有同步操作情况选择是否callback通知
 	QueryGenerals(_U8 nSync);
 	QuerySoldiers(_U8 nSync);
 	QueryBag(_U8 nSync);
@@ -1061,11 +1062,11 @@ class SGGAME_C2S
 
 	GetPaid();														//daily salary
 	UpgradeTitle();													//军衔提升
-		
+	
+	BuyGoods(_U32 item_id);											//商店购买
+
 	QueryPlayerPVPInfo(_U32 avatar_id);								//获取player pvp信息
 	QueryPlayerRankList();											//获取pvp排行
-
-	BuyGoods(_U32 item_id);											//商店购买
 
 	PVPCoolDown();													//挑战冷却时间
 	PVPGetRestTime();												//挑战剩余次数
@@ -1082,6 +1083,7 @@ class SGGAME_C2S
 	BeginInstanceBattle(_U32 instance_id, string map_url);			//开始副本战斗
 	EndInstanceBattle(_U32 instance_id, string map_url, _U32 result);//结束副本战斗
 	ResetInstance(_U32 instance_id);
+	SaveLastTownMap(string last_town_map);							//保存最后一次的地图信息
 
 	CreateLeague(string league_name);								//战盟 创建
 	ApplyJoinLeague(_U32 league_id);								//申请加入战盟		
@@ -1090,20 +1092,30 @@ class SGGAME_C2S
 	QueryLeagueList();												//查询当前所有战盟的列表
 	QueryLeagueMemberList(_U32 league_id);							//查询league_id战盟当前成员
 	QueryLeagueMemberInfo(_U32 member_id);							//显示成员选中tips
+	
+	ContributeLeague(_U32 rmb, _U32 energy);						//战盟捐献
+	HandleApply(_U32 applyer_id, _U8 allowed);						//处理加入战盟申请 bAllowed 同意- 1 拒绝-0
+	QueryLeagueNotice();											//查询战盟公告
+	SetLeagueNotice(_U32 league_id, string notice_content);
+	SetLeagueOwner(_U32 member_id);									//转交战盟
+	DissolveLeague();												//解散
+	SetMemberPosition(_U32 member_id, _U8 position);				//升职 0-普通成员 1-副团长 2-团长
+	DismissMember(_U32 member_id);									//开除
+	ExitLeague();													//退出战盟
+	QueryLeagueLog();												//战盟日志
 
 	SalaryGet();													//获取每日军饷
 	SalaryGetBat();													//批量获取 max = 10
 
 	EnhanceTurbo();													//提升无双技能
 	EquipTurboSkill(SG_TURBO_SKILL_SLOT skill_slot);				//装备无双技能
-
-	QueryServerTime();												//查询服务器时间
 };
 
 class SGGAME_S2C
 {
 	Pong();
 
+	QueryServerTimeResult(_U32 time);
 	GetServerListResult(SG_SERVER_INFO infos[count], _U32 count, _U32 last_server);
 	QueryAvatarFailed(_U32 code);
 	QueryAvatarResult(SG_PLAYER player);
@@ -1130,11 +1142,11 @@ class SGGAME_S2C
 
 	QueryPlayerQuestResult(SG_QUEST_LIVE_INFO quest_list[count], _U32 count, _U8 nSync);
 	FinishQuestDone(_U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, SG_DROP_ITEM_BASE drops[drop_count], _U32 drop_count);//level 任务完成之后
+	
+	BuyGoodsResult(A_UUID goods[count], _U32 count);	
 
 	QueryPlayerPVPInfoResult(SG_PLAYER_PVE pve);
 	QueryPlayerRankListResult(SG_PLAYER players[count], _U32 count);
-
-	BuyGoodsResult(A_UUID goods[count], _U32 count);					
 
 	PVPCoolDownResult(_U32 time);													//挑战冷却时间
 	PVPGetRestTimeResult(_U32 rest_time);											//挑战剩余次数
@@ -1159,12 +1171,20 @@ class SGGAME_S2C
 	QueryLeagueMemberListResult(SG_LEAGUE_MEMBER league_members[count], _U32 count);	
 	QueryLeagueMemberInfoResult();
 
-	SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
-	SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times);   //0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
+	ContributeLeagueResult(SG_LEAGUE_MEMBER self_info, SG_LEAGUE league_info);
+	HandleApplyResult(_U8 ret, SG_LEAGUE_MEMBER new_joiner);						//ret 0-succ 1-failed
+	QueryLeagueNoticeResult(string notice_content);
+	SetLeagueNoticeResult(_U8 ret, string notice_content);							//ret 0-succ 1-failed 失败带回原先的公告
+	SetLeagueOwnerResult(_U8 ret);													//ret 0-succ 1-failed
+	SetMemberPositionResult(_U8 ret, _U32 member_id, _U8 position);					//ret 0-succ 1-failed 如果成功则带回新职位失败不关心
+	DismissMemberResult(_U8 ret);													//ret 0-succ 1-failed	
+	ExitLeagueResult(_U8 ret);										
+	QueryLeagueLogResult(SG_LEAGUE_LOG league_log[count], _U32 count);
 
-	EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt);			//返回新的无双等级和消耗的觉醒点 ret 0-成功 other-failed
+	SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold);										//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
+	SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times);						//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
 
-	QueryServerTimeResult(_U32 time);
+	EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt);						//返回新的无双等级和消耗的觉醒点 ret 0-成功 other-failed
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

@@ -219,9 +219,7 @@ namespace Atlas
 		//check keys whether all in struct_info
 		for(size_t j = 0; j < keys.size(); ++j)
 		{
-			DDLReflect::FIELD_INFO finfo;
-			const void* fdata;
-			if(!DDLReflect::GetStructFieldInfo(pInfo, keys[j].c_str(), (const void*)NULL, finfo, fdata))
+			if(DDLReflect::GetStructFieldOffset(pInfo, keys[j].c_str())==(_U32)-1)
 			{
 				m_Err = StringFormat("input key not found in struct:%s\n column:%s", pInfo->name, keys[j].c_str());
 				return false;
@@ -385,8 +383,6 @@ namespace Atlas
 		//whether all column in excel match struct_info 
 		for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
 		{
-			DDLReflect::FIELD_INFO finfo;
-			const void* fdata;
 			Atlas::Map<Atlas::String, Atlas::String>::const_iterator it_find;
 			for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
 			{
@@ -396,7 +392,7 @@ namespace Atlas
 				}
 			}
 
-			if(!DDLReflect::GetStructFieldInfo(m_pStructInfo, it_find->first.c_str(), (const void*)NULL, finfo, fdata))
+			if(DDLReflect::GetStructFieldOffset(m_pStructInfo, it_find->first.c_str())==(_U32)-1)
 			{
 				m_Err = StringFormat("column not match in struct:%s\n column:%s\n", m_pStructInfo->name, it_col->second.c_str()); 
 				m_pExcelWrapper->Quit();

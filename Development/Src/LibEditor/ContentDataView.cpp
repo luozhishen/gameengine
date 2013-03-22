@@ -358,7 +358,7 @@ bool CContentDataView::CheckModify(bool bClear)
 		A_CONTENT_OBJECT* data = Atlas::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
 		if(!m_pInfo->Get(m_pCurInfo, data))
 		{
-			wxMessageBox(wxT("xxxx"));
+			wxMessageBox(wxT("error in ContentObject::Modify"));
 			return false;
 		}
 	}
@@ -374,12 +374,9 @@ bool CContentDataView::CheckModify(bool bClear)
 
 void CContentDataView::AppendObject(const DDLReflect::STRUCT_INFO* info, const A_CONTENT_OBJECT* data)
 {
-	wxString strName(data->name._Value, wxMBConvUTF8());
-	if(strName.empty()) strName = wxT("{NAME_EMPTY}");
 	char szUUID[100];
 	AUuidToString(data->uuid, szUUID);
-
-	int n = m_pList->InsertItem(m_pList->GetItemCount(), strName);
+	int n = m_pList->InsertItem(m_pList->GetItemCount(), wxString::FromUTF8(data->name._Value));
 	m_pList->SetItem(n, 1, wxString::FromUTF8(info->name));
 	m_pList->SetItem(n, 2, wxString::FromUTF8(szUUID));
 	m_pList->SetItemPtrData(n, (wxUIntPtr)&data->uuid);
@@ -438,17 +435,186 @@ void CContentDataView::SetCurrentObject(long nSelectObject, const DDLReflect::ST
 	m_pInfo->Set(info, data);
 }
 
+struct SEARCH_CONDITION
+{
+	Atlas::String name;
+	Atlas::String value;
+	const char* opt;
+};
+static char* opts[] = { "!=", "<=", ">=", "=", "<", ">" };
+
 void CContentDataView::FlashList()
 {
 	m_pList->DeleteAllItems();
 	SetCurrentObjectNULL();
 
 	const DDLReflect::STRUCT_INFO* info = m_mapTypes[(const char*)m_pObjectType->GetValue().ToUTF8()];
+
+	Atlas::Vector<SEARCH_CONDITION> conds;
+	Atlas::Vector<Atlas::String> condstrs;
+	Atlas::StringSplit((const char*)m_pSearchText->GetValue().ToUTF8(), ' ', condstrs);
+	if(condstrs.size()>0)
+	{
+		for(size_t i=0; i<condstrs.size(); i++)
+		{
+			Atlas::String& condstr = condstrs[i];
+			size_t c;
+			for(c=0; c<sizeof(opts)/sizeof(opts[0]); c++)
+			{
+				size_t offset = condstr.find(opts[c]);
+				if(offset==Atlas::String::npos) continue;
+
+				SEARCH_CONDITION cond;
+				cond.name = condstr.substr(0, offset);
+				cond.value = condstr.substr(offset+strlen(opts[c]));
+				cond.opt = opts[c];
+
+				DDLReflect::FIELD_INFO finfo;
+				if(DDLReflect::GetStructFieldOffset(info, cond.name.c_str(), &finfo)==(_U32)-1)
+				{
+					c = sizeof(opts)/sizeof(opts[0]);
+					break;
+				}
+
+				if(finfo.type!=DDLReflect::TYPE_STRING && cond.value.empty())
+				{
+					c = sizeof(opts)/sizeof(opts[0]);
+					break;
+				}
+
+				switch(finfo.type)
+				{
+				case DDLReflect::TYPE_STRING:
+					if(strcmp(cond.opt, "!=")!=0 && strcmp(cond.opt, "=")!=0)
+					{
+						c = sizeof(opts)/sizeof(opts[0]);
+					}
+				case DDLReflect::TYPE_U8:
+				case DDLReflect::TYPE_U16:
+				case DDLReflect::TYPE_U32:
+				case DDLReflect::TYPE_U64:
+				case DDLReflect::TYPE_S8:
+				case DDLReflect::TYPE_S16:
+				case DDLReflect::TYPE_S32:
+				case DDLReflect::TYPE_S64:
+				case DDLReflect::TYPE_F32:
+				case DDLReflect::TYPE_F64:
+					break;
+				default:
+					c = sizeof(opts)/sizeof(opts[0]);
+					break;
+				}
+				if(c==sizeof(opts)/sizeof(opts[0]))
+				{
+					break;
+				}
+
+				conds.push_back(cond);
+				break;
+			}
+			if(c==sizeof(opts)/sizeof(opts[0]))
+			{
+				wxMessageBox(wxT("invalid input"), wxT("Error"));
+				return;
+			}
+		}
+	}
+
 	const A_CONTENT_OBJECT* object = Atlas::ContentObject::FindFirst(info, false);
 	unsigned int count = 0;
 	while(object)
 	{
-		AppendObject(Atlas::ContentObject::GetObjectType(object->uuid), object);
+		bool skip = false;
+		for(size_t c=0; c<conds.size() && !skip; c++)
+		{
+			Atlas::String val;
+			DDLReflect::FIELD_INFO finfo;
+			if(!DDLReflect::StructParamToString(info, conds[c].name.c_str(), object, val, &finfo))
+			{
+				wxMessageBox(wxT("error in StructParamToString"), wxT("Error"));
+				return;
+			}
+
+			if(strcmp(conds[c].opt, "!=")==0)
+			{
+				if(finfo.type==DDLReflect::TYPE_STRING)
+				{
+					if(val==conds[c].value) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_U8 && finfo.type<=DDLReflect::TYPE_S64)
+				{
+					if(atoi(val.c_str())==atoi(conds[c].value.c_str())) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_F32 && finfo.type<=DDLReflect::TYPE_F64)
+				{
+					if(atof(val.c_str())==atof(conds[c].value.c_str())) skip = true;
+				}
+			}
+			else if(strcmp(conds[c].opt, "=")==0)
+			{
+				if(finfo.type==DDLReflect::TYPE_STRING)
+				{
+					if(val!=conds[c].value) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_U8 && finfo.type<=DDLReflect::TYPE_S64)
+				{
+					if(atoi(val.c_str())!=atoi(conds[c].value.c_str())) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_F32 && finfo.type<=DDLReflect::TYPE_F64)
+				{
+					if(atof(val.c_str())!=atof(conds[c].value.c_str())) skip = true;
+				}
+			}
+			else if(strcmp(conds[c].opt, "<=")==0)
+			{
+				if(finfo.type>=DDLReflect::TYPE_U8 && finfo.type<=DDLReflect::TYPE_S64)
+				{
+					if(atoi(val.c_str())>atoi(conds[c].value.c_str())) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_F32 && finfo.type<=DDLReflect::TYPE_F64)
+				{
+					if(atof(val.c_str())>atof(conds[c].value.c_str())) skip = true;
+				}
+			}
+			else if(strcmp(conds[c].opt, ">=")==0)
+			{
+				if(finfo.type>=DDLReflect::TYPE_U8 && finfo.type<=DDLReflect::TYPE_S64)
+				{
+					if(atoi(val.c_str())<atoi(conds[c].value.c_str())) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_F32 && finfo.type<=DDLReflect::TYPE_F64)
+				{
+					if(atof(val.c_str())<atof(conds[c].value.c_str())) skip = true;
+				}
+			}
+			else if(strcmp(conds[c].opt, "<")==0)
+			{
+				if(finfo.type>=DDLReflect::TYPE_U8 && finfo.type<=DDLReflect::TYPE_S64)
+				{
+					if(atoi(val.c_str())>=atoi(conds[c].value.c_str())) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_F32 && finfo.type<=DDLReflect::TYPE_F64)
+				{
+					if(atof(val.c_str())>=atof(conds[c].value.c_str())) skip = true;
+				}
+			}
+			else if(strcmp(conds[c].opt, ">")==0)
+			{
+				if(finfo.type>=DDLReflect::TYPE_U8 && finfo.type<=DDLReflect::TYPE_S64)
+				{
+					if(atoi(val.c_str())<=atoi(conds[c].value.c_str())) skip = true;
+				}
+				else if(finfo.type>=DDLReflect::TYPE_F32 && finfo.type<=DDLReflect::TYPE_F64)
+				{
+					if(atof(val.c_str())<=atof(conds[c].value.c_str())) skip = true;
+				}
+			}
+		}
+		if(!skip)
+		{
+			AppendObject(Atlas::ContentObject::GetObjectType(object->uuid), object);
+		}
+
 		object = Atlas::ContentObject::FindNext(info, false, object);
 		count++;
 	}

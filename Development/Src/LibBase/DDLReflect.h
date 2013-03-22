@@ -17,12 +17,12 @@ namespace DDLReflect
 	const _U8 TYPE_S16		= 0x12;
 	const _U8 TYPE_S32		= 0x13;
 	const _U8 TYPE_S64		= 0x14;
-	const _U8 TYPE_F32		= 0x20;
-	const _U8 TYPE_F64		= 0x21;
-	const _U8 TYPE_STRING	= 0x22;
-	const _U8 TYPE_UUID		= 0x23;
-	const _U8 TYPE_UUID_REF	= 0x24;
-	const _U8 TYPE_STRUCT	= 0x25;
+	const _U8 TYPE_F32		= 0x30;
+	const _U8 TYPE_F64		= 0x31;
+	const _U8 TYPE_STRING	= 0x72;
+	const _U8 TYPE_UUID		= 0x73;
+	const _U8 TYPE_UUID_REF	= 0x74;
+	const _U8 TYPE_STRUCT	= 0x75;
 	const _U8 TYPE_MASK		= 0x7f;
 	const _U8 TYPE_ARRAY	= 0x80;
 
@@ -124,13 +124,12 @@ namespace DDLReflect
 	bool IsChild(const STRUCT_INFO* parent, const STRUCT_INFO* child);
 
 	_U32 GetStructFieldOffset(const STRUCT_INFO* info, const char* name, FIELD_INFO* finfo=NULL);
-
-	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo, void*& fdata);
-	bool GetStructFieldInfo(const STRUCT_INFO* info, const char* name, const void* data, FIELD_INFO& finfo, const void*& fdata);
+	void* GetStructFieldData(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo);
+	const void* GetStructFieldData(const STRUCT_INFO* info, const char* name, const void* data, FIELD_INFO& finfo);
 
 	bool StructParamToString(const FIELD_INFO* finfo, const void* data, Atlas::String& str);
 	bool StructParamFromString(const FIELD_INFO* finfo, void* data, const char* str);
-	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Atlas::String& str);
+	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Atlas::String& str, FIELD_INFO* finfo=NULL);
 	bool StructParamFromString(const STRUCT_INFO* info, const char* name, void* data, const char* str);
 
 	bool StructParamType(const FIELD_INFO* finfo, Atlas::String& type);

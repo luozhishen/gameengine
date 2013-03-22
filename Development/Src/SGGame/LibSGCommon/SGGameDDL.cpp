@@ -960,7 +960,7 @@ namespace DDL
 		if(!Read<_U32>(Value.create_time)) return false;
 		if(!Read<_U32>(Value.owner_id)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.owner_name)) return false;
-		if(!ReadString<SG_LEAGUE_POST_MAX>(Value.post_content)) return false;
+		if(!ReadString<SG_LEAGUE_NOTICE_MAX>(Value.post_content)) return false;
 		return true;
 	}
 	template<>
@@ -976,7 +976,7 @@ namespace DDL
 		if(!Write<_U32>(Value.create_time)) return false;
 		if(!Write<_U32>(Value.owner_id)) return false;
 		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.owner_name)) return false;
-		if(!WriteString<SG_LEAGUE_POST_MAX>(Value.post_content)) return false;
+		if(!WriteString<SG_LEAGUE_NOTICE_MAX>(Value.post_content)) return false;
 		return true;
 	}
 }
@@ -1005,7 +1005,7 @@ namespace DDLReflect
 		{TYPE_U32, "create_time", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, create_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "owner_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, owner_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "owner_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, owner_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_STRING, "post_content", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, post_content), NULL, (_U16)SG_LEAGUE_POST_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_POST_MAX>), NULL},
+		{TYPE_STRING, "post_content", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, post_content), NULL, (_U16)SG_LEAGUE_NOTICE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_NOTICE_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE", sizeof(SG_LEAGUE), 10, _struct_SG_LEAGUE_fieldinfo, _struct_SG_LEAGUE_readproc, _struct_SG_LEAGUE_writeproc };
 	template<>
@@ -3289,6 +3289,7 @@ namespace DDL
 		if(!ReadStringArray<ARCHETYPE_URL_LENGTH_MAX, SG_TURBO_UNLOCK_SKILL_MAX>(Value.skills)) return false;
 		if(!Read<SG_TURBO_SKILL_SLOT>(Value.turbo_skill_slot)) return false;
 		if(!Read<_U32>(Value.last_operation_time)) return false;
+		if(!ReadString<SG_MAP_URL_MAX>(Value.last_town_map)) return false;
 		return true;
 	}
 	template<>
@@ -3319,6 +3320,7 @@ namespace DDL
 		if(!WriteStringArray<ARCHETYPE_URL_LENGTH_MAX, SG_TURBO_UNLOCK_SKILL_MAX>(Value.skills)) return false;
 		if(!Write<SG_TURBO_SKILL_SLOT>(Value.turbo_skill_slot)) return false;
 		if(!Write<_U32>(Value.last_operation_time)) return false;
+		if(!WriteString<SG_MAP_URL_MAX>(Value.last_town_map)) return false;
 		return true;
 	}
 }
@@ -3362,8 +3364,9 @@ namespace DDLReflect
 		{TYPE_STRING|TYPE_ARRAY, "skills", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, skills), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)SG_TURBO_UNLOCK_SKILL_MAX, (_U16)((size_t)(&((DDL::Array<DDL::String<ARCHETYPE_URL_LENGTH_MAX>, SG_TURBO_UNLOCK_SKILL_MAX>*)NULL)->_Array)), (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 		{TYPE_STRUCT, "turbo_skill_slot", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, turbo_skill_slot), &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_TURBO_SKILL_SLOT), NULL},
 		{TYPE_U32, "last_operation_time", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_operation_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "last_town_map", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_town_map), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 24, _struct_SG_PLAYER_fieldinfo, _struct_SG_PLAYER_readproc, _struct_SG_PLAYER_writeproc };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 25, _struct_SG_PLAYER_fieldinfo, _struct_SG_PLAYER_readproc, _struct_SG_PLAYER_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER>()
 	{
@@ -3673,122 +3676,144 @@ namespace DDLReflect
 		// 5 DeleteAvatar
 		// 6 EnterGame
 		// 7 LeaveGame
-		// 8 QueryPlayer
+		// 8 QueryServerTime
+		// 9 QueryPlayer
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 9 QueryGenerals
+		// 10 QueryGenerals
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 10 QuerySoldiers
+		// 11 QuerySoldiers
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 11 QueryBag
+		// 12 QueryBag
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 12 EquipItem
+		// 13 EquipItem
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "slots", 0, 0, &_rfl_struct_SG_EQUIP_SLOTS_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 13 EquipGenerals
+		// 14 EquipGenerals
 		{TYPE_U32|TYPE_ARRAY, "generals", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 14 EquipSoldiers
+		// 15 EquipSoldiers
 		{TYPE_U32|TYPE_ARRAY, "soldiers", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 15 UnLockSoldier
+		// 16 UnLockSoldier
 		{TYPE_U32, "soldier_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 16 EnhanceSoldier
+		// 17 EnhanceSoldier
 		{TYPE_U32, "soldier_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 17 EnhanceEquipt
+		// 18 EnhanceEquipt
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 18 ExtendEquipt
+		// 19 ExtendEquipt
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_UUID, "puuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 19 EnhanceCoolDown
-		// 20 EnhanceCoolDownClear
-		// 21 IncreaseEquipCoolDown
-		// 22 RefreshEquipNormal
+		// 20 EnhanceCoolDown
+		// 21 EnhanceCoolDownClear
+		// 22 IncreaseEquipCoolDown
+		// 23 RefreshEquipNormal
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 23 RefreshEquipProperty
+		// 24 RefreshEquipProperty
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 24 RefreshEquipAbility
+		// 25 RefreshEquipAbility
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 25 RefreshEquipDecideAccept
+		// 26 RefreshEquipDecideAccept
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 26 BeginBattle
+		// 27 BeginBattle
 		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 27 EndBattle
+		// 28 EndBattle
 		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 28 EquipGem
+		// 29 EquipGem
 		{TYPE_UUID, "item_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gem_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 29 UnequipGem
+		// 30 UnequipGem
 		{TYPE_UUID, "item_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gem_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 30 GemCombine
+		// 31 GemCombine
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 31 SetGeneralStatus
+		// 32 SetGeneralStatus
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "status", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 32 QueryPlayerQuest
+		// 33 QueryPlayerQuest
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 33 SaveQuestData
+		// 34 SaveQuestData
 		{TYPE_U32, "quest_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "counter", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "status", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 34 FinishQuest
+		// 35 FinishQuest
 		{TYPE_U32, "quest_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 35 HaloCoolDown
-		// 36 HaloIncreaseEXP
+		// 36 HaloCoolDown
+		// 37 HaloIncreaseEXP
 		{TYPE_U8, "halo_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 37 HaloGetCoolDown
-		// 38 GetPaid
-		// 39 UpgradeTitle
-		// 40 QueryPlayerPVPInfo
-		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 41 QueryPlayerRankList
-		// 42 BuyGoods
+		// 38 HaloGetCoolDown
+		// 39 GetPaid
+		// 40 UpgradeTitle
+		// 41 BuyGoods
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 43 PVPCoolDown
-		// 44 PVPGetRestTime
-		// 45 PVPRecord
-		// 46 PVPHeroList
-		// 47 PVPDailyReward
-		// 48 PVPBattleBegin
+		// 42 QueryPlayerPVPInfo
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 43 QueryPlayerRankList
+		// 44 PVPCoolDown
+		// 45 PVPGetRestTime
+		// 46 PVPRecord
+		// 47 PVPHeroList
+		// 48 PVPDailyReward
+		// 49 PVPBattleBegin
 		{TYPE_U32, "defender", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 49 PVPBattleEnd
+		// 50 PVPBattleEnd
 		{TYPE_U32, "defender", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 50 PVPCoolDownClear
-		// 51 PVPIncreateBattleTimes
-		// 52 QueryInstance
-		// 53 EnterInstance
+		// 51 PVPCoolDownClear
+		// 52 PVPIncreateBattleTimes
+		// 53 QueryInstance
+		// 54 EnterInstance
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "difficulty", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 54 BeginInstanceBattle
+		// 55 BeginInstanceBattle
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "map_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 55 EndInstanceBattle
+		// 56 EndInstanceBattle
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "map_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 56 ResetInstance
+		// 57 ResetInstance
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 57 CreateLeague
+		// 58 SaveLastTownMap
+		{TYPE_STRING, "last_town_map", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 59 CreateLeague
 		{TYPE_STRING, "league_name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 58 ApplyJoinLeague
+		// 60 ApplyJoinLeague
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 59 QueryLeagueApplyList
+		// 61 QueryLeagueApplyList
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 60 QueryLeague
+		// 62 QueryLeague
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 61 QueryLeagueList
-		// 62 QueryLeagueMemberList
+		// 63 QueryLeagueList
+		// 64 QueryLeagueMemberList
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 63 QueryLeagueMemberInfo
+		// 65 QueryLeagueMemberInfo
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 64 SalaryGet
-		// 65 SalaryGetBat
-		// 66 EnhanceTurbo
-		// 67 EquipTurboSkill
+		// 66 ContributeLeague
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "energy", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 67 HandleApply
+		{TYPE_U32, "applyer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8, "allowed", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 68 QueryLeagueNotice
+		// 69 SetLeagueNotice
+		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "notice_content", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 70 SetLeagueOwner
+		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 71 DissolveLeague
+		// 72 SetMemberPosition
+		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8, "position", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 73 DismissMember
+		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 74 ExitLeague
+		// 75 QueryLeagueLog
+		// 76 SalaryGet
+		// 77 SalaryGetBat
+		// 78 EnhanceTurbo
+		// 79 EquipTurboSkill
 		{TYPE_STRUCT, "skill_slot", 0, 0, &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 68 QueryServerTime
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -3800,6 +3825,7 @@ namespace DDLReflect
 		{"DeleteAvatar", 0, _class_SGGAME_C2S_fieldinfos+3},
 		{"EnterGame", 0, _class_SGGAME_C2S_fieldinfos+3},
 		{"LeaveGame", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+3},
 		{"QueryPlayer", 1, _class_SGGAME_C2S_fieldinfos+3},
 		{"QueryGenerals", 1, _class_SGGAME_C2S_fieldinfos+4},
 		{"QuerySoldiers", 1, _class_SGGAME_C2S_fieldinfos+5},
@@ -3832,9 +3858,9 @@ namespace DDLReflect
 		{"HaloGetCoolDown", 0, _class_SGGAME_C2S_fieldinfos+38},
 		{"GetPaid", 0, _class_SGGAME_C2S_fieldinfos+38},
 		{"UpgradeTitle", 0, _class_SGGAME_C2S_fieldinfos+38},
-		{"QueryPlayerPVPInfo", 1, _class_SGGAME_C2S_fieldinfos+38},
-		{"QueryPlayerRankList", 0, _class_SGGAME_C2S_fieldinfos+39},
-		{"BuyGoods", 1, _class_SGGAME_C2S_fieldinfos+39},
+		{"BuyGoods", 1, _class_SGGAME_C2S_fieldinfos+38},
+		{"QueryPlayerPVPInfo", 1, _class_SGGAME_C2S_fieldinfos+39},
+		{"QueryPlayerRankList", 0, _class_SGGAME_C2S_fieldinfos+40},
 		{"PVPCoolDown", 0, _class_SGGAME_C2S_fieldinfos+40},
 		{"PVPGetRestTime", 0, _class_SGGAME_C2S_fieldinfos+40},
 		{"PVPRecord", 0, _class_SGGAME_C2S_fieldinfos+40},
@@ -3849,20 +3875,30 @@ namespace DDLReflect
 		{"BeginInstanceBattle", 2, _class_SGGAME_C2S_fieldinfos+45},
 		{"EndInstanceBattle", 3, _class_SGGAME_C2S_fieldinfos+47},
 		{"ResetInstance", 1, _class_SGGAME_C2S_fieldinfos+50},
-		{"CreateLeague", 1, _class_SGGAME_C2S_fieldinfos+51},
-		{"ApplyJoinLeague", 1, _class_SGGAME_C2S_fieldinfos+52},
-		{"QueryLeagueApplyList", 1, _class_SGGAME_C2S_fieldinfos+53},
-		{"QueryLeague", 1, _class_SGGAME_C2S_fieldinfos+54},
-		{"QueryLeagueList", 0, _class_SGGAME_C2S_fieldinfos+55},
-		{"QueryLeagueMemberList", 1, _class_SGGAME_C2S_fieldinfos+55},
-		{"QueryLeagueMemberInfo", 1, _class_SGGAME_C2S_fieldinfos+56},
-		{"SalaryGet", 0, _class_SGGAME_C2S_fieldinfos+57},
-		{"SalaryGetBat", 0, _class_SGGAME_C2S_fieldinfos+57},
-		{"EnhanceTurbo", 0, _class_SGGAME_C2S_fieldinfos+57},
-		{"EquipTurboSkill", 1, _class_SGGAME_C2S_fieldinfos+57},
-		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+58},
+		{"SaveLastTownMap", 1, _class_SGGAME_C2S_fieldinfos+51},
+		{"CreateLeague", 1, _class_SGGAME_C2S_fieldinfos+52},
+		{"ApplyJoinLeague", 1, _class_SGGAME_C2S_fieldinfos+53},
+		{"QueryLeagueApplyList", 1, _class_SGGAME_C2S_fieldinfos+54},
+		{"QueryLeague", 1, _class_SGGAME_C2S_fieldinfos+55},
+		{"QueryLeagueList", 0, _class_SGGAME_C2S_fieldinfos+56},
+		{"QueryLeagueMemberList", 1, _class_SGGAME_C2S_fieldinfos+56},
+		{"QueryLeagueMemberInfo", 1, _class_SGGAME_C2S_fieldinfos+57},
+		{"ContributeLeague", 2, _class_SGGAME_C2S_fieldinfos+58},
+		{"HandleApply", 2, _class_SGGAME_C2S_fieldinfos+60},
+		{"QueryLeagueNotice", 0, _class_SGGAME_C2S_fieldinfos+62},
+		{"SetLeagueNotice", 2, _class_SGGAME_C2S_fieldinfos+62},
+		{"SetLeagueOwner", 1, _class_SGGAME_C2S_fieldinfos+64},
+		{"DissolveLeague", 0, _class_SGGAME_C2S_fieldinfos+65},
+		{"SetMemberPosition", 2, _class_SGGAME_C2S_fieldinfos+65},
+		{"DismissMember", 1, _class_SGGAME_C2S_fieldinfos+67},
+		{"ExitLeague", 0, _class_SGGAME_C2S_fieldinfos+68},
+		{"QueryLeagueLog", 0, _class_SGGAME_C2S_fieldinfos+68},
+		{"SalaryGet", 0, _class_SGGAME_C2S_fieldinfos+68},
+		{"SalaryGetBat", 0, _class_SGGAME_C2S_fieldinfos+68},
+		{"EnhanceTurbo", 0, _class_SGGAME_C2S_fieldinfos+68},
+		{"EquipTurboSkill", 1, _class_SGGAME_C2S_fieldinfos+68},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 69, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 80, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -3875,63 +3911,65 @@ namespace DDLReflect
 	static FIELD_INFO _class_SGGAME_S2C_fieldinfos[] = 
 	{
 		// 0 Pong
-		// 1 GetServerListResult
+		// 1 QueryServerTimeResult
+		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 GetServerListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "infos", 0, 0, &_rfl_struct_SG_SERVER_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "last_server", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 QueryAvatarFailed
+		// 3 QueryAvatarFailed
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 3 QueryAvatarResult
+		// 4 QueryAvatarResult
 		{TYPE_STRUCT, "player", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 4 CreateAvatarResult
+		// 5 CreateAvatarResult
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 QueryPlayerResult
+		// 6 QueryPlayerResult
 		{TYPE_STRUCT, "player", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 6 QueryGeneralResult
+		// 7 QueryGeneralResult
 		{TYPE_STRUCT|TYPE_ARRAY, "generals", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 7 QuerySoldierResult
+		// 8 QuerySoldierResult
 		{TYPE_STRUCT|TYPE_ARRAY, "soldiers", 0, 0, &_rfl_struct_SG_SOLDIER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 8 QueryBagBegin
-		// 9 QueryBagEquipt
+		// 9 QueryBagBegin
+		// 10 QueryBagEquipt
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 10 QueryBagUsable
+		// 11 QueryBagUsable
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_USABLE_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 11 QueryBagGen
+		// 12 QueryBagGen
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 12 QueryBagEnd
+		// 13 QueryBagEnd
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 13 EnhanceCoolDownResult
+		// 14 EnhanceCoolDownResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 14 RefreshEquipDone
+		// 15 RefreshEquipDone
 		{TYPE_STRUCT, "euipt", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 15 GemCombineResult
+		// 16 GemCombineResult
 		{TYPE_STRUCT, "gem", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 16 HaloIncreaseEXPResult
+		// 17 HaloIncreaseEXPResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 17 HaloGetCoolDownResult
+		// 18 HaloGetCoolDownResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 18 BeginBattleResult
+		// 19 BeginBattleResult
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 19 EndBattleResult
+		// 20 EndBattleResult
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 20 QueryPlayerQuestResult
+		// 21 QueryPlayerQuestResult
 		{TYPE_STRUCT|TYPE_ARRAY, "quest_list", 0, 0, &_rfl_struct_SG_QUEST_LIVE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 21 FinishQuestDone
+		// 22 FinishQuestDone
 		{TYPE_U32, "quest_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -3942,140 +3980,171 @@ namespace DDLReflect
 		{TYPE_U32, "energy", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 22 QueryPlayerPVPInfoResult
-		{TYPE_STRUCT, "pve", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 23 QueryPlayerRankListResult
-		{TYPE_STRUCT|TYPE_ARRAY, "players", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 24 BuyGoodsResult
+		// 23 BuyGoodsResult
 		{TYPE_UUID|TYPE_ARRAY, "goods", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 25 PVPCoolDownResult
-		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 26 PVPGetRestTimeResult
-		{TYPE_U32, "rest_time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 27 PVPRecordResult
-		{TYPE_STRUCT|TYPE_ARRAY, "record", 0, 0, &_rfl_struct_SG_PVP_RECORD_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 28 PVPHeroListRecord
+		// 24 QueryPlayerPVPInfoResult
+		{TYPE_STRUCT, "pve", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 25 QueryPlayerRankListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "players", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 29 PVPDailyReward
+		// 26 PVPCoolDownResult
+		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 27 PVPGetRestTimeResult
+		{TYPE_U32, "rest_time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 28 PVPRecordResult
+		{TYPE_STRUCT|TYPE_ARRAY, "record", 0, 0, &_rfl_struct_SG_PVP_RECORD_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 29 PVPHeroListRecord
+		{TYPE_STRUCT|TYPE_ARRAY, "players", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 30 PVPDailyReward
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 30 PVPBattleBeginResult
+		// 31 PVPBattleBeginResult
 		{TYPE_STRUCT, "SelfPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "DefenderPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "DefenderPlayerInfo", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 31 PVPBattleEndResult
+		// 32 PVPBattleEndResult
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 32 PVPCoolDownClearResult
-		// 33 PVPIncreateBattleTimesResult
+		// 33 PVPCoolDownClearResult
+		// 34 PVPIncreateBattleTimesResult
 		{TYPE_U32, "rest_times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 34 QueryInstanceResult
+		// 35 QueryInstanceResult
 		{TYPE_STRUCT|TYPE_ARRAY, "instances", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 35 BeginInstanceBattleResult
+		// 36 BeginInstanceBattleResult
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 36 EnterInstanceResult
+		// 37 EnterInstanceResult
 		{TYPE_STRUCT, "instance", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 37 EndInstanceBattleResult
+		// 38 EndInstanceBattleResult
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 38 ResetInstanceResult
+		// 39 ResetInstanceResult
 		{TYPE_U8, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "instance", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 39 CreateLeagueResult
+		// 40 CreateLeagueResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "league", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 40 QueryLeagueApplyListResult
+		// 41 QueryLeagueApplyListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "applyer", 0, 0, &_rfl_struct_SG_LEAGUE_APPLYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 41 QueryLeagueResult
+		// 42 QueryLeagueResult
 		{TYPE_STRUCT, "league", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 42 QueryLeagueListResult
+		// 43 QueryLeagueListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "league_list", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 43 QueryLeagueMemberListResult
+		// 44 QueryLeagueMemberListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "league_members", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 44 QueryLeagueMemberInfoResult
-		// 45 SalaryGetResult
+		// 45 QueryLeagueMemberInfoResult
+		// 46 ContributeLeagueResult
+		{TYPE_STRUCT, "self_info", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "league_info", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 47 HandleApplyResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "new_joiner", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 48 QueryLeagueNoticeResult
+		{TYPE_STRING, "notice_content", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 49 SetLeagueNoticeResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "notice_content", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 50 SetLeagueOwnerResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 51 SetMemberPositionResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8, "position", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 52 DismissMemberResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 53 ExitLeagueResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 54 QueryLeagueLogResult
+		{TYPE_STRUCT|TYPE_ARRAY, "league_log", 0, 0, &_rfl_struct_SG_LEAGUE_LOG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 55 SalaryGetResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 46 SalaryGetBatResult
+		// 56 SalaryGetBatResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 47 EnhanceTurboResult
+		// 57 EnhanceTurboResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "turbo_level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 48 QueryServerTimeResult
-		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
 		{"Pong", 0, _class_SGGAME_S2C_fieldinfos+0},
-		{"GetServerListResult", 3, _class_SGGAME_S2C_fieldinfos+0},
-		{"QueryAvatarFailed", 1, _class_SGGAME_S2C_fieldinfos+3},
-		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+4},
-		{"CreateAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+5},
-		{"QueryPlayerResult", 2, _class_SGGAME_S2C_fieldinfos+6},
-		{"QueryGeneralResult", 3, _class_SGGAME_S2C_fieldinfos+8},
-		{"QuerySoldierResult", 3, _class_SGGAME_S2C_fieldinfos+11},
-		{"QueryBagBegin", 0, _class_SGGAME_S2C_fieldinfos+14},
-		{"QueryBagEquipt", 2, _class_SGGAME_S2C_fieldinfos+14},
-		{"QueryBagUsable", 2, _class_SGGAME_S2C_fieldinfos+16},
-		{"QueryBagGen", 2, _class_SGGAME_S2C_fieldinfos+18},
-		{"QueryBagEnd", 1, _class_SGGAME_S2C_fieldinfos+20},
-		{"EnhanceCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+21},
-		{"RefreshEquipDone", 1, _class_SGGAME_S2C_fieldinfos+22},
-		{"GemCombineResult", 1, _class_SGGAME_S2C_fieldinfos+23},
-		{"HaloIncreaseEXPResult", 1, _class_SGGAME_S2C_fieldinfos+24},
-		{"HaloGetCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+25},
-		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+26},
-		{"EndBattleResult", 6, _class_SGGAME_S2C_fieldinfos+27},
-		{"QueryPlayerQuestResult", 3, _class_SGGAME_S2C_fieldinfos+33},
-		{"FinishQuestDone", 10, _class_SGGAME_S2C_fieldinfos+36},
-		{"QueryPlayerPVPInfoResult", 1, _class_SGGAME_S2C_fieldinfos+46},
-		{"QueryPlayerRankListResult", 2, _class_SGGAME_S2C_fieldinfos+47},
-		{"BuyGoodsResult", 2, _class_SGGAME_S2C_fieldinfos+49},
-		{"PVPCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+51},
-		{"PVPGetRestTimeResult", 1, _class_SGGAME_S2C_fieldinfos+52},
-		{"PVPRecordResult", 2, _class_SGGAME_S2C_fieldinfos+53},
-		{"PVPHeroListRecord", 2, _class_SGGAME_S2C_fieldinfos+55},
-		{"PVPDailyReward", 4, _class_SGGAME_S2C_fieldinfos+57},
-		{"PVPBattleBeginResult", 3, _class_SGGAME_S2C_fieldinfos+61},
-		{"PVPBattleEndResult", 1, _class_SGGAME_S2C_fieldinfos+64},
-		{"PVPCoolDownClearResult", 0, _class_SGGAME_S2C_fieldinfos+65},
-		{"PVPIncreateBattleTimesResult", 1, _class_SGGAME_S2C_fieldinfos+65},
-		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+66},
-		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+68},
-		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+69},
-		{"EndInstanceBattleResult", 6, _class_SGGAME_S2C_fieldinfos+70},
-		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+76},
-		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+79},
-		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+81},
-		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+83},
-		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+84},
-		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+86},
-		{"QueryLeagueMemberInfoResult", 0, _class_SGGAME_S2C_fieldinfos+88},
-		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+88},
-		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+91},
-		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+95},
-		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+98},
+		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+0},
+		{"GetServerListResult", 3, _class_SGGAME_S2C_fieldinfos+1},
+		{"QueryAvatarFailed", 1, _class_SGGAME_S2C_fieldinfos+4},
+		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+5},
+		{"CreateAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+6},
+		{"QueryPlayerResult", 2, _class_SGGAME_S2C_fieldinfos+7},
+		{"QueryGeneralResult", 3, _class_SGGAME_S2C_fieldinfos+9},
+		{"QuerySoldierResult", 3, _class_SGGAME_S2C_fieldinfos+12},
+		{"QueryBagBegin", 0, _class_SGGAME_S2C_fieldinfos+15},
+		{"QueryBagEquipt", 2, _class_SGGAME_S2C_fieldinfos+15},
+		{"QueryBagUsable", 2, _class_SGGAME_S2C_fieldinfos+17},
+		{"QueryBagGen", 2, _class_SGGAME_S2C_fieldinfos+19},
+		{"QueryBagEnd", 1, _class_SGGAME_S2C_fieldinfos+21},
+		{"EnhanceCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+22},
+		{"RefreshEquipDone", 1, _class_SGGAME_S2C_fieldinfos+23},
+		{"GemCombineResult", 1, _class_SGGAME_S2C_fieldinfos+24},
+		{"HaloIncreaseEXPResult", 1, _class_SGGAME_S2C_fieldinfos+25},
+		{"HaloGetCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+26},
+		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+27},
+		{"EndBattleResult", 6, _class_SGGAME_S2C_fieldinfos+28},
+		{"QueryPlayerQuestResult", 3, _class_SGGAME_S2C_fieldinfos+34},
+		{"FinishQuestDone", 10, _class_SGGAME_S2C_fieldinfos+37},
+		{"BuyGoodsResult", 2, _class_SGGAME_S2C_fieldinfos+47},
+		{"QueryPlayerPVPInfoResult", 1, _class_SGGAME_S2C_fieldinfos+49},
+		{"QueryPlayerRankListResult", 2, _class_SGGAME_S2C_fieldinfos+50},
+		{"PVPCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+52},
+		{"PVPGetRestTimeResult", 1, _class_SGGAME_S2C_fieldinfos+53},
+		{"PVPRecordResult", 2, _class_SGGAME_S2C_fieldinfos+54},
+		{"PVPHeroListRecord", 2, _class_SGGAME_S2C_fieldinfos+56},
+		{"PVPDailyReward", 4, _class_SGGAME_S2C_fieldinfos+58},
+		{"PVPBattleBeginResult", 3, _class_SGGAME_S2C_fieldinfos+62},
+		{"PVPBattleEndResult", 1, _class_SGGAME_S2C_fieldinfos+65},
+		{"PVPCoolDownClearResult", 0, _class_SGGAME_S2C_fieldinfos+66},
+		{"PVPIncreateBattleTimesResult", 1, _class_SGGAME_S2C_fieldinfos+66},
+		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+67},
+		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+69},
+		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+70},
+		{"EndInstanceBattleResult", 6, _class_SGGAME_S2C_fieldinfos+71},
+		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+77},
+		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+80},
+		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+82},
+		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+84},
+		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+85},
+		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+87},
+		{"QueryLeagueMemberInfoResult", 0, _class_SGGAME_S2C_fieldinfos+89},
+		{"ContributeLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+89},
+		{"HandleApplyResult", 2, _class_SGGAME_S2C_fieldinfos+91},
+		{"QueryLeagueNoticeResult", 1, _class_SGGAME_S2C_fieldinfos+93},
+		{"SetLeagueNoticeResult", 2, _class_SGGAME_S2C_fieldinfos+94},
+		{"SetLeagueOwnerResult", 1, _class_SGGAME_S2C_fieldinfos+96},
+		{"SetMemberPositionResult", 3, _class_SGGAME_S2C_fieldinfos+97},
+		{"DismissMemberResult", 1, _class_SGGAME_S2C_fieldinfos+100},
+		{"ExitLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+101},
+		{"QueryLeagueLogResult", 2, _class_SGGAME_S2C_fieldinfos+102},
+		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+104},
+		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+107},
+		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+111},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 49, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 58, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

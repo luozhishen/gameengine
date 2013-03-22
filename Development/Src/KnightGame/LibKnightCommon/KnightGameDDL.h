@@ -151,9 +151,9 @@ struct KNIGHT_SKILL_ACTIVE_CONFIG : KNIGHT_SKILL_CONFIG
 {
 	_U8 Element;
 	_U8 FormulaType;
-	_U32 AveValue;
-	_U32 Range;
-	_U32 FormulaRatio;
+	_S32 AveValue;
+	_S32 Range;
+	_F32 FormulaRatio;
 	_F32 Probability;
 };
 
@@ -172,31 +172,12 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_KNIGHT_SKILL_ACTIVE_CONFIG_info;
 }
 
-struct KNIGHT_SKILL_PASSIVE_CONFIG : KNIGHT_SKILL_CONFIG
-{
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<KNIGHT_SKILL_PASSIVE_CONFIG>(KNIGHT_SKILL_PASSIVE_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<KNIGHT_SKILL_PASSIVE_CONFIG>(const KNIGHT_SKILL_PASSIVE_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<KNIGHT_SKILL_PASSIVE_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_KNIGHT_SKILL_PASSIVE_CONFIG_info;
-}
-
 struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> BuffName;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
-	_U32 Duration;
+	_S32 Duration;
 };
 
 namespace DDL
@@ -217,7 +198,6 @@ namespace DDLReflect
 struct KNIGHT_BUFF_STATS : KNIGHT_BUFF_CONFIG
 {
 	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> AttrModSetting;
-	_U8 AddForever;
 };
 
 namespace DDL
@@ -279,6 +259,7 @@ namespace DDLReflect
 
 struct KNIGHT_BUFF_DAMAGE_CORRECTION : KNIGHT_BUFF_CONFIG
 {
+	_U8 AtkElemType;
 	DDL::Array<KNIGHT_ELEM_DAMAGE_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> ElementCorrection;
 	DDL::Array<KNIGHT_WEAPON_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> WeaponCorrection;
 };
@@ -303,7 +284,7 @@ struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
 	DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX> ElementType;
 	_U8 ElementDefMode;
 	_U32 ElementLevel;
-	_U32 ElementStrengthen;
+	_F32 ElementStrengthen;
 	_U8 ElementSeal;
 	_U8 ElementMiss;
 };
@@ -345,6 +326,28 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_BUFF_CORRECTION_info;
 }
 
+struct KNIGHT_BUFF_ATTACK_SLICES_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	_U8 AttackType;
+	_S32 HitScopeBias;
+	_S32 HitTimingBias;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_ATTACK_SLICES_CORRECTION>(KNIGHT_BUFF_ATTACK_SLICES_CORRECTION& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_ATTACK_SLICES_CORRECTION>(const KNIGHT_BUFF_ATTACK_SLICES_CORRECTION& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_ATTACK_SLICES_CORRECTION>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_ATTACK_SLICES_CORRECTION_info;
+}
+
 struct KNIGHT_ITEM_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
@@ -372,6 +375,8 @@ struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
 	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> InitialValue;
 	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> GrowthValue;
 	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> SkillIDs;
+	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> BuffIDs;
+	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> MantraIDs;
 };
 
 namespace DDL

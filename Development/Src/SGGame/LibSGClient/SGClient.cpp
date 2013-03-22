@@ -11,6 +11,8 @@
 
 namespace Atlas
 {
+	int CSGClient::ms_nLastRanderTime = 0;
+
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), m_C2S(this), m_S2C(this)
 	{
 		m_callback = NULL;
@@ -543,6 +545,13 @@ namespace Atlas
 		m_C2S.ResetInstance(instance_id);
 	}
 
+	void CSGClient::SaveLastTownMap(const char* last_town_map)
+	{
+		m_C2S.SaveLastTownMap(last_town_map);
+
+		m_player.last_town_map = last_town_map;
+	}
+
 	void CSGClient::CreateLeague(const char* league_name)
 	{
 		m_C2S.CreateLeague(league_name);
@@ -588,6 +597,56 @@ namespace Atlas
 		m_C2S.QueryLeagueMemberInfo(member_id);
 	}
 
+	void CSGClient::ContributeLeague(_U32 rmb, _U32 energy)
+	{
+		m_C2S.ContributeLeague(rmb, energy);
+	}
+
+	void CSGClient::HandleApply(_U32 applyer_id, _U8 allowed)
+	{
+		m_C2S.HandleApply(applyer_id, allowed);
+	}
+
+	void CSGClient::QueryLeagueNotice()
+	{
+		m_C2S.QueryLeagueNotice();
+	}
+
+	void CSGClient::SetLeagueNotice(_U32 league_id, const char* notice_content)
+	{
+		m_C2S.SetLeagueNotice(league_id, notice_content);
+	}
+
+	void CSGClient::SetLeagueOwner(_U32 member_id)
+	{
+		m_C2S.SetLeagueOwner(member_id);
+	}
+
+	void CSGClient::DissolveLeague()
+	{
+		m_C2S.DissolveLeague();
+	}
+
+	void CSGClient::SetMemberPosition(_U32 member_id, _U8 position)
+	{
+		m_C2S.SetMemberPosition(member_id, position);
+	}
+
+	void CSGClient::DismissMember(_U32 member_id)
+	{
+		m_C2S.DismissMember(member_id);
+	}
+
+	void CSGClient::ExitLeague()
+	{
+		m_C2S.ExitLeague();
+	}
+
+	void CSGClient::QueryLeagueLog()
+	{
+		m_C2S.QueryLeagueLog();
+	}
+
 	void CSGClient::SalaryGet()
 	{
 		m_C2S.SalaryGet();
@@ -606,6 +665,11 @@ namespace Atlas
 	void CSGClient::EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot)
 	{
 		m_C2S.EquipTurboSkill(skill_slot);
+		
+		//help to sync data
+		Atlas::Vector<_U8> vecSync;
+		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+		SyncSet(vecSync);
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -1248,6 +1312,79 @@ namespace Atlas
 		}
 	}
 
+	void CSGClient::ContributeLeagueResult(CSGClient* pClient, const SG_LEAGUE_MEMBER& self_info, const SG_LEAGUE& league_info)
+	{
+		if(m_callback)
+		{
+			m_callback->ContributeLeagueResult(self_info, league_info);
+		}
+	}
+
+	void CSGClient::HandleApplyResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_MEMBER& new_joiner)
+	{
+		if(m_callback)
+		{
+			m_callback->HandleApplyResult(ret, new_joiner);
+		}
+	}
+
+	void CSGClient::QueryLeagueNoticeResult(CSGClient* pClient, const char* notice_content)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueNoticeResult(notice_content);
+		}
+	}
+
+	void CSGClient::SetLeagueNoticeResult(CSGClient* pClient, _U8 ret, const char* notice_content)
+	{
+		if(m_callback)
+		{
+			m_callback->SetLeagueNoticeResult(ret, notice_content);
+		}
+	}
+
+	void CSGClient::SetLeagueOwnerResult(CSGClient* pClient, _U8 ret)
+	{
+		if(m_callback)
+		{
+			m_callback->SetLeagueOwnerResult(ret);
+		}
+	}
+
+	void CSGClient::SetMemberPositionResult(CSGClient* pClient, _U8 ret, _U32 member_id, _U8 position)
+	{
+		if(m_callback)
+		{
+			m_callback->SetMemberPositionResult(ret, member_id, position);
+		}
+	}
+
+	void CSGClient::DismissMemberResult(CSGClient* pClient, _U8 ret)
+	{
+		if(m_callback)
+		{
+			m_callback->DismissMemberResult(ret);
+		}
+	}
+
+	void CSGClient::ExitLeagueResult(CSGClient* pClient, _U8 ret)
+	{
+		if(m_callback)
+		{
+			m_callback->ExitLeagueResult(ret);
+		}
+	}
+
+	void CSGClient::QueryLeagueLogResult(CSGClient* pClient, const SG_LEAGUE_LOG* league_log, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueLogResult(league_log, count);
+		}
+	}
+
+
 	void CSGClient::SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold)
 	{
 		if(m_callback)
@@ -1307,21 +1444,6 @@ namespace Atlas
 		}
 	}
 
-	//void CSGClient::PVPBattleResult(CSGClient* pClient, _U32 reputation)
-	//{
-	//	//help to sync data
-	//	Atlas::Vector<_U8> vecSync;
-	//	vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
-	//	SyncSet(vecSync);
-
-	//	if(m_callback)
-	//	{
-	//		m_player.reputation += reputation;
-
-	//		m_callback->PVPBattleResult(reputation);
-	//	}
-	//}
-
 	void CSGClient::OnLoginDone()
 	{
 		CClient::OnLoginDone();
@@ -1356,6 +1478,23 @@ namespace Atlas
 		{
 			m_nConnectPingTime = 0;
 			if(m_callback) m_callback->NetworkTestResult(false);
+		}
+
+		//action poll
+		if(ms_nLastRanderTime == 0)
+		{
+			if(m_nServerTimeDelta != 0)
+			{
+				
+			}
+		}
+		else
+		{
+			if(GetServerTime() - ms_nLastRanderTime >= SG_CLIENT_EVENT_POLL_TIMEOUT)
+			{
+				//GetDailyAction
+				ms_nLastRanderTime = GetServerTime();
+			}
 		}
 	}
 

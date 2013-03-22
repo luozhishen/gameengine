@@ -10,8 +10,10 @@
 
 struct CONTENT_EXECEL_FIELDINFO
 {
-	Atlas::String colum;
+	Atlas::String column;
 	Atlas::String field;
+	Atlas::String defval;
+	bool notempty;
 	CONTENT_EXCEL_ENUM* _enum;
 };
 
@@ -186,28 +188,28 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 				return false;
 			}
 
-			Json::Value col = item.get("c", Json::Value());
-			Json::Value fld = item.get("f", Json::Value());
-			Json::Value enu = item.get("e", Json::Value(""));
-			if(!col.isString() || !fld.isString() || !enu.isString())
+			Json::Value col = item.get("column",		Json::Value());
+			Json::Value fld = item.get("field",		Json::Value());
+			Json::Value def = item.get("default",	Json::Value(""));
+			Json::Value notempty = item.get("notempty", Json::Value(false));
+			Json::Value enu = item.get("enum",		Json::Value(""));
+			if(!col.isString() || !fld.isString() || !def.isString() || !notempty.isBool() || !enu.isString())
 			{
 				m_errmsg = Atlas::StringFormat("template [%s] fields[%d] invalid value", names[t].c_str(), i);
 			}
 
-			DDLReflect::FIELD_INFO finfo;
-			const void* fdata;
-			if(!DDLReflect::GetStructFieldInfo(tmpl.info, fld.asCString(), (const void*)NULL, finfo, fdata))
+			if(DDLReflect::GetStructFieldOffset(tmpl.info, fld.asCString())==(_U32)-1)
 			{
-				m_errmsg = Atlas::StringFormat("template [%s] fields[%d] error in GetStructFieldInfo(%s, %s)", names[t].c_str(), i, tmpl.info->name, fld.asCString());
+				m_errmsg = Atlas::StringFormat("template [%s] fields[%d] error in GetStructFieldData(%s, %s)", names[t].c_str(), i, tmpl.info->name, fld.asCString());
 				return false;
 			}
 
 			Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
 			for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
 			{
-				if(fi->second.colum==col.asString())
+				if(fi->second.column==col.asString())
 				{
-					m_errmsg = Atlas::StringFormat("template [%s] fields[%d] colum[%s] already existed", names[t].c_str(), i, col.asCString());
+					m_errmsg = Atlas::StringFormat("template [%s] fields[%d] column[%s] already existed", names[t].c_str(), i, col.asCString());
 					return false;
 				}
 				if(fi->second.field==fld.asString())
@@ -218,8 +220,10 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			}
 
 			CONTENT_EXECEL_FIELDINFO fieldinfo;
-			fieldinfo.colum = col.asCString();
-			fieldinfo.field = fld.asCString();
+			fieldinfo.column = col.asString();
+			fieldinfo.field = fld.asString();
+			fieldinfo.defval = def.asString();
+			fieldinfo.notempty = notempty.asBool();
 			if(enu.asString().empty())
 			{
 				fieldinfo._enum = NULL;
@@ -306,7 +310,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
 		for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
 		{
-			field_map[fi->second.colum] = &fi->second;
+			field_map[fi->second.column] = &fi->second;
 		}
 	}
 	else
@@ -358,9 +362,15 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				m_errmsg = "error in GetCellValue";
 				return false;
 			}
-			if(!val.empty())
+
+			if(val.empty() && !i->second->defval.empty())
 			{
-				bExit = false;
+				val = i->second->defval;
+			}
+			if(val.empty() && i->second->notempty)
+			{
+				m_errmsg = Atlas::StringFormat("value cannot empty %s", Atlas::StringFormat("%s%d", i->first.c_str(), row).c_str());
+				return false;
 			}
 
 			if(i->second->_enum)

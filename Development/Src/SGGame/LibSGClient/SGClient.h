@@ -48,7 +48,6 @@ namespace Atlas
 		virtual void PVPRecordResult(const SG_PVP_RECORD_ITEM* record, _U32 count) = 0;				
 		virtual void PVPHeroListRecord(const SG_PLAYER* players, _U32 count) = 0;					
 		virtual void PVPDailyReward(_U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count) = 0;
-		//virtual void PVPBattleResult(_U32 reputation) = 0;
 		virtual void PVPBattleBeginResult(const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo) = 0;
 		virtual void PVPBattleEndResult(_U32 reputation) = 0;	
 		virtual void PVPCoolDownClearResult() = 0;						
@@ -67,10 +66,21 @@ namespace Atlas
 		virtual void QueryLeagueMemberListResult(const SG_LEAGUE_MEMBER* league_members, _U32 count) = 0;
 		virtual void QueryLeagueMemberInfoResult() = 0;
 
+		virtual void ContributeLeagueResult(const SG_LEAGUE_MEMBER& self_info, const SG_LEAGUE& league_info) = 0;
+		virtual void HandleApplyResult(_U8 ret, const SG_LEAGUE_MEMBER& new_joiner) = 0;								
+		virtual void QueryLeagueNoticeResult(const char* notice_content) = 0;
+		virtual void SetLeagueNoticeResult(_U8 ret, const char* notice_content) = 0;								
+		virtual void SetLeagueOwnerResult(_U8 ret) = 0;																
+		virtual void SetMemberPositionResult(_U8 ret, _U32 member_id, _U8 position) = 0;							
+		virtual void DismissMemberResult(_U8 ret) = 0;																
+		virtual void ExitLeagueResult(_U8 ret) = 0;										
+		virtual void QueryLeagueLogResult(const SG_LEAGUE_LOG* league_log, _U32 count) = 0;
+
 		virtual void SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold) = 0;				
 		virtual void SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times) = 0;
 
 		virtual void EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt) = 0;
+
 	};
 
 	class CSGClient : public CClient
@@ -150,7 +160,6 @@ namespace Atlas
 		void PVPRecord();														//对战记录		
 		void PVPHeroList();														//英雄榜			
 		void PVPDailyReward();													//pvp每日奖励之类
-		//void PVPBattle(_U32 defender, _U8 result);							//pvp战斗 0-succ 1-failed
 		void PVPBattleBegin(_U32 defender);										//pvp战斗开始 
 		void PVPBattleEnd(_U32 defender, _U8 ret);								//pvp战斗结束 0-succ 1-failed
 		void PVPCoolDownClear();												//pvp清楚挑战冷却时间
@@ -161,6 +170,7 @@ namespace Atlas
 		void BeginInstanceBattle(_U32 instance_id, const char* map_url);		//开始副本战斗
 		void EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result);				//结束副本战斗
 		void ResetInstance(_U32 instance_id);									//重置副本
+		void SaveLastTownMap(const char* last_town_map);						//保存最后一次的地图信息
 
 		void CreateLeague(const char* league_name);								//战盟 创建
 		void ApplyJoinLeague(_U32 league_id);									//申请加入战盟		
@@ -170,6 +180,17 @@ namespace Atlas
 		void QueryLeagueMemberList(_U32 league_id);								//查询league_id战盟当前成员
 		void QueryLeagueMemberInfo(_U32 member_id);								//显示成员选中tips
 		
+		void ContributeLeague(_U32 rmb, _U32 energy);							//战盟捐献
+		void HandleApply(_U32 applyer_id, _U8 allowed);							//批准加入 1-同意 0-拒绝
+		void QueryLeagueNotice();												//查询战盟公告
+		void SetLeagueNotice(_U32 league_id, const char* notice_content);		//设置战盟公告
+		void SetLeagueOwner(_U32 member_id);									//转交战盟
+		void DissolveLeague();													//解散
+		void SetMemberPosition(_U32 member_id, _U8 position);					//升职 0-普通成员 1-副团长 2-团长
+		void DismissMember(_U32 member_id);										//开除
+		void ExitLeague();														//退出战盟
+		void QueryLeagueLog();													//战盟日志
+
 		void SalaryGet();														//获取每日军饷
 		void SalaryGetBat();													//批量获取 max = 10
 
@@ -213,7 +234,6 @@ namespace Atlas
 		void PVPRecordResult(CSGClient* pClient, const SG_PVP_RECORD_ITEM* record, _U32 count);					//对战记录			
 		void PVPHeroListRecord(CSGClient* pClient, const SG_PLAYER* players, _U32 count);						//英雄榜				
 		void PVPDailyReward(CSGClient* pClient, _U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count);	//pvp每日奖励 增量
-		//void PVPBattleResult(CSGClient* pClient, _U32 reputation);											//pvp战斗结果返回
 		void PVPBattleBeginResult(CSGClient* pClient, const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo);	//pvp战斗
 		void PVPBattleEndResult(CSGClient* pClient, _U32 reputation);											//pvp战斗结束 
 		void PVPCoolDownClearResult(CSGClient* pClient);														//pvp清楚挑战冷却时间
@@ -232,6 +252,16 @@ namespace Atlas
 		void QueryLeagueMemberListResult(CSGClient* pClient, const SG_LEAGUE_MEMBER* league_members, _U32 count);	
 		void QueryLeagueMemberInfoResult(CSGClient* pClient);
 		
+		void ContributeLeagueResult(CSGClient* pClient, const SG_LEAGUE_MEMBER& self_info, const SG_LEAGUE& league_info);
+		void HandleApplyResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_MEMBER& new_joiner);								//ret 0-succ 1-failed
+		void QueryLeagueNoticeResult(CSGClient* pClient, const char* notice_content);
+		void SetLeagueNoticeResult(CSGClient* pClient, _U8 ret, const char* notice_content);								//ret 0-succ 1-failed 失败带回原先的公告
+		void SetLeagueOwnerResult(CSGClient* pClient, _U8 ret);																//ret 0-succ 1-failed
+		void SetMemberPositionResult(CSGClient* pClient, _U8 ret, _U32 member_id, _U8 position);							//ret 0-succ 1-failed 如果成功则带回新职位失败不关心
+		void DismissMemberResult(CSGClient* pClient, _U8 ret);																//ret 0-succ 1-failed	
+		void ExitLeagueResult(CSGClient* pClient, _U8 ret);										
+		void QueryLeagueLogResult(CSGClient* pClient, const SG_LEAGUE_LOG* league_log, _U32 count);
+
 		void SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold);									//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
 		void SalaryGetBatResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold, _U32 times);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
 
@@ -285,13 +315,15 @@ namespace Atlas
 
 		Atlas::Vector<_U32> m_newSoldiers;				//新获得的可解锁的soldier
 		Atlas::Vector<A_UUID> m_newItemList;			//新获得的物品
-
+		
 		int m_nServerTimeDelta;
 		Atlas::CSGSyncDataManager* m_pSyncMgr;
 		_U64 m_nConnectPingTime;
 
 		Atlas::Vector<SG_SERVER_INFO> m_serverList;		//目前的server
 		_U32 m_lastServerID;							//最后一次登陆的server的ID
+
+		static int ms_nLastRanderTime;					//上次一tick的时间
 	};
 
 }

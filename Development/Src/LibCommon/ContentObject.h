@@ -46,9 +46,6 @@ namespace Atlas
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object);
 
-		bool FindFirstEx(const DDLReflect::STRUCT_INFO* info, const Map<String, String>& cond, const A_CONTENT_OBJECT*& object);
-		bool FindNextEx(const DDLReflect::STRUCT_INFO* info, const Map<String, String>& cond, const A_CONTENT_OBJECT*& object);
-
 		bool LoadContent(const char* path=NULL, bool ignore=true);
 		bool LoadContentFromBinaryFile(const char* filename, const char* deskey);
 		bool SaveContent(const char* path=NULL, bool force=false);

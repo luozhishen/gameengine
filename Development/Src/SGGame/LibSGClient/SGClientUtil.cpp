@@ -11,6 +11,8 @@
 
 namespace Atlas
 {
+	Atlas::Vector<SG_DAILY_ACTION_CACHE> ms_dailyActionCacheList;
+
 	void SGClientUtil::SetRightLocation(const A_CONTENT_OBJECT* content_obj, const SG_EQUIP_SLOTS& slots, const A_UUID& uuid)
 	{
 		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == SG_EQUIPT_TYPE_WEAPON_JINZHAN
@@ -93,6 +95,39 @@ namespace Atlas
 			}
 		
 			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+		}
+	}
+
+	void SGClientUtil::GetDailyActionEvent(_U32 time, const SG_PLAYER& player_info, Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& notifyVec)
+	{
+		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_DAILY_ACTION_CONFIG >();
+		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+
+		for(_U32 i = 0; i < player_info.daily_actions._Count; ++i)
+		{
+			/*
+			//ms_dailyActionCacheList
+			tm *tblock;
+			tblock = localtime(&((time_t)time));
+
+			//convert time to the same day's
+			tm today_tm = *tblock;
+			today_tm.tm_sec = 0;
+
+			while(content_obj)
+			{
+				SG_DAILY_ACTION_CONFIG* config = (SG_DAILY_ACTION_CONFIG*)content_obj;
+				if(config->action_id != player_info.daily_actions._Array[i].action_id)
+				{
+					continue;
+				}
+
+				today_tm.tm_min = config->min;
+				today_tm.tm_hour = config->hour;
+				time_t ready_time = mktime(&today_tm);
+				content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			}
+			*/
 		}
 	}
 

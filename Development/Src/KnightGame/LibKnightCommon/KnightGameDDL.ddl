@@ -73,21 +73,13 @@ struct KNIGHT_SKILL_ACTIVE_CONFIG : KNIGHT_SKILL_CONFIG
 {
 	_U8														Element;
 	_U8														FormulaType;
-	_U32													AveValue;
-	_U32													Range;
-	_U32													FormulaRatio;
+	_S32													AveValue;
+	_S32													Range;
+	_F32													FormulaRatio;
 	_F32													Probability;
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_SKILL_ACTIVE_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_SKILL_ACTIVE_CONFIG)];
-
-//Skill Passive
-struct KNIGHT_SKILL_PASSIVE_CONFIG : KNIGHT_SKILL_CONFIG
-{
-
-}
-task[GEN_STRUCT_SERIALIZE(KNIGHT_SKILL_PASSIVE_CONFIG)];
-task[GEN_STRUCT_REFLECT(KNIGHT_SKILL_PASSIVE_CONFIG)];
 
 //************************BUFF**************************//
 //Buff
@@ -96,7 +88,7 @@ struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
 	string<KNIGHT_DESCRIPTION_MAX>							BuffName;
 	string<KNIGHT_DESCRIPTION_MAX>							Desc;
-	_U32													Duration;					
+	_S32													Duration;					
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_CONFIG)];
@@ -105,7 +97,6 @@ task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_CONFIG)];
 struct KNIGHT_BUFF_STATS : KNIGHT_BUFF_CONFIG
 {
 	array<KNIGHT_ATTRIBUTE_MODIFY_SETTING,KNIGHT_ARRAY_ELEMENT_MAX>		AttrModSetting;
-	_U8																	AddForever;
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_STATS)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_STATS)];
@@ -129,6 +120,7 @@ task[GEN_STRUCT_REFLECT(KNIGHT_WEAPON_CORRECTION)];
 
 struct KNIGHT_BUFF_DAMAGE_CORRECTION : KNIGHT_BUFF_CONFIG
 {
+	_U8																	AtkElemType;
 	array<KNIGHT_ELEM_DAMAGE_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>		ElementCorrection;
 	array<KNIGHT_WEAPON_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>			WeaponCorrection;
 }
@@ -141,7 +133,7 @@ struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
 	array<_U8,KNIGHT_ARRAY_ELEMENT_MAX>									ElementType;
 	_U8																	ElementDefMode;
 	_U32																ElementLevel;
-	_U32																ElementStrengthen;
+	_F32																ElementStrengthen;
 	_U8																	ElementSeal;
 	_U8																	ElementMiss;
 }
@@ -157,6 +149,16 @@ struct KNIGHT_BUFF_BUFF_CORRECTION : KNIGHT_BUFF_CONFIG
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_BUFF_CORRECTION)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_BUFF_CORRECTION)];
+
+//************************BUFF_ATTACK_SLICES_CORRECTION******************//
+struct KNIGHT_BUFF_ATTACK_SLICES_CORRECTION : KNIGHT_BUFF_CONFIG
+{
+	_U8														AttackType;
+	_S32													HitScopeBias;
+	_S32													HitTimingBias;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_ATTACK_SLICES_CORRECTION)];
+task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_ATTACK_SLICES_CORRECTION)];
 
 //************************ITEM**************************//    
 //Item
@@ -177,6 +179,8 @@ struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
 	array<KNIGHT_ATTRIBUTE_MODIFY_SETTING,KNIGHT_ARRAY_ELEMENT_MAX>	GrowthValue;
 
 	array<string<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX>	SkillIDs;
+	array<string<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX>	BuffIDs;
+	array<string<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX>	MantraIDs;
 };
 task[GEN_STRUCT_SERIALIZE(KNIGHT_EQUIPMENT_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_EQUIPMENT_CONFIG)];

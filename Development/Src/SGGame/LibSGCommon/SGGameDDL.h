@@ -213,6 +213,8 @@ struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 	_F32 HIT;
 	_F32 EVASION;
 	_F32 CRIT;
+	_F32 X;
+	_F32 Y;
 	DDL::String<ARCHETYPE_URL_LENGTH_MAX> skill_archetype;
 	DDL::String<SG_SKILL_DESC_MAX> skill_desc;
 };
@@ -1581,6 +1583,7 @@ struct SG_PLAYER : SG_GENERAL
 	_U8 increase_equipt_times;
 	_U8 title;
 	_U32 reputation;
+	_U32 energy;
 	_U32 halo_level;
 	_U32 halo_exp;
 	DDL::Array<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX> daily_actions;

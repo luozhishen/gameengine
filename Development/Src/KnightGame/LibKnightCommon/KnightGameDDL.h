@@ -471,6 +471,206 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CONFIG_info;
 }
 
+class KNIGHTGAME_C2S;
+
+class KNIGHTGAME_S2C;
+
+namespace DDLStub
+{
+
+	template<typename CALLER, typename CLASS>
+	class KNIGHTGAME_C2S : public DDLStub<CALLER, CLASS>
+	{
+	public:
+		KNIGHTGAME_C2S(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
+		{
+		}
+
+		virtual bool Dispatcher(CALLER* Caller, _U16 fid, DDL::BufferReader& Buf)
+		{
+			if(fid==0)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Ping(Caller);
+				return true;
+			}
+			if(fid==1)
+			{
+				_U32 __length;
+				char* _prefix_val;
+
+				// <string> <val> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_val = (char*)alloca(sizeof(_prefix_val[0])*(__length+1));
+				if(!_prefix_val) return false;
+				if(!Buf.ReadBuffer(_prefix_val, (unsigned int)sizeof(_prefix_val[0])*__length)) return false;
+				_prefix_val[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Set(Caller, _prefix_val);
+				return true;
+			}
+			if(fid==2)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Get(Caller);
+				return true;
+			}
+			return false;
+		}
+	};
+
+}
+
+namespace DDLProxy
+{
+
+	template<typename CLIENT, typename BUFFER>
+	class KNIGHTGAME_C2S : public DDLProxy<CLIENT, BUFFER>
+	{
+	public:
+		KNIGHTGAME_C2S(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::KNIGHTGAME_C2S>())
+		{
+		}
+
+		static KNIGHTGAME_C2S<CLIENT, BUFFER> Get(CLIENT* Client)
+		{
+			KNIGHTGAME_C2S<CLIENT, BUFFER> Proxy(Client);
+			return Proxy;
+		}
+
+		bool Ping()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+
+		bool Set(const char* val)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <val> <> <>
+			__length = DDL::StringLength(val);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(val, (unsigned int)sizeof(val[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool Get()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+		}
+	};
+
+}
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<KNIGHTGAME_C2S>();
+}
+
+namespace DDLStub
+{
+
+	template<typename CALLER, typename CLASS>
+	class KNIGHTGAME_S2C : public DDLStub<CALLER, CLASS>
+	{
+	public:
+		KNIGHTGAME_S2C(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
+		{
+		}
+
+		virtual bool Dispatcher(CALLER* Caller, _U16 fid, DDL::BufferReader& Buf)
+		{
+			if(fid==0)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Pong(Caller);
+				return true;
+			}
+			if(fid==1)
+			{
+				_U32 __length;
+				char* _prefix_val;
+
+				// <string> <val> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_val = (char*)alloca(sizeof(_prefix_val[0])*(__length+1));
+				if(!_prefix_val) return false;
+				if(!Buf.ReadBuffer(_prefix_val, (unsigned int)sizeof(_prefix_val[0])*__length)) return false;
+				_prefix_val[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->GetCallback(Caller, _prefix_val);
+				return true;
+			}
+			return false;
+		}
+	};
+
+}
+
+namespace DDLProxy
+{
+
+	template<typename CLIENT, typename BUFFER>
+	class KNIGHTGAME_S2C : public DDLProxy<CLIENT, BUFFER>
+	{
+	public:
+		KNIGHTGAME_S2C(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::KNIGHTGAME_S2C>())
+		{
+		}
+
+		static KNIGHTGAME_S2C<CLIENT, BUFFER> Get(CLIENT* Client)
+		{
+			KNIGHTGAME_S2C<CLIENT, BUFFER> Proxy(Client);
+			return Proxy;
+		}
+
+		bool Pong()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+
+		bool GetCallback(const char* val)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <val> <> <>
+			__length = DDL::StringLength(val);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(val, (unsigned int)sizeof(val[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+	};
+
+}
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<KNIGHTGAME_S2C>();
+}
+
 
 #pragma pack(pop)
 

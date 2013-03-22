@@ -8,6 +8,7 @@
 #include "SGSyncDataManager.h"
 #include "SGClientUtil.h"
 
+#include "SGActionStatusCache.h"
 
 namespace Atlas
 {

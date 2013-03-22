@@ -145,6 +145,8 @@ struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 	_F32						HIT;								//命中加成%
 	_F32						EVASION;							//闪避加成%
 	_F32						CRIT;								//暴击率加成%
+	_F32						X;									//无双点X坐标
+	_F32						Y;									//无双点Y坐标
 	string<ARCHETYPE_URL_LENGTH_MAX>	skill_archetype;			//主动解锁技能archettype
 	string<SG_SKILL_DESC_MAX>			skill_desc;					//解锁技能描述
 };
@@ -910,7 +912,7 @@ task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_CONFIG)];
 
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
-	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1003-pvp每日奖励 1004-每日军饷
+	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1004-pvp每日奖励 1003-每日军饷
 	_U32								times;					//剩余可领取俸禄 1-每日可进行关卡剩余次数 -pvp剩余次数 -pvp每日奖励可领次数 -每日军饷可领次数
 	_U32								reset_time;				//俸禄冷却时间 1-重置的时间标签 -重置的时间标签 -重置的时间标签 -重置的时间标签
 };
@@ -929,6 +931,7 @@ struct SG_PLAYER : SG_GENERAL
 	_U8									increase_equipt_times;	//提高过冷却时间次数
 	_U8									title;					//官职
 	_U32								reputation;				//军功
+	_U32								energy;					//体力
 	
 	_U32								halo_level;				//光环等级
 	_U32								halo_exp;				//光环经验

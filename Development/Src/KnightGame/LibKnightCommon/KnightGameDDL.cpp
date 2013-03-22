@@ -968,3 +968,47 @@ namespace DDLReflect
 	}
 }
 
+namespace DDLReflect
+{
+	static FIELD_INFO _class_KNIGHTGAME_C2S_fieldinfos[] = 
+	{
+		// 0 Ping
+		// 1 Set
+		{TYPE_STRING, "val", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 Get
+	};
+	static FUNCTION_INFO _class_KNIGHTGAME_C2S_funcinfos[] = 
+	{
+		{"Ping", 0, _class_KNIGHTGAME_C2S_fieldinfos+0},
+		{"Set", 1, _class_KNIGHTGAME_C2S_fieldinfos+0},
+		{"Get", 0, _class_KNIGHTGAME_C2S_fieldinfos+1},
+	};
+	static CLASS_INFO _class_KNIGHTGAME_C2S_info = { 0, "KNIGHTGAME_C2S", 3, _class_KNIGHTGAME_C2S_funcinfos };
+	template<>
+	const CLASS_INFO* GetClass<KNIGHTGAME_C2S>()
+	{
+		return &_class_KNIGHTGAME_C2S_info;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _class_KNIGHTGAME_S2C_fieldinfos[] = 
+	{
+		// 0 Pong
+		// 1 GetCallback
+		{TYPE_STRING, "val", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+	};
+	static FUNCTION_INFO _class_KNIGHTGAME_S2C_funcinfos[] = 
+	{
+		{"Pong", 0, _class_KNIGHTGAME_S2C_fieldinfos+0},
+		{"GetCallback", 1, _class_KNIGHTGAME_S2C_fieldinfos+0},
+	};
+	static CLASS_INFO _class_KNIGHTGAME_S2C_info = { 0, "KNIGHTGAME_S2C", 2, _class_KNIGHTGAME_S2C_funcinfos };
+	template<>
+	const CLASS_INFO* GetClass<KNIGHTGAME_S2C>()
+	{
+		return &_class_KNIGHTGAME_S2C_info;
+	}
+}
+

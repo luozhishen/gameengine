@@ -25,6 +25,8 @@ namespace DDL
 		if(!Read<_F32>(Value.HIT)) return false;
 		if(!Read<_F32>(Value.EVASION)) return false;
 		if(!Read<_F32>(Value.CRIT)) return false;
+		if(!Read<_F32>(Value.X)) return false;
+		if(!Read<_F32>(Value.Y)) return false;
 		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype)) return false;
 		if(!ReadString<SG_SKILL_DESC_MAX>(Value.skill_desc)) return false;
 		return true;
@@ -48,6 +50,8 @@ namespace DDL
 		if(!Write<_F32>(Value.HIT)) return false;
 		if(!Write<_F32>(Value.EVASION)) return false;
 		if(!Write<_F32>(Value.CRIT)) return false;
+		if(!Write<_F32>(Value.X)) return false;
+		if(!Write<_F32>(Value.Y)) return false;
 		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.skill_archetype)) return false;
 		if(!WriteString<SG_SKILL_DESC_MAX>(Value.skill_desc)) return false;
 		return true;
@@ -84,10 +88,12 @@ namespace DDLReflect
 		{TYPE_F32, "HIT", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, HIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 		{TYPE_F32, "EVASION", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, EVASION), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 		{TYPE_F32, "CRIT", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, CRIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "X", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, X), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Y", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, Y), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 		{TYPE_STRING, "skill_archetype", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 		{TYPE_STRING, "skill_desc", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_desc), NULL, (_U16)SG_SKILL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_DESC_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_TURBO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_TURBO_CONFIG", sizeof(SG_TURBO_CONFIG), 17, _struct_SG_TURBO_CONFIG_fieldinfo, _struct_SG_TURBO_CONFIG_readproc, _struct_SG_TURBO_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_TURBO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_TURBO_CONFIG", sizeof(SG_TURBO_CONFIG), 19, _struct_SG_TURBO_CONFIG_fieldinfo, _struct_SG_TURBO_CONFIG_readproc, _struct_SG_TURBO_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_TURBO_CONFIG>()
 	{
@@ -3275,6 +3281,7 @@ namespace DDL
 		if(!Read<_U8>(Value.increase_equipt_times)) return false;
 		if(!Read<_U8>(Value.title)) return false;
 		if(!Read<_U32>(Value.reputation)) return false;
+		if(!Read<_U32>(Value.energy)) return false;
 		if(!Read<_U32>(Value.halo_level)) return false;
 		if(!Read<_U32>(Value.halo_exp)) return false;
 		if(!ReadArray<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX>(Value.daily_actions)) return false;
@@ -3306,6 +3313,7 @@ namespace DDL
 		if(!Write<_U8>(Value.increase_equipt_times)) return false;
 		if(!Write<_U8>(Value.title)) return false;
 		if(!Write<_U32>(Value.reputation)) return false;
+		if(!Write<_U32>(Value.energy)) return false;
 		if(!Write<_U32>(Value.halo_level)) return false;
 		if(!Write<_U32>(Value.halo_exp)) return false;
 		if(!WriteArray<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX>(Value.daily_actions)) return false;
@@ -3350,6 +3358,7 @@ namespace DDLReflect
 		{TYPE_U8, "increase_equipt_times", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, increase_equipt_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "title", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U32, "reputation", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "energy", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "halo_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, halo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "halo_exp", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, halo_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "daily_actions", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, daily_actions), &_rfl_struct_SG_DAILY_ACTION_INFO_info, (_U16)-1, (_U16)SG_DAILY_ACTION_TYPE_MAX, (_U16)((size_t)(&((DDL::Array<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_DAILY_ACTION_INFO), NULL},
@@ -3366,7 +3375,7 @@ namespace DDLReflect
 		{TYPE_U32, "last_operation_time", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_operation_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "last_town_map", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_town_map), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 25, _struct_SG_PLAYER_fieldinfo, _struct_SG_PLAYER_readproc, _struct_SG_PLAYER_writeproc };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 26, _struct_SG_PLAYER_fieldinfo, _struct_SG_PLAYER_readproc, _struct_SG_PLAYER_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER>()
 	{

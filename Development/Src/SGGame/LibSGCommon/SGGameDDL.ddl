@@ -118,6 +118,7 @@ const _U8 SG_DAILY_ACTION_TYPE_PVP_BATTLE = 2;	//2-pvp挑战次数
 const _U8 SG_DAILY_ACTION_TYPE_PVP_REWARD = 3;	//3-pvp每日奖励
 const _U8 SG_DAILY_ACTION_TYPE_SALARY = 4;		//4-每日军饷可领次数
 const _U32 SG_DAILY_ACTION_NAME_MAX = 128;		
+const _U32 SG_DAILY_ACTION_DESC = 512;			
 
 //vip
 const _U32 SG_VIP_ICON_MAX = 256;
@@ -261,6 +262,15 @@ struct SG_LEAGUE_MEMBER_SETTING_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_MEMBER_SETTING_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_MEMBER_SETTING_CONFIG)];
 
+struct SG_LEAGUE_ACTION_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								action_id;				//活动id
+	string<SG_DAILY_ACTION_NAME_MAX>	action_name;			//活动名字
+	string<SG_DAILY_ACTION_DESC>		desc;					//活动描述
+};
+task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_ACTION_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_LEAGUE_ACTION_CONFIG)];
+
 //PVP事件记录
 struct SG_PVP_RECORD_ITEM : A_LIVE_OBJECT
 {
@@ -359,8 +369,11 @@ struct SG_LEAGUE_MEMBER : A_LIVE_OBJECT
 {
 	_U32								league_id;				//所在战盟ID
 	_U32								member_id;				//成员ID avatar_id
+	_U32								general_id;				//成员general_id
 	string<SG_PLAYER_NAME_MAX>			member_name;			//成员名字
 	_U32								member_level;			//成员Level
+	_U32								member_battle_value;	//成员战斗力
+	_U32								pvp_rank;				//成员pvp排名
 
 	_U8									position;				//所在战盟职位 0-普通成员 1-副团长 2-团长
 	_U32								contribution_value;		//贡献值
@@ -1028,6 +1041,7 @@ class SGGAME_C2S
 	QueryGenerals(_U8 nSync);
 	QuerySoldiers(_U8 nSync);
 	QueryBag(_U8 nSync);
+	QueryOtherPlayers(string current_town_map, _U32 num);
 
 	EquipItem(_U32 general_id, SG_EQUIP_SLOTS slots);
 	EquipGenerals(_U32 generals[count], _U32 count);
@@ -1132,6 +1146,7 @@ class SGGAME_S2C
 	QueryBagUsable(SG_USABLE_ITEM items[count], _U32 count);
 	QueryBagGen(SG_GEM_ITEM items[count], _U32 count);
 	QueryBagEnd(_U8 nSync);
+	QueryOtherPlayersResult(SG_PLAYER players[count], _U32 count);
 
 	EnhanceCoolDownResult(_U32 time);
 	RefreshEquipDone(SG_EQUIPT_ITEM euipt);

@@ -105,8 +105,6 @@ namespace Atlas
 		m_quests.clear();
 
 		m_nConnectPingTime = 0;
-
-		EnterGame();
 	}
 
 	void CSGClient::EnterGame()
@@ -137,6 +135,11 @@ namespace Atlas
 	void CSGClient::QueryBag(_U8 nSync)
 	{
 		m_C2S.QueryBag(nSync);
+	}
+
+	void CSGClient::QueryOtherPlayers(const char* szCurrentTownMap, _U32 nMaxNum)
+	{
+		m_C2S.QueryOtherPlayers(szCurrentTownMap, nMaxNum);
 	}
 
 	void CSGClient::EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots)
@@ -629,6 +632,7 @@ namespace Atlas
 	void CSGClient::DissolveLeague()
 	{
 		m_C2S.DissolveLeague();
+		m_player.league_id = 0;
 	}
 
 	void CSGClient::SetMemberPosition(_U32 member_id, _U8 position)
@@ -909,6 +913,11 @@ namespace Atlas
 		}
 
 		if(m_callback) m_callback->QueryBagDone(m_equipts, m_usables, m_gems);
+	}
+
+	void CSGClient::QueryOtherPlayersResult(CSGClient* pClient, const SG_PLAYER* players, _U32 count)
+	{
+		if(m_callback) m_callback->QueryOtherPlayersResult(players, count);
 	}
 
 	void CSGClient::BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE)
@@ -1376,6 +1385,11 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			if(!ret)
+			{
+				m_player.league_id = 0;
+			}
+			
 			m_callback->ExitLeagueResult(ret);
 		}
 	}

@@ -37,7 +37,7 @@ namespace Atlas
 		bool IsExistInDailyActionCache(_U32 action_id, EActionPeriodType period_type);
 		void UpdateDailyActionCache(_U32 action_id, EActionPeriodType new_period_type);
 
-		//遍历actionVec， 根据time来判定对应的action在什么状态下，结果对应放入status中
+		//根据time来判定对应的action在什么状态下，结果对应放入status中
 		void GetDailActionStatus(_U32 time, Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec);		//EActionPeriodType
 
 	private:

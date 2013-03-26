@@ -25,6 +25,7 @@ namespace Atlas
 		virtual void QueryAvatarDone(const SG_PLAYER& player) = 0;
 		virtual void CreateAvatarResult(_U32 code) = 0;
 		virtual void QueryPlayerResult(const SG_PLAYER& player) = 0;
+		virtual void QueryOtherPlayersResult(const SG_PLAYER* players, _U32 count) = 0;
 
 		virtual void QueryGeneralsDone(const Atlas::Vector<SG_GENERAL>& generals) = 0;
 		virtual void QuerySoldiersDone(const Atlas::Vector<SG_SOLDIER>& soldiers) = 0;
@@ -113,6 +114,7 @@ namespace Atlas
 		void QueryGenerals(_U8 nSync = 0);
 		void QuerySoldiers(_U8 nSync = 0);
 		void QueryBag(_U8 nSync = 0);
+		void QueryOtherPlayers(const char* szCurrentTownMap, _U32 nMaxNum);
 
 		void EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots);
 		void EquipGenerals(const _U32* generals, _U32 count);
@@ -213,6 +215,8 @@ namespace Atlas
 		void QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count);
 		void QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count);
 		void QueryBagEnd(CSGClient* pClient, _U8 nSync = 0);
+		void QueryOtherPlayersResult(CSGClient* pClient, const SG_PLAYER* players, _U32 count);
+
 		void BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
 		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
 		void EnhanceCoolDownResult(CSGClient* pClient, _U32 time);

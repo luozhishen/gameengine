@@ -177,7 +177,7 @@ namespace Atlas
 					break;
 				}
 
-				content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+				//content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
 			}
 		}
 	}

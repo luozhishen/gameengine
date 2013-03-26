@@ -52,7 +52,8 @@ namespace Atlas
 		{"SG_PVP_SETTING_CONFIG", "SG_PVP_SETTING_CONFIG.json", "increase_pay_rmb"},
 
 		{"SG_VIP_CONFIG", "SG_VIP_CONFIG.json", "vip_level"},
-		{"SG_TURBO_CONFIG", "SG_TURBO_CONFIG.json", "general_id,turbo_level"}
+		{"SG_TURBO_CONFIG", "SG_TURBO_CONFIG.json", "general_id,turbo_level"},
+		{"SG_LEAGUE_ACTION_CONFIG", "SG_LEAGUE_ACTION_CONFIG.json", "action_id"}
 
 	};
 
@@ -148,6 +149,8 @@ namespace Atlas
 		pContentGroup->Register(DDLReflect::GetStruct< SG_VIP_CONFIG >(), true, g_JsonContent[i++].keys);
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_TURBO_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_LEAGUE_ACTION_CONFIG >(), true, g_JsonContent[i++].keys);
 
 
 //#define CREATE_CONTENT_GROUP_AND_REGISTER(CONFIG, EXPAND_NAME, KEYS) \

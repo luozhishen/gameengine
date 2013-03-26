@@ -24,6 +24,7 @@ namespace Atlas
 			->Register(DDLReflect::GetStruct<DATATEST_BASE_CONFIG>(),false,"name");
 
 		ContentObject::CreateContentGroup("KnightConfig", "KnightConfig.json", false)
+			->Register(DDLReflect::GetStruct<KNIGHT_SKILL_CONFIG>(),false,"name")
 			->Register(DDLReflect::GetStruct<KNIGHT_SKILL_ACTIVE_CONFIG>(),false,"name")
 			->Register(DDLReflect::GetStruct<KNIGHT_BUFF_CONFIG>(),false,"name")
 			->Register(DDLReflect::GetStruct<KNIGHT_BUFF_STATS>(),false,"name")

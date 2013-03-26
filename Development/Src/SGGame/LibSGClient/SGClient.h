@@ -18,6 +18,7 @@ namespace Atlas
 
 		virtual void SyncDone() = 0;
 		virtual void DataUpdate(int nDataType) = 0;
+		virtual void NotifyAction(_U32 nActoinID, _U8 nActionType) = 0;
 
 		virtual void GetServerListResult(const SG_SERVER_INFO* infos, _U32 count, _U32 last_server) = 0;
 		virtual void QueryAvatarFailed(_U32 code) = 0;
@@ -70,9 +71,9 @@ namespace Atlas
 		virtual void HandleApplyResult(_U8 ret, const SG_LEAGUE_MEMBER& new_joiner) = 0;								
 		virtual void QueryLeagueNoticeResult(const char* notice_content) = 0;
 		virtual void SetLeagueNoticeResult(_U8 ret, const char* notice_content) = 0;								
-		virtual void SetLeagueOwnerResult(_U8 ret) = 0;																
+		virtual void SetLeagueOwnerResult(_U8 ret, _U32 member_id) = 0;																
 		virtual void SetMemberPositionResult(_U8 ret, _U32 member_id, _U8 position) = 0;							
-		virtual void DismissMemberResult(_U8 ret) = 0;																
+		virtual void DismissMemberResult(_U8 ret, _U32 member_id) = 0;																
 		virtual void ExitLeagueResult(_U8 ret) = 0;										
 		virtual void QueryLeagueLogResult(const SG_LEAGUE_LOG* league_log, _U32 count) = 0;
 
@@ -256,9 +257,9 @@ namespace Atlas
 		void HandleApplyResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_MEMBER& new_joiner);								//ret 0-succ 1-failed
 		void QueryLeagueNoticeResult(CSGClient* pClient, const char* notice_content);
 		void SetLeagueNoticeResult(CSGClient* pClient, _U8 ret, const char* notice_content);								//ret 0-succ 1-failed 失败带回原先的公告
-		void SetLeagueOwnerResult(CSGClient* pClient, _U8 ret);																//ret 0-succ 1-failed
+		void SetLeagueOwnerResult(CSGClient* pClient, _U8 ret, _U32 member_id);												//ret 0-succ 1-failed
 		void SetMemberPositionResult(CSGClient* pClient, _U8 ret, _U32 member_id, _U8 position);							//ret 0-succ 1-failed 如果成功则带回新职位失败不关心
-		void DismissMemberResult(CSGClient* pClient, _U8 ret);																//ret 0-succ 1-failed	
+		void DismissMemberResult(CSGClient* pClient, _U8 ret, _U32 member_id);												//ret 0-succ 1-failed	
 		void ExitLeagueResult(CSGClient* pClient, _U8 ret);										
 		void QueryLeagueLogResult(CSGClient* pClient, const SG_LEAGUE_LOG* league_log, _U32 count);
 
@@ -287,6 +288,7 @@ namespace Atlas
 		const int GetServerTime();
 		SG_ITEM* GetItemByUUID(const A_UUID& uuid);
 		void GetFinishedQuest(Atlas::Vector<SG_QUEST_LIVE_INFO>& quest_vec);
+		void GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec);
 
 		void GetNewSoldierList(Atlas::Vector<_U32>& soldier_lists);
 		bool HasNewSoldier();

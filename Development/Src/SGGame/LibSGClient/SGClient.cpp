@@ -13,6 +13,7 @@
 namespace Atlas
 {
 	int CSGClient::ms_nLastRanderTime = 0;
+	static Atlas::SGActionStatusCache g_actionStatusCache;
 
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), m_C2S(this), m_S2C(this)
 	{
@@ -104,6 +105,8 @@ namespace Atlas
 		m_quests.clear();
 
 		m_nConnectPingTime = 0;
+
+		EnterGame();
 	}
 
 	void CSGClient::EnterGame()
@@ -1345,11 +1348,11 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::SetLeagueOwnerResult(CSGClient* pClient, _U8 ret)
+	void CSGClient::SetLeagueOwnerResult(CSGClient* pClient, _U8 ret, _U32 member_id)
 	{
 		if(m_callback)
 		{
-			m_callback->SetLeagueOwnerResult(ret);
+			m_callback->SetLeagueOwnerResult(ret, member_id);
 		}
 	}
 
@@ -1361,11 +1364,11 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::DismissMemberResult(CSGClient* pClient, _U8 ret)
+	void CSGClient::DismissMemberResult(CSGClient* pClient, _U8 ret, _U32 member_id)
 	{
 		if(m_callback)
 		{
-			m_callback->DismissMemberResult(ret);
+			m_callback->DismissMemberResult(ret, member_id);
 		}
 	}
 
@@ -1395,6 +1398,15 @@ namespace Atlas
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
 			
+				for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
+				{
+					if(m_player.daily_actions._Array[i].action_id == 1003)
+					{
+						m_player.daily_actions._Array[i].times = m_player.daily_actions._Array[i].times + 1;
+						break;
+					}
+				}
+
 				//help to sync data
 				Atlas::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
@@ -1413,6 +1425,15 @@ namespace Atlas
 			{
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
+
+				for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
+				{
+					if(m_player.daily_actions._Array[i].action_id == 1003)
+					{
+						m_player.daily_actions._Array[i].times = times;
+						break;
+					}
+				}
 
 				//help to sync data
 				Atlas::Vector<_U8> vecSync;
@@ -1486,16 +1507,30 @@ namespace Atlas
 		{
 			if(m_nServerTimeDelta != 0)
 			{
-				
-			}
-		}
-		else
-		{
-			if(GetServerTime() - ms_nLastRanderTime >= SG_CLIENT_EVENT_POLL_TIMEOUT)
-			{
-				//GetDailyAction
 				ms_nLastRanderTime = GetServerTime();
 			}
+			else
+			{
+				return;
+			}
+		}
+
+		if(GetServerTime() - ms_nLastRanderTime >= SG_CLIENT_EVENT_POLL_TIMEOUT)
+		{
+			//GetDailyAction
+			Atlas::Vector<_U32> actionVec;
+			Atlas::Vector<_U8>	notifyTypeVec;
+			g_actionStatusCache.GetDailyActionEvent(GetServerTime(), actionVec, notifyTypeVec);
+
+			for(size_t i = 0; i < actionVec.size(); ++i)
+			{
+				if(m_callback)
+				{
+					m_callback->NotifyAction(actionVec[i], notifyTypeVec[i]);
+				}
+			}
+
+			ms_nLastRanderTime = GetServerTime();
 		}
 	}
 
@@ -1594,6 +1629,11 @@ namespace Atlas
 				quest_vec.push_back(*it);
 			}
 		}
+	}
+
+	void CSGClient::GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec)
+	{
+		g_actionStatusCache.GetDailActionStatus(GetServerTime(), actionVec, statusVec);
 	}
 
 	void CSGClient::GetNewSoldierList(Atlas::Vector<_U32>& soldier_lists)

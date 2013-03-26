@@ -43,7 +43,7 @@ CStructEditView::~CStructEditView()
 {
 	if(m_pData)
 	{
-		ATLAS_FREE(m_pData);
+		DDLReflect::DestoryObject(m_pData);
 		m_pData = NULL;
 	}
 }
@@ -51,7 +51,7 @@ CStructEditView::~CStructEditView()
 void CStructEditView::Clear()
 {
 	m_pPropGrid->Clear();
-	if(m_pData) ATLAS_FREE(m_pData);
+	if(m_pData) DDLReflect::DestoryObject(m_pData);
 	m_pInfo = NULL;
 	m_pData = NULL;
 }
@@ -67,7 +67,7 @@ bool CStructEditView::Set(const DDLReflect::STRUCT_INFO* info, const void* data)
 {
 	Clear();
 
-	m_pData = (void*)ATLAS_ALLOC(info->size);
+	m_pData = DDLReflect::CreateObject(info);
 	memcpy(m_pData, data, (size_t)info->size);
 	m_pInfo = info;
 	InitPropGrid(info, m_pData);

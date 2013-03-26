@@ -4290,12 +4290,15 @@ namespace DDLStub
 			if(fid==50)
 			{
 				_U8 _prefix_ret;
+				_U32 _prefix_member_id;
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <member_id> <> <>;
+				if(!Buf.Read(_prefix_member_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->SetLeagueOwnerResult(Caller, _prefix_ret);
+				DDLStub<CALLER, CLASS>::GetClass()->SetLeagueOwnerResult(Caller, _prefix_ret, _prefix_member_id);
 				return true;
 			}
 			if(fid==51)
@@ -4318,12 +4321,15 @@ namespace DDLStub
 			if(fid==52)
 			{
 				_U8 _prefix_ret;
+				_U32 _prefix_member_id;
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <member_id> <> <>;
+				if(!Buf.Read(_prefix_member_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->DismissMemberResult(Caller, _prefix_ret);
+				DDLStub<CALLER, CLASS>::GetClass()->DismissMemberResult(Caller, _prefix_ret, _prefix_member_id);
 				return true;
 			}
 			if(fid==53)
@@ -5087,11 +5093,13 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 49, Buf);
 		}
 
-		bool SetLeagueOwnerResult(_U8 ret)
+		bool SetLeagueOwnerResult(_U8 ret, _U32 member_id)
 		{
 			BUFFER Buf;
 			// <_U8> <ret> <> <>
 			if(!Buf.Write(ret)) return false;
+			// <_U32> <member_id> <> <>
+			if(!Buf.Write(member_id)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 50, Buf);
@@ -5111,11 +5119,13 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 51, Buf);
 		}
 
-		bool DismissMemberResult(_U8 ret)
+		bool DismissMemberResult(_U8 ret, _U32 member_id)
 		{
 			BUFFER Buf;
 			// <_U8> <ret> <> <>
 			if(!Buf.Write(ret)) return false;
+			// <_U32> <member_id> <> <>
+			if(!Buf.Write(member_id)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 52, Buf);

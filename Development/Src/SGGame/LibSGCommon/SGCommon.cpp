@@ -52,7 +52,7 @@ namespace Atlas
 		{"SG_PVP_SETTING_CONFIG", "SG_PVP_SETTING_CONFIG.json", "increase_pay_rmb"},
 
 		{"SG_VIP_CONFIG", "SG_VIP_CONFIG.json", "vip_level"},
-		{"SG_TURBO_CONFIG", "SG_TURBO_CONFIG.json", "turbo_level"}
+		{"SG_TURBO_CONFIG", "SG_TURBO_CONFIG.json", "general_id,turbo_level"}
 
 	};
 

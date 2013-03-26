@@ -35,7 +35,7 @@
       <Project>{ed44f362-6b0a-4d84-9089-2e0a89cdbecc}</Project>
     </ProjectReference>
     <ProjectReference Include="..\LibKnightCommon\LibKnightCommon.vcxproj">
-      <Project>{9a814d45-3d49-46b6-a21a-ca4e86a915e8}</Project>
+      <Project>{8e724abb-fbdc-4a27-b09d-335d9dfb2eb4}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">

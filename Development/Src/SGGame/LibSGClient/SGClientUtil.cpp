@@ -11,8 +11,6 @@
 
 namespace Atlas
 {
-	
-
 	void SGClientUtil::SetRightLocation(const A_CONTENT_OBJECT* content_obj, const SG_EQUIP_SLOTS& slots, const A_UUID& uuid)
 	{
 		if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_type == SG_EQUIPT_TYPE_WEAPON_JINZHAN

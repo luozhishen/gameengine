@@ -103,10 +103,10 @@ namespace DDLReflect
 	bool Json2Call(const FUNCTION_INFO* def, const Atlas::String& json, _U32& len, _U8* data);
 
 	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Json::Value& Value);
-	bool Json2Struct(const STRUCT_INFO* def, const Json::Value& Value, _U8* data);
+	bool Json2Struct(const STRUCT_INFO* def, const Json::Value& Value, _U8* data, bool ignore=false);
 
 	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Atlas::String& json);
-	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data);
+	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data, bool ignore=false);
 
 	template<typename T>
 	inline bool Struct2Json(const T& data, Atlas::String& json)
@@ -131,10 +131,6 @@ namespace DDLReflect
 	bool StructParamFromString(const FIELD_INFO* finfo, void* data, const char* str);
 	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Atlas::String& str, FIELD_INFO* finfo=NULL);
 	bool StructParamFromString(const STRUCT_INFO* info, const char* name, void* data, const char* str);
-
-	bool StructParamType(const FIELD_INFO* finfo, Atlas::String& type);
-	bool StructParamType(const STRUCT_INFO* info, _U16 index, Atlas::String& type);
-	bool StructParamType(const STRUCT_INFO* info, const char* name, Atlas::String& type);
 
 	void* CreateObject(const STRUCT_INFO* info);
 	void DestoryObject(void* data);

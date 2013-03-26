@@ -24,8 +24,8 @@ namespace DDLReflect
 	static bool struct_jsonread(const _U8* buf, const STRUCT_INFO* def, Json::Value& value);
 	static bool struct_jsonread(const _U8* buf, const FIELD_INFO* def, _U16 count, Json::Value& root);
 	static bool struct_jsonread(const _U8* buf, _U8 type, _U16 slen, Json::Value& value);
-	static bool struct_jsonwrite(const Json::Value& value, const STRUCT_INFO* def, _U8* data);
-	static bool struct_jsonwrite(const Json::Value& value, const FIELD_INFO* def, _U16 count, _U8* data);
+	static bool struct_jsonwrite(const Json::Value& value, const STRUCT_INFO* def, _U8* data, bool ignore);
+	static bool struct_jsonwrite(const Json::Value& value, const FIELD_INFO* def, _U16 count, _U8* data, bool ignore);
 	static bool struct_jsonwrite(const Json::Value& value, _U8 type, _U16 slen, _U8* data);
 
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Json::Value& json)
@@ -63,9 +63,9 @@ namespace DDLReflect
 		return struct_jsonread(data, def, Value);
 	}
 
-	bool Json2Struct(const STRUCT_INFO* def, const Json::Value& Value, _U8* data)
+	bool Json2Struct(const STRUCT_INFO* def, const Json::Value& Value, _U8* data, bool ignore)
 	{
-		return struct_jsonwrite(Value, def, data);
+		return struct_jsonwrite(Value, def, data, ignore);
 	}
 
 	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Atlas::String& json)
@@ -77,12 +77,12 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data)
+	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data, bool ignore)
 	{
 		Json::Value root;
 		Json::Reader reader;
 		if(!reader.parse(json, root)) return false;
-		if(!struct_jsonwrite(root, def, data)) return false;
+		if(!struct_jsonwrite(root, def, data, ignore)) return false;
 		return true;
 	}
 
@@ -504,21 +504,26 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool struct_jsonwrite(const Json::Value& value, const STRUCT_INFO* def, _U8* data)
+	bool struct_jsonwrite(const Json::Value& value, const STRUCT_INFO* def, _U8* data, bool ignore)
 	{
 		if(!value.isObject()) return false;
 		if(def->parent)
 		{
-			if(!struct_jsonwrite(value, def->parent, data)) return false;
+			if(!struct_jsonwrite(value, def->parent, data, ignore)) return false;
 		}
-		return struct_jsonwrite(value, def->finfos, def->fcount, data);
+		return struct_jsonwrite(value, def->finfos, def->fcount, data, ignore);
 	}
 
-	bool struct_jsonwrite(const Json::Value& value, const FIELD_INFO* def, _U16 count, _U8* data)
+	bool struct_jsonwrite(const Json::Value& value, const FIELD_INFO* def, _U16 count, _U8* data, bool ignore)
 	{
 		for(_U16 i=0; i<count; i++)
 		{
-			if(!value.isMember(def[i].name)) return false;
+			if(!value.isMember(def[i].name))
+			{
+				if(ignore) continue;
+				return false;
+			}
+
 			const Json::Value& svalue = value[def[i].name];
 
 			if(def[i].type&TYPE_ARRAY)
@@ -534,7 +539,7 @@ namespace DDLReflect
 				{
 					if((def[i].type&TYPE_MASK)==TYPE_STRUCT)
 					{
-						if(!struct_jsonwrite(svalue[a], def[i].sinfo, data+def[i].offset+def[i].prefix+def[i].elen*a)) return false;
+						if(!struct_jsonwrite(svalue[a], def[i].sinfo, data+def[i].offset+def[i].prefix+def[i].elen*a, ignore)) return false;
 					}
 					else
 					{
@@ -546,7 +551,7 @@ namespace DDLReflect
 			{
 				if(def[i].type==TYPE_STRUCT)
 				{
-					if(!struct_jsonwrite(svalue, def[i].sinfo, data+def[i].offset)) return false;
+					if(!struct_jsonwrite(svalue, def[i].sinfo, data+def[i].offset, ignore)) return false;
 				}
 				else 
 				{
@@ -876,6 +881,10 @@ namespace DDLReflect
 		{
 			json = Atlas::StringFormat("{\"%s\":\"%s\"}", finfo->name, str);
 		}
+		else if(finfo->type==TYPE_F32 || finfo->type==TYPE_F64)
+		{
+			json = Atlas::StringFormat("{\"%s\":%s%s}", finfo->name, *str=='.'?"0":"", str);
+		}
 		else
 		{
 			json = Atlas::StringFormat("{\"%s\":%s}", finfo->name, str);
@@ -899,52 +908,6 @@ namespace DDLReflect
 		void* fdata = GetStructFieldData(info, name, data, finfo);
 		if(!fdata) return false;
 		if(!StructParamFromString(&finfo, fdata, str)) return false;
-		return true;
-	}
-
-	bool StructParamType(const FIELD_INFO* finfo, Atlas::String& type)
-	{
-		char name[100];
-		switch(finfo->type&TYPE_MASK)
-		{
-		case DDLReflect::TYPE_U8:		sprintf(name, "%s", "_U8"); break;
-		case DDLReflect::TYPE_U16:		sprintf(name, "%s", "_U16"); break;
-		case DDLReflect::TYPE_U32:		sprintf(name, "%s", "_U32"); break;
-		case DDLReflect::TYPE_U64:		sprintf(name, "%s", "_U64"); break;
-		case DDLReflect::TYPE_S8:		sprintf(name, "%s", "_S8"); break;
-		case DDLReflect::TYPE_S16:		sprintf(name, "%s", "_S16"); break;
-		case DDLReflect::TYPE_S32:		sprintf(name, "%s", "_S32"); break;
-		case DDLReflect::TYPE_S64:		sprintf(name, "%s", "_S64"); break;
-		case DDLReflect::TYPE_F32:		sprintf(name, "%s", "_F32"); break;
-		case DDLReflect::TYPE_F64:		sprintf(name, "%s", "_F64"); break;
-		case DDLReflect::TYPE_STRING:	sprintf(name, "string<%d>", finfo->slen); break;
-		case DDLReflect::TYPE_UUID:		sprintf(name, "%s", "A_UUID"); break;
-		case DDLReflect::TYPE_UUID_REF:	sprintf(name, "content_ref<%s>", finfo->ref_type); break;
-		case DDLReflect::TYPE_STRUCT:	sprintf(name, "%s", finfo->sinfo->name); break;
-		default: return false;
-		}
-		if((finfo->type&DDLReflect::TYPE_ARRAY)==0)
-		{
-			type = name;
-		}
-		else
-		{
-			type = Atlas::StringFormat("array<%s, %d>", name, finfo->alen);
-		}
-		return true;
-	}
-
-	bool StructParamType(const STRUCT_INFO* info, _U16 index, Atlas::String& type)
-	{
-		if(index>=info->fcount) return false;
-		return StructParamType(&info->finfos[index], type);
-	}
-
-	bool StructParamType(const STRUCT_INFO* info, const char* name, Atlas::String& type)
-	{
-		FIELD_INFO finfo;
-		if(GetStructFieldOffset(info, name, &finfo)!=(_U32)-1) return false;
-		if(!StructParamType(&finfo, type)) return false;
 		return true;
 	}
 

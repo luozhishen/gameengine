@@ -209,6 +209,52 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<KNIGHT_CALC_CONFIG>(KNIGHT_CALC_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!Read<_F32>(Value.Influence)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<KNIGHT_CALC_CONFIG>(const KNIGHT_CALC_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!Write<_F32>(Value.Influence)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_KNIGHT_CALC_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<KNIGHT_CALC_CONFIG>(*((KNIGHT_CALC_CONFIG*)data));
+	}
+
+	static bool _struct_KNIGHT_CALC_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<KNIGHT_CALC_CONFIG>(*((const KNIGHT_CALC_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_KNIGHT_CALC_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_CALC_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
+		{TYPE_F32, "Influence", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_CALC_CONFIG, Influence), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_KNIGHT_CALC_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_CALC_CONFIG", sizeof(KNIGHT_CALC_CONFIG), 2, _struct_KNIGHT_CALC_CONFIG_fieldinfo, _struct_KNIGHT_CALC_CONFIG_readproc, _struct_KNIGHT_CALC_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_CALC_CONFIG>()
+	{
+		return &_rfl_struct_KNIGHT_CALC_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<KNIGHT_SKILL_CONFIG>(KNIGHT_SKILL_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -965,50 +1011,6 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<KNIGHT_WEAPON_CONFIG>()
 	{
 		return &_rfl_struct_KNIGHT_WEAPON_CONFIG_info;
-	}
-}
-
-namespace DDLReflect
-{
-	static FIELD_INFO _class_KNIGHTGAME_C2S_fieldinfos[] = 
-	{
-		// 0 Ping
-		// 1 Set
-		{TYPE_STRING, "val", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 Get
-	};
-	static FUNCTION_INFO _class_KNIGHTGAME_C2S_funcinfos[] = 
-	{
-		{"Ping", 0, _class_KNIGHTGAME_C2S_fieldinfos+0},
-		{"Set", 1, _class_KNIGHTGAME_C2S_fieldinfos+0},
-		{"Get", 0, _class_KNIGHTGAME_C2S_fieldinfos+1},
-	};
-	static CLASS_INFO _class_KNIGHTGAME_C2S_info = { 0, "KNIGHTGAME_C2S", 3, _class_KNIGHTGAME_C2S_funcinfos };
-	template<>
-	const CLASS_INFO* GetClass<KNIGHTGAME_C2S>()
-	{
-		return &_class_KNIGHTGAME_C2S_info;
-	}
-}
-
-namespace DDLReflect
-{
-	static FIELD_INFO _class_KNIGHTGAME_S2C_fieldinfos[] = 
-	{
-		// 0 Pong
-		// 1 GetCallback
-		{TYPE_STRING, "val", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-	};
-	static FUNCTION_INFO _class_KNIGHTGAME_S2C_funcinfos[] = 
-	{
-		{"Pong", 0, _class_KNIGHTGAME_S2C_fieldinfos+0},
-		{"GetCallback", 1, _class_KNIGHTGAME_S2C_fieldinfos+0},
-	};
-	static CLASS_INFO _class_KNIGHTGAME_S2C_info = { 0, "KNIGHTGAME_S2C", 2, _class_KNIGHTGAME_S2C_funcinfos };
-	template<>
-	const CLASS_INFO* GetClass<KNIGHTGAME_S2C>()
-	{
-		return &_class_KNIGHTGAME_S2C_info;
 	}
 }
 

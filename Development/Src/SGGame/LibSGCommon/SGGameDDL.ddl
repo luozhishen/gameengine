@@ -913,7 +913,7 @@ task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_CONFIG)];
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
 	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1004-pvp每日奖励 1003-每日军饷
-	_U32								times;					//剩余可领取俸禄 1-每日可进行关卡剩余次数 -pvp剩余次数 -pvp每日奖励可领次数 -每日军饷可领次数
+	_U32								times;					//剩余可领取俸禄 1-每日可进行关卡剩余次数 -pvp剩余次数 -pvp每日奖励可领次数 -每日军饷已领取次数
 	_U32								reset_time;				//俸禄冷却时间 1-重置的时间标签 -重置的时间标签 -重置的时间标签 -重置的时间标签
 };
 task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_INFO)];
@@ -1178,9 +1178,9 @@ class SGGAME_S2C
 	HandleApplyResult(_U8 ret, SG_LEAGUE_MEMBER new_joiner);						//ret 0-succ 1-failed
 	QueryLeagueNoticeResult(string notice_content);
 	SetLeagueNoticeResult(_U8 ret, string notice_content);							//ret 0-succ 1-failed 失败带回原先的公告
-	SetLeagueOwnerResult(_U8 ret);													//ret 0-succ 1-failed
+	SetLeagueOwnerResult(_U8 ret, _U32 member_id);									//ret 0-succ 1-failed
 	SetMemberPositionResult(_U8 ret, _U32 member_id, _U8 position);					//ret 0-succ 1-failed 如果成功则带回新职位失败不关心
-	DismissMemberResult(_U8 ret);													//ret 0-succ 1-failed	
+	DismissMemberResult(_U8 ret, _U32 member_id);									//ret 0-succ 1-failed	
 	ExitLeagueResult(_U8 ret);										
 	QueryLeagueLogResult(SG_LEAGUE_LOG league_log[count], _U32 count);
 

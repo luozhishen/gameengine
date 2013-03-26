@@ -335,20 +335,20 @@ bool CContentDataView::CheckModify(bool bClear)
 
 	m_pInfo->Updata();
 
-	A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)ATLAS_ALLOC(m_pCurInfo->size);
+	A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(m_pCurInfo);
 	if(!m_pInfo->Get(m_pCurInfo, obj))
 	{
-		ATLAS_FREE(obj);
+		DDLReflect::DestoryObject(obj);
 		return false;
 	}
 
 	if(memcmp(m_pCurData, obj, (size_t)m_pCurInfo->size)==0)
 	{
-		ATLAS_FREE(obj);
+		DDLReflect::DestoryObject(obj);
 	}
 	else
 	{
-		ATLAS_FREE(obj);
+		DDLReflect::DestoryObject(obj);
 
 		if(wxMessageBox(wxT("save data?"), wxT("!!!"), wxYES_NO)!=wxYES)
 		{
@@ -613,10 +613,10 @@ void CContentDataView::FlashList()
 		if(!skip)
 		{
 			AppendObject(Atlas::ContentObject::GetObjectType(object->uuid), object);
+			count++;
 		}
 
 		object = Atlas::ContentObject::FindNext(info, false, object);
-		count++;
 	}
 
 	if(count>0)

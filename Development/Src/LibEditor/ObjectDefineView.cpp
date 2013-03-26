@@ -118,6 +118,38 @@ void CObjectDefineView::AddObject(const DDLReflect::STRUCT_INFO* info)
 	m_mapItems[info->name] = tid;
 }
 
+bool StructParamType(const DDLReflect::FIELD_INFO* finfo, Atlas::String& type)
+{
+	char name[100];
+	switch(finfo->type&DDLReflect::TYPE_MASK)
+	{
+	case DDLReflect::TYPE_U8:		sprintf(name, "%s", "_U8"); break;
+	case DDLReflect::TYPE_U16:		sprintf(name, "%s", "_U16"); break;
+	case DDLReflect::TYPE_U32:		sprintf(name, "%s", "_U32"); break;
+	case DDLReflect::TYPE_U64:		sprintf(name, "%s", "_U64"); break;
+	case DDLReflect::TYPE_S8:		sprintf(name, "%s", "_S8"); break;
+	case DDLReflect::TYPE_S16:		sprintf(name, "%s", "_S16"); break;
+	case DDLReflect::TYPE_S32:		sprintf(name, "%s", "_S32"); break;
+	case DDLReflect::TYPE_S64:		sprintf(name, "%s", "_S64"); break;
+	case DDLReflect::TYPE_F32:		sprintf(name, "%s", "_F32"); break;
+	case DDLReflect::TYPE_F64:		sprintf(name, "%s", "_F64"); break;
+	case DDLReflect::TYPE_STRING:	sprintf(name, "string<%d>", finfo->slen); break;
+	case DDLReflect::TYPE_UUID:		sprintf(name, "%s", "A_UUID"); break;
+	case DDLReflect::TYPE_UUID_REF:	sprintf(name, "content_ref<%s>", finfo->ref_type); break;
+	case DDLReflect::TYPE_STRUCT:	sprintf(name, "%s", finfo->sinfo->name); break;
+	default: return false;
+	}
+	if((finfo->type&DDLReflect::TYPE_ARRAY)==0)
+	{
+		type = name;
+	}
+	else
+	{
+		type = Atlas::StringFormat("array<%s, %d>", name, finfo->alen);
+	}
+	return true;
+}
+
 void CObjectDefineView::ShowObject(const DDLReflect::STRUCT_INFO* info)
 {
 	wxMBConvUTF8 conv;
@@ -134,7 +166,7 @@ void CObjectDefineView::ShowObject(const DDLReflect::STRUCT_INFO* info)
 	for(_U16 i=0; i<info->fcount; i++)
 	{
 		Atlas::String type;
-		DDLReflect::StructParamType(info, i, type);
+		StructParamType(info->finfos+i, type);
 		s += wxT("\t");
 		s += wxString(type.c_str(), conv);
 		s += wxT(" ");

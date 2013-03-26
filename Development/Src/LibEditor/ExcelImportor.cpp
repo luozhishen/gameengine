@@ -367,6 +367,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			{
 				val = i->second->defval;
 			}
+
 			if(val.empty() && i->second->notempty)
 			{
 				m_errmsg = Atlas::StringFormat("value cannot empty %s", Atlas::StringFormat("%s%d", i->first.c_str(), row).c_str());
@@ -391,23 +392,24 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 						bError = true;
 					}
 				}
+				bExit = false;
 			}
 			else
 			{
+				if(!val.empty()) bExit = false;
 				val_map[i->second->field] = val;
 			}
 
 		}
-		if(bExit) break;
 		if(bError) return false;
+		if(bExit) break;
 
-		A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)malloc(tmpl.info->size);
+		A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(tmpl.info);
 		if(!obj)
 		{
 			m_errmsg = "malloc error";
 			return false;
 		}
-		memset(obj, 0, tmpl.info->size);
 
 		Atlas::Map<Atlas::String, Atlas::String>::iterator i1;
 		for(i1=val_map.begin(); i1!=val_map.end(); i1++)
@@ -420,7 +422,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				if(!DDLReflect::StructParamFromString(tmpl.info, i1->first.c_str(), obj, i1->second.c_str()))
 				{
 					m_errmsg = Atlas::StringFormat("error in StructParamFromString(%s, %s, %s)", tmpl.info->name, i1->first.c_str(), i1->second.c_str());
-					free(obj);
+					DDLReflect::DestoryObject(obj);
 					return false;
 				}
 			}
@@ -430,7 +432,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		if(!Atlas::ContentObject::GenContentObjectUniqueId(type_id, obj, pkey))
 		{
 			m_errmsg = "error in GenContentObjectUniqueId";
-			free(obj);
+			DDLReflect::DestoryObject(obj);
 			return false;
 		}
 
@@ -441,7 +443,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			if(info!=tmpl.info)
 			{
 				m_errmsg = Atlas::StringFormat("content object type [%s - %s] not match uniqueid:{%s}", tmpl.info->name, info?info->name:"unknown", pkey.c_str()), 
-				free(obj);
+				DDLReflect::DestoryObject(obj);
 				return false;
 			}
 			old_obj = Atlas::ContentObject::Modify(old_obj->uuid, tmpl.info);
@@ -461,14 +463,14 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				if(!excel->SetCellValue(range, Atlas::String(suuid)))
 				{
 					m_errmsg = "error in SetCellValue";
-					free(obj);
+					DDLReflect::DestoryObject(obj);
 					return false;
 				}
 			}
 		}
 
 		memcpy(old_obj, obj, tmpl.info->size);
-		free(obj);
+		DDLReflect::DestoryObject(obj);
 	}
 
 	Atlas::Set<A_UUID>::iterator it;

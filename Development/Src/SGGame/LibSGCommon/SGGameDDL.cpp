@@ -4067,12 +4067,14 @@ namespace DDLReflect
 		{TYPE_STRING, "notice_content", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 50 SetLeagueOwnerResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 51 SetMemberPositionResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "position", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 52 DismissMemberResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 53 ExitLeagueResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 54 QueryLeagueLogResult
@@ -4144,14 +4146,14 @@ namespace DDLReflect
 		{"HandleApplyResult", 2, _class_SGGAME_S2C_fieldinfos+91},
 		{"QueryLeagueNoticeResult", 1, _class_SGGAME_S2C_fieldinfos+93},
 		{"SetLeagueNoticeResult", 2, _class_SGGAME_S2C_fieldinfos+94},
-		{"SetLeagueOwnerResult", 1, _class_SGGAME_S2C_fieldinfos+96},
-		{"SetMemberPositionResult", 3, _class_SGGAME_S2C_fieldinfos+97},
-		{"DismissMemberResult", 1, _class_SGGAME_S2C_fieldinfos+100},
-		{"ExitLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+101},
-		{"QueryLeagueLogResult", 2, _class_SGGAME_S2C_fieldinfos+102},
-		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+104},
-		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+107},
-		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+111},
+		{"SetLeagueOwnerResult", 2, _class_SGGAME_S2C_fieldinfos+96},
+		{"SetMemberPositionResult", 3, _class_SGGAME_S2C_fieldinfos+98},
+		{"DismissMemberResult", 2, _class_SGGAME_S2C_fieldinfos+101},
+		{"ExitLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+103},
+		{"QueryLeagueLogResult", 2, _class_SGGAME_S2C_fieldinfos+104},
+		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+106},
+		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+109},
+		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+113},
 	};
 	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 58, _class_SGGAME_S2C_funcinfos };
 	template<>

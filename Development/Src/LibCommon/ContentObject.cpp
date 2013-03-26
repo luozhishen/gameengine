@@ -85,7 +85,7 @@ namespace Atlas
 			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>> m_object_map;
 		};
 		static CContentObjectManager g_objct_manager;
-		static bool LoadContentFromJsonFile(const char* filename);
+		static bool LoadContentFromJsonFile(const char* filename, bool ignore);
 
 		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook)
 		{
@@ -505,7 +505,7 @@ namespace Atlas
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				String file = Atlas::StringFormat("%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
-				if(LoadContentFromJsonFile(file.c_str()))
+				if(LoadContentFromJsonFile(file.c_str(), ignore))
 				{
 					i->second._dirty = false;
 				}
@@ -518,7 +518,7 @@ namespace Atlas
 			return true;
 		}
 
-		static bool CreateContentObject(Json::Value elem)
+		static bool CreateContentObject(Json::Value elem, bool ignore)
 		{
 			if(!elem.isObject())
 			{
@@ -550,14 +550,14 @@ namespace Atlas
 			{
 				return false;
 			}
-			if(!DDLReflect::Json2Struct(info, data, (_U8*)object))
+			if(!DDLReflect::Json2Struct(info, data, (_U8*)object, ignore))
 			{
 				return false;
 			}
 			return true;
 		}
 
-		bool LoadContentFromJsonFile(const char* filename)
+		bool LoadContentFromJsonFile(const char* filename, bool ignore)
 		{
 			Json::Value root;
 			std::ifstream f(filename, std::ifstream::binary);
@@ -570,7 +570,7 @@ namespace Atlas
 
 			for(Json::Value::UInt index=0; index<body.size(); index++)
 			{
-				if(!CreateContentObject(body.get(index, Json::Value()))) return false;
+				if(!CreateContentObject(body.get(index, Json::Value()), ignore)) return false;
 			}
 			return true;
 		}

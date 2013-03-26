@@ -54,6 +54,15 @@ struct KNIGHT_ATTRIBUTE_MODIFY_SETTING
 task[GEN_STRUCT_SERIALIZE(KNIGHT_ATTRIBUTE_MODIFY_SETTING)];
 task[GEN_STRUCT_REFLECT(KNIGHT_ATTRIBUTE_MODIFY_SETTING)];
 
+//************************CALC**************************//   
+struct KNIGHT_CALC_CONFIG : A_CONTENT_OBJECT
+{
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
+	_F32													Influence;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_CALC_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_CALC_CONFIG)];
+
 //************************SKILL**************************//                                                          
 // Skill Base
 struct KNIGHT_SKILL_CONFIG : A_CONTENT_OBJECT
@@ -213,25 +222,3 @@ struct KNIGHT_WEAPON_CONFIG : KNIGHT_EQUIPMENT_CONFIG
 };
 task[GEN_STRUCT_SERIALIZE(KNIGHT_WEAPON_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_WEAPON_CONFIG)];
-
-class KNIGHTGAME_C2S
-{
-	Ping();
-
-	Set(string val);
-	Get();
-};
-
-class KNIGHTGAME_S2C
-{
-	Pong();
-
-	GetCallback(string val);
-};
-
-task[GEN_CLASS_STUB(KNIGHTGAME_C2S)];
-task[GEN_CLASS_PROXY(KNIGHTGAME_C2S)];
-task[GEN_CLASS_REFLECT(KNIGHTGAME_C2S)];
-task[GEN_CLASS_STUB(KNIGHTGAME_S2C)];
-task[GEN_CLASS_PROXY(KNIGHTGAME_S2C)];
-task[GEN_CLASS_REFLECT(KNIGHTGAME_S2C)];

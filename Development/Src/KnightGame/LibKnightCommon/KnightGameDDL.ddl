@@ -129,9 +129,9 @@ task[GEN_STRUCT_REFLECT(KNIGHT_WEAPON_CORRECTION)];
 
 struct KNIGHT_BUFF_DAMAGE_CORRECTION : KNIGHT_BUFF_CONFIG
 {
-	_U8																	AtkElemType;
-	array<KNIGHT_ELEM_DAMAGE_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>		ElementCorrection;
-	array<KNIGHT_WEAPON_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>			WeaponCorrection;
+	_U8																	BuffAtkElemType;
+	array<KNIGHT_WEAPON_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>			BuffWeaponAtkCorrection;
+	array<KNIGHT_WEAPON_CORRECTION,KNIGHT_ARRAY_ELEMENT_MAX>			BuffWeaponDefCorrection;
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_DAMAGE_CORRECTION)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_DAMAGE_CORRECTION)];
@@ -139,12 +139,13 @@ task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_DAMAGE_CORRECTION)];
 //************************BUFF_MAGIC_CORRECTION**************************//
 struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
 {
-	array<_U8,KNIGHT_ARRAY_ELEMENT_MAX>									ElementType;
-	_U8																	ElementDefMode;
-	_U32																ElementLevel;
+	array<_U8,KNIGHT_ARRAY_ELEMENT_MAX>									BuffElemType;
+	_F32																BuffElemAtkCorrection;
+	_F32																BuffElemDefCorrection;
+	_U8																	BuffElemDefMode;
 	_F32																ElementStrengthen;
 	_U8																	ElementSeal;
-	_U8																	ElementMiss;
+	_F32																ElementMiss;
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_MAGIC_CORRECTION)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_MAGIC_CORRECTION)];

@@ -180,6 +180,19 @@ namespace Atlas
 	}
 
 	template<>
+	bool DiffCompareTemplateFun<SG_MATERIAL_ITEM>(const SG_MATERIAL_ITEM& t1, const SG_MATERIAL_ITEM& t2)
+	{
+		if(t1.item_id != t2.item_id
+			||t1.count != t2.count
+			)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+	template<>
 	bool DiffCompareTemplateFun<SG_USABLE_ITEM>(const SG_USABLE_ITEM& t1, const SG_USABLE_ITEM& t2)
 	{
 		if(t1.item_id != t2.item_id
@@ -246,6 +259,24 @@ namespace Atlas
 
 		return false;
 	}
+
+	bool SGClientUtil::DiffMaterial(const Atlas::Vector<SG_MATERIAL_ITEM>& material_old, const Atlas::Vector<SG_MATERIAL_ITEM>& material_new)
+	{
+		if(material_old.size() != material_new.size())
+		{
+			return true;
+		}
+
+		for(size_t i = 0; i < material_old.size(); ++i)
+		{
+			if(DiffCompareTemplateFun<SG_MATERIAL_ITEM>(material_old[i], material_new[i]))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 	
 	bool SGClientUtil::DiffQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_old, const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_new)
 	{
@@ -300,6 +331,33 @@ namespace Atlas
 	bool SGClientUtil::IsEmptyQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests)
 	{
 		return quests.empty();
+	}
+
+	_U32 SGClientUtil::GetDailyActionTime(const SG_PLAYER& player_info, _U32 action_id)
+	{
+		for(_U32 i = 0; i < player_info.daily_actions._Count; ++i)
+		{
+			if(player_info.daily_actions._Array[i].action_id == action_id)
+			{
+				return player_info.daily_actions._Array[i].times;
+			}
+		}
+		
+		return 0;
+	}
+
+	bool SGClientUtil::SetDailyActionTimeInCache(SG_PLAYER& player_info, _U32 action_id, _U32 times)
+	{
+		for(_U32 i = 0; i < player_info.daily_actions._Count; ++i)
+		{
+			if(player_info.daily_actions._Array[i].action_id == action_id)
+			{
+				player_info.daily_actions._Array[i].times = times;
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

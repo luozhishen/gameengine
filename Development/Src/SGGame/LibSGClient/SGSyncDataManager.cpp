@@ -16,6 +16,11 @@ namespace Atlas
 
 	CSGSyncDataManager::~CSGSyncDataManager() {}
 
+	void CSGSyncDataManager::SetSGClient(CSGClient* pClient)
+	{
+		m_pClient = pClient;
+	}
+
 	void CSGSyncDataManager::AddAllRequest()
 	{
 		for(int i = eSyncPlayer; i < eSyncMax; ++i)
@@ -87,6 +92,7 @@ namespace Atlas
 				case eSyncEquipt:
 				case eSyncUsable:
 				case eSyncGem:
+				case eSyncMaterial:
 				case eSyncBagEnd:
 					break;
 				case eSyncPlayerQuest:

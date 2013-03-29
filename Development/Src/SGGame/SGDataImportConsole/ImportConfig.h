@@ -34,6 +34,7 @@ namespace Atlas
 	protected:
 		bool GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, Atlas::String& id);
 		bool UpdateCacheData(const A_CONTENT_OBJECT* pObject);//map<column_name, strValue>
+		bool IsWholeLineEmpty(bool bLineHead, Atlas::Map<Atlas::String, Atlas::String>& columnMap, int nRow);
 
 	private:
 		Atlas::Map<Atlas::String, Atlas::Map<Atlas::String, Atlas::String>> m_FieldMaps;	//enum field map     map<table_name, map<field, value>>

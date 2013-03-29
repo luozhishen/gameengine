@@ -280,9 +280,9 @@ namespace DDLReflect
 
 struct KNIGHT_BUFF_DAMAGE_CORRECTION : KNIGHT_BUFF_CONFIG
 {
-	_U8 AtkElemType;
-	DDL::Array<KNIGHT_ELEM_DAMAGE_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> ElementCorrection;
-	DDL::Array<KNIGHT_WEAPON_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> WeaponCorrection;
+	_U8 BuffAtkElemType;
+	DDL::Array<KNIGHT_WEAPON_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> BuffWeaponAtkCorrection;
+	DDL::Array<KNIGHT_WEAPON_CORRECTION, KNIGHT_ARRAY_ELEMENT_MAX> BuffWeaponDefCorrection;
 };
 
 namespace DDL
@@ -302,12 +302,13 @@ namespace DDLReflect
 
 struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
 {
-	DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX> ElementType;
-	_U8 ElementDefMode;
-	_U32 ElementLevel;
+	DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX> BuffElemType;
+	_F32 BuffElemAtkCorrection;
+	_F32 BuffElemDefCorrection;
+	_U8 BuffElemDefMode;
 	_F32 ElementStrengthen;
 	_U8 ElementSeal;
-	_U8 ElementMiss;
+	_F32 ElementMiss;
 };
 
 namespace DDL
@@ -391,13 +392,15 @@ namespace DDLReflect
 
 struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
 {
+	DDL::String<KNIGHT_DESCRIPTION_MAX> EquiptName;
+	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
 	_U32 Level;
 	_U32 Rank;
+	_U32 MantraSize;
 	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> InitialValue;
 	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> GrowthValue;
 	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> SkillIDs;
 	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> BuffIDs;
-	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> MantraIDs;
 };
 
 namespace DDL

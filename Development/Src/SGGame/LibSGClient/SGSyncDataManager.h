@@ -21,6 +21,7 @@ namespace Atlas
 			eSyncEquipt,
 			eSyncUsable,
 			eSyncGem,
+			eSyncMaterial,
 			eSyncBagEnd,
 			eSyncPlayerQuest,
 			eSyncServerTime,
@@ -28,8 +29,10 @@ namespace Atlas
 			eSyncMax,
 		};
 
-		CSGSyncDataManager(CSGClient* pClient);
+		CSGSyncDataManager(CSGClient* pClient = NULL);
 		~CSGSyncDataManager();
+
+		void SetSGClient(CSGClient* pClient);
 
 		void AddAllRequest();
 

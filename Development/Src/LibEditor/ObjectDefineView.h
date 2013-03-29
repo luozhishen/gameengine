@@ -1,6 +1,8 @@
 #ifndef __ATLAS_OBJECT_DEFINE_VIEW__
 #define __ATLAS_OBJECT_DEFINE_VIEW__
 
+class wxPropertyGrid;
+
 class CObjectDefineView : public wxPanel
 {
 	DECLARE_EVENT_TABLE()
@@ -21,11 +23,10 @@ protected:
 
 private:
 	Atlas::Map<Atlas::String, wxTreeItemId> m_mapItems;
-
-	wxTextCtrl* m_pSearchText;
-	wxTreeCtrl* m_pTree;
-	wxTreeItemId m_TreeRoot;
-	wxTextCtrl* m_pInfo;
+	wxTextCtrl*		m_pSearchText;
+	wxTreeCtrl*		m_pTree;
+	wxTreeItemId	m_TreeRoot;
+	wxPropertyGrid*	m_pInfo;
 };
 
 #endif

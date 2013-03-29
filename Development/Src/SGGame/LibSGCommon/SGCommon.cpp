@@ -30,7 +30,7 @@ namespace Atlas
 		{"SG_QUEST_INFO_CONFIG", "SG_QUEST_INFO_CONFIG.json", "quest_id"},
 		{"SG_LEVEL_INFO_CONFIG", "SG_LEVEL_INFO_CONFIG.json", "level_id"},
 		{"SG_DIRTY_WORD_CONFIG", "SG_DIRTY_WORD_CONFIG.json", "dirty_word"},
-		{"SG_PLAYER_RANDOM_NAME_CONFIG", "SG_PLAYER_RANDOM_NAME_CONFIG.json", "family_name"},
+		{"SG_PLAYER_RANDOM_NAME_CONFIG", "SG_PLAYER_RANDOM_NAME_CONFIG.json", "family_name,male_name,female_name"},
 		{"SG_DROP_ITEM_CONFIG", "SG_DROP_ITEM_CONFIG.json", "group_id,item_id"},
 
 		{"SG_LEVEL_DROP_CONFIG", "SG_LEVEL_DROP_CONFIG.json", "level_name"},
@@ -53,8 +53,10 @@ namespace Atlas
 
 		{"SG_VIP_CONFIG", "SG_VIP_CONFIG.json", "vip_level"},
 		{"SG_TURBO_CONFIG", "SG_TURBO_CONFIG.json", "general_id,turbo_level"},
-		{"SG_LEAGUE_ACTION_CONFIG", "SG_LEAGUE_ACTION_CONFIG.json", "action_id"}
-
+		{"SG_LEAGUE_ACTION_CONFIG", "SG_LEAGUE_ACTION_CONFIG.json", "action_id"},
+		{"SG_MATERIAL_CONFIG", "SG_MATERIAL_CONFIG.json", "item_id"},
+		{"SG_LEAGUE_TOAST_CONFIG", "SG_LEAGUE_TOAST_CONFIG.json", "wine_id"}
+		
 	};
 
 	const char* AtlasGameName()
@@ -151,54 +153,10 @@ namespace Atlas
 		pContentGroup->Register(DDLReflect::GetStruct< SG_TURBO_CONFIG >(), true, g_JsonContent[i++].keys);
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_LEAGUE_ACTION_CONFIG >(), true, g_JsonContent[i++].keys);
-
-
-//#define CREATE_CONTENT_GROUP_AND_REGISTER(CONFIG, EXPAND_NAME, KEYS) \
-//	pContentGroup = ContentObject::CreateContentGroup(#CONFIG, #CONFIG##EXPAND_NAME, true); \
-//	pContentGroup->Register(DDLReflect::GetStruct< CONFIG >(), true, KEYS);
-//		
-//		ContentObject::IContentGroup* pContentGroup = NULL;
-//
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_PAY_CONSUME_CONFIG, ".json", "apply_times");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_PAY_REWARD_CONFIG, ".json", "player_level");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_INSTANCE_CONFIG, ".json", "instance_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_LEAGUE_CONFIG, ".json", "league_level");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_LEAGUE_POW_CONFIG, ".json", "pow_type");
-//
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_LEAGUE_MEMBER_SETTING_CONFIG, ".json", "master_num");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_DAILY_ACTION_CONFIG, ".json", "type");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_HALO_CONFIG, ".json", "halo_level");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_HALO_LEVELUP_CONFIG, ".json", "level");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_PLAYER_TITLE_CONFIG, ".json", "title_level");
-//
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_QUEST_INFO_CONFIG, ".json", "quest_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_LEVEL_INFO_CONFIG, ".json", "level_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_DIRTY_WORD_CONFIG, ".json", "dirty_word");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_PLAYER_RANDOM_NAME_CONFIG, ".json", "family_name");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_DROP_ITEM_CONFIG, ".json", "group_id,item_id");
-//
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_LEVEL_DROP_CONFIG, ".json", "level_name");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_ENEMY_CONFIG, ".json", "enemy_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_GENERAL_CONFIG, ".json", "general_id,attr_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_SOLDIER_CONFIG, ".json", "soldier_id,attr_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_GENERAL_LEVEL_CONFIG, ".json", "attr_id,level");
-//
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_SOLDIER_LEVEL_CONFIG, ".json", "attr_id,level");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_ITEM_CONFIG, ".json", "item_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_EQUIPT_ITEM_CONFIG, ".json", "item_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_USABLE_ITEM_CONFIG, ".json", "item_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_GEM_ITEM_CONFIG, ".json", "item_id");
-//
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_GOODS_CONFIG, ".json", "good_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_GOODS_GROUP_CONFIG, ".json", "goods_group_id,good_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_SHOP_CONFIG, ".json", "shop_id,goods_group_id");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_PVP_INFO_CONFIG, ".json", "server_level_lower,server_level_upper,lower,upper");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_PVP_SETTING_CONFIG, ".json", "increase_pay_rmb");
-//
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_VIP_CONFIG, ".json", "vip_level");
-//		CREATE_CONTENT_GROUP_AND_REGISTER(SG_TURBO_CONFIG, ".json", "turbo_level");
-//
-//#undef CREATE_CONTENT_GROUP_AND_REGISTER
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_MATERIAL_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_LEAGUE_TOAST_CONFIG >(), true, g_JsonContent[i++].keys);
 
 	}
 

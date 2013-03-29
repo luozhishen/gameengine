@@ -14,13 +14,15 @@ namespace Atlas
 {
 	int CSGClient::ms_nLastRanderTime = 0;
 	static Atlas::SGActionStatusCache g_actionStatusCache;
+	static Atlas::CSGSyncDataManager g_syncDataManager;
 
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), m_C2S(this), m_S2C(this)
 	{
 		m_callback = NULL;
 		m_nServerTimeDelta = 0;
 		m_nConnectPingTime = 0;
-		m_pSyncMgr = ATLAS_NEW Atlas::CSGSyncDataManager(this);
+		//m_pSyncMgr = new Atlas::CSGSyncDataManager(this);
+		g_syncDataManager.SetSGClient(this);
 		m_lastServerID = SG_INVALID_SERVER_ID;
 	}	
 
@@ -110,6 +112,8 @@ namespace Atlas
 	void CSGClient::EnterGame()
 	{
 		m_C2S.EnterGame();
+
+		
 	}
 
 	void CSGClient::LeaveGame()
@@ -607,6 +611,8 @@ namespace Atlas
 	void CSGClient::ContributeLeague(_U32 rmb, _U32 energy)
 	{
 		m_C2S.ContributeLeague(rmb, energy);
+		m_player.rmb -= rmb;
+		m_player.energy -= energy;
 	}
 
 	void CSGClient::HandleApply(_U32 applyer_id, _U8 allowed)
@@ -655,6 +661,11 @@ namespace Atlas
 		m_C2S.QueryLeagueLog();
 	}
 
+	void CSGClient::LeagueToast(_U8 wine_id)
+	{
+		m_C2S.LeagueToast(wine_id);
+	}
+
 	void CSGClient::SalaryGet()
 	{
 		m_C2S.SalaryGet();
@@ -678,6 +689,11 @@ namespace Atlas
 		Atlas::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
+	}
+
+	void CSGClient::MakeEquipt(_U32 equipt_id)
+	{
+		m_C2S.MakeEquipt(equipt_id);
 	}
 
 	void CSGClient::Pong(CSGClient* pClient)
@@ -731,8 +747,22 @@ namespace Atlas
 		static bool bQueryed = false;
 		if(!bQueryed)
 		{
-			SyncForInit();
+			//EnterGame();
+			//SyncForInit();
 			bQueryed = true;
+		}
+	}
+
+	void CSGClient::EnterGameResult(CSGClient* pClient, _U8 ret)
+	{
+		if(!ret)
+		{
+			SyncForInit();
+		}
+
+		if(m_callback)
+		{
+			m_callback->EnterGameResult(ret);
 		}
 	}
 
@@ -741,7 +771,7 @@ namespace Atlas
 		if(m_callback) m_callback->CreateAvatarResult(code);
 		if(code == 0)
 		{
-			SyncForInit();
+			//EnterGame(); //SyncForInit(); in it
 		}
 	}
 
@@ -761,7 +791,7 @@ namespace Atlas
 		//sync waitting...
 		if(nSync) 
 		{
-			m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncPlayer);
+			g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncPlayer);
 			return;
 		}
 
@@ -791,7 +821,7 @@ namespace Atlas
 		//sync waitting...
 		if(nSync)
 		{
-			m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncGenerals);
+			g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncGenerals);
 			return;
 		}
 			
@@ -820,7 +850,7 @@ namespace Atlas
 
 		if(nSync)
 		{
-			m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncSoldiers);
+			g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncSoldiers);
 			return;
 		}
 
@@ -829,7 +859,7 @@ namespace Atlas
 
 	void CSGClient::QueryBagBegin(CSGClient* pClient)
 	{
-		if(m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncBagBegin))
+		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncBagBegin))
 			return;
 	}
 
@@ -853,7 +883,7 @@ namespace Atlas
 			m_equipts.push_back(items[i]);
 		}
 
-		if(m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncEquipt))
+		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncEquipt))
 			return;
 	}
 
@@ -877,7 +907,7 @@ namespace Atlas
 			m_usables.push_back(items[i]);
 		}
 
-		if(m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncUsable))
+		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncUsable))
 			return;
 	}
 
@@ -901,13 +931,37 @@ namespace Atlas
 			m_gems.push_back(items[i]);
 		}
 
-		if(m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncGem))
+		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncGem))
+			return;
+	}
+
+	void CSGClient::QueryBagMaterial(CSGClient* pClient, const SG_MATERIAL_ITEM* items, _U32 count)
+	{
+		Atlas::Vector<SG_MATERIAL_ITEM> new_materials;
+		SGClientUtil::GenerateTempNewVec<SG_MATERIAL_ITEM>(items, count, new_materials);
+
+		if(SGClientUtil::DiffMaterial(m_materials, new_materials))
+			//&& !SGClientUtil::IsEmptyGem(m_gems))
+		{
+			if(m_callback) 
+			{
+				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncMaterial);
+			}
+		}
+
+		m_materials.clear();
+		for(_U32 i = 0; i < count; ++i)
+		{
+			m_materials.push_back(items[i]);
+		}
+
+		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncMaterial))
 			return;
 	}
 
 	void CSGClient::QueryBagEnd(CSGClient* pClient, _U8 nSync)
 	{
-		if(nSync && m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncBagEnd))
+		if(nSync && g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncBagEnd))
 		{
 			return;
 		}
@@ -1011,7 +1065,7 @@ namespace Atlas
 		time_t t;
 		time(&t);
 		m_nServerTimeDelta = (int)(server_time - (_U32)t);
-		if(m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncServerTime))
+		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncServerTime))
 			return;
 	}
 
@@ -1024,7 +1078,7 @@ namespace Atlas
 		}
 		
 		//sync ...
-		if(nSync && m_pSyncMgr->ReceiveRequest(Atlas::CSGSyncDataManager::eSyncPlayerQuest))
+		if(nSync && g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncPlayerQuest))
 			return;
 
 		if(m_callback)
@@ -1317,11 +1371,11 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::QueryLeagueMemberInfoResult(CSGClient* pClient)
+	void CSGClient::QueryLeagueMemberInfoResult(CSGClient* pClient, const SG_LEAGUE_MEMBER& member_info)
 	{
 		if(m_callback)
 		{
-			m_callback->QueryLeagueMemberInfoResult();
+			m_callback->QueryLeagueMemberInfoResult(member_info);
 		}
 	}
 
@@ -1402,6 +1456,24 @@ namespace Atlas
 		}
 	}
 
+	void CSGClient::LeagueToastResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 rmb, _U32 reward_reputation, _U32 reward_league_xp)
+	{
+		if(m_callback)
+		{
+			if(!ret)
+			{
+				m_player.rmb -= rmb;
+				m_player.gold -= gold;
+				m_player.reputation += reward_reputation;
+
+				_U32 times = SGClientUtil::GetDailyActionTime(m_player, 3001);
+				if(times > 0)
+					SGClientUtil::SetDailyActionTimeInCache(m_player, 3001, times-1);
+			}
+
+			m_callback->LeagueToastResult(ret, gold, rmb, reward_reputation, reward_league_xp);
+		}
+	}
 
 	void CSGClient::SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold)
 	{
@@ -1477,6 +1549,14 @@ namespace Atlas
 			}
 
 			m_callback->EnhanceTurboResult(ret, turbo_level, wake_pt);
+		}
+	}
+
+	void CSGClient::MakeEquiptResult(CSGClient* pClient, _U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material)
+	{
+		if(m_callback)
+		{
+			m_callback->MakeEquiptResult(ret, new_euqipt, com_material, key_material);
 		}
 	}
 
@@ -1581,6 +1661,11 @@ namespace Atlas
 	const Atlas::Vector<SG_USABLE_ITEM>& CSGClient::GetUsableItem()
 	{
 		return m_usables;
+	}
+
+	const Atlas::Vector<SG_MATERIAL_ITEM>& CSGClient::GetMaterialItem()
+	{
+		return m_materials;
 	}
 
 	const SG_SERVER_INFO& CSGClient::GetCurrentServerInfo()
@@ -1707,22 +1792,25 @@ namespace Atlas
 
 	void CSGClient::SyncForInit()
 	{
-		m_pSyncMgr->AddAllRequest();
-		m_pSyncMgr->SendSyncRequest();
+		g_syncDataManager.AddAllRequest();
+		g_syncDataManager.SendSyncRequest();
 	}
 
 	void CSGClient::SyncSet(const Atlas::Vector<_U8> vecSync)
 	{
 		for(size_t i = 0; i < vecSync.size(); ++i)
 		{
-			m_pSyncMgr->AddRequest(vecSync[i]);
+			g_syncDataManager.AddRequest(vecSync[i]);
 		}
 
-		m_pSyncMgr->SendSyncRequest();
+		g_syncDataManager.SendSyncRequest();
 	}
 
 	void CSGClient::SyncSuccNotify()
 	{
-		m_callback->SyncDone();
+		if(m_callback)
+		{
+			m_callback->SyncDone();
+		}
 	}
 }

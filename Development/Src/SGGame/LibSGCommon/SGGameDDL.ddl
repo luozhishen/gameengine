@@ -13,7 +13,7 @@ const _U8 SG_CLIENT_PING_TIMEOUT  = 10;
 const _U8 SG_CLIENT_EVENT_POLL_TIMEOUT = 10;
 
 //Basic
-const _U32 ARCHETYPE_URL_LENGTH_MAX = 128;
+const _U32 ARCHETYPE_URL_LENGTH_MAX = 256;
 const _U32 SG_DESCRIPTION_MAX = 512;
 const _U32 SG_INVALID_SERVER_ID = 255;
 
@@ -58,6 +58,9 @@ const _U32 SG_ITEM_EQUIPT_ID_START  = 40000;
 const _U32 SG_ITEM_EQUIPT_ID_END	= 49999;
 const _U32 SG_ITEM_NAME_MAX			= 32;
 
+//Material
+const _U32 SG_MATERIAL_DESC_MAX = 256;
+
 //Gem
 const _U32 SG_GEM_DESC_MAX = 256;
 
@@ -94,7 +97,7 @@ const _U8 SG_QUEST_STATUS_FINISHED = 5;
 //Title
 const _U32 SG_TITLE_GENERAL_DESC = 512;
 const _U32 SG_TITLE_PROP_DESC = 768;
-const _U32 SG_TITLE_ACRHTYPE_MAX = 256;
+const _U32 SG_TITLE_ACRHTYPE_MAX = 512;
 
 //League
 const _U32 SG_LEAGUE_NAME_MAX = 32;
@@ -109,6 +112,7 @@ const _U32 SG_INSTANCE_REWARD_DES_MAX = 128;
 const _U32 SG_LEAGUE_APPLY_MAX = 10;
 const _U8 SG_LEAGUE_CREATE_SUCC = 0;
 const _U8 SG_LEAGUE_CREATE_FAILED = 1;
+const _U8 SG_LEAUGE_WINE_NAME_MAX = 32;
 
 //daily action type
 const _U32 SG_DAILY_ACTION_TYPE_MAX = 12;		//目前日常活动最大值
@@ -271,6 +275,20 @@ struct SG_LEAGUE_ACTION_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_ACTION_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_ACTION_CONFIG)];
 
+struct SG_LEAGUE_TOAST_CONFIG : A_CONTENT_OBJECT
+{
+	_U8									wine_id;				//酒的id
+	string<SG_LEAGUE_LOG_MAX>			wine_name;				//酒名字
+	_U32								req_vid;				//vip等级要求
+	_U32								consume_gold;			//消耗铜钱
+	_U32								consume_rmb;			//消耗金币
+	_U32								reward_reputation;		//军功(声望)奖励
+	_U32								reward_league_xp;		//战盟经验
+};
+task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_TOAST_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_LEAGUE_TOAST_CONFIG)];
+
+
 //PVP事件记录
 struct SG_PVP_RECORD_ITEM : A_LIVE_OBJECT
 {
@@ -389,6 +407,7 @@ struct SG_LEAGUE_APPLYER : A_LIVE_OBJECT
 	string<SG_PLAYER_NAME_MAX>			applyer_name;			//申请者名字
 	_U32								general_id;				//申请者职业(主将ID)
 	_U32								level;					//申请者等级
+	_U32								rank;					//申请者pvp排名
 	_U32								league_id;				//申请加入战盟的ID 
 	_U8									reason;					//?
 };
@@ -698,6 +717,15 @@ struct SG_ITEM_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_ITEM_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_ITEM_CONFIG)];
 
+//材料
+struct SG_MATERIAL_CONFIG : SG_ITEM_CONFIG
+{
+	string<SG_MATERIAL_DESC_MAX>		desc;				//描述
+	_U32								req_level;			//等级
+};
+task[GEN_STRUCT_SERIALIZE(SG_MATERIAL_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_MATERIAL_CONFIG)];
+
 //装备配置
 struct SG_EQUIPT_ITEM_CONFIG : SG_ITEM_CONFIG				//装备
 {
@@ -1000,6 +1028,14 @@ struct SG_GEM_ITEM : SG_ITEM
 task[GEN_STRUCT_SERIALIZE(SG_GEM_ITEM)];
 task[GEN_STRUCT_REFLECT(SG_GEM_ITEM)];
 
+struct SG_MATERIAL_ITEM : SG_ITEM
+{
+	
+};
+task[GEN_STRUCT_SERIALIZE(SG_MATERIAL_ITEM)];
+task[GEN_STRUCT_REFLECT(SG_MATERIAL_ITEM)];
+
+
 //Misc
 struct SG_SERVER_INFO
 {
@@ -1120,12 +1156,15 @@ class SGGAME_C2S
 	DismissMember(_U32 member_id);									//开除
 	ExitLeague();													//退出战盟
 	QueryLeagueLog();												//战盟日志
+	LeagueToast(_U8 wine_id);										//战盟置酒
 
 	SalaryGet();													//获取每日军饷
 	SalaryGetBat();													//批量获取 max = 10
 
 	EnhanceTurbo();													//提升无双技能
 	EquipTurboSkill(SG_TURBO_SKILL_SLOT skill_slot);				//装备无双技能
+
+	MakeEquipt(_U32 equipt_id);										//装备打造
 };
 
 class SGGAME_S2C
@@ -1136,6 +1175,7 @@ class SGGAME_S2C
 	GetServerListResult(SG_SERVER_INFO infos[count], _U32 count, _U32 last_server);
 	QueryAvatarFailed(_U32 code);
 	QueryAvatarResult(SG_PLAYER player);
+	EnterGameResult(_U8 ret);										//0 - succ
 	CreateAvatarResult(_U32 code);
 
 	QueryPlayerResult(SG_PLAYER player, _U8 nSync);
@@ -1145,6 +1185,7 @@ class SGGAME_S2C
 	QueryBagEquipt(SG_EQUIPT_ITEM items[count], _U32 count);
 	QueryBagUsable(SG_USABLE_ITEM items[count], _U32 count);
 	QueryBagGen(SG_GEM_ITEM items[count], _U32 count);
+	QueryBagMaterial(SG_MATERIAL_ITEM items[count], _U32 count);
 	QueryBagEnd(_U8 nSync);
 	QueryOtherPlayersResult(SG_PLAYER players[count], _U32 count);
 
@@ -1187,7 +1228,7 @@ class SGGAME_S2C
 	QueryLeagueResult(SG_LEAGUE league);							
 	QueryLeagueListResult(SG_LEAGUE league_list[count], _U32 count);
 	QueryLeagueMemberListResult(SG_LEAGUE_MEMBER league_members[count], _U32 count);	
-	QueryLeagueMemberInfoResult();
+	QueryLeagueMemberInfoResult(SG_LEAGUE_MEMBER member_info);
 
 	ContributeLeagueResult(SG_LEAGUE_MEMBER self_info, SG_LEAGUE league_info);
 	HandleApplyResult(_U8 ret, SG_LEAGUE_MEMBER new_joiner);						//ret 0-succ 1-failed
@@ -1198,11 +1239,13 @@ class SGGAME_S2C
 	DismissMemberResult(_U8 ret, _U32 member_id);									//ret 0-succ 1-failed	
 	ExitLeagueResult(_U8 ret);										
 	QueryLeagueLogResult(SG_LEAGUE_LOG league_log[count], _U32 count);
+	LeagueToastResult(_U8 ret, _U32 gold, _U32 rmb, _U32 reward_reputation, _U32 reward_league_xp);		//0-succ 1-failed
 
-	SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold);										//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
-	SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times);						//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
+	SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold);														//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
+	SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times);										//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
 
-	EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt);						//返回新的无双等级和消耗的觉醒点 ret 0-成功 other-failed
+	EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt);																//返回新的无双等级和消耗的觉醒点 ret 0-成功 other-failed
+	MakeEquiptResult(_U8 ret, SG_EQUIPT_ITEM new_euqipt, SG_MATERIAL_ITEM com_material, SG_MATERIAL_ITEM key_material);			//装备打造 com_material,key_material返回使用掉的材料
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

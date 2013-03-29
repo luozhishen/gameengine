@@ -23,6 +23,7 @@ namespace Atlas
 		virtual void GetServerListResult(const SG_SERVER_INFO* infos, _U32 count, _U32 last_server) = 0;
 		virtual void QueryAvatarFailed(_U32 code) = 0;
 		virtual void QueryAvatarDone(const SG_PLAYER& player) = 0;
+		virtual void EnterGameResult(_U8 ret) = 0;
 		virtual void CreateAvatarResult(_U32 code) = 0;
 		virtual void QueryPlayerResult(const SG_PLAYER& player) = 0;
 		virtual void QueryOtherPlayersResult(const SG_PLAYER* players, _U32 count) = 0;
@@ -66,7 +67,7 @@ namespace Atlas
 		virtual void QueryLeagueResult(const SG_LEAGUE& league) = 0;							
 		virtual void QueryLeagueListResult(const SG_LEAGUE* league_list, _U32 count) = 0;
 		virtual void QueryLeagueMemberListResult(const SG_LEAGUE_MEMBER* league_members, _U32 count) = 0;
-		virtual void QueryLeagueMemberInfoResult() = 0;
+		virtual void QueryLeagueMemberInfoResult(const SG_LEAGUE_MEMBER& member_info) = 0;
 
 		virtual void ContributeLeagueResult(const SG_LEAGUE_MEMBER& self_info, const SG_LEAGUE& league_info) = 0;
 		virtual void HandleApplyResult(_U8 ret, const SG_LEAGUE_MEMBER& new_joiner) = 0;								
@@ -77,11 +78,13 @@ namespace Atlas
 		virtual void DismissMemberResult(_U8 ret, _U32 member_id) = 0;																
 		virtual void ExitLeagueResult(_U8 ret) = 0;										
 		virtual void QueryLeagueLogResult(const SG_LEAGUE_LOG* league_log, _U32 count) = 0;
+		virtual void LeagueToastResult(_U8 ret, _U32 gold, _U32 rmb, _U32 reward_reputation, _U32 reward_league_xp) = 0;
 
 		virtual void SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold) = 0;				
 		virtual void SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times) = 0;
 
 		virtual void EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt) = 0;
+		virtual void MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material) = 0;
 
 	};
 
@@ -193,12 +196,14 @@ namespace Atlas
 		void DismissMember(_U32 member_id);										//开除
 		void ExitLeague();														//退出战盟
 		void QueryLeagueLog();													//战盟日志
+		void LeagueToast(_U8 wine_id);											//战盟置酒
 
 		void SalaryGet();														//获取每日军饷
 		void SalaryGetBat();													//批量获取 max = 10
 
 		void EnhanceTurbo();
 		void EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot);			//装备无双技能
+		void MakeEquipt(_U32 equipt_id);										//装备打造
 
 		//result
 		void Pong(CSGClient* pClient);
@@ -206,6 +211,7 @@ namespace Atlas
 		void GetServerListResult(CSGClient* pClient, const SG_SERVER_INFO* infos, _U32 count, _U32 last_server);
 		void QueryAvatarFailed(CSGClient* pClient, _U32 code);
 		void QueryAvatarResult(CSGClient* pClient, const SG_PLAYER& player);
+		void EnterGameResult(CSGClient* pClient, _U8 ret);
 		void CreateAvatarResult(CSGClient* pClient, _U32 code);
 		void QueryPlayerResult(CSGClient* pClient, const SG_PLAYER& player, _U8 nSync = 0);
 		void QueryGeneralResult(CSGClient* pClient, const SG_GENERAL* generals, _U32 count, _U8 nSync = 0);
@@ -214,6 +220,7 @@ namespace Atlas
 		void QueryBagEquipt(CSGClient* pClient, const SG_EQUIPT_ITEM* items, _U32 count);
 		void QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count);
 		void QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count);
+		void QueryBagMaterial(CSGClient* pClient, const SG_MATERIAL_ITEM* items, _U32 count);
 		void QueryBagEnd(CSGClient* pClient, _U8 nSync = 0);
 		void QueryOtherPlayersResult(CSGClient* pClient, const SG_PLAYER* players, _U32 count);
 
@@ -255,7 +262,7 @@ namespace Atlas
 		void QueryLeagueResult(CSGClient* pClient, const SG_LEAGUE& league);							
 		void QueryLeagueListResult(CSGClient* pClient, const SG_LEAGUE* league_list, _U32 count);
 		void QueryLeagueMemberListResult(CSGClient* pClient, const SG_LEAGUE_MEMBER* league_members, _U32 count);	
-		void QueryLeagueMemberInfoResult(CSGClient* pClient);
+		void QueryLeagueMemberInfoResult(CSGClient* pClient, const SG_LEAGUE_MEMBER& member_info);
 		
 		void ContributeLeagueResult(CSGClient* pClient, const SG_LEAGUE_MEMBER& self_info, const SG_LEAGUE& league_info);
 		void HandleApplyResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_MEMBER& new_joiner);								//ret 0-succ 1-failed
@@ -266,12 +273,13 @@ namespace Atlas
 		void DismissMemberResult(CSGClient* pClient, _U8 ret, _U32 member_id);												//ret 0-succ 1-failed	
 		void ExitLeagueResult(CSGClient* pClient, _U8 ret);										
 		void QueryLeagueLogResult(CSGClient* pClient, const SG_LEAGUE_LOG* league_log, _U32 count);
+		void LeagueToastResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 rmb, _U32 reward_reputation, _U32 reward_league_xp);				//ret 0-succ 1-failed
 
 		void SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold);									//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
 		void SalaryGetBatResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold, _U32 times);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
 
-		void EnhanceTurboResult(CSGClient* pClient, _U8 ret, _U32 turbo_level,  _U32 wake_pt);							//返回新的无双等级和消耗的觉醒点 
-
+		void EnhanceTurboResult(CSGClient* pClient, _U8 ret, _U32 turbo_level,  _U32 wake_pt);										//返回新的无双等级和消耗的觉醒点 
+		void MakeEquiptResult(CSGClient* pClient, _U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material);			//装备打造 com_material,key_material返回使用掉的材料
 	public:
 		virtual void OnLoginDone();
 		virtual void OnLoginFailed();
@@ -286,6 +294,7 @@ namespace Atlas
 		const Atlas::Vector<SG_EQUIPT_ITEM>& GetEquiptItem();
 		const Atlas::Vector<SG_GEM_ITEM>& GetGemItem();
 		const Atlas::Vector<SG_USABLE_ITEM>& GetUsableItem();
+		const Atlas::Vector<SG_MATERIAL_ITEM>& GetMaterialItem();
 		const Atlas::Vector<SG_INSTANCE_INFO>& GetInstanceInfo();
 		const SG_SERVER_INFO& GetCurrentServerInfo();
 
@@ -316,6 +325,7 @@ namespace Atlas
 		Atlas::Vector<SG_EQUIPT_ITEM> m_equipts;
 		Atlas::Vector<SG_USABLE_ITEM> m_usables;
 		Atlas::Vector<SG_GEM_ITEM> m_gems;
+		Atlas::Vector<SG_MATERIAL_ITEM> m_materials;
 		Atlas::Vector<SG_QUEST_LIVE_INFO> m_quests;
 		Atlas::Vector<SG_INSTANCE_INFO> m_instances;
 
@@ -323,7 +333,7 @@ namespace Atlas
 		Atlas::Vector<A_UUID> m_newItemList;			//新获得的物品
 		
 		int m_nServerTimeDelta;
-		Atlas::CSGSyncDataManager* m_pSyncMgr;
+		//Atlas::CSGSyncDataManager* m_pSyncMgr;
 		_U64 m_nConnectPingTime;
 
 		Atlas::Vector<SG_SERVER_INFO> m_serverList;		//目前的server

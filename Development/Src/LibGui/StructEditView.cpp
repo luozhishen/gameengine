@@ -8,10 +8,7 @@
 #include <wx/utils.h>
 
 #include <AtlasBase.h>
-
 #include "StructEditView.h"
-#include "GenerateObjectDlg.h"
-#include "ContentDataView.h"
 
 enum
 {
@@ -163,12 +160,6 @@ void CStructEditView::OnPropertyGridChanging(wxPropertyGridEvent &event)
 
 void CStructEditView::InitPropGrid(const DDLReflect::STRUCT_INFO* info, const void* data)
 {
-	if(strcmp(info->name, "SG_TEST")==0)
-	{
-		wxPGProperty* prop = ATLAS_NEW wxDirProperty(wxT("hjkhkhjkh"));
-		m_pPropGrid->Append(prop);
-	}
-
 	if(info->parent) InitPropGrid(info->parent, data);
 	if(info->fcount==0) return;
 

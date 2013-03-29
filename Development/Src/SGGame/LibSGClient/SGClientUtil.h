@@ -18,6 +18,7 @@ namespace Atlas
 		static bool DiffEquipt(const Atlas::Vector<SG_EQUIPT_ITEM>& equipts_old, const Atlas::Vector<SG_EQUIPT_ITEM>& equipts_new);
 		static bool DiffUsable(const Atlas::Vector<SG_USABLE_ITEM>& usables_old, const Atlas::Vector<SG_USABLE_ITEM>& usables_new);
 		static bool DiffGem(const Atlas::Vector<SG_GEM_ITEM>& gems_old, const Atlas::Vector<SG_GEM_ITEM>& gems_new);
+		static bool DiffMaterial(const Atlas::Vector<SG_MATERIAL_ITEM>& material_old, const Atlas::Vector<SG_MATERIAL_ITEM>& material_new);
 		static bool DiffQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_old, const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_new);
 
 		static bool IsEmptyPlayerInfo(const SG_PLAYER& player);
@@ -27,6 +28,9 @@ namespace Atlas
 		static bool IsEmptyUsable(const Atlas::Vector<SG_USABLE_ITEM>& usables);
 		static bool IsEmptyGem(const Atlas::Vector<SG_GEM_ITEM>& gems);
 		static bool IsEmptyQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests);
+
+		static _U32 GetDailyActionTime(const SG_PLAYER& player_info, _U32 action_id);
+		static bool SetDailyActionTimeInCache(SG_PLAYER& player_info, _U32 action_id, _U32 times);
 
 		template<typename T>
 		static void GenerateTempNewVec(const T* t, _U32 count, Atlas::Vector<T>& vec)

@@ -402,12 +402,11 @@ namespace Atlas
 
 		A_CONTENT_OBJECT* pObject = (A_CONTENT_OBJECT*)ATLAS_ALIGN_ALLOC(m_pStructInfo->size);
 		nRow = nStartLine + 1;
-		size_t count;
 		m_nUpdateRowNum = 0;
 		m_nInsertRowNum = 0;
 		do{
 			memset(pObject, 0, (size_t)m_pStructInfo->size);
-			count = 0;
+			bool bWholeLineEmpty = false;
 
 			for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
 			{
@@ -415,13 +414,15 @@ namespace Atlas
 				strRange = wxString::FromUTF8(szTmp);
 				m_pExcelWrapper->GetCellValue(strRange, strValue);
 
-				//line data end
 				if(strValue.empty())
 				{
-					count++;
-					continue;
+					bWholeLineEmpty = IsWholeLineEmpty(it_col == columnMap.begin(), columnMap, nRow);
+					if(bWholeLineEmpty)
+					{
+						break;
+					}
 				}
-	
+
 				Atlas::String fieldvalue = (const char*)strValue.ToUTF8();	
 				//for float append zero at head
 				if(fieldvalue.find(".") == 0)
@@ -463,7 +464,7 @@ namespace Atlas
 				}
 			}
 
-			if(count==columnMap.size())
+			if(bWholeLineEmpty)
 			{
 				break;
 			}
@@ -523,6 +524,37 @@ namespace Atlas
 		pObject->uuid = uuid;
 
 		return true;
+	}
+
+	bool CContentExcelImportManager::IsWholeLineEmpty(bool bLineHead, Atlas::Map<Atlas::String, Atlas::String>& columnMap, int nRow)
+	{
+		static bool bRet = false;
+		if(bLineHead)
+		{
+			Atlas::Map<Atlas::String, Atlas::String>::iterator it_col;
+			int nEmptyCount = 1;
+			for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
+			{
+				char szTmp[32];
+
+				sprintf(szTmp, "%s%d", it_col->first.c_str(), nRow);
+				wxString strRange = wxString::FromUTF8(szTmp);
+				wxString strValue;
+				m_pExcelWrapper->GetCellValue(strRange, strValue);
+				
+				if(strValue.empty())
+				{
+					++nEmptyCount;
+				}
+			}
+
+			if(nEmptyCount >= columnMap.size())
+			{
+				bRet = true;
+			}
+		}
+
+		return bRet;
 	}
 
 	bool CContentExcelImportManager::GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, Atlas::String& id)

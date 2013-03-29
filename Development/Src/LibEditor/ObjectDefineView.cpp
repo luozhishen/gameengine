@@ -11,8 +11,9 @@
 #include <AtlasCommon.h>
 
 #include "ObjectDefineView.h"
-
-#include <sstream>
+#include <wx/propgrid/propgrid.h>
+#include <wx/propgrid/advprops.h>
+#include "PropertyEx.h"
 
 enum
 {
@@ -45,7 +46,8 @@ CObjectDefineView::CObjectDefineView(wxWindow* pParent) : wxPanel(pParent)
 
 	wxSplitterWindow* pSplitter = ATLAS_NEW wxSplitterWindow(this);
 	m_pTree = ATLAS_NEW wxTreeCtrl(pSplitter, ID_OBJECT_TREE, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT | wxTR_HIDE_ROOT);
-	m_pInfo = ATLAS_NEW wxTextCtrl(pSplitter, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY);
+	m_pInfo = ATLAS_NEW wxPropertyGrid(pSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
+
 	pSplitter->SplitVertically(m_pTree, m_pInfo, 200);
 
 	pSizer2->Add(pSizer1, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
@@ -150,30 +152,31 @@ bool StructParamType(const DDLReflect::FIELD_INFO* finfo, Atlas::String& type)
 	return true;
 }
 
-void CObjectDefineView::ShowObject(const DDLReflect::STRUCT_INFO* info)
+void AddStruct(wxPropertyGrid* pGrid, const DDLReflect::STRUCT_INFO* info)
 {
-	wxMBConvUTF8 conv;
-	wxString s;
-	s += wxT("struct ");
-	s += wxString(info->name, conv);
 	if(info->parent)
 	{
-		s += wxT(" : ");
-		s += wxString(info->parent->name, conv);
+		AddStruct(pGrid, info->parent);
 	}
-	s += wxT("\n{\n");
-	
+
+	wxString name;
+	name.Printf(wxT("{%s}"), wxString::FromUTF8(info->name));
+	wxPGProperty* prop = ATLAS_NEW wxPropertyCategory(name);
+	prop->ChangeFlag(wxPG_PROP_READONLY, true);
+	wxPGId prop_id = pGrid->Append(prop);
 	for(_U16 i=0; i<info->fcount; i++)
 	{
 		Atlas::String type;
 		StructParamType(info->finfos+i, type);
-		s += wxT("\t");
-		s += wxString(type.c_str(), conv);
-		s += wxT(" ");
-		s += wxString(info->finfos[i].name, conv);
-		s += wxT(";\n");
+		name = wxString::FromUTF8(info->finfos[i].name);
+		prop = ATLAS_NEW wxStringProperty(name, name, wxString::FromUTF8(type.c_str()));
+		prop->ChangeFlag(wxPG_PROP_READONLY, true);
+		pGrid->AppendIn(prop_id, prop);
 	}
-	s += wxT("};\n");
+}
 
-	m_pInfo->SetValue(s);
+void CObjectDefineView::ShowObject(const DDLReflect::STRUCT_INFO* info)
+{
+	m_pInfo->Clear();
+	AddStruct(m_pInfo, info);
 }

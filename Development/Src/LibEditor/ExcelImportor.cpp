@@ -8,23 +8,23 @@
 #include "ExcelImportor.h"
 #include "OLEAutoExcelWrapper.h"
 
-struct CONTENT_EXECEL_FIELDINFO
+struct EXCEL_FIELDINFO
 {
 	Atlas::String column;
 	Atlas::String field;
 	Atlas::String defval;
 	bool notempty;
-	CONTENT_EXCEL_ENUM* _enum;
+	EXCEL_ENUM* _enum;
 };
 
-struct CONTENT_EXCEL_TEMPLATE
+struct EXCEL_TEMPLATE
 {
 	Atlas::String name;
 	const DDLReflect::STRUCT_INFO* info;
 	unsigned int title_line;
 	unsigned int start_line;
 	bool clear_data;
-	Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO> m_fields;
+	Atlas::Map<Atlas::String, EXCEL_FIELDINFO> m_fields;
 };
 
 CContentExcelImportor::CContentExcelImportor()
@@ -40,7 +40,7 @@ void CContentExcelImportor::GetTemplateList(Atlas::Vector<Atlas::String>& list)
 {
 	list.clear();
 
-	Atlas::Map<Atlas::String, CONTENT_EXCEL_TEMPLATE*>::iterator i2;
+	Atlas::Map<Atlas::String, EXCEL_TEMPLATE*>::iterator i2;
 	for(i2=m_tmpl_map.begin(); i2!=m_tmpl_map.end(); i2++)
 	{
 		list.push_back(i2->second->name.c_str());
@@ -49,14 +49,14 @@ void CContentExcelImportor::GetTemplateList(Atlas::Vector<Atlas::String>& list)
 
 void CContentExcelImportor::ClearTemplateDefine()
 {
-	Atlas::Map<Atlas::String, CONTENT_EXCEL_ENUM*>::iterator i1;
+	Atlas::Map<Atlas::String, EXCEL_ENUM*>::iterator i1;
 	for(i1=m_enum_map.begin(); i1!=m_enum_map.end(); i1++)
 	{
 		delete i1->second;
 	}
 	m_enum_map.clear();
 
-	Atlas::Map<Atlas::String, CONTENT_EXCEL_TEMPLATE*>::iterator i2;
+	Atlas::Map<Atlas::String, EXCEL_TEMPLATE*>::iterator i2;
 	for(i2=m_tmpl_map.begin(); i2!=m_tmpl_map.end(); i2++)
 	{
 		delete i2->second;
@@ -101,8 +101,8 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			return false;
 		}
 
-		m_enum_map[names[ei]] = new CONTENT_EXCEL_ENUM;
-		CONTENT_EXCEL_ENUM& _map = *m_enum_map[names[ei]];
+		m_enum_map[names[ei]] = new EXCEL_ENUM;
+		EXCEL_ENUM& _map = *m_enum_map[names[ei]];
 
 		Json::Value::Members keys = _enum.getMemberNames();
 		for(size_t i=0; i<keys.size(); i++)
@@ -171,8 +171,8 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			return false;
 		}
 
-		m_tmpl_map[names[t]] = new CONTENT_EXCEL_TEMPLATE;
-		CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[names[t]];
+		m_tmpl_map[names[t]] = new EXCEL_TEMPLATE;
+		EXCEL_TEMPLATE& tmpl = *m_tmpl_map[names[t]];
 		tmpl.name = names[t];
 		tmpl.info = Atlas::ContentObject::GetType(type.asCString());
 		tmpl.clear_data = clear.asBool();
@@ -188,7 +188,7 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 				return false;
 			}
 
-			Json::Value col = item.get("column",		Json::Value());
+			Json::Value col = item.get("column",		Json::Value(""));
 			Json::Value fld = item.get("field",		Json::Value());
 			Json::Value def = item.get("default",	Json::Value(""));
 			Json::Value notempty = item.get("notempty", Json::Value(false));
@@ -197,14 +197,13 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			{
 				m_errmsg = Atlas::StringFormat("template [%s] fields[%d] invalid value", names[t].c_str(), i);
 			}
-
 			if(DDLReflect::GetStructFieldOffset(tmpl.info, fld.asCString())==(_U32)-1)
 			{
 				m_errmsg = Atlas::StringFormat("template [%s] fields[%d] error in GetStructFieldData(%s, %s)", names[t].c_str(), i, tmpl.info->name, fld.asCString());
 				return false;
 			}
 
-			Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
+			Atlas::Map<Atlas::String, EXCEL_FIELDINFO>::iterator fi;
 			for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
 			{
 				if(fi->second.column==col.asString())
@@ -219,7 +218,7 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 				}
 			}
 
-			CONTENT_EXECEL_FIELDINFO fieldinfo;
+			EXCEL_FIELDINFO fieldinfo;
 			fieldinfo.column = col.asString();
 			fieldinfo.field = fld.asString();
 			fieldinfo.defval = def.asString();
@@ -230,7 +229,7 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 			}
 			else
 			{
-				Atlas::Map<Atlas::String, CONTENT_EXCEL_ENUM*>::iterator i;
+				Atlas::Map<Atlas::String, EXCEL_ENUM*>::iterator i;
 				i = m_enum_map.find(enu.asCString());
 				if(i==m_enum_map.end())
 				{
@@ -290,7 +289,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		return false;
 	}
 
-	CONTENT_EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
+	EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
 	Atlas::String sUUID;
 	Atlas::Set<A_UUID> oldobjs;
 
@@ -304,10 +303,10 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		}
 	}
 
-	Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO*> field_map;
+	Atlas::Map<Atlas::String, EXCEL_FIELDINFO*> field_map;
 	if(tmpl.title_line==0)
 	{
-		Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO>::iterator fi;
+		Atlas::Map<Atlas::String, EXCEL_FIELDINFO>::iterator fi;
 		for(fi=tmpl.m_fields.begin(); fi!=tmpl.m_fields.end(); fi++)
 		{
 			field_map[fi->second.column] = &fi->second;
@@ -353,7 +352,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		Atlas::Map<Atlas::String, Atlas::String> val_map;
 		bool bExit = true, bError = false;
 
-		Atlas::Map<Atlas::String, CONTENT_EXECEL_FIELDINFO*>::iterator i;
+		Atlas::Map<Atlas::String, EXCEL_FIELDINFO*>::iterator i;
 		for(i=field_map.begin(); i!=field_map.end(); i++)
 		{
 			Atlas::String val;

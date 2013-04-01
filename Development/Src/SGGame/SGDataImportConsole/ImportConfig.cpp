@@ -416,7 +416,7 @@ namespace Atlas
 
 				if(strValue.empty())
 				{
-					bWholeLineEmpty = IsWholeLineEmpty(it_col == columnMap.begin(), columnMap, nRow);
+					bWholeLineEmpty = IsWholeLineEmpty( (it_col->first.find('A') != Atlas::String::npos), columnMap, nRow);
 					if(bWholeLineEmpty)
 					{
 						break;
@@ -441,27 +441,40 @@ namespace Atlas
 				
 				if(it_find != fmap.end())
 				{
-					Atlas::String fieldname = Atlas::StringFormat("%s.%s", m_pStructInfo->name, it_find->second.c_str());
-					if(m_FieldMaps.find(fieldname)!=m_FieldMaps.end())
+					if(!fieldvalue.empty())
 					{
-						Atlas::Map<Atlas::String, Atlas::String>& ffmap = m_FieldMaps[fieldname];
-						if(ffmap.find(fieldvalue)==ffmap.end())
+						Atlas::String fieldname = Atlas::StringFormat("%s.%s", m_pStructInfo->name, it_find->second.c_str());
+						if(m_FieldMaps.find(fieldname)!=m_FieldMaps.end())
 						{
-							m_Err = StringFormat("Invalidate enum field \n struct %s Column %s ", m_pStructInfo->name, it_col->second.c_str());
-							m_pExcelWrapper->Quit();
-							return false;
+							Atlas::Map<Atlas::String, Atlas::String>& ffmap = m_FieldMaps[fieldname];
+							if(ffmap.find(fieldvalue)==ffmap.end() )
+							{
+								m_Err = StringFormat("Invalidate enum field \n struct %s Column %s ", m_pStructInfo->name, it_col->second.c_str());
+								m_pExcelWrapper->Quit();
+								return false;
+							}
+							fieldvalue = ffmap[fieldvalue];
 						}
-						fieldvalue = ffmap[fieldvalue];
 					}
 				}
 
-				//fill content 
-				if(!StructParamFromString(m_pStructInfo, it_find->first.c_str(), pObject, fieldvalue.c_str()))
+
+				if(strcmp(m_pStructInfo->name , "SG_LEVEL_INFO_CONFIG") == 0)
 				{
-					m_Err = StringFormat("Get Value %s failed\n %s", it_col->second.c_str(), it_col->first.c_str());
-					m_pExcelWrapper->Quit();
-					return false;	
+					int n = 0;
 				}
+
+				if(!fieldvalue.empty())
+				{
+					//fill content 
+					if(!StructParamFromString(m_pStructInfo, it_find->first.c_str(), pObject, fieldvalue.c_str()))
+					{
+						m_Err = StringFormat("Get Value %s failed\n %s", it_col->second.c_str(), it_col->first.c_str());
+						m_pExcelWrapper->Quit();
+						return false;	
+					}
+				}
+				
 			}
 
 			if(bWholeLineEmpty)
@@ -528,9 +541,9 @@ namespace Atlas
 
 	bool CContentExcelImportManager::IsWholeLineEmpty(bool bLineHead, Atlas::Map<Atlas::String, Atlas::String>& columnMap, int nRow)
 	{
-		static bool bRet = false;
-		if(bLineHead)
-		{
+		//static bool bRet = false;
+		//if(bLineHead)
+		//{
 			Atlas::Map<Atlas::String, Atlas::String>::iterator it_col;
 			int nEmptyCount = 1;
 			for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
@@ -550,11 +563,12 @@ namespace Atlas
 
 			if(nEmptyCount >= columnMap.size())
 			{
-				bRet = true;
+				//bRet = true;
+				return true;
 			}
-		}
-
-		return bRet;
+		//}
+			return false;
+		//return bRet;
 	}
 
 	bool CContentExcelImportManager::GetObjectUnqiueID(const A_CONTENT_OBJECT* pObejct, Atlas::String& id)

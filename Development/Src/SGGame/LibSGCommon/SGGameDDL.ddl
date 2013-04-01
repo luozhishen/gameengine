@@ -38,7 +38,7 @@ const _U32 SG_PLAYER_WUSHENG_MALE_ID = 11001;
 const _U32 SG_PLAYER_WUSHENG_FEMALE_ID = 11002;
 
 //Soldier General Skill 
-const _U32 SG_SOLDIER_NAME_MAX = 12;
+const _U32 SG_SOLDIER_NAME_MAX = 24;
 const _U32 SG_LEVEL_SOLDIERS_INFO_MAX = 6;
 const _U32 SG_SKILL_NAME_MAX = 10;
 const _U32 SG_SKILL_DESC_MAX = 256;
@@ -131,6 +131,27 @@ const _U32 SG_VIP_ICON_MAX = 256;
 const _U32 SG_TURBO_CHARPTER_NAME_MAX = 128;
 const _U32 SG_TURBO_UNLOCK_SKILL_MAX = 15;
 const _U32 SG_TURBO_EQUIP_SKILL_MAX = 3;
+
+//auto combat
+const _U32 SG_AUTO_COMBAT_REWARD_MAX = 64;
+
+struct SG_MAP_URL
+{
+	string<SG_MAP_URL_MAX>				map_url;				
+};
+task[GEN_STRUCT_SERIALIZE(SG_MAP_URL)];
+task[GEN_STRUCT_REFLECT(SG_MAP_URL)];
+
+struct SG_AUTO_COMBAT_REWARD
+{
+	_U32													level;
+	_U32													exp;
+	_U32													gold;
+	//array<SG_DROP_ITEM_CONFIG, 32>							item_list;
+};
+task[GEN_STRUCT_SERIALIZE(SG_AUTO_COMBAT_REWARD)];
+task[GEN_STRUCT_REFLECT(SG_AUTO_COMBAT_REWARD)];
+
 
 //turbo 无双
 struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
@@ -229,9 +250,12 @@ struct SG_INSTANCE_INFO : A_LIVE_OBJECT
 	_S8									progress;				//进度 -1 - 未进入副本 0-进入副本未完成任意小关 1-已完成小关数目
 	_U8									num_today;				//今日已经挑战次数
 	_U8									normal_completed;		//普通难度是否已过 0-未过 1-已过
+	_S8									furthest_normal;		//普通难度最远进度
+	_S8									furthest_hard;			//困难难度最远进度
 };
 task[GEN_STRUCT_SERIALIZE(SG_INSTANCE_INFO)];
 task[GEN_STRUCT_REFLECT(SG_INSTANCE_INFO)];
+
 
 //league
 struct SG_LEAGUE_CONFIG : A_CONTENT_OBJECT
@@ -418,7 +442,7 @@ struct SG_LEAGUE_LOG	: A_LIVE_OBJECT
 {
 	_U32								league_id;				
 	_U32								result_time;			//该条log记录时间
-	_U8									type;					//该条log的事件类型
+	_U32								type;					//该条log的事件类型
 	string<SG_LEAGUE_LOG_MAX>			log;					//log内容
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_LOG)];
@@ -841,6 +865,7 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 	_U32								general_id;
 	_U32								attr_id;
 
+	_U8									type;				//武将类型
 	string<SG_DESCRIPTION_MAX>			description;		//描述
 	_S32								req_title;			//要求的官职
 	_S32								req_gold;			//需要的金币
@@ -1136,6 +1161,7 @@ class SGGAME_C2S
 	BeginInstanceBattle(_U32 instance_id, string map_url);			//开始副本战斗
 	EndInstanceBattle(_U32 instance_id, string map_url, _U32 result);//结束副本战斗
 	ResetInstance(_U32 instance_id);
+	//AutoCombatInstance(_U32 instance_id, _U8 difficulty, SG_MAP_URL map_url_list[count], _U32 count);
 	SaveLastTownMap(string last_town_map);							//保存最后一次的地图信息
 
 	CreateLeague(string league_name);								//战盟 创建
@@ -1197,7 +1223,7 @@ class SGGAME_S2C
 	HaloGetCoolDownResult(_U32 time);
 
 	BeginBattleResult(SG_PLAYER_PVE PlayerPVE);
-	EndBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);//level 战斗结束后等级
+	EndBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);//level 战斗结束后等级
 
 	QueryPlayerQuestResult(SG_QUEST_LIVE_INFO quest_list[count], _U32 count, _U8 nSync);
 	FinishQuestDone(_U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, SG_DROP_ITEM_BASE drops[drop_count], _U32 drop_count);//level 任务完成之后
@@ -1219,9 +1245,10 @@ class SGGAME_S2C
 
 	QueryInstanceResult(SG_INSTANCE_INFO instances[count], _U32 count);				//副本
 	BeginInstanceBattleResult(SG_PLAYER_PVE PlayerPVE);								//开始副本战斗
-	EnterInstanceResult(SG_INSTANCE_INFO instance);			
+	EnterInstanceResult(SG_INSTANCE_INFO instance);					
 	EndInstanceBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
 	ResetInstanceResult(_U8 result, _U32 rmb, SG_INSTANCE_INFO instance);			//result 0-succ 1-failed
+	//AutoCombatInstanceResult(SG_AUTO_COMBAT_REWARD combat_reward_list[count], _U32 count);
 
 	CreateLeagueResult(_U8 ret, SG_LEAGUE league);									//0-succ other-failed
 	QueryLeagueApplyListResult(SG_LEAGUE_APPLYER applyer[count], _U32 count);

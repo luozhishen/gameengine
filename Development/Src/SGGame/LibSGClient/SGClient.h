@@ -30,7 +30,7 @@ namespace Atlas
 
 		virtual void QueryGeneralsDone(const Atlas::Vector<SG_GENERAL>& generals) = 0;
 		virtual void QuerySoldiersDone(const Atlas::Vector<SG_SOLDIER>& soldiers) = 0;
-		virtual void QueryBagDone(Atlas::Vector<SG_EQUIPT_ITEM>& equipts, Atlas::Vector<SG_USABLE_ITEM>& usables, Atlas::Vector<SG_GEM_ITEM>& gems) = 0;
+		virtual void QueryBagDone(Atlas::Vector<SG_EQUIPT_ITEM>& equipts, Atlas::Vector<SG_USABLE_ITEM>& usables, Atlas::Vector<SG_GEM_ITEM>& gems, Atlas::Vector<SG_MATERIAL_ITEM>& material) = 0;
 		virtual void EnhanceCoolDownResult(_U32 time) = 0;
 		virtual void RefreshEquipDone(SG_EQUIPT_ITEM& euipt) = 0;
 		virtual void GemCombineResult(const SG_GEM_ITEM& gem) = 0;
@@ -38,7 +38,7 @@ namespace Atlas
 		virtual void HaloIncreaseEXPResult(_U32 time) = 0;
 
 		virtual void BeginBattleDone(const SG_PLAYER_PVE& PlayerPVE) = 0;
-		virtual void EndBattleDone(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void EndBattleDone(_U32 level, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
 
 		virtual void QueryPlayerQuestResult(const SG_QUEST_LIVE_INFO* quest_list, _U32 count) = 0;
 		virtual void FinishQuestDone(_U32 quest_id, _U32 exp, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
@@ -225,7 +225,7 @@ namespace Atlas
 		void QueryOtherPlayersResult(CSGClient* pClient, const SG_PLAYER* players, _U32 count);
 
 		void BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
-		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
 		void EnhanceCoolDownResult(CSGClient* pClient, _U32 time);
 		void RefreshEquipDone(CSGClient* pClient, SG_EQUIPT_ITEM& euipt);
 		void GemCombineResult(CSGClient* pClient, const SG_GEM_ITEM& gem);

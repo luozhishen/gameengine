@@ -27,7 +27,8 @@ namespace Atlas
 		while(content_obj)
 		{
 			SG_DAILY_ACTION_CONFIG* config = (SG_DAILY_ACTION_CONFIG*)content_obj;
-			if(!config)
+			if(!config
+				|| (config->hour == config->end_hour && config->min == config->end_min))	//daily action event has no notify
 			{
 				content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
 				continue;

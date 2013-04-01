@@ -7,6 +7,94 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_MAP_URL>(SG_MAP_URL& Value)
+	{
+		if(!ReadString<SG_MAP_URL_MAX>(Value.map_url)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_MAP_URL>(const SG_MAP_URL& Value)
+	{
+		if(!WriteString<SG_MAP_URL_MAX>(Value.map_url)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_MAP_URL_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_MAP_URL>(*((SG_MAP_URL*)data));
+	}
+
+	static bool _struct_SG_MAP_URL_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_MAP_URL>(*((const SG_MAP_URL*)data));
+	}
+
+	static FIELD_INFO _struct_SG_MAP_URL_fieldinfo[] =
+	{
+		{TYPE_STRING, "map_url", 0, (_U16)ATLAS_OFFSETOF(SG_MAP_URL, map_url), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_MAP_URL_info = { NULL, "SG_MAP_URL", sizeof(SG_MAP_URL), 1, _struct_SG_MAP_URL_fieldinfo, _struct_SG_MAP_URL_readproc, _struct_SG_MAP_URL_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAP_URL>()
+	{
+		return &_rfl_struct_SG_MAP_URL_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_AUTO_COMBAT_REWARD>(SG_AUTO_COMBAT_REWARD& Value)
+	{
+		if(!Read<_U32>(Value.level)) return false;
+		if(!Read<_U32>(Value.exp)) return false;
+		if(!Read<_U32>(Value.gold)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_AUTO_COMBAT_REWARD>(const SG_AUTO_COMBAT_REWARD& Value)
+	{
+		if(!Write<_U32>(Value.level)) return false;
+		if(!Write<_U32>(Value.exp)) return false;
+		if(!Write<_U32>(Value.gold)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_AUTO_COMBAT_REWARD_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_AUTO_COMBAT_REWARD>(*((SG_AUTO_COMBAT_REWARD*)data));
+	}
+
+	static bool _struct_SG_AUTO_COMBAT_REWARD_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_AUTO_COMBAT_REWARD>(*((const SG_AUTO_COMBAT_REWARD*)data));
+	}
+
+	static FIELD_INFO _struct_SG_AUTO_COMBAT_REWARD_fieldinfo[] =
+	{
+		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_AUTO_COMBAT_REWARD, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "exp", 0, (_U16)ATLAS_OFFSETOF(SG_AUTO_COMBAT_REWARD, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "gold", 0, (_U16)ATLAS_OFFSETOF(SG_AUTO_COMBAT_REWARD, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_AUTO_COMBAT_REWARD_info = { NULL, "SG_AUTO_COMBAT_REWARD", sizeof(SG_AUTO_COMBAT_REWARD), 3, _struct_SG_AUTO_COMBAT_REWARD_fieldinfo, _struct_SG_AUTO_COMBAT_REWARD_readproc, _struct_SG_AUTO_COMBAT_REWARD_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_AUTO_COMBAT_REWARD>()
+	{
+		return &_rfl_struct_SG_AUTO_COMBAT_REWARD_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_TURBO_CONFIG>(SG_TURBO_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -397,6 +485,8 @@ namespace DDL
 		if(!Read<_S8>(Value.progress)) return false;
 		if(!Read<_U8>(Value.num_today)) return false;
 		if(!Read<_U8>(Value.normal_completed)) return false;
+		if(!Read<_S8>(Value.furthest_normal)) return false;
+		if(!Read<_S8>(Value.furthest_hard)) return false;
 		return true;
 	}
 	template<>
@@ -408,6 +498,8 @@ namespace DDL
 		if(!Write<_S8>(Value.progress)) return false;
 		if(!Write<_U8>(Value.num_today)) return false;
 		if(!Write<_U8>(Value.normal_completed)) return false;
+		if(!Write<_S8>(Value.furthest_normal)) return false;
+		if(!Write<_S8>(Value.furthest_hard)) return false;
 		return true;
 	}
 }
@@ -432,8 +524,10 @@ namespace DDLReflect
 		{TYPE_S8, "progress", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, progress), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
 		{TYPE_U8, "num_today", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, num_today), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "normal_completed", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, normal_completed), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_S8, "furthest_normal", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, furthest_normal), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
+		{TYPE_S8, "furthest_hard", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, furthest_hard), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_INSTANCE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_INSTANCE_INFO", sizeof(SG_INSTANCE_INFO), 5, _struct_SG_INSTANCE_INFO_fieldinfo, _struct_SG_INSTANCE_INFO_readproc, _struct_SG_INSTANCE_INFO_writeproc };
+	STRUCT_INFO _rfl_struct_SG_INSTANCE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_INSTANCE_INFO", sizeof(SG_INSTANCE_INFO), 7, _struct_SG_INSTANCE_INFO_fieldinfo, _struct_SG_INSTANCE_INFO_readproc, _struct_SG_INSTANCE_INFO_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_INSTANCE_INFO>()
 	{
@@ -1273,7 +1367,7 @@ namespace DDL
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!Read<_U32>(Value.result_time)) return false;
-		if(!Read<_U8>(Value.type)) return false;
+		if(!Read<_U32>(Value.type)) return false;
 		if(!ReadString<SG_LEAGUE_LOG_MAX>(Value.log)) return false;
 		return true;
 	}
@@ -1283,7 +1377,7 @@ namespace DDL
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.league_id)) return false;
 		if(!Write<_U32>(Value.result_time)) return false;
-		if(!Write<_U8>(Value.type)) return false;
+		if(!Write<_U32>(Value.type)) return false;
 		if(!WriteString<SG_LEAGUE_LOG_MAX>(Value.log)) return false;
 		return true;
 	}
@@ -1306,7 +1400,7 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "result_time", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, result_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "type", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "log", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, log), NULL, (_U16)SG_LEAGUE_LOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_LOG_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_LOG_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_LOG", sizeof(SG_LEAGUE_LOG), 4, _struct_SG_LEAGUE_LOG_fieldinfo, _struct_SG_LEAGUE_LOG_readproc, _struct_SG_LEAGUE_LOG_writeproc };
@@ -2944,6 +3038,7 @@ namespace DDL
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.general_id)) return false;
 		if(!Read<_U32>(Value.attr_id)) return false;
+		if(!Read<_U8>(Value.type)) return false;
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
 		if(!Read<_S32>(Value.req_title)) return false;
 		if(!Read<_S32>(Value.req_gold)) return false;
@@ -2964,6 +3059,7 @@ namespace DDL
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.general_id)) return false;
 		if(!Write<_U32>(Value.attr_id)) return false;
+		if(!Write<_U8>(Value.type)) return false;
 		if(!WriteString<SG_DESCRIPTION_MAX>(Value.description)) return false;
 		if(!Write<_S32>(Value.req_title)) return false;
 		if(!Write<_S32>(Value.req_gold)) return false;
@@ -2997,6 +3093,7 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "attr_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_STRING, "description", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
 		{TYPE_S32, "req_title", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "req_gold", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
@@ -3010,7 +3107,7 @@ namespace DDLReflect
 		{TYPE_STRING, "skill_desc", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, skill_desc), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
 		{TYPE_S32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 14, _struct_SG_GENERAL_CONFIG_fieldinfo, _struct_SG_GENERAL_CONFIG_readproc, _struct_SG_GENERAL_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 15, _struct_SG_GENERAL_CONFIG_fieldinfo, _struct_SG_GENERAL_CONFIG_readproc, _struct_SG_GENERAL_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL_CONFIG>()
 	{
@@ -4195,6 +4292,7 @@ namespace DDLReflect
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 24 QueryPlayerQuestResult
@@ -4354,46 +4452,46 @@ namespace DDLReflect
 		{"HaloIncreaseEXPResult", 1, _class_SGGAME_S2C_fieldinfos+30},
 		{"HaloGetCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+31},
 		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+32},
-		{"EndBattleResult", 6, _class_SGGAME_S2C_fieldinfos+33},
-		{"QueryPlayerQuestResult", 3, _class_SGGAME_S2C_fieldinfos+39},
-		{"FinishQuestDone", 10, _class_SGGAME_S2C_fieldinfos+42},
-		{"BuyGoodsResult", 2, _class_SGGAME_S2C_fieldinfos+52},
-		{"QueryPlayerPVPInfoResult", 1, _class_SGGAME_S2C_fieldinfos+54},
-		{"QueryPlayerRankListResult", 2, _class_SGGAME_S2C_fieldinfos+55},
-		{"PVPCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+57},
-		{"PVPGetRestTimeResult", 1, _class_SGGAME_S2C_fieldinfos+58},
-		{"PVPRecordResult", 2, _class_SGGAME_S2C_fieldinfos+59},
-		{"PVPHeroListRecord", 2, _class_SGGAME_S2C_fieldinfos+61},
-		{"PVPDailyReward", 4, _class_SGGAME_S2C_fieldinfos+63},
-		{"PVPBattleBeginResult", 3, _class_SGGAME_S2C_fieldinfos+67},
-		{"PVPBattleEndResult", 1, _class_SGGAME_S2C_fieldinfos+70},
-		{"PVPCoolDownClearResult", 0, _class_SGGAME_S2C_fieldinfos+71},
-		{"PVPIncreateBattleTimesResult", 1, _class_SGGAME_S2C_fieldinfos+71},
-		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+72},
-		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+74},
-		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+75},
-		{"EndInstanceBattleResult", 6, _class_SGGAME_S2C_fieldinfos+76},
-		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+82},
-		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+85},
-		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+87},
-		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+89},
-		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+90},
-		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+92},
-		{"QueryLeagueMemberInfoResult", 1, _class_SGGAME_S2C_fieldinfos+94},
-		{"ContributeLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+95},
-		{"HandleApplyResult", 2, _class_SGGAME_S2C_fieldinfos+97},
-		{"QueryLeagueNoticeResult", 1, _class_SGGAME_S2C_fieldinfos+99},
-		{"SetLeagueNoticeResult", 2, _class_SGGAME_S2C_fieldinfos+100},
-		{"SetLeagueOwnerResult", 2, _class_SGGAME_S2C_fieldinfos+102},
-		{"SetMemberPositionResult", 3, _class_SGGAME_S2C_fieldinfos+104},
-		{"DismissMemberResult", 2, _class_SGGAME_S2C_fieldinfos+107},
-		{"ExitLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+109},
-		{"QueryLeagueLogResult", 2, _class_SGGAME_S2C_fieldinfos+110},
-		{"LeagueToastResult", 5, _class_SGGAME_S2C_fieldinfos+112},
-		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+117},
-		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+120},
-		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+124},
-		{"MakeEquiptResult", 4, _class_SGGAME_S2C_fieldinfos+127},
+		{"EndBattleResult", 7, _class_SGGAME_S2C_fieldinfos+33},
+		{"QueryPlayerQuestResult", 3, _class_SGGAME_S2C_fieldinfos+40},
+		{"FinishQuestDone", 10, _class_SGGAME_S2C_fieldinfos+43},
+		{"BuyGoodsResult", 2, _class_SGGAME_S2C_fieldinfos+53},
+		{"QueryPlayerPVPInfoResult", 1, _class_SGGAME_S2C_fieldinfos+55},
+		{"QueryPlayerRankListResult", 2, _class_SGGAME_S2C_fieldinfos+56},
+		{"PVPCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+58},
+		{"PVPGetRestTimeResult", 1, _class_SGGAME_S2C_fieldinfos+59},
+		{"PVPRecordResult", 2, _class_SGGAME_S2C_fieldinfos+60},
+		{"PVPHeroListRecord", 2, _class_SGGAME_S2C_fieldinfos+62},
+		{"PVPDailyReward", 4, _class_SGGAME_S2C_fieldinfos+64},
+		{"PVPBattleBeginResult", 3, _class_SGGAME_S2C_fieldinfos+68},
+		{"PVPBattleEndResult", 1, _class_SGGAME_S2C_fieldinfos+71},
+		{"PVPCoolDownClearResult", 0, _class_SGGAME_S2C_fieldinfos+72},
+		{"PVPIncreateBattleTimesResult", 1, _class_SGGAME_S2C_fieldinfos+72},
+		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+73},
+		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+75},
+		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+76},
+		{"EndInstanceBattleResult", 6, _class_SGGAME_S2C_fieldinfos+77},
+		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+83},
+		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+86},
+		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+88},
+		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+90},
+		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+91},
+		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+93},
+		{"QueryLeagueMemberInfoResult", 1, _class_SGGAME_S2C_fieldinfos+95},
+		{"ContributeLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+96},
+		{"HandleApplyResult", 2, _class_SGGAME_S2C_fieldinfos+98},
+		{"QueryLeagueNoticeResult", 1, _class_SGGAME_S2C_fieldinfos+100},
+		{"SetLeagueNoticeResult", 2, _class_SGGAME_S2C_fieldinfos+101},
+		{"SetLeagueOwnerResult", 2, _class_SGGAME_S2C_fieldinfos+103},
+		{"SetMemberPositionResult", 3, _class_SGGAME_S2C_fieldinfos+105},
+		{"DismissMemberResult", 2, _class_SGGAME_S2C_fieldinfos+108},
+		{"ExitLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+110},
+		{"QueryLeagueLogResult", 2, _class_SGGAME_S2C_fieldinfos+111},
+		{"LeagueToastResult", 5, _class_SGGAME_S2C_fieldinfos+113},
+		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+118},
+		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+121},
+		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+125},
+		{"MakeEquiptResult", 4, _class_SGGAME_S2C_fieldinfos+128},
 	};
 	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 63, _class_SGGAME_S2C_funcinfos };
 	template<>

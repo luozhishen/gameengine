@@ -9,7 +9,7 @@ namespace Atlas
 
 		//把[lowerLevel uppperLevel]之间的小兵加到soldierVec里面
 		static void GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Atlas::Vector<_U32>& soldierVec, Atlas::Vector<SG_SOLDIER>& curSoldierVec);
-		static void GetUnlockTurboSkill(_U32 turbo_level, Atlas::String& skill_archetype);
+		static void GetUnlockTurboSkill(_U32 general_id, _U32 turbo_level, Atlas::String& skill_archetype);
 
 		static bool DiffPlayerInfo(const SG_PLAYER& player_old, const SG_PLAYER& player_new);
 		static bool DiffSoldiers(const Atlas::Vector<SG_SOLDIER>& soldiers_old, const Atlas::Vector<SG_SOLDIER>& soldiers_new);

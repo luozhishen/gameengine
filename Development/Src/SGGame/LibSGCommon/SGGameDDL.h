@@ -70,7 +70,7 @@ const _U32 SG_PLAYER_WUSHENG_MALE_ID = 11001;
 
 const _U32 SG_PLAYER_WUSHENG_FEMALE_ID = 11002;
 
-const _U32 SG_SOLDIER_NAME_MAX = 12;
+const _U32 SG_SOLDIER_NAME_MAX = 24;
 
 const _U32 SG_LEVEL_SOLDIERS_INFO_MAX = 6;
 
@@ -201,6 +201,50 @@ const _U32 SG_TURBO_CHARPTER_NAME_MAX = 128;
 const _U32 SG_TURBO_UNLOCK_SKILL_MAX = 15;
 
 const _U32 SG_TURBO_EQUIP_SKILL_MAX = 3;
+
+const _U32 SG_AUTO_COMBAT_REWARD_MAX = 64;
+
+struct SG_MAP_URL
+{
+	DDL::String<SG_MAP_URL_MAX> map_url;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_MAP_URL>(SG_MAP_URL& Value);
+	template<>
+	bool BufferWriter::Write<SG_MAP_URL>(const SG_MAP_URL& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAP_URL>();
+	extern STRUCT_INFO _rfl_struct_SG_MAP_URL_info;
+}
+
+struct SG_AUTO_COMBAT_REWARD
+{
+	_U32 level;
+	_U32 exp;
+	_U32 gold;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_AUTO_COMBAT_REWARD>(SG_AUTO_COMBAT_REWARD& Value);
+	template<>
+	bool BufferWriter::Write<SG_AUTO_COMBAT_REWARD>(const SG_AUTO_COMBAT_REWARD& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_AUTO_COMBAT_REWARD>();
+	extern STRUCT_INFO _rfl_struct_SG_AUTO_COMBAT_REWARD_info;
+}
 
 struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 {
@@ -371,6 +415,8 @@ struct SG_INSTANCE_INFO : A_LIVE_OBJECT
 	_S8 progress;
 	_U8 num_today;
 	_U8 normal_completed;
+	_S8 furthest_normal;
+	_S8 furthest_hard;
 };
 
 namespace DDL
@@ -746,7 +792,7 @@ struct SG_LEAGUE_LOG : A_LIVE_OBJECT
 {
 	_U32 league_id;
 	_U32 result_time;
-	_U8 type;
+	_U32 type;
 	DDL::String<SG_LEAGUE_LOG_MAX> log;
 };
 
@@ -1441,6 +1487,7 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 general_id;
 	_U32 attr_id;
+	_U8 type;
 	DDL::String<SG_DESCRIPTION_MAX> description;
 	_S32 req_title;
 	_S32 req_gold;
@@ -4009,6 +4056,7 @@ namespace DDLStub
 				_U32 _prefix_exp_addition;
 				_U32 _prefix_exp;
 				_U32 _prefix_gold;
+				_U32 _prefix_wake_pt;
 				SG_DROP_ITEM_CONFIG* _prefix_drops;
 				_U32 _prefix_drop_count;
 
@@ -4020,6 +4068,8 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_exp)) return false;
 				// <_U32> <gold> <> <>;
 				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <wake_pt> <> <>;
+				if(!Buf.Read(_prefix_wake_pt)) return false;
 				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
 				if(!Buf.Read(__length)) return false;
 				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
@@ -4029,7 +4079,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_drop_count)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EndBattleResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_drops, _prefix_drop_count);
+				DDLStub<CALLER, CLASS>::GetClass()->EndBattleResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_wake_pt, _prefix_drops, _prefix_drop_count);
 				return true;
 			}
 			if(fid==24)
@@ -4979,7 +5029,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 22, Buf);
 		}
 
-		bool EndBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
+		bool EndBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
 		{
 			BUFFER Buf;
 			_U32 __length;
@@ -4991,6 +5041,8 @@ namespace DDLProxy
 			if(!Buf.Write(exp)) return false;
 			// <_U32> <gold> <> <>
 			if(!Buf.Write(gold)) return false;
+			// <_U32> <wake_pt> <> <>
+			if(!Buf.Write(wake_pt)) return false;
 			// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>
 			__length = (_U16)(drop_count);
 			if(!Buf.Write(__length)) return false;

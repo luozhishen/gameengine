@@ -611,8 +611,6 @@ namespace Atlas
 	void CSGClient::ContributeLeague(_U32 rmb, _U32 energy)
 	{
 		m_C2S.ContributeLeague(rmb, energy);
-		m_player.rmb -= rmb;
-		m_player.energy -= energy;
 	}
 
 	void CSGClient::HandleApply(_U32 applyer_id, _U8 allowed)
@@ -743,14 +741,6 @@ namespace Atlas
 	{
 		m_player = player;
 		if(m_callback) m_callback->QueryAvatarDone(m_player);
-		
-		static bool bQueryed = false;
-		if(!bQueryed)
-		{
-			//EnterGame();
-			//SyncForInit();
-			bQueryed = true;
-		}
 	}
 
 	void CSGClient::EnterGameResult(CSGClient* pClient, _U8 ret)
@@ -769,15 +759,14 @@ namespace Atlas
 	void CSGClient::CreateAvatarResult(CSGClient* pClient, _U32 code)
 	{
 		if(m_callback) m_callback->CreateAvatarResult(code);
-		if(code == 0)
-		{
-			//EnterGame(); //SyncForInit(); in it
-		}
 	}
 
 	void CSGClient::QueryPlayerResult(CSGClient* pClient, const SG_PLAYER& player, _U8 nSync)
 	{
-		if(SGClientUtil::DiffPlayerInfo(m_player, player)
+		SG_PLAYER player_tmp = m_player;
+
+		m_player = player;
+		if(SGClientUtil::DiffPlayerInfo(player_tmp, player)
 			&& !SGClientUtil::IsEmptyPlayerInfo(m_player))
 		{
 			if(m_callback) 
@@ -785,8 +774,6 @@ namespace Atlas
 				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
 			}
 		}
-
-		m_player = player;
 		
 		//sync waitting...
 		if(nSync) 
@@ -966,7 +953,7 @@ namespace Atlas
 			return;
 		}
 
-		if(m_callback) m_callback->QueryBagDone(m_equipts, m_usables, m_gems);
+		if(m_callback) m_callback->QueryBagDone(m_equipts, m_usables, m_gems, m_materials);
 	}
 
 	void CSGClient::QueryOtherPlayersResult(CSGClient* pClient, const SG_PLAYER* players, _U32 count)
@@ -979,7 +966,7 @@ namespace Atlas
 		if(m_callback) m_callback->BeginBattleDone(PlayerPVE);
 	}
 
-	void CSGClient::EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
+	void CSGClient::EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
 	{
 		SG_DROP_ITEM_BASE drop_lists[10];
 		memset(drop_lists, 0, sizeof(drop_lists));
@@ -1002,12 +989,14 @@ namespace Atlas
 
 			m_player.exp = exp;
 			m_player.gold += gold;
+			m_player.wake_pt += wake_pt;
+
 			for(_U32 i = 0; i < drop_count; ++i)
 			{
 				m_newItemList.push_back(drops[i].uuid);
 			}
 
-			m_callback->EndBattleDone(level, exp_addition, gold, drop_lists, drop_count);
+			m_callback->EndBattleDone(level, exp_addition, gold, wake_pt, drop_lists, drop_count);
 			m_callback->DataUpdate(CSGSyncDataManager::eSyncPlayer);
 		}
 	}
@@ -1383,6 +1372,11 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			SyncSet(vecSync);
+
 			m_callback->ContributeLeagueResult(self_info, league_info);
 		}
 	}
@@ -1469,6 +1463,11 @@ namespace Atlas
 				_U32 times = SGClientUtil::GetDailyActionTime(m_player, 3001);
 				if(times > 0)
 					SGClientUtil::SetDailyActionTimeInCache(m_player, 3001, times-1);
+
+				if(m_callback) 
+				{
+					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				}
 			}
 
 			m_callback->LeagueToastResult(ret, gold, rmb, reward_reputation, reward_league_xp);
@@ -1484,14 +1483,14 @@ namespace Atlas
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
 			
-				for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
+	/*			for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
 				{
 					if(m_player.daily_actions._Array[i].action_id == 1003)
 					{
 						m_player.daily_actions._Array[i].times = m_player.daily_actions._Array[i].times + 1;
 						break;
 					}
-				}
+				}*/
 
 				//help to sync data
 				Atlas::Vector<_U8> vecSync;
@@ -1512,14 +1511,14 @@ namespace Atlas
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
 
-				for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
-				{
-					if(m_player.daily_actions._Array[i].action_id == 1003)
-					{
-						m_player.daily_actions._Array[i].times = times;
-						break;
-					}
-				}
+				//for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
+				//{
+				//	if(m_player.daily_actions._Array[i].action_id == 1003)
+				//	{
+				//		m_player.daily_actions._Array[i].times += times;
+				//		break;
+				//	}
+				//}
 
 				//help to sync data
 				Atlas::Vector<_U8> vecSync;
@@ -1539,7 +1538,7 @@ namespace Atlas
 			m_player.wake_pt -= wake_pt;
 			
 			Atlas::String skill_archetype;
-			SGClientUtil::GetUnlockTurboSkill(turbo_level, skill_archetype);
+			SGClientUtil::GetUnlockTurboSkill(m_player.general_id, turbo_level, skill_archetype);
 
 			if(!skill_archetype.empty())
 			{
@@ -1556,6 +1555,17 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			if(!ret)
+			{
+				m_newItemList.push_back(new_euqipt.uuid);
+
+				//help to sync data
+				Atlas::Vector<_U8> vecSync;
+				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+				SyncSet(vecSync);
+			}
+
 			m_callback->MakeEquiptResult(ret, new_euqipt, com_material, key_material);
 		}
 	}

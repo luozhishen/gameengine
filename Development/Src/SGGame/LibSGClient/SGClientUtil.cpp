@@ -78,14 +78,18 @@ namespace Atlas
 		std::unique(soldierVec.begin(), soldierVec.end());
 	}
 	
-	void SGClientUtil::GetUnlockTurboSkill(_U32 turbo_level, Atlas::String& skill_archetype)
+	void SGClientUtil::GetUnlockTurboSkill(_U32 general_id, _U32 turbo_level, Atlas::String& skill_archetype)
 	{
+		if(general_id == 11002)
+			general_id = 11001;
+
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_TURBO_CONFIG >();
 		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
 		while(content_obj)
 		{
 			SG_TURBO_CONFIG* config = (SG_TURBO_CONFIG*)content_obj;
 			if(	config->turbo_level == turbo_level
+				&& config->general_id == general_id
 				&& strlen(*(config->skill_archetype)) != 0)
 			{
 				skill_archetype += *(config->skill_archetype);

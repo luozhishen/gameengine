@@ -322,7 +322,7 @@ namespace Atlas
 		} while (true);
 	
 		//lack of some column
-		if(fmap.size() != columnMap.size())
+		/*if(fmap.size() != columnMap.size())
 		{
 			Atlas::String strLoseInfo;
 			for(Atlas::Map<Atlas::String, Atlas::String>::const_iterator it = fmap.begin(); it != fmap.end(); ++it)
@@ -348,7 +348,7 @@ namespace Atlas
 			m_Err = StringFormat("excel lose column \n%s", strLoseInfo.c_str());
 			m_pExcelWrapper->Quit();
 			return false;
-		}
+		}*/
 
 		Atlas::Map<Atlas::String, Atlas::String>::iterator it_col;
 		//whether all keys exist in excel
@@ -381,24 +381,24 @@ namespace Atlas
 		}
 
 		//whether all column in excel match struct_info 
-		for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
-		{
-			Atlas::Map<Atlas::String, Atlas::String>::const_iterator it_find;
-			for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
-			{
-				if(it_col->second == it_find->second)
-				{
-					break;
-				}
-			}
+		//for(it_col = columnMap.begin(); it_col != columnMap.end(); ++it_col)
+		//{
+		//	Atlas::Map<Atlas::String, Atlas::String>::const_iterator it_find;
+		//	for(it_find = fmap.begin(); it_find != fmap.end(); ++it_find)
+		//	{
+		//		if(it_col->second == it_find->second)
+		//		{
+		//			break;
+		//		}
+		//	}
 
-			if(DDLReflect::GetStructFieldOffset(m_pStructInfo, it_find->first.c_str())==(_U32)-1)
-			{
-				m_Err = StringFormat("column not match in struct:%s\n column:%s\n", m_pStructInfo->name, it_col->second.c_str()); 
-				m_pExcelWrapper->Quit();
-				return false;
-			}
-		}
+		//	if(DDLReflect::GetStructFieldOffset(m_pStructInfo, it_find->first.c_str())==(_U32)-1)
+		//	{
+		//		m_Err = StringFormat("column not match in struct:%s\n column:%s\n", m_pStructInfo->name, it_col->second.c_str()); 
+		//		m_pExcelWrapper->Quit();
+		//		return false;
+		//	}
+		//}
 
 		A_CONTENT_OBJECT* pObject = (A_CONTENT_OBJECT*)ATLAS_ALIGN_ALLOC(m_pStructInfo->size);
 		nRow = nStartLine + 1;
@@ -457,13 +457,7 @@ namespace Atlas
 						}
 					}
 				}
-
-
-				if(strcmp(m_pStructInfo->name , "SG_LEVEL_INFO_CONFIG") == 0)
-				{
-					int n = 0;
-				}
-
+				
 				if(!fieldvalue.empty())
 				{
 					//fill content 

@@ -80,7 +80,7 @@ const _U8 SG_EQUIPT_TYPE_LEG		= 6;
 const _U8 SG_EQUIPT_TYPE_DECORATION = 7;
 
 //Quest
-const _U32 SG_QUEST_DIALOG_MAX = 512;
+const _U32 SG_QUEST_DIALOG_MAX = 768;
 const _U32 SG_QUEST_NAME_MAX = 32;
 const _U32 SG_QUEST_URL_MAX = 128;
 const _U32 SG_QUEST_COND_MAX = 128;
@@ -135,23 +135,12 @@ const _U32 SG_TURBO_EQUIP_SKILL_MAX = 3;
 //auto combat
 const _U32 SG_AUTO_COMBAT_REWARD_MAX = 64;
 
-struct SG_MAP_URL
-{
-	string<SG_MAP_URL_MAX>				map_url;				
-};
-task[GEN_STRUCT_SERIALIZE(SG_MAP_URL)];
-task[GEN_STRUCT_REFLECT(SG_MAP_URL)];
-
-struct SG_AUTO_COMBAT_REWARD
-{
-	_U32													level;
-	_U32													exp;
-	_U32													gold;
-	//array<SG_DROP_ITEM_CONFIG, 32>							item_list;
-};
-task[GEN_STRUCT_SERIALIZE(SG_AUTO_COMBAT_REWARD)];
-task[GEN_STRUCT_REFLECT(SG_AUTO_COMBAT_REWARD)];
-
+//struct SG_MAP_URL
+//{
+//	string<SG_MAP_URL_MAX>				map_url;				
+//};
+//task[GEN_STRUCT_SERIALIZE(SG_MAP_URL)];
+//task[GEN_STRUCT_REFLECT(SG_MAP_URL)];
 
 //turbo 无双
 struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
@@ -878,6 +867,8 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 	string<SG_SKILL_DESC_MAX>			skill_name;			//技能名称
 	string<SG_DESCRIPTION_MAX>			skill_desc;			//技能表述
 	_S32								rank;				//阶级
+	_U8									atk_type;			//攻击类型
+	_U8									def_type;			//防御类型
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_GENERAL_CONFIG)];
@@ -975,6 +966,16 @@ struct SG_DAILY_ACTION_CONFIG			: A_CONTENT_OBJECT
 };
 task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_CONFIG)];
+
+struct SG_DAILY_ACTION_DESC_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								action_id;				//活动id
+	string<SG_DAILY_ACTION_NAME_MAX>	action_name;			//活动名字
+	string<SG_DAILY_ACTION_DESC>		desc;					//活动描述
+	_U8									display_type;			//显示分类
+};
+task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_DESC_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_DESC_CONFIG)];
 
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
@@ -1142,6 +1143,7 @@ class SGGAME_C2S
 	UpgradeTitle();													//军衔提升
 	
 	BuyGoods(_U32 item_id);											//商店购买
+	SellItem(A_UUID uuid, _U32 count);								//卖出
 
 	QueryPlayerPVPInfo(_U32 avatar_id);								//获取player pvp信息
 	QueryPlayerRankList();											//获取pvp排行
@@ -1159,9 +1161,8 @@ class SGGAME_C2S
 	QueryInstance();												//副本
 	EnterInstance(_U32 instance_id, _U8 difficulty);				//进入副本 0-普通 1-困难
 	BeginInstanceBattle(_U32 instance_id, string map_url);			//开始副本战斗
-	EndInstanceBattle(_U32 instance_id, string map_url, _U32 result);//结束副本战斗
+	EndInstanceBattle(_U32 instance_id, string map_url, _U32 result, _U8 auto_combat);//结束副本战斗 auto_combat 0-no  1-yes
 	ResetInstance(_U32 instance_id);
-	//AutoCombatInstance(_U32 instance_id, _U8 difficulty, SG_MAP_URL map_url_list[count], _U32 count);
 	SaveLastTownMap(string last_town_map);							//保存最后一次的地图信息
 
 	CreateLeague(string league_name);								//战盟 创建
@@ -1191,6 +1192,8 @@ class SGGAME_C2S
 	EquipTurboSkill(SG_TURBO_SKILL_SLOT skill_slot);				//装备无双技能
 
 	MakeEquipt(_U32 equipt_id);										//装备打造
+
+	QueryActionAvailable(_U32 action_list[count], _U32 count);		//判断活动是否可以进入/激活
 };
 
 class SGGAME_S2C
@@ -1229,6 +1232,7 @@ class SGGAME_S2C
 	FinishQuestDone(_U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, SG_DROP_ITEM_BASE drops[drop_count], _U32 drop_count);//level 任务完成之后
 	
 	BuyGoodsResult(A_UUID goods[count], _U32 count);	
+	SellItemResult(_U8 ret, A_UUID uuid, _U32 count);								//ret 0-succ 1-failed 
 
 	QueryPlayerPVPInfoResult(SG_PLAYER_PVE pve);
 	QueryPlayerRankListResult(SG_PLAYER players[count], _U32 count);
@@ -1246,9 +1250,8 @@ class SGGAME_S2C
 	QueryInstanceResult(SG_INSTANCE_INFO instances[count], _U32 count);				//副本
 	BeginInstanceBattleResult(SG_PLAYER_PVE PlayerPVE);								//开始副本战斗
 	EnterInstanceResult(SG_INSTANCE_INFO instance);					
-	EndInstanceBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	EndInstanceBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, _U8 result, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);//0-succ other-failed
 	ResetInstanceResult(_U8 result, _U32 rmb, SG_INSTANCE_INFO instance);			//result 0-succ 1-failed
-	//AutoCombatInstanceResult(SG_AUTO_COMBAT_REWARD combat_reward_list[count], _U32 count);
 
 	CreateLeagueResult(_U8 ret, SG_LEAGUE league);									//0-succ other-failed
 	QueryLeagueApplyListResult(SG_LEAGUE_APPLYER applyer[count], _U32 count);
@@ -1273,6 +1276,8 @@ class SGGAME_S2C
 
 	EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt);																//返回新的无双等级和消耗的觉醒点 ret 0-成功 other-failed
 	MakeEquiptResult(_U8 ret, SG_EQUIPT_ITEM new_euqipt, SG_MATERIAL_ITEM com_material, SG_MATERIAL_ITEM key_material);			//装备打造 com_material,key_material返回使用掉的材料
+
+	QueryActionAvailableResult(_U32 action_list[count], _U32 available_list[count], _U32 count);		//判断活动是否可以进入/激活 available_list[i] 0-available 1-none available
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

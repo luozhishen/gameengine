@@ -68,7 +68,7 @@ task[GEN_STRUCT_REFLECT(KNIGHT_CALC_CONFIG)];
 struct KNIGHT_SKILL_CONFIG : A_CONTENT_OBJECT
 {
 	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
-	string<KNIGHT_DESCRIPTION_MAX>							SkillName;
+	string<KNIGHT_DESCRIPTION_MAX>							RealName;
 	string<KNIGHT_DESCRIPTION_MAX>							Desc;
 	_U32													Level;
 	_U8														Target;
@@ -95,7 +95,7 @@ task[GEN_STRUCT_REFLECT(KNIGHT_SKILL_ACTIVE_CONFIG)];
 struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 {
 	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
-	string<KNIGHT_DESCRIPTION_MAX>							BuffName;
+	string<KNIGHT_DESCRIPTION_MAX>							RealName;
 	string<KNIGHT_DESCRIPTION_MAX>							Desc;
 	_S32													Duration;					
 }
@@ -182,7 +182,7 @@ task[GEN_STRUCT_REFLECT(KNIGHT_ITEM_CONFIG)];
 //Equipment
 struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
 {
-	string<KNIGHT_DESCRIPTION_MAX>		EquiptName;
+	string<KNIGHT_DESCRIPTION_MAX>		RealName;
 	string<KNIGHT_DESCRIPTION_MAX>		Desc;
 	_U32								Level;
 	_U32								Rank;

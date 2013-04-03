@@ -59,7 +59,7 @@ namespace Atlas
 		virtual void QueryInstanceResult(const SG_INSTANCE_INFO* instances, _U32 count) = 0;					
 		virtual void BeginInstanceBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;								
 		virtual void EnterInstanceResult(const SG_INSTANCE_INFO& instance) = 0;			
-		virtual void EndInstanceBattleResult(_U32 level, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count) = 0;
+		virtual void EndInstanceBattleResult(_U32 level, _U32 exp, _U32 gold, _U32 wake_pt, _U8 result, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count) = 0;
 		virtual void ResetInstanceResult(_U8 result, _U32 rmb, const SG_INSTANCE_INFO& instance) = 0;
 
 		virtual void CreateLeagueResult(_U8 ret, const SG_LEAGUE& league) = 0;							//0-succ other-failed
@@ -85,7 +85,9 @@ namespace Atlas
 
 		virtual void EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt) = 0;
 		virtual void MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material) = 0;
+		virtual void QueryActionStatusResult(_U32 *action_list, Atlas::Vector<_U8> statusVec, _U32 *available_list, _U32 count) = 0;
 
+		virtual void SellItemResult(_U8 ret, const A_UUID& uuid, _U32 count) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -136,9 +138,9 @@ namespace Atlas
 		void RefreshEquipAbility(A_UUID& uuid);
 		void RefreshEquipDecideAccept(A_UUID& uuid);
 
-		void HaloCoolDown();												//立刻冷却
-		void HaloIncreaseEXP(_U8 halo_type);								//升级光环
-		void HaloGetCoolDown();												//获取光环冷却时间
+		void HaloCoolDown();													//立刻冷却
+		void HaloIncreaseEXP(_U8 halo_type);									//升级光环
+		void HaloGetCoolDown();													//获取光环冷却时间
 
 		void BeginBattle(const char* name);
 		void EndBattle(const char* name, _U32 result);
@@ -160,6 +162,7 @@ namespace Atlas
 		void QueryPlayerRankList();												//pvp排行榜
 
 		void BuyGoods(_U32 item_id);											//商店购买
+		void SellItem(const A_UUID& uuid, const _U32 count);					//卖出物品
 
 		void PVPCoolDown();														//挑战冷却时间
 		void PVPGetRestTime();													//挑战剩余次数
@@ -174,7 +177,7 @@ namespace Atlas
 		void QueryInstance();													//副本
 		void EnterInstance(_U32 instance_id, _U8 difficulty);					//进入副本 0-普通 1-困难
 		void BeginInstanceBattle(_U32 instance_id, const char* map_url);		//开始副本战斗
-		void EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result);				//结束副本战斗
+		void EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result, _U8 auto_combat = 0);//结束副本战斗 auto_combat 0-no 1-yese
 		void ResetInstance(_U32 instance_id);									//重置副本
 		void SaveLastTownMap(const char* last_town_map);						//保存最后一次的地图信息
 
@@ -204,6 +207,7 @@ namespace Atlas
 		void EnhanceTurbo();
 		void EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot);			//装备无双技能
 		void MakeEquipt(_U32 equipt_id);										//装备打造
+		void QueryActionAvailable(_U32 *action_list, _U32 count);				//判断活动是否可以进入/激活
 
 		//result
 		void Pong(CSGClient* pClient);
@@ -240,6 +244,7 @@ namespace Atlas
 		void QueryPlayerRankListResult(CSGClient* pClient, SG_PLAYER* players, _U32 count);
 		
 		void BuyGoodsResult(CSGClient* pClient, const A_UUID* goods, _U32 count);						
+		void SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 count);				//ret 0-succ 1-failed 
 
 		void PVPCoolDownResult(CSGClient* pClient, _U32 time);													//挑战冷却时间
 		void PVPGetRestTimeResult(CSGClient* pClient, _U32 rest_time);											//挑战剩余次数
@@ -254,7 +259,7 @@ namespace Atlas
 		void QueryInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO* instances, _U32 count);			//副本
 		void BeginInstanceBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);						//开始副本战斗
 		void EnterInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO& instance);			
-		void EndInstanceBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void EndInstanceBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, _U8 result, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
 		void ResetInstanceResult(CSGClient* pClient, _U8 result, _U32 rmb, const SG_INSTANCE_INFO& instance);	//result 0-succ 1-failed
 
 		void CreateLeagueResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE& league);							//0-succ 1-failed
@@ -280,6 +285,10 @@ namespace Atlas
 
 		void EnhanceTurboResult(CSGClient* pClient, _U8 ret, _U32 turbo_level,  _U32 wake_pt);										//返回新的无双等级和消耗的觉醒点 
 		void MakeEquiptResult(CSGClient* pClient, _U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material);			//装备打造 com_material,key_material返回使用掉的材料
+		void QueryActionAvailableResult(CSGClient* pClient, _U32* action_list, _U32* available_list, _U32 count);		//判断活动是否可以进入/激活 available_list[i] 0-available 1-none available
+
+	
+
 	public:
 		virtual void OnLoginDone();
 		virtual void OnLoginFailed();
@@ -301,7 +310,7 @@ namespace Atlas
 		const int GetServerTime();
 		SG_ITEM* GetItemByUUID(const A_UUID& uuid);
 		void GetFinishedQuest(Atlas::Vector<SG_QUEST_LIVE_INFO>& quest_vec);
-		void GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec);
+		//void GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec, Atlas::Vector<_U8>& availableVec);
 
 		void GetNewSoldierList(Atlas::Vector<_U32>& soldier_lists);
 		bool HasNewSoldier();
@@ -312,6 +321,11 @@ namespace Atlas
 		bool HasNewItem();
 		bool IsNewItem(const A_UUID& uuid);
 		void ClearNewItemList();
+
+		void GetNewApplyerList(Atlas::Vector<_U32>& applyer_list);
+		bool HasNewApplyer();
+		bool IsNewApplyer(_U32 applyer_id);
+		void ClearNewApplyerList();
 
 		void SyncForInit();
 		void SyncSet(const Atlas::Vector<_U8> vecSync);
@@ -329,11 +343,7 @@ namespace Atlas
 		Atlas::Vector<SG_QUEST_LIVE_INFO> m_quests;
 		Atlas::Vector<SG_INSTANCE_INFO> m_instances;
 
-		Atlas::Vector<_U32> m_newSoldiers;				//新获得的可解锁的soldier
-		Atlas::Vector<A_UUID> m_newItemList;			//新获得的物品
-		
 		int m_nServerTimeDelta;
-		//Atlas::CSGSyncDataManager* m_pSyncMgr;
 		_U64 m_nConnectPingTime;
 
 		Atlas::Vector<SG_SERVER_INFO> m_serverList;		//目前的server

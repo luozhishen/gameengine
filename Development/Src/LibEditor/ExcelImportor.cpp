@@ -362,6 +362,8 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				return false;
 			}
 
+			if(!val.empty()) bExit = false;
+
 			if(val.empty() && !i->second->defval.empty())
 			{
 				val = i->second->defval;
@@ -391,11 +393,9 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 						bError = true;
 					}
 				}
-				bExit = false;
 			}
 			else
 			{
-				if(!val.empty()) bExit = false;
 				val_map[i->second->field] = val;
 			}
 

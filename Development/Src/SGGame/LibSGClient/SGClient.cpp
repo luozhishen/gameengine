@@ -9,12 +9,17 @@
 #include "SGClientUtil.h"
 
 #include "SGActionStatusCache.h"
+#include "SGClientTipsHelper.h"
 
 namespace Atlas
 {
 	int CSGClient::ms_nLastRanderTime = 0;
 	static Atlas::SGActionStatusCache g_actionStatusCache;
 	static Atlas::CSGSyncDataManager g_syncDataManager;
+
+	Atlas::SGClientTipsHelper<_U32>		g_newSoldiers;	  //新获得的可解锁的soldier
+	Atlas::SGClientTipsHelper<A_UUID>	g_newItemList;		  //新获得的物品
+	Atlas::SGClientTipsHelper<_U32>		g_newApplyers;	  //申请的战盟的玩家的信息
 
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), m_C2S(this), m_S2C(this)
 	{
@@ -186,16 +191,43 @@ namespace Atlas
 		}
 
 		m_C2S.EquipItem(general_id, tidy_slots);
+
+		if(m_player.general_id == general_id)
+		{
+			m_player.equip_slots = tidy_slots;
+		}
+		else
+		{
+			for(_U32 i = 0; i < m_generals.size(); ++i)
+			{
+				if(m_generals[i].general_id == general_id)
+				{
+					m_generals[i].equip_slots = tidy_slots;
+					break;
+				}
+			}
+		}
 	}
 
 	void CSGClient::EquipGenerals(const _U32* generals, _U32 count)
 	{
 		m_C2S.EquipGenerals(generals, count);
+
+		m_player.equip_generals.Resize(count);
+		for(_U32 i = 0; i < count; ++i)
+		{
+			m_player.equip_generals._Array[i] = generals[i];
+		}
 	}
 
 	void CSGClient::EquipSoldiers(const _U32* soldiers, _U32 count)
 	{
 		m_C2S.EquipSoldiers(soldiers, count);
+
+		for(_U32 i = 0; i < count; ++i)
+		{
+			m_player.equip_soldiers._Array[i] = soldiers[i];
+		}
 	}
 
 	void CSGClient::UnLockSoldier(_U32 soldier_id)
@@ -250,6 +282,11 @@ namespace Atlas
 	void CSGClient::EnhanceCoolDownClear()
 	{
 		m_C2S.EnhanceCoolDownClear();
+
+		//help to sync data
+		Atlas::Vector<_U8> vecSync;
+		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+		SyncSet(vecSync);
 	}
 
 	void CSGClient::IncreaseEquipCoolDown()
@@ -470,6 +507,11 @@ namespace Atlas
 		m_C2S.BuyGoods(item_id);
 	}
 
+	void CSGClient::SellItem(const A_UUID& uuid, const _U32 count)
+	{
+		m_C2S.SellItem(uuid, count);
+	}
+
 	void CSGClient::PVPCoolDown()
 	{
 		m_C2S.PVPCoolDown();
@@ -546,9 +588,9 @@ namespace Atlas
 		m_C2S.BeginInstanceBattle(instance_id, map_url);
 	}
 
-	void CSGClient::EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result)
+	void CSGClient::EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result, _U8 auto_combat)
 	{
-		m_C2S.EndInstanceBattle(instance_id, map_url, result);
+		m_C2S.EndInstanceBattle(instance_id, map_url, result, auto_combat);
 	}
 
 	void CSGClient::ResetInstance(_U32 instance_id)
@@ -694,6 +736,11 @@ namespace Atlas
 		m_C2S.MakeEquipt(equipt_id);
 	}
 
+	void CSGClient::QueryActionAvailable(_U32 *action_list, _U32 count)
+	{
+		m_C2S.QueryActionAvailable(action_list, count);
+	}
+
 	void CSGClient::Pong(CSGClient* pClient)
 	{
 		if(m_callback)
@@ -793,16 +840,14 @@ namespace Atlas
 		if(SGClientUtil::DiffGenerals(m_generals, generals_new))
 			//&& !SGClientUtil::IsEmptyGeneral(m_generals))
 		{
+			
+			m_generals.clear();
+			SGClientUtil::GenerateTempNewVec<SG_GENERAL>(generals, count, m_generals);
+
 			if(m_callback) 
 			{
 				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncGenerals);
 			}
-		}
-
-		m_generals.clear();
-		for(_U32 i = 0; i < count; ++i)
-		{
-			m_generals.push_back(generals[i]);
 		}
 
 		//sync waitting...
@@ -823,16 +868,13 @@ namespace Atlas
 		if(SGClientUtil::DiffSoldiers(m_soldiers, soldiers_new))
 			//&& !SGClientUtil::IsEmptySoldier(m_soldiers))
 		{
+			m_soldiers.clear();
+			SGClientUtil::GenerateTempNewVec<SG_SOLDIER>(soldiers, count, m_soldiers);
+			
 			if(m_callback) 
 			{
 				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncSoldiers);
 			}
-		}
-
-		m_soldiers.clear();
-		for(_U32 i = 0; i < count; ++i)
-		{
-			m_soldiers.push_back(soldiers[i]);
 		}
 
 		if(nSync)
@@ -858,16 +900,13 @@ namespace Atlas
 		if(SGClientUtil::DiffEquipt(m_equipts, equipts_new))
 			//&& !SGClientUtil::IsEmptyEquipt(m_equipts))
 		{
+			m_equipts.clear();
+			SGClientUtil::GenerateTempNewVec<SG_EQUIPT_ITEM>(items, count, m_equipts);
+
 			if(m_callback) 
 			{
 				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncEquipt);
 			}
-		}
-
-		m_equipts.clear();
-		for(_U32 i = 0; i < count; ++i)
-		{
-			m_equipts.push_back(items[i]);
 		}
 
 		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncEquipt))
@@ -882,17 +921,15 @@ namespace Atlas
 		if(SGClientUtil::DiffUsable(m_usables, usables_new))
 			//&& !SGClientUtil::IsEmptyUsable(m_usables))
 		{
+			m_usables.clear();
+			SGClientUtil::GenerateTempNewVec<SG_USABLE_ITEM>(items, count, m_usables);
+
 			if(m_callback) 
 			{
 				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncUsable);
 			}
 		}
 
-		m_usables.clear();
-		for(_U32 i = 0; i < count; ++i)
-		{
-			m_usables.push_back(items[i]);
-		}
 
 		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncUsable))
 			return;
@@ -906,16 +943,13 @@ namespace Atlas
 		if(SGClientUtil::DiffGem(m_gems, gems_new))
 			//&& !SGClientUtil::IsEmptyGem(m_gems))
 		{
+			m_gems.clear();
+			SGClientUtil::GenerateTempNewVec<SG_GEM_ITEM>(items, count, m_gems);
+
 			if(m_callback) 
 			{
 				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncGem);
 			}
-		}
-
-		m_gems.clear();
-		for(_U32 i = 0; i < count; ++i)
-		{
-			m_gems.push_back(items[i]);
 		}
 
 		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncGem))
@@ -930,16 +964,12 @@ namespace Atlas
 		if(SGClientUtil::DiffMaterial(m_materials, new_materials))
 			//&& !SGClientUtil::IsEmptyGem(m_gems))
 		{
+			m_materials.clear();
+			SGClientUtil::GenerateTempNewVec<SG_MATERIAL_ITEM>(items, count, m_materials);
 			if(m_callback) 
 			{
 				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncMaterial);
 			}
-		}
-
-		m_materials.clear();
-		for(_U32 i = 0; i < count; ++i)
-		{
-			m_materials.push_back(items[i]);
 		}
 
 		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncMaterial))
@@ -983,7 +1013,7 @@ namespace Atlas
 		{
 			if(m_player.level != level)
 			{
-				SGClientUtil::GetUnlockSoldierByLevel(m_player.level, level, m_newSoldiers, m_soldiers);
+				SGClientUtil::GetUnlockSoldierByLevel(m_player.level, level, g_newSoldiers.GetData(), m_soldiers);
 				m_player.level = (_U16)level;
 			}
 
@@ -993,11 +1023,17 @@ namespace Atlas
 
 			for(_U32 i = 0; i < drop_count; ++i)
 			{
-				m_newItemList.push_back(drops[i].uuid);
+				g_newItemList.AddItem(drops[i].uuid);
 			}
 
 			m_callback->EndBattleDone(level, exp_addition, gold, wake_pt, drop_lists, drop_count);
-			m_callback->DataUpdate(CSGSyncDataManager::eSyncPlayer);
+
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+			SyncSet(vecSync);
+			//m_callback->DataUpdate(CSGSyncDataManager::eSyncPlayer);
 		}
 	}
 	
@@ -1092,7 +1128,7 @@ namespace Atlas
 		{
 			if(m_player.level != level)
 			{
-				SGClientUtil::GetUnlockSoldierByLevel(m_player.level, level, m_newSoldiers, m_soldiers);
+				SGClientUtil::GetUnlockSoldierByLevel(m_player.level, level, g_newSoldiers.GetData(), m_soldiers);
 				m_player.level = (_U16)level;
 			}
 
@@ -1103,7 +1139,7 @@ namespace Atlas
 
 			for(_U32 i = 0; i < drop_count; ++i)
 			{
-				m_newItemList.push_back(drops[i].uuid);
+				g_newItemList.AddItem(drops[i].uuid);
 			}
 
 			m_callback->FinishQuestDone(quest_id, exp_addition, gold, rmb, reputation, energy, drops, drop_count);
@@ -1131,7 +1167,7 @@ namespace Atlas
 	{
 		for(_U32 i = 0; i < count; ++i)
 		{
-			m_newItemList.push_back(goods[i]);
+			g_newItemList.AddItem(goods[i]);
 		}
 
 		//help to sync data
@@ -1188,7 +1224,7 @@ namespace Atlas
 
 			for(_U32 i = 0; i < count; ++i)
 			{
-				m_newItemList.push_back(items->uuid);
+				g_newItemList.AddItem(items->uuid);
 			}
 
 		}
@@ -1273,26 +1309,34 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::EndInstanceBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
+	void CSGClient::EndInstanceBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, _U8 result, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
 	{
 		if(m_callback)
 		{
 			if(m_player.level != level)
 			{
-				SGClientUtil::GetUnlockSoldierByLevel(m_player.level, level, m_newSoldiers, m_soldiers);
+				SGClientUtil::GetUnlockSoldierByLevel(m_player.level, level, g_newSoldiers.GetData(), m_soldiers);
 				m_player.level = (_U16)level;
 			}
 
 			m_player.exp = exp;
 			m_player.gold += gold;
+			m_player.wake_pt += wake_pt;
 
 			for(_U32 i = 0; i < drop_count; ++i)
 			{
-				m_newItemList.push_back(drops[i].uuid);
+				g_newItemList.AddItem(drops[i].uuid);
 			}
 			
-			m_callback->EndInstanceBattleResult(level, exp_addition, gold, drops, drop_count);
-			m_callback->DataUpdate(CSGSyncDataManager::eSyncPlayer);
+			m_callback->EndInstanceBattleResult(level, exp_addition, gold, wake_pt, result, drops, drop_count);
+
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+			SyncSet(vecSync);
+
+			//m_callback->DataUpdate(CSGSyncDataManager::eSyncPlayer);
 		}
 	}
 
@@ -1332,6 +1376,15 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			//SGClientUtil::GenerateTempNewVec<SG_LEAGUE_APPLYER>(applyers, count, g_newApplyers.GetData());
+			Atlas::Vector<_U32>& applyerVec = g_newApplyers.GetData();
+			g_newApplyers.Resize(count);
+
+			for(_U32 i = 0; i < count; ++i)
+			{
+				applyerVec[i] = applyers[i].applyer_id;
+			}
+
 			m_callback->QueryLeagueApplyListResult(applyers, count);
 		}
 	}
@@ -1483,15 +1536,6 @@ namespace Atlas
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
 			
-	/*			for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
-				{
-					if(m_player.daily_actions._Array[i].action_id == 1003)
-					{
-						m_player.daily_actions._Array[i].times = m_player.daily_actions._Array[i].times + 1;
-						break;
-					}
-				}*/
-
 				//help to sync data
 				Atlas::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
@@ -1510,15 +1554,6 @@ namespace Atlas
 			{
 				m_player.rmb -= rmb;
 				m_player.gold += gold;
-
-				//for(_U32 i = 0; i < m_player.daily_actions._Count; ++i)
-				//{
-				//	if(m_player.daily_actions._Array[i].action_id == 1003)
-				//	{
-				//		m_player.daily_actions._Array[i].times += times;
-				//		break;
-				//	}
-				//}
 
 				//help to sync data
 				Atlas::Vector<_U8> vecSync;
@@ -1544,7 +1579,11 @@ namespace Atlas
 			{
 				DDL::String<ARCHETYPE_URL_LENGTH_MAX> unlock_archetype;
 				unlock_archetype.Assign(skill_archetype.c_str());
-				m_player.skills._Array[m_player.skills._Count] = unlock_archetype;
+				
+				int nCount = m_player.skills._Count;
+				m_player.skills.Resize(nCount + 1);
+				m_player.skills._Array[nCount] = unlock_archetype;
+				
 			}
 
 			m_callback->EnhanceTurboResult(ret, turbo_level, wake_pt);
@@ -1557,7 +1596,7 @@ namespace Atlas
 		{
 			if(!ret)
 			{
-				m_newItemList.push_back(new_euqipt.uuid);
+				g_newItemList.AddItem(new_euqipt.uuid);
 
 				//help to sync data
 				Atlas::Vector<_U8> vecSync;
@@ -1567,6 +1606,33 @@ namespace Atlas
 			}
 
 			m_callback->MakeEquiptResult(ret, new_euqipt, com_material, key_material);
+		}
+	}
+
+	void CSGClient::QueryActionAvailableResult(CSGClient* pClient, _U32* action_list, _U32* available_list, _U32 count)
+	{
+		if(m_callback)
+		{
+			Atlas::Vector<_U8> statusVec;
+			Atlas::Vector<_U32> actionVec;
+
+			SGClientUtil::GenerateTempNewVec(action_list, count, actionVec);
+			g_actionStatusCache.GetDailActionStatus(GetServerTime(), actionVec, statusVec);
+
+			m_callback->QueryActionStatusResult(action_list, statusVec, available_list, count);
+		}
+	}
+
+	void CSGClient::SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 count)
+	{
+		if(m_callback)
+		{
+			if(!result)
+			{
+				SGClientUtil::UpdateItemByUUID(this, uuid, count);
+			}
+
+			m_callback->SellItemResult(result, uuid, count);
 		}
 	}
 
@@ -1740,64 +1806,69 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec)
-	{
-		g_actionStatusCache.GetDailActionStatus(GetServerTime(), actionVec, statusVec);
-	}
+	//void CSGClient::GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec, Atlas::Vector<_U8>& availableVec)
+	//{
+	//	g_actionStatusCache.GetDailActionStatus(GetServerTime(), actionVec, statusVec);
+	//}
 
 	void CSGClient::GetNewSoldierList(Atlas::Vector<_U32>& soldier_lists)
 	{
-		soldier_lists = m_newSoldiers;
+		g_newSoldiers.GetNewList(soldier_lists);
 	}
 
 	bool CSGClient::HasNewSoldier()
 	{
-		return !m_newSoldiers.empty();
+		return g_newSoldiers.HasNewItem();
 	}
 
 	bool CSGClient::IsNewSoldier(_U32 soldier_id)
 	{
-		for(size_t i = 0; i < m_newSoldiers.size(); ++i)
-		{
-			if(m_newSoldiers[i] == soldier_id)
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return g_newSoldiers.IsNewItem(soldier_id);
 	}
 
 	void CSGClient::ClearNewSoldierList()
 	{
-		m_newSoldiers.clear();
+		g_newSoldiers.ClearNewList();
 	}
 
 	void CSGClient::GetNewItemList(Atlas::Vector<A_UUID>& item_lists)
 	{
-		item_lists = m_newItemList;
+		g_newItemList.GetNewList(item_lists);
 	}
 
 	bool CSGClient::HasNewItem()
 	{
-		return !m_newItemList.empty();
+		return g_newItemList.HasNewItem();
 	}
 
 	bool CSGClient::IsNewItem(const A_UUID& uuid)
 	{
-		for(size_t i = 0; i < m_newItemList.size(); ++i)
-		{
-			if(m_newItemList[i] == uuid)
-			{
-				return true;
-			}
-		}
-		return false;
+		return g_newItemList.IsNewItem(uuid);
 	}
 
 	void CSGClient::ClearNewItemList()
 	{
-		m_newItemList.clear();
+		g_newItemList.ClearNewList();
+	}
+
+	void CSGClient::GetNewApplyerList(Atlas::Vector<_U32>& applyer_list)
+	{
+		g_newApplyers.GetNewList(applyer_list);
+	}
+	
+	bool CSGClient::HasNewApplyer()
+	{
+		return g_newApplyers.HasNewItem();
+	}
+
+	bool CSGClient::IsNewApplyer(_U32 applyer_id)
+	{
+		return g_newApplyers.IsNewItem(applyer_id);
+	}
+	
+	void CSGClient::ClearNewApplyerList()
+	{
+		return g_newApplyers.ClearNewList();
 	}
 
 	void CSGClient::SyncForInit()

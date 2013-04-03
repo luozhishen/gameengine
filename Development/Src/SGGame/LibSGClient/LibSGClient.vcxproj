@@ -22,11 +22,13 @@
     <ClCompile Include="SGActionStatusCache.cpp" />
     <ClCompile Include="SGClient.cpp" />
     <ClCompile Include="SGClientApp.cpp" />
+    <ClCompile Include="SGClientTipsHelper.cpp" />
     <ClCompile Include="SGClientUtil.cpp" />
     <ClCompile Include="SGSyncDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGActionStatusCache.h" />
+    <ClInclude Include="SGClientTipsHelper.h" />
     <ClInclude Include="SGClientUtil.h" />
     <ClInclude Include="SGSyncDataManager.h" />
     <ClInclude Include="SGClient.h" />

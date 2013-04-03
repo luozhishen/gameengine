@@ -32,6 +32,8 @@ namespace Atlas
 		static _U32 GetDailyActionTime(const SG_PLAYER& player_info, _U32 action_id);
 		static bool SetDailyActionTimeInCache(SG_PLAYER& player_info, _U32 action_id, _U32 times);
 
+		static bool UpdateItemByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count);
+
 		template<typename T>
 		static void GenerateTempNewVec(const T* t, _U32 count, Atlas::Vector<T>& vec)
 		{
@@ -40,6 +42,44 @@ namespace Atlas
 				vec.push_back(t[i]);
 			}
 		}
+
+		template<typename T1, typename T2>
+		static void GenerateTempNewVec(const T1* t, _U32 count, Atlas::Vector<T2>& vec);
+		
+		//warning !!! apple`s complier will set it as error
+		//template<>
+		//static void GenerateTempNewVec<SG_LEAGUE_APPLYER, _U32>(const SG_LEAGUE_APPLYER* t, _U32 count, Atlas::Vector<_U32>& vec)
+		//{
+		//	for(_U32 i = 0; i < count; ++i)
+		//	{
+		//		vec.push_back(t[i].applyer_id);
+		//	}
+		//}
+
+		
+		template<typename T>
+		static bool UpdateItemTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, _U32 count)
+		{
+			for(Atlas::Vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
+			{
+				if((*it).uuid == uuid)
+				{
+					if(count == 0)
+					{
+						vec.erase(it);
+					}
+					else
+					{
+						(*it).count = count;
+					}
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 	};
 }
 

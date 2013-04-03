@@ -364,4 +364,31 @@ namespace Atlas
 		return false;
 	}
 
+
+	bool SGClientUtil::UpdateItemByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count)
+	{
+		bool bRet = false;
+
+		Atlas::Vector<SG_EQUIPT_ITEM>& equiptVec		= (Atlas::Vector<SG_EQUIPT_ITEM>&)pClient->GetEquiptItem();
+		Atlas::Vector<SG_GEM_ITEM>& gemVec				= (Atlas::Vector<SG_GEM_ITEM>&)pClient->GetGemItem();
+		Atlas::Vector<SG_USABLE_ITEM>& usableVec		= (Atlas::Vector<SG_USABLE_ITEM>&)pClient->GetUsableItem();
+		Atlas::Vector<SG_MATERIAL_ITEM>& materialVec	= (Atlas::Vector<SG_MATERIAL_ITEM>&)pClient->GetMaterialItem();
+
+		//if one item has been update then do not update next vec and return true
+		if(	!UpdateItemTemplateFun<SG_EQUIPT_ITEM>(equiptVec, uuid, count)
+			&&!UpdateItemTemplateFun<SG_GEM_ITEM>(gemVec, uuid, count)
+			&&!UpdateItemTemplateFun<SG_USABLE_ITEM>(usableVec, uuid, count)
+			&&!UpdateItemTemplateFun<SG_MATERIAL_ITEM>(materialVec, uuid, count))
+		{
+			return bRet;
+		}
+		else
+		{
+			bRet = true;
+		}
+
+
+		return bRet;
+	}
+
 }

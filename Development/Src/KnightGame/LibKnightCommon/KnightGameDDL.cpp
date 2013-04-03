@@ -259,7 +259,7 @@ namespace DDL
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
-		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.SkillName)) return false;
+		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Read<_U32>(Value.Level)) return false;
 		if(!Read<_U8>(Value.Target)) return false;
@@ -271,7 +271,7 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
-		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.SkillName)) return false;
+		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Write<_U32>(Value.Level)) return false;
 		if(!Write<_U8>(Value.Target)) return false;
@@ -296,7 +296,7 @@ namespace DDLReflect
 	static FIELD_INFO _struct_KNIGHT_SKILL_CONFIG_fieldinfo[] =
 	{
 		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
-		{TYPE_STRING, "SkillName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, SkillName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
+		{TYPE_STRING, "RealName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, RealName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_STRING, "Desc", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, Desc), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_U32, "Level", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, Level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U8, "Target", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_SKILL_CONFIG, Target), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
@@ -375,7 +375,7 @@ namespace DDL
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
-		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.BuffName)) return false;
+		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Read<_S32>(Value.Duration)) return false;
 		return true;
@@ -385,7 +385,7 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
-		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.BuffName)) return false;
+		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Write<_S32>(Value.Duration)) return false;
 		return true;
@@ -408,7 +408,7 @@ namespace DDLReflect
 	static FIELD_INFO _struct_KNIGHT_BUFF_CONFIG_fieldinfo[] =
 	{
 		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
-		{TYPE_STRING, "BuffName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, BuffName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
+		{TYPE_STRING, "RealName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, RealName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_STRING, "Desc", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, Desc), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_S32, "Duration", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, Duration), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 	};
@@ -808,7 +808,7 @@ namespace DDL
 	bool BufferReader::Read<KNIGHT_EQUIPMENT_CONFIG>(KNIGHT_EQUIPMENT_CONFIG& Value)
 	{
 		if(!BufferReader::Read<KNIGHT_ITEM_CONFIG>(Value)) return false;
-		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.EquiptName)) return false;
+		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Read<_U32>(Value.Level)) return false;
 		if(!Read<_U32>(Value.Rank)) return false;
@@ -823,7 +823,7 @@ namespace DDL
 	bool BufferWriter::Write<KNIGHT_EQUIPMENT_CONFIG>(const KNIGHT_EQUIPMENT_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<KNIGHT_ITEM_CONFIG>(Value)) return false;
-		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.EquiptName)) return false;
+		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Write<_U32>(Value.Level)) return false;
 		if(!Write<_U32>(Value.Rank)) return false;
@@ -851,7 +851,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_KNIGHT_EQUIPMENT_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "EquiptName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, EquiptName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
+		{TYPE_STRING, "RealName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, RealName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_STRING, "Desc", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, Desc), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_U32, "Level", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, Level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "Rank", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, Rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},

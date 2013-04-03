@@ -55,7 +55,9 @@ namespace Atlas
 		{"SG_TURBO_CONFIG", "SG_TURBO_CONFIG.json", "general_id,turbo_level"},
 		{"SG_LEAGUE_ACTION_CONFIG", "SG_LEAGUE_ACTION_CONFIG.json", "action_id"},
 		{"SG_MATERIAL_CONFIG", "SG_MATERIAL_CONFIG.json", "item_id"},
-		{"SG_LEAGUE_TOAST_CONFIG", "SG_LEAGUE_TOAST_CONFIG.json", "wine_id"}
+		{"SG_LEAGUE_TOAST_CONFIG", "SG_LEAGUE_TOAST_CONFIG.json", "wine_id"},
+
+		{"SG_DAILY_ACTION_DESC_CONFIG", "SG_DAILY_ACTION_DESC_CONFIG.json", "action_id"}
 		
 	};
 
@@ -157,6 +159,9 @@ namespace Atlas
 		pContentGroup->Register(DDLReflect::GetStruct< SG_MATERIAL_CONFIG >(), true, g_JsonContent[i++].keys);
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_LEAGUE_TOAST_CONFIG >(), true, g_JsonContent[i++].keys);
+
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_DAILY_ACTION_DESC_CONFIG >(), true, g_JsonContent[i++].keys);
 
 	}
 

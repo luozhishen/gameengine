@@ -1023,3 +1023,41 @@ namespace DDLReflect
 	}
 }
 
+namespace DDLReflect
+{
+	static FIELD_INFO _class_KNGIHT_C2S_fieldinfos[] = 
+	{
+		// 0 Ping
+		{0, NULL, 0, NULL, 0, 0, 0, 0},
+	};
+	static FUNCTION_INFO _class_KNGIHT_C2S_funcinfos[] = 
+	{
+		{"Ping", 0, _class_KNGIHT_C2S_fieldinfos+0},
+	};
+	static CLASS_INFO _class_KNGIHT_C2S_info = { 0, "KNGIHT_C2S", 1, _class_KNGIHT_C2S_funcinfos };
+	template<>
+	const CLASS_INFO* GetClass<KNGIHT_C2S>()
+	{
+		return &_class_KNGIHT_C2S_info;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _class_KNIGHT_S2C_fieldinfos[] = 
+	{
+		// 0 Pong
+		{0, NULL, 0, NULL, 0, 0, 0, 0},
+	};
+	static FUNCTION_INFO _class_KNIGHT_S2C_funcinfos[] = 
+	{
+		{"Pong", 0, _class_KNIGHT_S2C_fieldinfos+0},
+	};
+	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 1, _class_KNIGHT_S2C_funcinfos };
+	template<>
+	const CLASS_INFO* GetClass<KNIGHT_S2C>()
+	{
+		return &_class_KNIGHT_S2C_info;
+	}
+}
+

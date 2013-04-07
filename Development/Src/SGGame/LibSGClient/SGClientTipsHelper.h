@@ -46,6 +46,11 @@ namespace Atlas
 			return m_data;
 		}
 
+		void Resize(_U32 count)
+		{
+			m_data.resize( (size_t)count > m_data.size() ? (size_t)count : m_data.size());
+		}
+
 	private:
 		Atlas::Vector<T> m_data;
 	};

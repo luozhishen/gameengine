@@ -60,7 +60,7 @@ namespace Atlas
 		template<typename T>
 		static bool UpdateItemTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, _U32 count)
 		{
-			for(Atlas::Vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
+			for(typename Atlas::Vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
 			{
 				if((*it).uuid == uuid)
 				{

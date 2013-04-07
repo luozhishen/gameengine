@@ -495,6 +495,132 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CONFIG_info;
 }
 
+class KNGIHT_C2S;
+
+class KNIGHT_S2C;
+
+namespace DDLStub
+{
+
+	template<typename CALLER, typename CLASS>
+	class KNGIHT_C2S : public DDLStub<CALLER, CLASS>
+	{
+	public:
+		KNGIHT_C2S(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
+		{
+		}
+
+		virtual bool Dispatcher(CALLER* Caller, _U16 fid, DDL::BufferReader& Buf)
+		{
+			if(fid==0)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Ping(Caller);
+				return true;
+			}
+			return false;
+		}
+	};
+
+}
+
+namespace DDLProxy
+{
+
+	template<typename CLIENT, typename BUFFER>
+	class KNGIHT_C2S : public DDLProxy<CLIENT, BUFFER>
+	{
+	public:
+		KNGIHT_C2S(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::KNGIHT_C2S>())
+		{
+		}
+
+		static KNGIHT_C2S<CLIENT, BUFFER> Get(CLIENT* Client)
+		{
+			KNGIHT_C2S<CLIENT, BUFFER> Proxy(Client);
+			return Proxy;
+		}
+
+		bool Ping()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+	};
+
+}
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<KNGIHT_C2S>();
+}
+
+namespace DDLStub
+{
+
+	template<typename CALLER, typename CLASS>
+	class KNIGHT_S2C : public DDLStub<CALLER, CLASS>
+	{
+	public:
+		KNIGHT_S2C(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
+		{
+		}
+
+		virtual bool Dispatcher(CALLER* Caller, _U16 fid, DDL::BufferReader& Buf)
+		{
+			if(fid==0)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Pong(Caller);
+				return true;
+			}
+			return false;
+		}
+	};
+
+}
+
+namespace DDLProxy
+{
+
+	template<typename CLIENT, typename BUFFER>
+	class KNIGHT_S2C : public DDLProxy<CLIENT, BUFFER>
+	{
+	public:
+		KNIGHT_S2C(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::KNIGHT_S2C>())
+		{
+		}
+
+		static KNIGHT_S2C<CLIENT, BUFFER> Get(CLIENT* Client)
+		{
+			KNIGHT_S2C<CLIENT, BUFFER> Proxy(Client);
+			return Proxy;
+		}
+
+		bool Pong()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+	};
+
+}
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<KNIGHT_S2C>();
+}
+
 
 #pragma pack(pop)
 

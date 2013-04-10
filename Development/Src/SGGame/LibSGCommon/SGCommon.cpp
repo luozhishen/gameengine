@@ -57,7 +57,17 @@ namespace Atlas
 		{"SG_MATERIAL_CONFIG", "SG_MATERIAL_CONFIG.json", "item_id"},
 		{"SG_LEAGUE_TOAST_CONFIG", "SG_LEAGUE_TOAST_CONFIG.json", "wine_id"},
 
-		{"SG_DAILY_ACTION_DESC_CONFIG", "SG_DAILY_ACTION_DESC_CONFIG.json", "action_id"}
+		{"SG_DAILY_ACTION_DESC_CONFIG", "SG_DAILY_ACTION_DESC_CONFIG.json", "action_id"},
+		{"SG_CHAT_CHANNEL_CONFIG", "SG_CHAT_CHANNEL_CONFIG.json", "channel_id"},
+		{"SG_CHAT_TAB_CONFIG", "SG_CHAT_TAB_CONFIG.json", "tab_id"},
+		{"SG_LEAGUE_DIANJIANG_CONFIG", "SG_LEAGUE_DIANJIANG_CONFIG.json", "consume_npc_gold"},
+		{"SG_ENERGY_CONFIG", "SG_ENERGY_CONFIG.json", "restore_energy"},
+
+		{"SG_ENERGY_BUY_CONFIG", "SG_ENERGY_BUY_CONFIG.json", "times"},
+		{"SG_FRIEND_NUM_CONFIG", "SG_FRIEND_NUM_CONFIG.json", "player_level"},
+		{"SG_ASTROLOGY_BALL_CONFIG", "SG_ASTROLOGY_BALL_CONFIG.json", "ball_id"},
+		{"SG_ASTROLOGER_CONFIG", "SG_ASTROLOGER_CONFIG.json", "astrologer_id"},
+		{"SG_GENERAL_ASTROLOG_SLOT_CONFIG", "SG_GENERAL_ASTROLOG_SLOT_CONFIG.json", "general_level"},
 		
 	};
 
@@ -162,7 +172,25 @@ namespace Atlas
 
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_DAILY_ACTION_DESC_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_CHAT_CHANNEL_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_CHAT_TAB_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_LEAGUE_DIANJIANG_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_ENERGY_CONFIG >(), true, g_JsonContent[i++].keys);
 
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_ENERGY_BUY_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_FRIEND_NUM_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_ASTROLOGY_BALL_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_ASTROLOGER_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_GENERAL_ASTROLOG_SLOT_CONFIG >(), true, g_JsonContent[i++].keys);
 	}
 
 	void InitLiveObjects()

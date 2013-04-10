@@ -53,7 +53,7 @@ namespace Atlas
 
 		Atlas::Map<Atlas::String, Atlas::String> params;
 		params["token"] = pToken;
-		String url = StringFormat("%slogin.php", pUrl);
+		String url = StringFormat(pUrl, "login");
 		m_pLoginRequest = MORequestString(url.c_str(), params);
 		if(!m_pLoginRequest)
 		{
@@ -289,7 +289,7 @@ namespace Atlas
 		Atlas::Map<Atlas::String, Atlas::String> params;
 		params["session_key"] = m_SessionKey;
 		params["request"] = m_SendQueue.front();
-		String url = StringFormat("%srequest.php", m_BaseUrl.c_str());
+		String url = StringFormat(m_BaseUrl.c_str(), "request");
 		m_pCurrentRequest = MORequestString(url.c_str(), params);
 	}
 

@@ -46,6 +46,7 @@ namespace Atlas
 		std::map<int, bool> m_nSeqContainer;
 		Atlas::CSGClient* m_pClient;
 		_U8	m_nStatus;
+		_U8 m_nLastSendReq;
 	};
 
 }

@@ -495,7 +495,7 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CONFIG_info;
 }
 
-class KNGIHT_C2S;
+class KNIGHT_C2S;
 
 class KNIGHT_S2C;
 
@@ -503,10 +503,10 @@ namespace DDLStub
 {
 
 	template<typename CALLER, typename CLASS>
-	class KNGIHT_C2S : public DDLStub<CALLER, CLASS>
+	class KNIGHT_C2S : public DDLStub<CALLER, CLASS>
 	{
 	public:
-		KNGIHT_C2S(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
+		KNIGHT_C2S(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
 		{
 		}
 
@@ -520,6 +520,46 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Ping(Caller);
 				return true;
 			}
+			if(fid==1)
+			{
+				_U32 __length;
+				char* _prefix_value;
+
+				// <string> <value> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_value = (char*)alloca(sizeof(_prefix_value[0])*(__length+1));
+				if(!_prefix_value) return false;
+				if(!Buf.ReadBuffer(_prefix_value, (unsigned int)sizeof(_prefix_value[0])*__length)) return false;
+				_prefix_value[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Set(Caller, _prefix_value);
+				return true;
+			}
+			if(fid==2)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Get(Caller);
+				return true;
+			}
+			if(fid==3)
+			{
+				_U32 __length;
+				char* _prefix_msg;
+
+				// <string> <msg> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_msg = (char*)alloca(sizeof(_prefix_msg[0])*(__length+1));
+				if(!_prefix_msg) return false;
+				if(!Buf.ReadBuffer(_prefix_msg, (unsigned int)sizeof(_prefix_msg[0])*__length)) return false;
+				_prefix_msg[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Boardcast(Caller, _prefix_msg);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -530,16 +570,16 @@ namespace DDLProxy
 {
 
 	template<typename CLIENT, typename BUFFER>
-	class KNGIHT_C2S : public DDLProxy<CLIENT, BUFFER>
+	class KNIGHT_C2S : public DDLProxy<CLIENT, BUFFER>
 	{
 	public:
-		KNGIHT_C2S(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::KNGIHT_C2S>())
+		KNIGHT_C2S(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::KNIGHT_C2S>())
 		{
 		}
 
-		static KNGIHT_C2S<CLIENT, BUFFER> Get(CLIENT* Client)
+		static KNIGHT_C2S<CLIENT, BUFFER> Get(CLIENT* Client)
 		{
-			KNGIHT_C2S<CLIENT, BUFFER> Proxy(Client);
+			KNIGHT_C2S<CLIENT, BUFFER> Proxy(Client);
 			return Proxy;
 		}
 
@@ -550,6 +590,40 @@ namespace DDLProxy
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
+
+		bool Set(const char* value)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <value> <> <>
+			__length = DDL::StringLength(value);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(value, (unsigned int)sizeof(value[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool Get()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+		}
+
+		bool Boardcast(const char* msg)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <msg> <> <>
+			__length = DDL::StringLength(msg);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(msg, (unsigned int)sizeof(msg[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+		}
 	};
 
 }
@@ -557,7 +631,7 @@ namespace DDLProxy
 namespace DDLReflect
 {
 	template<>
-	const CLASS_INFO* GetClass<KNGIHT_C2S>();
+	const CLASS_INFO* GetClass<KNIGHT_C2S>();
 }
 
 namespace DDLStub
@@ -579,6 +653,41 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->Pong(Caller);
+				return true;
+			}
+			if(fid==1)
+			{
+				_U32 __length;
+				char* _prefix_value;
+
+				// <string> <value> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_value = (char*)alloca(sizeof(_prefix_value[0])*(__length+1));
+				if(!_prefix_value) return false;
+				if(!Buf.ReadBuffer(_prefix_value, (unsigned int)sizeof(_prefix_value[0])*__length)) return false;
+				_prefix_value[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->GetCallback(Caller, _prefix_value);
+				return true;
+			}
+			if(fid==2)
+			{
+				_U32 __length;
+				_U32 _prefix_uid;
+				char* _prefix_msg;
+
+				// <_U32> <uid> <> <>;
+				if(!Buf.Read(_prefix_uid)) return false;
+				// <string> <msg> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_msg = (char*)alloca(sizeof(_prefix_msg[0])*(__length+1));
+				if(!_prefix_msg) return false;
+				if(!Buf.ReadBuffer(_prefix_msg, (unsigned int)sizeof(_prefix_msg[0])*__length)) return false;
+				_prefix_msg[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BoardcastCallback(Caller, _prefix_uid, _prefix_msg);
 				return true;
 			}
 			return false;
@@ -610,6 +719,34 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+
+		bool GetCallback(const char* value)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <value> <> <>
+			__length = DDL::StringLength(value);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(value, (unsigned int)sizeof(value[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool BoardcastCallback(_U32 uid, const char* msg)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <uid> <> <>
+			if(!Buf.Write(uid)) return false;
+			// <string> <msg> <> <>
+			__length = DDL::StringLength(msg);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(msg, (unsigned int)sizeof(msg[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 	};
 

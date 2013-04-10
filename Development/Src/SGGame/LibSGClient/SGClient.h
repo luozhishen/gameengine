@@ -88,6 +88,19 @@ namespace Atlas
 		virtual void QueryActionStatusResult(_U32 *action_list, Atlas::Vector<_U8> statusVec, _U32 *available_list, _U32 count) = 0;
 
 		virtual void SellItemResult(_U8 ret, const A_UUID& uuid, _U32 count) = 0;
+
+		virtual void QueryFriendListResult(const SG_FRIEND_INFO* friend_list, _U32 count) = 0;
+		virtual void QueryFriendListSearchResult(const SG_FRIEND_SEARCH_INFO* search_list, _U32 count) = 0;
+		virtual void QueryFriendInvitationListResult(const SG_FRIEND_INVITATION* invitation_list, _U32 count) = 0;
+		virtual void AcceptFriendResult(_U8 ret, _U32 avatar_id) = 0;
+
+		virtual void SendChatResult(const _U8 ret) = 0;
+		virtual void ReceiveChatResult(const SG_CHAT_RECV_INFO* chat_list, _U32 count) = 0;
+
+		virtual void QueryLeagueDianjiangListResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count) = 0;	
+		virtual void JoinLeagueDianjiangResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self)= 0;								
+		virtual void QueryLeagueDianjiangRewardResult(_U8 ret, _U32 reputation)= 0;											
+		virtual void LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner)= 0;
 	};
 
 	class CSGClient : public CClient
@@ -209,6 +222,22 @@ namespace Atlas
 		void MakeEquipt(_U32 equipt_id);										//装备打造
 		void QueryActionAvailable(_U32 *action_list, _U32 count);				//判断活动是否可以进入/激活
 
+		void QueryFriendList();					
+		void QueryFirendSearchList(const char* nick);	
+		void QueryFriendInvitationList();		
+		void InviteFriend(_U32 avatar_id);		
+		void AcceptFriend(_U32 avatar_id);		
+		void RefuseInvitation(_U32 avatar_id);	
+		void DelFriend(_U32 avatar_id);			
+
+		void SendChat(const SG_CHAT_SEND_INFO& send_info);						//发送聊天
+		void ReceiveChat(const _U32* channel_list, const _U32 count);			//接受频道消息
+
+		void QueryLeagueDianjiangList(_U32 league_id);							//获取当前点将的列表
+		void JoinLeagueDianjiang(_U32 league_id);								//参加点将
+		void QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id);		//查询点将奖励
+		void LeagueDianjiangSummonNPC(_U32 league_id);							//招募npc参加点将活动
+
 		//result
 		void Pong(CSGClient* pClient);
 
@@ -287,7 +316,18 @@ namespace Atlas
 		void MakeEquiptResult(CSGClient* pClient, _U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material);			//装备打造 com_material,key_material返回使用掉的材料
 		void QueryActionAvailableResult(CSGClient* pClient, _U32* action_list, _U32* available_list, _U32 count);		//判断活动是否可以进入/激活 available_list[i] 0-available 1-none available
 
-	
+		void QueryFriendListResult(CSGClient* pClient, const SG_FRIEND_INFO* friend_list, _U32 count);
+		void QueryFriendListSearchResult(CSGClient* pClient, const SG_FRIEND_SEARCH_INFO* search_list, _U32 count);
+		void QueryFriendInvitationListResult(CSGClient* pClient, const SG_FRIEND_INVITATION* invitation_list, _U32 count);
+		void AcceptFriendResult(CSGClient* pClient, _U8 ret, _U32 avatar_id);
+
+		void SendChatResult(CSGClient* pClient, const _U8 ret);
+		void ReceiveChatResult(CSGClient* pClient, const SG_CHAT_RECV_INFO* chat_list, _U32 count);
+
+		void QueryLeagueDianjiangListResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count);	
+		void JoinLeagueDianjiangResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self);								
+		void QueryLeagueDianjiangRewardResult(CSGClient* pClient, _U8 ret, _U32 reputation);											
+		void LeagueDianjiangSummonNPCResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner);
 
 	public:
 		virtual void OnLoginDone();
@@ -310,7 +350,6 @@ namespace Atlas
 		const int GetServerTime();
 		SG_ITEM* GetItemByUUID(const A_UUID& uuid);
 		void GetFinishedQuest(Atlas::Vector<SG_QUEST_LIVE_INFO>& quest_vec);
-		//void GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec, Atlas::Vector<_U8>& availableVec);
 
 		void GetNewSoldierList(Atlas::Vector<_U32>& soldier_lists);
 		bool HasNewSoldier();

@@ -14,6 +14,8 @@ namespace Atlas
 	void InitDDLStub()
 	{
 		Atlas::Engine::InitDDLStub();
+		RegisterClientStub<KNIGHT_S2C>();
+		RegisterServerStub<KNIGHT_C2S>(0);
 	}
 
 	void InitContentObjects()

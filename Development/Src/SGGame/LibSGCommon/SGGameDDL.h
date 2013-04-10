@@ -44,6 +44,8 @@ const _U32 SG_ICON_MAX = 256;
 
 const _U32 SG_MAP_URL_MAX = 256;
 
+const _U32 SG_TEX_MAX = 256;
+
 const _U8 SG_SYNC_NONE = 0;
 
 const _U8 SG_SYNC_PLAYER = 1;
@@ -106,8 +108,6 @@ const _U32 SG_MATERIAL_DESC_MAX = 256;
 
 const _U32 SG_GEM_DESC_MAX = 256;
 
-const _U32 SG_EQUIPT_TEX_MAX = 256;
-
 const _U32 SG_EUQIPT_GEM_SLOTS_MAX = 8;
 
 const _U32 SG_EQUIPT_GENERAL_MAX = 2;
@@ -129,6 +129,8 @@ const _U8 SG_EQUIPT_TYPE_CHEST = 5;
 const _U8 SG_EQUIPT_TYPE_LEG = 6;
 
 const _U8 SG_EQUIPT_TYPE_DECORATION = 7;
+
+const _U32 SG_USABLE_DESC_MAX = 256;
 
 const _U32 SG_QUEST_DIALOG_MAX = 768;
 
@@ -204,6 +206,247 @@ const _U32 SG_TURBO_EQUIP_SKILL_MAX = 3;
 
 const _U32 SG_AUTO_COMBAT_REWARD_MAX = 64;
 
+const _U32 SG_CHAT_CHANNEL_NAME_MAX = 32;
+
+const _U32 SG_CHAT_CHANNEL_COLOR_MAX = 32;
+
+const _U32 SG_CHAT_TAP_NAME_MAX = 32;
+
+const _U32 SG_CHAT_CONTENT_MAX = 512;
+
+const _U32 SG_ASTROLOGY_BALL_NAME_MAX = 32;
+
+const _U32 SG_ASTROLOGY_BALL_DESC_MAX = 128;
+
+const _U32 SG_ASTROLOGER_NAME_MAX = 32;
+
+const _U32 SG_ASTROLOGER_DESC_MAX = 128;
+
+struct SG_ASTROLOGY_BALL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 ball_id;
+	DDL::String<SG_ASTROLOGY_BALL_NAME_MAX> ball_name;
+	_U32 level;
+	DDL::String<SG_ASTROLOGY_BALL_DESC_MAX> desc;
+	_U8 quality;
+	_U8 attri_type;
+	_F32 attri_num;
+	_U32 levelup_ball;
+	_U32 req_levelup;
+	_U32 price;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
+	DDL::String<SG_TEX_MAX> tex;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ASTROLOGY_BALL_CONFIG>(SG_ASTROLOGY_BALL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGY_BALL_CONFIG>(const SG_ASTROLOGY_BALL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info;
+}
+
+struct SG_ASTROLOGER_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 astrologer_id;
+	DDL::String<SG_ASTROLOGER_NAME_MAX> astrologer_name;
+	_U32 level;
+	DDL::String<SG_ASTROLOGER_DESC_MAX> desc;
+	_U32 consume_gold;
+	_F32 level_up_percent;
+	_F32 failed_percent;
+	_U32 reward1;
+	_F32 reward_percent1;
+	_U32 reward2;
+	_F32 reward_percent2;
+	_U32 reward3;
+	_F32 reward_percent3;
+	_U32 reward4;
+	_F32 reward_percent4;
+	_U32 reward5;
+	_F32 reward_percent5;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
+	DDL::String<SG_TEX_MAX> tex;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ASTROLOGER_CONFIG>(SG_ASTROLOGER_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGER_CONFIG>(const SG_ASTROLOGER_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGER_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_ASTROLOGER_CONFIG_info;
+}
+
+struct SG_GENERAL_ASTROLOG_SLOT_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 general_level;
+	_U32 slot_num;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(SG_GENERAL_ASTROLOG_SLOT_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(const SG_GENERAL_ASTROLOG_SLOT_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GENERAL_ASTROLOG_SLOT_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_info;
+}
+
+struct SG_FRIEND_NUM_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 player_level;
+	_U32 upper_friend_limit;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_NUM_CONFIG>(SG_FRIEND_NUM_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_NUM_CONFIG>(const SG_FRIEND_NUM_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_NUM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_FRIEND_NUM_CONFIG_info;
+}
+
+struct SG_ENERGY_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 restore_energy;
+	_U32 buy_unit_energy;
+	_U32 reset_time;
+	_U32 consume_pve;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ENERGY_CONFIG>(SG_ENERGY_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_ENERGY_CONFIG>(const SG_ENERGY_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ENERGY_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_ENERGY_CONFIG_info;
+}
+
+struct SG_ENERGY_BUY_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 times;
+	_U32 consume_rmb;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ENERGY_BUY_CONFIG>(SG_ENERGY_BUY_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_ENERGY_BUY_CONFIG>(const SG_ENERGY_BUY_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ENERGY_BUY_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_ENERGY_BUY_CONFIG_info;
+}
+
+struct SG_CHAT_CHANNEL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 channel_id;
+	DDL::String<SG_CHAT_CHANNEL_NAME_MAX> channel_name;
+	_U8 scope;
+	_U8 shield;
+	_U32 interval_times;
+	_U32 interval_period;
+	_U32 req_level;
+	_U32 content_length_max;
+	DDL::String<SG_CHAT_CHANNEL_COLOR_MAX> color;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_CHANNEL_CONFIG>(SG_CHAT_CHANNEL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_CHAT_CHANNEL_CONFIG>(const SG_CHAT_CHANNEL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_CHANNEL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_CHAT_CHANNEL_CONFIG_info;
+}
+
+struct SG_CHAT_TAB_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 tab_id;
+	DDL::String<SG_CHAT_TAP_NAME_MAX> tab_name;
+	_U32 channel_id1;
+	_U32 channel_id2;
+	_U32 channel_id3;
+	_U32 channel_id4;
+	_U32 channel_id5;
+	_U32 channel_id6;
+	_U32 channel_id7;
+	_U32 channel_id8;
+	_U32 channel_id9;
+	_U32 channel_id10;
+	_U32 channel_id11;
+	_U32 channel_id12;
+	_U32 channel_id13;
+	_U32 channel_id14;
+	_U32 channel_id15;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_TAB_CONFIG>(SG_CHAT_TAB_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_CHAT_TAB_CONFIG>(const SG_CHAT_TAB_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_TAB_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_CHAT_TAB_CONFIG_info;
+}
+
 struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 general_id;
@@ -274,6 +517,7 @@ struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 	_U32 reset_instance_times;
 	_U8 hangup_free;
 	_U8 enhance_free;
+	_U32 enhance_friend_num;
 	DDL::String<SG_VIP_ICON_MAX> res;
 	_U32 U;
 	_U32 V;
@@ -509,6 +753,27 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_LEAGUE_TOAST_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_TOAST_CONFIG_info;
+}
+
+struct SG_LEAGUE_DIANJIANG_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 consume_npc_gold;
+	_U32 reward_reputation;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_DIANJIANG_CONFIG>(SG_LEAGUE_DIANJIANG_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_DIANJIANG_CONFIG>(const SG_LEAGUE_DIANJIANG_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_DIANJIANG_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_DIANJIANG_CONFIG_info;
 }
 
 struct SG_PVP_RECORD_ITEM : A_LIVE_OBJECT
@@ -767,6 +1032,30 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_LEAGUE_LOG>();
 	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_LOG_info;
+}
+
+struct SG_LEAGUE_DIANJIANG_JOINER : A_LIVE_OBJECT
+{
+	_U32 league_id;
+	_U32 member_id;
+	_U32 general_id;
+	DDL::String<SG_PLAYER_NAME_MAX> member_name;
+	_U8 role;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_DIANJIANG_JOINER>(SG_LEAGUE_DIANJIANG_JOINER& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_DIANJIANG_JOINER>(const SG_LEAGUE_DIANJIANG_JOINER& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_DIANJIANG_JOINER>();
+	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info;
 }
 
 struct SG_HALO_CONFIG : A_CONTENT_OBJECT
@@ -1209,7 +1498,7 @@ struct SG_ITEM_CONFIG : A_CONTENT_OBJECT
 	_U32 V;
 	_U32 UL;
 	_U32 VL;
-	DDL::String<SG_EQUIPT_TEX_MAX> tex;
+	DDL::String<SG_TEX_MAX> tex;
 	DDL::String<SG_ITEM_NAME_MAX> item_name;
 	_U8 quality;
 };
@@ -1294,7 +1583,13 @@ namespace DDLReflect
 
 struct SG_USABLE_ITEM_CONFIG : SG_ITEM_CONFIG
 {
-	DDL::String<100> functional;
+	DDL::String<SG_USABLE_DESC_MAX> desc;
+	_U8 salablity;
+	_U32 req_level;
+	_U8 usage_type;
+	_F32 attri_value1;
+	_F32 attri_value2;
+	_F32 attri_value3;
 };
 
 namespace DDL
@@ -1827,6 +2122,91 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_MATERIAL_ITEM_info;
 }
 
+struct SG_FRIEND_BASE_INFO : A_LIVE_OBJECT
+{
+	_U32 avatar_id;
+	DDL::String<SG_PLAYER_NAME_MAX> nick;
+	_U32 title;
+	_U32 level;
+	_U32 battle_value;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_BASE_INFO>(SG_FRIEND_BASE_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_BASE_INFO>(const SG_FRIEND_BASE_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_BASE_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_FRIEND_BASE_INFO_info;
+}
+
+struct SG_FRIEND_INFO : SG_FRIEND_BASE_INFO
+{
+	_U32 recent_op_time;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_INFO>(SG_FRIEND_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_INFO>(const SG_FRIEND_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_FRIEND_INFO_info;
+}
+
+struct SG_FRIEND_SEARCH_INFO : SG_FRIEND_BASE_INFO
+{
+	_U32 current_friend_num;
+	_U32 max_friend_num;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_SEARCH_INFO>(SG_FRIEND_SEARCH_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_SEARCH_INFO>(const SG_FRIEND_SEARCH_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_SEARCH_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_FRIEND_SEARCH_INFO_info;
+}
+
+struct SG_FRIEND_INVITATION : SG_FRIEND_BASE_INFO
+{
+	_U32 recent_op_time;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_INVITATION>(SG_FRIEND_INVITATION& Value);
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_INVITATION>(const SG_FRIEND_INVITATION& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_INVITATION>();
+	extern STRUCT_INFO _rfl_struct_SG_FRIEND_INVITATION_info;
+}
+
 struct SG_SERVER_INFO
 {
 	_U32 server_id;
@@ -1874,6 +2254,55 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL_QUERY_INFO>();
 	extern STRUCT_INFO _rfl_struct_SG_GENERAL_QUERY_INFO_info;
+}
+
+struct SG_CHAT_SEND_INFO : A_LIVE_OBJECT
+{
+	_U32 channel_id;
+	_U32 receiver_id;
+	DDL::String<SG_PLAYER_NAME_MAX> receiver_nick;
+	_U32 time;
+	DDL::String<SG_CHAT_CONTENT_MAX> content;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_SEND_INFO>(SG_CHAT_SEND_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_CHAT_SEND_INFO>(const SG_CHAT_SEND_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_SEND_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_CHAT_SEND_INFO_info;
+}
+
+struct SG_CHAT_RECV_INFO : A_LIVE_OBJECT
+{
+	_U32 channel_id;
+	_U32 msg_id;
+	_U32 sender_id;
+	DDL::String<SG_PLAYER_NAME_MAX> sender_nick;
+	_U32 time;
+	DDL::String<SG_CHAT_CONTENT_MAX> content;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_RECV_INFO>(SG_CHAT_RECV_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_CHAT_RECV_INFO>(const SG_CHAT_RECV_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_RECV_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_CHAT_RECV_INFO_info;
 }
 
 class SGGAME_C2S;
@@ -2864,6 +3293,158 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryActionAvailable(Caller, _prefix_action_list, _prefix_count);
 				return true;
 			}
+			if(fid==85)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendList(Caller);
+				return true;
+			}
+			if(fid==86)
+			{
+				_U32 __length;
+				char* _prefix_nick;
+
+				// <string> <nick> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_nick = (char*)alloca(sizeof(_prefix_nick[0])*(__length+1));
+				if(!_prefix_nick) return false;
+				if(!Buf.ReadBuffer(_prefix_nick, (unsigned int)sizeof(_prefix_nick[0])*__length)) return false;
+				_prefix_nick[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFirendSearchList(Caller, _prefix_nick);
+				return true;
+			}
+			if(fid==87)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendInvitationList(Caller);
+				return true;
+			}
+			if(fid==88)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->InviteFriend(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==89)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriend(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==90)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefuseInvitation(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==91)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->DelFriend(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==92)
+			{
+				SG_CHAT_SEND_INFO _prefix_send_info;
+
+				// <SG_CHAT_SEND_INFO> <send_info> <> <>;
+				if(!Buf.Read(_prefix_send_info)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SendChat(Caller, _prefix_send_info);
+				return true;
+			}
+			if(fid==93)
+			{
+				_U32 __length;
+				_U32* _prefix_channel_list;
+				_U32 _prefix_count;
+
+				// <_U32> <channel_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_channel_list = (_U32*)alloca(sizeof(_prefix_channel_list[0])*__length);
+				if(!_prefix_channel_list) return false;
+				if(!Buf.ReadPointer(_prefix_channel_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->ReceiveChat(Caller, _prefix_channel_list, _prefix_count);
+				return true;
+			}
+			if(fid==94)
+			{
+				_U32 _prefix_league_id;
+
+				// <_U32> <league_id> <> <>;
+				if(!Buf.Read(_prefix_league_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangList(Caller, _prefix_league_id);
+				return true;
+			}
+			if(fid==95)
+			{
+				_U32 _prefix_league_id;
+
+				// <_U32> <league_id> <> <>;
+				if(!Buf.Read(_prefix_league_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->JoinLeagueDianjiang(Caller, _prefix_league_id);
+				return true;
+			}
+			if(fid==96)
+			{
+				_U32 _prefix_league_id;
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <league_id> <> <>;
+				if(!Buf.Read(_prefix_league_id)) return false;
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangReward(Caller, _prefix_league_id, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==97)
+			{
+				_U32 _prefix_league_id;
+
+				// <_U32> <league_id> <> <>;
+				if(!Buf.Read(_prefix_league_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->LeagueDianjiangSummonNPC(Caller, _prefix_league_id);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -3757,6 +4338,142 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
+		}
+
+		bool QueryFriendList()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
+		}
+
+		bool QueryFirendSearchList(const char* nick)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <nick> <> <>
+			__length = DDL::StringLength(nick);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(nick, (unsigned int)sizeof(nick[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
+		}
+
+		bool QueryFriendInvitationList()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
+		}
+
+		bool InviteFriend(_U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
+		}
+
+		bool AcceptFriend(_U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
+		}
+
+		bool RefuseInvitation(_U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
+		}
+
+		bool DelFriend(_U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
+		}
+
+		bool SendChat(const SG_CHAT_SEND_INFO& send_info)
+		{
+			BUFFER Buf;
+			// <SG_CHAT_SEND_INFO> <send_info> <> <>
+			if(!Buf.Write(send_info)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
+		}
+
+		bool ReceiveChat(const _U32* channel_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <channel_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(channel_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
+		}
+
+		bool QueryLeagueDianjiangList(_U32 league_id)
+		{
+			BUFFER Buf;
+			// <_U32> <league_id> <> <>
+			if(!Buf.Write(league_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 94, Buf);
+		}
+
+		bool JoinLeagueDianjiang(_U32 league_id)
+		{
+			BUFFER Buf;
+			// <_U32> <league_id> <> <>
+			if(!Buf.Write(league_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 95, Buf);
+		}
+
+		bool QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <league_id> <> <>
+			if(!Buf.Write(league_id)) return false;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 96, Buf);
+		}
+
+		bool LeagueDianjiangSummonNPC(_U32 league_id)
+		{
+			BUFFER Buf;
+			// <_U32> <league_id> <> <>
+			if(!Buf.Write(league_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 97, Buf);
 		}
 	};
 
@@ -4826,6 +5543,172 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryActionAvailableResult(Caller, _prefix_action_list, _prefix_available_list, _prefix_count);
 				return true;
 			}
+			if(fid==65)
+			{
+				_U32 __length;
+				SG_FRIEND_INFO* _prefix_friend_list;
+				_U32 _prefix_count;
+
+				// <SG_FRIEND_INFO> <friend_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_friend_list = (SG_FRIEND_INFO*)alloca(sizeof(_prefix_friend_list[0])*__length);
+				if(!_prefix_friend_list) return false;
+				if(!Buf.ReadPointer(_prefix_friend_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendListResult(Caller, _prefix_friend_list, _prefix_count);
+				return true;
+			}
+			if(fid==66)
+			{
+				_U32 __length;
+				SG_FRIEND_SEARCH_INFO* _prefix_search_list;
+				_U32 _prefix_count;
+
+				// <SG_FRIEND_SEARCH_INFO> <search_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_search_list = (SG_FRIEND_SEARCH_INFO*)alloca(sizeof(_prefix_search_list[0])*__length);
+				if(!_prefix_search_list) return false;
+				if(!Buf.ReadPointer(_prefix_search_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendListSearchResult(Caller, _prefix_search_list, _prefix_count);
+				return true;
+			}
+			if(fid==67)
+			{
+				_U32 __length;
+				SG_FRIEND_INVITATION* _prefix_invitation_list;
+				_U32 _prefix_count;
+
+				// <SG_FRIEND_INVITATION> <invitation_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_invitation_list = (SG_FRIEND_INVITATION*)alloca(sizeof(_prefix_invitation_list[0])*__length);
+				if(!_prefix_invitation_list) return false;
+				if(!Buf.ReadPointer(_prefix_invitation_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendInvitationListResult(Caller, _prefix_invitation_list, _prefix_count);
+				return true;
+			}
+			if(fid==68)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_avatar_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriendResult(Caller, _prefix_ret, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==69)
+			{
+				_U8 _prefix_ret;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SendChatResult(Caller, _prefix_ret);
+				return true;
+			}
+			if(fid==70)
+			{
+				_U32 __length;
+				SG_CHAT_RECV_INFO* _prefix_chat_list;
+				_U32 _prefix_count;
+
+				// <SG_CHAT_RECV_INFO> <chat_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_chat_list = (SG_CHAT_RECV_INFO*)alloca(sizeof(_prefix_chat_list[0])*__length);
+				if(!_prefix_chat_list) return false;
+				if(!Buf.ReadPointer(_prefix_chat_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->ReceiveChatResult(Caller, _prefix_chat_list, _prefix_count);
+				return true;
+			}
+			if(fid==71)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				SG_LEAGUE_DIANJIANG_JOINER* _prefix_joiner_list;
+				_U32 _prefix_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <SG_LEAGUE_DIANJIANG_JOINER> <joiner_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_joiner_list = (SG_LEAGUE_DIANJIANG_JOINER*)alloca(sizeof(_prefix_joiner_list[0])*__length);
+				if(!_prefix_joiner_list) return false;
+				if(!Buf.ReadPointer(_prefix_joiner_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangListResult(Caller, _prefix_ret, _prefix_joiner_list, _prefix_count);
+				return true;
+			}
+			if(fid==72)
+			{
+				_U8 _prefix_ret;
+				SG_LEAGUE_DIANJIANG_JOINER _prefix_self;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <SG_LEAGUE_DIANJIANG_JOINER> <self> <> <>;
+				if(!Buf.Read(_prefix_self)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->JoinLeagueDianjiangResult(Caller, _prefix_ret, _prefix_self);
+				return true;
+			}
+			if(fid==73)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_reputation;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <reputation> <> <>;
+				if(!Buf.Read(_prefix_reputation)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangRewardResult(Caller, _prefix_ret, _prefix_reputation);
+				return true;
+			}
+			if(fid==74)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_gold;
+				_U32 _prefix_rmb;
+				SG_LEAGUE_DIANJIANG_JOINER _prefix_npc_joiner;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <SG_LEAGUE_DIANJIANG_JOINER> <npc_joiner> <> <>;
+				if(!Buf.Read(_prefix_npc_joiner)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->LeagueDianjiangSummonNPCResult(Caller, _prefix_ret, _prefix_gold, _prefix_rmb, _prefix_npc_joiner);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -5724,6 +6607,145 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
+		}
+
+		bool QueryFriendListResult(const SG_FRIEND_INFO* friend_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_FRIEND_INFO> <friend_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(friend_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
+		}
+
+		bool QueryFriendListSearchResult(const SG_FRIEND_SEARCH_INFO* search_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_FRIEND_SEARCH_INFO> <search_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(search_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
+		}
+
+		bool QueryFriendInvitationListResult(const SG_FRIEND_INVITATION* invitation_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_FRIEND_INVITATION> <invitation_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(invitation_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
+		}
+
+		bool AcceptFriendResult(_U8 ret, _U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
+		}
+
+		bool SendChatResult(_U8 ret)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 69, Buf);
+		}
+
+		bool ReceiveChatResult(const SG_CHAT_RECV_INFO* chat_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_CHAT_RECV_INFO> <chat_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(chat_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 70, Buf);
+		}
+
+		bool QueryLeagueDianjiangListResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <SG_LEAGUE_DIANJIANG_JOINER> <joiner_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(joiner_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 71, Buf);
+		}
+
+		bool JoinLeagueDianjiangResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <SG_LEAGUE_DIANJIANG_JOINER> <self> <> <>
+			if(!Buf.Write(self)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 72, Buf);
+		}
+
+		bool QueryLeagueDianjiangRewardResult(_U8 ret, _U32 reputation)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <reputation> <> <>
+			if(!Buf.Write(reputation)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 73, Buf);
+		}
+
+		bool LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <SG_LEAGUE_DIANJIANG_JOINER> <npc_joiner> <> <>
+			if(!Buf.Write(npc_joiner)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 74, Buf);
 		}
 	};
 

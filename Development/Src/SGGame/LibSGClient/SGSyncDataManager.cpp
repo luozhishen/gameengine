@@ -12,6 +12,7 @@ namespace Atlas
 	CSGSyncDataManager::CSGSyncDataManager(CSGClient* pClient) 
 	{
 		m_pClient = pClient;
+		m_nLastSendReq = eSyncNone;
 	}
 
 	CSGSyncDataManager::~CSGSyncDataManager() {}
@@ -44,6 +45,7 @@ namespace Atlas
 
 			if(IsEmpty())
 			{
+				m_nLastSendReq = eSyncNone;
 				return false;								//no msg send any more
 			}
 			else
@@ -53,6 +55,7 @@ namespace Atlas
 			}
 		}
 
+		m_nLastSendReq = eSyncNone;
 		return false;
 	}
 
@@ -67,6 +70,19 @@ namespace Atlas
 		{
 			if(it->second != true)
 			{
+				if(m_nLastSendReq == it->first
+					||	it->first == eSyncEquipt
+					||	it->first == eSyncUsable
+					||	it->first == eSyncGem
+					||	it->first == eSyncMaterial
+					||	it->first == eSyncBagEnd		
+					)
+				{
+					return;
+				}
+
+				m_nLastSendReq =(_U8)it->first;
+
 				switch(it->first)
 				{
 				case eSyncPlayer:

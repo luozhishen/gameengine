@@ -741,6 +741,71 @@ namespace Atlas
 		m_C2S.QueryActionAvailable(action_list, count);
 	}
 
+	void CSGClient::QueryFriendList()
+	{
+		m_C2S.QueryFriendList();
+	}
+
+	void CSGClient::QueryFirendSearchList(const char* nick)
+	{
+		m_C2S.QueryFirendSearchList(nick);
+	}
+
+	void CSGClient::QueryFriendInvitationList()
+	{
+		m_C2S.QueryFriendInvitationList();
+	}
+
+	void CSGClient::InviteFriend(_U32 avatar_id)
+	{
+		m_C2S.InviteFriend(avatar_id);
+	}
+
+	void CSGClient::AcceptFriend(_U32 avatar_id)
+	{
+		m_C2S.AcceptFriend(avatar_id);
+	}
+
+	void CSGClient::RefuseInvitation(_U32 avatar_id)
+	{
+		m_C2S.RefuseInvitation(avatar_id);
+	}
+
+	void CSGClient::DelFriend(_U32 avatar_id)
+	{
+		m_C2S.DelFriend(avatar_id);
+	}
+	
+	void CSGClient::SendChat(const SG_CHAT_SEND_INFO& send_info)
+	{
+		m_C2S.SendChat(send_info);
+	}
+
+	void CSGClient::ReceiveChat(const _U32* channel_list, const _U32 count)
+	{
+		m_C2S.ReceiveChat(channel_list, count);
+	}
+
+	void CSGClient::QueryLeagueDianjiangList(_U32 league_id)
+	{
+		m_C2S.QueryLeagueDianjiangList(league_id);
+	}
+
+	void CSGClient::JoinLeagueDianjiang(_U32 league_id)
+	{
+		m_C2S.JoinLeagueDianjiang(league_id);
+	}
+
+	void CSGClient::QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id)
+	{
+		m_C2S.QueryLeagueDianjiangReward(league_id, avatar_id);
+	}
+
+	void CSGClient::LeagueDianjiangSummonNPC(_U32 league_id)
+	{
+		m_C2S.LeagueDianjiangSummonNPC(league_id);
+	}
+
 	void CSGClient::Pong(CSGClient* pClient)
 	{
 		if(m_callback)
@@ -1144,6 +1209,11 @@ namespace Atlas
 
 			m_callback->FinishQuestDone(quest_id, exp_addition, gold, rmb, reputation, energy, drops, drop_count);
 			m_callback->DataUpdate(CSGSyncDataManager::eSyncPlayer);
+
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+			SyncSet(vecSync);
 		}
 	}
 
@@ -1570,7 +1640,7 @@ namespace Atlas
 		if(m_callback)
 		{
 			m_player.turbo_level = turbo_level;
-			m_player.wake_pt -= wake_pt;
+			m_player.wake_pt = wake_pt;
 			
 			Atlas::String skill_archetype;
 			SGClientUtil::GetUnlockTurboSkill(m_player.general_id, turbo_level, skill_archetype);
@@ -1587,6 +1657,11 @@ namespace Atlas
 			}
 
 			m_callback->EnhanceTurboResult(ret, turbo_level, wake_pt);
+
+			if(m_callback) 
+			{
+				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+			}
 		}
 	}
 
@@ -1622,6 +1697,86 @@ namespace Atlas
 			m_callback->QueryActionStatusResult(action_list, statusVec, available_list, count);
 		}
 	}
+	
+	void CSGClient::QueryFriendListResult(CSGClient* pClient, const SG_FRIEND_INFO* friend_list, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryFriendListResult(friend_list, count);
+		}
+	}
+
+	void CSGClient::QueryFriendListSearchResult(CSGClient* pClient, const SG_FRIEND_SEARCH_INFO* search_list, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryFriendListSearchResult(search_list, count);
+		}
+	}
+
+	void CSGClient::QueryFriendInvitationListResult(CSGClient* pClient, const SG_FRIEND_INVITATION* invitation_list, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryFriendInvitationListResult(invitation_list, count);
+		}
+	}
+
+	void CSGClient::AcceptFriendResult(CSGClient* pClient, _U8 ret, _U32 avatar_id)
+	{
+		if(m_callback)
+		{
+			m_callback->AcceptFriendResult(ret, avatar_id);
+		}
+	}
+
+	void CSGClient::SendChatResult(CSGClient* pClient, const _U8 ret)
+	{
+		if(m_callback)
+		{
+			m_callback->SendChatResult(ret);
+		}
+	}
+	
+	void CSGClient::ReceiveChatResult(CSGClient* pClient, const SG_CHAT_RECV_INFO* chat_list, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->ReceiveChatResult(chat_list, count);
+		}
+	}
+
+	void CSGClient::QueryLeagueDianjiangListResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueDianjiangListResult(ret, joiner_list, count);
+		}
+	}
+
+	void CSGClient::JoinLeagueDianjiangResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self)
+	{
+		if(m_callback)
+		{
+			m_callback->JoinLeagueDianjiangResult(ret, self);
+		}
+	}
+
+	void CSGClient::QueryLeagueDianjiangRewardResult(CSGClient* pClient, _U8 ret, _U32 reputation)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryLeagueDianjiangRewardResult(ret, reputation);
+		}
+	}
+
+	void CSGClient::LeagueDianjiangSummonNPCResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner)
+	{
+		if(m_callback)
+		{
+			m_callback->LeagueDianjiangSummonNPCResult(ret, gold, rmb, npc_joiner);
+		}
+	}
 
 	void CSGClient::SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 count)
 	{
@@ -1633,6 +1788,12 @@ namespace Atlas
 			}
 
 			m_callback->SellItemResult(result, uuid, count);
+
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+			SyncSet(vecSync);
 		}
 	}
 
@@ -1805,11 +1966,6 @@ namespace Atlas
 			}
 		}
 	}
-
-	//void CSGClient::GetActionStatus(Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec, Atlas::Vector<_U8>& availableVec)
-	//{
-	//	g_actionStatusCache.GetDailActionStatus(GetServerTime(), actionVec, statusVec);
-	//}
 
 	void CSGClient::GetNewSoldierList(Atlas::Vector<_U32>& soldier_lists)
 	{

@@ -227,19 +227,27 @@ task[GEN_STRUCT_SERIALIZE(KNIGHT_WEAPON_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_WEAPON_CONFIG)];
 
 
-class KNGIHT_C2S
+class KNIGHT_C2S
 {
 	Ping();
+
+	Set(string value);
+	Get();
+
+	Boardcast(string msg);
 };
 
 class KNIGHT_S2C
 {
 	Pong();
+
+	GetCallback(string value);
+	BoardcastCallback(_U32 uid, string msg);
 };
 
-task[GEN_CLASS_STUB(KNGIHT_C2S)];
-task[GEN_CLASS_PROXY(KNGIHT_C2S)];
-task[GEN_CLASS_REFLECT(KNGIHT_C2S)];
+task[GEN_CLASS_STUB(KNIGHT_C2S)];
+task[GEN_CLASS_PROXY(KNIGHT_C2S)];
+task[GEN_CLASS_REFLECT(KNIGHT_C2S)];
 task[GEN_CLASS_STUB(KNIGHT_S2C)];
 task[GEN_CLASS_PROXY(KNIGHT_S2C)];
 task[GEN_CLASS_REFLECT(KNIGHT_S2C)];

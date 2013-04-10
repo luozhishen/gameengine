@@ -19,6 +19,7 @@ const _U32 SG_INVALID_SERVER_ID = 255;
 
 const _U32 SG_ICON_MAX = 256;
 const _U32 SG_MAP_URL_MAX = 256;
+const _U32 SG_TEX_MAX = 256;
 
 //Sync data
 const _U8 SG_SYNC_NONE = 0;
@@ -65,7 +66,6 @@ const _U32 SG_MATERIAL_DESC_MAX = 256;
 const _U32 SG_GEM_DESC_MAX = 256;
 
 //Equipt
-const _U32 SG_EQUIPT_TEX_MAX = 256;
 const _U32 SG_EUQIPT_GEM_SLOTS_MAX = 8;
 const _U32 SG_EQUIPT_GENERAL_MAX = 2;
 const _U32 SG_EQUIPT_SOLDIER_MAX = 3;
@@ -78,6 +78,9 @@ const _U8 SG_EQUIPT_TYPE_SHOULDER	= 4;
 const _U8 SG_EQUIPT_TYPE_CHEST		= 5;
 const _U8 SG_EQUIPT_TYPE_LEG		= 6;
 const _U8 SG_EQUIPT_TYPE_DECORATION = 7;
+
+//usable
+const _U32 SG_USABLE_DESC_MAX = 256;
 
 //Quest
 const _U32 SG_QUEST_DIALOG_MAX = 768;
@@ -142,6 +145,157 @@ const _U32 SG_AUTO_COMBAT_REWARD_MAX = 64;
 //task[GEN_STRUCT_SERIALIZE(SG_MAP_URL)];
 //task[GEN_STRUCT_REFLECT(SG_MAP_URL)];
 
+//chat
+const _U32 SG_CHAT_CHANNEL_NAME_MAX = 32;
+const _U32 SG_CHAT_CHANNEL_COLOR_MAX = 32;
+const _U32 SG_CHAT_TAP_NAME_MAX = 32;
+const _U32 SG_CHAT_CONTENT_MAX = 512;
+
+//strology
+const _U32 SG_ASTROLOGY_BALL_NAME_MAX = 32;
+const _U32 SG_ASTROLOGY_BALL_DESC_MAX = 128;
+
+const _U32 SG_ASTROLOGER_NAME_MAX = 32;
+const _U32 SG_ASTROLOGER_DESC_MAX = 128;
+
+//astrology
+struct SG_ASTROLOGY_BALL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								ball_id;					//命魂ID
+	string<SG_ASTROLOGY_BALL_NAME_MAX>	ball_name;					//命魂名字
+	_U32								level;						//命魂等级
+	string<SG_ASTROLOGY_BALL_DESC_MAX>	desc;						//命魂描述
+	_U8									quality;					//品质
+	_U8									attri_type;					//属性枚举 加什么属性
+	_F32								attri_num;					//属性数值 加多少
+	_U32								levelup_ball;				//升级后的命魂ID
+	_U32								req_levelup;				//升级所需的魂力值
+	_U32								price;						//命魂吞噬后所得的魂力值
+
+	_U32								U;					
+	_U32								V;
+	_U32								UL;
+	_U32								VL;
+	
+	string<SG_TEX_MAX>					tex;						//纹理
+};
+task[GEN_STRUCT_SERIALIZE(SG_ASTROLOGY_BALL_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ASTROLOGY_BALL_CONFIG)];
+
+struct SG_ASTROLOGER_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								astrologer_id;				//占星师ID
+	string<SG_ASTROLOGER_NAME_MAX>		astrologer_name;			//名字
+	_U32								level;						//等级
+	string<SG_ASTROLOGER_DESC_MAX>		desc;						//描述
+	_U32								consume_gold;				//花费金币/铜钱
+	_F32								level_up_percent;			//占星level提升概率
+	_F32								failed_percent;				//占星归1概率
+	
+	_U32								reward1;					//1品质命魂道具组ID
+	_F32								reward_percent1;			//出现概率1
+	
+	_U32								reward2;					//2品质命魂道具组ID
+	_F32								reward_percent2;			//出现概率2
+	
+	_U32								reward3;					//3品质命魂道具组ID
+	_F32								reward_percent3;			//出现概率3
+	
+	_U32								reward4;					//4品质命魂道具组ID
+	_F32								reward_percent4;			//出现概率4
+	
+	_U32								reward5;					//5品质命魂道具组ID
+	_F32								reward_percent5;			//出现概率5
+	
+	_U32								U;					
+	_U32								V;
+	_U32								UL;
+	_U32								VL;
+	
+	string<SG_TEX_MAX>					tex;						//纹理
+
+};
+task[GEN_STRUCT_SERIALIZE(SG_ASTROLOGER_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ASTROLOGER_CONFIG)];
+
+struct SG_GENERAL_ASTROLOG_SLOT_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								general_level;				//武将等级
+	_U32								slot_num;					//命魂格数
+};
+task[GEN_STRUCT_SERIALIZE(SG_GENERAL_ASTROLOG_SLOT_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_GENERAL_ASTROLOG_SLOT_CONFIG)];
+
+//friend
+struct SG_FRIEND_NUM_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								player_level;				//玩家等级
+	_U32								upper_friend_limit;			//好友数量
+};
+task[GEN_STRUCT_SERIALIZE(SG_FRIEND_NUM_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_FRIEND_NUM_CONFIG)];
+
+//energy
+struct SG_ENERGY_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								restore_energy;				//每半小时恢复体力值
+	_U32								buy_unit_energy;			//每次购买体力值
+	_U32								reset_time;					//每日体力更新时间
+	_U32								consume_pve;				//pve每次扣除体力值
+};
+task[GEN_STRUCT_SERIALIZE(SG_ENERGY_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ENERGY_CONFIG)];
+
+struct SG_ENERGY_BUY_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								times;						//购买的次数
+	_U32								consume_rmb;				//购买所花费的体力
+};
+task[GEN_STRUCT_SERIALIZE(SG_ENERGY_BUY_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ENERGY_BUY_CONFIG)];
+
+//chat
+struct SG_CHAT_CHANNEL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								channel_id;					//频道ID
+	string<SG_CHAT_CHANNEL_NAME_MAX>	channel_name;				//频道名称
+	_U8									scope;						//范围
+	_U8									shield;						//屏蔽情况
+	_U32								interval_times;				//间隔次数
+	_U32								interval_period;			//发话间隔
+	_U32								req_level;					//等级要求
+	_U32								content_length_max;			//内容长度限制
+	string<SG_CHAT_CHANNEL_COLOR_MAX>   color;						//描边颜色
+};
+task[GEN_STRUCT_SERIALIZE(SG_CHAT_CHANNEL_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_CHAT_CHANNEL_CONFIG)];
+
+struct SG_CHAT_TAB_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								tab_id;
+	string<SG_CHAT_TAP_NAME_MAX>		tab_name;
+	_U32								channel_id1;
+	_U32								channel_id2;
+	_U32								channel_id3;
+	_U32								channel_id4;
+	_U32								channel_id5;
+
+	_U32								channel_id6;
+	_U32								channel_id7;
+	_U32								channel_id8;
+	_U32								channel_id9;
+	_U32								channel_id10;
+
+	_U32								channel_id11;
+	_U32								channel_id12;
+	_U32								channel_id13;
+	_U32								channel_id14;
+	_U32								channel_id15;
+};
+task[GEN_STRUCT_SERIALIZE(SG_CHAT_TAB_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_CHAT_TAB_CONFIG)];
+
+
 //turbo 无双
 struct SG_TURBO_CONFIG : A_CONTENT_OBJECT
 {
@@ -188,7 +342,7 @@ struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 	_U32						reset_instance_times;			//可重置副本次数
 	_U8							hangup_free;					//挂机免费 0-否 1-是
 	_U8							enhance_free;					//强化免费 0-否 1-是
-
+	_U32						enhance_friend_num;				//vip好友上限增加量
 
 	string<SG_VIP_ICON_MAX>				res;					//图标资源
 	_U32								U;					
@@ -301,6 +455,13 @@ struct SG_LEAGUE_TOAST_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_TOAST_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_TOAST_CONFIG)];
 
+struct SG_LEAGUE_DIANJIANG_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								consume_npc_gold;		//召唤npc所需金币
+	_U32								reward_reputation;		//奖励军功/声望
+};
+task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_DIANJIANG_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_LEAGUE_DIANJIANG_CONFIG)];
 
 //PVP事件记录
 struct SG_PVP_RECORD_ITEM : A_LIVE_OBJECT
@@ -427,7 +588,7 @@ struct SG_LEAGUE_APPLYER : A_LIVE_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_APPLYER)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_APPLYER)];
 
-struct SG_LEAGUE_LOG	: A_LIVE_OBJECT
+struct SG_LEAGUE_LOG : A_LIVE_OBJECT
 {
 	_U32								league_id;				
 	_U32								result_time;			//该条log记录时间
@@ -436,6 +597,17 @@ struct SG_LEAGUE_LOG	: A_LIVE_OBJECT
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_LOG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_LOG)];
+
+struct SG_LEAGUE_DIANJIANG_JOINER : A_LIVE_OBJECT
+{
+	_U32								league_id;				//所在战盟ID
+	_U32								member_id;				//成员ID avatar_id
+	_U32								general_id;				//成员general_id
+	string<SG_PLAYER_NAME_MAX>			member_name;			//成员名字
+	_U8 								role;					//0-主动参与 1-协助
+};
+task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_DIANJIANG_JOINER)];
+task[GEN_STRUCT_REFLECT(SG_LEAGUE_DIANJIANG_JOINER)];
 
 //光环
 struct SG_HALO_CONFIG					: A_CONTENT_OBJECT 
@@ -723,7 +895,7 @@ struct SG_ITEM_CONFIG : A_CONTENT_OBJECT
 	_U32								UL;
 	_U32								VL;
 	
-	string<SG_EQUIPT_TEX_MAX>			tex;				//纹理
+	string<SG_TEX_MAX>					tex;				//纹理
 	string<SG_ITEM_NAME_MAX>			item_name;			//物品名字
 	_U8									quality;			//品质
 };
@@ -772,7 +944,13 @@ task[GEN_STRUCT_REFLECT(SG_EQUIPT_ITEM_CONFIG)];
 //可使用配置
 struct SG_USABLE_ITEM_CONFIG : SG_ITEM_CONFIG				
 {
-	string<100>							functional;
+	string<SG_USABLE_DESC_MAX>			desc;				//描述
+	_U8									salablity;			//是否可出售 0-否 1-是
+	_U32								req_level;			//等级要求
+	_U8									usage_type;			//使用类型
+	_F32								attri_value1;		//属性值1
+	_F32								attri_value2;		//属性值2
+	_F32								attri_value3;		//属性值3
 };
 task[GEN_STRUCT_SERIALIZE(SG_USABLE_ITEM_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_USABLE_ITEM_CONFIG)];
@@ -926,6 +1104,7 @@ struct SG_SOLDIER : A_LIVE_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_SOLDIER)];
 task[GEN_STRUCT_REFLECT(SG_SOLDIER)];
 
+
 //daily action
 struct SG_DAILY_ACTION_CONFIG			: A_CONTENT_OBJECT
 {
@@ -1056,11 +1235,43 @@ task[GEN_STRUCT_REFLECT(SG_GEM_ITEM)];
 
 struct SG_MATERIAL_ITEM : SG_ITEM
 {
-	
 };
 task[GEN_STRUCT_SERIALIZE(SG_MATERIAL_ITEM)];
 task[GEN_STRUCT_REFLECT(SG_MATERIAL_ITEM)];
 
+//friend live
+struct SG_FRIEND_BASE_INFO : A_LIVE_OBJECT
+{
+	_U32									avatar_id;				//avatar_id
+	string<SG_PLAYER_NAME_MAX>				nick;
+	_U32									title;
+	_U32									level;
+	_U32									battle_value;
+};
+task[GEN_STRUCT_SERIALIZE(SG_FRIEND_BASE_INFO)];
+task[GEN_STRUCT_REFLECT(SG_FRIEND_BASE_INFO)];
+
+struct SG_FRIEND_INFO : SG_FRIEND_BASE_INFO
+{
+	_U32									recent_op_time;			//在线时间戳
+};
+task[GEN_STRUCT_SERIALIZE(SG_FRIEND_INFO)];
+task[GEN_STRUCT_REFLECT(SG_FRIEND_INFO)];
+
+struct SG_FRIEND_SEARCH_INFO : SG_FRIEND_BASE_INFO
+{
+	_U32									current_friend_num;		//对方现在的好友数量
+	_U32									max_friend_num;			//对方最多的好友数量
+};
+task[GEN_STRUCT_SERIALIZE(SG_FRIEND_SEARCH_INFO)];
+task[GEN_STRUCT_REFLECT(SG_FRIEND_SEARCH_INFO)];
+
+struct SG_FRIEND_INVITATION : SG_FRIEND_BASE_INFO
+{
+	_U32									recent_op_time;			//在线时间戳	
+}
+task[GEN_STRUCT_SERIALIZE(SG_FRIEND_INVITATION)];
+task[GEN_STRUCT_REFLECT(SG_FRIEND_INVITATION)];
 
 //Misc
 struct SG_SERVER_INFO
@@ -1085,6 +1296,30 @@ struct SG_GENERAL_QUERY_INFO
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL_QUERY_INFO)];
 task[GEN_STRUCT_REFLECT(SG_GENERAL_QUERY_INFO)];
+
+//chat
+struct SG_CHAT_SEND_INFO : A_LIVE_OBJECT
+{
+	_U32 								channel_id;
+	_U32								receiver_id;
+	string<SG_PLAYER_NAME_MAX>			receiver_nick;
+	_U32 								time;
+	string<SG_CHAT_CONTENT_MAX>			content;
+};
+task[GEN_STRUCT_SERIALIZE(SG_CHAT_SEND_INFO)];
+task[GEN_STRUCT_REFLECT(SG_CHAT_SEND_INFO)];
+
+struct SG_CHAT_RECV_INFO : A_LIVE_OBJECT
+{
+	_U32 								channel_id;
+	_U32								msg_id;
+	_U32								sender_id;
+	string<SG_PLAYER_NAME_MAX>			sender_nick;
+	_U32 								time;
+	string<SG_CHAT_CONTENT_MAX> 		content;
+};
+task[GEN_STRUCT_SERIALIZE(SG_CHAT_RECV_INFO)];
+task[GEN_STRUCT_REFLECT(SG_CHAT_RECV_INFO)];
 
 class SGGAME_C2S
 {
@@ -1194,6 +1429,22 @@ class SGGAME_C2S
 	MakeEquipt(_U32 equipt_id);										//装备打造
 
 	QueryActionAvailable(_U32 action_list[count], _U32 count);		//判断活动是否可以进入/激活
+
+	QueryFriendList();												//获取好友列表
+	QueryFirendSearchList(string nick);								//查询可以加为好友的列表
+	QueryFriendInvitationList();									//查询自己被邀请的列表
+	InviteFriend(_U32 avatar_id);									//邀请好友
+	AcceptFriend(_U32 avatar_id);									//同意加为好友
+	RefuseInvitation(_U32 avatar_id);								//拒绝加为好友
+	DelFriend(_U32 avatar_id);										//删除好友
+
+	SendChat(SG_CHAT_SEND_INFO send_info);							//发送消息
+	ReceiveChat(_U32 channel_list[count], _U32 count);				//接受消息
+	
+	QueryLeagueDianjiangList(_U32 league_id);						//获取当前点将的列表
+	JoinLeagueDianjiang(_U32 league_id);							//参加点将
+	QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id);		//查询点将奖励
+	LeagueDianjiangSummonNPC(_U32 league_id);						//招募npc参加点将活动
 };
 
 class SGGAME_S2C
@@ -1278,6 +1529,19 @@ class SGGAME_S2C
 	MakeEquiptResult(_U8 ret, SG_EQUIPT_ITEM new_euqipt, SG_MATERIAL_ITEM com_material, SG_MATERIAL_ITEM key_material);			//装备打造 com_material,key_material返回使用掉的材料
 
 	QueryActionAvailableResult(_U32 action_list[count], _U32 available_list[count], _U32 count);		//判断活动是否可以进入/激活 available_list[i] 0-available 1-none available
+
+	QueryFriendListResult(SG_FRIEND_INFO friend_list[count], _U32 count);
+	QueryFriendListSearchResult(SG_FRIEND_SEARCH_INFO search_list[count], _U32 count);
+	QueryFriendInvitationListResult(SG_FRIEND_INVITATION invitation_list[count], _U32 count);
+	AcceptFriendResult(_U8 ret, _U32 avatar_id);
+
+	SendChatResult(_U8 ret);
+	ReceiveChatResult(SG_CHAT_RECV_INFO chat_list[count], _U32 count);
+
+	QueryLeagueDianjiangListResult(_U8 ret, SG_LEAGUE_DIANJIANG_JOINER joiner_list[count], _U32 count);	//0-succ other-failed no league 
+	JoinLeagueDianjiangResult(_U8 ret, SG_LEAGUE_DIANJIANG_JOINER self);								//0-succ other-failed
+	QueryLeagueDianjiangRewardResult(_U8 ret, _U32 reputation);											//0-succ other-failed
+	LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, SG_LEAGUE_DIANJIANG_JOINER npc_joiner);//0-succ other-failed
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

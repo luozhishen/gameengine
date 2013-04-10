@@ -1025,20 +1025,27 @@ namespace DDLReflect
 
 namespace DDLReflect
 {
-	static FIELD_INFO _class_KNGIHT_C2S_fieldinfos[] = 
+	static FIELD_INFO _class_KNIGHT_C2S_fieldinfos[] = 
 	{
 		// 0 Ping
-		{0, NULL, 0, NULL, 0, 0, 0, 0},
+		// 1 Set
+		{TYPE_STRING, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 Get
+		// 3 Boardcast
+		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
-	static FUNCTION_INFO _class_KNGIHT_C2S_funcinfos[] = 
+	static FUNCTION_INFO _class_KNIGHT_C2S_funcinfos[] = 
 	{
-		{"Ping", 0, _class_KNGIHT_C2S_fieldinfos+0},
+		{"Ping", 0, _class_KNIGHT_C2S_fieldinfos+0},
+		{"Set", 1, _class_KNIGHT_C2S_fieldinfos+0},
+		{"Get", 0, _class_KNIGHT_C2S_fieldinfos+1},
+		{"Boardcast", 1, _class_KNIGHT_C2S_fieldinfos+1},
 	};
-	static CLASS_INFO _class_KNGIHT_C2S_info = { 0, "KNGIHT_C2S", 1, _class_KNGIHT_C2S_funcinfos };
+	static CLASS_INFO _class_KNIGHT_C2S_info = { 0, "KNIGHT_C2S", 4, _class_KNIGHT_C2S_funcinfos };
 	template<>
-	const CLASS_INFO* GetClass<KNGIHT_C2S>()
+	const CLASS_INFO* GetClass<KNIGHT_C2S>()
 	{
-		return &_class_KNGIHT_C2S_info;
+		return &_class_KNIGHT_C2S_info;
 	}
 }
 
@@ -1047,13 +1054,19 @@ namespace DDLReflect
 	static FIELD_INFO _class_KNIGHT_S2C_fieldinfos[] = 
 	{
 		// 0 Pong
-		{0, NULL, 0, NULL, 0, 0, 0, 0},
+		// 1 GetCallback
+		{TYPE_STRING, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 BoardcastCallback
+		{TYPE_U32, "uid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_KNIGHT_S2C_funcinfos[] = 
 	{
 		{"Pong", 0, _class_KNIGHT_S2C_fieldinfos+0},
+		{"GetCallback", 1, _class_KNIGHT_S2C_fieldinfos+0},
+		{"BoardcastCallback", 2, _class_KNIGHT_S2C_fieldinfos+1},
 	};
-	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 1, _class_KNIGHT_S2C_funcinfos };
+	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 3, _class_KNIGHT_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<KNIGHT_S2C>()
 	{

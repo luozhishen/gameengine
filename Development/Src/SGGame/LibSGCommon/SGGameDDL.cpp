@@ -7,6 +7,545 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_ASTROLOGY_BALL_CONFIG>(SG_ASTROLOGY_BALL_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.ball_id)) return false;
+		if(!ReadString<SG_ASTROLOGY_BALL_NAME_MAX>(Value.ball_name)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		if(!ReadString<SG_ASTROLOGY_BALL_DESC_MAX>(Value.desc)) return false;
+		if(!Read<_U8>(Value.quality)) return false;
+		if(!Read<_U8>(Value.attri_type)) return false;
+		if(!Read<_F32>(Value.attri_num)) return false;
+		if(!Read<_U32>(Value.levelup_ball)) return false;
+		if(!Read<_U32>(Value.req_levelup)) return false;
+		if(!Read<_U32>(Value.price)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGY_BALL_CONFIG>(const SG_ASTROLOGY_BALL_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.ball_id)) return false;
+		if(!WriteString<SG_ASTROLOGY_BALL_NAME_MAX>(Value.ball_name)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		if(!WriteString<SG_ASTROLOGY_BALL_DESC_MAX>(Value.desc)) return false;
+		if(!Write<_U8>(Value.quality)) return false;
+		if(!Write<_U8>(Value.attri_type)) return false;
+		if(!Write<_F32>(Value.attri_num)) return false;
+		if(!Write<_U32>(Value.levelup_ball)) return false;
+		if(!Write<_U32>(Value.req_levelup)) return false;
+		if(!Write<_U32>(Value.price)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_ASTROLOGY_BALL_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_ASTROLOGY_BALL_CONFIG>(*((SG_ASTROLOGY_BALL_CONFIG*)data));
+	}
+
+	static bool _struct_SG_ASTROLOGY_BALL_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_ASTROLOGY_BALL_CONFIG>(*((const SG_ASTROLOGY_BALL_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "ball_id", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, ball_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "ball_name", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, ball_name), NULL, (_U16)SG_ASTROLOGY_BALL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGY_BALL_NAME_MAX>), NULL},
+		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, desc), NULL, (_U16)SG_ASTROLOGY_BALL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGY_BALL_DESC_MAX>), NULL},
+		{TYPE_U8, "quality", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, quality), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "attri_type", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "attri_num", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "levelup_ball", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, levelup_ball), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_levelup", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, req_levelup), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "price", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, price), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ASTROLOGY_BALL_CONFIG", sizeof(SG_ASTROLOGY_BALL_CONFIG), 15, _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo, _struct_SG_ASTROLOGY_BALL_CONFIG_readproc, _struct_SG_ASTROLOGY_BALL_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_CONFIG>()
+	{
+		return &_rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ASTROLOGER_CONFIG>(SG_ASTROLOGER_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.astrologer_id)) return false;
+		if(!ReadString<SG_ASTROLOGER_NAME_MAX>(Value.astrologer_name)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		if(!ReadString<SG_ASTROLOGER_DESC_MAX>(Value.desc)) return false;
+		if(!Read<_U32>(Value.consume_gold)) return false;
+		if(!Read<_F32>(Value.level_up_percent)) return false;
+		if(!Read<_F32>(Value.failed_percent)) return false;
+		if(!Read<_U32>(Value.reward1)) return false;
+		if(!Read<_F32>(Value.reward_percent1)) return false;
+		if(!Read<_U32>(Value.reward2)) return false;
+		if(!Read<_F32>(Value.reward_percent2)) return false;
+		if(!Read<_U32>(Value.reward3)) return false;
+		if(!Read<_F32>(Value.reward_percent3)) return false;
+		if(!Read<_U32>(Value.reward4)) return false;
+		if(!Read<_F32>(Value.reward_percent4)) return false;
+		if(!Read<_U32>(Value.reward5)) return false;
+		if(!Read<_F32>(Value.reward_percent5)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGER_CONFIG>(const SG_ASTROLOGER_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.astrologer_id)) return false;
+		if(!WriteString<SG_ASTROLOGER_NAME_MAX>(Value.astrologer_name)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		if(!WriteString<SG_ASTROLOGER_DESC_MAX>(Value.desc)) return false;
+		if(!Write<_U32>(Value.consume_gold)) return false;
+		if(!Write<_F32>(Value.level_up_percent)) return false;
+		if(!Write<_F32>(Value.failed_percent)) return false;
+		if(!Write<_U32>(Value.reward1)) return false;
+		if(!Write<_F32>(Value.reward_percent1)) return false;
+		if(!Write<_U32>(Value.reward2)) return false;
+		if(!Write<_F32>(Value.reward_percent2)) return false;
+		if(!Write<_U32>(Value.reward3)) return false;
+		if(!Write<_F32>(Value.reward_percent3)) return false;
+		if(!Write<_U32>(Value.reward4)) return false;
+		if(!Write<_F32>(Value.reward_percent4)) return false;
+		if(!Write<_U32>(Value.reward5)) return false;
+		if(!Write<_F32>(Value.reward_percent5)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_ASTROLOGER_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_ASTROLOGER_CONFIG>(*((SG_ASTROLOGER_CONFIG*)data));
+	}
+
+	static bool _struct_SG_ASTROLOGER_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_ASTROLOGER_CONFIG>(*((const SG_ASTROLOGER_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_ASTROLOGER_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "astrologer_id", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, astrologer_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "astrologer_name", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, astrologer_name), NULL, (_U16)SG_ASTROLOGER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGER_NAME_MAX>), NULL},
+		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, desc), NULL, (_U16)SG_ASTROLOGER_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGER_DESC_MAX>), NULL},
+		{TYPE_U32, "consume_gold", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, consume_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "level_up_percent", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, level_up_percent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "failed_percent", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, failed_percent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward1", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent1", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward3", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent3", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward4", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent4", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward5", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent5", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_ASTROLOGER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ASTROLOGER_CONFIG", sizeof(SG_ASTROLOGER_CONFIG), 22, _struct_SG_ASTROLOGER_CONFIG_fieldinfo, _struct_SG_ASTROLOGER_CONFIG_readproc, _struct_SG_ASTROLOGER_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGER_CONFIG>()
+	{
+		return &_rfl_struct_SG_ASTROLOGER_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(SG_GENERAL_ASTROLOG_SLOT_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.general_level)) return false;
+		if(!Read<_U32>(Value.slot_num)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(const SG_GENERAL_ASTROLOG_SLOT_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.general_level)) return false;
+		if(!Write<_U32>(Value.slot_num)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(*((SG_GENERAL_ASTROLOG_SLOT_CONFIG*)data));
+	}
+
+	static bool _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(*((const SG_GENERAL_ASTROLOG_SLOT_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "general_level", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "slot_num", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, slot_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_ASTROLOG_SLOT_CONFIG", sizeof(SG_GENERAL_ASTROLOG_SLOT_CONFIG), 2, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_fieldinfo, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_readproc, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GENERAL_ASTROLOG_SLOT_CONFIG>()
+	{
+		return &_rfl_struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_NUM_CONFIG>(SG_FRIEND_NUM_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.player_level)) return false;
+		if(!Read<_U32>(Value.upper_friend_limit)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_NUM_CONFIG>(const SG_FRIEND_NUM_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.player_level)) return false;
+		if(!Write<_U32>(Value.upper_friend_limit)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_FRIEND_NUM_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_FRIEND_NUM_CONFIG>(*((SG_FRIEND_NUM_CONFIG*)data));
+	}
+
+	static bool _struct_SG_FRIEND_NUM_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_FRIEND_NUM_CONFIG>(*((const SG_FRIEND_NUM_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_FRIEND_NUM_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "player_level", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_NUM_CONFIG, player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "upper_friend_limit", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_NUM_CONFIG, upper_friend_limit), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_FRIEND_NUM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_FRIEND_NUM_CONFIG", sizeof(SG_FRIEND_NUM_CONFIG), 2, _struct_SG_FRIEND_NUM_CONFIG_fieldinfo, _struct_SG_FRIEND_NUM_CONFIG_readproc, _struct_SG_FRIEND_NUM_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_NUM_CONFIG>()
+	{
+		return &_rfl_struct_SG_FRIEND_NUM_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ENERGY_CONFIG>(SG_ENERGY_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.restore_energy)) return false;
+		if(!Read<_U32>(Value.buy_unit_energy)) return false;
+		if(!Read<_U32>(Value.reset_time)) return false;
+		if(!Read<_U32>(Value.consume_pve)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_ENERGY_CONFIG>(const SG_ENERGY_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.restore_energy)) return false;
+		if(!Write<_U32>(Value.buy_unit_energy)) return false;
+		if(!Write<_U32>(Value.reset_time)) return false;
+		if(!Write<_U32>(Value.consume_pve)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_ENERGY_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_ENERGY_CONFIG>(*((SG_ENERGY_CONFIG*)data));
+	}
+
+	static bool _struct_SG_ENERGY_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_ENERGY_CONFIG>(*((const SG_ENERGY_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_ENERGY_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "restore_energy", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, restore_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "buy_unit_energy", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, buy_unit_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_pve", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, consume_pve), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_ENERGY_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ENERGY_CONFIG", sizeof(SG_ENERGY_CONFIG), 4, _struct_SG_ENERGY_CONFIG_fieldinfo, _struct_SG_ENERGY_CONFIG_readproc, _struct_SG_ENERGY_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ENERGY_CONFIG>()
+	{
+		return &_rfl_struct_SG_ENERGY_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ENERGY_BUY_CONFIG>(SG_ENERGY_BUY_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.times)) return false;
+		if(!Read<_U32>(Value.consume_rmb)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_ENERGY_BUY_CONFIG>(const SG_ENERGY_BUY_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.times)) return false;
+		if(!Write<_U32>(Value.consume_rmb)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_ENERGY_BUY_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_ENERGY_BUY_CONFIG>(*((SG_ENERGY_BUY_CONFIG*)data));
+	}
+
+	static bool _struct_SG_ENERGY_BUY_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_ENERGY_BUY_CONFIG>(*((const SG_ENERGY_BUY_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_ENERGY_BUY_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "times", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_BUY_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_BUY_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_ENERGY_BUY_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ENERGY_BUY_CONFIG", sizeof(SG_ENERGY_BUY_CONFIG), 2, _struct_SG_ENERGY_BUY_CONFIG_fieldinfo, _struct_SG_ENERGY_BUY_CONFIG_readproc, _struct_SG_ENERGY_BUY_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ENERGY_BUY_CONFIG>()
+	{
+		return &_rfl_struct_SG_ENERGY_BUY_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_CHANNEL_CONFIG>(SG_CHAT_CHANNEL_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.channel_id)) return false;
+		if(!ReadString<SG_CHAT_CHANNEL_NAME_MAX>(Value.channel_name)) return false;
+		if(!Read<_U8>(Value.scope)) return false;
+		if(!Read<_U8>(Value.shield)) return false;
+		if(!Read<_U32>(Value.interval_times)) return false;
+		if(!Read<_U32>(Value.interval_period)) return false;
+		if(!Read<_U32>(Value.req_level)) return false;
+		if(!Read<_U32>(Value.content_length_max)) return false;
+		if(!ReadString<SG_CHAT_CHANNEL_COLOR_MAX>(Value.color)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_CHAT_CHANNEL_CONFIG>(const SG_CHAT_CHANNEL_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.channel_id)) return false;
+		if(!WriteString<SG_CHAT_CHANNEL_NAME_MAX>(Value.channel_name)) return false;
+		if(!Write<_U8>(Value.scope)) return false;
+		if(!Write<_U8>(Value.shield)) return false;
+		if(!Write<_U32>(Value.interval_times)) return false;
+		if(!Write<_U32>(Value.interval_period)) return false;
+		if(!Write<_U32>(Value.req_level)) return false;
+		if(!Write<_U32>(Value.content_length_max)) return false;
+		if(!WriteString<SG_CHAT_CHANNEL_COLOR_MAX>(Value.color)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_CHAT_CHANNEL_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_CHAT_CHANNEL_CONFIG>(*((SG_CHAT_CHANNEL_CONFIG*)data));
+	}
+
+	static bool _struct_SG_CHAT_CHANNEL_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_CHAT_CHANNEL_CONFIG>(*((const SG_CHAT_CHANNEL_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_CHAT_CHANNEL_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "channel_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "channel_name", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, channel_name), NULL, (_U16)SG_CHAT_CHANNEL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CHANNEL_NAME_MAX>), NULL},
+		{TYPE_U8, "scope", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, scope), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "shield", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, shield), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "interval_times", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, interval_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "interval_period", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, interval_period), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "content_length_max", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, content_length_max), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "color", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, color), NULL, (_U16)SG_CHAT_CHANNEL_COLOR_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CHANNEL_COLOR_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_CHAT_CHANNEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_CHAT_CHANNEL_CONFIG", sizeof(SG_CHAT_CHANNEL_CONFIG), 9, _struct_SG_CHAT_CHANNEL_CONFIG_fieldinfo, _struct_SG_CHAT_CHANNEL_CONFIG_readproc, _struct_SG_CHAT_CHANNEL_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_CHANNEL_CONFIG>()
+	{
+		return &_rfl_struct_SG_CHAT_CHANNEL_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_TAB_CONFIG>(SG_CHAT_TAB_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.tab_id)) return false;
+		if(!ReadString<SG_CHAT_TAP_NAME_MAX>(Value.tab_name)) return false;
+		if(!Read<_U32>(Value.channel_id1)) return false;
+		if(!Read<_U32>(Value.channel_id2)) return false;
+		if(!Read<_U32>(Value.channel_id3)) return false;
+		if(!Read<_U32>(Value.channel_id4)) return false;
+		if(!Read<_U32>(Value.channel_id5)) return false;
+		if(!Read<_U32>(Value.channel_id6)) return false;
+		if(!Read<_U32>(Value.channel_id7)) return false;
+		if(!Read<_U32>(Value.channel_id8)) return false;
+		if(!Read<_U32>(Value.channel_id9)) return false;
+		if(!Read<_U32>(Value.channel_id10)) return false;
+		if(!Read<_U32>(Value.channel_id11)) return false;
+		if(!Read<_U32>(Value.channel_id12)) return false;
+		if(!Read<_U32>(Value.channel_id13)) return false;
+		if(!Read<_U32>(Value.channel_id14)) return false;
+		if(!Read<_U32>(Value.channel_id15)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_CHAT_TAB_CONFIG>(const SG_CHAT_TAB_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.tab_id)) return false;
+		if(!WriteString<SG_CHAT_TAP_NAME_MAX>(Value.tab_name)) return false;
+		if(!Write<_U32>(Value.channel_id1)) return false;
+		if(!Write<_U32>(Value.channel_id2)) return false;
+		if(!Write<_U32>(Value.channel_id3)) return false;
+		if(!Write<_U32>(Value.channel_id4)) return false;
+		if(!Write<_U32>(Value.channel_id5)) return false;
+		if(!Write<_U32>(Value.channel_id6)) return false;
+		if(!Write<_U32>(Value.channel_id7)) return false;
+		if(!Write<_U32>(Value.channel_id8)) return false;
+		if(!Write<_U32>(Value.channel_id9)) return false;
+		if(!Write<_U32>(Value.channel_id10)) return false;
+		if(!Write<_U32>(Value.channel_id11)) return false;
+		if(!Write<_U32>(Value.channel_id12)) return false;
+		if(!Write<_U32>(Value.channel_id13)) return false;
+		if(!Write<_U32>(Value.channel_id14)) return false;
+		if(!Write<_U32>(Value.channel_id15)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_CHAT_TAB_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_CHAT_TAB_CONFIG>(*((SG_CHAT_TAB_CONFIG*)data));
+	}
+
+	static bool _struct_SG_CHAT_TAB_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_CHAT_TAB_CONFIG>(*((const SG_CHAT_TAB_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_CHAT_TAB_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "tab_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, tab_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tab_name", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, tab_name), NULL, (_U16)SG_CHAT_TAP_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_TAP_NAME_MAX>), NULL},
+		{TYPE_U32, "channel_id1", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id2", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id3", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id4", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id5", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id6", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id7", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id7), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id8", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id8), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id9", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id9), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id10", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id10), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id11", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id11), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id12", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id12), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id13", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id13), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id14", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id14), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id15", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id15), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_CHAT_TAB_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_CHAT_TAB_CONFIG", sizeof(SG_CHAT_TAB_CONFIG), 17, _struct_SG_CHAT_TAB_CONFIG_fieldinfo, _struct_SG_CHAT_TAB_CONFIG_readproc, _struct_SG_CHAT_TAB_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_TAB_CONFIG>()
+	{
+		return &_rfl_struct_SG_CHAT_TAB_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_TURBO_CONFIG>(SG_TURBO_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -162,6 +701,7 @@ namespace DDL
 		if(!Read<_U32>(Value.reset_instance_times)) return false;
 		if(!Read<_U8>(Value.hangup_free)) return false;
 		if(!Read<_U8>(Value.enhance_free)) return false;
+		if(!Read<_U32>(Value.enhance_friend_num)) return false;
 		if(!ReadString<SG_VIP_ICON_MAX>(Value.res)) return false;
 		if(!Read<_U32>(Value.U)) return false;
 		if(!Read<_U32>(Value.V)) return false;
@@ -181,6 +721,7 @@ namespace DDL
 		if(!Write<_U32>(Value.reset_instance_times)) return false;
 		if(!Write<_U8>(Value.hangup_free)) return false;
 		if(!Write<_U8>(Value.enhance_free)) return false;
+		if(!Write<_U32>(Value.enhance_friend_num)) return false;
 		if(!WriteString<SG_VIP_ICON_MAX>(Value.res)) return false;
 		if(!Write<_U32>(Value.U)) return false;
 		if(!Write<_U32>(Value.V)) return false;
@@ -213,13 +754,14 @@ namespace DDLReflect
 		{TYPE_U32, "reset_instance_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, reset_instance_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U8, "hangup_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, hangup_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "enhance_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, enhance_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "enhance_friend_num", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, enhance_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "res", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, res), NULL, (_U16)SG_VIP_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_VIP_ICON_MAX>), NULL},
 		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 13, _struct_SG_VIP_CONFIG_fieldinfo, _struct_SG_VIP_CONFIG_readproc, _struct_SG_VIP_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 14, _struct_SG_VIP_CONFIG_fieldinfo, _struct_SG_VIP_CONFIG_readproc, _struct_SG_VIP_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_VIP_CONFIG>()
 	{
@@ -716,6 +1258,52 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<SG_LEAGUE_TOAST_CONFIG>()
 	{
 		return &_rfl_struct_SG_LEAGUE_TOAST_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_DIANJIANG_CONFIG>(SG_LEAGUE_DIANJIANG_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.consume_npc_gold)) return false;
+		if(!Read<_U32>(Value.reward_reputation)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_DIANJIANG_CONFIG>(const SG_LEAGUE_DIANJIANG_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.consume_npc_gold)) return false;
+		if(!Write<_U32>(Value.reward_reputation)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LEAGUE_DIANJIANG_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LEAGUE_DIANJIANG_CONFIG>(*((SG_LEAGUE_DIANJIANG_CONFIG*)data));
+	}
+
+	static bool _struct_SG_LEAGUE_DIANJIANG_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LEAGUE_DIANJIANG_CONFIG>(*((const SG_LEAGUE_DIANJIANG_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LEAGUE_DIANJIANG_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "consume_npc_gold", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_CONFIG, consume_npc_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_DIANJIANG_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_DIANJIANG_CONFIG", sizeof(SG_LEAGUE_DIANJIANG_CONFIG), 2, _struct_SG_LEAGUE_DIANJIANG_CONFIG_fieldinfo, _struct_SG_LEAGUE_DIANJIANG_CONFIG_readproc, _struct_SG_LEAGUE_DIANJIANG_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_DIANJIANG_CONFIG>()
+	{
+		return &_rfl_struct_SG_LEAGUE_DIANJIANG_CONFIG_info;
 	}
 }
 
@@ -1320,6 +1908,61 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<SG_LEAGUE_LOG>()
 	{
 		return &_rfl_struct_SG_LEAGUE_LOG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_DIANJIANG_JOINER>(SG_LEAGUE_DIANJIANG_JOINER& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.league_id)) return false;
+		if(!Read<_U32>(Value.member_id)) return false;
+		if(!Read<_U32>(Value.general_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.member_name)) return false;
+		if(!Read<_U8>(Value.role)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_DIANJIANG_JOINER>(const SG_LEAGUE_DIANJIANG_JOINER& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.league_id)) return false;
+		if(!Write<_U32>(Value.member_id)) return false;
+		if(!Write<_U32>(Value.general_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.member_name)) return false;
+		if(!Write<_U8>(Value.role)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LEAGUE_DIANJIANG_JOINER_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LEAGUE_DIANJIANG_JOINER>(*((SG_LEAGUE_DIANJIANG_JOINER*)data));
+	}
+
+	static bool _struct_SG_LEAGUE_DIANJIANG_JOINER_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LEAGUE_DIANJIANG_JOINER>(*((const SG_LEAGUE_DIANJIANG_JOINER*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LEAGUE_DIANJIANG_JOINER_fieldinfo[] =
+	{
+		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "member_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, member_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "member_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, member_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U8, "role", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, role), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_DIANJIANG_JOINER", sizeof(SG_LEAGUE_DIANJIANG_JOINER), 5, _struct_SG_LEAGUE_DIANJIANG_JOINER_fieldinfo, _struct_SG_LEAGUE_DIANJIANG_JOINER_readproc, _struct_SG_LEAGUE_DIANJIANG_JOINER_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_DIANJIANG_JOINER>()
+	{
+		return &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info;
 	}
 }
 
@@ -2385,7 +3028,7 @@ namespace DDL
 		if(!Read<_U32>(Value.V)) return false;
 		if(!Read<_U32>(Value.UL)) return false;
 		if(!Read<_U32>(Value.VL)) return false;
-		if(!ReadString<SG_EQUIPT_TEX_MAX>(Value.tex)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
 		if(!ReadString<SG_ITEM_NAME_MAX>(Value.item_name)) return false;
 		if(!Read<_U8>(Value.quality)) return false;
 		return true;
@@ -2401,7 +3044,7 @@ namespace DDL
 		if(!Write<_U32>(Value.V)) return false;
 		if(!Write<_U32>(Value.UL)) return false;
 		if(!Write<_U32>(Value.VL)) return false;
-		if(!WriteString<SG_EQUIPT_TEX_MAX>(Value.tex)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
 		if(!WriteString<SG_ITEM_NAME_MAX>(Value.item_name)) return false;
 		if(!Write<_U8>(Value.quality)) return false;
 		return true;
@@ -2430,7 +3073,7 @@ namespace DDLReflect
 		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, tex), NULL, (_U16)SG_EQUIPT_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_EQUIPT_TEX_MAX>), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
 		{TYPE_STRING, "item_name", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, item_name), NULL, (_U16)SG_ITEM_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ITEM_NAME_MAX>), NULL},
 		{TYPE_U8, "quality", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, quality), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
@@ -2603,14 +3246,26 @@ namespace DDL
 	bool BufferReader::Read<SG_USABLE_ITEM_CONFIG>(SG_USABLE_ITEM_CONFIG& Value)
 	{
 		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
-		if(!ReadString<100>(Value.functional)) return false;
+		if(!ReadString<SG_USABLE_DESC_MAX>(Value.desc)) return false;
+		if(!Read<_U8>(Value.salablity)) return false;
+		if(!Read<_U32>(Value.req_level)) return false;
+		if(!Read<_U8>(Value.usage_type)) return false;
+		if(!Read<_F32>(Value.attri_value1)) return false;
+		if(!Read<_F32>(Value.attri_value2)) return false;
+		if(!Read<_F32>(Value.attri_value3)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<SG_USABLE_ITEM_CONFIG>(const SG_USABLE_ITEM_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<SG_ITEM_CONFIG>(Value)) return false;
-		if(!WriteString<100>(Value.functional)) return false;
+		if(!WriteString<SG_USABLE_DESC_MAX>(Value.desc)) return false;
+		if(!Write<_U8>(Value.salablity)) return false;
+		if(!Write<_U32>(Value.req_level)) return false;
+		if(!Write<_U8>(Value.usage_type)) return false;
+		if(!Write<_F32>(Value.attri_value1)) return false;
+		if(!Write<_F32>(Value.attri_value2)) return false;
+		if(!Write<_F32>(Value.attri_value3)) return false;
 		return true;
 	}
 }
@@ -2630,9 +3285,15 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_USABLE_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "functional", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, functional), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, desc), NULL, (_U16)SG_USABLE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_USABLE_DESC_MAX>), NULL},
+		{TYPE_U8, "salablity", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, salablity), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "usage_type", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, usage_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "attri_value1", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "attri_value2", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "attri_value3", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_USABLE_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_USABLE_ITEM_CONFIG", sizeof(SG_USABLE_ITEM_CONFIG), 1, _struct_SG_USABLE_ITEM_CONFIG_fieldinfo, _struct_SG_USABLE_ITEM_CONFIG_readproc, _struct_SG_USABLE_ITEM_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_USABLE_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_USABLE_ITEM_CONFIG", sizeof(SG_USABLE_ITEM_CONFIG), 7, _struct_SG_USABLE_ITEM_CONFIG_fieldinfo, _struct_SG_USABLE_ITEM_CONFIG_readproc, _struct_SG_USABLE_ITEM_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_USABLE_ITEM_CONFIG>()
 	{
@@ -3836,6 +4497,193 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_FRIEND_BASE_INFO>(SG_FRIEND_BASE_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.avatar_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Read<_U32>(Value.title)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		if(!Read<_U32>(Value.battle_value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_BASE_INFO>(const SG_FRIEND_BASE_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.avatar_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Write<_U32>(Value.title)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		if(!Write<_U32>(Value.battle_value)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_FRIEND_BASE_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_FRIEND_BASE_INFO>(*((SG_FRIEND_BASE_INFO*)data));
+	}
+
+	static bool _struct_SG_FRIEND_BASE_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_FRIEND_BASE_INFO>(*((const SG_FRIEND_BASE_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_FRIEND_BASE_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "avatar_id", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "title", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "battle_value", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, battle_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_FRIEND_BASE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_FRIEND_BASE_INFO", sizeof(SG_FRIEND_BASE_INFO), 5, _struct_SG_FRIEND_BASE_INFO_fieldinfo, _struct_SG_FRIEND_BASE_INFO_readproc, _struct_SG_FRIEND_BASE_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_BASE_INFO>()
+	{
+		return &_rfl_struct_SG_FRIEND_BASE_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_INFO>(SG_FRIEND_INFO& Value)
+	{
+		if(!BufferReader::Read<SG_FRIEND_BASE_INFO>(Value)) return false;
+		if(!Read<_U32>(Value.recent_op_time)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_INFO>(const SG_FRIEND_INFO& Value)
+	{
+		if(!BufferWriter::Write<SG_FRIEND_BASE_INFO>(Value)) return false;
+		if(!Write<_U32>(Value.recent_op_time)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_FRIEND_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_FRIEND_INFO>(*((SG_FRIEND_INFO*)data));
+	}
+
+	static bool _struct_SG_FRIEND_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_FRIEND_INFO>(*((const SG_FRIEND_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_FRIEND_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "recent_op_time", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_INFO, recent_op_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_FRIEND_INFO_info = { &_rfl_struct_SG_FRIEND_BASE_INFO_info, "SG_FRIEND_INFO", sizeof(SG_FRIEND_INFO), 1, _struct_SG_FRIEND_INFO_fieldinfo, _struct_SG_FRIEND_INFO_readproc, _struct_SG_FRIEND_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_INFO>()
+	{
+		return &_rfl_struct_SG_FRIEND_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_SEARCH_INFO>(SG_FRIEND_SEARCH_INFO& Value)
+	{
+		if(!BufferReader::Read<SG_FRIEND_BASE_INFO>(Value)) return false;
+		if(!Read<_U32>(Value.current_friend_num)) return false;
+		if(!Read<_U32>(Value.max_friend_num)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_SEARCH_INFO>(const SG_FRIEND_SEARCH_INFO& Value)
+	{
+		if(!BufferWriter::Write<SG_FRIEND_BASE_INFO>(Value)) return false;
+		if(!Write<_U32>(Value.current_friend_num)) return false;
+		if(!Write<_U32>(Value.max_friend_num)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_FRIEND_SEARCH_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_FRIEND_SEARCH_INFO>(*((SG_FRIEND_SEARCH_INFO*)data));
+	}
+
+	static bool _struct_SG_FRIEND_SEARCH_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_FRIEND_SEARCH_INFO>(*((const SG_FRIEND_SEARCH_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_FRIEND_SEARCH_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "current_friend_num", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_SEARCH_INFO, current_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "max_friend_num", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_SEARCH_INFO, max_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_FRIEND_SEARCH_INFO_info = { &_rfl_struct_SG_FRIEND_BASE_INFO_info, "SG_FRIEND_SEARCH_INFO", sizeof(SG_FRIEND_SEARCH_INFO), 2, _struct_SG_FRIEND_SEARCH_INFO_fieldinfo, _struct_SG_FRIEND_SEARCH_INFO_readproc, _struct_SG_FRIEND_SEARCH_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_SEARCH_INFO>()
+	{
+		return &_rfl_struct_SG_FRIEND_SEARCH_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_FRIEND_INVITATION>(SG_FRIEND_INVITATION& Value)
+	{
+		if(!BufferReader::Read<SG_FRIEND_BASE_INFO>(Value)) return false;
+		if(!Read<_U32>(Value.recent_op_time)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_FRIEND_INVITATION>(const SG_FRIEND_INVITATION& Value)
+	{
+		if(!BufferWriter::Write<SG_FRIEND_BASE_INFO>(Value)) return false;
+		if(!Write<_U32>(Value.recent_op_time)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_FRIEND_INVITATION_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_FRIEND_INVITATION>(*((SG_FRIEND_INVITATION*)data));
+	}
+
+	static bool _struct_SG_FRIEND_INVITATION_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_FRIEND_INVITATION>(*((const SG_FRIEND_INVITATION*)data));
+	}
+
+	static FIELD_INFO _struct_SG_FRIEND_INVITATION_fieldinfo[] =
+	{
+		{TYPE_U32, "recent_op_time", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_INVITATION, recent_op_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_FRIEND_INVITATION_info = { &_rfl_struct_SG_FRIEND_BASE_INFO_info, "SG_FRIEND_INVITATION", sizeof(SG_FRIEND_INVITATION), 1, _struct_SG_FRIEND_INVITATION_fieldinfo, _struct_SG_FRIEND_INVITATION_readproc, _struct_SG_FRIEND_INVITATION_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_FRIEND_INVITATION>()
+	{
+		return &_rfl_struct_SG_FRIEND_INVITATION_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_SERVER_INFO>(SG_SERVER_INFO& Value)
 	{
 		if(!Read<_U32>(Value.server_id)) return false;
@@ -3939,6 +4787,119 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<SG_GENERAL_QUERY_INFO>()
 	{
 		return &_rfl_struct_SG_GENERAL_QUERY_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_SEND_INFO>(SG_CHAT_SEND_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.channel_id)) return false;
+		if(!Read<_U32>(Value.receiver_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.receiver_nick)) return false;
+		if(!Read<_U32>(Value.time)) return false;
+		if(!ReadString<SG_CHAT_CONTENT_MAX>(Value.content)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_CHAT_SEND_INFO>(const SG_CHAT_SEND_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.channel_id)) return false;
+		if(!Write<_U32>(Value.receiver_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.receiver_nick)) return false;
+		if(!Write<_U32>(Value.time)) return false;
+		if(!WriteString<SG_CHAT_CONTENT_MAX>(Value.content)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_CHAT_SEND_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_CHAT_SEND_INFO>(*((SG_CHAT_SEND_INFO*)data));
+	}
+
+	static bool _struct_SG_CHAT_SEND_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_CHAT_SEND_INFO>(*((const SG_CHAT_SEND_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_CHAT_SEND_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "channel_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "receiver_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, receiver_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "receiver_nick", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, receiver_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "time", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "content", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, content), NULL, (_U16)SG_CHAT_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CONTENT_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_CHAT_SEND_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_CHAT_SEND_INFO", sizeof(SG_CHAT_SEND_INFO), 5, _struct_SG_CHAT_SEND_INFO_fieldinfo, _struct_SG_CHAT_SEND_INFO_readproc, _struct_SG_CHAT_SEND_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_SEND_INFO>()
+	{
+		return &_rfl_struct_SG_CHAT_SEND_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_CHAT_RECV_INFO>(SG_CHAT_RECV_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.channel_id)) return false;
+		if(!Read<_U32>(Value.msg_id)) return false;
+		if(!Read<_U32>(Value.sender_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.sender_nick)) return false;
+		if(!Read<_U32>(Value.time)) return false;
+		if(!ReadString<SG_CHAT_CONTENT_MAX>(Value.content)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_CHAT_RECV_INFO>(const SG_CHAT_RECV_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.channel_id)) return false;
+		if(!Write<_U32>(Value.msg_id)) return false;
+		if(!Write<_U32>(Value.sender_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.sender_nick)) return false;
+		if(!Write<_U32>(Value.time)) return false;
+		if(!WriteString<SG_CHAT_CONTENT_MAX>(Value.content)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_CHAT_RECV_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_CHAT_RECV_INFO>(*((SG_CHAT_RECV_INFO*)data));
+	}
+
+	static bool _struct_SG_CHAT_RECV_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_CHAT_RECV_INFO>(*((const SG_CHAT_RECV_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_CHAT_RECV_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "channel_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "msg_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, msg_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "sender_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, sender_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "sender_nick", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, sender_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "time", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "content", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, content), NULL, (_U16)SG_CHAT_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CONTENT_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_CHAT_RECV_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_CHAT_RECV_INFO", sizeof(SG_CHAT_RECV_INFO), 6, _struct_SG_CHAT_RECV_INFO_fieldinfo, _struct_SG_CHAT_RECV_INFO_readproc, _struct_SG_CHAT_RECV_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_CHAT_RECV_INFO>()
+	{
+		return &_rfl_struct_SG_CHAT_RECV_INFO_info;
 	}
 }
 
@@ -4109,6 +5070,32 @@ namespace DDLReflect
 		// 84 QueryActionAvailable
 		{TYPE_U32|TYPE_ARRAY, "action_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 85 QueryFriendList
+		// 86 QueryFirendSearchList
+		{TYPE_STRING, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 87 QueryFriendInvitationList
+		// 88 InviteFriend
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 89 AcceptFriend
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 90 RefuseInvitation
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 91 DelFriend
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 92 SendChat
+		{TYPE_STRUCT, "send_info", 0, 0, &_rfl_struct_SG_CHAT_SEND_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 93 ReceiveChat
+		{TYPE_U32|TYPE_ARRAY, "channel_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 94 QueryLeagueDianjiangList
+		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 95 JoinLeagueDianjiang
+		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 96 QueryLeagueDianjiangReward
+		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 97 LeagueDianjiangSummonNPC
+		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -4197,8 +5184,21 @@ namespace DDLReflect
 		{"EquipTurboSkill", 1, _class_SGGAME_C2S_fieldinfos+74},
 		{"MakeEquipt", 1, _class_SGGAME_C2S_fieldinfos+75},
 		{"QueryActionAvailable", 2, _class_SGGAME_C2S_fieldinfos+76},
+		{"QueryFriendList", 0, _class_SGGAME_C2S_fieldinfos+78},
+		{"QueryFirendSearchList", 1, _class_SGGAME_C2S_fieldinfos+78},
+		{"QueryFriendInvitationList", 0, _class_SGGAME_C2S_fieldinfos+79},
+		{"InviteFriend", 1, _class_SGGAME_C2S_fieldinfos+79},
+		{"AcceptFriend", 1, _class_SGGAME_C2S_fieldinfos+80},
+		{"RefuseInvitation", 1, _class_SGGAME_C2S_fieldinfos+81},
+		{"DelFriend", 1, _class_SGGAME_C2S_fieldinfos+82},
+		{"SendChat", 1, _class_SGGAME_C2S_fieldinfos+83},
+		{"ReceiveChat", 2, _class_SGGAME_C2S_fieldinfos+84},
+		{"QueryLeagueDianjiangList", 1, _class_SGGAME_C2S_fieldinfos+86},
+		{"JoinLeagueDianjiang", 1, _class_SGGAME_C2S_fieldinfos+87},
+		{"QueryLeagueDianjiangReward", 2, _class_SGGAME_C2S_fieldinfos+88},
+		{"LeagueDianjiangSummonNPC", 1, _class_SGGAME_C2S_fieldinfos+90},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 85, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 98, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -4415,6 +5415,38 @@ namespace DDLReflect
 		{TYPE_U32|TYPE_ARRAY, "action_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "available_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 65 QueryFriendListResult
+		{TYPE_STRUCT|TYPE_ARRAY, "friend_list", 0, 0, &_rfl_struct_SG_FRIEND_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 66 QueryFriendListSearchResult
+		{TYPE_STRUCT|TYPE_ARRAY, "search_list", 0, 0, &_rfl_struct_SG_FRIEND_SEARCH_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 67 QueryFriendInvitationListResult
+		{TYPE_STRUCT|TYPE_ARRAY, "invitation_list", 0, 0, &_rfl_struct_SG_FRIEND_INVITATION_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 68 AcceptFriendResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 69 SendChatResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 70 ReceiveChatResult
+		{TYPE_STRUCT|TYPE_ARRAY, "chat_list", 0, 0, &_rfl_struct_SG_CHAT_RECV_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 71 QueryLeagueDianjiangListResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "joiner_list", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 72 JoinLeagueDianjiangResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "self", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 73 QueryLeagueDianjiangRewardResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 74 LeagueDianjiangSummonNPCResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "npc_joiner", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
@@ -4483,8 +5515,18 @@ namespace DDLReflect
 		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+130},
 		{"MakeEquiptResult", 4, _class_SGGAME_S2C_fieldinfos+133},
 		{"QueryActionAvailableResult", 3, _class_SGGAME_S2C_fieldinfos+137},
+		{"QueryFriendListResult", 2, _class_SGGAME_S2C_fieldinfos+140},
+		{"QueryFriendListSearchResult", 2, _class_SGGAME_S2C_fieldinfos+142},
+		{"QueryFriendInvitationListResult", 2, _class_SGGAME_S2C_fieldinfos+144},
+		{"AcceptFriendResult", 2, _class_SGGAME_S2C_fieldinfos+146},
+		{"SendChatResult", 1, _class_SGGAME_S2C_fieldinfos+148},
+		{"ReceiveChatResult", 2, _class_SGGAME_S2C_fieldinfos+149},
+		{"QueryLeagueDianjiangListResult", 3, _class_SGGAME_S2C_fieldinfos+151},
+		{"JoinLeagueDianjiangResult", 2, _class_SGGAME_S2C_fieldinfos+154},
+		{"QueryLeagueDianjiangRewardResult", 2, _class_SGGAME_S2C_fieldinfos+156},
+		{"LeagueDianjiangSummonNPCResult", 4, _class_SGGAME_S2C_fieldinfos+158},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 65, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 75, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

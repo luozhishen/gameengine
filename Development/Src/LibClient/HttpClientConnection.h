@@ -33,19 +33,24 @@ namespace Atlas
 
 	protected:
 		void ProcessLoginRequest();
+		void ProcessLogoutRequest();
 		void ProcessQueueRequest();
+		void ProcessPullRequest();
+		int ProcessRequest(MOREQUEST* request);
 		void SendRequest();
-		void DoDisconnect();
 
 	private:
 		Atlas::String m_BaseUrl;
 		MOREQUEST* m_pLoginRequest;
-		MOREQUEST* m_pNotifyRequest;
+		MOREQUEST* m_pLogoutRequest;
+		MOREQUEST* m_pPullRequest;
 		MOREQUEST* m_pCurrentRequest;
 		Atlas::String m_SessionKey;
 		Atlas::List<Atlas::String> m_SendQueue;
 		STATE m_nHttpState;
 		STATE_CALLBACK m_StateCallback;
+		_U32 m_nRequestSeq, m_nPullSeq, m_nLogoutRetry;
+		bool m_bInLogout;
 	};
 
 }

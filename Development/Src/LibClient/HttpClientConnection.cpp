@@ -10,15 +10,19 @@ namespace Atlas
 	CHttpClientConnection::CHttpClientConnection(CClient* pClient) : CClientConnectionBase(pClient)
 	{
 		m_pLoginRequest = NULL;
-		m_pNotifyRequest = NULL;
+		m_pLogoutRequest = NULL;
+		m_pPullRequest = NULL;
 		m_pCurrentRequest = NULL;
 		m_nHttpState = STATE_RUNNING;
+		m_nRequestSeq = 0;
+		m_nPullSeq = 0;
+		m_bInLogout = false;
 	}
 
 	CHttpClientConnection::~CHttpClientConnection()
 	{
 		ATLAS_ASSERT(!m_pLoginRequest);
-		ATLAS_ASSERT(!m_pNotifyRequest);
+		ATLAS_ASSERT(!m_pPullRequest);
 		ATLAS_ASSERT(!m_pCurrentRequest);
 	}
 
@@ -27,16 +31,19 @@ namespace Atlas
 		if(m_pLoginRequest)
 		{
 			ProcessLoginRequest();
+			return;
 		}
 
-		if(m_pCurrentRequest && MORequestStatus(m_pCurrentRequest)!=MOREQUESTSTATE_PENDING)
+		if(m_nState==CClient::STATE_LOGINED)
 		{
 			ProcessQueueRequest();
-		}
+			ProcessPullRequest();
+			ProcessLogoutRequest();
 
-		if(!m_pCurrentRequest && !m_SendQueue.empty() && m_nHttpState!=STATE_PAUSE)
-		{
-			SendRequest();
+			if(!m_bInLogout && !m_pCurrentRequest && !m_SendQueue.empty() && m_nHttpState!=STATE_PAUSE)
+			{
+				SendRequest();
+			}
 		}
 	}
 
@@ -44,11 +51,11 @@ namespace Atlas
 	{
 		ATLAS_ASSERT(m_nState==CClient::STATE_NA || m_nState==CClient::STATE_FAILED);
 		ATLAS_ASSERT(!m_pLoginRequest);
-		ATLAS_ASSERT(!m_pNotifyRequest);
+		ATLAS_ASSERT(!m_pPullRequest);
 		ATLAS_ASSERT(!m_pCurrentRequest);
 		if(m_nState!=CClient::STATE_NA && m_nState!=CClient::STATE_FAILED) return false;
 		if(m_pLoginRequest) return false;
-		if(m_pNotifyRequest) return false;
+		if(m_pPullRequest) return false;
 		if(m_pCurrentRequest) return false;
 
 		Atlas::Map<Atlas::String, Atlas::String> params;
@@ -59,6 +66,7 @@ namespace Atlas
 		{
 			m_nState = CClient::STATE_FAILED;
 			m_nErrCode = CClient::ERRCODE_NETWORK;
+			GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
 			return false;
 		}
 
@@ -72,9 +80,14 @@ namespace Atlas
 
 	void CHttpClientConnection::Logout()
 	{
-		if(m_nState==CClient::STATE_LOGINED)
+		if(m_nState==CClient::STATE_LOGINED && !m_bInLogout)
 		{
-			m_nState = CClient::STATE_NA;
+			m_bInLogout = true;
+			m_nLogoutRetry = 1;
+			String url = StringFormat(m_BaseUrl.c_str(), "logout");
+			Atlas::Map<Atlas::String, Atlas::String> params;
+			params["session_key"] = m_SessionKey;
+			m_pLogoutRequest = MORequestString(url.c_str(), params);
 		}
 	}
 
@@ -162,60 +175,158 @@ namespace Atlas
 			ATLAS_ASSERT(m_nState==CClient::STATE_LOGINING);
 			SetErrorCode(CClient::ERRCODE_NETWORK);
 			m_nState = CClient::STATE_FAILED;
-			CLIENT_LOG(GetClient(), "http_connection : http failed");
+			CLIENT_LOG(GetClient(), "http_connection : http failed for login");
 		}
 		MORequestDestory(m_pLoginRequest);
 		m_pLoginRequest = NULL;
 
-		if(m_nState==CClient::STATE_FAILED) GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
-		if(m_nState==CClient::STATE_LOGINED) GetClient()->GetClientApp()->QueueLoginDone(GetClient());
+		if(m_nState==CClient::STATE_FAILED)
+		{
+			GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
+		}
+		if(m_nState==CClient::STATE_LOGINED)
+		{
+			m_nRequestSeq = 1;
+			m_nPullSeq = 1;
+			GetClient()->GetClientApp()->QueueLoginDone(GetClient());
+		}
+	}
+
+	void CHttpClientConnection::ProcessLogoutRequest()
+	{
+		if(!m_bInLogout) return;
+
+		if(m_pLogoutRequest)
+		{
+			if(MORequestStatus(m_pLogoutRequest)==MOREQUESTSTATE_PENDING)
+			{
+				return;
+			}
+
+			if(MORequestStatus(m_pLogoutRequest)!=MOREQUESTSTATE_DONE)
+			{
+				MORequestDestory(m_pLogoutRequest);
+				m_pLogoutRequest = NULL;
+				CLIENT_LOG(GetClient(), "http_connection : http failed for logout");
+
+				if(m_nLogoutRetry<3)
+				{
+					String url = StringFormat(m_BaseUrl.c_str(), "logout");
+					Atlas::Map<Atlas::String, Atlas::String> params;
+					params["session_key"] = m_SessionKey;
+					m_pLogoutRequest = MORequestString(url.c_str(), params);
+					m_nLogoutRetry++;
+					return;
+				}
+			}
+			else
+			{
+				MORequestDestory(m_pLogoutRequest);
+				m_pLogoutRequest = NULL;
+			}
+
+		}
+
+		if(m_pPullRequest==NULL && m_pCurrentRequest==NULL && m_pLogoutRequest==NULL)
+		{
+			m_nState = CClient::STATE_NA;
+			m_bInLogout = false;
+			m_SessionKey = "";
+			m_SendQueue.clear();
+			GetClient()->GetClientApp()->QueueDisconnected(GetClient());
+		}
 	}
 
 	void CHttpClientConnection::ProcessQueueRequest()
 	{
-		ATLAS_ASSERT(m_pCurrentRequest);
-		if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_PENDING) return;
-
-		if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_FAILED)
+		if(m_pCurrentRequest && MORequestStatus(m_pCurrentRequest)!=MOREQUESTSTATE_PENDING)
 		{
-			CLIENT_LOG(GetClient(), "http_connection : http failed");
+			if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_PENDING)
+			{
+				return;
+			}
+
+			if(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_FAILED)
+			{
+				CLIENT_LOG(GetClient(), "http_connection : http failed");
+				MORequestDestory(m_pCurrentRequest);
+				m_pCurrentRequest = NULL;
+
+				if(m_StateCallback)
+				{
+					m_nHttpState = STATE_PAUSE;
+					m_StateCallback(m_nHttpState);
+				}
+				return;
+			}
+
+			ATLAS_ASSERT(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_DONE);
+
+			int ret = ProcessRequest(m_pCurrentRequest);
 			MORequestDestory(m_pCurrentRequest);
 			m_pCurrentRequest = NULL;
-
-			if(m_StateCallback)
+			if(ret==MOERROR_NOERROR)
 			{
-				m_nHttpState = STATE_PAUSE;
-				m_StateCallback(m_nHttpState);
+				m_SendQueue.pop_front();
+				m_nRequestSeq++;
+				if(m_nHttpState==STATE_RETRY)
+				{
+					m_nHttpState = STATE_RUNNING;
+					m_StateCallback(m_nHttpState);
+				}
 			}
+		}
+	}
+
+	void CHttpClientConnection::ProcessPullRequest()
+	{
+		if(!m_pPullRequest)
+		{
+			if(m_bInLogout) return;
+
+			Atlas::Map<Atlas::String, Atlas::String> params;
+			params["session_key"] = m_SessionKey;
+			params["seq"] = Atlas::StringFormat("%d", m_nPullSeq);
+			String url = StringFormat(m_BaseUrl.c_str(), "pull");
+			m_pPullRequest = MORequestString(url.c_str(), params);
+			if(!m_pPullRequest) return;
+		}
+
+		if(MORequestStatus(m_pPullRequest)==MOREQUESTSTATE_PENDING)
+		{
 			return;
 		}
 
-		ATLAS_ASSERT(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_DONE);
+		if(MORequestStatus(m_pPullRequest)!=MOREQUESTSTATE_DONE)
+		{
+			CLIENT_LOG(GetClient(), "http_connection : http failed for pull");
+			MORequestDestory(m_pPullRequest);
+			m_pPullRequest = NULL;
+			return;
+		}
 
-		int ret = MOClientGetResultCode(m_pCurrentRequest);
+		int ret = ProcessRequest(m_pPullRequest);
+		MORequestDestory(m_pPullRequest);
+		m_pPullRequest = NULL;
+		if(ret==MOERROR_NOERROR)
+		{
+			m_nPullSeq++;
+		}
+	}
+
+	int CHttpClientConnection::ProcessRequest(MOREQUEST* request)
+	{
+		int ret = MOClientGetResultCode(request);
 		if(ret!=MOERROR_NOERROR)
 		{
-			CLIENT_LOG(GetClient(), "http server return error : [%s] [%s], return code = %d", m_SendQueue.front().c_str(), MORequestGetResult(m_pCurrentRequest), ret);
-			MORequestDestory(m_pCurrentRequest);
-			m_pCurrentRequest = NULL;
-			if(ret==MOERROR_INVALID_SESSION) DoDisconnect();
-			return;
+			return ret;
 		}
 
-		const char* result = MOClientGetResultString(m_pCurrentRequest);
+		const char* result = MOClientGetResultString(request);
 		CLIENT_LOG(GetClient(), "recv response: %s", result);
 		if(*result=='\0')
 		{
-			MORequestDestory(m_pCurrentRequest);
-			m_pCurrentRequest = NULL;
-
-			m_SendQueue.pop_front();
-			if(m_nHttpState==STATE_RETRY)
-			{
-				m_nHttpState = STATE_RUNNING;
-				m_StateCallback(m_nHttpState);
-			}
-			return;
+			return MOERROR_NOERROR;
 		}
 
 		Json::Value root;
@@ -223,34 +334,26 @@ namespace Atlas
 		if(!reader.parse(result, result+strlen(result), root) || !root.isMember("response") || !root["response"].isArray())
 		{
 			CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
-			MORequestDestory(m_pCurrentRequest);
-			m_pCurrentRequest = NULL;
-			return;
-		}
-
-		m_SendQueue.pop_front();
-		if(m_nHttpState==STATE_RETRY)
-		{
-			m_nHttpState = STATE_RUNNING;
-			m_StateCallback(m_nHttpState);
+			MORequestDestory(request);
+			request = NULL;
+			return MOERROR_UNKNOWN;
 		}
 
 		Json::Value& _array = root["response"];
 		Json::Value _default;
-		for(Json::Value::UInt i=0; i<_array.size(); i++)
+		Json::Value::UInt i;
+		for(i=0; i<_array.size(); i++)
 		{
 			Json::Value& elm = _array[i];
-			bool error = false;
 
-			if(!elm.isObject()) error = true;
-			if(!elm.isMember("method") || !elm["method"].isString()) error = true;
-			if(!elm.isMember("message") || !elm["message"].isObject()) error = true;
-			if(error)
+			if(		!elm.isObject()
+				||	!elm.isMember("method") || !elm["method"].isString()
+				||	!elm.isMember("message") || !elm["message"].isObject())
 			{
 				Json::FastWriter writer;
 				String json = writer.write(elm);
 				CLIENT_LOG(GetClient(), "http_connection : invalid data, (%d) %s", json.c_str());
-				continue;
+				break;
 			}
 
 			const DDLReflect::CLASS_INFO* cls;
@@ -258,8 +361,7 @@ namespace Atlas
 			if(!GetClientFunctionStub(elm["method"].asCString(), cls, fid))
 			{
 				CLIENT_LOG(GetClient(), "http_connection : invalid method name %s", elm["method"].asCString());
-				error = true;
-				continue;
+				break;
 			}
 
 			_U32 len = 300*1024;
@@ -269,40 +371,24 @@ namespace Atlas
 				Json::FastWriter writer;
 				String json = writer.write(elm["message"]);
 				CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", fid, json.c_str());
-				error = true;
-			}
-			else
-			{
-				GetClient()->GetClientApp()->QueueData(GetClient(), cls->iid, fid, len, data);
+				ATLAS_FREE(data);
+				break;
 			}
 
+			GetClient()->GetClientApp()->QueueData(GetClient(), cls->iid, fid, len, data);
 			ATLAS_FREE(data);
 		}
-
-		MORequestDestory(m_pCurrentRequest);
-		m_pCurrentRequest = NULL;
+		return (i==_array.size())?MOERROR_NOERROR:MOERROR_UNKNOWN;
 	}
 
 	void CHttpClientConnection::SendRequest()
 	{
-		ATLAS_ASSERT(!m_pCurrentRequest);
 		Atlas::Map<Atlas::String, Atlas::String> params;
 		params["session_key"] = m_SessionKey;
 		params["request"] = m_SendQueue.front();
+		params["seq"] = Atlas::StringFormat("%d", m_nRequestSeq);
 		String url = StringFormat(m_BaseUrl.c_str(), "request");
 		m_pCurrentRequest = MORequestString(url.c_str(), params);
-	}
-
-	void CHttpClientConnection::DoDisconnect()
-	{
-		if(m_nState!=CClient::STATE_LOGINED) return;
-		if(m_pLoginRequest) MORequestDestory(m_pLoginRequest);
-		if(m_pCurrentRequest) MORequestDestory(m_pCurrentRequest);
-		m_pLoginRequest = NULL;
-		m_pCurrentRequest = NULL;
-		m_nState = CClient::STATE_NA;
-		m_SessionKey = "";
-		m_SendQueue.clear();
 	}
 
 }

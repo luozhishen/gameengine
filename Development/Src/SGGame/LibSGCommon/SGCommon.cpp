@@ -65,7 +65,7 @@ namespace Atlas
 
 		{"SG_ENERGY_BUY_CONFIG", "SG_ENERGY_BUY_CONFIG.json", "times"},
 		{"SG_FRIEND_NUM_CONFIG", "SG_FRIEND_NUM_CONFIG.json", "player_level"},
-		{"SG_ASTROLOGY_BALL_CONFIG", "SG_ASTROLOGY_BALL_CONFIG.json", "ball_id"},
+		{"SG_ASTROLOGY_BALL_CONFIG", "SG_ASTROLOGY_BALL_CONFIG.json", "item_id"},
 		{"SG_ASTROLOGER_CONFIG", "SG_ASTROLOGER_CONFIG.json", "astrologer_id"},
 		{"SG_GENERAL_ASTROLOG_SLOT_CONFIG", "SG_GENERAL_ASTROLOG_SLOT_CONFIG.json", "general_level"},
 		

@@ -7,91 +7,6 @@
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<SG_ASTROLOGY_BALL_CONFIG>(SG_ASTROLOGY_BALL_CONFIG& Value)
-	{
-		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
-		if(!Read<_U32>(Value.ball_id)) return false;
-		if(!ReadString<SG_ASTROLOGY_BALL_NAME_MAX>(Value.ball_name)) return false;
-		if(!Read<_U32>(Value.level)) return false;
-		if(!ReadString<SG_ASTROLOGY_BALL_DESC_MAX>(Value.desc)) return false;
-		if(!Read<_U8>(Value.quality)) return false;
-		if(!Read<_U8>(Value.attri_type)) return false;
-		if(!Read<_F32>(Value.attri_num)) return false;
-		if(!Read<_U32>(Value.levelup_ball)) return false;
-		if(!Read<_U32>(Value.req_levelup)) return false;
-		if(!Read<_U32>(Value.price)) return false;
-		if(!Read<_U32>(Value.U)) return false;
-		if(!Read<_U32>(Value.V)) return false;
-		if(!Read<_U32>(Value.UL)) return false;
-		if(!Read<_U32>(Value.VL)) return false;
-		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
-		return true;
-	}
-	template<>
-	bool BufferWriter::Write<SG_ASTROLOGY_BALL_CONFIG>(const SG_ASTROLOGY_BALL_CONFIG& Value)
-	{
-		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
-		if(!Write<_U32>(Value.ball_id)) return false;
-		if(!WriteString<SG_ASTROLOGY_BALL_NAME_MAX>(Value.ball_name)) return false;
-		if(!Write<_U32>(Value.level)) return false;
-		if(!WriteString<SG_ASTROLOGY_BALL_DESC_MAX>(Value.desc)) return false;
-		if(!Write<_U8>(Value.quality)) return false;
-		if(!Write<_U8>(Value.attri_type)) return false;
-		if(!Write<_F32>(Value.attri_num)) return false;
-		if(!Write<_U32>(Value.levelup_ball)) return false;
-		if(!Write<_U32>(Value.req_levelup)) return false;
-		if(!Write<_U32>(Value.price)) return false;
-		if(!Write<_U32>(Value.U)) return false;
-		if(!Write<_U32>(Value.V)) return false;
-		if(!Write<_U32>(Value.UL)) return false;
-		if(!Write<_U32>(Value.VL)) return false;
-		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
-		return true;
-	}
-}
-
-namespace DDLReflect
-{
-
-	static bool _struct_SG_ASTROLOGY_BALL_CONFIG_readproc(DDL::BufferReader& buf, void* data)
-	{
-		return buf.Read<SG_ASTROLOGY_BALL_CONFIG>(*((SG_ASTROLOGY_BALL_CONFIG*)data));
-	}
-
-	static bool _struct_SG_ASTROLOGY_BALL_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
-	{
-		return buf.Write<SG_ASTROLOGY_BALL_CONFIG>(*((const SG_ASTROLOGY_BALL_CONFIG*)data));
-	}
-
-	static FIELD_INFO _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo[] =
-	{
-		{TYPE_U32, "ball_id", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, ball_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "ball_name", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, ball_name), NULL, (_U16)SG_ASTROLOGY_BALL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGY_BALL_NAME_MAX>), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, desc), NULL, (_U16)SG_ASTROLOGY_BALL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGY_BALL_DESC_MAX>), NULL},
-		{TYPE_U8, "quality", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, quality), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "attri_type", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "attri_num", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "levelup_ball", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, levelup_ball), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "req_levelup", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, req_levelup), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "price", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, price), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
-	};
-	STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ASTROLOGY_BALL_CONFIG", sizeof(SG_ASTROLOGY_BALL_CONFIG), 15, _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo, _struct_SG_ASTROLOGY_BALL_CONFIG_readproc, _struct_SG_ASTROLOGY_BALL_CONFIG_writeproc };
-	template<>
-	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_CONFIG>()
-	{
-		return &_rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info;
-	}
-}
-
-namespace DDL
-{
-	template<>
 	bool BufferReader::Read<SG_ASTROLOGER_CONFIG>(SG_ASTROLOGER_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -117,6 +32,11 @@ namespace DDL
 		if(!Read<_U32>(Value.UL)) return false;
 		if(!Read<_U32>(Value.VL)) return false;
 		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!Read<_U32>(Value.U2)) return false;
+		if(!Read<_U32>(Value.V2)) return false;
+		if(!Read<_U32>(Value.UL2)) return false;
+		if(!Read<_U32>(Value.VL2)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex2)) return false;
 		return true;
 	}
 	template<>
@@ -145,6 +65,11 @@ namespace DDL
 		if(!Write<_U32>(Value.UL)) return false;
 		if(!Write<_U32>(Value.VL)) return false;
 		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!Write<_U32>(Value.U2)) return false;
+		if(!Write<_U32>(Value.V2)) return false;
+		if(!Write<_U32>(Value.UL2)) return false;
+		if(!Write<_U32>(Value.VL2)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex2)) return false;
 		return true;
 	}
 }
@@ -186,8 +111,13 @@ namespace DDLReflect
 		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, tex2), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_ASTROLOGER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ASTROLOGER_CONFIG", sizeof(SG_ASTROLOGER_CONFIG), 22, _struct_SG_ASTROLOGER_CONFIG_fieldinfo, _struct_SG_ASTROLOGER_CONFIG_readproc, _struct_SG_ASTROLOGER_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_ASTROLOGER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ASTROLOGER_CONFIG", sizeof(SG_ASTROLOGER_CONFIG), 27, _struct_SG_ASTROLOGER_CONFIG_fieldinfo, _struct_SG_ASTROLOGER_CONFIG_readproc, _struct_SG_ASTROLOGER_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_ASTROLOGER_CONFIG>()
 	{
@@ -702,6 +632,7 @@ namespace DDL
 		if(!Read<_U8>(Value.hangup_free)) return false;
 		if(!Read<_U8>(Value.enhance_free)) return false;
 		if(!Read<_U32>(Value.enhance_friend_num)) return false;
+		if(!Read<_U8>(Value.auto_atrology)) return false;
 		if(!ReadString<SG_VIP_ICON_MAX>(Value.res)) return false;
 		if(!Read<_U32>(Value.U)) return false;
 		if(!Read<_U32>(Value.V)) return false;
@@ -722,6 +653,7 @@ namespace DDL
 		if(!Write<_U8>(Value.hangup_free)) return false;
 		if(!Write<_U8>(Value.enhance_free)) return false;
 		if(!Write<_U32>(Value.enhance_friend_num)) return false;
+		if(!Write<_U8>(Value.auto_atrology)) return false;
 		if(!WriteString<SG_VIP_ICON_MAX>(Value.res)) return false;
 		if(!Write<_U32>(Value.U)) return false;
 		if(!Write<_U32>(Value.V)) return false;
@@ -755,13 +687,14 @@ namespace DDLReflect
 		{TYPE_U8, "hangup_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, hangup_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "enhance_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, enhance_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U32, "enhance_friend_num", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, enhance_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "auto_atrology", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, auto_atrology), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_STRING, "res", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, res), NULL, (_U16)SG_VIP_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_VIP_ICON_MAX>), NULL},
 		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 14, _struct_SG_VIP_CONFIG_fieldinfo, _struct_SG_VIP_CONFIG_readproc, _struct_SG_VIP_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 15, _struct_SG_VIP_CONFIG_fieldinfo, _struct_SG_VIP_CONFIG_readproc, _struct_SG_VIP_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_VIP_CONFIG>()
 	{
@@ -3362,6 +3295,73 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_ASTROLOGY_BALL_CONFIG>(SG_ASTROLOGY_BALL_CONFIG& Value)
+	{
+		if(!BufferReader::Read<SG_ITEM_CONFIG>(Value)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		if(!ReadString<SG_ASTROLOGY_BALL_DESC_MAX>(Value.desc)) return false;
+		if(!Read<_U8>(Value.quality)) return false;
+		if(!Read<_U8>(Value.attri_type)) return false;
+		if(!Read<_F32>(Value.attri_num)) return false;
+		if(!Read<_U32>(Value.levelup_ball)) return false;
+		if(!Read<_U32>(Value.req_levelup)) return false;
+		if(!Read<_U32>(Value.swllaow_obtain)) return false;
+		if(!ReadString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGY_BALL_CONFIG>(const SG_ASTROLOGY_BALL_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<SG_ITEM_CONFIG>(Value)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		if(!WriteString<SG_ASTROLOGY_BALL_DESC_MAX>(Value.desc)) return false;
+		if(!Write<_U8>(Value.quality)) return false;
+		if(!Write<_U8>(Value.attri_type)) return false;
+		if(!Write<_F32>(Value.attri_num)) return false;
+		if(!Write<_U32>(Value.levelup_ball)) return false;
+		if(!Write<_U32>(Value.req_levelup)) return false;
+		if(!Write<_U32>(Value.swllaow_obtain)) return false;
+		if(!WriteString<ARCHETYPE_URL_LENGTH_MAX>(Value.archetype)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_ASTROLOGY_BALL_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_ASTROLOGY_BALL_CONFIG>(*((SG_ASTROLOGY_BALL_CONFIG*)data));
+	}
+
+	static bool _struct_SG_ASTROLOGY_BALL_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_ASTROLOGY_BALL_CONFIG>(*((const SG_ASTROLOGY_BALL_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, desc), NULL, (_U16)SG_ASTROLOGY_BALL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGY_BALL_DESC_MAX>), NULL},
+		{TYPE_U8, "quality", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, quality), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "attri_type", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "attri_num", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "levelup_ball", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, levelup_ball), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_levelup", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, req_levelup), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "swllaow_obtain", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, swllaow_obtain), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "archetype", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_ASTROLOGY_BALL_CONFIG", sizeof(SG_ASTROLOGY_BALL_CONFIG), 9, _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo, _struct_SG_ASTROLOGY_BALL_CONFIG_readproc, _struct_SG_ASTROLOGY_BALL_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_CONFIG>()
+	{
+		return &_rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_ENEMY_CONFIG>(SG_ENEMY_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -4497,6 +4497,43 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_ASTROLOGY_BALL_ITEM>(SG_ASTROLOGY_BALL_ITEM& Value)
+	{
+		if(!BufferReader::Read<SG_ITEM>(Value)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGY_BALL_ITEM>(const SG_ASTROLOGY_BALL_ITEM& Value)
+	{
+		if(!BufferWriter::Write<SG_ITEM>(Value)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_ASTROLOGY_BALL_ITEM_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_ASTROLOGY_BALL_ITEM>(*((SG_ASTROLOGY_BALL_ITEM*)data));
+	}
+
+	static bool _struct_SG_ASTROLOGY_BALL_ITEM_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_ASTROLOGY_BALL_ITEM>(*((const SG_ASTROLOGY_BALL_ITEM*)data));
+	}
+
+	STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_ITEM_info = { &_rfl_struct_SG_ITEM_info, "SG_ASTROLOGY_BALL_ITEM", sizeof(SG_ASTROLOGY_BALL_ITEM), 0, NULL, _struct_SG_ASTROLOGY_BALL_ITEM_readproc, _struct_SG_ASTROLOGY_BALL_ITEM_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_ITEM>()
+	{
+		return &_rfl_struct_SG_ASTROLOGY_BALL_ITEM_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_FRIEND_BASE_INFO>(SG_FRIEND_BASE_INFO& Value)
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
@@ -4852,7 +4889,6 @@ namespace DDL
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.channel_id)) return false;
-		if(!Read<_U32>(Value.msg_id)) return false;
 		if(!Read<_U32>(Value.sender_id)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.sender_nick)) return false;
 		if(!Read<_U32>(Value.time)) return false;
@@ -4864,7 +4900,6 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.channel_id)) return false;
-		if(!Write<_U32>(Value.msg_id)) return false;
 		if(!Write<_U32>(Value.sender_id)) return false;
 		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.sender_nick)) return false;
 		if(!Write<_U32>(Value.time)) return false;
@@ -4889,13 +4924,12 @@ namespace DDLReflect
 	static FIELD_INFO _struct_SG_CHAT_RECV_INFO_fieldinfo[] =
 	{
 		{TYPE_U32, "channel_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "msg_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, msg_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "sender_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, sender_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "sender_nick", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, sender_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
 		{TYPE_U32, "time", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "content", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, content), NULL, (_U16)SG_CHAT_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CONTENT_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_CHAT_RECV_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_CHAT_RECV_INFO", sizeof(SG_CHAT_RECV_INFO), 6, _struct_SG_CHAT_RECV_INFO_fieldinfo, _struct_SG_CHAT_RECV_INFO_readproc, _struct_SG_CHAT_RECV_INFO_writeproc };
+	STRUCT_INFO _rfl_struct_SG_CHAT_RECV_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_CHAT_RECV_INFO", sizeof(SG_CHAT_RECV_INFO), 5, _struct_SG_CHAT_RECV_INFO_fieldinfo, _struct_SG_CHAT_RECV_INFO_readproc, _struct_SG_CHAT_RECV_INFO_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_CHAT_RECV_INFO>()
 	{
@@ -5062,40 +5096,54 @@ namespace DDLReflect
 		{TYPE_U8, "wine_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 79 SalaryGet
 		// 80 SalaryGetBat
-		// 81 EnhanceTurbo
-		// 82 EquipTurboSkill
+		// 81 BuyEnergy
+		// 82 EnhanceTurbo
+		// 83 EquipTurboSkill
 		{TYPE_STRUCT, "skill_slot", 0, 0, &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 83 MakeEquipt
+		// 84 MakeEquipt
 		{TYPE_U32, "equipt_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 84 QueryActionAvailable
+		// 85 QueryActionAvailable
 		{TYPE_U32|TYPE_ARRAY, "action_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 85 QueryFriendList
-		// 86 QueryFirendSearchList
+		// 86 QueryFriendList
+		// 87 QueryFirendSearchList
 		{TYPE_STRING, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 87 QueryFriendInvitationList
-		// 88 InviteFriend
+		// 88 QueryFriendInvitationList
+		// 89 InviteFriend
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 89 AcceptFriend
+		// 90 AcceptFriend
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 90 RefuseInvitation
+		// 91 RefuseInvitation
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 91 DelFriend
+		// 92 DelFriend
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 92 SendChat
+		// 93 SendChat
 		{TYPE_STRUCT, "send_info", 0, 0, &_rfl_struct_SG_CHAT_SEND_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 93 ReceiveChat
+		// 94 ReceiveChat
 		{TYPE_U32|TYPE_ARRAY, "channel_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 94 QueryLeagueDianjiangList
+		// 95 QueryLeagueDianjiangList
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 95 JoinLeagueDianjiang
+		// 96 JoinLeagueDianjiang
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 96 QueryLeagueDianjiangReward
+		// 97 QueryLeagueDianjiangReward
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 97 LeagueDianjiangSummonNPC
+		// 98 LeagueDianjiangSummonNPC
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 99 QueryAstrologyBag
+		// 100 SaveToBag
+		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 101 SetAstrologyBallStatus
+		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8, "status", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 102 EnhanceAstrologyBall
+		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 103 BuyAstrologyBall
+		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 104 Strology
+		{TYPE_U32, "astrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -5180,6 +5228,7 @@ namespace DDLReflect
 		{"LeagueToast", 1, _class_SGGAME_C2S_fieldinfos+73},
 		{"SalaryGet", 0, _class_SGGAME_C2S_fieldinfos+74},
 		{"SalaryGetBat", 0, _class_SGGAME_C2S_fieldinfos+74},
+		{"BuyEnergy", 0, _class_SGGAME_C2S_fieldinfos+74},
 		{"EnhanceTurbo", 0, _class_SGGAME_C2S_fieldinfos+74},
 		{"EquipTurboSkill", 1, _class_SGGAME_C2S_fieldinfos+74},
 		{"MakeEquipt", 1, _class_SGGAME_C2S_fieldinfos+75},
@@ -5197,8 +5246,14 @@ namespace DDLReflect
 		{"JoinLeagueDianjiang", 1, _class_SGGAME_C2S_fieldinfos+87},
 		{"QueryLeagueDianjiangReward", 2, _class_SGGAME_C2S_fieldinfos+88},
 		{"LeagueDianjiangSummonNPC", 1, _class_SGGAME_C2S_fieldinfos+90},
+		{"QueryAstrologyBag", 0, _class_SGGAME_C2S_fieldinfos+91},
+		{"SaveToBag", 1, _class_SGGAME_C2S_fieldinfos+91},
+		{"SetAstrologyBallStatus", 3, _class_SGGAME_C2S_fieldinfos+92},
+		{"EnhanceAstrologyBall", 1, _class_SGGAME_C2S_fieldinfos+95},
+		{"BuyAstrologyBall", 1, _class_SGGAME_C2S_fieldinfos+96},
+		{"Strology", 1, _class_SGGAME_C2S_fieldinfos+97},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 98, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 105, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -5402,51 +5457,81 @@ namespace DDLReflect
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 62 EnhanceTurboResult
+		// 62 BuyEnergyResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "energy", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 63 EnhanceTurboResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "turbo_level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 63 MakeEquiptResult
+		// 64 MakeEquiptResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "new_euqipt", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "com_material", 0, 0, &_rfl_struct_SG_MATERIAL_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "key_material", 0, 0, &_rfl_struct_SG_MATERIAL_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 64 QueryActionAvailableResult
+		// 65 QueryActionAvailableResult
 		{TYPE_U32|TYPE_ARRAY, "action_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "available_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 65 QueryFriendListResult
+		// 66 QueryFriendListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "friend_list", 0, 0, &_rfl_struct_SG_FRIEND_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 66 QueryFriendListSearchResult
+		// 67 QueryFriendListSearchResult
 		{TYPE_STRUCT|TYPE_ARRAY, "search_list", 0, 0, &_rfl_struct_SG_FRIEND_SEARCH_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 67 QueryFriendInvitationListResult
+		// 68 QueryFriendInvitationListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "invitation_list", 0, 0, &_rfl_struct_SG_FRIEND_INVITATION_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 68 AcceptFriendResult
+		// 69 AcceptFriendResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 69 SendChatResult
+		// 70 SendChatResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 70 ReceiveChatResult
+		// 71 ReceiveChatResult
 		{TYPE_STRUCT|TYPE_ARRAY, "chat_list", 0, 0, &_rfl_struct_SG_CHAT_RECV_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 71 QueryLeagueDianjiangListResult
+		// 72 QueryLeagueDianjiangListResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "joiner_list", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 72 JoinLeagueDianjiangResult
+		// 73 JoinLeagueDianjiangResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "self", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 73 QueryLeagueDianjiangRewardResult
+		// 74 QueryLeagueDianjiangRewardResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 74 LeagueDianjiangSummonNPCResult
+		// 75 LeagueDianjiangSummonNPCResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "npc_joiner", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 76 QueryAstrologyBagResult
+		{TYPE_U32|TYPE_ARRAY, "bag_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32|TYPE_ARRAY, "tmp_bag_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 77 SaveToBagResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 78 SetAstrologyBallStatusResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "general", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 79 EnhanceAstrologyBallResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "new_ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 80 BuyAstrologyBallResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "astrology_value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 81 StrologyResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "atrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
@@ -5512,21 +5597,28 @@ namespace DDLReflect
 		{"LeagueToastResult", 5, _class_SGGAME_S2C_fieldinfos+118},
 		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+123},
 		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+126},
-		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+130},
-		{"MakeEquiptResult", 4, _class_SGGAME_S2C_fieldinfos+133},
-		{"QueryActionAvailableResult", 3, _class_SGGAME_S2C_fieldinfos+137},
-		{"QueryFriendListResult", 2, _class_SGGAME_S2C_fieldinfos+140},
-		{"QueryFriendListSearchResult", 2, _class_SGGAME_S2C_fieldinfos+142},
-		{"QueryFriendInvitationListResult", 2, _class_SGGAME_S2C_fieldinfos+144},
-		{"AcceptFriendResult", 2, _class_SGGAME_S2C_fieldinfos+146},
-		{"SendChatResult", 1, _class_SGGAME_S2C_fieldinfos+148},
-		{"ReceiveChatResult", 2, _class_SGGAME_S2C_fieldinfos+149},
-		{"QueryLeagueDianjiangListResult", 3, _class_SGGAME_S2C_fieldinfos+151},
-		{"JoinLeagueDianjiangResult", 2, _class_SGGAME_S2C_fieldinfos+154},
-		{"QueryLeagueDianjiangRewardResult", 2, _class_SGGAME_S2C_fieldinfos+156},
-		{"LeagueDianjiangSummonNPCResult", 4, _class_SGGAME_S2C_fieldinfos+158},
+		{"BuyEnergyResult", 4, _class_SGGAME_S2C_fieldinfos+130},
+		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+134},
+		{"MakeEquiptResult", 4, _class_SGGAME_S2C_fieldinfos+137},
+		{"QueryActionAvailableResult", 3, _class_SGGAME_S2C_fieldinfos+141},
+		{"QueryFriendListResult", 2, _class_SGGAME_S2C_fieldinfos+144},
+		{"QueryFriendListSearchResult", 2, _class_SGGAME_S2C_fieldinfos+146},
+		{"QueryFriendInvitationListResult", 2, _class_SGGAME_S2C_fieldinfos+148},
+		{"AcceptFriendResult", 2, _class_SGGAME_S2C_fieldinfos+150},
+		{"SendChatResult", 1, _class_SGGAME_S2C_fieldinfos+152},
+		{"ReceiveChatResult", 2, _class_SGGAME_S2C_fieldinfos+153},
+		{"QueryLeagueDianjiangListResult", 3, _class_SGGAME_S2C_fieldinfos+155},
+		{"JoinLeagueDianjiangResult", 2, _class_SGGAME_S2C_fieldinfos+158},
+		{"QueryLeagueDianjiangRewardResult", 2, _class_SGGAME_S2C_fieldinfos+160},
+		{"LeagueDianjiangSummonNPCResult", 4, _class_SGGAME_S2C_fieldinfos+162},
+		{"QueryAstrologyBagResult", 4, _class_SGGAME_S2C_fieldinfos+166},
+		{"SaveToBagResult", 2, _class_SGGAME_S2C_fieldinfos+170},
+		{"SetAstrologyBallStatusResult", 2, _class_SGGAME_S2C_fieldinfos+172},
+		{"EnhanceAstrologyBallResult", 4, _class_SGGAME_S2C_fieldinfos+174},
+		{"BuyAstrologyBallResult", 3, _class_SGGAME_S2C_fieldinfos+178},
+		{"StrologyResult", 4, _class_SGGAME_S2C_fieldinfos+181},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 75, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 82, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

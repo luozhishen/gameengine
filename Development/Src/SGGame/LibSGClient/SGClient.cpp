@@ -224,6 +224,7 @@ namespace Atlas
 	{
 		m_C2S.EquipSoldiers(soldiers, count);
 
+		m_player.equip_soldiers.Resize(count);
 		for(_U32 i = 0; i < count; ++i)
 		{
 			m_player.equip_soldiers._Array[i] = soldiers[i];
@@ -716,6 +717,11 @@ namespace Atlas
 		m_C2S.SalaryGetBat();
 	}
 
+	void CSGClient::BuyEnergy()
+	{
+		m_C2S.BuyEnergy();	
+	}
+
 	void CSGClient::EnhanceTurbo()
 	{
 		m_C2S.EnhanceTurbo();
@@ -806,6 +812,36 @@ namespace Atlas
 		m_C2S.LeagueDianjiangSummonNPC(league_id);
 	}
 
+	void CSGClient::QueryAstrologyBag()
+	{
+		m_C2S.QueryAstrologyBag();
+	}
+
+	void CSGClient::SaveToBag(_U32 item_id)
+	{
+		m_C2S.SaveToBag(item_id);
+	}
+
+	void CSGClient::SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status)
+	{
+		m_C2S.SetAstrologyBallStatus(general_id, ball_id, status);
+	}
+
+	void CSGClient::EnhanceAstrologyBall(_U32 ball_id)
+	{
+		m_C2S.EnhanceAstrologyBall(ball_id);
+	}
+
+	void CSGClient::BuyAstrologyBall(_U32 ball_id)
+	{
+		m_C2S.BuyAstrologyBall(ball_id);
+	}
+
+	void CSGClient::Strology(_U32 astrologer_id)
+	{
+		m_C2S.Strology(astrologer_id);
+	}
+	
 	void CSGClient::Pong(CSGClient* pClient)
 	{
 		if(m_callback)
@@ -824,19 +860,24 @@ namespace Atlas
 		}
 
 		//for login after LoginDone
-		if(m_callback && (m_lastServerID == SG_INVALID_SERVER_ID))
+		static bool bLogin = true;
+		if(bLogin)
 		{
-			if(last_server == SG_INVALID_SERVER_ID)
+			if(m_callback && m_lastServerID == SG_INVALID_SERVER_ID)
 			{
-				m_lastServerID = infos[count-1].server_id;
+				if(last_server == SG_INVALID_SERVER_ID)
+				{
+					m_lastServerID = infos[count-1].server_id;
+				}
+				else
+				{
+					m_lastServerID = last_server;
+				}
+
+				m_callback->LoginResult(0);
+				bLogin = false;
+				return;
 			}
-			else
-			{
-				m_lastServerID = last_server;
-			}
-			
-			m_callback->LoginResult(0);
-			return;
 		}
 
 		m_lastServerID = last_server;
@@ -1635,6 +1676,25 @@ namespace Atlas
 		}
 	}
 
+	void CSGClient::BuyEnergyResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 energy, _U32 times)
+	{
+		if(m_callback)
+		{
+			if(!ret)
+			{
+				m_player.rmb -= rmb;
+				m_player.energy += energy;
+
+				//help to sync data
+				Atlas::Vector<_U8> vecSync;
+				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+				SyncSet(vecSync);
+			}
+
+			m_callback->BuyEnergyResult(ret, rmb, energy, times);
+		}
+	}
+
 	void CSGClient::EnhanceTurboResult(CSGClient* pClient, _U8 ret, _U32 turbo_level,  _U32 wake_pt)
 	{
 		if(m_callback)
@@ -1766,6 +1826,16 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			if(ret)
+			{
+				m_player.reputation += reputation;
+			
+				//help to sync data
+				Atlas::Vector<_U8> vecSync;
+				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+				SyncSet(vecSync);
+			}
+
 			m_callback->QueryLeagueDianjiangRewardResult(ret, reputation);
 		}
 	}
@@ -1774,7 +1844,66 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			if(ret)
+			{
+				m_player.gold -= gold;
+				m_player.rmb -= rmb;
+			}
+
 			m_callback->LeagueDianjiangSummonNPCResult(ret, gold, rmb, npc_joiner);
+			
+			if(ret)
+			{
+				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+			}
+		}
+	}
+
+	void CSGClient::QueryAstrologyBagResult(CSGClient* pClient, const _U32* bag_list, _U32 count1, const _U32* tmp_bag_list, _U32 count2)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryAstrologyBagResult(bag_list, count1, tmp_bag_list, count2);
+		}
+	}
+
+	void CSGClient::SaveToBagResult(CSGClient* pClient, _U8 ret, _U32 item_id)
+	{
+		if(m_callback)
+		{
+			m_callback->SaveToBagResult(ret, item_id);
+		}
+	}
+
+	void CSGClient::SetAstrologyBallStatusResult(CSGClient* pClient, _U8 ret, const SG_GENERAL& general)
+	{
+		if(m_callback)
+		{
+			m_callback->SetAstrologyBallStatusResult(ret, general);
+		}
+	}
+
+	void CSGClient::EnhanceAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id)
+	{
+		if(m_callback)
+		{
+			m_callback->EnhanceAstrologyBallResult(ret, gold, ball_id, new_ball_id);
+		}
+	}
+
+	void CSGClient::BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id)
+	{
+		if(m_callback)
+		{
+			m_callback->BuyAstrologyBallResult(ret, astrology_value, ball_id);
+		}
+	}
+
+	void CSGClient::StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id)
+	{
+		if(m_callback)
+		{
+			m_callback->StrologyResult(ret, gold, ball_id, astrologer_id);
 		}
 	}
 

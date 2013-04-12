@@ -378,6 +378,7 @@ namespace DDL
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Read<_S32>(Value.Duration)) return false;
+		if(!Read<_U8>(Value.IconType)) return false;
 		return true;
 	}
 	template<>
@@ -388,6 +389,7 @@ namespace DDL
 		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
 		if(!Write<_S32>(Value.Duration)) return false;
+		if(!Write<_U8>(Value.IconType)) return false;
 		return true;
 	}
 }
@@ -411,8 +413,9 @@ namespace DDLReflect
 		{TYPE_STRING, "RealName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, RealName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_STRING, "Desc", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, Desc), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_S32, "Duration", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, Duration), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_U8, "IconType", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, IconType), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_KNIGHT_BUFF_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_BUFF_CONFIG", sizeof(KNIGHT_BUFF_CONFIG), 4, _struct_KNIGHT_BUFF_CONFIG_fieldinfo, _struct_KNIGHT_BUFF_CONFIG_readproc, _struct_KNIGHT_BUFF_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_KNIGHT_BUFF_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_BUFF_CONFIG", sizeof(KNIGHT_BUFF_CONFIG), 5, _struct_KNIGHT_BUFF_CONFIG_fieldinfo, _struct_KNIGHT_BUFF_CONFIG_readproc, _struct_KNIGHT_BUFF_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_CONFIG>()
 	{
@@ -1028,20 +1031,25 @@ namespace DDLReflect
 	static FIELD_INFO _class_KNIGHT_C2S_fieldinfos[] = 
 	{
 		// 0 Ping
-		// 1 Set
+		// 1 Create
 		{TYPE_STRING, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 Get
-		// 3 Boardcast
+		// 2 Delete
+		// 3 Set
+		{TYPE_STRING, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 4 Get
+		// 5 Boardcast
 		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_KNIGHT_C2S_funcinfos[] = 
 	{
 		{"Ping", 0, _class_KNIGHT_C2S_fieldinfos+0},
-		{"Set", 1, _class_KNIGHT_C2S_fieldinfos+0},
-		{"Get", 0, _class_KNIGHT_C2S_fieldinfos+1},
-		{"Boardcast", 1, _class_KNIGHT_C2S_fieldinfos+1},
+		{"Create", 1, _class_KNIGHT_C2S_fieldinfos+0},
+		{"Delete", 0, _class_KNIGHT_C2S_fieldinfos+1},
+		{"Set", 1, _class_KNIGHT_C2S_fieldinfos+1},
+		{"Get", 0, _class_KNIGHT_C2S_fieldinfos+2},
+		{"Boardcast", 1, _class_KNIGHT_C2S_fieldinfos+2},
 	};
-	static CLASS_INFO _class_KNIGHT_C2S_info = { 0, "KNIGHT_C2S", 4, _class_KNIGHT_C2S_funcinfos };
+	static CLASS_INFO _class_KNIGHT_C2S_info = { 0, "KNIGHT_C2S", 6, _class_KNIGHT_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<KNIGHT_C2S>()
 	{
@@ -1055,6 +1063,7 @@ namespace DDLReflect
 	{
 		// 0 Pong
 		// 1 GetCallback
+		{TYPE_U32, "aid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 2 BoardcastCallback
 		{TYPE_U32, "uid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -1063,8 +1072,8 @@ namespace DDLReflect
 	static FUNCTION_INFO _class_KNIGHT_S2C_funcinfos[] = 
 	{
 		{"Pong", 0, _class_KNIGHT_S2C_fieldinfos+0},
-		{"GetCallback", 1, _class_KNIGHT_S2C_fieldinfos+0},
-		{"BoardcastCallback", 2, _class_KNIGHT_S2C_fieldinfos+1},
+		{"GetCallback", 2, _class_KNIGHT_S2C_fieldinfos+0},
+		{"BoardcastCallback", 2, _class_KNIGHT_S2C_fieldinfos+2},
 	};
 	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 3, _class_KNIGHT_S2C_funcinfos };
 	template<>

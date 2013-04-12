@@ -102,6 +102,10 @@ const _U32 SG_ITEM_EQUIPT_ID_START = 40000;
 
 const _U32 SG_ITEM_EQUIPT_ID_END = 49999;
 
+const _U32 SG_ITEM_ASTOLOGY_BALL_ID_START = 50000;
+
+const _U32 SG_ITEM_ASTOLOGY_BALL_ID_END = 59999;
+
 const _U32 SG_ITEM_NAME_MAX = 32;
 
 const _U32 SG_MATERIAL_DESC_MAX = 256;
@@ -222,40 +226,6 @@ const _U32 SG_ASTROLOGER_NAME_MAX = 32;
 
 const _U32 SG_ASTROLOGER_DESC_MAX = 128;
 
-struct SG_ASTROLOGY_BALL_CONFIG : A_CONTENT_OBJECT
-{
-	_U32 ball_id;
-	DDL::String<SG_ASTROLOGY_BALL_NAME_MAX> ball_name;
-	_U32 level;
-	DDL::String<SG_ASTROLOGY_BALL_DESC_MAX> desc;
-	_U8 quality;
-	_U8 attri_type;
-	_F32 attri_num;
-	_U32 levelup_ball;
-	_U32 req_levelup;
-	_U32 price;
-	_U32 U;
-	_U32 V;
-	_U32 UL;
-	_U32 VL;
-	DDL::String<SG_TEX_MAX> tex;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<SG_ASTROLOGY_BALL_CONFIG>(SG_ASTROLOGY_BALL_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<SG_ASTROLOGY_BALL_CONFIG>(const SG_ASTROLOGY_BALL_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info;
-}
-
 struct SG_ASTROLOGER_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 astrologer_id;
@@ -280,6 +250,11 @@ struct SG_ASTROLOGER_CONFIG : A_CONTENT_OBJECT
 	_U32 UL;
 	_U32 VL;
 	DDL::String<SG_TEX_MAX> tex;
+	_U32 U2;
+	_U32 V2;
+	_U32 UL2;
+	_U32 VL2;
+	DDL::String<SG_TEX_MAX> tex2;
 };
 
 namespace DDL
@@ -518,6 +493,7 @@ struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 	_U8 hangup_free;
 	_U8 enhance_free;
 	_U32 enhance_friend_num;
+	_U8 auto_atrology;
 	DDL::String<SG_VIP_ICON_MAX> res;
 	_U32 U;
 	_U32 V;
@@ -1632,6 +1608,34 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_GEM_ITEM_CONFIG_info;
 }
 
+struct SG_ASTROLOGY_BALL_CONFIG : SG_ITEM_CONFIG
+{
+	_U32 level;
+	DDL::String<SG_ASTROLOGY_BALL_DESC_MAX> desc;
+	_U8 quality;
+	_U8 attri_type;
+	_F32 attri_num;
+	_U32 levelup_ball;
+	_U32 req_levelup;
+	_U32 swllaow_obtain;
+	DDL::String<ARCHETYPE_URL_LENGTH_MAX> archetype;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ASTROLOGY_BALL_CONFIG>(SG_ASTROLOGY_BALL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGY_BALL_CONFIG>(const SG_ASTROLOGY_BALL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info;
+}
+
 struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 enemy_id;
@@ -2122,6 +2126,25 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_MATERIAL_ITEM_info;
 }
 
+struct SG_ASTROLOGY_BALL_ITEM : SG_ITEM
+{
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_ASTROLOGY_BALL_ITEM>(SG_ASTROLOGY_BALL_ITEM& Value);
+	template<>
+	bool BufferWriter::Write<SG_ASTROLOGY_BALL_ITEM>(const SG_ASTROLOGY_BALL_ITEM& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_ASTROLOGY_BALL_ITEM>();
+	extern STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_ITEM_info;
+}
+
 struct SG_FRIEND_BASE_INFO : A_LIVE_OBJECT
 {
 	_U32 avatar_id;
@@ -2283,7 +2306,6 @@ namespace DDLReflect
 struct SG_CHAT_RECV_INFO : A_LIVE_OBJECT
 {
 	_U32 channel_id;
-	_U32 msg_id;
 	_U32 sender_id;
 	DDL::String<SG_PLAYER_NAME_MAX> sender_nick;
 	_U32 time;
@@ -3250,10 +3272,18 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EnhanceTurbo(Caller);
+				DDLStub<CALLER, CLASS>::GetClass()->BuyEnergy(Caller);
 				return true;
 			}
 			if(fid==82)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceTurbo(Caller);
+				return true;
+			}
+			if(fid==83)
 			{
 				SG_TURBO_SKILL_SLOT _prefix_skill_slot;
 
@@ -3264,7 +3294,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EquipTurboSkill(Caller, _prefix_skill_slot);
 				return true;
 			}
-			if(fid==83)
+			if(fid==84)
 			{
 				_U32 _prefix_equipt_id;
 
@@ -3275,7 +3305,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->MakeEquipt(Caller, _prefix_equipt_id);
 				return true;
 			}
-			if(fid==84)
+			if(fid==85)
 			{
 				_U32 __length;
 				_U32* _prefix_action_list;
@@ -3293,7 +3323,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryActionAvailable(Caller, _prefix_action_list, _prefix_count);
 				return true;
 			}
-			if(fid==85)
+			if(fid==86)
 			{
 
 
@@ -3301,7 +3331,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendList(Caller);
 				return true;
 			}
-			if(fid==86)
+			if(fid==87)
 			{
 				_U32 __length;
 				char* _prefix_nick;
@@ -3317,23 +3347,12 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFirendSearchList(Caller, _prefix_nick);
 				return true;
 			}
-			if(fid==87)
+			if(fid==88)
 			{
 
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendInvitationList(Caller);
-				return true;
-			}
-			if(fid==88)
-			{
-				_U32 _prefix_avatar_id;
-
-				// <_U32> <avatar_id> <> <>;
-				if(!Buf.Read(_prefix_avatar_id)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->InviteFriend(Caller, _prefix_avatar_id);
 				return true;
 			}
 			if(fid==89)
@@ -3344,7 +3363,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_avatar_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriend(Caller, _prefix_avatar_id);
+				DDLStub<CALLER, CLASS>::GetClass()->InviteFriend(Caller, _prefix_avatar_id);
 				return true;
 			}
 			if(fid==90)
@@ -3355,7 +3374,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_avatar_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RefuseInvitation(Caller, _prefix_avatar_id);
+				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriend(Caller, _prefix_avatar_id);
 				return true;
 			}
 			if(fid==91)
@@ -3366,10 +3385,21 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_avatar_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->DelFriend(Caller, _prefix_avatar_id);
+				DDLStub<CALLER, CLASS>::GetClass()->RefuseInvitation(Caller, _prefix_avatar_id);
 				return true;
 			}
 			if(fid==92)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->DelFriend(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==93)
 			{
 				SG_CHAT_SEND_INFO _prefix_send_info;
 
@@ -3380,7 +3410,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SendChat(Caller, _prefix_send_info);
 				return true;
 			}
-			if(fid==93)
+			if(fid==94)
 			{
 				_U32 __length;
 				_U32* _prefix_channel_list;
@@ -3398,7 +3428,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ReceiveChat(Caller, _prefix_channel_list, _prefix_count);
 				return true;
 			}
-			if(fid==94)
+			if(fid==95)
 			{
 				_U32 _prefix_league_id;
 
@@ -3409,7 +3439,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangList(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==95)
+			if(fid==96)
 			{
 				_U32 _prefix_league_id;
 
@@ -3420,7 +3450,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->JoinLeagueDianjiang(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==96)
+			if(fid==97)
 			{
 				_U32 _prefix_league_id;
 				_U32 _prefix_avatar_id;
@@ -3434,7 +3464,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangReward(Caller, _prefix_league_id, _prefix_avatar_id);
 				return true;
 			}
-			if(fid==97)
+			if(fid==98)
 			{
 				_U32 _prefix_league_id;
 
@@ -3443,6 +3473,75 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->LeagueDianjiangSummonNPC(Caller, _prefix_league_id);
+				return true;
+			}
+			if(fid==99)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryAstrologyBag(Caller);
+				return true;
+			}
+			if(fid==100)
+			{
+				_U32 _prefix_item_id;
+
+				// <_U32> <item_id> <> <>;
+				if(!Buf.Read(_prefix_item_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SaveToBag(Caller, _prefix_item_id);
+				return true;
+			}
+			if(fid==101)
+			{
+				_U32 _prefix_general_id;
+				_U32 _prefix_ball_id;
+				_U8 _prefix_status;
+
+				// <_U32> <general_id> <> <>;
+				if(!Buf.Read(_prefix_general_id)) return false;
+				// <_U32> <ball_id> <> <>;
+				if(!Buf.Read(_prefix_ball_id)) return false;
+				// <_U8> <status> <> <>;
+				if(!Buf.Read(_prefix_status)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SetAstrologyBallStatus(Caller, _prefix_general_id, _prefix_ball_id, _prefix_status);
+				return true;
+			}
+			if(fid==102)
+			{
+				_U32 _prefix_ball_id;
+
+				// <_U32> <ball_id> <> <>;
+				if(!Buf.Read(_prefix_ball_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceAstrologyBall(Caller, _prefix_ball_id);
+				return true;
+			}
+			if(fid==103)
+			{
+				_U32 _prefix_ball_id;
+
+				// <_U32> <ball_id> <> <>;
+				if(!Buf.Read(_prefix_ball_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BuyAstrologyBall(Caller, _prefix_ball_id);
+				return true;
+			}
+			if(fid==104)
+			{
+				_U32 _prefix_astrologer_id;
+
+				// <_U32> <astrologer_id> <> <>;
+				if(!Buf.Read(_prefix_astrologer_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Strology(Caller, _prefix_astrologer_id);
 				return true;
 			}
 			return false;
@@ -4297,12 +4396,20 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 80, Buf);
 		}
 
-		bool EnhanceTurbo()
+		bool BuyEnergy()
 		{
 			BUFFER Buf;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
+		}
+
+		bool EnhanceTurbo()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
 		}
 
 		bool EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot)
@@ -4312,7 +4419,7 @@ namespace DDLProxy
 			if(!Buf.Write(skill_slot)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
 		}
 
 		bool MakeEquipt(_U32 equipt_id)
@@ -4322,7 +4429,7 @@ namespace DDLProxy
 			if(!Buf.Write(equipt_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
 		}
 
 		bool QueryActionAvailable(const _U32* action_list, _U32 count)
@@ -4337,7 +4444,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
 		}
 
 		bool QueryFriendList()
@@ -4345,7 +4452,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
 		}
 
 		bool QueryFirendSearchList(const char* nick)
@@ -4358,7 +4465,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(nick, (unsigned int)sizeof(nick[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
 		}
 
 		bool QueryFriendInvitationList()
@@ -4366,7 +4473,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
 		}
 
 		bool InviteFriend(_U32 avatar_id)
@@ -4376,7 +4483,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
 		}
 
 		bool AcceptFriend(_U32 avatar_id)
@@ -4386,7 +4493,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
 		}
 
 		bool RefuseInvitation(_U32 avatar_id)
@@ -4396,7 +4503,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
 		}
 
 		bool DelFriend(_U32 avatar_id)
@@ -4406,7 +4513,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
 		}
 
 		bool SendChat(const SG_CHAT_SEND_INFO& send_info)
@@ -4416,7 +4523,7 @@ namespace DDLProxy
 			if(!Buf.Write(send_info)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
 		}
 
 		bool ReceiveChat(const _U32* channel_list, _U32 count)
@@ -4431,7 +4538,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 94, Buf);
 		}
 
 		bool QueryLeagueDianjiangList(_U32 league_id)
@@ -4441,7 +4548,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 94, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 95, Buf);
 		}
 
 		bool JoinLeagueDianjiang(_U32 league_id)
@@ -4451,7 +4558,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 95, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 96, Buf);
 		}
 
 		bool QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id)
@@ -4463,7 +4570,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 96, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 97, Buf);
 		}
 
 		bool LeagueDianjiangSummonNPC(_U32 league_id)
@@ -4473,7 +4580,69 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 97, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 98, Buf);
+		}
+
+		bool QueryAstrologyBag()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 99, Buf);
+		}
+
+		bool SaveToBag(_U32 item_id)
+		{
+			BUFFER Buf;
+			// <_U32> <item_id> <> <>
+			if(!Buf.Write(item_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 100, Buf);
+		}
+
+		bool SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status)
+		{
+			BUFFER Buf;
+			// <_U32> <general_id> <> <>
+			if(!Buf.Write(general_id)) return false;
+			// <_U32> <ball_id> <> <>
+			if(!Buf.Write(ball_id)) return false;
+			// <_U8> <status> <> <>
+			if(!Buf.Write(status)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 101, Buf);
+		}
+
+		bool EnhanceAstrologyBall(_U32 ball_id)
+		{
+			BUFFER Buf;
+			// <_U32> <ball_id> <> <>
+			if(!Buf.Write(ball_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 102, Buf);
+		}
+
+		bool BuyAstrologyBall(_U32 ball_id)
+		{
+			BUFFER Buf;
+			// <_U32> <ball_id> <> <>
+			if(!Buf.Write(ball_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 103, Buf);
+		}
+
+		bool Strology(_U32 astrologer_id)
+		{
+			BUFFER Buf;
+			// <_U32> <astrologer_id> <> <>
+			if(!Buf.Write(astrologer_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 104, Buf);
 		}
 	};
 
@@ -5485,6 +5654,26 @@ namespace DDLStub
 			if(fid==62)
 			{
 				_U8 _prefix_ret;
+				_U32 _prefix_rmb;
+				_U32 _prefix_energy;
+				_U32 _prefix_times;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <_U32> <energy> <> <>;
+				if(!Buf.Read(_prefix_energy)) return false;
+				// <_U32> <times> <> <>;
+				if(!Buf.Read(_prefix_times)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BuyEnergyResult(Caller, _prefix_ret, _prefix_rmb, _prefix_energy, _prefix_times);
+				return true;
+			}
+			if(fid==63)
+			{
+				_U8 _prefix_ret;
 				_U32 _prefix_turbo_level;
 				_U32 _prefix_wake_pt;
 
@@ -5499,7 +5688,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceTurboResult(Caller, _prefix_ret, _prefix_turbo_level, _prefix_wake_pt);
 				return true;
 			}
-			if(fid==63)
+			if(fid==64)
 			{
 				_U8 _prefix_ret;
 				SG_EQUIPT_ITEM _prefix_new_euqipt;
@@ -5519,7 +5708,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->MakeEquiptResult(Caller, _prefix_ret, _prefix_new_euqipt, _prefix_com_material, _prefix_key_material);
 				return true;
 			}
-			if(fid==64)
+			if(fid==65)
 			{
 				_U32 __length;
 				_U32* _prefix_action_list;
@@ -5543,7 +5732,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryActionAvailableResult(Caller, _prefix_action_list, _prefix_available_list, _prefix_count);
 				return true;
 			}
-			if(fid==65)
+			if(fid==66)
 			{
 				_U32 __length;
 				SG_FRIEND_INFO* _prefix_friend_list;
@@ -5561,7 +5750,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendListResult(Caller, _prefix_friend_list, _prefix_count);
 				return true;
 			}
-			if(fid==66)
+			if(fid==67)
 			{
 				_U32 __length;
 				SG_FRIEND_SEARCH_INFO* _prefix_search_list;
@@ -5579,7 +5768,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendListSearchResult(Caller, _prefix_search_list, _prefix_count);
 				return true;
 			}
-			if(fid==67)
+			if(fid==68)
 			{
 				_U32 __length;
 				SG_FRIEND_INVITATION* _prefix_invitation_list;
@@ -5597,7 +5786,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendInvitationListResult(Caller, _prefix_invitation_list, _prefix_count);
 				return true;
 			}
-			if(fid==68)
+			if(fid==69)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_avatar_id;
@@ -5611,7 +5800,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriendResult(Caller, _prefix_ret, _prefix_avatar_id);
 				return true;
 			}
-			if(fid==69)
+			if(fid==70)
 			{
 				_U8 _prefix_ret;
 
@@ -5622,7 +5811,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SendChatResult(Caller, _prefix_ret);
 				return true;
 			}
-			if(fid==70)
+			if(fid==71)
 			{
 				_U32 __length;
 				SG_CHAT_RECV_INFO* _prefix_chat_list;
@@ -5640,7 +5829,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ReceiveChatResult(Caller, _prefix_chat_list, _prefix_count);
 				return true;
 			}
-			if(fid==71)
+			if(fid==72)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -5661,7 +5850,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangListResult(Caller, _prefix_ret, _prefix_joiner_list, _prefix_count);
 				return true;
 			}
-			if(fid==72)
+			if(fid==73)
 			{
 				_U8 _prefix_ret;
 				SG_LEAGUE_DIANJIANG_JOINER _prefix_self;
@@ -5675,7 +5864,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->JoinLeagueDianjiangResult(Caller, _prefix_ret, _prefix_self);
 				return true;
 			}
-			if(fid==73)
+			if(fid==74)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_reputation;
@@ -5689,7 +5878,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangRewardResult(Caller, _prefix_ret, _prefix_reputation);
 				return true;
 			}
-			if(fid==74)
+			if(fid==75)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_gold;
@@ -5707,6 +5896,118 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->LeagueDianjiangSummonNPCResult(Caller, _prefix_ret, _prefix_gold, _prefix_rmb, _prefix_npc_joiner);
+				return true;
+			}
+			if(fid==76)
+			{
+				_U32 __length;
+				_U32* _prefix_bag_list;
+				_U32 _prefix_count1;
+				_U32* _prefix_tmp_bag_list;
+				_U32 _prefix_count2;
+
+				// <_U32> <bag_list> <> <count1>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_bag_list = (_U32*)alloca(sizeof(_prefix_bag_list[0])*__length);
+				if(!_prefix_bag_list) return false;
+				if(!Buf.ReadPointer(_prefix_bag_list, __length)) return false;
+				// <_U32> <count1> <> <>;
+				if(!Buf.Read(_prefix_count1)) return false;
+				// <_U32> <tmp_bag_list> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_tmp_bag_list = (_U32*)alloca(sizeof(_prefix_tmp_bag_list[0])*__length);
+				if(!_prefix_tmp_bag_list) return false;
+				if(!Buf.ReadPointer(_prefix_tmp_bag_list, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryAstrologyBagResult(Caller, _prefix_bag_list, _prefix_count1, _prefix_tmp_bag_list, _prefix_count2);
+				return true;
+			}
+			if(fid==77)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_item_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <item_id> <> <>;
+				if(!Buf.Read(_prefix_item_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SaveToBagResult(Caller, _prefix_ret, _prefix_item_id);
+				return true;
+			}
+			if(fid==78)
+			{
+				_U8 _prefix_ret;
+				SG_GENERAL _prefix_general;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <SG_GENERAL> <general> <> <>;
+				if(!Buf.Read(_prefix_general)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SetAstrologyBallStatusResult(Caller, _prefix_ret, _prefix_general);
+				return true;
+			}
+			if(fid==79)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_gold;
+				_U32 _prefix_ball_id;
+				_U32 _prefix_new_ball_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <ball_id> <> <>;
+				if(!Buf.Read(_prefix_ball_id)) return false;
+				// <_U32> <new_ball_id> <> <>;
+				if(!Buf.Read(_prefix_new_ball_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceAstrologyBallResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_id, _prefix_new_ball_id);
+				return true;
+			}
+			if(fid==80)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_astrology_value;
+				_U32 _prefix_ball_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <astrology_value> <> <>;
+				if(!Buf.Read(_prefix_astrology_value)) return false;
+				// <_U32> <ball_id> <> <>;
+				if(!Buf.Read(_prefix_ball_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BuyAstrologyBallResult(Caller, _prefix_ret, _prefix_astrology_value, _prefix_ball_id);
+				return true;
+			}
+			if(fid==81)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_gold;
+				_U32 _prefix_ball_id;
+				_U32 _prefix_atrologer_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <ball_id> <> <>;
+				if(!Buf.Read(_prefix_ball_id)) return false;
+				// <_U32> <atrologer_id> <> <>;
+				if(!Buf.Read(_prefix_atrologer_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->StrologyResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_id, _prefix_atrologer_id);
 				return true;
 			}
 			return false;
@@ -6560,6 +6861,22 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 61, Buf);
 		}
 
+		bool BuyEnergyResult(_U8 ret, _U32 rmb, _U32 energy, _U32 times)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <_U32> <energy> <> <>
+			if(!Buf.Write(energy)) return false;
+			// <_U32> <times> <> <>
+			if(!Buf.Write(times)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 62, Buf);
+		}
+
 		bool EnhanceTurboResult(_U8 ret, _U32 turbo_level, _U32 wake_pt)
 		{
 			BUFFER Buf;
@@ -6571,7 +6888,7 @@ namespace DDLProxy
 			if(!Buf.Write(wake_pt)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 62, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 63, Buf);
 		}
 
 		bool MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material)
@@ -6587,7 +6904,7 @@ namespace DDLProxy
 			if(!Buf.Write(key_material)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 63, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
 		}
 
 		bool QueryActionAvailableResult(const _U32* action_list, const _U32* available_list, _U32 count)
@@ -6606,7 +6923,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
 		}
 
 		bool QueryFriendListResult(const SG_FRIEND_INFO* friend_list, _U32 count)
@@ -6621,7 +6938,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
 		}
 
 		bool QueryFriendListSearchResult(const SG_FRIEND_SEARCH_INFO* search_list, _U32 count)
@@ -6636,7 +6953,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
 		}
 
 		bool QueryFriendInvitationListResult(const SG_FRIEND_INVITATION* invitation_list, _U32 count)
@@ -6651,7 +6968,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
 		}
 
 		bool AcceptFriendResult(_U8 ret, _U32 avatar_id)
@@ -6663,7 +6980,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 69, Buf);
 		}
 
 		bool SendChatResult(_U8 ret)
@@ -6673,7 +6990,7 @@ namespace DDLProxy
 			if(!Buf.Write(ret)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 69, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 70, Buf);
 		}
 
 		bool ReceiveChatResult(const SG_CHAT_RECV_INFO* chat_list, _U32 count)
@@ -6688,7 +7005,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 70, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 71, Buf);
 		}
 
 		bool QueryLeagueDianjiangListResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count)
@@ -6705,7 +7022,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 71, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 72, Buf);
 		}
 
 		bool JoinLeagueDianjiangResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self)
@@ -6717,7 +7034,7 @@ namespace DDLProxy
 			if(!Buf.Write(self)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 72, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 73, Buf);
 		}
 
 		bool QueryLeagueDianjiangRewardResult(_U8 ret, _U32 reputation)
@@ -6729,7 +7046,7 @@ namespace DDLProxy
 			if(!Buf.Write(reputation)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 73, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 74, Buf);
 		}
 
 		bool LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner)
@@ -6745,7 +7062,98 @@ namespace DDLProxy
 			if(!Buf.Write(npc_joiner)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 74, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 75, Buf);
+		}
+
+		bool QueryAstrologyBagResult(const _U32* bag_list, _U32 count1, const _U32* tmp_bag_list, _U32 count2)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <bag_list> <> <count1>
+			__length = (_U16)(count1);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(bag_list, __length)) return false;
+			// <_U32> <count1> <> <>
+			if(!Buf.Write(count1)) return false;
+			// <_U32> <tmp_bag_list> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(tmp_bag_list, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 76, Buf);
+		}
+
+		bool SaveToBagResult(_U8 ret, _U32 item_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <item_id> <> <>
+			if(!Buf.Write(item_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 77, Buf);
+		}
+
+		bool SetAstrologyBallStatusResult(_U8 ret, const SG_GENERAL& general)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <SG_GENERAL> <general> <> <>
+			if(!Buf.Write(general)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 78, Buf);
+		}
+
+		bool EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <ball_id> <> <>
+			if(!Buf.Write(ball_id)) return false;
+			// <_U32> <new_ball_id> <> <>
+			if(!Buf.Write(new_ball_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 79, Buf);
+		}
+
+		bool BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <astrology_value> <> <>
+			if(!Buf.Write(astrology_value)) return false;
+			// <_U32> <ball_id> <> <>
+			if(!Buf.Write(ball_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 80, Buf);
+		}
+
+		bool StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <ball_id> <> <>
+			if(!Buf.Write(ball_id)) return false;
+			// <_U32> <atrologer_id> <> <>
+			if(!Buf.Write(atrologer_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
 		}
 	};
 

@@ -13,6 +13,7 @@
 #define MOERROR_ALREADY_EXISTED				7
 #define MOERROR_NOT_EXISTED					8
 #define MOERROR_UNDEFINE_METHOD				9
+#define MOERROR_TRY_AGAIN					10
 
 int MOError(const char* str);
 

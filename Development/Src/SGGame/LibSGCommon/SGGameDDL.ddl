@@ -57,6 +57,8 @@ const _U32 SG_ITEM_GEM_ID_START		= 30000;
 const _U32 SG_ITEM_GEM_ID_END		= 39999;
 const _U32 SG_ITEM_EQUIPT_ID_START  = 40000;
 const _U32 SG_ITEM_EQUIPT_ID_END	= 49999;
+const _U32 SG_ITEM_ASTOLOGY_BALL_ID_START	= 50000;
+const _U32 SG_ITEM_ASTOLOGY_BALL_ID_END		= 59999;
 const _U32 SG_ITEM_NAME_MAX			= 32;
 
 //Material
@@ -158,30 +160,7 @@ const _U32 SG_ASTROLOGY_BALL_DESC_MAX = 128;
 const _U32 SG_ASTROLOGER_NAME_MAX = 32;
 const _U32 SG_ASTROLOGER_DESC_MAX = 128;
 
-//astrology
-struct SG_ASTROLOGY_BALL_CONFIG : A_CONTENT_OBJECT
-{
-	_U32								ball_id;					//命魂ID
-	string<SG_ASTROLOGY_BALL_NAME_MAX>	ball_name;					//命魂名字
-	_U32								level;						//命魂等级
-	string<SG_ASTROLOGY_BALL_DESC_MAX>	desc;						//命魂描述
-	_U8									quality;					//品质
-	_U8									attri_type;					//属性枚举 加什么属性
-	_F32								attri_num;					//属性数值 加多少
-	_U32								levelup_ball;				//升级后的命魂ID
-	_U32								req_levelup;				//升级所需的魂力值
-	_U32								price;						//命魂吞噬后所得的魂力值
-
-	_U32								U;					
-	_U32								V;
-	_U32								UL;
-	_U32								VL;
-	
-	string<SG_TEX_MAX>					tex;						//纹理
-};
-task[GEN_STRUCT_SERIALIZE(SG_ASTROLOGY_BALL_CONFIG)];
-task[GEN_STRUCT_REFLECT(SG_ASTROLOGY_BALL_CONFIG)];
-
+//命魂
 struct SG_ASTROLOGER_CONFIG : A_CONTENT_OBJECT
 {
 	_U32								astrologer_id;				//占星师ID
@@ -213,6 +192,13 @@ struct SG_ASTROLOGER_CONFIG : A_CONTENT_OBJECT
 	_U32								VL;
 	
 	string<SG_TEX_MAX>					tex;						//纹理
+
+	_U32								U2;					
+	_U32								V2;
+	_U32								UL2;
+	_U32								VL2;
+	
+	string<SG_TEX_MAX>					tex2;						//纹理
 
 };
 task[GEN_STRUCT_SERIALIZE(SG_ASTROLOGER_CONFIG)];
@@ -343,6 +329,7 @@ struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 	_U8							hangup_free;					//挂机免费 0-否 1-是
 	_U8							enhance_free;					//强化免费 0-否 1-是
 	_U32						enhance_friend_num;				//vip好友上限增加量
+	_U8							auto_atrology;					//占星vip是否开启
 
 	string<SG_VIP_ICON_MAX>				res;					//图标资源
 	_U32								U;					
@@ -968,6 +955,23 @@ struct SG_GEM_ITEM_CONFIG : SG_ITEM_CONFIG
 task[GEN_STRUCT_SERIALIZE(SG_GEM_ITEM_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_GEM_ITEM_CONFIG)];
 
+//命魂
+struct SG_ASTROLOGY_BALL_CONFIG : SG_ITEM_CONFIG
+{
+	_U32								level;				//命魂等级
+	string<SG_ASTROLOGY_BALL_DESC_MAX>	desc;				//命魂描述
+	_U8									quality;			//品质
+	_U8									attri_type;			//属性枚举 加什么属性
+	_F32								attri_num;			//属性数值 加多少
+	_U32								levelup_ball;		//升级后的命魂ID
+	_U32								req_levelup;		//升级所需的魂力值
+	_U32								swllaow_obtain;		//命魂吞噬后所得的魂力值
+	string<ARCHETYPE_URL_LENGTH_MAX>	archetype;			//archetype
+};
+task[GEN_STRUCT_SERIALIZE(SG_ASTROLOGY_BALL_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ASTROLOGY_BALL_CONFIG)];
+
+
 //敌人配置
 struct SG_ENEMY_CONFIG : A_CONTENT_OBJECT
 {
@@ -1158,7 +1162,7 @@ task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_DESC_CONFIG)];
 
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
-	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1004-pvp每日奖励 1003-每日军饷
+	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1004-pvp每日奖励 1003-每日军饷 1007-每日购买体力的次数
 	_U32								times;					//剩余可领取俸禄 1-每日可进行关卡剩余次数 -pvp剩余次数 -pvp每日奖励可领次数 -每日军饷已领取次数
 	_U32								reset_time;				//俸禄冷却时间 1-重置的时间标签 -重置的时间标签 -重置的时间标签 -重置的时间标签
 };
@@ -1239,6 +1243,12 @@ struct SG_MATERIAL_ITEM : SG_ITEM
 task[GEN_STRUCT_SERIALIZE(SG_MATERIAL_ITEM)];
 task[GEN_STRUCT_REFLECT(SG_MATERIAL_ITEM)];
 
+struct SG_ASTROLOGY_BALL_ITEM : SG_ITEM
+{
+};
+task[GEN_STRUCT_SERIALIZE(SG_ASTROLOGY_BALL_ITEM)];
+task[GEN_STRUCT_REFLECT(SG_ASTROLOGY_BALL_ITEM)];
+
 //friend live
 struct SG_FRIEND_BASE_INFO : A_LIVE_OBJECT
 {
@@ -1312,7 +1322,6 @@ task[GEN_STRUCT_REFLECT(SG_CHAT_SEND_INFO)];
 struct SG_CHAT_RECV_INFO : A_LIVE_OBJECT
 {
 	_U32 								channel_id;
-	_U32								msg_id;
 	_U32								sender_id;
 	string<SG_PLAYER_NAME_MAX>			sender_nick;
 	_U32 								time;
@@ -1422,6 +1431,7 @@ class SGGAME_C2S
 
 	SalaryGet();													//获取每日军饷
 	SalaryGetBat();													//批量获取 max = 10
+	BuyEnergy();													//购买体力
 
 	EnhanceTurbo();													//提升无双技能
 	EquipTurboSkill(SG_TURBO_SKILL_SLOT skill_slot);				//装备无双技能
@@ -1445,6 +1455,13 @@ class SGGAME_C2S
 	JoinLeagueDianjiang(_U32 league_id);							//参加点将
 	QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id);		//查询点将奖励
 	LeagueDianjiangSummonNPC(_U32 league_id);						//招募npc参加点将活动
+
+	QueryAstrologyBag();												//查询命魂
+	SaveToBag(_U32 item_id);											//存入命魂包中
+	SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status);	//0-卸下 1-装备
+	EnhanceAstrologyBall(_U32 ball_id);									//升级命魂
+	BuyAstrologyBall(_U32 ball_id);										//购买命魂
+	Strology(_U32 astrologer_id);										//占星
 };
 
 class SGGAME_S2C
@@ -1524,6 +1541,7 @@ class SGGAME_S2C
 
 	SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold);														//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
 	SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times);										//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
+	BuyEnergyResult(_U8 ret, _U32 rmb, _U32 energy, _U32 times);										//0-succ 1-failed rmb-消耗的rmb energy-获得的energy times-成功领取的次数
 
 	EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt);																//返回新的无双等级和消耗的觉醒点 ret 0-成功 other-failed
 	MakeEquiptResult(_U8 ret, SG_EQUIPT_ITEM new_euqipt, SG_MATERIAL_ITEM com_material, SG_MATERIAL_ITEM key_material);			//装备打造 com_material,key_material返回使用掉的材料
@@ -1542,6 +1560,13 @@ class SGGAME_S2C
 	JoinLeagueDianjiangResult(_U8 ret, SG_LEAGUE_DIANJIANG_JOINER self);								//0-succ other-failed
 	QueryLeagueDianjiangRewardResult(_U8 ret, _U32 reputation);											//0-succ other-failed
 	LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, SG_LEAGUE_DIANJIANG_JOINER npc_joiner);//0-succ other-failed
+
+	QueryAstrologyBagResult(_U32 bag_list[count1], _U32 count1, _U32 tmp_bag_list[count2], _U32 count2);
+	SaveToBagResult(_U8 ret, _U32 item_id);
+	SetAstrologyBallStatusResult(_U8 ret, SG_GENERAL general);
+	EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
+	BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id);
+	StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id);
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

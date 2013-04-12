@@ -12,7 +12,7 @@ namespace Atlas
 
 	CKnightClientApp::CKnightClientApp(bool bThread) : CClientApp("KnightGame", bThread)
 	{
-		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://127.0.0.1:1982/atlas-api/%s");
+		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://192.168.5.11:1982/atlas-api/%s");
 		if(!GetParam("ConnectType")) SetParam("ConnectType", "http");
 	}
 

@@ -227,6 +227,6 @@ const char* MOClientGetResultString(MOREQUEST* request)
 	const char* result = MORequestGetResult(request);
 	if(!result) return NULL;
 	result = strchr(result, ';');
-	if(!result) return NULL;
+	if(!result) return "";
 	return result+1;
 }

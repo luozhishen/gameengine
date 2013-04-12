@@ -2,69 +2,84 @@
 
 #pragma warning(disable:4100)
 #pragma warning(disable:4996)
+#pragma warning(disable:4121)
 
-#include <windows.h>
-#include <wininet.h>
-#include <stdlib.h>
-
-#include <AtlasBase.h>
+#include <AtlasSTL.h>
 #include "mosdk.h"
 #include "mo_common.h"
 
-static bool http_request(MOREQUEST* request, const char* url, const char* postdata);
+#include <windows.h>
+#include <wininet.h>
+
+static bool http_request(MOREQUEST* request, INTERNET_STATUS_CALLBACK callback, const char* url, const char* postdata);
 
 struct MOREQUEST
 {
 	HINTERNET _session;
 	HINTERNET _connect;
 	HINTERNET _request;
-	char* _result;
-	int _result_len;
+	Atlas::String _result;
 	FILE* _file;
 	MOREQUESTSTATE _state;
 	Atlas::String _postdata;
 };
 
-static void requeststring_process(MOREQUEST* request)
+static void CALLBACK requeststring_callback(HINTERNET hInternet, DWORD_PTR dwContext, DWORD dwInternetStatus, LPVOID lpvStatusInformation, DWORD dwStatusInformationLength)
 {
-	DWORD len;
-	if(!InternetQueryDataAvailable(request->_request, &len, NULL, NULL))
+	char tmp[1000];
+	static DWORD prev_status_0 = 0, prev_status_1 = 0;
+	sprintf(tmp, "state=%d %d %p\n", dwInternetStatus, GetCurrentThreadId(), hInternet);
+	OutputDebugStringA(tmp);
+	if(dwInternetStatus==41 && prev_status_1==40 && prev_status_0==100) {
+//		DebugBreak();
+	}
+	prev_status_0 = prev_status_1;
+	prev_status_1 = dwInternetStatus;
+	if(INTERNET_STATUS_REQUEST_COMPLETE!=dwInternetStatus) return;
+	LPINTERNET_ASYNC_RESULT res = (LPINTERNET_ASYNC_RESULT)lpvStatusInformation;
+	MOREQUEST* request = (MOREQUEST*)dwContext;
+
+	if(!res->dwResult)
 	{
 		request->_state = MOREQUESTSTATE_FAILED;
 		return;
 	}
 
-	DWORD total = 0, got = len, bsize = len + 1;
-	request->_result = (char*)malloc(bsize);
-	while(got)
+	DWORD len;
+	char buf[1000];
+
+	for(;;)
 	{
-		if(!InternetReadFile(request->_request, request->_result+total, bsize-total, &got))
+		if(!InternetReadFile(request->_request, buf, sizeof(buf)-1, &len))
 		{
 			request->_state = MOREQUESTSTATE_FAILED;
 			return;
 		}
-		if(got==0) break;
-
-		total += got;
-		if(!InternetQueryDataAvailable(request->_request, &len, NULL, NULL)) {
-			request->_state = MOREQUESTSTATE_FAILED;
-			return;
-		}
-
-		if(len>=bsize-total)
-		{
-			bsize = total + len + 1;
-			request->_result = (char*)realloc(request->_result, bsize);
-		}
+		if(len==0) break;
+		buf[len] = '\0';
+		request->_result += buf;
 	}
 
-	request->_result[total] = '\0';
-	request->_result_len = (int)total;
 	request->_state = MOREQUESTSTATE_DONE;
 }
 
-static void requestfile_process(MOREQUEST* request)
+static void CALLBACK requestfile_callback(HINTERNET hInternet, DWORD_PTR dwContext, DWORD dwInternetStatus, LPVOID lpvStatusInformation, DWORD dwStatusInformationLength)
 {
+	if(INTERNET_STATUS_REQUEST_COMPLETE!=dwInternetStatus && INTERNET_STATUS_RESPONSE_RECEIVED!=dwInternetStatus) return;
+
+	MOREQUEST* request = (MOREQUEST*)dwContext;
+	if(request->_state!=MOREQUESTSTATE_PENDING) return;
+
+	if(INTERNET_STATUS_REQUEST_COMPLETE==dwInternetStatus)
+	{
+		LPINTERNET_ASYNC_RESULT res = (LPINTERNET_ASYNC_RESULT)lpvStatusInformation;
+		if(!res->dwResult)
+		{
+			request->_state = MOREQUESTSTATE_FAILED;
+			return;
+		}
+	}
+
 	DWORD len, got;
 	char buf[10*1024];
 	for(;;)
@@ -74,7 +89,7 @@ static void requestfile_process(MOREQUEST* request)
 			request->_state = MOREQUESTSTATE_FAILED;
 			return;
 		}
-		if(len==0) return;
+		if(INTERNET_STATUS_REQUEST_COMPLETE!=dwInternetStatus && len==0) return;
 
 		if(!InternetReadFile(request->_request, buf, sizeof(buf), &got))
 		{
@@ -114,7 +129,7 @@ MOREQUEST* MORequestString(const char* url, const char* postdata)
 {
 	MOREQUEST* request = new MOREQUEST;
 	request->_file = NULL;
-	if(http_request(request, url, postdata))
+	if(http_request(request, requeststring_callback, url, postdata))
 	{
 		return request;
 	}
@@ -132,7 +147,7 @@ MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* pat
 
 	MOREQUEST* request = new MOREQUEST;
 	request->_file = file;
-	if(http_request(request, url, postdata))
+	if(http_request(request, requestfile_callback, url, postdata))
 	{
 		return request;
 	}
@@ -156,37 +171,25 @@ void MORequestDestory(MOREQUEST* request)
 	InternetCloseHandle(request->_request);
 	InternetCloseHandle(request->_connect);
 	InternetCloseHandle(request->_session);
-	if(request->_result) free(request->_result);
 	delete request;
 }
 
 MOREQUESTSTATE MORequestStatus(MOREQUEST* request)
 {
-	if(request->_state==MOREQUESTSTATE_PENDING)
-	{
-		if(request->_file)
-		{
-			requestfile_process(request);
-		}
-		else
-		{
-			requeststring_process(request);
-		}
-	}
 	return request->_state;
 }
 
 const char* MORequestGetResult(MOREQUEST* request)
 {
-	return request->_result;
+	return request->_result.c_str();
 }
 
 int MORequestGetResultLength(MOREQUEST* request)
 {
-	return request->_result_len;
+	return (int)(request->_result.size());
 }
 
-bool http_request(MOREQUEST* request, const char* url, const char* postdata)
+bool http_request(MOREQUEST* request, INTERNET_STATUS_CALLBACK callback, const char* url, const char* postdata)
 {
 	static char g_TypeSpec[] = "Content-Type: application/x-www-form-urlencoded\r\n";
 	static char g_AcceptType[] = "*/*";
@@ -209,20 +212,29 @@ bool http_request(MOREQUEST* request, const char* url, const char* postdata)
 	urlcomps.dwExtraInfoLength = sizeof(buf5);
 	if(!InternetCrackUrlA(url, (DWORD)strlen(url), 0, &urlcomps)) return false;
 
-	request->_session = InternetOpenA("MO_CLIENT", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+	request->_session = InternetOpenA("MO_CLIENT", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, INTERNET_FLAG_ASYNC);
 	if(request->_session)
 	{
+		InternetSetStatusCallback(request->_session, callback);
+		char tmp[1000];
+		sprintf(tmp, "current thread id = %d %p\n", GetCurrentThreadId(), request->_session);
+		OutputDebugStringA(tmp);
 		request->_connect = InternetConnectA(request->_session, urlcomps.lpszHostName, urlcomps.nPort, urlcomps.lpszUserName, urlcomps.lpszPassword, INTERNET_SERVICE_HTTP, INTERNET_FLAG_EXISTING_CONNECT, (DWORD_PTR)request);
+
+		sprintf(tmp, "InternetConnectA %d %p\n", GetCurrentThreadId(), request->_connect);
+		OutputDebugStringA(tmp);
 		if(request->_connect)
 		{
 			request->_state = MOREQUESTSTATE_PENDING;
-			request->_result = NULL;
+			request->_result = "";
 			DWORD flag = INTERNET_FLAG_NO_UI|INTERNET_FLAG_NO_CACHE_WRITE|INTERNET_FLAG_PRAGMA_NOCACHE|INTERNET_FLAG_RELOAD;
 			if(urlcomps.nScheme==INTERNET_SCHEME_HTTPS) flag |= INTERNET_FLAG_SECURE;
 			Atlas::String urlpath;
 			urlpath = urlcomps.lpszUrlPath;
 			urlpath += urlcomps.lpszExtraInfo;
 			request->_request = HttpOpenRequestA(request->_connect, postdata?"POST":"GET", urlpath.c_str(), NULL, NULL, NULL, flag, (DWORD_PTR)request);
+			sprintf(tmp, "HttpOpenRequestA %d %p\n", GetCurrentThreadId(), request->_request);
+			OutputDebugStringA(tmp);
 			if(request->_request)
 			{
 				BOOL result;
@@ -231,10 +243,14 @@ bool http_request(MOREQUEST* request, const char* url, const char* postdata)
 					request->_postdata = postdata;
 					postdata = request->_postdata.c_str();
 					result = HttpSendRequestA(request->_request, g_TypeSpec, (DWORD)strlen(g_TypeSpec), (LPVOID)postdata, (DWORD)strlen(postdata));
+					sprintf(tmp, "HttpSendRequestA %d %p\n", GetCurrentThreadId(), request->_request);
+					OutputDebugStringA(tmp);
 				}
 				else
 				{
 					result = HttpSendRequestA(request->_request, NULL, 0, NULL, 0);
+					sprintf(tmp, "HttpSendRequestA %d %p\n", GetCurrentThreadId(), request->_request);
+					OutputDebugStringA(tmp);
 				}
 
 				if(result || GetLastError()==ERROR_IO_PENDING) return true;

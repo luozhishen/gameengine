@@ -97,7 +97,8 @@ struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
 	string<KNIGHT_DESCRIPTION_MAX>							RealName;
 	string<KNIGHT_DESCRIPTION_MAX>							Desc;
-	_S32													Duration;					
+	_S32													Duration;
+	_U8														IconType;					
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_CONFIG)];
@@ -231,6 +232,8 @@ class KNIGHT_C2S
 {
 	Ping();
 
+	Create(string value);
+	Delete();
 	Set(string value);
 	Get();
 
@@ -241,7 +244,7 @@ class KNIGHT_S2C
 {
 	Pong();
 
-	GetCallback(string value);
+	GetCallback(_U32 aid, string value);
 	BoardcastCallback(_U32 uid, string msg);
 };
 

@@ -104,7 +104,7 @@ private:
 
 	_U32					m_nCurrentIndex;
 
-	Atlas::CmdHistory*				m_pCmdHistory;
+	Atlas::CmdHistory*		m_pCmdHistory;
 };
 
 #endif

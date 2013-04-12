@@ -82,6 +82,7 @@ namespace Atlas
 
 		virtual void SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold) = 0;				
 		virtual void SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times) = 0;
+		virtual void BuyEnergyResult(_U8 ret, _U32 rmb, _U32 energy, _U32 times) = 0;
 
 		virtual void EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt) = 0;
 		virtual void MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material) = 0;
@@ -101,6 +102,13 @@ namespace Atlas
 		virtual void JoinLeagueDianjiangResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self)= 0;								
 		virtual void QueryLeagueDianjiangRewardResult(_U8 ret, _U32 reputation)= 0;											
 		virtual void LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner)= 0;
+
+		virtual void QueryAstrologyBagResult(const _U32* bag_list, _U32 count1, const _U32* tmp_bag_list, _U32 count2) = 0;
+		virtual void SaveToBagResult(_U8 ret, _U32 item_id) = 0;
+		virtual void SetAstrologyBallStatusResult(_U8 ret, const SG_GENERAL& general) = 0;
+		virtual void EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id) = 0;
+		virtual void BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id) = 0;
+		virtual void StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -216,7 +224,8 @@ namespace Atlas
 
 		void SalaryGet();														//获取每日军饷
 		void SalaryGetBat();													//批量获取 max = 10
-
+		void BuyEnergy();
+		
 		void EnhanceTurbo();
 		void EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot);			//装备无双技能
 		void MakeEquipt(_U32 equipt_id);										//装备打造
@@ -237,6 +246,13 @@ namespace Atlas
 		void JoinLeagueDianjiang(_U32 league_id);								//参加点将
 		void QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id);		//查询点将奖励
 		void LeagueDianjiangSummonNPC(_U32 league_id);							//招募npc参加点将活动
+
+		void QueryAstrologyBag();												//查询命魂
+		void SaveToBag(_U32 item_id);											//存入命魂包中
+		void SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status);	//0-卸下 1-装备
+		void EnhanceAstrologyBall(_U32 ball_id);								//升级命魂
+		void BuyAstrologyBall(_U32 ball_id);									//购买命魂
+		void Strology(_U32 astrologer_id);										//占星
 
 		//result
 		void Pong(CSGClient* pClient);
@@ -311,6 +327,7 @@ namespace Atlas
 
 		void SalaryGetResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold);									//0-succ 1-failed rmb-消耗的rmb gold-获得的gold
 		void SalaryGetBatResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 gold, _U32 times);					//0-succ 1-failed rmb-消耗的rmb gold-获得的gold times-成功领取的次数
+		void BuyEnergyResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U32 energy, _U32 times);
 
 		void EnhanceTurboResult(CSGClient* pClient, _U8 ret, _U32 turbo_level,  _U32 wake_pt);										//返回新的无双等级和消耗的觉醒点 
 		void MakeEquiptResult(CSGClient* pClient, _U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material);			//装备打造 com_material,key_material返回使用掉的材料
@@ -328,6 +345,13 @@ namespace Atlas
 		void JoinLeagueDianjiangResult(CSGClient* pClient, _U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self);								
 		void QueryLeagueDianjiangRewardResult(CSGClient* pClient, _U8 ret, _U32 reputation);											
 		void LeagueDianjiangSummonNPCResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner);
+
+		void QueryAstrologyBagResult(CSGClient* pClient, const _U32* bag_list, _U32 count1, const _U32* tmp_bag_list, _U32 count2);
+		void SaveToBagResult(CSGClient* pClient, _U8 ret, _U32 item_id);
+		void SetAstrologyBallStatusResult(CSGClient* pClient, _U8 ret, const SG_GENERAL& general);
+		void EnhanceAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
+		void BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id);
+		void StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id);
 
 	public:
 		virtual void OnLoginDone();

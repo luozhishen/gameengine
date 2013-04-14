@@ -262,10 +262,7 @@ namespace Atlas
 
 			ATLAS_ASSERT(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_DONE);
 
-			int ret = ProcessRequest(m_pCurrentRequest);
-			MORequestDestory(m_pCurrentRequest);
-			m_pCurrentRequest = NULL;
-			if(ret==MOERROR_NOERROR)
+			if(ProcessRequest(m_pCurrentRequest)==MOERROR_NOERROR)
 			{
 				m_SendQueue.pop_front();
 				m_nRequestSeq++;
@@ -275,6 +272,8 @@ namespace Atlas
 					m_StateCallback(m_nHttpState);
 				}
 			}
+			MORequestDestory(m_pCurrentRequest);
+			m_pCurrentRequest = NULL;
 		}
 	}
 
@@ -334,8 +333,6 @@ namespace Atlas
 		if(!reader.parse(result, result+strlen(result), root) || !root.isMember("response") || !root["response"].isArray())
 		{
 			CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
-			MORequestDestory(request);
-			request = NULL;
 			return MOERROR_UNKNOWN;
 		}
 

@@ -5,36 +5,30 @@
 #pragma warning(disable:4121)
 
 #include <AtlasSTL.h>
+#include <crtdbg.h>
 #include "mosdk.h"
 #include "mo_common.h"
 
 #include <windows.h>
 #include <wininet.h>
 
-static bool http_request(MOREQUEST* request, INTERNET_STATUS_CALLBACK callback, const char* url, const char* postdata);
+static bool http_request(MOREQUEST* request, const char* url, const char* postdata);
+static char g_TypeSpec[] = "Content-Type: application/x-www-form-urlencoded\r\n";
+static char g_AcceptType[] = "*/*";
 
 struct MOREQUEST
 {
-	HINTERNET _session;
 	HINTERNET _connect;
 	HINTERNET _request;
 	Atlas::String _result;
 	FILE* _file;
 	MOREQUESTSTATE _state;
 	Atlas::String _postdata;
+	char buf[1000];
 };
 
-static void CALLBACK requeststring_callback(HINTERNET hInternet, DWORD_PTR dwContext, DWORD dwInternetStatus, LPVOID lpvStatusInformation, DWORD dwStatusInformationLength)
+static void CALLBACK request_callback(HINTERNET hInternet, DWORD_PTR dwContext, DWORD dwInternetStatus, LPVOID lpvStatusInformation, DWORD dwStatusInformationLength)
 {
-	char tmp[1000];
-	static DWORD prev_status_0 = 0, prev_status_1 = 0;
-	sprintf(tmp, "state=%d %d %p\n", dwInternetStatus, GetCurrentThreadId(), hInternet);
-	OutputDebugStringA(tmp);
-	if(dwInternetStatus==41 && prev_status_1==40 && prev_status_0==100) {
-//		DebugBreak();
-	}
-	prev_status_0 = prev_status_1;
-	prev_status_1 = dwInternetStatus;
 	if(INTERNET_STATUS_REQUEST_COMPLETE!=dwInternetStatus) return;
 	LPINTERNET_ASYNC_RESULT res = (LPINTERNET_ASYNC_RESULT)lpvStatusInformation;
 	MOREQUEST* request = (MOREQUEST*)dwContext;
@@ -42,67 +36,70 @@ static void CALLBACK requeststring_callback(HINTERNET hInternet, DWORD_PTR dwCon
 	if(!res->dwResult)
 	{
 		request->_state = MOREQUESTSTATE_FAILED;
+		_RPT1(_CRT_WARN, "callback return error = %d", res->dwError);
 		return;
 	}
 
-	DWORD len;
-	char buf[1000];
-
+	DWORD len = 0;
+//	char buf[1000];
 	for(;;)
 	{
+		INTERNET_BUFFERS ib = { sizeof(INTERNET_BUFFERS) };
+		ib.lpvBuffer = request->buf;
+		ib.dwBufferLength = sizeof(request->buf) - 1;
+		if(!InternetReadFileEx(request->_request, &ib, IRF_ASYNC, (LPARAM)request))
+		{
+			if(GetLastError()!=ERROR_IO_PENDING)
+			{
+				request->_state = MOREQUESTSTATE_FAILED;
+				_RPT1(_CRT_WARN, "InternetReadFileEx return error = %d", GetLastError());
+			}
+			return;
+		}
+		len = ib.dwBufferLength;
+		if(len==0) break;
+		/*
 		if(!InternetReadFile(request->_request, buf, sizeof(buf)-1, &len))
 		{
-			request->_state = MOREQUESTSTATE_FAILED;
+			if(GetLastError()!=ERROR_IO_PENDING)
+			{
+				request->_state = MOREQUESTSTATE_FAILED;
+			}
 			return;
 		}
 		if(len==0) break;
-		buf[len] = '\0';
-		request->_result += buf;
+		*/
+
+		if(request->_file)
+		{
+			fwrite(request->buf, 1, len, request->_file);
+		}
+		else
+		{
+			request->buf[len] = '\0';
+			request->_result += request->buf;
+		}
 	}
 
 	request->_state = MOREQUESTSTATE_DONE;
 }
 
-static void CALLBACK requestfile_callback(HINTERNET hInternet, DWORD_PTR dwContext, DWORD dwInternetStatus, LPVOID lpvStatusInformation, DWORD dwStatusInformationLength)
+class MO_REQUEST_WIN32_INIT
 {
-	if(INTERNET_STATUS_REQUEST_COMPLETE!=dwInternetStatus && INTERNET_STATUS_RESPONSE_RECEIVED!=dwInternetStatus) return;
-
-	MOREQUEST* request = (MOREQUEST*)dwContext;
-	if(request->_state!=MOREQUESTSTATE_PENDING) return;
-
-	if(INTERNET_STATUS_REQUEST_COMPLETE==dwInternetStatus)
+public:
+	MO_REQUEST_WIN32_INIT()
 	{
-		LPINTERNET_ASYNC_RESULT res = (LPINTERNET_ASYNC_RESULT)lpvStatusInformation;
-		if(!res->dwResult)
-		{
-			request->_state = MOREQUESTSTATE_FAILED;
-			return;
-		}
+		_session = InternetOpenA("MO_CLIENT", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, INTERNET_FLAG_ASYNC);
+		InternetSetStatusCallback(_session, request_callback);
 	}
-
-	DWORD len, got;
-	char buf[10*1024];
-	for(;;)
+	~MO_REQUEST_WIN32_INIT()
 	{
-		if(!InternetQueryDataAvailable(request->_request, &len, NULL, NULL))
-		{
-			request->_state = MOREQUESTSTATE_FAILED;
-			return;
-		}
-		if(INTERNET_STATUS_REQUEST_COMPLETE!=dwInternetStatus && len==0) return;
-
-		if(!InternetReadFile(request->_request, buf, sizeof(buf), &got))
-		{
-			request->_state = MOREQUESTSTATE_FAILED;
-			return;
-		}
-		if(got==0) break;
-
-		fwrite(buf, 1, got, request->_file);
+		InternetSetStatusCallback(_session, NULL);
+		CloseHandle(_session);
 	}
-
-	request->_state = MOREQUESTSTATE_DONE;
-}
+	HINTERNET _session;
+};
+static MO_REQUEST_WIN32_INIT g_MO_REQUEST_WIN32_INIT;
 
 MOREQUEST* MORequestString(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params)
 {
@@ -129,7 +126,7 @@ MOREQUEST* MORequestString(const char* url, const char* postdata)
 {
 	MOREQUEST* request = new MOREQUEST;
 	request->_file = NULL;
-	if(http_request(request, requeststring_callback, url, postdata))
+	if(http_request(request, url, postdata))
 	{
 		return request;
 	}
@@ -147,7 +144,7 @@ MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* pat
 
 	MOREQUEST* request = new MOREQUEST;
 	request->_file = file;
-	if(http_request(request, requestfile_callback, url, postdata))
+	if(http_request(request, url, postdata))
 	{
 		return request;
 	}
@@ -167,10 +164,10 @@ MOREQUEST* MOUploadFiles(const char* url, const char* postdata, const Atlas::Map
 void MORequestDestory(MOREQUEST* request)
 {
 	while(request->_state==MOREQUESTSTATE_PENDING) SwitchToThread();
-	InternetSetStatusCallback(request->_session, NULL);
+//	InternetSetStatusCallback(request->_session, NULL);
 	InternetCloseHandle(request->_request);
 	InternetCloseHandle(request->_connect);
-	InternetCloseHandle(request->_session);
+//	InternetCloseHandle(request->_session);
 	delete request;
 }
 
@@ -189,11 +186,8 @@ int MORequestGetResultLength(MOREQUEST* request)
 	return (int)(request->_result.size());
 }
 
-bool http_request(MOREQUEST* request, INTERNET_STATUS_CALLBACK callback, const char* url, const char* postdata)
+bool http_request(MOREQUEST* request, const char* url, const char* postdata)
 {
-	static char g_TypeSpec[] = "Content-Type: application/x-www-form-urlencoded\r\n";
-	static char g_AcceptType[] = "*/*";
-
 	URL_COMPONENTSA urlcomps;
 	CHAR buf0[256], buf1[256], buf2[256], buf3[256], buf4[1024], buf5[1024];
 	ZeroMemory(&urlcomps, sizeof(urlcomps));
@@ -212,54 +206,42 @@ bool http_request(MOREQUEST* request, INTERNET_STATUS_CALLBACK callback, const c
 	urlcomps.dwExtraInfoLength = sizeof(buf5);
 	if(!InternetCrackUrlA(url, (DWORD)strlen(url), 0, &urlcomps)) return false;
 
-	request->_session = InternetOpenA("MO_CLIENT", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, INTERNET_FLAG_ASYNC);
-	if(request->_session)
+	request->_connect = InternetConnectA(g_MO_REQUEST_WIN32_INIT._session, urlcomps.lpszHostName, urlcomps.nPort, urlcomps.lpszUserName, urlcomps.lpszPassword, INTERNET_SERVICE_HTTP, INTERNET_FLAG_EXISTING_CONNECT, (DWORD_PTR)request);
+	if(request->_connect)
 	{
-		InternetSetStatusCallback(request->_session, callback);
-		char tmp[1000];
-		sprintf(tmp, "current thread id = %d %p\n", GetCurrentThreadId(), request->_session);
-		OutputDebugStringA(tmp);
-		request->_connect = InternetConnectA(request->_session, urlcomps.lpszHostName, urlcomps.nPort, urlcomps.lpszUserName, urlcomps.lpszPassword, INTERNET_SERVICE_HTTP, INTERNET_FLAG_EXISTING_CONNECT, (DWORD_PTR)request);
-
-		sprintf(tmp, "InternetConnectA %d %p\n", GetCurrentThreadId(), request->_connect);
-		OutputDebugStringA(tmp);
-		if(request->_connect)
+		request->_state = MOREQUESTSTATE_PENDING;
+		request->_result = "";
+		request->_postdata = postdata;
+		DWORD flag = INTERNET_FLAG_NO_UI|INTERNET_FLAG_NO_CACHE_WRITE|INTERNET_FLAG_PRAGMA_NOCACHE|INTERNET_FLAG_RELOAD;
+		if(urlcomps.nScheme==INTERNET_SCHEME_HTTPS) flag |= INTERNET_FLAG_SECURE;
+		Atlas::String urlpath;
+		urlpath = urlcomps.lpszUrlPath;
+		urlpath += urlcomps.lpszExtraInfo;
+		request->_request = HttpOpenRequestA(request->_connect, request->_postdata.empty()?"GET":"POST", urlpath.c_str(), NULL, NULL, NULL, flag, (DWORD_PTR)request);
+		if(request->_request)
 		{
-			request->_state = MOREQUESTSTATE_PENDING;
-			request->_result = "";
-			DWORD flag = INTERNET_FLAG_NO_UI|INTERNET_FLAG_NO_CACHE_WRITE|INTERNET_FLAG_PRAGMA_NOCACHE|INTERNET_FLAG_RELOAD;
-			if(urlcomps.nScheme==INTERNET_SCHEME_HTTPS) flag |= INTERNET_FLAG_SECURE;
-			Atlas::String urlpath;
-			urlpath = urlcomps.lpszUrlPath;
-			urlpath += urlcomps.lpszExtraInfo;
-			request->_request = HttpOpenRequestA(request->_connect, postdata?"POST":"GET", urlpath.c_str(), NULL, NULL, NULL, flag, (DWORD_PTR)request);
-			sprintf(tmp, "HttpOpenRequestA %d %p\n", GetCurrentThreadId(), request->_request);
-			OutputDebugStringA(tmp);
-			if(request->_request)
+			BOOL result;
+			if(request->_postdata.empty())
 			{
-				BOOL result;
-				if(postdata)
-				{
-					request->_postdata = postdata;
-					postdata = request->_postdata.c_str();
-					result = HttpSendRequestA(request->_request, g_TypeSpec, (DWORD)strlen(g_TypeSpec), (LPVOID)postdata, (DWORD)strlen(postdata));
-					sprintf(tmp, "HttpSendRequestA %d %p\n", GetCurrentThreadId(), request->_request);
-					OutputDebugStringA(tmp);
-				}
-				else
-				{
-					result = HttpSendRequestA(request->_request, NULL, 0, NULL, 0);
-					sprintf(tmp, "HttpSendRequestA %d %p\n", GetCurrentThreadId(), request->_request);
-					OutputDebugStringA(tmp);
-				}
-
-				if(result || GetLastError()==ERROR_IO_PENDING) return true;
-				InternetCloseHandle(request->_request);
+				result = HttpSendRequestA(request->_request, NULL, 0, NULL, 0);
 			}
-			InternetCloseHandle(request->_connect);
+			else
+			{
+				result = HttpSendRequestA(request->_request, g_TypeSpec, (DWORD)strlen(g_TypeSpec), (LPVOID)request->_postdata.c_str(), (DWORD)request->_postdata.size());
+			}
+
+			if(result || GetLastError()==ERROR_IO_PENDING) return true;
+			{
+				INTERNET_BUFFERS ib = { sizeof(INTERNET_BUFFERS) };
+				ib.lpvBuffer = request->buf;
+				ib.dwBufferLength = 0;//sizeof(request->buf);
+				result = InternetReadFileEx(request->_request, &ib, IRF_ASYNC, (LPARAM)request);
+				if(result || GetLastError()==ERROR_IO_PENDING) return true;
+			}
+
+			InternetCloseHandle(request->_request);
 		}
-		InternetSetStatusCallback(request->_session, NULL);
-		InternetCloseHandle(request->_session);
+		InternetCloseHandle(request->_connect);
 	}
 	return false;
 }

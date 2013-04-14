@@ -106,7 +106,10 @@ namespace Atlas
 	{
 		if(m_pClient->GetState()==Atlas::CClient::STATE_NA || m_pClient->GetState()==Atlas::CClient::STATE_FAILED)
 		{
-			m_pClient->LoginForStress(m_nIndex);
+			if(m_pClient->LoginForStress(m_nIndex))
+			{
+				SetTitle("Logining...");
+			}
 		}
 	}
 

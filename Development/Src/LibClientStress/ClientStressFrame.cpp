@@ -334,6 +334,7 @@ void CClientStressFrame::OnLogin(wxCommandEvent& event)
 		if(!pClient) continue;
 		pClient->Login();
 	}
+	UpdateClientList();
 }
 
 void CClientStressFrame::OnLogout(wxCommandEvent& event)

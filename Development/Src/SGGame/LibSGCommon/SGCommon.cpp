@@ -68,6 +68,9 @@ namespace Atlas
 		{"SG_ASTROLOGY_BALL_CONFIG", "SG_ASTROLOGY_BALL_CONFIG.json", "item_id"},
 		{"SG_ASTROLOGER_CONFIG", "SG_ASTROLOGER_CONFIG.json", "astrologer_id"},
 		{"SG_GENERAL_ASTROLOG_SLOT_CONFIG", "SG_GENERAL_ASTROLOG_SLOT_CONFIG.json", "general_level"},
+
+		{"SG_LOOT_ITEM_CONFIG", "SG_LOOT_ITEM_CONFIG.json", "loot_id"},
+		
 		
 	};
 
@@ -191,6 +194,10 @@ namespace Atlas
 		pContentGroup->Register(DDLReflect::GetStruct< SG_ASTROLOGER_CONFIG >(), true, g_JsonContent[i++].keys);
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_GENERAL_ASTROLOG_SLOT_CONFIG >(), true, g_JsonContent[i++].keys);
+
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_LOOT_ITEM_CONFIG >(), true, g_JsonContent[i++].keys);
+		
 	}
 
 	void InitLiveObjects()

@@ -2735,6 +2735,88 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_LOOT_ITEM_CONFIG>(SG_LOOT_ITEM_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.loot_id)) return false;
+		if(!Read<_U32>(Value.num)) return false;
+		if(!Read<_U32>(Value.group_id1)) return false;
+		if(!Read<_U8>(Value.group_rate1)) return false;
+		if(!Read<_U32>(Value.group_id2)) return false;
+		if(!Read<_U8>(Value.group_rate2)) return false;
+		if(!Read<_U32>(Value.group_id3)) return false;
+		if(!Read<_U8>(Value.group_rate3)) return false;
+		if(!Read<_U32>(Value.group_id4)) return false;
+		if(!Read<_U8>(Value.group_rate4)) return false;
+		if(!Read<_U32>(Value.group_id5)) return false;
+		if(!Read<_U8>(Value.group_rate5)) return false;
+		if(!Read<_U32>(Value.group_id6)) return false;
+		if(!Read<_U8>(Value.group_rate6)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LOOT_ITEM_CONFIG>(const SG_LOOT_ITEM_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.loot_id)) return false;
+		if(!Write<_U32>(Value.num)) return false;
+		if(!Write<_U32>(Value.group_id1)) return false;
+		if(!Write<_U8>(Value.group_rate1)) return false;
+		if(!Write<_U32>(Value.group_id2)) return false;
+		if(!Write<_U8>(Value.group_rate2)) return false;
+		if(!Write<_U32>(Value.group_id3)) return false;
+		if(!Write<_U8>(Value.group_rate3)) return false;
+		if(!Write<_U32>(Value.group_id4)) return false;
+		if(!Write<_U8>(Value.group_rate4)) return false;
+		if(!Write<_U32>(Value.group_id5)) return false;
+		if(!Write<_U8>(Value.group_rate5)) return false;
+		if(!Write<_U32>(Value.group_id6)) return false;
+		if(!Write<_U8>(Value.group_rate6)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LOOT_ITEM_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LOOT_ITEM_CONFIG>(*((SG_LOOT_ITEM_CONFIG*)data));
+	}
+
+	static bool _struct_SG_LOOT_ITEM_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LOOT_ITEM_CONFIG>(*((const SG_LOOT_ITEM_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LOOT_ITEM_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "loot_id", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, loot_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "num", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "group_id1", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate1", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id2", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate2", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id3", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate3", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id4", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate4", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id5", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate5", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id6", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate6", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LOOT_ITEM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LOOT_ITEM_CONFIG", sizeof(SG_LOOT_ITEM_CONFIG), 14, _struct_SG_LOOT_ITEM_CONFIG_fieldinfo, _struct_SG_LOOT_ITEM_CONFIG_readproc, _struct_SG_LOOT_ITEM_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LOOT_ITEM_CONFIG>()
+	{
+		return &_rfl_struct_SG_LOOT_ITEM_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_ATTR_MOD_CONFIG>(SG_ATTR_MOD_CONFIG& Value)
 	{
 		if(!Read<_F32>(Value.MOD_HPAddition)) return false;
@@ -5144,6 +5226,11 @@ namespace DDLReflect
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 104 Strology
 		{TYPE_U32, "astrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 105 UseItem
+		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 106 UseItem2
+		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "target_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -5252,8 +5339,10 @@ namespace DDLReflect
 		{"EnhanceAstrologyBall", 1, _class_SGGAME_C2S_fieldinfos+95},
 		{"BuyAstrologyBall", 1, _class_SGGAME_C2S_fieldinfos+96},
 		{"Strology", 1, _class_SGGAME_C2S_fieldinfos+97},
+		{"UseItem", 1, _class_SGGAME_C2S_fieldinfos+98},
+		{"UseItem2", 2, _class_SGGAME_C2S_fieldinfos+99},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 105, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 107, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -5532,6 +5621,13 @@ namespace DDLReflect
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "atrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 82 UseItemResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 83 UseItemResult2
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "target_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
@@ -5617,8 +5713,10 @@ namespace DDLReflect
 		{"EnhanceAstrologyBallResult", 4, _class_SGGAME_S2C_fieldinfos+174},
 		{"BuyAstrologyBallResult", 3, _class_SGGAME_S2C_fieldinfos+178},
 		{"StrologyResult", 4, _class_SGGAME_S2C_fieldinfos+181},
+		{"UseItemResult", 2, _class_SGGAME_S2C_fieldinfos+185},
+		{"UseItemResult2", 3, _class_SGGAME_S2C_fieldinfos+187},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 82, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 84, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

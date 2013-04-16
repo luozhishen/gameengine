@@ -1374,6 +1374,39 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_DROP_ITEM_CONFIG_info;
 }
 
+struct SG_LOOT_ITEM_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 loot_id;
+	_U32 num;
+	_U32 group_id1;
+	_U8 group_rate1;
+	_U32 group_id2;
+	_U8 group_rate2;
+	_U32 group_id3;
+	_U8 group_rate3;
+	_U32 group_id4;
+	_U8 group_rate4;
+	_U32 group_id5;
+	_U8 group_rate5;
+	_U32 group_id6;
+	_U8 group_rate6;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LOOT_ITEM_CONFIG>(SG_LOOT_ITEM_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_LOOT_ITEM_CONFIG>(const SG_LOOT_ITEM_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LOOT_ITEM_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_LOOT_ITEM_CONFIG_info;
+}
+
 struct SG_ATTR_MOD_CONFIG
 {
 	_F32 MOD_HPAddition;
@@ -3544,6 +3577,31 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Strology(Caller, _prefix_astrologer_id);
 				return true;
 			}
+			if(fid==105)
+			{
+				_U32 _prefix_item_id;
+
+				// <_U32> <item_id> <> <>;
+				if(!Buf.Read(_prefix_item_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UseItem(Caller, _prefix_item_id);
+				return true;
+			}
+			if(fid==106)
+			{
+				_U32 _prefix_item_id;
+				_U32 _prefix_target_id;
+
+				// <_U32> <item_id> <> <>;
+				if(!Buf.Read(_prefix_item_id)) return false;
+				// <_U32> <target_id> <> <>;
+				if(!Buf.Read(_prefix_target_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UseItem2(Caller, _prefix_item_id, _prefix_target_id);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -4643,6 +4701,28 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 104, Buf);
+		}
+
+		bool UseItem(_U32 item_id)
+		{
+			BUFFER Buf;
+			// <_U32> <item_id> <> <>
+			if(!Buf.Write(item_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 105, Buf);
+		}
+
+		bool UseItem2(_U32 item_id, _U32 target_id)
+		{
+			BUFFER Buf;
+			// <_U32> <item_id> <> <>
+			if(!Buf.Write(item_id)) return false;
+			// <_U32> <target_id> <> <>
+			if(!Buf.Write(target_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 106, Buf);
 		}
 	};
 
@@ -6010,6 +6090,37 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->StrologyResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_id, _prefix_atrologer_id);
 				return true;
 			}
+			if(fid==82)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_item_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <item_id> <> <>;
+				if(!Buf.Read(_prefix_item_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UseItemResult(Caller, _prefix_ret, _prefix_item_id);
+				return true;
+			}
+			if(fid==83)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_item_id;
+				_U32 _prefix_target_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <item_id> <> <>;
+				if(!Buf.Read(_prefix_item_id)) return false;
+				// <_U32> <target_id> <> <>;
+				if(!Buf.Read(_prefix_target_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UseItemResult2(Caller, _prefix_ret, _prefix_item_id, _prefix_target_id);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -7154,6 +7265,32 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
+		}
+
+		bool UseItemResult(_U8 ret, _U32 item_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <item_id> <> <>
+			if(!Buf.Write(item_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
+		}
+
+		bool UseItemResult2(_U8 ret, _U32 item_id, _U32 target_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <item_id> <> <>
+			if(!Buf.Write(item_id)) return false;
+			// <_U32> <target_id> <> <>
+			if(!Buf.Write(target_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
 		}
 	};
 

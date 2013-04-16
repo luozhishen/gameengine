@@ -109,6 +109,9 @@ namespace Atlas
 		virtual void EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id) = 0;
 		virtual void BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id) = 0;
 		virtual void StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id) = 0;
+
+		virtual void UseItemResult(_U8 ret, _U32 item_id) = 0;
+		virtual void UseItemResult2(_U8 ret, _U32 item_id, _U32 target_id) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -254,6 +257,9 @@ namespace Atlas
 		void BuyAstrologyBall(_U32 ball_id);									//购买命魂
 		void Strology(_U32 astrologer_id);										//占星
 
+		void UseItem(_U32 item_id);												//使用可使用的物品
+		void UseItem2(_U32 item_id, _U32 target_id);
+
 		//result
 		void Pong(CSGClient* pClient);
 
@@ -352,6 +358,9 @@ namespace Atlas
 		void EnhanceAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
 		void BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id);
 		void StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id);
+
+		void UseItemResult(CSGClient* pClient, _U8 ret, _U32 item_id);
+		void UseItemResult2(CSGClient* pClient, _U8 ret, _U32 item_id, _U32 target_id);
 
 	public:
 		virtual void OnLoginDone();

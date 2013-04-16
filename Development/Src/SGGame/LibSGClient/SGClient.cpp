@@ -814,7 +814,21 @@ namespace Atlas
 
 	void CSGClient::QueryAstrologyBag()
 	{
-		m_C2S.QueryAstrologyBag();
+		//m_C2S.QueryAstrologyBag();
+
+		//for test ui
+		if(m_callback)
+		{
+			Atlas::Vector<_U32> vecBag;
+			
+			vecBag.push_back(50101);
+			vecBag.push_back(50201);
+			vecBag.push_back(50301);
+			vecBag.push_back(50401);
+			vecBag.push_back(50501);
+			
+			m_callback->QueryAstrologyBagResult(vecBag.data(), (_U32)vecBag.size(),vecBag.data(), (_U32)vecBag.size());
+		}
 	}
 
 	void CSGClient::SaveToBag(_U32 item_id)
@@ -839,9 +853,26 @@ namespace Atlas
 
 	void CSGClient::Strology(_U32 astrologer_id)
 	{
-		m_C2S.Strology(astrologer_id);
+		//m_C2S.Strology(astrologer_id);
+
+		if(m_callback)
+		{
+			_U32 new_astrologer_id = astrologer_id >= 5 ? 5 : astrologer_id+1;
+			_U32 ball_id = 50101 + (new_astrologer_id -1)*100;
+			m_callback->StrologyResult(0, 0, ball_id, new_astrologer_id);
+		}
+	}
+
+	void CSGClient::UseItem(_U32 item_id)
+	{
+		m_C2S.UseItem(item_id);
 	}
 	
+	void CSGClient::UseItem2(_U32 item_id, _U32 target_id)
+	{
+		m_C2S.UseItem2(item_id, target_id);
+	}
+
 	void CSGClient::Pong(CSGClient* pClient)
 	{
 		if(m_callback)
@@ -1904,6 +1935,35 @@ namespace Atlas
 		if(m_callback)
 		{
 			m_callback->StrologyResult(ret, gold, ball_id, astrologer_id);
+		}
+	}
+
+	void CSGClient::UseItemResult(CSGClient* pClient, _U8 ret, _U32 item_id)
+	{
+		if(m_callback)
+		{
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+			SyncSet(vecSync);
+
+			m_callback->UseItemResult(ret, item_id);
+		}
+	}
+
+	void CSGClient::UseItemResult2(CSGClient* pClient, _U8 ret, _U32 item_id, _U32 target_id)
+	{
+		if(m_callback)
+		{
+			//help to sync data
+			Atlas::Vector<_U8> vecSync;
+			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
+			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+			SyncSet(vecSync);
+
+			m_callback->UseItemResult(ret, item_id);
 		}
 	}
 

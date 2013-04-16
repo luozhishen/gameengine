@@ -445,7 +445,7 @@ task[GEN_STRUCT_REFLECT(SG_LEAGUE_TOAST_CONFIG)];
 struct SG_LEAGUE_DIANJIANG_CONFIG : A_CONTENT_OBJECT
 {
 	_U32								consume_npc_gold;		//召唤npc所需金币
-	_U32								reward_reputation;		//奖励军功/声望
+	_U32								reward_reputation;		//奖励军功声望
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_DIANJIANG_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_DIANJIANG_CONFIG)];
@@ -817,6 +817,27 @@ struct SG_DROP_ITEM_CONFIG : SG_DROP_ITEM_BASE
 };
 task[GEN_STRUCT_SERIALIZE(SG_DROP_ITEM_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_DROP_ITEM_CONFIG)];
+
+//宝箱掉落
+struct SG_LOOT_ITEM_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								loot_id;
+	_U32								num;
+	_U32								group_id1;
+	_U8									group_rate1;
+	_U32								group_id2;
+	_U8									group_rate2;
+	_U32								group_id3;
+	_U8									group_rate3;
+	_U32								group_id4;
+	_U8									group_rate4;
+	_U32								group_id5;
+	_U8									group_rate5;
+	_U32								group_id6;
+	_U8									group_rate6;
+};
+task[GEN_STRUCT_SERIALIZE(SG_LOOT_ITEM_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_LOOT_ITEM_CONFIG)];
 
 struct SG_ATTR_MOD_CONFIG
 {
@@ -1462,6 +1483,9 @@ class SGGAME_C2S
 	EnhanceAstrologyBall(_U32 ball_id);									//升级命魂
 	BuyAstrologyBall(_U32 ball_id);										//购买命魂
 	Strology(_U32 astrologer_id);										//占星
+
+	UseItem(_U32 item_id);												//使用可使用物品
+	UseItem2(_U32 item_id, _U32 target_id);								//使用可使用物品 target_id 可填 [ 武将id ]
 };
 
 class SGGAME_S2C
@@ -1567,6 +1591,9 @@ class SGGAME_S2C
 	EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
 	BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id);
 	StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id);
+
+	UseItemResult(_U8 ret, _U32 item_id);																//使用可使用物品
+	UseItemResult2(_U8 ret, _U32 item_id, _U32 target_id);												//使用可使用物品
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

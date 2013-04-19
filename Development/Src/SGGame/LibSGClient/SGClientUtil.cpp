@@ -391,4 +391,30 @@ namespace Atlas
 		return bRet;
 	}
 
+
+	void SGClientUtil::UpdateGeneralSoulBall(SG_PLAYER& player_info, Atlas::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general)
+	{
+		if(new_general.general_id == player_info.general_id)
+		{
+			player_info.minghun_slots.Resize(6);
+			for(_U32 i = 0; i < 6; ++i)
+			{
+				player_info.minghun_slots._Array[i] = new_general.minghun_slots._Array[i];
+			}
+		}
+
+		for(Atlas::Vector<SG_GENERAL>::iterator it = generals.begin(); it != generals.end(); ++it)
+		{
+			if((*it).general_id == new_general.general_id)
+			{
+				(*it).minghun_slots.Resize(6);
+				for(_U32 i = 0; i < 6; ++i)
+				{
+					(*it).minghun_slots._Array[i] = new_general.minghun_slots._Array[i];
+				}
+
+				break;
+			}
+		}
+	}
 }

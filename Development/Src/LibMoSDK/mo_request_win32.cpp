@@ -36,12 +36,11 @@ static void CALLBACK request_callback(HINTERNET hInternet, DWORD_PTR dwContext, 
 	if(!res->dwResult)
 	{
 		request->_state = MOREQUESTSTATE_FAILED;
-		_RPT1(_CRT_WARN, "callback return error = %d", res->dwError);
+		_RPT1(_CRT_WARN, "callback return error = %d\n", res->dwError);
 		return;
 	}
 
 	DWORD len = 0;
-//	char buf[1000];
 	for(;;)
 	{
 		INTERNET_BUFFERS ib = { sizeof(INTERNET_BUFFERS) };
@@ -52,23 +51,12 @@ static void CALLBACK request_callback(HINTERNET hInternet, DWORD_PTR dwContext, 
 			if(GetLastError()!=ERROR_IO_PENDING)
 			{
 				request->_state = MOREQUESTSTATE_FAILED;
-				_RPT1(_CRT_WARN, "InternetReadFileEx return error = %d", GetLastError());
+				_RPT1(_CRT_WARN, "InternetReadFileEx return error = %d\n", GetLastError());
 			}
 			return;
 		}
 		len = ib.dwBufferLength;
 		if(len==0) break;
-		/*
-		if(!InternetReadFile(request->_request, buf, sizeof(buf)-1, &len))
-		{
-			if(GetLastError()!=ERROR_IO_PENDING)
-			{
-				request->_state = MOREQUESTSTATE_FAILED;
-			}
-			return;
-		}
-		if(len==0) break;
-		*/
 
 		if(request->_file)
 		{
@@ -95,7 +83,7 @@ public:
 	~MO_REQUEST_WIN32_INIT()
 	{
 		InternetSetStatusCallback(_session, NULL);
-		CloseHandle(_session);
+		InternetCloseHandle(_session);
 	}
 	HINTERNET _session;
 };

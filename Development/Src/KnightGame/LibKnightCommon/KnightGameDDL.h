@@ -585,6 +585,41 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Boardcast(Caller, _prefix_msg);
 				return true;
 			}
+			if(fid==6)
+			{
+				_U32 _prefix_index;
+
+				// <_U32> <index> <> <>;
+				if(!Buf.Read(_prefix_index)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RoomJoin(Caller, _prefix_index);
+				return true;
+			}
+			if(fid==7)
+			{
+				_U32 __length;
+				char* _prefix_msg;
+
+				// <string> <msg> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_msg = (char*)alloca(sizeof(_prefix_msg[0])*(__length+1));
+				if(!_prefix_msg) return false;
+				if(!Buf.ReadBuffer(_prefix_msg, (unsigned int)sizeof(_prefix_msg[0])*__length)) return false;
+				_prefix_msg[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RoomChat(Caller, _prefix_msg);
+				return true;
+			}
+			if(fid==8)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RoomLeave(Caller);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -670,6 +705,37 @@ namespace DDLProxy
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
 		}
+
+		bool RoomJoin(_U32 index)
+		{
+			BUFFER Buf;
+			// <_U32> <index> <> <>
+			if(!Buf.Write(index)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+		}
+
+		bool RoomChat(const char* msg)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <msg> <> <>
+			__length = DDL::StringLength(msg);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(msg, (unsigned int)sizeof(msg[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
+		}
+
+		bool RoomLeave()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
+		}
 	};
 
 }
@@ -739,6 +805,44 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BoardcastCallback(Caller, _prefix_uid, _prefix_msg);
 				return true;
 			}
+			if(fid==3)
+			{
+				_U32 _prefix_result;
+
+				// <_U32> <result> <> <>;
+				if(!Buf.Read(_prefix_result)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RoomJoinCallback(Caller, _prefix_result);
+				return true;
+			}
+			if(fid==4)
+			{
+				_U32 __length;
+				_U32 _prefix_index;
+				char* _prefix_msg;
+
+				// <_U32> <index> <> <>;
+				if(!Buf.Read(_prefix_index)) return false;
+				// <string> <msg> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_msg = (char*)alloca(sizeof(_prefix_msg[0])*(__length+1));
+				if(!_prefix_msg) return false;
+				if(!Buf.ReadBuffer(_prefix_msg, (unsigned int)sizeof(_prefix_msg[0])*__length)) return false;
+				_prefix_msg[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RoomChatCallback(Caller, _prefix_index, _prefix_msg);
+				return true;
+			}
+			if(fid==5)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RoomLeaveCallback(Caller);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -798,6 +902,39 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+		}
+
+		bool RoomJoinCallback(_U32 result)
+		{
+			BUFFER Buf;
+			// <_U32> <result> <> <>
+			if(!Buf.Write(result)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+		}
+
+		bool RoomChatCallback(_U32 index, const char* msg)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <index> <> <>
+			if(!Buf.Write(index)) return false;
+			// <string> <msg> <> <>
+			__length = DDL::StringLength(msg);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(msg, (unsigned int)sizeof(msg[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+		}
+
+		bool RoomLeaveCallback()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
 		}
 	};
 

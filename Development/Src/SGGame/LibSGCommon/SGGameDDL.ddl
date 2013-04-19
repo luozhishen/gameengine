@@ -160,6 +160,87 @@ const _U32 SG_ASTROLOGY_BALL_DESC_MAX = 128;
 const _U32 SG_ASTROLOGER_NAME_MAX = 32;
 const _U32 SG_ASTROLOGER_DESC_MAX = 128;
 
+//horse
+const _U32	SG_HORSE_NAME_MAX = 32;
+const _U32	SG_HORSE_MESH_MAX = 512;
+const _U32	SG_HORSE_DESC_MAX = 512;
+
+//zhanjiang level
+const _U32 SG_ZHANJIANG_LEVEL_LD_MAX = 512;
+
+struct SG_ZHANJIANG_LEVEL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32										level_id;			//关卡
+	//_U32										general_id;			//武将
+	string<SG_TEX_MAX>							general_tex;		//武将tex
+	_U32										U;					
+	_U32										V;					
+	_U32										UL;
+	_U32										VL;
+			
+	string<SG_ZHANJIANG_LEVEL_LD_MAX>			LD_map;				//对应LD地图
+	_U32										reward_gold;		//铜钱奖励
+	_U32										reward_exp;			//经验奖励
+	_U32										reward_reputation;	//奖励军功
+
+	_U32										reward_item1;		//道具奖励1
+	_F32										reward_rate1;		//道具几率1
+	_U32										reward_item2;		//奖励2
+	_F32										reward_rate2;		//几率2
+	_U32										reward_item3;		//奖励3
+	_F32										reward_rate3;		//几率3
+
+};
+task[GEN_STRUCT_SERIALIZE(SG_ZHANJIANG_LEVEL_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_ZHANJIANG_LEVEL_CONFIG)];
+
+//horse
+struct SG_HORSE_CONFIG : A_CONTENT_OBJECT
+{
+	_U32										horse_level;		//坐骑等级
+	string<SG_HORSE_NAME_MAX>					horse_name;			//坐骑名字
+	_U8											horse_star;			//坐骑星级
+	_U32										req_exp;			//需求经验
+	_U32										consume_gold;		//消耗铜钱
+	_U32										gold_exp;			//铜钱经验
+
+	_F32										gold_10_rate;		//铜钱十倍率
+	_U32										consume_rmb;		//消耗元宝
+	_U32										rmb_exp;			//元宝经验
+
+	_F32										rmb_levelup_rate;	//元宝直升率
+	_F32										rmb_10_rate;		//元宝十倍率
+
+	_F32										restore_hp_rate;	//每秒回血
+
+	_U32										soldier_hp;			//小兵生命
+	_U32										soldier_atk;		//小兵攻击
+	_U32										soldier_def;		//小兵防御
+
+	_U32										general_hp;			//武将生命
+	_U32										general_atk;		//武将攻击
+	_U32										general_def;		//武将防御
+
+	string<SG_HORSE_MESH_MAX>					mesh;				//坐骑mesh
+};
+task[GEN_STRUCT_SERIALIZE(SG_HORSE_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_HORSE_CONFIG)];
+
+struct SG_HORSE_SETTING_CONFIG : A_CONTENT_OBJECT
+{
+	_U32										unlock_level;		//解锁等级
+	string<SG_HORSE_NAME_MAX>					horse_name;			//坐骑名字
+	string<SG_HORSE_DESC_MAX>					desc;				//描述文字
+	string<SG_TEX_MAX>							tex;				//坐骑tex
+	_U32										U;					
+	_U32										V;					
+	_U32										UL;
+	_U32										VL;
+};
+task[GEN_STRUCT_SERIALIZE(SG_HORSE_SETTING_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_HORSE_SETTING_CONFIG)];
+
+
 //命魂
 struct SG_ASTROLOGER_CONFIG : A_CONTENT_OBJECT
 {
@@ -425,6 +506,7 @@ struct SG_LEAGUE_ACTION_CONFIG : A_CONTENT_OBJECT
 	_U32								action_id;				//活动id
 	string<SG_DAILY_ACTION_NAME_MAX>	action_name;			//活动名字
 	string<SG_DAILY_ACTION_DESC>		desc;					//活动描述
+	_U32								sort_seq;				//显示顺序
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_ACTION_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_ACTION_CONFIG)];
@@ -981,7 +1063,6 @@ struct SG_ASTROLOGY_BALL_CONFIG : SG_ITEM_CONFIG
 {
 	_U32								level;				//命魂等级
 	string<SG_ASTROLOGY_BALL_DESC_MAX>	desc;				//命魂描述
-	_U8									quality;			//品质
 	_U8									attri_type;			//属性枚举 加什么属性
 	_F32								attri_num;			//属性数值 加多少
 	_U32								levelup_ball;		//升级后的命魂ID
@@ -1117,6 +1198,7 @@ struct SG_GENERAL : A_LIVE_OBJECT
 	_U32								exp;
 	_U8									status;				//武将状态 0-未招募 1-在酒馆未在队 2-在酒馆在队
 	SG_EQUIP_SLOTS						equip_slots;
+	array<_U32, 6>						minghun_slots;			//命魂槽 ball_id
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL)];
 task[GEN_STRUCT_REFLECT(SG_GENERAL)];
@@ -1165,8 +1247,7 @@ struct SG_DAILY_ACTION_CONFIG			: A_CONTENT_OBJECT
 	_U32								V;
 	_U32								UL;
 	_U32								VL;
-
-
+	_U32								sort_seq;				//显示排序使用
 };
 task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_CONFIG)];
@@ -1177,6 +1258,7 @@ struct SG_DAILY_ACTION_DESC_CONFIG : A_CONTENT_OBJECT
 	string<SG_DAILY_ACTION_NAME_MAX>	action_name;			//活动名字
 	string<SG_DAILY_ACTION_DESC>		desc;					//活动描述
 	_U8									display_type;			//显示分类
+	_U32								sort_seq;				//显示排序使用
 };
 task[GEN_STRUCT_SERIALIZE(SG_DAILY_ACTION_DESC_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_DESC_CONFIG)];
@@ -1223,6 +1305,12 @@ struct SG_PLAYER : SG_GENERAL
 
 	_U32								last_operation_time;	//最后一次操作时间
 	string<SG_MAP_URL_MAX>				last_town_map;			//最后一次的地图url
+
+	_U32								minghun_value;			//魂力值
+	_U32								current_zhanxing_value;	//目前的占星等级
+
+	_U32								horse_exp;
+	_U32								horse_level;
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];
@@ -1408,7 +1496,7 @@ class SGGAME_C2S
 	UpgradeTitle();													//军衔提升
 	
 	BuyGoods(_U32 item_id);											//商店购买
-	SellItem(A_UUID uuid, _U32 count);								//卖出
+	SellItem(A_UUID uuid, _U32 item_id, _U32 count);				//卖出
 
 	QueryPlayerPVPInfo(_U32 avatar_id);								//获取player pvp信息
 	QueryPlayerRankList();											//获取pvp排行
@@ -1462,7 +1550,7 @@ class SGGAME_C2S
 	QueryActionAvailable(_U32 action_list[count], _U32 count);		//判断活动是否可以进入/激活
 
 	QueryFriendList();												//获取好友列表
-	QueryFirendSearchList(string nick);								//查询可以加为好友的列表
+	QueryFriendSearchList(string nick);								//查询可以加为好友的列表
 	QueryFriendInvitationList();									//查询自己被邀请的列表
 	InviteFriend(_U32 avatar_id);									//邀请好友
 	AcceptFriend(_U32 avatar_id);									//同意加为好友
@@ -1480,12 +1568,16 @@ class SGGAME_C2S
 	QueryAstrologyBag();												//查询命魂
 	SaveToBag(_U32 item_id);											//存入命魂包中
 	SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status);	//0-卸下 1-装备
-	EnhanceAstrologyBall(_U32 ball_id);									//升级命魂
-	BuyAstrologyBall(_U32 ball_id);										//购买命魂
+	EnhanceAstrologyBall(_U32 ball_id, _U32 general_id);				//升级命魂 如果general_id 不为0则是升级装备在武将身上的id
+	//BuyAstrologyBall(_U32 ball_id);									//购买命魂
 	Strology(_U32 astrologer_id);										//占星
+	StrologyAuto(_U32 RestSlotCount);									//一键占星
+	Devour(_U8 bag_type);												//一键吞噬
 
-	UseItem(_U32 item_id);												//使用可使用物品
-	UseItem2(_U32 item_id, _U32 target_id);								//使用可使用物品 target_id 可填 [ 武将id ]
+	UseItem(A_UUID uuid, _U32 item_id, _U32 count, _U32 target_id);		//使用可使用物品 target_id 可填 [ 武将id ]
+
+	FeedHorse(_U8 feed_type);											//养马
+	
 };
 
 class SGGAME_S2C
@@ -1523,8 +1615,8 @@ class SGGAME_S2C
 	QueryPlayerQuestResult(SG_QUEST_LIVE_INFO quest_list[count], _U32 count, _U8 nSync);
 	FinishQuestDone(_U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, SG_DROP_ITEM_BASE drops[drop_count], _U32 drop_count);//level 任务完成之后
 	
-	BuyGoodsResult(A_UUID goods[count], _U32 count);	
-	SellItemResult(_U8 ret, A_UUID uuid, _U32 count);								//ret 0-succ 1-failed 
+	BuyGoodsResult(_U8 ret, A_UUID goods[count], _U32 id_list[count], _U32 count);	
+	SellItemResult(_U8 ret, A_UUID uuid, _U32 item_id, _U32 count);					//ret 0-succ 1-failed 
 
 	QueryPlayerPVPInfoResult(SG_PLAYER_PVE pve);
 	QueryPlayerRankListResult(SG_PLAYER players[count], _U32 count);
@@ -1589,11 +1681,14 @@ class SGGAME_S2C
 	SaveToBagResult(_U8 ret, _U32 item_id);
 	SetAstrologyBallStatusResult(_U8 ret, SG_GENERAL general);
 	EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
-	BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id);
+	//BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id);
 	StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id);
+	StrologyAutoResult(_U8 ret, _U32 gold, _U32 ball_list[count], _U32 count, _U32 atrologer_id);
+	DevourResult(_U8 ret, _U8 bag_type, _U32 ball_list[count], _U32 count);
 
-	UseItemResult(_U8 ret, _U32 item_id);																//使用可使用物品
-	UseItemResult2(_U8 ret, _U32 item_id, _U32 target_id);												//使用可使用物品
+	UseItemResult(_U8 ret, A_UUID uuid, _U32 count, _U32 target_id, SG_PLAYER player_info, SG_GENERAL general, SG_ITEM drops[drop_count], _U32 drop_count);													//使用可使用物品
+
+	FeedHorseResult(_U8 ret, _U32 xp, _U32 level, _U8 xp_add_type);
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

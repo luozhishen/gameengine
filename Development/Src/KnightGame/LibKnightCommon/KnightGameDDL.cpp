@@ -1039,6 +1039,11 @@ namespace DDLReflect
 		// 4 Get
 		// 5 Boardcast
 		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 6 RoomJoin
+		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 7 RoomChat
+		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 8 RoomLeave
 	};
 	static FUNCTION_INFO _class_KNIGHT_C2S_funcinfos[] = 
 	{
@@ -1048,8 +1053,11 @@ namespace DDLReflect
 		{"Set", 1, _class_KNIGHT_C2S_fieldinfos+1},
 		{"Get", 0, _class_KNIGHT_C2S_fieldinfos+2},
 		{"Boardcast", 1, _class_KNIGHT_C2S_fieldinfos+2},
+		{"RoomJoin", 1, _class_KNIGHT_C2S_fieldinfos+3},
+		{"RoomChat", 1, _class_KNIGHT_C2S_fieldinfos+4},
+		{"RoomLeave", 0, _class_KNIGHT_C2S_fieldinfos+5},
 	};
-	static CLASS_INFO _class_KNIGHT_C2S_info = { 0, "KNIGHT_C2S", 6, _class_KNIGHT_C2S_funcinfos };
+	static CLASS_INFO _class_KNIGHT_C2S_info = { 0, "KNIGHT_C2S", 9, _class_KNIGHT_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<KNIGHT_C2S>()
 	{
@@ -1068,14 +1076,23 @@ namespace DDLReflect
 		// 2 BoardcastCallback
 		{TYPE_U32, "uid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 3 RoomJoinCallback
+		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 4 RoomChatCallback
+		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 5 RoomLeaveCallback
 	};
 	static FUNCTION_INFO _class_KNIGHT_S2C_funcinfos[] = 
 	{
 		{"Pong", 0, _class_KNIGHT_S2C_fieldinfos+0},
 		{"GetCallback", 2, _class_KNIGHT_S2C_fieldinfos+0},
 		{"BoardcastCallback", 2, _class_KNIGHT_S2C_fieldinfos+2},
+		{"RoomJoinCallback", 1, _class_KNIGHT_S2C_fieldinfos+4},
+		{"RoomChatCallback", 2, _class_KNIGHT_S2C_fieldinfos+5},
+		{"RoomLeaveCallback", 0, _class_KNIGHT_S2C_fieldinfos+7},
 	};
-	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 3, _class_KNIGHT_S2C_funcinfos };
+	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 6, _class_KNIGHT_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<KNIGHT_S2C>()
 	{

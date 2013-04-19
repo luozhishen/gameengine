@@ -117,8 +117,6 @@ namespace Atlas
 	void CSGClient::EnterGame()
 	{
 		m_C2S.EnterGame();
-
-		
 	}
 
 	void CSGClient::LeaveGame()
@@ -508,9 +506,9 @@ namespace Atlas
 		m_C2S.BuyGoods(item_id);
 	}
 
-	void CSGClient::SellItem(const A_UUID& uuid, const _U32 count)
+	void CSGClient::SellItem(const A_UUID& uuid, const _U32 item_id, const _U32 count)
 	{
-		m_C2S.SellItem(uuid, count);
+		m_C2S.SellItem(uuid, item_id, count);
 	}
 
 	void CSGClient::PVPCoolDown()
@@ -752,9 +750,9 @@ namespace Atlas
 		m_C2S.QueryFriendList();
 	}
 
-	void CSGClient::QueryFirendSearchList(const char* nick)
+	void CSGClient::QueryFriendSearchList(const char* nick)
 	{
-		m_C2S.QueryFirendSearchList(nick);
+		m_C2S.QueryFriendSearchList(nick);
 	}
 
 	void CSGClient::QueryFriendInvitationList()
@@ -814,21 +812,7 @@ namespace Atlas
 
 	void CSGClient::QueryAstrologyBag()
 	{
-		//m_C2S.QueryAstrologyBag();
-
-		//for test ui
-		if(m_callback)
-		{
-			Atlas::Vector<_U32> vecBag;
-			
-			vecBag.push_back(50101);
-			vecBag.push_back(50201);
-			vecBag.push_back(50301);
-			vecBag.push_back(50401);
-			vecBag.push_back(50501);
-			
-			m_callback->QueryAstrologyBagResult(vecBag.data(), (_U32)vecBag.size(),vecBag.data(), (_U32)vecBag.size());
-		}
+		m_C2S.QueryAstrologyBag();
 	}
 
 	void CSGClient::SaveToBag(_U32 item_id)
@@ -841,38 +825,41 @@ namespace Atlas
 		m_C2S.SetAstrologyBallStatus(general_id, ball_id, status);
 	}
 
-	void CSGClient::EnhanceAstrologyBall(_U32 ball_id)
+	void CSGClient::EnhanceAstrologyBall(_U32 ball_id, _U32 general_id)
 	{
-		m_C2S.EnhanceAstrologyBall(ball_id);
+		m_C2S.EnhanceAstrologyBall(ball_id, general_id);
 	}
 
-	void CSGClient::BuyAstrologyBall(_U32 ball_id)
-	{
-		m_C2S.BuyAstrologyBall(ball_id);
-	}
+	//void CSGClient::BuyAstrologyBall(_U32 ball_id)
+	//{
+	//	m_C2S.BuyAstrologyBall(ball_id);
+	//}
 
 	void CSGClient::Strology(_U32 astrologer_id)
 	{
-		//m_C2S.Strology(astrologer_id);
-
-		if(m_callback)
-		{
-			_U32 new_astrologer_id = astrologer_id >= 5 ? 5 : astrologer_id+1;
-			_U32 ball_id = 50101 + (new_astrologer_id -1)*100;
-			m_callback->StrologyResult(0, 0, ball_id, new_astrologer_id);
-		}
+		m_C2S.Strology(astrologer_id);
 	}
 
-	void CSGClient::UseItem(_U32 item_id)
+	void CSGClient::StrologyAuto(_U32 RestSlotCount)
 	{
-		m_C2S.UseItem(item_id);
-	}
-	
-	void CSGClient::UseItem2(_U32 item_id, _U32 target_id)
-	{
-		m_C2S.UseItem2(item_id, target_id);
+		m_C2S.StrologyAuto(RestSlotCount);
 	}
 
+	void CSGClient::UseItem(const A_UUID& uuid, _U32 item_id, _U32 count, _U32 target_id)
+	{
+		m_C2S.UseItem(uuid, item_id, count, target_id);
+	}
+
+	void CSGClient::Devour(_U8 bag_type)
+	{
+		m_C2S.Devour(bag_type);
+	}
+
+	void CSGClient::FeedHorse(const _U8 feed_type)
+	{
+		m_C2S.FeedHorse(feed_type);
+	}
+		
 	void CSGClient::Pong(CSGClient* pClient)
 	{
 		if(m_callback)
@@ -1168,9 +1155,9 @@ namespace Atlas
 			//help to sync data
 			Atlas::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
-			//m_callback->DataUpdate(CSGSyncDataManager::eSyncPlayer);
 		}
 	}
 	
@@ -1305,7 +1292,7 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::BuyGoodsResult(CSGClient* pClient, const A_UUID* goods, _U32 count)
+	void CSGClient::BuyGoodsResult(CSGClient* pClient, _U8 ret, const A_UUID* goods, _U32* id_list, _U32 count)
 	{
 		for(_U32 i = 0; i < count; ++i)
 		{
@@ -1316,6 +1303,11 @@ namespace Atlas
 		Atlas::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
+
+		if(m_callback)
+		{
+			m_callback->BuyGoodsResult(ret, id_list, count);
+		}
 	}
 
 	void CSGClient::PVPCoolDownResult(CSGClient* pClient, _U32 time)
@@ -1475,6 +1467,7 @@ namespace Atlas
 			//help to sync data
 			Atlas::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
 
@@ -1716,13 +1709,12 @@ namespace Atlas
 				m_player.rmb -= rmb;
 				m_player.energy += energy;
 
-				//help to sync data
-				Atlas::Vector<_U8> vecSync;
-				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
-				SyncSet(vecSync);
+				_U32 times = SGClientUtil::GetDailyActionTime(m_player, 1007);
+				SGClientUtil::SetDailyActionTimeInCache(m_player, 1007, times+1);
 			}
 
 			m_callback->BuyEnergyResult(ret, rmb, energy, times);
+			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
 		}
 	}
 
@@ -1910,6 +1902,11 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			if(!ret)
+			{
+				SGClientUtil::UpdateGeneralSoulBall(m_player, m_generals, general);
+			}
+			
 			m_callback->SetAstrologyBallStatusResult(ret, general);
 		}
 	}
@@ -1922,52 +1919,140 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id)
-	{
-		if(m_callback)
-		{
-			m_callback->BuyAstrologyBallResult(ret, astrology_value, ball_id);
-		}
-	}
+	//void CSGClient::BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id)
+	//{
+	//	if(m_callback)
+	//	{
+	//		m_callback->BuyAstrologyBallResult(ret, astrology_value, ball_id);
+	//	}
+	//}
 
 	void CSGClient::StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id)
 	{
 		if(m_callback)
 		{
+			if(!ret)
+			{
+				m_player.current_zhanxing_value = astrologer_id;
+			}
 			m_callback->StrologyResult(ret, gold, ball_id, astrologer_id);
 		}
 	}
 
-	void CSGClient::UseItemResult(CSGClient* pClient, _U8 ret, _U32 item_id)
+	void CSGClient::StrologyAutoResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32* ball_list, _U32 count, _U32 astrologer_id)
+	{
+		if(m_callback)
+		{
+			if(!ret)
+			{
+				m_player.current_zhanxing_value = astrologer_id;
+			}
+
+			m_callback->StrologyAutoResult(ret, gold, ball_list, count, astrologer_id);
+		}
+	}
+
+	void CSGClient::DevourResult(CSGClient* pClient, _U8 ret, _U8 bag_type, _U32* ball_list, _U32 count)
 	{
 		if(m_callback)
 		{
 			//help to sync data
 			Atlas::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
-			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
 
-			m_callback->UseItemResult(ret, item_id);
+			m_callback->DevourResult(ret, bag_type, ball_list, count);
 		}
 	}
 
-	void CSGClient::UseItemResult2(CSGClient* pClient, _U8 ret, _U32 item_id, _U32 target_id)
+	void CSGClient::UseItemResult(CSGClient* pClient, _U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count)
 	{
 		if(m_callback)
 		{
-			//help to sync data
+			for(_U32 i = 0; i < drop_count; ++i)
+			{
+				const SG_ITEM& item = drops[i];
+
+				if( drops[i].item_id >= SG_ITEM_USABLE_ID_START && drops[i].item_id <= SG_ITEM_USABLE_ID_END)
+				{
+					SGClientUtil::AddItem<SG_USABLE_ITEM, SG_USABLE_ITEM_CONFIG>(m_usables, item);
+				}
+
+				if( drops[i].item_id >= SG_ITEM_MATERIAL_ID_START && drops[i].item_id <= SG_ITEM_MATERIAL_ID_END)
+				{
+					SGClientUtil::AddItem<SG_MATERIAL_ITEM, SG_MATERIAL_CONFIG>(m_materials, item);
+				}
+
+				if( drops[i].item_id >= SG_ITEM_GEM_ID_START && drops[i].item_id <= SG_ITEM_GEM_ID_END)
+				{
+					SGClientUtil::AddItem<SG_GEM_ITEM, SG_GEM_ITEM_CONFIG>(m_gems, item);
+				}
+
+				if( drops[i].item_id >= SG_ITEM_EQUIPT_ID_START && drops[i].item_id <= SG_ITEM_EQUIPT_ID_END)
+				{
+					assert(0);
+				}
+
+				if( drops[i].item_id >= SG_ITEM_ASTOLOGY_BALL_ID_START && drops[i].item_id <= SG_ITEM_ASTOLOGY_BALL_ID_END)
+				{
+					assert(0);
+				}
+			}
+
+			if(player_info.exp || player_info.level)
+			{
+				m_player.exp = player_info.exp;
+				m_player.level = player_info.level;
+			}
+
+			if(player_info.gold)
+			{
+				m_player.gold += player_info.gold;
+			}
+
+			if(player_info.rmb)
+			{
+				m_player.rmb += player_info.rmb;
+			}
+			
+			if(general.exp || general.level)
+			{
+				for(Atlas::Vector<SG_GENERAL>::iterator it = m_generals.begin(); it != m_generals.end(); ++it)
+				{
+					if((*it).general_id == general.general_id)
+					{
+						(*it).exp = general.exp;
+						(*it).level = general.level;
+					}
+				}
+			}
+			
+			//help to sync data no need
 			Atlas::Vector<_U8> vecSync;
-			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
-			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
 
-			m_callback->UseItemResult(ret, item_id);
+			m_callback->UseItemResult(ret, uuid, count, target_id, player_info, general, drops, drop_count);
 		}
 	}
 
-	void CSGClient::SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 count)
+	void CSGClient::FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 level, _U8 xp_add_type)
+	{
+		if(m_callback)
+		{
+			if(ret)
+			{
+				m_player.halo_exp = xp;
+				m_player.horse_level = level;
+				
+				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+			}
+
+			m_callback->FeedHorseResult(ret, xp, level, xp_add_type);
+		}
+	}
+
+	void CSGClient::SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 item_id, const _U32 count)
 	{
 		if(m_callback)
 		{
@@ -1976,7 +2061,7 @@ namespace Atlas
 				SGClientUtil::UpdateItemByUUID(this, uuid, count);
 			}
 
-			m_callback->SellItemResult(result, uuid, count);
+			m_callback->SellItemResult(result, uuid, item_id, count);
 
 			//help to sync data
 			Atlas::Vector<_U8> vecSync;

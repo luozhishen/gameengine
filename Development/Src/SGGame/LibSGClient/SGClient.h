@@ -88,7 +88,7 @@ namespace Atlas
 		virtual void MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material) = 0;
 		virtual void QueryActionStatusResult(_U32 *action_list, Atlas::Vector<_U8> statusVec, _U32 *available_list, _U32 count) = 0;
 
-		virtual void SellItemResult(_U8 ret, const A_UUID& uuid, _U32 count) = 0;
+		virtual void SellItemResult(_U8 ret, const A_UUID& uuid, _U32 item_id, _U32 count) = 0;
 
 		virtual void QueryFriendListResult(const SG_FRIEND_INFO* friend_list, _U32 count) = 0;
 		virtual void QueryFriendListSearchResult(const SG_FRIEND_SEARCH_INFO* search_list, _U32 count) = 0;
@@ -107,11 +107,15 @@ namespace Atlas
 		virtual void SaveToBagResult(_U8 ret, _U32 item_id) = 0;
 		virtual void SetAstrologyBallStatusResult(_U8 ret, const SG_GENERAL& general) = 0;
 		virtual void EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id) = 0;
-		virtual void BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id) = 0;
+		//virtual void BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id) = 0;
 		virtual void StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id) = 0;
+		virtual void StrologyAutoResult(_U8 ret, _U32 gold, _U32* ball_list, _U32 count, _U32 atrologer_id) = 0;
+		virtual void DevourResult(_U8 ret, _U8 bag_type, _U32* ball_list, _U32 count) = 0;
+		virtual void UseItemResult(_U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count) = 0;
 
-		virtual void UseItemResult(_U8 ret, _U32 item_id) = 0;
-		virtual void UseItemResult2(_U8 ret, _U32 item_id, _U32 target_id) = 0;
+		virtual void FeedHorseResult(_U8 ret, _U32 xp, _U32 level, _U8 xp_add_type) = 0;
+
+		virtual void BuyGoodsResult(_U8 ret, _U32* id_list, _U32 count) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -186,7 +190,7 @@ namespace Atlas
 		void QueryPlayerRankList();												//pvp排行榜
 
 		void BuyGoods(_U32 item_id);											//商店购买
-		void SellItem(const A_UUID& uuid, const _U32 count);					//卖出物品
+		void SellItem(const A_UUID& uuid, const _U32 item_id, const _U32 count);//卖出物品
 
 		void PVPCoolDown();														//挑战冷却时间
 		void PVPGetRestTime();													//挑战剩余次数
@@ -235,7 +239,7 @@ namespace Atlas
 		void QueryActionAvailable(_U32 *action_list, _U32 count);				//判断活动是否可以进入/激活
 
 		void QueryFriendList();					
-		void QueryFirendSearchList(const char* nick);	
+		void QueryFriendSearchList(const char* nick);	
 		void QueryFriendInvitationList();		
 		void InviteFriend(_U32 avatar_id);		
 		void AcceptFriend(_U32 avatar_id);		
@@ -253,12 +257,15 @@ namespace Atlas
 		void QueryAstrologyBag();												//查询命魂
 		void SaveToBag(_U32 item_id);											//存入命魂包中
 		void SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status);	//0-卸下 1-装备
-		void EnhanceAstrologyBall(_U32 ball_id);								//升级命魂
-		void BuyAstrologyBall(_U32 ball_id);									//购买命魂
+		void EnhanceAstrologyBall(_U32 ball_id, _U32 general_id);				//升级命魂
+		//void BuyAstrologyBall(_U32 ball_id);									//购买命魂
 		void Strology(_U32 astrologer_id);										//占星
+		void StrologyAuto(_U32 RestSlotCount);									//一键占星
+												
+		void UseItem(const A_UUID& uuid, _U32 item_id, _U32 count, _U32 target_id);//使用可使用的物品
+		void Devour(_U8 bag_type);
 
-		void UseItem(_U32 item_id);												//使用可使用的物品
-		void UseItem2(_U32 item_id, _U32 target_id);
+		void FeedHorse(const _U8 feed_type);
 
 		//result
 		void Pong(CSGClient* pClient);
@@ -294,8 +301,8 @@ namespace Atlas
 		void QueryPlayerPVPInfoResult(CSGClient* pClient, const SG_PLAYER_PVE& pve);
 		void QueryPlayerRankListResult(CSGClient* pClient, SG_PLAYER* players, _U32 count);
 		
-		void BuyGoodsResult(CSGClient* pClient, const A_UUID* goods, _U32 count);						
-		void SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 count);				//ret 0-succ 1-failed 
+		void BuyGoodsResult(CSGClient* pClient, _U8 ret, const A_UUID* goods, _U32* id_list, _U32 count);						
+		void SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 item_id, const _U32 count);				//ret 0-succ 1-failed 
 
 		void PVPCoolDownResult(CSGClient* pClient, _U32 time);													//挑战冷却时间
 		void PVPGetRestTimeResult(CSGClient* pClient, _U32 rest_time);											//挑战剩余次数
@@ -356,12 +363,13 @@ namespace Atlas
 		void SaveToBagResult(CSGClient* pClient, _U8 ret, _U32 item_id);
 		void SetAstrologyBallStatusResult(CSGClient* pClient, _U8 ret, const SG_GENERAL& general);
 		void EnhanceAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
-		void BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id);
+		//void BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id);
 		void StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id);
+		void StrologyAutoResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32* ball_list, _U32 count, _U32 atrologer_id);
+		void DevourResult(CSGClient* pClient, _U8 ret, _U8 bag_type, _U32* ball_list, _U32 count);
 
-		void UseItemResult(CSGClient* pClient, _U8 ret, _U32 item_id);
-		void UseItemResult2(CSGClient* pClient, _U8 ret, _U32 item_id, _U32 target_id);
-
+		void UseItemResult(CSGClient* pClient, _U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count);
+		void FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 level, _U8 xp_add_type);
 	public:
 		virtual void OnLoginDone();
 		virtual void OnLoginFailed();

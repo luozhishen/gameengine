@@ -238,6 +238,10 @@ class KNIGHT_C2S
 	Get();
 
 	Boardcast(string msg);
+
+	RoomJoin(_U32 index);
+	RoomChat(string msg);
+	RoomLeave();
 };
 
 class KNIGHT_S2C
@@ -246,6 +250,11 @@ class KNIGHT_S2C
 
 	GetCallback(_U32 aid, string value);
 	BoardcastCallback(_U32 uid, string msg);
+
+	RoomJoinCallback(_U32 result);
+	RoomChatCallback(_U32 index, string msg);
+	RoomLeaveCallback();
+	
 };
 
 task[GEN_CLASS_STUB(KNIGHT_C2S)];

@@ -70,7 +70,9 @@ namespace Atlas
 		{"SG_GENERAL_ASTROLOG_SLOT_CONFIG", "SG_GENERAL_ASTROLOG_SLOT_CONFIG.json", "general_level"},
 
 		{"SG_LOOT_ITEM_CONFIG", "SG_LOOT_ITEM_CONFIG.json", "loot_id"},
-		
+		{"SG_HORSE_CONFIG", "SG_HORSE_CONFIG.json", "horse_level"},
+		{"SG_HORSE_SETTING_CONFIG", "SG_HORSE_SETTING_CONFIG.json", "unlock_level"},
+		{"SG_ZHANJIANG_LEVEL_CONFIG", "SG_ZHANJIANG_LEVEL_CONFIG.json", "level_id"},
 		
 	};
 
@@ -197,7 +199,13 @@ namespace Atlas
 
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_LOOT_ITEM_CONFIG >(), true, g_JsonContent[i++].keys);
-		
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_HORSE_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_HORSE_SETTING_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_ZHANJIANG_LEVEL_CONFIG >(), true, g_JsonContent[i++].keys);
+				
 	}
 
 	void InitLiveObjects()

@@ -84,11 +84,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ddl_codegen.h" />
+    <ClInclude Include="ddl_codegen_javascript.h" />
     <ClInclude Include="ddl_codegen_php.h" />
     <ClInclude Include="ddl_parser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ddl_codegen.c" />
+    <ClCompile Include="ddl_codegen_javascript.c" />
     <ClCompile Include="ddl_codegen_php.c" />
     <ClCompile Include="ddl_main.c" />
     <ClCompile Include="ddl_parser.c" />

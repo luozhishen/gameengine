@@ -56,7 +56,67 @@ namespace Atlas
 		//	}
 		//}
 
-		
+		static void UpdateGeneralSoulBall(SG_PLAYER& player_info, Atlas::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general);
+
+		template<typename T, typename CT>
+		static void AddItem(Atlas::Vector<T>& cacheVec, const SG_ITEM& item)
+		{
+			T t;
+			t.item_id = item.item_id;
+
+			CT* config = NULL;
+			_U32 stack_max = 1;
+			_U32 count = item.count;
+
+			const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< CT >();
+			const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+			bool bFind = false;
+			while(content_obj)
+			{
+				config = (CT*)content_obj;
+				if(config->item_id == item.item_id)
+				{
+					bFind = true;
+					break;
+				}
+
+				content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			}
+
+			if(bFind)
+			{
+				stack_max = config->stack_max;
+			}
+			
+			for(typename Atlas::Vector<T>::iterator it = cacheVec.begin(); it != cacheVec.end(); ++it)
+			{
+				if((*it).item_id == item.item_id)
+				{
+					const T& t_item = *it;
+					if(t_item.count < stack_max)
+					{
+						if(t_item.count + count <= stack_max)
+						{
+							UpdateItemTemplateFun<T>(cacheVec, t_item.uuid, t_item.count + count);
+						}
+						else
+						{
+							count -= (stack_max - t_item.count);
+						}
+					}
+				}
+			}
+
+			if(count)
+			{
+				t.uuid = item.uuid;
+				t.count = count;
+				t.expired_time = item.expired_time;
+
+				cacheVec.push_back(t);
+			}
+		}
+
 		template<typename T>
 		static bool UpdateItemTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, _U32 count)
 		{

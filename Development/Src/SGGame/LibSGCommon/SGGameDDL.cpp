@@ -1174,6 +1174,122 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_BOSSRUSH_INFO>(SG_BOSSRUSH_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.level_id)) return false;
+		if(!Read<_U32>(Value.boss_hp)) return false;
+		if(!Read<_U8>(Value.remain_times)) return false;
+		if(!Read<_U32>(Value.next_reset_time)) return false;
+		if(!Read<_U8>(Value.status)) return false;
+		if(!Read<_U32>(Value.furthest_level)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_BOSSRUSH_INFO>(const SG_BOSSRUSH_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.level_id)) return false;
+		if(!Write<_U32>(Value.boss_hp)) return false;
+		if(!Write<_U8>(Value.remain_times)) return false;
+		if(!Write<_U32>(Value.next_reset_time)) return false;
+		if(!Write<_U8>(Value.status)) return false;
+		if(!Write<_U32>(Value.furthest_level)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_BOSSRUSH_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_BOSSRUSH_INFO>(*((SG_BOSSRUSH_INFO*)data));
+	}
+
+	static bool _struct_SG_BOSSRUSH_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_BOSSRUSH_INFO>(*((const SG_BOSSRUSH_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_BOSSRUSH_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "level_id", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "boss_hp", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, boss_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "remain_times", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, remain_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "next_reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, next_reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "furthest_level", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, furthest_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_BOSSRUSH_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_BOSSRUSH_INFO", sizeof(SG_BOSSRUSH_INFO), 6, _struct_SG_BOSSRUSH_INFO_fieldinfo, _struct_SG_BOSSRUSH_INFO_readproc, _struct_SG_BOSSRUSH_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BOSSRUSH_INFO>()
+	{
+		return &_rfl_struct_SG_BOSSRUSH_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_BOSSRUSH_SUPPORT_INFO>(SG_BOSSRUSH_SUPPORT_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.friend_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.friend_nick)) return false;
+		if(!Read<_U32>(Value.level_id)) return false;
+		if(!Read<_U32>(Value.boss_hp)) return false;
+		if(!Read<_U8>(Value.status)) return false;
+		if(!Read<_U32>(Value.next_reset_time)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_BOSSRUSH_SUPPORT_INFO>(const SG_BOSSRUSH_SUPPORT_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.friend_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.friend_nick)) return false;
+		if(!Write<_U32>(Value.level_id)) return false;
+		if(!Write<_U32>(Value.boss_hp)) return false;
+		if(!Write<_U8>(Value.status)) return false;
+		if(!Write<_U32>(Value.next_reset_time)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_BOSSRUSH_SUPPORT_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_BOSSRUSH_SUPPORT_INFO>(*((SG_BOSSRUSH_SUPPORT_INFO*)data));
+	}
+
+	static bool _struct_SG_BOSSRUSH_SUPPORT_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_BOSSRUSH_SUPPORT_INFO>(*((const SG_BOSSRUSH_SUPPORT_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_BOSSRUSH_SUPPORT_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "friend_id", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, friend_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "friend_nick", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, friend_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "level_id", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "boss_hp", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, boss_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "next_reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, next_reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_BOSSRUSH_SUPPORT_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_BOSSRUSH_SUPPORT_INFO", sizeof(SG_BOSSRUSH_SUPPORT_INFO), 6, _struct_SG_BOSSRUSH_SUPPORT_INFO_fieldinfo, _struct_SG_BOSSRUSH_SUPPORT_INFO_readproc, _struct_SG_BOSSRUSH_SUPPORT_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BOSSRUSH_SUPPORT_INFO>()
+	{
+		return &_rfl_struct_SG_BOSSRUSH_SUPPORT_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_LEAGUE_CONFIG>(SG_LEAGUE_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -5920,8 +6036,10 @@ namespace DDLReflect
 		// 84 FeedHorseResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "xp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "xp_add", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "xp_add_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8, "feed_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
@@ -6009,7 +6127,7 @@ namespace DDLReflect
 		{"StrologyAutoResult", 5, _class_SGGAME_S2C_fieldinfos+185},
 		{"DevourResult", 4, _class_SGGAME_S2C_fieldinfos+190},
 		{"UseItemResult", 8, _class_SGGAME_S2C_fieldinfos+194},
-		{"FeedHorseResult", 4, _class_SGGAME_S2C_fieldinfos+202},
+		{"FeedHorseResult", 6, _class_SGGAME_S2C_fieldinfos+202},
 	};
 	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 85, _class_SGGAME_S2C_funcinfos };
 	template<>

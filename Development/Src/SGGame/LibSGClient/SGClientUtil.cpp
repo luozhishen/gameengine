@@ -387,7 +387,6 @@ namespace Atlas
 			bRet = true;
 		}
 
-
 		return bRet;
 	}
 
@@ -416,5 +415,42 @@ namespace Atlas
 				break;
 			}
 		}
+	}
+
+	_U32 SGClientUtil::GetHorseXpAdd(_U32 cur_level, _U32 new_level, _U32 cur_exp,_U32 exp)
+	{
+		_U32 exp_add = 0;
+		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_HORSE_CONFIG >();
+		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		bool bFind = false;
+		SG_HORSE_CONFIG* config1 = NULL;
+		SG_HORSE_CONFIG* config2 = NULL;
+		SG_HORSE_CONFIG* config = NULL;
+		while(content_obj)
+		{
+			config = (SG_HORSE_CONFIG*)content_obj;
+			if(config->horse_level == cur_level)
+			{
+				config1 = config;
+			}
+
+			if(config->horse_level == new_level)
+			{
+				config2 = config;
+			}
+
+			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+		}
+
+		if(config1 == config2)
+		{
+			exp_add = exp - cur_exp;
+		}
+		else
+		{
+			exp_add = config2->req_exp - exp;
+		}
+
+		return exp_add;
 	}
 }

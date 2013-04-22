@@ -467,6 +467,30 @@ struct SG_INSTANCE_INFO : A_LIVE_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_INSTANCE_INFO)];
 task[GEN_STRUCT_REFLECT(SG_INSTANCE_INFO)];
 
+//boss rush
+struct SG_BOSSRUSH_INFO : A_LIVE_OBJECT
+{
+	_U32								level_id;				//关卡id
+	_U32								boss_hp;				//当前boss血量
+	_U8									remain_times;			//剩余挑战次数
+	_U32								next_reset_time;		//下次重置时间
+	_U8									status;					//状态 0-Initial 1-started 2-waiting for support 3-canceled 4-ready to reward 5-Rewarded
+	_U32								furthest_level;			//最远进度
+};
+task[GEN_STRUCT_SERIALIZE(SG_BOSSRUSH_INFO)];
+task[GEN_STRUCT_REFLECT(SG_BOSSRUSH_INFO)];
+
+struct SG_BOSSRUSH_SUPPORT_INFO : A_LIVE_OBJECT
+{
+	_U32								friend_id;				//好友id
+	string<SG_PLAYER_NAME_MAX>			friend_nick;
+	_U32								level_id;		
+	_U32								boss_hp;				//boss剩余血量
+	_U8									status;					//状态 0-waiting for support; 1-supported; 2-canceled; 3-ready to reward; 4-rewarded; 
+	_U32								next_reset_time;		//下次重置时间
+};
+task[GEN_STRUCT_SERIALIZE(SG_BOSSRUSH_SUPPORT_INFO)];
+task[GEN_STRUCT_REFLECT(SG_BOSSRUSH_SUPPORT_INFO)];
 
 //league
 struct SG_LEAGUE_CONFIG : A_CONTENT_OBJECT
@@ -1577,7 +1601,37 @@ class SGGAME_C2S
 	UseItem(A_UUID uuid, _U32 item_id, _U32 count, _U32 target_id);		//使用可使用物品 target_id 可填 [ 武将id ]
 
 	FeedHorse(_U8 feed_type);											//养马
-	
+
+	//QueryBossRushInfo();
+	//QueryBossRushSupportInfo();
+	//
+	//QueryBossRushInfoResult(SG_BOSSRUSH_INFO bossrush_info);
+	//QueryBossRushSupportInfoResult(SG_BOSSRUSH_SUPPORT_INFO support_list[count], _U32 count);
+	//
+	//BeginBossRushBattle(_U32 level_id, string level_url);
+	//EndBossRushBattle(string level_url, _U32 result, _U32 total_damage);
+	//
+	//BeginBossRushBattleResult(SG_PLAYER_PVE PlayerPVE);
+	//EndBossRushBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	//
+	//BeginBossRushSupportBattle(_U32 friend_id, _U32 level_id, string level_url);
+	//EndBossRushSupportBattle(_U32 friend_id, string level_url, _U32 result, _U32 total_damage);
+	//
+	//BeginBossRushSupportBattleResult(SG_PLAYER_PVE PlayerPVE);
+	//EndBossRushSupportBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	//
+	//RequestBossRushSupport();
+	//
+	//CancelBossRush();
+	//
+	//AddBossRushRemainingTimes();
+	//AddBossRushRemainingTimesResult(_U8 ret, _U32 rmb, _U8 remain_times);
+	//
+	//AwardBossRush();
+	//AwardBossRushResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	//
+	//AwardBossRushSupport(_U32 friend_id, _U32 level_id, string level_url);
+	//AwardBossRushSupportResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
 };
 
 class SGGAME_S2C
@@ -1685,10 +1739,10 @@ class SGGAME_S2C
 	StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id);
 	StrologyAutoResult(_U8 ret, _U32 gold, _U32 ball_list[count], _U32 count, _U32 atrologer_id);
 	DevourResult(_U8 ret, _U8 bag_type, _U32 ball_list[count], _U32 count);
-
+	
 	UseItemResult(_U8 ret, A_UUID uuid, _U32 count, _U32 target_id, SG_PLAYER player_info, SG_GENERAL general, SG_ITEM drops[drop_count], _U32 drop_count);													//使用可使用物品
 
-	FeedHorseResult(_U8 ret, _U32 xp, _U32 level, _U8 xp_add_type);
+	FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type);
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

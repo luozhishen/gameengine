@@ -140,6 +140,9 @@ namespace Atlas
 			return false;
 		}
 
+
+		static _U32 GetHorseXpAdd(_U32 cur_level, _U32 new_level, _U32 cur_exp, _U32 exp);
+
 	};
 }
 

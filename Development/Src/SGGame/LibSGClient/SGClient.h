@@ -113,7 +113,7 @@ namespace Atlas
 		virtual void DevourResult(_U8 ret, _U8 bag_type, _U32* ball_list, _U32 count) = 0;
 		virtual void UseItemResult(_U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count) = 0;
 
-		virtual void FeedHorseResult(_U8 ret, _U32 xp, _U32 level, _U8 xp_add_type) = 0;
+		virtual void FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type) = 0;
 
 		virtual void BuyGoodsResult(_U8 ret, _U32* id_list, _U32 count) = 0;
 	};
@@ -369,7 +369,7 @@ namespace Atlas
 		void DevourResult(CSGClient* pClient, _U8 ret, _U8 bag_type, _U32* ball_list, _U32 count);
 
 		void UseItemResult(CSGClient* pClient, _U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count);
-		void FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 level, _U8 xp_add_type);
+		void FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type);
 	public:
 		virtual void OnLoginDone();
 		virtual void OnLoginFailed();

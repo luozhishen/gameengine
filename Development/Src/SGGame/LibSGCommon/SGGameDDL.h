@@ -720,6 +720,56 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_INSTANCE_INFO_info;
 }
 
+struct SG_BOSSRUSH_INFO : A_LIVE_OBJECT
+{
+	_U32 level_id;
+	_U32 boss_hp;
+	_U8 remain_times;
+	_U32 next_reset_time;
+	_U8 status;
+	_U32 furthest_level;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_BOSSRUSH_INFO>(SG_BOSSRUSH_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_BOSSRUSH_INFO>(const SG_BOSSRUSH_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BOSSRUSH_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_BOSSRUSH_INFO_info;
+}
+
+struct SG_BOSSRUSH_SUPPORT_INFO : A_LIVE_OBJECT
+{
+	_U32 friend_id;
+	DDL::String<SG_PLAYER_NAME_MAX> friend_nick;
+	_U32 level_id;
+	_U32 boss_hp;
+	_U8 status;
+	_U32 next_reset_time;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_BOSSRUSH_SUPPORT_INFO>(SG_BOSSRUSH_SUPPORT_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_BOSSRUSH_SUPPORT_INFO>(const SG_BOSSRUSH_SUPPORT_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BOSSRUSH_SUPPORT_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_BOSSRUSH_SUPPORT_INFO_info;
+}
+
 struct SG_LEAGUE_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 league_level;
@@ -6332,20 +6382,26 @@ namespace DDLStub
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_xp;
+				_U32 _prefix_xp_add;
 				_U32 _prefix_level;
 				_U8 _prefix_xp_add_type;
+				_U8 _prefix_feed_type;
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
 				// <_U32> <xp> <> <>;
 				if(!Buf.Read(_prefix_xp)) return false;
+				// <_U32> <xp_add> <> <>;
+				if(!Buf.Read(_prefix_xp_add)) return false;
 				// <_U32> <level> <> <>;
 				if(!Buf.Read(_prefix_level)) return false;
 				// <_U8> <xp_add_type> <> <>;
 				if(!Buf.Read(_prefix_xp_add_type)) return false;
+				// <_U8> <feed_type> <> <>;
+				if(!Buf.Read(_prefix_feed_type)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->FeedHorseResult(Caller, _prefix_ret, _prefix_xp, _prefix_level, _prefix_xp_add_type);
+				DDLStub<CALLER, CLASS>::GetClass()->FeedHorseResult(Caller, _prefix_ret, _prefix_xp, _prefix_xp_add, _prefix_level, _prefix_xp_add_type, _prefix_feed_type);
 				return true;
 			}
 			return false;
@@ -7555,17 +7611,21 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
 		}
 
-		bool FeedHorseResult(_U8 ret, _U32 xp, _U32 level, _U8 xp_add_type)
+		bool FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type)
 		{
 			BUFFER Buf;
 			// <_U8> <ret> <> <>
 			if(!Buf.Write(ret)) return false;
 			// <_U32> <xp> <> <>
 			if(!Buf.Write(xp)) return false;
+			// <_U32> <xp_add> <> <>
+			if(!Buf.Write(xp_add)) return false;
 			// <_U32> <level> <> <>
 			if(!Buf.Write(level)) return false;
 			// <_U8> <xp_add_type> <> <>
 			if(!Buf.Write(xp_add_type)) return false;
+			// <_U8> <feed_type> <> <>
+			if(!Buf.Write(feed_type)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 84, Buf);

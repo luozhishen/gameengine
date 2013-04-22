@@ -1915,6 +1915,14 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
+			if(!ret)
+			{
+				//help to sync data
+				Atlas::Vector<_U8> vecSync;
+				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+				SyncSet(vecSync);
+			}
+
 			m_callback->EnhanceAstrologyBallResult(ret, gold, ball_id, new_ball_id);
 		}
 	}
@@ -1934,6 +1942,8 @@ namespace Atlas
 			if(!ret)
 			{
 				m_player.current_zhanxing_value = astrologer_id;
+				m_player.gold -= gold;
+				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
 			}
 			m_callback->StrologyResult(ret, gold, ball_id, astrologer_id);
 		}
@@ -1946,6 +1956,8 @@ namespace Atlas
 			if(!ret)
 			{
 				m_player.current_zhanxing_value = astrologer_id;
+				m_player.gold -= gold;
+				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
 			}
 
 			m_callback->StrologyAutoResult(ret, gold, ball_list, count, astrologer_id);
@@ -2036,19 +2048,24 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 level, _U8 xp_add_type)
+	void CSGClient::FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type)
 	{
 		if(m_callback)
 		{
-			if(ret)
+			if(!ret)
 			{
-				m_player.halo_exp = xp;
+				xp_add = SGClientUtil::GetHorseXpAdd(m_player.horse_level, level, m_player.horse_exp, xp);
+
+				m_player.horse_exp = xp;
 				m_player.horse_level = level;
 				
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				//help to sync data
+				Atlas::Vector<_U8> vecSync;
+				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
+				SyncSet(vecSync);
 			}
 
-			m_callback->FeedHorseResult(ret, xp, level, xp_add_type);
+			m_callback->FeedHorseResult(ret, xp, xp_add, level, xp_add_type, feed_type);
 		}
 	}
 

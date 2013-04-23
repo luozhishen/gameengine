@@ -555,7 +555,7 @@ namespace Atlas
 				}
 			}
 
-			if(nEmptyCount >= columnMap.size())
+			if(nEmptyCount >= (int)columnMap.size())
 			{
 				//bRet = true;
 				return true;

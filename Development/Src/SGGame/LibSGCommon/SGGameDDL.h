@@ -234,6 +234,174 @@ const _U32 SG_HORSE_DESC_MAX = 512;
 
 const _U32 SG_ZHANJIANG_LEVEL_LD_MAX = 512;
 
+const _U32 SG_NEWCOMER_GUIDE_DESC_MAX = 512;
+
+const _U32 SG_NEWCOMER_GUIDE_PIC_MAX = 128;
+
+const _U32 SG_NEWCOMER_GUIDE_ICON_MAX = 128;
+
+const _U32 SG_NEWCOMER_GUIDE_TIP_MAX = 128;
+
+struct SG_NEWCOMER_GUIDE_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 function_id;
+	_U32 process_id;
+	_U8 type;
+	_U32 remain_time;
+	_U8 condition1;
+	_U32 condition1_param1;
+	_U32 condition1_param2;
+	_U8 condition2;
+	_U32 condition2_param1;
+	_U32 condition2_param2;
+	_U8 open_function;
+	DDL::String<SG_NEWCOMER_GUIDE_DESC_MAX> desc;
+	DDL::String<SG_NEWCOMER_GUIDE_PIC_MAX> guider_pic;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
+	DDL::String<SG_NEWCOMER_GUIDE_ICON_MAX> icon;
+	_U32 U2;
+	_U32 V2;
+	_U32 UL2;
+	_U32 VL2;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_CONFIG>(SG_NEWCOMER_GUIDE_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_CONFIG>(const SG_NEWCOMER_GUIDE_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_CONFIG_info;
+}
+
+struct SG_NEWCOMER_GUIDE_PROCESS_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 process_id;
+	_U8 type;
+	_U32 group;
+	_U32 close_level;
+	_U8 termial_type;
+	_U32 step1;
+	_U32 step2;
+	_U32 step3;
+	_U32 step4;
+	_U32 step5;
+	_U32 step6;
+	_U32 step7;
+	_U32 step8;
+	_U32 step9;
+	_U32 step10;
+	_U32 step11;
+	_U32 step12;
+	_U32 step13;
+	_U32 step14;
+	_U32 step15;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>(SG_NEWCOMER_GUIDE_PROCESS_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>(const SG_NEWCOMER_GUIDE_PROCESS_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_info;
+}
+
+struct SG_NEWCOMER_GUIDE_STEP_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 step_id;
+	_U32 open_ui;
+	_U32 ui_condition;
+	_U8 complete_type;
+	_U32 complete_param1;
+	_U32 complete_param2;
+	_U32 button_tip;
+	_U32 button_param1;
+	_U32 button_param2;
+	_U8 arrow_direction;
+	_U32 offset_x;
+	_U32 offset_y;
+	DDL::String<SG_NEWCOMER_GUIDE_TIP_MAX> tip_desc;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_STEP_CONFIG>(SG_NEWCOMER_GUIDE_STEP_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_STEP_CONFIG>(const SG_NEWCOMER_GUIDE_STEP_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_STEP_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info;
+}
+
+struct SG_DAILY_SEARCH_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 road_pt;
+	_U8 road_type;
+	_U32 param;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SEARCH_CONFIG>(SG_DAILY_SEARCH_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SEARCH_CONFIG>(const SG_DAILY_SEARCH_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SEARCH_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_DAILY_SEARCH_CONFIG_info;
+}
+
+struct SG_DAILY_SEARCH_REWARD_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 circle_num;
+	_U32 reward_energy;
+	_U32 reward_rmb;
+	_U32 reward_item1;
+	_U32 reward_item1_count;
+	_U32 reward_item2;
+	_U32 reward_item2_count;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SEARCH_REWARD_CONFIG>(SG_DAILY_SEARCH_REWARD_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SEARCH_REWARD_CONFIG>(const SG_DAILY_SEARCH_REWARD_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SEARCH_REWARD_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_DAILY_SEARCH_REWARD_CONFIG_info;
+}
+
 struct SG_ZHANJIANG_LEVEL_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 level_id;
@@ -382,7 +550,8 @@ namespace DDLReflect
 
 struct SG_GENERAL_ASTROLOG_SLOT_CONFIG : A_CONTENT_OBJECT
 {
-	_U32 general_level;
+	_U32 general_level_upper;
+	_U32 general_level_lower;
 	_U32 slot_num;
 };
 
@@ -3716,14 +3885,17 @@ namespace DDLStub
 			{
 				_U32 _prefix_ball_id;
 				_U32 _prefix_general_id;
+				_U32 _prefix_index;
 
 				// <_U32> <ball_id> <> <>;
 				if(!Buf.Read(_prefix_ball_id)) return false;
 				// <_U32> <general_id> <> <>;
 				if(!Buf.Read(_prefix_general_id)) return false;
+				// <_U32> <index> <> <>;
+				if(!Buf.Read(_prefix_index)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EnhanceAstrologyBall(Caller, _prefix_ball_id, _prefix_general_id);
+				DDLStub<CALLER, CLASS>::GetClass()->EnhanceAstrologyBall(Caller, _prefix_ball_id, _prefix_general_id, _prefix_index);
 				return true;
 			}
 			if(fid==103)
@@ -3788,6 +3960,164 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->FeedHorse(Caller, _prefix_feed_type);
+				return true;
+			}
+			if(fid==108)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushInfo(Caller);
+				return true;
+			}
+			if(fid==109)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushSupportInfo(Caller);
+				return true;
+			}
+			if(fid==110)
+			{
+				_U32 __length;
+				_U32 _prefix_level_id;
+				char* _prefix_level_url;
+
+				// <_U32> <level_id> <> <>;
+				if(!Buf.Read(_prefix_level_id)) return false;
+				// <string> <level_url> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_level_url = (char*)alloca(sizeof(_prefix_level_url[0])*(__length+1));
+				if(!_prefix_level_url) return false;
+				if(!Buf.ReadBuffer(_prefix_level_url, (unsigned int)sizeof(_prefix_level_url[0])*__length)) return false;
+				_prefix_level_url[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushBattle(Caller, _prefix_level_id, _prefix_level_url);
+				return true;
+			}
+			if(fid==111)
+			{
+				_U32 __length;
+				char* _prefix_level_url;
+				_U32 _prefix_result;
+				_U32 _prefix_total_damage;
+
+				// <string> <level_url> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_level_url = (char*)alloca(sizeof(_prefix_level_url[0])*(__length+1));
+				if(!_prefix_level_url) return false;
+				if(!Buf.ReadBuffer(_prefix_level_url, (unsigned int)sizeof(_prefix_level_url[0])*__length)) return false;
+				_prefix_level_url[__length] = '\0';
+				// <_U32> <result> <> <>;
+				if(!Buf.Read(_prefix_result)) return false;
+				// <_U32> <total_damage> <> <>;
+				if(!Buf.Read(_prefix_total_damage)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushBattle(Caller, _prefix_level_url, _prefix_result, _prefix_total_damage);
+				return true;
+			}
+			if(fid==112)
+			{
+				_U32 __length;
+				_U32 _prefix_friend_id;
+				_U32 _prefix_level_id;
+				char* _prefix_level_url;
+
+				// <_U32> <friend_id> <> <>;
+				if(!Buf.Read(_prefix_friend_id)) return false;
+				// <_U32> <level_id> <> <>;
+				if(!Buf.Read(_prefix_level_id)) return false;
+				// <string> <level_url> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_level_url = (char*)alloca(sizeof(_prefix_level_url[0])*(__length+1));
+				if(!_prefix_level_url) return false;
+				if(!Buf.ReadBuffer(_prefix_level_url, (unsigned int)sizeof(_prefix_level_url[0])*__length)) return false;
+				_prefix_level_url[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushSupportBattle(Caller, _prefix_friend_id, _prefix_level_id, _prefix_level_url);
+				return true;
+			}
+			if(fid==113)
+			{
+				_U32 __length;
+				_U32 _prefix_friend_id;
+				char* _prefix_level_url;
+				_U32 _prefix_result;
+				_U32 _prefix_total_damage;
+
+				// <_U32> <friend_id> <> <>;
+				if(!Buf.Read(_prefix_friend_id)) return false;
+				// <string> <level_url> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_level_url = (char*)alloca(sizeof(_prefix_level_url[0])*(__length+1));
+				if(!_prefix_level_url) return false;
+				if(!Buf.ReadBuffer(_prefix_level_url, (unsigned int)sizeof(_prefix_level_url[0])*__length)) return false;
+				_prefix_level_url[__length] = '\0';
+				// <_U32> <result> <> <>;
+				if(!Buf.Read(_prefix_result)) return false;
+				// <_U32> <total_damage> <> <>;
+				if(!Buf.Read(_prefix_total_damage)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushSupportBattle(Caller, _prefix_friend_id, _prefix_level_url, _prefix_result, _prefix_total_damage);
+				return true;
+			}
+			if(fid==114)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RequestBossRushSupport(Caller);
+				return true;
+			}
+			if(fid==115)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->CancelBossRush(Caller);
+				return true;
+			}
+			if(fid==116)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AddBossRushRemainingTimes(Caller);
+				return true;
+			}
+			if(fid==117)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRush(Caller);
+				return true;
+			}
+			if(fid==118)
+			{
+				_U32 __length;
+				_U32 _prefix_friend_id;
+				_U32 _prefix_level_id;
+				char* _prefix_level_url;
+
+				// <_U32> <friend_id> <> <>;
+				if(!Buf.Read(_prefix_friend_id)) return false;
+				// <_U32> <level_id> <> <>;
+				if(!Buf.Read(_prefix_level_id)) return false;
+				// <string> <level_url> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_level_url = (char*)alloca(sizeof(_prefix_level_url[0])*(__length+1));
+				if(!_prefix_level_url) return false;
+				if(!Buf.ReadBuffer(_prefix_level_url, (unsigned int)sizeof(_prefix_level_url[0])*__length)) return false;
+				_prefix_level_url[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRushSupport(Caller, _prefix_friend_id, _prefix_level_id, _prefix_level_url);
 				return true;
 			}
 			return false;
@@ -4863,13 +5193,15 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 101, Buf);
 		}
 
-		bool EnhanceAstrologyBall(_U32 ball_id, _U32 general_id)
+		bool EnhanceAstrologyBall(_U32 ball_id, _U32 general_id, _U32 index)
 		{
 			BUFFER Buf;
 			// <_U32> <ball_id> <> <>
 			if(!Buf.Write(ball_id)) return false;
 			// <_U32> <general_id> <> <>
 			if(!Buf.Write(general_id)) return false;
+			// <_U32> <index> <> <>
+			if(!Buf.Write(index)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 102, Buf);
@@ -4929,6 +5261,139 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 107, Buf);
+		}
+
+		bool QueryBossRushInfo()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 108, Buf);
+		}
+
+		bool QueryBossRushSupportInfo()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 109, Buf);
+		}
+
+		bool BeginBossRushBattle(_U32 level_id, const char* level_url)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <level_id> <> <>
+			if(!Buf.Write(level_id)) return false;
+			// <string> <level_url> <> <>
+			__length = DDL::StringLength(level_url);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(level_url, (unsigned int)sizeof(level_url[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 110, Buf);
+		}
+
+		bool EndBossRushBattle(const char* level_url, _U32 result, _U32 total_damage)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <level_url> <> <>
+			__length = DDL::StringLength(level_url);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(level_url, (unsigned int)sizeof(level_url[0])*__length)) return false;
+			// <_U32> <result> <> <>
+			if(!Buf.Write(result)) return false;
+			// <_U32> <total_damage> <> <>
+			if(!Buf.Write(total_damage)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 111, Buf);
+		}
+
+		bool BeginBossRushSupportBattle(_U32 friend_id, _U32 level_id, const char* level_url)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <friend_id> <> <>
+			if(!Buf.Write(friend_id)) return false;
+			// <_U32> <level_id> <> <>
+			if(!Buf.Write(level_id)) return false;
+			// <string> <level_url> <> <>
+			__length = DDL::StringLength(level_url);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(level_url, (unsigned int)sizeof(level_url[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 112, Buf);
+		}
+
+		bool EndBossRushSupportBattle(_U32 friend_id, const char* level_url, _U32 result, _U32 total_damage)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <friend_id> <> <>
+			if(!Buf.Write(friend_id)) return false;
+			// <string> <level_url> <> <>
+			__length = DDL::StringLength(level_url);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(level_url, (unsigned int)sizeof(level_url[0])*__length)) return false;
+			// <_U32> <result> <> <>
+			if(!Buf.Write(result)) return false;
+			// <_U32> <total_damage> <> <>
+			if(!Buf.Write(total_damage)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 113, Buf);
+		}
+
+		bool RequestBossRushSupport()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 114, Buf);
+		}
+
+		bool CancelBossRush()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 115, Buf);
+		}
+
+		bool AddBossRushRemainingTimes()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 116, Buf);
+		}
+
+		bool AwardBossRush()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 117, Buf);
+		}
+
+		bool AwardBossRushSupport(_U32 friend_id, _U32 level_id, const char* level_url)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <friend_id> <> <>
+			if(!Buf.Write(friend_id)) return false;
+			// <_U32> <level_id> <> <>
+			if(!Buf.Write(level_id)) return false;
+			// <string> <level_url> <> <>
+			__length = DDL::StringLength(level_url);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(level_url, (unsigned int)sizeof(level_url[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 118, Buf);
 		}
 	};
 
@@ -6277,6 +6742,7 @@ namespace DDLStub
 				_U32 _prefix_gold;
 				_U32 _prefix_ball_id;
 				_U32 _prefix_atrologer_id;
+				_U32 _prefix_last_atrologer_id;
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
@@ -6286,9 +6752,11 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_ball_id)) return false;
 				// <_U32> <atrologer_id> <> <>;
 				if(!Buf.Read(_prefix_atrologer_id)) return false;
+				// <_U32> <last_atrologer_id> <> <>;
+				if(!Buf.Read(_prefix_last_atrologer_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->StrologyResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_id, _prefix_atrologer_id);
+				DDLStub<CALLER, CLASS>::GetClass()->StrologyResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_id, _prefix_atrologer_id, _prefix_last_atrologer_id);
 				return true;
 			}
 			if(fid==81)
@@ -6325,6 +6793,8 @@ namespace DDLStub
 				_U8 _prefix_bag_type;
 				_U32* _prefix_ball_list;
 				_U32 _prefix_count;
+				_U32* _prefix_devoured_list;
+				_U32 _prefix_count2;
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
@@ -6337,9 +6807,16 @@ namespace DDLStub
 				if(!Buf.ReadPointer(_prefix_ball_list, __length)) return false;
 				// <_U32> <count> <> <>;
 				if(!Buf.Read(_prefix_count)) return false;
+				// <_U32> <devoured_list> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_devoured_list = (_U32*)alloca(sizeof(_prefix_devoured_list[0])*__length);
+				if(!_prefix_devoured_list) return false;
+				if(!Buf.ReadPointer(_prefix_devoured_list, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->DevourResult(Caller, _prefix_ret, _prefix_bag_type, _prefix_ball_list, _prefix_count);
+				DDLStub<CALLER, CLASS>::GetClass()->DevourResult(Caller, _prefix_ret, _prefix_bag_type, _prefix_ball_list, _prefix_count, _prefix_devoured_list, _prefix_count2);
 				return true;
 			}
 			if(fid==83)
@@ -6402,6 +6879,206 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->FeedHorseResult(Caller, _prefix_ret, _prefix_xp, _prefix_xp_add, _prefix_level, _prefix_xp_add_type, _prefix_feed_type);
+				return true;
+			}
+			if(fid==85)
+			{
+				SG_BOSSRUSH_INFO _prefix_bossrush_info;
+
+				// <SG_BOSSRUSH_INFO> <bossrush_info> <> <>;
+				if(!Buf.Read(_prefix_bossrush_info)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushInfoResult(Caller, _prefix_bossrush_info);
+				return true;
+			}
+			if(fid==86)
+			{
+				_U32 __length;
+				SG_BOSSRUSH_SUPPORT_INFO* _prefix_support_list;
+				_U32 _prefix_count;
+
+				// <SG_BOSSRUSH_SUPPORT_INFO> <support_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_support_list = (SG_BOSSRUSH_SUPPORT_INFO*)alloca(sizeof(_prefix_support_list[0])*__length);
+				if(!_prefix_support_list) return false;
+				if(!Buf.ReadPointer(_prefix_support_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushSupportInfoResult(Caller, _prefix_support_list, _prefix_count);
+				return true;
+			}
+			if(fid==87)
+			{
+				SG_PLAYER_PVE _prefix_PlayerPVE;
+
+				// <SG_PLAYER_PVE> <PlayerPVE> <> <>;
+				if(!Buf.Read(_prefix_PlayerPVE)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushBattleResult(Caller, _prefix_PlayerPVE);
+				return true;
+			}
+			if(fid==88)
+			{
+				_U32 __length;
+				_U32 _prefix_level;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_exp;
+				_U32 _prefix_gold;
+				_U32 _prefix_wake_pt;
+				SG_DROP_ITEM_CONFIG* _prefix_drops;
+				_U32 _prefix_drop_count;
+
+				// <_U32> <level> <> <>;
+				if(!Buf.Read(_prefix_level)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <exp> <> <>;
+				if(!Buf.Read(_prefix_exp)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <wake_pt> <> <>;
+				if(!Buf.Read(_prefix_wake_pt)) return false;
+				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
+				if(!_prefix_drops) return false;
+				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
+				// <_U32> <drop_count> <> <>;
+				if(!Buf.Read(_prefix_drop_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushBattleResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_wake_pt, _prefix_drops, _prefix_drop_count);
+				return true;
+			}
+			if(fid==89)
+			{
+				SG_PLAYER_PVE _prefix_PlayerPVE;
+
+				// <SG_PLAYER_PVE> <PlayerPVE> <> <>;
+				if(!Buf.Read(_prefix_PlayerPVE)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushSupportBattleResult(Caller, _prefix_PlayerPVE);
+				return true;
+			}
+			if(fid==90)
+			{
+				_U32 __length;
+				_U32 _prefix_level;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_exp;
+				_U32 _prefix_gold;
+				_U32 _prefix_wake_pt;
+				SG_DROP_ITEM_CONFIG* _prefix_drops;
+				_U32 _prefix_drop_count;
+
+				// <_U32> <level> <> <>;
+				if(!Buf.Read(_prefix_level)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <exp> <> <>;
+				if(!Buf.Read(_prefix_exp)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <wake_pt> <> <>;
+				if(!Buf.Read(_prefix_wake_pt)) return false;
+				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
+				if(!_prefix_drops) return false;
+				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
+				// <_U32> <drop_count> <> <>;
+				if(!Buf.Read(_prefix_drop_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushSupportBattleResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_wake_pt, _prefix_drops, _prefix_drop_count);
+				return true;
+			}
+			if(fid==91)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_rmb;
+				_U8 _prefix_remain_times;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <_U8> <remain_times> <> <>;
+				if(!Buf.Read(_prefix_remain_times)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AddBossRushRemainingTimesResult(Caller, _prefix_ret, _prefix_rmb, _prefix_remain_times);
+				return true;
+			}
+			if(fid==92)
+			{
+				_U32 __length;
+				_U32 _prefix_level;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_exp;
+				_U32 _prefix_gold;
+				_U32 _prefix_wake_pt;
+				SG_DROP_ITEM_CONFIG* _prefix_drops;
+				_U32 _prefix_drop_count;
+
+				// <_U32> <level> <> <>;
+				if(!Buf.Read(_prefix_level)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <exp> <> <>;
+				if(!Buf.Read(_prefix_exp)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <wake_pt> <> <>;
+				if(!Buf.Read(_prefix_wake_pt)) return false;
+				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
+				if(!_prefix_drops) return false;
+				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
+				// <_U32> <drop_count> <> <>;
+				if(!Buf.Read(_prefix_drop_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRushResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_wake_pt, _prefix_drops, _prefix_drop_count);
+				return true;
+			}
+			if(fid==93)
+			{
+				_U32 __length;
+				_U32 _prefix_level;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_exp;
+				_U32 _prefix_gold;
+				_U32 _prefix_wake_pt;
+				SG_DROP_ITEM_CONFIG* _prefix_drops;
+				_U32 _prefix_drop_count;
+
+				// <_U32> <level> <> <>;
+				if(!Buf.Read(_prefix_level)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <exp> <> <>;
+				if(!Buf.Read(_prefix_exp)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <wake_pt> <> <>;
+				if(!Buf.Read(_prefix_wake_pt)) return false;
+				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
+				if(!_prefix_drops) return false;
+				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
+				// <_U32> <drop_count> <> <>;
+				if(!Buf.Read(_prefix_drop_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRushSupportResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_wake_pt, _prefix_drops, _prefix_drop_count);
 				return true;
 			}
 			return false;
@@ -7528,7 +8205,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 79, Buf);
 		}
 
-		bool StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id)
+		bool StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id, _U32 last_atrologer_id)
 		{
 			BUFFER Buf;
 			// <_U8> <ret> <> <>
@@ -7539,6 +8216,8 @@ namespace DDLProxy
 			if(!Buf.Write(ball_id)) return false;
 			// <_U32> <atrologer_id> <> <>
 			if(!Buf.Write(atrologer_id)) return false;
+			// <_U32> <last_atrologer_id> <> <>
+			if(!Buf.Write(last_atrologer_id)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 80, Buf);
@@ -7565,7 +8244,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
 		}
 
-		bool DevourResult(_U8 ret, _U8 bag_type, const _U32* ball_list, _U32 count)
+		bool DevourResult(_U8 ret, _U8 bag_type, const _U32* ball_list, _U32 count, const _U32* devoured_list, _U32 count2)
 		{
 			BUFFER Buf;
 			_U32 __length;
@@ -7579,6 +8258,12 @@ namespace DDLProxy
 			if(!Buf.WritePointer(ball_list, __length)) return false;
 			// <_U32> <count> <> <>
 			if(!Buf.Write(count)) return false;
+			// <_U32> <devoured_list> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(devoured_list, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
@@ -7629,6 +8314,165 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
+		}
+
+		bool QueryBossRushInfoResult(const SG_BOSSRUSH_INFO& bossrush_info)
+		{
+			BUFFER Buf;
+			// <SG_BOSSRUSH_INFO> <bossrush_info> <> <>
+			if(!Buf.Write(bossrush_info)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
+		}
+
+		bool QueryBossRushSupportInfoResult(const SG_BOSSRUSH_SUPPORT_INFO* support_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_BOSSRUSH_SUPPORT_INFO> <support_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(support_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
+		}
+
+		bool BeginBossRushBattleResult(const SG_PLAYER_PVE& PlayerPVE)
+		{
+			BUFFER Buf;
+			// <SG_PLAYER_PVE> <PlayerPVE> <> <>
+			if(!Buf.Write(PlayerPVE)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
+		}
+
+		bool EndBossRushBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <level> <> <>
+			if(!Buf.Write(level)) return false;
+			// <_U32> <exp_addition> <> <>
+			if(!Buf.Write(exp_addition)) return false;
+			// <_U32> <exp> <> <>
+			if(!Buf.Write(exp)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <wake_pt> <> <>
+			if(!Buf.Write(wake_pt)) return false;
+			// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>
+			__length = (_U16)(drop_count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(drops, __length)) return false;
+			// <_U32> <drop_count> <> <>
+			if(!Buf.Write(drop_count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
+		}
+
+		bool BeginBossRushSupportBattleResult(const SG_PLAYER_PVE& PlayerPVE)
+		{
+			BUFFER Buf;
+			// <SG_PLAYER_PVE> <PlayerPVE> <> <>
+			if(!Buf.Write(PlayerPVE)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
+		}
+
+		bool EndBossRushSupportBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <level> <> <>
+			if(!Buf.Write(level)) return false;
+			// <_U32> <exp_addition> <> <>
+			if(!Buf.Write(exp_addition)) return false;
+			// <_U32> <exp> <> <>
+			if(!Buf.Write(exp)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <wake_pt> <> <>
+			if(!Buf.Write(wake_pt)) return false;
+			// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>
+			__length = (_U16)(drop_count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(drops, __length)) return false;
+			// <_U32> <drop_count> <> <>
+			if(!Buf.Write(drop_count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
+		}
+
+		bool AddBossRushRemainingTimesResult(_U8 ret, _U32 rmb, _U8 remain_times)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <_U8> <remain_times> <> <>
+			if(!Buf.Write(remain_times)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
+		}
+
+		bool AwardBossRushResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <level> <> <>
+			if(!Buf.Write(level)) return false;
+			// <_U32> <exp_addition> <> <>
+			if(!Buf.Write(exp_addition)) return false;
+			// <_U32> <exp> <> <>
+			if(!Buf.Write(exp)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <wake_pt> <> <>
+			if(!Buf.Write(wake_pt)) return false;
+			// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>
+			__length = (_U16)(drop_count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(drops, __length)) return false;
+			// <_U32> <drop_count> <> <>
+			if(!Buf.Write(drop_count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
+		}
+
+		bool AwardBossRushSupportResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <level> <> <>
+			if(!Buf.Write(level)) return false;
+			// <_U32> <exp_addition> <> <>
+			if(!Buf.Write(exp_addition)) return false;
+			// <_U32> <exp> <> <>
+			if(!Buf.Write(exp)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <wake_pt> <> <>
+			if(!Buf.Write(wake_pt)) return false;
+			// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>
+			__length = (_U16)(drop_count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(drops, __length)) return false;
+			// <_U32> <drop_count> <> <>
+			if(!Buf.Write(drop_count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
 		}
 	};
 

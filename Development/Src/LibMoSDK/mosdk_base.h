@@ -19,11 +19,9 @@ typedef enum {
 } MOREQUESTSTATE;
 
 MOREQUEST* MORequestString(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params);
-MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path);
-MOREQUEST* MOUploadFiles(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const Atlas::Map<Atlas::String, Atlas::String>& files);
+MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path, bool append);
 MOREQUEST* MORequestString(const char* url, const char* postdata);
-MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path);
-MOREQUEST* MOUploadFiles(const char* url, const char* postdata, const Atlas::Map<Atlas::String, Atlas::String>& files);
+MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path, bool append);
 void MORequestDestory(MOREQUEST* request);
 
 MOREQUESTSTATE MORequestStatus(MOREQUEST* request);

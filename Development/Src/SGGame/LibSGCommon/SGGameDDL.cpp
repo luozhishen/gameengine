@@ -7,6 +7,401 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_CONFIG>(SG_NEWCOMER_GUIDE_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.function_id)) return false;
+		if(!Read<_U32>(Value.process_id)) return false;
+		if(!Read<_U8>(Value.type)) return false;
+		if(!Read<_U32>(Value.remain_time)) return false;
+		if(!Read<_U8>(Value.condition1)) return false;
+		if(!Read<_U32>(Value.condition1_param1)) return false;
+		if(!Read<_U32>(Value.condition1_param2)) return false;
+		if(!Read<_U8>(Value.condition2)) return false;
+		if(!Read<_U32>(Value.condition2_param1)) return false;
+		if(!Read<_U32>(Value.condition2_param2)) return false;
+		if(!Read<_U8>(Value.open_function)) return false;
+		if(!ReadString<SG_NEWCOMER_GUIDE_DESC_MAX>(Value.desc)) return false;
+		if(!ReadString<SG_NEWCOMER_GUIDE_PIC_MAX>(Value.guider_pic)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
+		if(!ReadString<SG_NEWCOMER_GUIDE_ICON_MAX>(Value.icon)) return false;
+		if(!Read<_U32>(Value.U2)) return false;
+		if(!Read<_U32>(Value.V2)) return false;
+		if(!Read<_U32>(Value.UL2)) return false;
+		if(!Read<_U32>(Value.VL2)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_CONFIG>(const SG_NEWCOMER_GUIDE_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.function_id)) return false;
+		if(!Write<_U32>(Value.process_id)) return false;
+		if(!Write<_U8>(Value.type)) return false;
+		if(!Write<_U32>(Value.remain_time)) return false;
+		if(!Write<_U8>(Value.condition1)) return false;
+		if(!Write<_U32>(Value.condition1_param1)) return false;
+		if(!Write<_U32>(Value.condition1_param2)) return false;
+		if(!Write<_U8>(Value.condition2)) return false;
+		if(!Write<_U32>(Value.condition2_param1)) return false;
+		if(!Write<_U32>(Value.condition2_param2)) return false;
+		if(!Write<_U8>(Value.open_function)) return false;
+		if(!WriteString<SG_NEWCOMER_GUIDE_DESC_MAX>(Value.desc)) return false;
+		if(!WriteString<SG_NEWCOMER_GUIDE_PIC_MAX>(Value.guider_pic)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
+		if(!WriteString<SG_NEWCOMER_GUIDE_ICON_MAX>(Value.icon)) return false;
+		if(!Write<_U32>(Value.U2)) return false;
+		if(!Write<_U32>(Value.V2)) return false;
+		if(!Write<_U32>(Value.UL2)) return false;
+		if(!Write<_U32>(Value.VL2)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_NEWCOMER_GUIDE_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_NEWCOMER_GUIDE_CONFIG>(*((SG_NEWCOMER_GUIDE_CONFIG*)data));
+	}
+
+	static bool _struct_SG_NEWCOMER_GUIDE_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_NEWCOMER_GUIDE_CONFIG>(*((const SG_NEWCOMER_GUIDE_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "function_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, function_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "process_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, process_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "remain_time", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, remain_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition1_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "condition1_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition2_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "condition2_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "open_function", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, open_function), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, desc), NULL, (_U16)SG_NEWCOMER_GUIDE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_DESC_MAX>), NULL},
+		{TYPE_STRING, "guider_pic", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, guider_pic), NULL, (_U16)SG_NEWCOMER_GUIDE_PIC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_PIC_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "icon", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, icon), NULL, (_U16)SG_NEWCOMER_GUIDE_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_ICON_MAX>), NULL},
+		{TYPE_U32, "U2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_CONFIG", sizeof(SG_NEWCOMER_GUIDE_CONFIG), 22, _struct_SG_NEWCOMER_GUIDE_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_CONFIG>()
+	{
+		return &_rfl_struct_SG_NEWCOMER_GUIDE_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>(SG_NEWCOMER_GUIDE_PROCESS_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.process_id)) return false;
+		if(!Read<_U8>(Value.type)) return false;
+		if(!Read<_U32>(Value.group)) return false;
+		if(!Read<_U32>(Value.close_level)) return false;
+		if(!Read<_U8>(Value.termial_type)) return false;
+		if(!Read<_U32>(Value.step1)) return false;
+		if(!Read<_U32>(Value.step2)) return false;
+		if(!Read<_U32>(Value.step3)) return false;
+		if(!Read<_U32>(Value.step4)) return false;
+		if(!Read<_U32>(Value.step5)) return false;
+		if(!Read<_U32>(Value.step6)) return false;
+		if(!Read<_U32>(Value.step7)) return false;
+		if(!Read<_U32>(Value.step8)) return false;
+		if(!Read<_U32>(Value.step9)) return false;
+		if(!Read<_U32>(Value.step10)) return false;
+		if(!Read<_U32>(Value.step11)) return false;
+		if(!Read<_U32>(Value.step12)) return false;
+		if(!Read<_U32>(Value.step13)) return false;
+		if(!Read<_U32>(Value.step14)) return false;
+		if(!Read<_U32>(Value.step15)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>(const SG_NEWCOMER_GUIDE_PROCESS_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.process_id)) return false;
+		if(!Write<_U8>(Value.type)) return false;
+		if(!Write<_U32>(Value.group)) return false;
+		if(!Write<_U32>(Value.close_level)) return false;
+		if(!Write<_U8>(Value.termial_type)) return false;
+		if(!Write<_U32>(Value.step1)) return false;
+		if(!Write<_U32>(Value.step2)) return false;
+		if(!Write<_U32>(Value.step3)) return false;
+		if(!Write<_U32>(Value.step4)) return false;
+		if(!Write<_U32>(Value.step5)) return false;
+		if(!Write<_U32>(Value.step6)) return false;
+		if(!Write<_U32>(Value.step7)) return false;
+		if(!Write<_U32>(Value.step8)) return false;
+		if(!Write<_U32>(Value.step9)) return false;
+		if(!Write<_U32>(Value.step10)) return false;
+		if(!Write<_U32>(Value.step11)) return false;
+		if(!Write<_U32>(Value.step12)) return false;
+		if(!Write<_U32>(Value.step13)) return false;
+		if(!Write<_U32>(Value.step14)) return false;
+		if(!Write<_U32>(Value.step15)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>(*((SG_NEWCOMER_GUIDE_PROCESS_CONFIG*)data));
+	}
+
+	static bool _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>(*((const SG_NEWCOMER_GUIDE_PROCESS_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "process_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, process_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, group), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "close_level", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, close_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "termial_type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, termial_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "step1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step3", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step4", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step5", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step6", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step7", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step7), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step8", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step8), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step9", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step9), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step10", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step10), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step11", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step11), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step12", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step12), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step13", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step13), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step14", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step14), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step15", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step15), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_PROCESS_CONFIG", sizeof(SG_NEWCOMER_GUIDE_PROCESS_CONFIG), 20, _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_PROCESS_CONFIG>()
+	{
+		return &_rfl_struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_STEP_CONFIG>(SG_NEWCOMER_GUIDE_STEP_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.step_id)) return false;
+		if(!Read<_U32>(Value.open_ui)) return false;
+		if(!Read<_U32>(Value.ui_condition)) return false;
+		if(!Read<_U8>(Value.complete_type)) return false;
+		if(!Read<_U32>(Value.complete_param1)) return false;
+		if(!Read<_U32>(Value.complete_param2)) return false;
+		if(!Read<_U32>(Value.button_tip)) return false;
+		if(!Read<_U32>(Value.button_param1)) return false;
+		if(!Read<_U32>(Value.button_param2)) return false;
+		if(!Read<_U8>(Value.arrow_direction)) return false;
+		if(!Read<_U32>(Value.offset_x)) return false;
+		if(!Read<_U32>(Value.offset_y)) return false;
+		if(!ReadString<SG_NEWCOMER_GUIDE_TIP_MAX>(Value.tip_desc)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_STEP_CONFIG>(const SG_NEWCOMER_GUIDE_STEP_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.step_id)) return false;
+		if(!Write<_U32>(Value.open_ui)) return false;
+		if(!Write<_U32>(Value.ui_condition)) return false;
+		if(!Write<_U8>(Value.complete_type)) return false;
+		if(!Write<_U32>(Value.complete_param1)) return false;
+		if(!Write<_U32>(Value.complete_param2)) return false;
+		if(!Write<_U32>(Value.button_tip)) return false;
+		if(!Write<_U32>(Value.button_param1)) return false;
+		if(!Write<_U32>(Value.button_param2)) return false;
+		if(!Write<_U8>(Value.arrow_direction)) return false;
+		if(!Write<_U32>(Value.offset_x)) return false;
+		if(!Write<_U32>(Value.offset_y)) return false;
+		if(!WriteString<SG_NEWCOMER_GUIDE_TIP_MAX>(Value.tip_desc)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_NEWCOMER_GUIDE_STEP_CONFIG>(*((SG_NEWCOMER_GUIDE_STEP_CONFIG*)data));
+	}
+
+	static bool _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_NEWCOMER_GUIDE_STEP_CONFIG>(*((const SG_NEWCOMER_GUIDE_STEP_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "step_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, step_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "open_ui", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, open_ui), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "ui_condition", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, ui_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "complete_type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "complete_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "complete_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "button_tip", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_tip), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "button_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "button_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "arrow_direction", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, arrow_direction), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "offset_x", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_x), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "offset_y", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_y), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tip_desc", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, tip_desc), NULL, (_U16)SG_NEWCOMER_GUIDE_TIP_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_TIP_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_STEP_CONFIG", sizeof(SG_NEWCOMER_GUIDE_STEP_CONFIG), 13, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_STEP_CONFIG>()
+	{
+		return &_rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SEARCH_CONFIG>(SG_DAILY_SEARCH_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.road_pt)) return false;
+		if(!Read<_U8>(Value.road_type)) return false;
+		if(!Read<_U32>(Value.param)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SEARCH_CONFIG>(const SG_DAILY_SEARCH_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.road_pt)) return false;
+		if(!Write<_U8>(Value.road_type)) return false;
+		if(!Write<_U32>(Value.param)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_DAILY_SEARCH_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_DAILY_SEARCH_CONFIG>(*((SG_DAILY_SEARCH_CONFIG*)data));
+	}
+
+	static bool _struct_SG_DAILY_SEARCH_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_DAILY_SEARCH_CONFIG>(*((const SG_DAILY_SEARCH_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_DAILY_SEARCH_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "road_pt", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_CONFIG, road_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "road_type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_CONFIG, road_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "param", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_CONFIG, param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_DAILY_SEARCH_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_SEARCH_CONFIG", sizeof(SG_DAILY_SEARCH_CONFIG), 3, _struct_SG_DAILY_SEARCH_CONFIG_fieldinfo, _struct_SG_DAILY_SEARCH_CONFIG_readproc, _struct_SG_DAILY_SEARCH_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SEARCH_CONFIG>()
+	{
+		return &_rfl_struct_SG_DAILY_SEARCH_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SEARCH_REWARD_CONFIG>(SG_DAILY_SEARCH_REWARD_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.circle_num)) return false;
+		if(!Read<_U32>(Value.reward_energy)) return false;
+		if(!Read<_U32>(Value.reward_rmb)) return false;
+		if(!Read<_U32>(Value.reward_item1)) return false;
+		if(!Read<_U32>(Value.reward_item1_count)) return false;
+		if(!Read<_U32>(Value.reward_item2)) return false;
+		if(!Read<_U32>(Value.reward_item2_count)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SEARCH_REWARD_CONFIG>(const SG_DAILY_SEARCH_REWARD_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.circle_num)) return false;
+		if(!Write<_U32>(Value.reward_energy)) return false;
+		if(!Write<_U32>(Value.reward_rmb)) return false;
+		if(!Write<_U32>(Value.reward_item1)) return false;
+		if(!Write<_U32>(Value.reward_item1_count)) return false;
+		if(!Write<_U32>(Value.reward_item2)) return false;
+		if(!Write<_U32>(Value.reward_item2_count)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_DAILY_SEARCH_REWARD_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_DAILY_SEARCH_REWARD_CONFIG>(*((SG_DAILY_SEARCH_REWARD_CONFIG*)data));
+	}
+
+	static bool _struct_SG_DAILY_SEARCH_REWARD_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_DAILY_SEARCH_REWARD_CONFIG>(*((const SG_DAILY_SEARCH_REWARD_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_DAILY_SEARCH_REWARD_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "circle_num", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, circle_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_energy", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1_count", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item1_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2_count", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item2_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_DAILY_SEARCH_REWARD_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_SEARCH_REWARD_CONFIG", sizeof(SG_DAILY_SEARCH_REWARD_CONFIG), 7, _struct_SG_DAILY_SEARCH_REWARD_CONFIG_fieldinfo, _struct_SG_DAILY_SEARCH_REWARD_CONFIG_readproc, _struct_SG_DAILY_SEARCH_REWARD_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SEARCH_REWARD_CONFIG>()
+	{
+		return &_rfl_struct_SG_DAILY_SEARCH_REWARD_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_ZHANJIANG_LEVEL_CONFIG>(SG_ZHANJIANG_LEVEL_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -380,7 +775,8 @@ namespace DDL
 	bool BufferReader::Read<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(SG_GENERAL_ASTROLOG_SLOT_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
-		if(!Read<_U32>(Value.general_level)) return false;
+		if(!Read<_U32>(Value.general_level_upper)) return false;
+		if(!Read<_U32>(Value.general_level_lower)) return false;
 		if(!Read<_U32>(Value.slot_num)) return false;
 		return true;
 	}
@@ -388,7 +784,8 @@ namespace DDL
 	bool BufferWriter::Write<SG_GENERAL_ASTROLOG_SLOT_CONFIG>(const SG_GENERAL_ASTROLOG_SLOT_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
-		if(!Write<_U32>(Value.general_level)) return false;
+		if(!Write<_U32>(Value.general_level_upper)) return false;
+		if(!Write<_U32>(Value.general_level_lower)) return false;
 		if(!Write<_U32>(Value.slot_num)) return false;
 		return true;
 	}
@@ -409,10 +806,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "general_level", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_level_upper", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_level_lower", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "slot_num", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, slot_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_ASTROLOG_SLOT_CONFIG", sizeof(SG_GENERAL_ASTROLOG_SLOT_CONFIG), 2, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_fieldinfo, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_readproc, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_ASTROLOG_SLOT_CONFIG", sizeof(SG_GENERAL_ASTROLOG_SLOT_CONFIG), 3, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_fieldinfo, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_readproc, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL_ASTROLOG_SLOT_CONFIG>()
 	{
@@ -5610,6 +6008,7 @@ namespace DDLReflect
 		// 102 EnhanceAstrologyBall
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 103 Strology
 		{TYPE_U32, "astrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 104 StrologyAuto
@@ -5623,6 +6022,32 @@ namespace DDLReflect
 		{TYPE_U32, "target_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 107 FeedHorse
 		{TYPE_U8, "feed_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 108 QueryBossRushInfo
+		// 109 QueryBossRushSupportInfo
+		// 110 BeginBossRushBattle
+		{TYPE_U32, "level_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 111 EndBossRushBattle
+		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "total_damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 112 BeginBossRushSupportBattle
+		{TYPE_U32, "friend_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "level_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 113 EndBossRushSupportBattle
+		{TYPE_U32, "friend_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "total_damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 114 RequestBossRushSupport
+		// 115 CancelBossRush
+		// 116 AddBossRushRemainingTimes
+		// 117 AwardBossRush
+		// 118 AwardBossRushSupport
+		{TYPE_U32, "friend_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "level_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -5728,14 +6153,25 @@ namespace DDLReflect
 		{"QueryAstrologyBag", 0, _class_SGGAME_C2S_fieldinfos+92},
 		{"SaveToBag", 1, _class_SGGAME_C2S_fieldinfos+92},
 		{"SetAstrologyBallStatus", 3, _class_SGGAME_C2S_fieldinfos+93},
-		{"EnhanceAstrologyBall", 2, _class_SGGAME_C2S_fieldinfos+96},
-		{"Strology", 1, _class_SGGAME_C2S_fieldinfos+98},
-		{"StrologyAuto", 1, _class_SGGAME_C2S_fieldinfos+99},
-		{"Devour", 1, _class_SGGAME_C2S_fieldinfos+100},
-		{"UseItem", 4, _class_SGGAME_C2S_fieldinfos+101},
-		{"FeedHorse", 1, _class_SGGAME_C2S_fieldinfos+105},
+		{"EnhanceAstrologyBall", 3, _class_SGGAME_C2S_fieldinfos+96},
+		{"Strology", 1, _class_SGGAME_C2S_fieldinfos+99},
+		{"StrologyAuto", 1, _class_SGGAME_C2S_fieldinfos+100},
+		{"Devour", 1, _class_SGGAME_C2S_fieldinfos+101},
+		{"UseItem", 4, _class_SGGAME_C2S_fieldinfos+102},
+		{"FeedHorse", 1, _class_SGGAME_C2S_fieldinfos+106},
+		{"QueryBossRushInfo", 0, _class_SGGAME_C2S_fieldinfos+107},
+		{"QueryBossRushSupportInfo", 0, _class_SGGAME_C2S_fieldinfos+107},
+		{"BeginBossRushBattle", 2, _class_SGGAME_C2S_fieldinfos+107},
+		{"EndBossRushBattle", 3, _class_SGGAME_C2S_fieldinfos+109},
+		{"BeginBossRushSupportBattle", 3, _class_SGGAME_C2S_fieldinfos+112},
+		{"EndBossRushSupportBattle", 4, _class_SGGAME_C2S_fieldinfos+115},
+		{"RequestBossRushSupport", 0, _class_SGGAME_C2S_fieldinfos+119},
+		{"CancelBossRush", 0, _class_SGGAME_C2S_fieldinfos+119},
+		{"AddBossRushRemainingTimes", 0, _class_SGGAME_C2S_fieldinfos+119},
+		{"AwardBossRush", 0, _class_SGGAME_C2S_fieldinfos+119},
+		{"AwardBossRushSupport", 3, _class_SGGAME_C2S_fieldinfos+119},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 108, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 119, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -6013,6 +6449,7 @@ namespace DDLReflect
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "atrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "last_atrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 81 StrologyAutoResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -6024,6 +6461,8 @@ namespace DDLReflect
 		{TYPE_U8, "bag_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "ball_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32|TYPE_ARRAY, "devoured_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 83 UseItemResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -6040,6 +6479,51 @@ namespace DDLReflect
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "xp_add_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "feed_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 85 QueryBossRushInfoResult
+		{TYPE_STRUCT, "bossrush_info", 0, 0, &_rfl_struct_SG_BOSSRUSH_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 86 QueryBossRushSupportInfoResult
+		{TYPE_STRUCT|TYPE_ARRAY, "support_list", 0, 0, &_rfl_struct_SG_BOSSRUSH_SUPPORT_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 87 BeginBossRushBattleResult
+		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 88 EndBossRushBattleResult
+		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 89 BeginBossRushSupportBattleResult
+		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 90 EndBossRushSupportBattleResult
+		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 91 AddBossRushRemainingTimesResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8, "remain_times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 92 AwardBossRushResult
+		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 93 AwardBossRushSupportResult
+		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
@@ -6123,13 +6607,22 @@ namespace DDLReflect
 		{"SaveToBagResult", 2, _class_SGGAME_S2C_fieldinfos+173},
 		{"SetAstrologyBallStatusResult", 2, _class_SGGAME_S2C_fieldinfos+175},
 		{"EnhanceAstrologyBallResult", 4, _class_SGGAME_S2C_fieldinfos+177},
-		{"StrologyResult", 4, _class_SGGAME_S2C_fieldinfos+181},
-		{"StrologyAutoResult", 5, _class_SGGAME_S2C_fieldinfos+185},
-		{"DevourResult", 4, _class_SGGAME_S2C_fieldinfos+190},
-		{"UseItemResult", 8, _class_SGGAME_S2C_fieldinfos+194},
-		{"FeedHorseResult", 6, _class_SGGAME_S2C_fieldinfos+202},
+		{"StrologyResult", 5, _class_SGGAME_S2C_fieldinfos+181},
+		{"StrologyAutoResult", 5, _class_SGGAME_S2C_fieldinfos+186},
+		{"DevourResult", 6, _class_SGGAME_S2C_fieldinfos+191},
+		{"UseItemResult", 8, _class_SGGAME_S2C_fieldinfos+197},
+		{"FeedHorseResult", 6, _class_SGGAME_S2C_fieldinfos+205},
+		{"QueryBossRushInfoResult", 1, _class_SGGAME_S2C_fieldinfos+211},
+		{"QueryBossRushSupportInfoResult", 2, _class_SGGAME_S2C_fieldinfos+212},
+		{"BeginBossRushBattleResult", 1, _class_SGGAME_S2C_fieldinfos+214},
+		{"EndBossRushBattleResult", 7, _class_SGGAME_S2C_fieldinfos+215},
+		{"BeginBossRushSupportBattleResult", 1, _class_SGGAME_S2C_fieldinfos+222},
+		{"EndBossRushSupportBattleResult", 7, _class_SGGAME_S2C_fieldinfos+223},
+		{"AddBossRushRemainingTimesResult", 3, _class_SGGAME_S2C_fieldinfos+230},
+		{"AwardBossRushResult", 7, _class_SGGAME_S2C_fieldinfos+233},
+		{"AwardBossRushSupportResult", 7, _class_SGGAME_S2C_fieldinfos+240},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 85, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 94, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

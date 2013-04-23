@@ -167,7 +167,7 @@ MOREQUEST* MOClientDownloadFile(MOCLIENT* client, const char* method, const Atla
 	postdata += client->session_key;
 	Atlas::String url;
 	url = client->baseurl + method + client->prefix;
-	return MODownloadFile(url.c_str(), postdata.c_str(), path);
+	return MODownloadFile(url.c_str(), postdata.c_str(), path, false);
 }
 
 MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& files)

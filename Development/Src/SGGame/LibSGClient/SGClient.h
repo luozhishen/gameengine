@@ -108,14 +108,24 @@ namespace Atlas
 		virtual void SetAstrologyBallStatusResult(_U8 ret, const SG_GENERAL& general) = 0;
 		virtual void EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id) = 0;
 		//virtual void BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id) = 0;
-		virtual void StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id) = 0;
+		virtual void StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id, _U32 last_astrologer_id) = 0;
 		virtual void StrologyAutoResult(_U8 ret, _U32 gold, _U32* ball_list, _U32 count, _U32 atrologer_id) = 0;
-		virtual void DevourResult(_U8 ret, _U8 bag_type, _U32* ball_list, _U32 count) = 0;
+		virtual void DevourResult(_U8 ret, _U8 bag_type, _U32* ball_list, _U32 count, _U32* devoured_list, _U32 count2) = 0;
 		virtual void UseItemResult(_U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count) = 0;
 
 		virtual void FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type) = 0;
 
 		virtual void BuyGoodsResult(_U8 ret, _U32* id_list, _U32 count) = 0;
+
+		virtual void QueryBossRushInfoResult(const SG_BOSSRUSH_INFO& bossrush_info) = 0;
+		virtual void QueryBossRushSupportInfoResult(const SG_BOSSRUSH_SUPPORT_INFO* support_list, _U32 count) = 0;
+		virtual void BeginBossRushBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;
+		virtual void EndBossRushBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void BeginBossRushSupportBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;
+		virtual void EndBossRushSupportBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void AddBossRushRemainingTimesResult(_U8 ret, _U32 rmb, _U8 remain_times) = 0;
+		virtual void AwardBossRushResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void AwardBossRushSupportResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -257,7 +267,7 @@ namespace Atlas
 		void QueryAstrologyBag();												//²éÑ¯Ãü»ê
 		void SaveToBag(_U32 item_id);											//´æÈëÃü»ê°üÖÐ
 		void SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status);	//0-Ð¶ÏÂ 1-×°±¸
-		void EnhanceAstrologyBall(_U32 ball_id, _U32 general_id);				//Éý¼¶Ãü»ê
+		void EnhanceAstrologyBall(_U32 ball_id, _U32 general_id, _U32 index);	//Éý¼¶Ãü»ê
 		//void BuyAstrologyBall(_U32 ball_id);									//¹ºÂòÃü»ê
 		void Strology(_U32 astrologer_id);										//Õ¼ÐÇ
 		void StrologyAuto(_U32 RestSlotCount);									//Ò»¼üÕ¼ÐÇ
@@ -266,6 +276,18 @@ namespace Atlas
 		void Devour(_U8 bag_type);
 
 		void FeedHorse(const _U8 feed_type);
+
+		void QueryBossRushInfo();
+		void QueryBossRushSupportInfo();
+		void BeginBossRushBattle(_U32 level_id, const char* level_url);
+		void EndBossRushBattle(const char* level_url, _U32 result, _U32 total_damage);
+		void BeginBossRushSupportBattle(_U32 friend_id, _U32 level_id, const char* level_url);
+		void EndBossRushSupportBattle(_U32 friend_id, const char* level_url, _U32 result, _U32 total_damage);
+		void RequestBossRushSupport();
+		void CancelBossRush();
+		void AddBossRushRemainingTimes();
+		void AwardBossRush();
+		void AwardBossRushSupport(_U32 friend_id, _U32 level_id, const char* level_url);
 
 		//result
 		void Pong(CSGClient* pClient);
@@ -364,12 +386,23 @@ namespace Atlas
 		void SetAstrologyBallStatusResult(CSGClient* pClient, _U8 ret, const SG_GENERAL& general);
 		void EnhanceAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
 		//void BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id);
-		void StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id);
+		void StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id, _U32 last_astrologer_id);
 		void StrologyAutoResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32* ball_list, _U32 count, _U32 atrologer_id);
-		void DevourResult(CSGClient* pClient, _U8 ret, _U8 bag_type, _U32* ball_list, _U32 count);
+		void DevourResult(CSGClient* pClient, _U8 ret, _U8 bag_type, _U32* ball_list, _U32 count, _U32* devoured_list, _U32 count2);
 
 		void UseItemResult(CSGClient* pClient, _U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count);
 		void FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type);
+
+		void QueryBossRushInfoResult(CSGClient* pClient, const SG_BOSSRUSH_INFO& bossrush_info);
+		void QueryBossRushSupportInfoResult(CSGClient* pClient, const SG_BOSSRUSH_SUPPORT_INFO* support_list, _U32 count);
+		void BeginBossRushBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
+		void EndBossRushBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void BeginBossRushSupportBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
+		void EndBossRushSupportBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void AddBossRushRemainingTimesResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U8 remain_times);
+		void AwardBossRushResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void AwardBossRushSupportResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+
 	public:
 		virtual void OnLoginDone();
 		virtual void OnLoginFailed();

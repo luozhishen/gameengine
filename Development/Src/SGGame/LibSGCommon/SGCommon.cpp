@@ -67,12 +67,18 @@ namespace Atlas
 		{"SG_FRIEND_NUM_CONFIG", "SG_FRIEND_NUM_CONFIG.json", "player_level"},
 		{"SG_ASTROLOGY_BALL_CONFIG", "SG_ASTROLOGY_BALL_CONFIG.json", "item_id"},
 		{"SG_ASTROLOGER_CONFIG", "SG_ASTROLOGER_CONFIG.json", "astrologer_id"},
-		{"SG_GENERAL_ASTROLOG_SLOT_CONFIG", "SG_GENERAL_ASTROLOG_SLOT_CONFIG.json", "general_level"},
+		{"SG_GENERAL_ASTROLOG_SLOT_CONFIG", "SG_GENERAL_ASTROLOG_SLOT_CONFIG.json", "general_level_upper"},
 
 		{"SG_LOOT_ITEM_CONFIG", "SG_LOOT_ITEM_CONFIG.json", "loot_id"},
 		{"SG_HORSE_CONFIG", "SG_HORSE_CONFIG.json", "horse_level"},
 		{"SG_HORSE_SETTING_CONFIG", "SG_HORSE_SETTING_CONFIG.json", "unlock_level"},
 		{"SG_ZHANJIANG_LEVEL_CONFIG", "SG_ZHANJIANG_LEVEL_CONFIG.json", "level_id"},
+		{"SG_NEWCOMER_GUIDE_CONFIG", "SG_NEWCOMER_GUIDE_CONFIG.json", "function_id"},
+
+		{"SG_NEWCOMER_GUIDE_PROCESS_CONFIG", "SG_NEWCOMER_GUIDE_PROCESS_CONFIG.json", "process_id"},
+		{"SG_NEWCOMER_GUIDE_STEP_CONFIG", "SG_NEWCOMER_GUIDE_STEP_CONFIG.json", "step_id"},
+		{"SG_DAILY_SEARCH_CONFIG", "SG_DAILY_SEARCH_CONFIG.json", "road_pt"},
+		{"SG_DAILY_SEARCH_REWARD_CONFIG", "SG_DAILY_SEARCH_REWARD_CONFIG.json", "circle_num"},
 		
 	};
 
@@ -205,6 +211,17 @@ namespace Atlas
 		pContentGroup->Register(DDLReflect::GetStruct< SG_HORSE_SETTING_CONFIG >(), true, g_JsonContent[i++].keys);
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_ZHANJIANG_LEVEL_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_NEWCOMER_GUIDE_CONFIG >(), true, g_JsonContent[i++].keys);
+
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_NEWCOMER_GUIDE_PROCESS_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_NEWCOMER_GUIDE_STEP_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_DAILY_SEARCH_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_DAILY_SEARCH_REWARD_CONFIG >(), true, g_JsonContent[i++].keys);
 				
 	}
 

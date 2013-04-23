@@ -11,6 +11,7 @@ struct MOREQUEST
 {
     Atlas::String _result;
     FILE* _file;
+	int _length;
     MOREQUESTSTATE _state;
 	MOHttpRequest* request;
 };
@@ -21,13 +22,9 @@ struct MOREQUEST
 
 - (id)init;
 - (void)dealloc;
-- (NSURL *)smartURLForString:(NSString *)str;
-- (NSMutableURLRequest *)requestGet:(NSString *)aUrl queryString:(NSString *)aQueryString;
-- (NSMutableURLRequest *)requestPost:(NSString *)aUrl queryString:(NSString *)aQueryString;
-- (void)sendRequest:(NSURLRequest *)request;
-- (void)httpGet:(NSString *)aUrl queryString:(NSString *)aQueryString;
-- (void)httpPost:(NSString *)aUrl queryString:(NSString *)aQueryString;
 - (MOREQUEST*)getStruct;
+- (void)stringRequest:(NSString *)aUrl queryString:(NSString *)aQueryString;
+- (void)streamRequest:(NSString *)aUrl queryString:(NSString *)aQueryString;
 
 @end
 
@@ -46,64 +43,20 @@ struct MOREQUEST
     [super dealloc];
 }
 
-- (NSURL *)smartURLForString:(NSString *)str {
-	NSURL *     result;
-	NSString *  trimmedStr;
-	NSRange     schemeMarkerRange;
-	NSString *  scheme;
-	
-	assert(str != nil);
-	
-	result = nil;
-	
-	trimmedStr = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	if ( (trimmedStr != nil) && (trimmedStr.length != 0) ) {
-		schemeMarkerRange = [trimmedStr rangeOfString:@"://"];
-		
-		if (schemeMarkerRange.location == NSNotFound) {
-			result = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", trimmedStr]];
-		} else {
-			scheme = [trimmedStr substringWithRange:NSMakeRange(0, schemeMarkerRange.location)];
-			assert(scheme != nil);
-			
-			if ( ([scheme compare:@"http"  options:NSCaseInsensitiveSearch] == NSOrderedSame)
-				|| ([scheme compare:@"https" options:NSCaseInsensitiveSearch] == NSOrderedSame) ) {
-				result = [NSURL URLWithString:trimmedStr];
-			} else {
-				// It looks like this is some unsupported URL scheme.
-			}
-		}
-	}
-	
-	return result;
+- (MOREQUEST*)getStruct {
+	return &_struct;
 }
 
-- (NSMutableURLRequest *)requestGet:(NSString *)aUrl queryString:(NSString *)aQueryString {
-	NSMutableString *url = [[NSMutableString alloc] initWithString:aUrl];
+- (void)stringRequest:(NSString *)aUrl queryString:(NSString *)aQueryString {
+	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:aUrl]] autorelease];
+	[request setTimeoutInterval:100.0f];
 	if (aQueryString) {
-		[url appendFormat:@"?%@", aQueryString];
+		[request setHTTPMethod:@"POST"];
+		[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+		[request setHTTPBody:[aQueryString dataUsingEncoding:NSUTF8StringEncoding]];
+	} else {
+		[request setHTTPMethod:@"GET"];
 	}
-	
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:[self smartURLForString:url]] autorelease];
-	[request setHTTPMethod:@"GET"];
-	[request setTimeoutInterval:20.0f];
-	
-	[url release];
-	return request;
-}
-
-- (NSMutableURLRequest *)requestPost:(NSString *)aUrl queryString:(NSString *)aQueryString {
-	
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:[self smartURLForString:aUrl]] autorelease];
-	[request setHTTPMethod:@"POST"];
-	[request setTimeoutInterval:20.0f];
-	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-	[request setHTTPBody:[aQueryString dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	return request;
-}
-
-- (void)sendRequest:(NSURLRequest *)request {
 	[NSURLConnection
 		sendAsynchronousRequest:request
 		queue:[[NSOperationQueue alloc] init]
@@ -124,18 +77,37 @@ struct MOREQUEST
         }];
 }
 
-- (void)httpGet:(NSString *)aUrl queryString:(NSString *)aQueryString {
-	NSMutableURLRequest *request = [self requestGet:aUrl queryString:aQueryString];
-	[self sendRequest:request];
+- (bool)streamRequest:(NSString *)aUrl queryString:(NSString *)aQueryString {
+	NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL URLWithString:aUrl] autorelease];
+	[request setTimeoutInterval:100.0f];
+	if (aQueryString) {
+		[request setHTTPMethod:@"POST"];
+		[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+		[request setHTTPBody:[aQueryString dataUsingEncoding:NSUTF8StringEncoding]];
+	} else {
+		[request setHTTPMethod:@"GET"];
+	}
+	NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
 }
 
-- (void)httpPost:(NSString *)aUrl queryString:(NSString *)aQueryString {
-	NSMutableURLRequest *request = [self requestPost:aUrl queryString:aQueryString];
-	[self sendRequest:request];
+- (void)connection:(NSURLConnection __unused *)connection didReceiveResponse:(NSURLResponse *)response
+{
 }
 
-- (MOREQUEST*)getStruct {
-	return &_struct;
+- (void)connection:(NSURLConnection __unused *)connection didReceiveData:(NSData *)data
+{
+	fwrite([data bytes], 1, [data length], _struct._file);
+	_struct._length += (int)[data length];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection __unused *)connection
+{
+	_struct._state = MOREQUESTSTATE_DONE;
+}
+
+- (void)connection:(NSURLConnection __unused *)connection didFailWithError:(NSError *)error
+{
+	_struct._state = MOREQUESTSTATE_FAILED;
 }
 
 @end
@@ -147,18 +119,11 @@ MOREQUEST* MORequestString(const char* url, const Atlas::Map<Atlas::String, Atla
 	return MORequestString(url, val.c_str());
 }
 
-MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path)
+MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path, bool append)
 {
 	Atlas::String val;
 	build_http_param(val, params);
 	return MODownloadFile(url, val.c_str(), path);
-}
-
-MOREQUEST* MOUploadFiles(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const Atlas::Map<Atlas::String, Atlas::String>& files)
-{
-	Atlas::String val;
-	build_http_param(val, params);
-	return MOUploadFiles(url, val.c_str(), files);
 }
 
 MOREQUEST* MORequestString(const char* url, const char* postdata)
@@ -177,12 +142,7 @@ MOREQUEST* MORequestString(const char* url, const char* postdata)
 	return [request getStruct];
 }
 
-MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path)
-{
-	return NULL;
-}
-
-MOREQUEST* MOUploadFiles(const char* url, const char* postdata, const Atlas::Map<Atlas::String, Atlas::String>& files)
+MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path, bool append)
 {
 	return NULL;
 }
@@ -204,7 +164,7 @@ const char* MORequestGetResult(MOREQUEST* request)
 
 int MORequestGetResultLength(MOREQUEST* request)
 {
-	return (int)(request->_result.size());
+	return request->_file?request->_length:(int)(request->_result.size());
 }
 
 #endif

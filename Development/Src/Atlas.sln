@@ -66,12 +66,21 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KnightDataImportConsole", "KnightGame\KnightDataImportConsole\KnightDataImportConsole.vcxproj", "{35971424-8E03-47B6-B23E-B036EE66D122}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibKnightCommon", "KnightGame\LibKnightCommon\LibKnightCommon.vcxproj", "{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ADAEFB09-1F84-444E-AB89-E0B91A964AD0} = {ADAEFB09-1F84-444E-AB89-E0B91A964AD0}
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97} = {1A43D78F-6A91-4B19-B2DB-78CB5848DD97}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KnightEditor", "KnightGame\KnightEditor\KnightEditor.vcxproj", "{3FC55A22-248F-4AE0-B584-0794544D1B24}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4} = {8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaExtention", "KnightGame\LuaExtention\LuaExtention.vcxproj", "{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}"
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 26
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -171,6 +180,10 @@ Global
 		SccProjectTopLevelParentUniqueName24 = Atlas.sln
 		SccLocalPath24 = KnightGame
 		SccProjectFilePathRelativizedFromConnection24 = KnightEditor\\
+		SccProjectUniqueName25 = KnightGame\\LuaExtention\\LuaExtention.vcxproj
+		SccProjectTopLevelParentUniqueName25 = Atlas.sln
+		SccLocalPath25 = ..\\..\\..
+		SccProjectFilePathRelativizedFromConnection25 = Atlas\\Development\\Src\\KnightGame\\LuaExtention\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -355,6 +368,12 @@ Global
 		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|Win32.Build.0 = Release|Win32
 		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|x64.ActiveCfg = Release|x64
 		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|x64.Build.0 = Release|x64
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|Win32.Build.0 = Debug|Win32
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|x64.ActiveCfg = Debug|Win32
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|Win32.ActiveCfg = Release|Win32
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|Win32.Build.0 = Release|Win32
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -384,5 +403,6 @@ Global
 		{35971424-8E03-47B6-B23E-B036EE66D122} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
 		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
 		{3FC55A22-248F-4AE0-B584-0794544D1B24} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
 	EndGlobalSection
 EndGlobal

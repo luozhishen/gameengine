@@ -47,6 +47,9 @@
     <ClInclude Include="KnightCommon.h" />
     <ClInclude Include="KnightGameDDL.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\..\KnightGame\Content\Lua\test.lua" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -144,6 +147,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Project\Phobos\Trunk\MacDev\Development\External\luaplus51-all-master\Src\LuaPlus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,6 +165,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Project\Phobos\Trunk\MacDev\Development\External\luaplus51-all-master\Src\LuaPlus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -171,6 +176,13 @@
     <BuildLog>
       <Path>$(IntDir)\$(ProjectName).log</Path>
     </BuildLog>
+    <Lib>
+      <AdditionalDependencies>LuaExtention.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\Project\Phobos\Trunk\MacDev\Development\External\Atlas\Development\Src\Release\</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

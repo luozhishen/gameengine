@@ -12,9 +12,9 @@
 #include <windows.h>
 #include <wininet.h>
 
-static bool http_request(MOREQUEST* request, const char* url, const char* postdata);
+static bool http_request(MOREQUEST* request, const char* url, const char* header, const char* postdata);
 static char g_TypeSpec[] = "Content-Type: application/x-www-form-urlencoded\r\n";
-static char g_AcceptType[] = "*/*";
+//static char g_AcceptType[] = "*/*";
 
 struct MOREQUEST
 {
@@ -22,8 +22,10 @@ struct MOREQUEST
 	HINTERNET _request;
 	Atlas::String _result;
 	FILE* _file;
+	int _length;
 	MOREQUESTSTATE _state;
 	Atlas::String _postdata;
+	Atlas::String _postheader;
 	char buf[1000];
 };
 
@@ -61,6 +63,7 @@ static void CALLBACK request_callback(HINTERNET hInternet, DWORD_PTR dwContext, 
 		if(request->_file)
 		{
 			fwrite(request->buf, 1, len, request->_file);
+			request->_length += len;
 		}
 		else
 		{
@@ -96,25 +99,18 @@ MOREQUEST* MORequestString(const char* url, const Atlas::Map<Atlas::String, Atla
 	return MORequestString(url, postdata.c_str());
 }
 
-MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path)
+MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path, bool append)
 {
 	Atlas::String postdata;
 	build_http_param(postdata, params);
-	return MODownloadFile(url, postdata.c_str(), path);
-}
-
-MOREQUEST* MOUploadFiles(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const Atlas::Map<Atlas::String, Atlas::String>& files)
-{
-	Atlas::String postdata;
-	build_http_param(postdata, params);
-	return MOUploadFiles(url, postdata.c_str(), files);
+	return MODownloadFile(url, postdata.c_str(), path, append);
 }
 
 MOREQUEST* MORequestString(const char* url, const char* postdata)
 {
 	MOREQUEST* request = new MOREQUEST;
 	request->_file = NULL;
-	if(http_request(request, url, postdata))
+	if(http_request(request, url, postdata?g_TypeSpec:NULL, postdata))
 	{
 		return request;
 	}
@@ -125,14 +121,24 @@ MOREQUEST* MORequestString(const char* url, const char* postdata)
 	}
 }
 
-MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path)
+MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path, bool append)
 {
-	FILE* file = fopen(path, "wb");
+	FILE* file = fopen(path, append?"ab":"wb");
 	if(file==NULL) return NULL;
+	fseek(file, 0, SEEK_END);
+	int loc = ftell(file);
+	if(loc<=1000) loc = 0; else loc -= 1000;
+	fseek(file, loc, SEEK_SET);
 
 	MOREQUEST* request = new MOREQUEST;
 	request->_file = file;
-	if(http_request(request, url, postdata))
+	request->_length = loc;
+	if(postdata) request->_postheader += g_TypeSpec;
+	char seekstr[100];
+	sprintf(seekstr, "Range:bytes=%d-\r\n", loc);
+	request->_postheader += seekstr;
+
+	if(http_request(request, url, request->_postheader.c_str(), postdata))
 	{
 		return request;
 	}
@@ -142,11 +148,6 @@ MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* pat
 		fclose(file);
 		return NULL;
 	}
-}
-
-MOREQUEST* MOUploadFiles(const char* url, const char* postdata, const Atlas::Map<Atlas::String, Atlas::String>& files)
-{
-	return NULL;
 }
 
 void MORequestDestory(MOREQUEST* request)
@@ -171,10 +172,10 @@ const char* MORequestGetResult(MOREQUEST* request)
 
 int MORequestGetResultLength(MOREQUEST* request)
 {
-	return (int)(request->_result.size());
+	return request->_file?request->_length:(int)(request->_result.size());
 }
 
-bool http_request(MOREQUEST* request, const char* url, const char* postdata)
+bool http_request(MOREQUEST* request, const char* url, const char* header, const char* postdata)
 {
 	URL_COMPONENTSA urlcomps;
 	CHAR buf0[256], buf1[256], buf2[256], buf3[256], buf4[1024], buf5[1024];
@@ -211,11 +212,11 @@ bool http_request(MOREQUEST* request, const char* url, const char* postdata)
 			BOOL result;
 			if(request->_postdata.empty())
 			{
-				result = HttpSendRequestA(request->_request, NULL, 0, NULL, 0);
+				result = HttpSendRequestA(request->_request, header, header?(DWORD)strlen(header):0, NULL, 0);
 			}
 			else
 			{
-				result = HttpSendRequestA(request->_request, g_TypeSpec, (DWORD)strlen(g_TypeSpec), (LPVOID)request->_postdata.c_str(), (DWORD)request->_postdata.size());
+				result = HttpSendRequestA(request->_request, header, header?(DWORD)strlen(header):0, (LPVOID)request->_postdata.c_str(), (DWORD)request->_postdata.size());
 			}
 
 			if(result || GetLastError()==ERROR_IO_PENDING) return true;

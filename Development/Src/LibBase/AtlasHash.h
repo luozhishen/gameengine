@@ -24,8 +24,8 @@ namespace Atlas
 	private:
 		void transform(const _U8 block[BLOCK_SIZE]);
 		_U8 buffer[BLOCK_SIZE];
-		_U32 count[2];   // 64bit counter for number of bits (lo, hi)
-		_U32 state[4];   // digest so far
+		_U32 count[2];
+		_U32 state[4];
  	};
 
 	class CHashSha1

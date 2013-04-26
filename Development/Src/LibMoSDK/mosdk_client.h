@@ -23,8 +23,6 @@ const char* MOGetSessionKey(MOCLIENT* client);
 const char* MOGetClientBaseUrl(MOCLIENT* client);
 MOREQUEST* MOClientRequestString(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params);
 MOREQUEST* MOClientDownloadFile(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path);
-MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& files);
-MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params, const Atlas::Map<Atlas::String, Atlas::String>& files);
 int MOClientGetResultCode(MOREQUEST* request);
 const char* MOClientGetResultString(MOREQUEST* request);
 

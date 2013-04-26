@@ -170,32 +170,6 @@ MOREQUEST* MOClientDownloadFile(MOCLIENT* client, const char* method, const Atla
 	return MODownloadFile(url.c_str(), postdata.c_str(), path, false);
 }
 
-MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& files)
-{
-	if(MOGetClientState(client)!=MOCLIENTSTATE_AUTH) return NULL;
-
-	Atlas::String postdata;
-	postdata = "token=";
-	postdata += client->session_key;
-	Atlas::String url;
-	url = client->baseurl + method + client->prefix;
-	return MOUploadFiles(url.c_str(), postdata.c_str(), files);
-}
-
-MOREQUEST* MOClientUploadFiles(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params, const Atlas::Map<Atlas::String, Atlas::String>& files)
-{
-	if(MOGetClientState(client)!=MOCLIENTSTATE_AUTH) return NULL;
-
-	Atlas::String postdata;
-	build_http_param(postdata, params);
-	if(!postdata.empty()) postdata += "&";
-	postdata += "token=";
-	postdata += client->session_key;
-	Atlas::String url;
-	url = client->baseurl + method + client->prefix;
-	return MOUploadFiles(url.c_str(), postdata.c_str(), files);
-}
-
 int MOClientGetResultCode(MOREQUEST* request)
 {
 	switch(MORequestStatus(request))

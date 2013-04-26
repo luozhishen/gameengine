@@ -3,7 +3,90 @@
 #include "AtlasBase.h"
 #include "AsyncRPCImpl.h"
 
-namespace Atlas {
+namespace Atlas
+{
+
+	template <typename pool_t>
+	pool_t AllocPool(_U32, _U32)
+	{
+		return(NULL);
+	}
+
+	template <typename pool_t>
+	void FreePool(pool_t)
+	{
+	}
+
+	template <typename pool_t>
+	_U8* LockBuffer(pool_t)
+	{
+		return(NULL);
+	}
+
+	template <typename pool_t>
+	void UnlockBuffer(pool_t, _U8*)
+	{
+	}
+
+	template <typename pool_t, _U32 LVL_MIN=8, _U32 LVL_MAX=10>
+	struct TURBO_ALLOCATOR {
+		TURBO_ALLOCATOR() {
+			for(_U32 ndx=0; ndx<=LVL_MAX-LVL_MIN; ++ndx) {
+				htpools[ndx] = AllocPool<pool_t>(1<<(ndx+LVL_MIN), 0);
+			}
+		}
+		~TURBO_ALLOCATOR() {
+			for(_U32 ndx=0; ndx<=LVL_MAX-LVL_MIN; ++ndx) {
+				FreePool(htpools[ndx]);
+			}
+		}
+		void *Alloc(size_t size) {
+			if(size>(1<<LVL_MAX)) {
+				return(NULL);
+			} else {
+				_U32 ndx;
+				for(ndx=0; ndx<=LVL_MAX-LVL_MIN; ++ndx) {
+					if((size_t)1<<(ndx+LVL_MIN)>=size) break;
+				}
+				return(LockBuffer(htpools[ndx]));
+			}
+		}
+		void Free(void *buf) {
+			UnlockBuffer(htpools[0], (_U8*)buf);
+		}
+		pool_t GetMaxPool() {
+			return htpools[LVL_MAX-LVL_MIN];
+		}
+		pool_t htpools[LVL_MAX-LVL_MIN+1];
+	};
+
+	template <>
+	inline
+	HIOPOOL AllocPool<HIOPOOL>(_U32 size, _U32 count)
+	{
+		return AllocIoBufferPool(size, size, 0, count);
+	}
+
+	template <>
+	inline
+	void FreePool(HIOPOOL pool)
+	{
+		FreeIoBufferPool(pool);
+	}
+
+	template <>
+	inline
+	_U8* LockBuffer(HIOPOOL pool)
+	{
+		return LockIoBuffer(pool);
+	}
+
+	template <>
+	inline
+	void UnlockBuffer(HIOPOOL, _U8* buf)
+	{
+		UnlockIoBuffer(buf);
+	}
 
 	#define	RPC_SERVER_NONE				0
 	#define	RPC_SERVER_CONNECTING		1

@@ -157,6 +157,11 @@ MOREQUESTSTATE MORequestStatus(MOREQUEST* request)
 	return request->_state;
 }
 
+int MORequestContentSize(MOREQUEST* request)
+{
+	return 0;
+}
+
 const char* MORequestGetResult(MOREQUEST* request)
 {
 	return request->_result.c_str();

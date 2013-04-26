@@ -17,6 +17,7 @@
 #include "AtlasUtils.h"
 #include "AsyncRPC.h"
 #include "AtlasUUID.h"
+#include "AtlasHash.h"
 #include "sigslot.h"
 
 namespace Atlas

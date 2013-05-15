@@ -1,6 +1,9 @@
 
 include "../../LibCommon/CommonDDL.ddl"
 
+//SG_SERVER_RESULT
+const _U8 SG_SERVER_RESULT_SUCC			= 0;
+
 //SG_CLIENT
 const _U8 SG_CLIENT_STATUS_READY		= 0;
 const _U8 SG_CLIENT_STATUS_UNINIT		= 1;
@@ -173,6 +176,76 @@ const _U32 SG_NEWCOMER_GUIDE_DESC_MAX = 512;
 const _U32 SG_NEWCOMER_GUIDE_PIC_MAX = 128;
 const _U32 SG_NEWCOMER_GUIDE_ICON_MAX = 128;
 const _U32 SG_NEWCOMER_GUIDE_TIP_MAX = 128;
+const _U32 SG_NEWCOMER_UI_MAX = 128;
+const _U32 SG_NEWCOMER_GUIDER_LABEL_MAX = 128;
+
+
+//vip
+const _U32 SG_VIP_DESC_MAX = 512;
+
+//rmb_recharge
+const _U32 SG_RECHARGE_YUANBAO_DESC = 128;
+const _U32 SG_RECHARGE_PRICE_DESC = 128;
+const _U32 SG_RECHARGE_OTHER_DESC = 128;
+
+//world boss
+struct SG_WORLD_BOSS_CONFIG : A_CONTENT_OBJECT
+{
+	_U32										world_level;		//世界等级
+	_U32										boss_id;			//bossid
+	_U32										base_gold;			//基础银币
+	_U32										total_gold;			//银币总量
+	_U32										total_reputation;	//声望总量
+
+	_U32										loot;				//参与宝石宝箱
+	_U32										reward_gold;		//单次银币奖励
+	_U32										reward_loot1;		//单次宝箱1奖励
+	_F32										reward_loot1_rate;	//单次宝箱1几率
+	_U32										reward_loot2;		//单次宝箱2奖励
+	_F32										reward_loot2_rate;	//单次宝箱2几率
+
+	string<100>									reward1;			//第n名奖励
+	string<100>									reward2;
+	string<100>									reward3;
+	string<100>									reward4;
+	string<100>									reward5;
+	string<100>									reward6;
+	string<100>									reward7;
+	string<100>									reward8;
+	string<100>									reward9;
+	string<100>									reward10;
+};
+task[GEN_STRUCT_SERIALIZE(SG_WORLD_BOSS_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_WORLD_BOSS_CONFIG)];
+
+struct SG_WORLD_BOSS_INSPIRE_CONFIG : A_CONTENT_OBJECT
+{
+	_U32										times;				//次数
+	_U32										consume_rmb;		//花费元宝数
+};
+task[GEN_STRUCT_SERIALIZE(SG_WORLD_BOSS_INSPIRE_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_WORLD_BOSS_INSPIRE_CONFIG)];
+
+//rmb_recharge
+struct SG_RECHARGE_CONFIG : A_CONTENT_OBJECT
+{
+	_U32										index;				//序号
+	_U32										yuanbao;			//元宝数
+	_U32										extra_yuanbao;		//额外赠送元宝数
+	string<SG_RECHARGE_YUANBAO_DESC>			yuanbao_desc;		//元宝表述
+	_U32										price;				//价格rmb
+	string<SG_RECHARGE_PRICE_DESC>				price_desc;			//价格描述
+	string<SG_RECHARGE_OTHER_DESC>				other_desc;
+
+	string<SG_ICON_MAX>							icon;				//图片资源
+
+	_U32										U;					
+	_U32										V;					
+	_U32										UL;					
+	_U32										VL;	
+};		
+task[GEN_STRUCT_SERIALIZE(SG_RECHARGE_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_RECHARGE_CONFIG)];
 
 //newcomer guide
 struct SG_NEWCOMER_GUIDE_CONFIG : A_CONTENT_OBJECT
@@ -189,7 +262,7 @@ struct SG_NEWCOMER_GUIDE_CONFIG : A_CONTENT_OBJECT
 	_U32										condition2_param1;	//开启2条件1
 	_U32										condition2_param2;	//开启2条件2
 																	
-	_U8											open_function;		//开启功能
+	string<SG_NEWCOMER_UI_MAX>					open_function;		//开启功能 string
 	string<SG_NEWCOMER_GUIDE_DESC_MAX>			desc;				//文字说明
 																	
 	string<SG_NEWCOMER_GUIDE_PIC_MAX>			guider_pic;			//引导员图片
@@ -198,11 +271,13 @@ struct SG_NEWCOMER_GUIDE_CONFIG : A_CONTENT_OBJECT
 	_U32										UL;					
 	_U32										VL;					
 																	
-	string<SG_NEWCOMER_GUIDE_ICON_MAX>			icon;				//开启功能icon
+	string<SG_ICON_MAX>							icon;				//开启功能icon
 	_U32										U2;					//icon的UVULVL
 	_U32										V2;					
 	_U32										UL2;				
 	_U32										VL2;				
+	string<SG_NEWCOMER_GUIDER_LABEL_MAX>		guider_label;		//引导员标题
+	string<SG_TEX_MAX>							tex;				
 };
 task[GEN_STRUCT_SERIALIZE(SG_NEWCOMER_GUIDE_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_NEWCOMER_GUIDE_CONFIG)];
@@ -237,18 +312,22 @@ task[GEN_STRUCT_REFLECT(SG_NEWCOMER_GUIDE_PROCESS_CONFIG)];
 struct SG_NEWCOMER_GUIDE_STEP_CONFIG : A_CONTENT_OBJECT
 {
 	_U32										step_id;			//步骤ID
-	_U32										open_ui;			//自动开启界面
-	_U32										ui_condition;		//界面条件
+	string<SG_NEWCOMER_UI_MAX>					open_ui;			//自动开启界面 string
+	string<SG_NEWCOMER_UI_MAX>					ui_condition;		//界面条件 string
 	_U8											complete_type;		//完成类型
-	_U32										complete_param1;	//完成参数1
+	string<SG_NEWCOMER_UI_MAX>					complete_param1;	//完成参数1 string
 	_U32										complete_param2;	//完成参数2
 	_U32										button_tip;			//按键提示
-	_U32										button_param1;		//指向按键参数1
+	string<SG_NEWCOMER_UI_MAX>					button_param1;		//指向按键参数1 string
 	_U32										button_param2;		//指向按键参数2
 	_U8											arrow_direction;	//箭头方向
 	_U32										offset_x;			//偏移量X
 	_U32										offset_y;			//偏移量Y
 	string<SG_NEWCOMER_GUIDE_TIP_MAX>			tip_desc;			//提示框文字显示
+	_U32										up;
+	_U32										down;
+	_U32										left;
+	_U32										right;
 };
 task[GEN_STRUCT_SERIALIZE(SG_NEWCOMER_GUIDE_STEP_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_NEWCOMER_GUIDE_STEP_CONFIG)];
@@ -331,6 +410,11 @@ struct SG_HORSE_CONFIG : A_CONTENT_OBJECT
 	_U32										general_def;		//武将防御
 
 	string<SG_HORSE_MESH_MAX>					mesh;				//坐骑mesh
+	string<SG_TEX_MAX>							tex;				//icon tex
+	_U32										U;					
+	_U32										V;					
+	_U32										UL;
+	_U32										VL;
 };
 task[GEN_STRUCT_SERIALIZE(SG_HORSE_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_HORSE_CONFIG)];
@@ -521,6 +605,7 @@ struct SG_VIP_CONFIG : A_CONTENT_OBJECT
 	_U8							enhance_free;					//强化免费 0-否 1-是
 	_U32						enhance_friend_num;				//vip好友上限增加量
 	_U8							auto_atrology;					//占星vip是否开启
+	string<SG_VIP_DESC_MAX>     desc;							//描述
 
 	string<SG_VIP_ICON_MAX>				res;					//图标资源
 	_U32								U;					
@@ -582,10 +667,10 @@ struct SG_BOSSRUSH_INFO : A_LIVE_OBJECT
 {
 	_U32								level_id;				//关卡id
 	_U32								boss_hp;				//当前boss血量
-	_U8									remain_times;			//剩余挑战次数
 	_U32								next_reset_time;		//下次重置时间
 	_U8									status;					//状态 0-Initial 1-started 2-waiting for support 3-canceled 4-ready to reward 5-Rewarded
-	_U32								furthest_level;			//最远进度
+
+	array<_U8, 128>						daily_progress;			//0- daily havent 1-have	
 };
 task[GEN_STRUCT_SERIALIZE(SG_BOSSRUSH_INFO)];
 task[GEN_STRUCT_REFLECT(SG_BOSSRUSH_INFO)];
@@ -665,6 +750,53 @@ struct SG_LEAGUE_DIANJIANG_CONFIG : A_CONTENT_OBJECT
 };
 task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_DIANJIANG_CONFIG)];
 task[GEN_STRUCT_REFLECT(SG_LEAGUE_DIANJIANG_CONFIG)];
+
+struct SG_LEAGUE_BATTLE_RANK_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								server_level_lower;		//服务器等级上限
+	_U32								server_level_upper;		//服务器等级下限
+	_U32								lower;					//战盟排名下限
+	_U32								upper;					//战盟排名上限
+	
+	_U32								reward_exp;				//经验奖励
+	_U32								reward_gold;			//铜钱奖励
+	_U32								reward_rmb;				//元宝奖励
+	_U32								reward_reputation;		//奖励军功
+	_U32								reward_contribution;	//贡献度奖励
+
+	_U32								reward_item1;			//道具1奖励
+	_U32								reward_item_count1;		//道具1数量
+	_U32								reward_item2;			//道具2奖励
+	_U32								reward_item_count2;		//道具2数量
+	_U32								reward_item3;			//道具3奖励
+	_U32								reward_item_count3;		//道具3数量
+};
+task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_BATTLE_RANK_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_LEAGUE_BATTLE_RANK_CONFIG)];
+
+struct SG_LEAGUE_MEMBER_WIN_CONFIG : A_CONTENT_OBJECT
+{
+	_U32								server_level_lower;		//服务器等级上限
+	_U32								server_level_upper;		//服务器等级下限
+
+	_U32								win_times;				//连胜次数
+
+	_U32								reward_exp;				//经验奖励
+	_U32								reward_gold;			//铜钱奖励
+	_U32								reward_rmb;				//元宝奖励
+	_U32								reward_reputation;		//奖励军功
+	_U32								reward_contribution;	//贡献度奖励
+
+	_U32								reward_item1;			//道具1奖励
+	_U32								reward_item_count1;		//道具1数量
+	_U32								reward_item2;			//道具2奖励
+	_U32								reward_item_count2;		//道具2数量
+	_U32								reward_item3;			//道具3奖励
+	_U32								reward_item_count3;		//道具3数量
+};
+task[GEN_STRUCT_SERIALIZE(SG_LEAGUE_MEMBER_WIN_CONFIG)];
+task[GEN_STRUCT_REFLECT(SG_LEAGUE_MEMBER_WIN_CONFIG)];
+
 
 //PVP事件记录
 struct SG_PVP_RECORD_ITEM : A_LIVE_OBJECT
@@ -1001,6 +1133,7 @@ struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 	string<100>							level_name;
 	_U32								exp;
 	_U32								gold;
+	_U32								reputation;
 	_U32								level_id;	
 	_U32								next_level;
 
@@ -1308,6 +1441,8 @@ struct SG_PLAYER_PVE
 	array<SG_EQUIPPED_UNIT_PVE, 3>		EquippedSoldiers;
 	string<SG_PLAYER_NAME_MAX>			Nick;
 	_U32								Avatar_ID;			//如果是查询则返回查询时带入的avatar_id
+	_U32								horse_level;
+	_U32								halo_level;
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER_PVE)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER_PVE)];
@@ -1332,7 +1467,7 @@ struct SG_GENERAL : A_LIVE_OBJECT
 	_U32								exp;
 	_U8									status;				//武将状态 0-未招募 1-在酒馆未在队 2-在酒馆在队
 	SG_EQUIP_SLOTS						equip_slots;
-	array<_U32, 6>						minghun_slots;			//命魂槽 ball_id
+	array<_U32, 6>						minghun_slots;		//命魂槽 ball_id
 };
 task[GEN_STRUCT_SERIALIZE(SG_GENERAL)];
 task[GEN_STRUCT_REFLECT(SG_GENERAL)];
@@ -1399,7 +1534,7 @@ task[GEN_STRUCT_REFLECT(SG_DAILY_ACTION_DESC_CONFIG)];
 
 struct SG_DAILY_ACTION_INFO				: A_LIVE_OBJECT
 {
-	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1004-pvp每日奖励 1003-每日军饷 1007-每日购买体力的次数
+	_U32								action_id;				//1001-俸禄 1-每日关卡可进行 1002-pvp 1004-pvp每日奖励 1003-每日军饷 1007-每日购买体力的次数 2002-boss rush
 	_U32								times;					//剩余可领取俸禄 1-每日可进行关卡剩余次数 -pvp剩余次数 -pvp每日奖励可领次数 -每日军饷已领取次数
 	_U32								reset_time;				//俸禄冷却时间 1-重置的时间标签 -重置的时间标签 -重置的时间标签 -重置的时间标签
 };
@@ -1445,9 +1580,28 @@ struct SG_PLAYER : SG_GENERAL
 
 	_U32								horse_exp;
 	_U32								horse_level;
+
+	_U32								furthest_level;			//boss rush
+	_U32								xunbao_circle;			//daily search
+	_U32								xunbao_step;			
 };
 task[GEN_STRUCT_SERIALIZE(SG_PLAYER)];
 task[GEN_STRUCT_REFLECT(SG_PLAYER)];
+
+//simple player info
+struct SG_PLAYER_INFO : SG_GENERAL
+{
+	string<SG_PLAYER_NAME_MAX>			nick;					//昵称
+	_U32								avatar_id;				//相当于userid
+	_U8									title;					//官职
+	_U32								reputation;				//军功
+	_U32								rank;					//排行榜排名
+	_U32								vip_level;				//vip等级
+	_U32								league_id;				//所在战盟ID
+	_U32								horse_level;			
+};
+task[GEN_STRUCT_SERIALIZE(SG_PLAYER_INFO)];
+task[GEN_STRUCT_REFLECT(SG_PLAYER_INFO)];
 
 struct SG_ITEM : A_LIVE_OBJECT
 {
@@ -1573,6 +1727,36 @@ struct SG_CHAT_RECV_INFO : A_LIVE_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_CHAT_RECV_INFO)];
 task[GEN_STRUCT_REFLECT(SG_CHAT_RECV_INFO)];
 
+//pvp
+struct SG_PVP_HEROLIST_PLAYER : A_LIVE_OBJECT
+{
+	string<SG_PLAYER_NAME_MAX>			nick;
+	_U32 								level;
+	_U32								rank;
+};
+task[GEN_STRUCT_SERIALIZE(SG_PVP_HEROLIST_PLAYER)];
+task[GEN_STRUCT_REFLECT(SG_PVP_HEROLIST_PLAYER)];
+
+struct SG_PVP_RANK_PLAYER : A_LIVE_OBJECT
+{
+	_U32 								avatar_id;
+	_U32								general_id;		
+	string<SG_PLAYER_NAME_MAX>			nick;
+	_U32 								level;
+	_U32								rank;
+};
+task[GEN_STRUCT_SERIALIZE(SG_PVP_RANK_PLAYER)];
+task[GEN_STRUCT_REFLECT(SG_PVP_RANK_PLAYER)];
+
+//newcomer guide
+struct SG_NEWCOMER_GUIDE_INFO : A_LIVE_OBJECT
+{
+	_U32								function_id;
+	_U8									status;					//0-not never exist in list 1-activated 2- finished
+};
+task[GEN_STRUCT_SERIALIZE(SG_NEWCOMER_GUIDE_INFO)];
+task[GEN_STRUCT_REFLECT(SG_NEWCOMER_GUIDE_INFO)];
+
 class SGGAME_C2S
 {
 	Ping();
@@ -1610,7 +1794,7 @@ class SGGAME_C2S
 	RefreshEquipDecideAccept(A_UUID uuid);
 
 	BeginBattle(string name);
-	EndBattle(string name, _U32 result);
+	EndBattle(string name, _U32 result, _U8 auto_combat);			//auto_combat 0-no  1-yes
 
 	EquipGem(A_UUID item_uuid, _U32 gem_id);
 	UnequipGem(A_UUID item_uuid, _U32 gem_id);
@@ -1620,7 +1804,7 @@ class SGGAME_C2S
 	
 	QueryPlayerQuest(_U8 nSync);									//查询玩家任务信息
 	SaveQuestData(_U32 quest_id, _U32 counter, _U8 status);			//更改任务状态
-	FinishQuest(_U32 quest_id);										//提交完成任务
+	FinishQuest(_U32 quest_id, _U32 rmb);							//提交完成任务
 
 	HaloCoolDown();													//立刻冷却
 	HaloIncreaseEXP(_U8 halo_type);									//升级光环
@@ -1703,7 +1887,6 @@ class SGGAME_C2S
 	SaveToBag(_U32 item_id);											//存入命魂包中
 	SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status);	//0-卸下 1-装备
 	EnhanceAstrologyBall(_U32 ball_id, _U32 general_id, _U32 index);	//升级命魂 如果general_id 不为0则是升级装备在武将身上的id
-	//BuyAstrologyBall(_U32 ball_id);									//购买命魂
 	Strology(_U32 astrologer_id);										//占星
 	StrologyAuto(_U32 RestSlotCount);									//一键占星
 	Devour(_U8 bag_type);												//一键吞噬
@@ -1714,7 +1897,7 @@ class SGGAME_C2S
 
 	QueryBossRushInfo();
 	QueryBossRushSupportInfo();
-	BeginBossRushBattle(_U32 level_id, string level_url);
+	BeginBossRushBattle(_U32 level_id, string level_url, _U32 init_boss_hp);
 	EndBossRushBattle(string level_url, _U32 result, _U32 total_damage);
 	BeginBossRushSupportBattle(_U32 friend_id, _U32 level_id, string level_url);
 	EndBossRushSupportBattle(_U32 friend_id, string level_url, _U32 result, _U32 total_damage);
@@ -1724,6 +1907,11 @@ class SGGAME_C2S
 	AwardBossRush();
 	AwardBossRushSupport(_U32 friend_id, _U32 level_id, string level_url);
 
+	QueryDiceNum();														//每日寻宝筛子
+	
+	QueryNewcomerGuideInfo();											//新手引导
+	ActivateNewcomerGuide(_U32 function_id);
+	FinishNewcomerGuide(_U32 function_id);
 };
 
 class SGGAME_S2C
@@ -1746,35 +1934,38 @@ class SGGAME_S2C
 	QueryBagGen(SG_GEM_ITEM items[count], _U32 count);
 	QueryBagMaterial(SG_MATERIAL_ITEM items[count], _U32 count);
 	QueryBagEnd(_U8 nSync);
-	QueryOtherPlayersResult(SG_PLAYER players[count], _U32 count);
+	QueryOtherPlayersResult(SG_PLAYER_INFO players[count], _U32 count);
 
+	EnhanceEquiptResult(_U8 ret, _U32 gold, SG_EQUIPT_ITEM equip_item);
+	ExtendEquiptResult(_U8 ret, SG_EQUIPT_ITEM equip_item, A_UUID reduce_uuid);
 	EnhanceCoolDownResult(_U32 time);
 	RefreshEquipDone(SG_EQUIPT_ITEM euipt);
 	GemCombineResult(SG_GEM_ITEM gem);
 
 	HaloIncreaseEXPResult(_U32 time);
+	HaloCoolDownResult(_U8 ret, _U32 consume_rmb);
 	HaloGetCoolDownResult(_U32 time);
 
 	BeginBattleResult(SG_PLAYER_PVE PlayerPVE);
-	EndBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);//level 战斗结束后等级
+	EndBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);//level 战斗结束后等级  
 
 	QueryPlayerQuestResult(SG_QUEST_LIVE_INFO quest_list[count], _U32 count, _U8 nSync);
-	FinishQuestDone(_U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, SG_DROP_ITEM_BASE drops[drop_count], _U32 drop_count);//level 任务完成之后
+	FinishQuestDone(_U8 ret, _U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, SG_DROP_ITEM_BASE drops[drop_count], _U32 drop_count, _U32 consume_rmb);//level 任务完成之后
 	
 	BuyGoodsResult(_U8 ret, A_UUID goods[count], _U32 id_list[count], _U32 count);	
 	SellItemResult(_U8 ret, A_UUID uuid, _U32 item_id, _U32 count);					//ret 0-succ 1-failed 
 
 	QueryPlayerPVPInfoResult(SG_PLAYER_PVE pve);
-	QueryPlayerRankListResult(SG_PLAYER players[count], _U32 count);
+	QueryPlayerRankListResult(SG_PVP_RANK_PLAYER players[count], _U32 count);
 
 	PVPCoolDownResult(_U32 time);													//挑战冷却时间
 	PVPGetRestTimeResult(_U32 rest_time);											//挑战剩余次数
 	PVPRecordResult(SG_PVP_RECORD_ITEM record[count], _U32 count);					//对战记录			
-	PVPHeroListRecord(SG_PLAYER players[count], _U32 count);						//英雄榜				
+	PVPHeroListRecord(SG_PVP_HEROLIST_PLAYER players[count], _U32 count);			//英雄榜				
 	PVPDailyReward(_U32 gold, _U32 reputation, SG_ITEM items[count], _U32 count);	//pvp每日奖励 增量
-	PVPBattleBeginResult(SG_PLAYER_PVE SelfPVE, SG_PLAYER_PVE DefenderPVE, SG_PLAYER DefenderPlayerInfo);//pvp战斗
+	PVPBattleBeginResult(SG_PLAYER_PVE SelfPVE, SG_PLAYER_PVE DefenderPVE);			//pvp战斗
 	PVPBattleEndResult(_U32 reputation);											//pvp战斗结束 
-	PVPCoolDownClearResult();														//pvp清除挑战冷却时间
+	PVPCoolDownClearResult(_U8 ret, _U32 cost);										//pvp清除挑战冷却时间
 	PVPIncreateBattleTimesResult(_U32 rest_times);									//pvp增加挑战次数
 
 	QueryInstanceResult(SG_INSTANCE_INFO instances[count], _U32 count);				//副本
@@ -1827,24 +2018,27 @@ class SGGAME_S2C
 	SaveToBagResult(_U8 ret, _U32 item_id);
 	SetAstrologyBallStatusResult(_U8 ret, SG_GENERAL general);
 	EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
-	//BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id);
 	StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id, _U32 last_atrologer_id);
 	StrologyAutoResult(_U8 ret, _U32 gold, _U32 ball_list[count], _U32 count, _U32 atrologer_id);
 	DevourResult(_U8 ret, _U8 bag_type, _U32 ball_list[count], _U32 count, _U32 devoured_list[count2], _U32 count2);
 	
 	UseItemResult(_U8 ret, A_UUID uuid, _U32 count, _U32 target_id, SG_PLAYER player_info, SG_GENERAL general, SG_ITEM drops[drop_count], _U32 drop_count);													//使用可使用物品
 
-	FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type);
+	FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type, _U32 gold, _U32 rmb);
 
 	QueryBossRushInfoResult(SG_BOSSRUSH_INFO bossrush_info);
 	QueryBossRushSupportInfoResult(SG_BOSSRUSH_SUPPORT_INFO support_list[count], _U32 count);
 	BeginBossRushBattleResult(SG_PLAYER_PVE PlayerPVE);
-	EndBossRushBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
-	BeginBossRushSupportBattleResult(SG_PLAYER_PVE PlayerPVE);
-	EndBossRushSupportBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	EndBossRushBattleResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	BeginBossRushSupportBattleResult(_U8 ret, SG_PLAYER_PVE PlayerPVE);
+	EndBossRushSupportBattleResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
 	AddBossRushRemainingTimesResult(_U8 ret, _U32 rmb, _U8 remain_times);
-	AwardBossRushResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
-	AwardBossRushSupportResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	AwardBossRushResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+	AwardBossRushSupportResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count);
+
+	QueryDiceNumResult(_U8 ret, _U32 dice_num, _U32 reward_time, _U32 energy, _U32 rmb, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count, _U32 circle_num, _U32 step);
+
+	QueryNewcomerGuideInfoResult(SG_NEWCOMER_GUIDE_INFO guide_list[count], _U32 count);
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

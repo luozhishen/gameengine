@@ -18,7 +18,9 @@ namespace Atlas
 	const char* GetExeDir();
 
 	void StringSplit(const String& value, char splitchar, Vector<String>& result);
-	Atlas::String StringFormat(const char* fmt, ...);
+	String StringFormat(const char* fmt, ...);
+	String StringTrim(const char* str);
+	String StringTrim(const Atlas::String& str);
 
 	bool MakeDirectory(const char* dir);
 	bool RemoveDirectory(const char* dir);

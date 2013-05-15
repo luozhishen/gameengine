@@ -37,6 +37,9 @@
     <ProjectReference Include="..\LibKnightCommon\LibKnightCommon.vcxproj">
       <Project>{8e724abb-fbdc-4a27-b09d-335d9dfb2eb4}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\LuaExtention\LuaExtention.vcxproj">
+      <Project>{1a43d78f-6a91-4b19-b2db-78cb5848dd97}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3FC55A22-248F-4AE0-B584-0794544D1B24}</ProjectGuid>

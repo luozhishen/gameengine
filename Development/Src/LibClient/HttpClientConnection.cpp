@@ -9,6 +9,7 @@ namespace Atlas
 
 	CHttpClientConnection::CHttpClientConnection(CClient* pClient) : CClientConnectionBase(pClient)
 	{
+		m_bPullRequest = false;
 		m_pLoginRequest = NULL;
 		m_pLogoutRequest = NULL;
 		m_pPullRequest = NULL;
@@ -281,7 +282,7 @@ namespace Atlas
 	{
 		if(!m_pPullRequest)
 		{
-			if(m_bInLogout) return;
+			if(m_bInLogout || !m_bPullRequest) return;
 
 			Atlas::Map<Atlas::String, Atlas::String> params;
 			params["session_key"] = m_SessionKey;

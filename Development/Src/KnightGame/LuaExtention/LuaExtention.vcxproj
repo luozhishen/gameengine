@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaPlus.cpp" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaPlusAddons.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaPlus_Libs.cpp" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaState.cpp" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaStateOutFile.cpp" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaState_DumpObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaTableIterator.cpp" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\lwstrlib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\popen.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\bit.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lapi.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lauxlib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lbaselib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lcode.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ldblib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ldebug.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ldo.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ldump.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lfunc.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lgc.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\linit.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\liolib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\llex.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lmathlib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lmem.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\loadlib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lobject.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lopcodes.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\loslib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lparser.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lstate.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lstring.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lstrlib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ltable.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ltablib.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ltm.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lundump.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lvm.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lzio.c" />
+    <ClCompile Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\print.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaAutoBlock.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaCall.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaFunction.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaHelper.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaHelper_Object.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaHelper_StackObject.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaLink.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaObject.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaPlus.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaPlusCD.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaPlusInternal.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaStackObject.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaStackTableIterator.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaState.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaStateCD.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaStateOutFile.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaTableIterator.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lapi.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lauxlib.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lcode.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ldebug.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ldo.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lfunc.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lgc.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\llex.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\llimits.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lmem.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lobject.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lopcodes.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lparser.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lstate.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lstring.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ltable.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\ltm.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lua.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\luaconf.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lualib.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lundump.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lvm.h" />
+    <ClInclude Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\lzio.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaCall.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaObject.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaStackObject.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaStackTableIterator.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\LuaState.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\..\..\..\luaplus51-all-master\Src\LuaPlus\src\Makefile">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>LuaExtention</RootNamespace>
+    <SccProjectName>Perforce Project</SccProjectName>
+    <SccLocalPath>..\..\..\..\..</SccLocalPath>
+    <SccProvider>MSSCCI:Perforce SCM</SccProvider>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Atlas.props" />
+    <Import Project="..\KnightGame.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Atlas.props" />
+    <Import Project="..\KnightGame.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Atlas.props" />
+    <Import Project="..\KnightGame.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Atlas.props" />
+    <Import Project="..\KnightGame.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <TargetMachine>
+      </TargetMachine>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <TargetMachine>
+      </TargetMachine>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -47,6 +47,26 @@ namespace Atlas
 		}
 	}
 
+	String StringTrim(const char* str)
+	{
+		String v = str;
+		return StringTrim(v);
+	}
+
+	String StringTrim(const Atlas::String& v)
+	{
+		Atlas::String str = v;
+		Atlas::String::size_type pos = str.find_last_not_of(' ');
+		if(pos != Atlas::String::npos) 
+		{
+			str.erase(pos + 1);
+			pos = str.find_first_not_of(' ');
+			if(pos != std::string::npos) str.erase(0, pos);
+		}
+		else str.erase(str.begin(), str.end());
+		return v;
+	}
+
 #ifndef IPHONE
 	class CAtlasExeDirInit
 	{
@@ -190,7 +210,7 @@ namespace Atlas
 			}
 		}
 		closedir(dirp);
-		return rmdir(dir)!=-1);
+		return rmdir(dir)!=-1;
 	}
 
 	bool RenameFile(const char* n1, const char* n2)
@@ -298,14 +318,16 @@ namespace Atlas
 
 	void ToHexString(const void* data, _U32 size, String& out)
 	{
-		const _U8* hash = (const _U8*)data;
-		out.resize(size*2, ' ');
 		const char tab[]={"0123456789abcdef"};
-		for(int i=(int)size;--i>=0;) 
+		char txt[1000];
+		const _U8* hash = (const _U8*)data;
+		for(_U32 i=0; i<size; i++)
 		{
-			out.replace((size_t)(i*2), 1, &tab[(hash[i]>>4)&0xF]);
-			out.replace((size_t)(i*2+1), 1, &tab[hash[i]&0xF]);
+			txt[i*2+0] = tab[(hash[i]>>4)&0xF];
+			txt[i*2+1] = tab[hash[i]&0xF];
 		}
+		txt[size*2] ='\0';
+		out = txt;
 	}
 
 }

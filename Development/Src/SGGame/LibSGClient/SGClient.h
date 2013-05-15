@@ -32,7 +32,7 @@ namespace Atlas
 		virtual void QuerySoldiersDone(const Atlas::Vector<SG_SOLDIER>& soldiers) = 0;
 		virtual void QueryBagDone(Atlas::Vector<SG_EQUIPT_ITEM>& equipts, Atlas::Vector<SG_USABLE_ITEM>& usables, Atlas::Vector<SG_GEM_ITEM>& gems, Atlas::Vector<SG_MATERIAL_ITEM>& material) = 0;
 		virtual void EnhanceCoolDownResult(_U32 time) = 0;
-		virtual void RefreshEquipDone(SG_EQUIPT_ITEM& euipt) = 0;
+		virtual void RefreshEquipDone(const SG_EQUIPT_ITEM& euipt) = 0;
 		virtual void GemCombineResult(const SG_GEM_ITEM& gem) = 0;
 		virtual void HaloGetCoolDownResult(_U32 time) = 0;
 		virtual void HaloIncreaseEXPResult(_U32 time) = 0;
@@ -41,17 +41,17 @@ namespace Atlas
 		virtual void EndBattleDone(_U32 level, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
 
 		virtual void QueryPlayerQuestResult(const SG_QUEST_LIVE_INFO* quest_list, _U32 count) = 0;
-		virtual void FinishQuestDone(_U32 quest_id, _U32 exp, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void FinishQuestDone(_U8 ret, _U32 quest_id, _U32 exp, _U32 gold,  _U32 rmb, _U32 reputation, _U32 energy, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
 
 		virtual void QueryPlayerPVPInfoResult(const SG_PLAYER_PVE& pve) = 0;
-		virtual void QueryPlayerRankListResult(SG_PLAYER* players, _U32 count) = 0;
+		virtual void QueryPlayerRankListResult(const SG_PVP_RANK_PLAYER* players, _U32 count) = 0;
 
 		virtual void PVPCoolDownResult(_U32 time) = 0;												
 		virtual void PVPGetRestTimeResult(_U32 rest_time) = 0;										
 		virtual void PVPRecordResult(const SG_PVP_RECORD_ITEM* record, _U32 count) = 0;				
-		virtual void PVPHeroListRecord(const SG_PLAYER* players, _U32 count) = 0;					
+		virtual void PVPHeroListRecord(const SG_PVP_HEROLIST_PLAYER* players, _U32 count) = 0;					
 		virtual void PVPDailyReward(_U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count) = 0;
-		virtual void PVPBattleBeginResult(const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo) = 0;
+		virtual void PVPBattleBeginResult(const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE) = 0;
 		virtual void PVPBattleEndResult(_U32 reputation) = 0;	
 		virtual void PVPCoolDownClearResult() = 0;						
 		virtual void PVPIncreateBattleTimesResult(_U32 rest_times) = 0;
@@ -86,7 +86,7 @@ namespace Atlas
 
 		virtual void EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt) = 0;
 		virtual void MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material) = 0;
-		virtual void QueryActionStatusResult(_U32 *action_list, Atlas::Vector<_U8> statusVec, _U32 *available_list, _U32 count) = 0;
+		virtual void QueryActionStatusResult(const _U32 *action_list, const Atlas::Vector<_U8>& statusVec, const _U32 *available_list, _U32 count) = 0;
 
 		virtual void SellItemResult(_U8 ret, const A_UUID& uuid, _U32 item_id, _U32 count) = 0;
 
@@ -107,10 +107,10 @@ namespace Atlas
 		virtual void SaveToBagResult(_U8 ret, _U32 item_id) = 0;
 		virtual void SetAstrologyBallStatusResult(_U8 ret, const SG_GENERAL& general) = 0;
 		virtual void EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id) = 0;
-		//virtual void BuyAstrologyBallResult(_U8 ret, _U32 astrology_value, _U32 ball_id) = 0;
+		
 		virtual void StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id, _U32 last_astrologer_id) = 0;
-		virtual void StrologyAutoResult(_U8 ret, _U32 gold, _U32* ball_list, _U32 count, _U32 atrologer_id) = 0;
-		virtual void DevourResult(_U8 ret, _U8 bag_type, _U32* ball_list, _U32 count, _U32* devoured_list, _U32 count2) = 0;
+		virtual void StrologyAutoResult(_U8 ret, _U32 gold, const _U32* ball_list, _U32 count, _U32 atrologer_id) = 0;
+		virtual void DevourResult(_U8 ret, _U8 bag_type, const _U32* ball_list, _U32 count, const _U32* devoured_list, _U32 count2) = 0;
 		virtual void UseItemResult(_U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count) = 0;
 
 		virtual void FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type) = 0;
@@ -120,12 +120,15 @@ namespace Atlas
 		virtual void QueryBossRushInfoResult(const SG_BOSSRUSH_INFO& bossrush_info) = 0;
 		virtual void QueryBossRushSupportInfoResult(const SG_BOSSRUSH_SUPPORT_INFO* support_list, _U32 count) = 0;
 		virtual void BeginBossRushBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;
-		virtual void EndBossRushBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
-		virtual void BeginBossRushSupportBattleResult(const SG_PLAYER_PVE& PlayerPVE) = 0;
-		virtual void EndBossRushSupportBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void EndBossRushBattleResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void BeginBossRushSupportBattleResult(_U8 ret, const SG_PLAYER_PVE& PlayerPVE) = 0;
+		virtual void EndBossRushSupportBattleResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
 		virtual void AddBossRushRemainingTimesResult(_U8 ret, _U32 rmb, _U8 remain_times) = 0;
-		virtual void AwardBossRushResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
-		virtual void AwardBossRushSupportResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void AwardBossRushResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+		virtual void AwardBossRushSupportResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_BASE* drops, _U32 drop_count) = 0;
+
+		virtual void QueryDiceNumResult(_U8 ret, _U32 dice_num, _U32 reward_time, _U32 energy, _U32 rmb, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count, _U32 circle_num, _U32 step) = 0;
+		virtual void QueryNewcomerGuideInfoResult(const SG_NEWCOMER_GUIDE_INFO* guide_list, _U32 count) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -181,7 +184,7 @@ namespace Atlas
 		void HaloGetCoolDown();													//获取光环冷却时间
 
 		void BeginBattle(const char* name);
-		void EndBattle(const char* name, _U32 result);
+		void EndBattle(const char* name, _U32 result, _U8 auto_combat);
 		void QueryServerTime();
 
 		void EquipGem(const A_UUID& item_uuid, _U32 gem_id);
@@ -191,7 +194,7 @@ namespace Atlas
 		
 		void QueryPlayerQuest(_U8 nSync = 0);									//查询玩家任务信息
 		void SaveQuestData(const SG_QUEST_LIVE_INFO& quest_info);				//更改任务状态
-		void FinishQuest(_U32 quest_id);										//提交完成任务
+		void FinishQuest(_U32 quest_id, _U32 rmb);								//提交完成任务
 
 		void GetPaid();															//daily salary
 		void UpgradeTitle();													//提升军衔
@@ -268,7 +271,6 @@ namespace Atlas
 		void SaveToBag(_U32 item_id);											//存入命魂包中
 		void SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status);	//0-卸下 1-装备
 		void EnhanceAstrologyBall(_U32 ball_id, _U32 general_id, _U32 index);	//升级命魂
-		//void BuyAstrologyBall(_U32 ball_id);									//购买命魂
 		void Strology(_U32 astrologer_id);										//占星
 		void StrologyAuto(_U32 RestSlotCount);									//一键占星
 												
@@ -279,7 +281,7 @@ namespace Atlas
 
 		void QueryBossRushInfo();
 		void QueryBossRushSupportInfo();
-		void BeginBossRushBattle(_U32 level_id, const char* level_url);
+		void BeginBossRushBattle(_U32 level_id, const char* level_url, _U32 init_boss_hp);
 		void EndBossRushBattle(const char* level_url, _U32 result, _U32 total_damage);
 		void BeginBossRushSupportBattle(_U32 friend_id, _U32 level_id, const char* level_url);
 		void EndBossRushSupportBattle(_U32 friend_id, const char* level_url, _U32 result, _U32 total_damage);
@@ -288,6 +290,11 @@ namespace Atlas
 		void AddBossRushRemainingTimes();
 		void AwardBossRush();
 		void AwardBossRushSupport(_U32 friend_id, _U32 level_id, const char* level_url);
+
+		void QueryDiceNum();
+		void QueryNewcomerGuideInfo();
+		void ActivateNewcomerGuide(_U32 function_id);
+		void FinishNewcomerGuide(_U32 function_id);
 
 		//result
 		void Pong(CSGClient* pClient);
@@ -306,22 +313,25 @@ namespace Atlas
 		void QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count);
 		void QueryBagMaterial(CSGClient* pClient, const SG_MATERIAL_ITEM* items, _U32 count);
 		void QueryBagEnd(CSGClient* pClient, _U8 nSync = 0);
-		void QueryOtherPlayersResult(CSGClient* pClient, const SG_PLAYER* players, _U32 count);
+		void QueryOtherPlayersResult(CSGClient* pClient, const SG_PLAYER_INFO* players, _U32 count);
 
+		void EnhanceEquiptResult(CSGClient* pClient, _U8 ret, _U32 gold, const SG_EQUIPT_ITEM& equip_item);
+		void ExtendEquiptResult(CSGClient* pClient, _U8 ret, const SG_EQUIPT_ITEM& equip_item, const A_UUID& reduce_uuid);
 		void BeginBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
 		void EndBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
 		void EnhanceCoolDownResult(CSGClient* pClient, _U32 time);
-		void RefreshEquipDone(CSGClient* pClient, SG_EQUIPT_ITEM& euipt);
+		void RefreshEquipDone(CSGClient* pClient, const SG_EQUIPT_ITEM& euipt);
 		void GemCombineResult(CSGClient* pClient, const SG_GEM_ITEM& gem);
 		void HaloGetCoolDownResult(CSGClient* pClient, _U32 time);								//获取光环冷却时间
 		void HaloIncreaseEXPResult(CSGClient* pClient, _U32 time);
+		void HaloCoolDownResult(CSGClient* pClient, _U8 ret, _U32 consume_rmb);					//光环冷却结果
 		void QueryServerTimeResult(CSGClient* pClient, _U32 time);
 		
 		void QueryPlayerQuestResult(CSGClient* pClient,const SG_QUEST_LIVE_INFO* quest_list, _U32 count, _U8 nSync = 0);
-		void FinishQuestDone(CSGClient* pClient, _U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold, _U32 rmb, _U32 reputation, _U32 energy, const SG_DROP_ITEM_BASE* drops, _U32 drop_count);
+		void FinishQuestDone(CSGClient* pClient, _U8 ret, _U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold, _U32 rmb, _U32 reputation, _U32 energy, const SG_DROP_ITEM_BASE* drops, _U32 drop_count, _U32 consume_rmb);
 
 		void QueryPlayerPVPInfoResult(CSGClient* pClient, const SG_PLAYER_PVE& pve);
-		void QueryPlayerRankListResult(CSGClient* pClient, SG_PLAYER* players, _U32 count);
+		void QueryPlayerRankListResult(CSGClient* pClient, SG_PVP_RANK_PLAYER* players, _U32 count);
 		
 		void BuyGoodsResult(CSGClient* pClient, _U8 ret, const A_UUID* goods, _U32* id_list, _U32 count);						
 		void SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 item_id, const _U32 count);				//ret 0-succ 1-failed 
@@ -329,11 +339,11 @@ namespace Atlas
 		void PVPCoolDownResult(CSGClient* pClient, _U32 time);													//挑战冷却时间
 		void PVPGetRestTimeResult(CSGClient* pClient, _U32 rest_time);											//挑战剩余次数
 		void PVPRecordResult(CSGClient* pClient, const SG_PVP_RECORD_ITEM* record, _U32 count);					//对战记录			
-		void PVPHeroListRecord(CSGClient* pClient, const SG_PLAYER* players, _U32 count);						//英雄榜				
+		void PVPHeroListRecord(CSGClient* pClient, const SG_PVP_HEROLIST_PLAYER* players, _U32 count);			//英雄榜				
 		void PVPDailyReward(CSGClient* pClient, _U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count);	//pvp每日奖励 增量
-		void PVPBattleBeginResult(CSGClient* pClient, const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE, const SG_PLAYER& DefenderPlayerInfo);	//pvp战斗
+		void PVPBattleBeginResult(CSGClient* pClient, const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE);	//pvp战斗
 		void PVPBattleEndResult(CSGClient* pClient, _U32 reputation);											//pvp战斗结束 
-		void PVPCoolDownClearResult(CSGClient* pClient);														//pvp清楚挑战冷却时间
+		void PVPCoolDownClearResult(CSGClient* pClient, _U8 ret, _U32 cost);									//pvp清楚挑战冷却时间
 		void PVPIncreateBattleTimesResult(CSGClient* pClient, _U32 rest_times);									//pvp增加挑战次数
 
 		void QueryInstanceResult(CSGClient* pClient, const SG_INSTANCE_INFO* instances, _U32 count);			//副本
@@ -385,23 +395,25 @@ namespace Atlas
 		void SaveToBagResult(CSGClient* pClient, _U8 ret, _U32 item_id);
 		void SetAstrologyBallStatusResult(CSGClient* pClient, _U8 ret, const SG_GENERAL& general);
 		void EnhanceAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id);
-		//void BuyAstrologyBallResult(CSGClient* pClient, _U8 ret, _U32 astrology_value, _U32 ball_id);
 		void StrologyResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 ball_id, _U32 astrologer_id, _U32 last_astrologer_id);
 		void StrologyAutoResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32* ball_list, _U32 count, _U32 atrologer_id);
 		void DevourResult(CSGClient* pClient, _U8 ret, _U8 bag_type, _U32* ball_list, _U32 count, _U32* devoured_list, _U32 count2);
 
 		void UseItemResult(CSGClient* pClient, _U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, const _U32 drop_count);
-		void FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type);
+		void FeedHorseResult(CSGClient* pClient, _U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type, _U32 gold, _U32 rmb);
 
 		void QueryBossRushInfoResult(CSGClient* pClient, const SG_BOSSRUSH_INFO& bossrush_info);
 		void QueryBossRushSupportInfoResult(CSGClient* pClient, const SG_BOSSRUSH_SUPPORT_INFO* support_list, _U32 count);
 		void BeginBossRushBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
-		void EndBossRushBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
-		void BeginBossRushSupportBattleResult(CSGClient* pClient, const SG_PLAYER_PVE& PlayerPVE);
-		void EndBossRushSupportBattleResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void EndBossRushBattleResult(CSGClient* pClient, _U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void BeginBossRushSupportBattleResult(CSGClient* pClient, _U8 ret, const SG_PLAYER_PVE& PlayerPVE);
+		void EndBossRushSupportBattleResult(CSGClient* pClient, _U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
 		void AddBossRushRemainingTimesResult(CSGClient* pClient, _U8 ret, _U32 rmb, _U8 remain_times);
-		void AwardBossRushResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
-		void AwardBossRushSupportResult(CSGClient* pClient, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void AwardBossRushResult(CSGClient* pClient, _U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+		void AwardBossRushSupportResult(CSGClient* pClient, _U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count);
+
+		void QueryDiceNumResult(CSGClient* pClient, _U8 ret, _U32 dice_num, _U32 reward_time, _U32 energy, _U32 rmb, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count, _U32 circle_num, _U32 step);
+		void QueryNewcomerGuideInfoResult(CSGClient* pClient, const SG_NEWCOMER_GUIDE_INFO* guide_list, _U32 count);
 
 	public:
 		virtual void OnLoginDone();

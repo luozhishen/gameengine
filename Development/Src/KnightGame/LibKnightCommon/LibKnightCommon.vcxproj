@@ -42,10 +42,12 @@
   <ItemGroup>
     <ClCompile Include="KnightCommon.cpp" />
     <ClCompile Include="KnightGameDDL.cpp" />
+    <ClCompile Include="KnightLogicManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KnightCommon.h" />
     <ClInclude Include="KnightGameDDL.h" />
+    <ClInclude Include="KnightLogicManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\..\..\..\KnightGame\Content\Lua\test.lua" />
@@ -147,7 +149,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Project\Phobos\Trunk\MacDev\Development\External\luaplus51-all-master\Src\LuaPlus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\luaplus51-all-master\Src\LuaPlus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

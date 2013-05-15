@@ -78,7 +78,7 @@ namespace Atlas
 					||	it->first == eSyncBagEnd		
 					)
 				{
-					//return;
+					return;
 				}
 
 				m_nLastSendReq =(_U8)it->first;

@@ -78,11 +78,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KnightEditor", "KnightGame\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaExtention", "KnightGame\LuaExtention\LuaExtention.vcxproj", "{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibBSDiff", "LibBSDiff\LibBSDiff.vcxproj", "{2BD85465-F110-41ED-8289-7588136A962C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JPatch", "JPatch", "{0F4D3206-9EDD-4D5C-B1BE-D88347EBCC21}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibBSDiff", "JPatch\LibBSDiff\LibBSDiff.vcxproj", "{2BD85465-F110-41ED-8289-7588136A962C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibJPatch", "JPatch\LibJPatch\LibJPatch.vcxproj", "{E9780E71-1903-4E06-8B29-261243BBBA8F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApplyPatch", "JPatch\ApplyPatch\ApplyPatch.vcxproj", "{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenBLF", "JPatch\GenBLF\GenBLF.vcxproj", "{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenPatch", "JPatch\GenPatch\GenPatch.vcxproj", "{F4F52A95-0038-49A9-9463-39E25FB8AB1C}"
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 26
+		SccNumberOfProjects = 31
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -186,6 +196,26 @@ Global
 		SccProjectTopLevelParentUniqueName25 = Atlas.sln
 		SccLocalPath25 = ..\\..\\..
 		SccProjectFilePathRelativizedFromConnection25 = Atlas\\Development\\Src\\KnightGame\\LuaExtention\\
+		SccProjectUniqueName26 = JPatch\\LibJPatch\\LibJPatch.vcxproj
+		SccProjectTopLevelParentUniqueName26 = Atlas.sln
+		SccLocalPath26 = ..
+		SccProjectFilePathRelativizedFromConnection26 = Src\\JPatch\\LibJPatch\\
+		SccProjectUniqueName27 = JPatch\\LibBSDiff\\LibBSDiff.vcxproj
+		SccProjectTopLevelParentUniqueName27 = Atlas.sln
+		SccLocalPath27 = ..
+		SccProjectFilePathRelativizedFromConnection27 = Src\\JPatch\\LibBSDiff\\
+		SccProjectUniqueName28 = JPatch\\ApplyPatch\\ApplyPatch.vcxproj
+		SccProjectTopLevelParentUniqueName28 = Atlas.sln
+		SccLocalPath28 = ..
+		SccProjectFilePathRelativizedFromConnection28 = Src\\JPatch\\ApplyPatch\\
+		SccProjectUniqueName29 = JPatch\\GenBLF\\GenBLF.vcxproj
+		SccProjectTopLevelParentUniqueName29 = Atlas.sln
+		SccLocalPath29 = ..
+		SccProjectFilePathRelativizedFromConnection29 = Src\\JPatch\\GenBLF\\
+		SccProjectUniqueName30 = JPatch\\GenPatch\\GenPatch.vcxproj
+		SccProjectTopLevelParentUniqueName30 = Atlas.sln
+		SccLocalPath30 = ..
+		SccProjectFilePathRelativizedFromConnection30 = Src\\JPatch\\GenPatch\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -372,10 +402,12 @@ Global
 		{3FC55A22-248F-4AE0-B584-0794544D1B24}.Release|x64.Build.0 = Release|x64
 		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|Win32.Build.0 = Debug|Win32
-		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|x64.ActiveCfg = Debug|Win32
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|x64.ActiveCfg = Debug|x64
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Debug|x64.Build.0 = Debug|x64
 		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|Win32.ActiveCfg = Release|Win32
 		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|Win32.Build.0 = Release|Win32
-		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|x64.ActiveCfg = Release|Win32
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|x64.ActiveCfg = Release|x64
+		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97}.Release|x64.Build.0 = Release|x64
 		{2BD85465-F110-41ED-8289-7588136A962C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{2BD85465-F110-41ED-8289-7588136A962C}.Debug|Win32.Build.0 = Debug|Win32
 		{2BD85465-F110-41ED-8289-7588136A962C}.Debug|x64.ActiveCfg = Debug|x64
@@ -384,6 +416,38 @@ Global
 		{2BD85465-F110-41ED-8289-7588136A962C}.Release|Win32.Build.0 = Release|Win32
 		{2BD85465-F110-41ED-8289-7588136A962C}.Release|x64.ActiveCfg = Release|x64
 		{2BD85465-F110-41ED-8289-7588136A962C}.Release|x64.Build.0 = Release|x64
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Debug|Win32.Build.0 = Debug|Win32
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Debug|x64.ActiveCfg = Debug|x64
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Debug|x64.Build.0 = Debug|x64
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Release|Win32.ActiveCfg = Release|Win32
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Release|Win32.Build.0 = Release|Win32
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Release|x64.ActiveCfg = Release|x64
+		{E9780E71-1903-4E06-8B29-261243BBBA8F}.Release|x64.Build.0 = Release|x64
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Debug|Win32.Build.0 = Debug|Win32
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Debug|x64.ActiveCfg = Debug|x64
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Debug|x64.Build.0 = Debug|x64
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Release|Win32.ActiveCfg = Release|Win32
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Release|Win32.Build.0 = Release|Win32
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Release|x64.ActiveCfg = Release|x64
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704}.Release|x64.Build.0 = Release|x64
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Debug|Win32.Build.0 = Debug|Win32
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Debug|x64.ActiveCfg = Debug|x64
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Debug|x64.Build.0 = Debug|x64
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Release|Win32.ActiveCfg = Release|Win32
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Release|Win32.Build.0 = Release|Win32
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Release|x64.ActiveCfg = Release|x64
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F}.Release|x64.Build.0 = Release|x64
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Debug|Win32.Build.0 = Debug|Win32
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Debug|x64.ActiveCfg = Debug|x64
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Debug|x64.Build.0 = Debug|x64
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Release|Win32.ActiveCfg = Release|Win32
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Release|Win32.Build.0 = Release|Win32
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Release|x64.ActiveCfg = Release|x64
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -397,7 +461,6 @@ Global
 		{48206A30-7D48-4AB8-B647-413A4EE27AFA} = {5DA0A740-D312-4602-96F5-A02B617755A4}
 		{ED44F362-6B0A-4D84-9089-2E0A89CDBECC} = {5DA0A740-D312-4602-96F5-A02B617755A4}
 		{AA9ABE8C-4EF6-40C6-BF1F-9AB38054646E} = {5DA0A740-D312-4602-96F5-A02B617755A4}
-		{2BD85465-F110-41ED-8289-7588136A962C} = {5DA0A740-D312-4602-96F5-A02B617755A4}
 		{ADAEFB09-1F84-444E-AB89-E0B91A964AD0} = {243EA744-5506-41C2-A822-B3DD9A8A28F2}
 		{BE02B479-5C9D-4876-92D2-D810A64260D8} = {243EA744-5506-41C2-A822-B3DD9A8A28F2}
 		{36DA92B8-AEC5-43E2-9E84-0DF47CF36732} = {10AF36C9-F408-4870-8A46-BD1B9E9BD7BE}
@@ -415,5 +478,10 @@ Global
 		{8E724ABB-FBDC-4A27-B09D-335D9DFB2EB4} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
 		{3FC55A22-248F-4AE0-B584-0794544D1B24} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
 		{1A43D78F-6A91-4B19-B2DB-78CB5848DD97} = {A0F91F79-029E-4EF9-8202-685C4AEE9A95}
+		{2BD85465-F110-41ED-8289-7588136A962C} = {0F4D3206-9EDD-4D5C-B1BE-D88347EBCC21}
+		{E9780E71-1903-4E06-8B29-261243BBBA8F} = {0F4D3206-9EDD-4D5C-B1BE-D88347EBCC21}
+		{BBDA9C1B-9463-4892-AAAF-CD0D4D800704} = {0F4D3206-9EDD-4D5C-B1BE-D88347EBCC21}
+		{F4A27965-84C5-4FA8-B82A-9B8D17C9688F} = {0F4D3206-9EDD-4D5C-B1BE-D88347EBCC21}
+		{F4F52A95-0038-49A9-9463-39E25FB8AB1C} = {0F4D3206-9EDD-4D5C-B1BE-D88347EBCC21}
 	EndGlobalSection
 EndGlobal

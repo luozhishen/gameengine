@@ -100,8 +100,6 @@ namespace Atlas
 		}
 	}
 
-
-
 	bool SGClientUtil::DiffPlayerInfo(const SG_PLAYER& player_old, const SG_PLAYER& player_new)
 	{
 		char* pOldAddress = (char*)&player_old;
@@ -121,17 +119,17 @@ namespace Atlas
 
 	bool SGClientUtil::DiffSoldiers(const Atlas::Vector<SG_SOLDIER>& soldiers_old, const Atlas::Vector<SG_SOLDIER>& soldiers_new)
 	{
-		return soldiers_old.size() != soldiers_new.size();
+		return SGClientUtil::DiffDataVec(soldiers_old, soldiers_new);
 	}
 
 	bool SGClientUtil::DiffGenerals(const Atlas::Vector<SG_GENERAL>& generals_old, const Atlas::Vector<SG_GENERAL>& generals_new)
 	{
-		return generals_old.size() != generals_new.size();
+		return DiffDataVec(generals_old, generals_new);
 	}
 	
 	bool SGClientUtil::DiffBag()
 	{
-		return false;
+		return true;
 	}
 
 	template<typename T>
@@ -365,7 +363,7 @@ namespace Atlas
 	}
 
 
-	bool SGClientUtil::UpdateItemByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count)
+	bool SGClientUtil::UpdateItemCountByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count)
 	{
 		bool bRet = false;
 
@@ -375,10 +373,10 @@ namespace Atlas
 		Atlas::Vector<SG_MATERIAL_ITEM>& materialVec	= (Atlas::Vector<SG_MATERIAL_ITEM>&)pClient->GetMaterialItem();
 
 		//if one item has been update then do not update next vec and return true
-		if(	!UpdateItemTemplateFun<SG_EQUIPT_ITEM>(equiptVec, uuid, count)
-			&&!UpdateItemTemplateFun<SG_GEM_ITEM>(gemVec, uuid, count)
-			&&!UpdateItemTemplateFun<SG_USABLE_ITEM>(usableVec, uuid, count)
-			&&!UpdateItemTemplateFun<SG_MATERIAL_ITEM>(materialVec, uuid, count))
+		if(	!UpdateItemCountTemplateFun<SG_EQUIPT_ITEM>(equiptVec, uuid, count)
+			&&!UpdateItemCountTemplateFun<SG_GEM_ITEM>(gemVec, uuid, count)
+			&&!UpdateItemCountTemplateFun<SG_USABLE_ITEM>(usableVec, uuid, count)
+			&&!UpdateItemCountTemplateFun<SG_MATERIAL_ITEM>(materialVec, uuid, count))
 		{
 			return bRet;
 		}
@@ -452,5 +450,197 @@ namespace Atlas
 		}
 
 		return exp_add;
+	}
+
+	bool SGClientUtil::UpdateEquipt(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt)
+	{
+		bool ret = false;
+
+		for(size_t i = 0; i < cache_equipt.size(); ++i)
+		{
+			if(cache_equipt[i].uuid == new_equipt.uuid)
+			{
+				cache_equipt[i] = new_equipt;
+				
+				//update gem slot
+				_U32 gem_slot = new_equipt.gems_slots._Count > cache_equipt[i].gems_slots._Count ? new_equipt.gems_slots._Count : cache_equipt[i].gems_slots._Count;
+				cache_equipt[i].gems_slots.Resize(gem_slot);
+				for(_U32 j = 0; j < gem_slot; ++j)
+				{
+					cache_equipt[i].gems_slots._Array[j] = new_equipt.gems_slots._Array[j];
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	bool SGClientUtil::UpdateEquiptTurboLevel(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level)
+	{
+		bool ret = false;
+
+		for(size_t i = 0; i < cache_equipt.size(); ++i)
+		{
+			if(cache_equipt[i].uuid == uuid)
+			{
+				cache_equipt[i].turbo_level = turbo_level;
+				ret = true;
+			}
+		}
+
+		return ret;
+	}
+
+
+	bool SGClientUtil::UnlockSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id)
+	{
+		bool ret = false;
+		
+		_U32 req_gold = 0;
+		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_SOLDIER_CONFIG >();
+		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		bool bFind = false;
+		SG_SOLDIER_CONFIG* config = NULL;
+		while(content_obj)
+		{
+			config = (SG_SOLDIER_CONFIG*)content_obj;
+			if(config->soldier_id == soldier_id)
+			{
+				bFind = true;
+				break;
+			}
+
+			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+		}
+		
+		if(bFind)
+		{
+			for(size_t i = 0; i < cache_soldiers.size(); ++i)
+			{
+				if(cache_soldiers[i].soldier_id == soldier_id)
+				{
+					return false;
+				}
+			}
+		
+			if(player_info.gold < (_U32)config->req_gold)
+			{
+				return false;
+			}
+
+			player_info.gold -= config->req_gold;
+
+			SG_SOLDIER new_soldier;
+			memset(&new_soldier, 0, sizeof(new_soldier));
+			new_soldier.level = 1;
+			new_soldier.soldier_id = soldier_id;
+
+			cache_soldiers.push_back(new_soldier);
+
+			ret = true;
+		}
+
+		return ret;
+	}
+
+	bool SGClientUtil::EnhanceSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id)
+	{
+		bool ret = false;
+		
+		_U32 req_gold = 0;
+		_U32 attri_id = 0;
+		_U32 level = 1;
+
+		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_SOLDIER_CONFIG >();
+		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		bool bFind = false;
+		SG_SOLDIER_CONFIG* config = NULL;
+		while(content_obj)
+		{
+			config = (SG_SOLDIER_CONFIG*)content_obj;
+			if(config->soldier_id == soldier_id)
+			{
+				bFind = true;
+				break;
+			}
+
+			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+		}
+		
+		if(bFind)
+		{
+			attri_id = config->attr_id;
+		}
+		else
+		{
+			return false;
+		}
+		
+		struct_info = DDLReflect::GetStruct< SG_SOLDIER_LEVEL_CONFIG >();
+		content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		SG_SOLDIER_LEVEL_CONFIG* config1 = NULL;
+
+		size_t i = 0;
+		bFind = false;
+
+		for(; i < cache_soldiers.size(); ++i)
+		{
+			if(cache_soldiers[i].soldier_id == soldier_id)
+			{
+				bFind = true;
+				break;
+			}
+		}
+
+		if(!bFind)
+		{
+			return ret;
+		}
+
+		SG_SOLDIER& soldier = cache_soldiers[i];
+
+		while(content_obj)
+		{
+			config1 = (SG_SOLDIER_LEVEL_CONFIG*)content_obj;
+			if(config1->attr_id == attri_id
+				&& config1->level == soldier.level)
+			{
+				//no enough gold
+				if(player_info.gold < (_U32)config1->levelup_gold)
+				{
+					return false;
+				}
+
+				player_info.gold -= config1->levelup_gold;
+				soldier.level += 1;
+
+				ret = true;
+				break;
+			}
+			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+		}
+
+		return ret;
+	}
+
+
+	bool SGClientUtil::UpdateGemItemCount(Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count)
+	{
+		bool ret = false;
+		return ret;
+	}
+	
+	_U32 SGClientUtil::GetGemItemCount(const Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id)
+	{
+		_U32 count = 0;
+		for(size_t i = 0; i < cache_gems.size(); ++i)
+		{
+			if(cache_gems[i].item_id == gem_id)
+			{
+				count += cache_gems[i].count;
+			}
+		}
+
+		return count;
 	}
 }

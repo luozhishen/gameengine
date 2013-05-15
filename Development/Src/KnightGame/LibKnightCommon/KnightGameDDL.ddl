@@ -38,6 +38,21 @@ struct DATATEST_BASE_CONFIG : A_CONTENT_OBJECT
 task[GEN_STRUCT_SERIALIZE(DATATEST_BASE_CONFIG)];
 task[GEN_STRUCT_REFLECT(DATATEST_BASE_CONFIG)];
 
+//************************Lua common validate interface**************************//
+
+const _U32	LUA_COMMON_PARAM_MAX = 16;
+const _U8	LUA_COMMON_PARAM_TYPE_BOOL	= 0;
+const _U8	LUA_COMMON_PARAM_TYPE_NUMBER = 1;
+const _U8	LUA_COMMON_PARAM_TYPE_STRING = 2;
+const _U8	LUA_COMMON_PARAM_TYPE_TABLE	= 3;
+
+struct LUA_COMMON_VALIDATE_INTERFACE : A_CONTENT_OBJECT
+{
+	array<_U8,LUA_COMMON_PARAM_MAX>	ArrParams;
+};
+task[GEN_STRUCT_SERIALIZE(LUA_COMMON_VALIDATE_INTERFACE)];
+task[GEN_STRUCT_REFLECT(LUA_COMMON_VALIDATE_INTERFACE)];
+
 //************************KNIGHT**************************//
 // Basic
 const _U32 KNIGHT_DESCRIPTION_MAX = 256;
@@ -57,7 +72,6 @@ task[GEN_STRUCT_REFLECT(KNIGHT_ATTRIBUTE_MODIFY_SETTING)];
 //************************CALC**************************//   
 struct KNIGHT_CALC_CONFIG : A_CONTENT_OBJECT
 {
-	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
 	_F32													Influence;
 };
 task[GEN_STRUCT_SERIALIZE(KNIGHT_CALC_CONFIG)];
@@ -97,7 +111,7 @@ struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
 	string<KNIGHT_DESCRIPTION_MAX>							RealName;
 	string<KNIGHT_DESCRIPTION_MAX>							Desc;
-	_S32													Duration;
+	_U32													Duration;
 	_U8														IconType;					
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_CONFIG)];
@@ -141,12 +155,11 @@ task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_DAMAGE_CORRECTION)];
 struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
 {
 	array<_U8,KNIGHT_ARRAY_ELEMENT_MAX>									BuffElemType;
-	_F32																BuffElemAtkCorrection;
-	_F32																BuffElemDefCorrection;
 	_U8																	BuffElemDefMode;
-	_F32																ElementStrengthen;
-	_U8																	ElementSeal;
-	_F32																ElementMiss;
+	_U8																	BuffElemSeal;
+	_F32																BuffElemAtkEVT;
+	_F32																BuffElemDefEVT;
+	_F32																BuffElemMiss;
 }
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_MAGIC_CORRECTION)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_MAGIC_CORRECTION)];
@@ -161,6 +174,17 @@ struct KNIGHT_BUFF_BUFF_CORRECTION : KNIGHT_BUFF_CONFIG
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_BUFF_CORRECTION)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_BUFF_CORRECTION)];
 
+//************************BUFF_DOT**************************//
+struct KNIGHT_BUFF_DOT : KNIGHT_BUFF_CONFIG
+{
+	_U8																	Type;
+	_S32																AveValue;
+	_S32																Range;
+	_F32																Ratio;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_DOT)];
+task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_DOT)];
+
 //************************BUFF_ATTACK_SLICES_CORRECTION******************//
 struct KNIGHT_BUFF_ATTACK_SLICES_CORRECTION : KNIGHT_BUFF_CONFIG
 {
@@ -171,11 +195,22 @@ struct KNIGHT_BUFF_ATTACK_SLICES_CORRECTION : KNIGHT_BUFF_CONFIG
 task[GEN_STRUCT_SERIALIZE(KNIGHT_BUFF_ATTACK_SLICES_CORRECTION)];
 task[GEN_STRUCT_REFLECT(KNIGHT_BUFF_ATTACK_SLICES_CORRECTION)];
 
+//************************MANTRA******************//
+struct KNIGHT_MANTRA_CONFIG : A_CONTENT_OBJECT
+{
+	string<KNIGHT_DESCRIPTION_MAX>							RealName;
+	string<KNIGHT_DESCRIPTION_MAX>							Condition;
+	_S32													Cost;
+}
+task[GEN_STRUCT_SERIALIZE(KNIGHT_MANTRA_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_MANTRA_CONFIG)];
+
 //************************ITEM**************************//    
 //Item
 struct KNIGHT_ITEM_CONFIG : A_CONTENT_OBJECT
 {
 	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceUIURL;
 };
 task[GEN_STRUCT_SERIALIZE(KNIGHT_ITEM_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_ITEM_CONFIG)];
@@ -188,6 +223,7 @@ struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
 	_U32								Level;
 	_U32								Rank;
 	_U32								MantraSize;
+	_U8									Type;
 
 	array<KNIGHT_ATTRIBUTE_MODIFY_SETTING,KNIGHT_ARRAY_ELEMENT_MAX>	InitialValue;
 	array<KNIGHT_ATTRIBUTE_MODIFY_SETTING,KNIGHT_ARRAY_ELEMENT_MAX>	GrowthValue;
@@ -222,26 +258,53 @@ task[GEN_STRUCT_REFLECT(KNIGHT_SHIELD_CONFIG)];
 //Weapon
 struct KNIGHT_WEAPON_CONFIG : KNIGHT_EQUIPMENT_CONFIG
 {
-	_U8								Type;
 };
 task[GEN_STRUCT_SERIALIZE(KNIGHT_WEAPON_CONFIG)];
 task[GEN_STRUCT_REFLECT(KNIGHT_WEAPON_CONFIG)];
 
+//Mount
+struct KNIGHT_MOUNT_CONFIG : KNIGHT_ITEM_CONFIG
+{
+	string<KNIGHT_DESCRIPTION_MAX>		RealName;
+	string<KNIGHT_DESCRIPTION_MAX>		Desc;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_MOUNT_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_MOUNT_CONFIG)];
+
+//************************ATTACK**************************//    
+//Attack
+struct KNIGHT_ATTACK_PHASE
+{
+	_U8			Type;
+	_U8			NumOfSlice;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_ATTACK_PHASE)];
+task[GEN_STRUCT_REFLECT(KNIGHT_ATTACK_PHASE)];
+
+struct KNIGHT_ATTACK_CONFIG : A_CONTENT_OBJECT
+{
+	string<KNIGHT_RESOURCE_URL_MAX>							ResourceURL;
+
+	array<KNIGHT_ATTACK_PHASE,KNIGHT_ARRAY_ELEMENT_MAX>		AttackPhases;
+	array<_U8,KNIGHT_ARRAY_ELEMENT_MAX>						CriticalStrikes;
+	_F32													Efficacy;
+	_U8														AppropriateWeapon;
+	_U8														bNoAction;
+};
+task[GEN_STRUCT_SERIALIZE(KNIGHT_ATTACK_CONFIG)];
+task[GEN_STRUCT_REFLECT(KNIGHT_ATTACK_CONFIG)];
+
+//*********************************************************//    
 
 class KNIGHT_C2S
 {
 	Ping();
 
-	Create(string value);
-	Delete();
+	New(string value);
 	Set(string value);
 	Get();
 
 	Boardcast(string msg);
-
-	RoomJoin(_U32 index);
-	RoomChat(string msg);
-	RoomLeave();
 };
 
 class KNIGHT_S2C
@@ -250,11 +313,6 @@ class KNIGHT_S2C
 
 	GetCallback(_U32 aid, string value);
 	BoardcastCallback(_U32 uid, string msg);
-
-	RoomJoinCallback(_U32 result);
-	RoomChatCallback(_U32 index, string msg);
-	RoomLeaveCallback();
-	
 };
 
 task[GEN_CLASS_STUB(KNIGHT_C2S)];

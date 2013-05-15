@@ -32,7 +32,7 @@ namespace Atlas
 		static _U32 GetDailyActionTime(const SG_PLAYER& player_info, _U32 action_id);
 		static bool SetDailyActionTimeInCache(SG_PLAYER& player_info, _U32 action_id, _U32 times);
 
-		static bool UpdateItemByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count);
+		static bool UpdateItemCountByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count);
 
 		template<typename T>
 		static void GenerateTempNewVec(const T* t, _U32 count, Atlas::Vector<T>& vec)
@@ -55,6 +55,43 @@ namespace Atlas
 		//		vec.push_back(t[i].applyer_id);
 		//	}
 		//}
+
+
+		template<typename T>
+		static bool DiffData(const T& old_data, const T& new_data)
+		{
+			char* pOldAddress = (char*)&old_data;
+			char* pNewAddress = (char*)&new_data;
+			int nOffsize = sizeof(T);
+
+			for(int n = 0; n < nOffsize; ++n)
+			{
+				if( *(pOldAddress + n) != *(pNewAddress + n))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		template<typename T>
+		static bool DiffDataVec(const Atlas::Vector<T>& old_data, const Atlas::Vector<T>& new_data)
+		{
+			if(old_data.size() != new_data.size())
+				return true;
+
+			for(size_t i = 0; i < old_data.size(); ++i)
+			{
+				if(DiffData<T>(old_data[i], new_data[i]))
+				{
+					return true;	
+				}
+			}
+
+			return false;
+		}
+
 
 		static void UpdateGeneralSoulBall(SG_PLAYER& player_info, Atlas::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general);
 
@@ -97,7 +134,7 @@ namespace Atlas
 					{
 						if(t_item.count + count <= stack_max)
 						{
-							UpdateItemTemplateFun<T>(cacheVec, t_item.uuid, t_item.count + count);
+							UpdateItemCountTemplateFun<T>(cacheVec, t_item.uuid, t_item.count + count);
 						}
 						else
 						{
@@ -118,7 +155,7 @@ namespace Atlas
 		}
 
 		template<typename T>
-		static bool UpdateItemTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, _U32 count)
+		static bool UpdateItemCountTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, _U32 count)
 		{
 			for(typename Atlas::Vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
 			{
@@ -140,8 +177,24 @@ namespace Atlas
 			return false;
 		}
 
+		/*template<typename T>
+		static bool UpdateItemTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, const T& newT)
+		{
+			return false;
+		}*/
+
 
 		static _U32 GetHorseXpAdd(_U32 cur_level, _U32 new_level, _U32 cur_exp, _U32 exp);
+		
+		static bool UpdateEquipt(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt);
+		static bool UpdateEquiptTurboLevel(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level);
+
+		static bool UnlockSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
+
+		static bool EnhanceSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
+
+		static bool UpdateGemItemCount(Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count);
+		static _U32 GetGemItemCount(const Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id);
 
 	};
 }

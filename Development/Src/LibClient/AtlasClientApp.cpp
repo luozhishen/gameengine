@@ -70,12 +70,20 @@ namespace Atlas
 		return m_Params;
 	}
 
-	bool CClientApp::LoadParams()
+	bool CClientApp::LoadParams(const char* path)
 	{
 		m_Params.clear();
 
-		Atlas::String strXmlFile = Atlas::AtlasGameDir();
-		strXmlFile += "\\Config\\Client.json";
+		Atlas::String strXmlFile = path?path:Atlas::AtlasGameDir();
+		if(path)
+		{
+			strXmlFile = Atlas::StringFormat("%s%s", path, "Client.json");
+		}
+		else
+		{
+			strXmlFile += "\\Config\\Client.json";
+		}
+		
 		std::ifstream ifs;
 		ifs.open(strXmlFile.c_str());
 		if(!ifs.is_open()) return false;

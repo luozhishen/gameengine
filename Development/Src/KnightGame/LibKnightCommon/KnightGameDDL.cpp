@@ -165,6 +165,49 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<LUA_COMMON_VALIDATE_INTERFACE>(LUA_COMMON_VALIDATE_INTERFACE& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadArray<_U8, LUA_COMMON_PARAM_MAX>(Value.ArrParams)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<LUA_COMMON_VALIDATE_INTERFACE>(const LUA_COMMON_VALIDATE_INTERFACE& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteArray<_U8, LUA_COMMON_PARAM_MAX>(Value.ArrParams)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_LUA_COMMON_VALIDATE_INTERFACE_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<LUA_COMMON_VALIDATE_INTERFACE>(*((LUA_COMMON_VALIDATE_INTERFACE*)data));
+	}
+
+	static bool _struct_LUA_COMMON_VALIDATE_INTERFACE_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<LUA_COMMON_VALIDATE_INTERFACE>(*((const LUA_COMMON_VALIDATE_INTERFACE*)data));
+	}
+
+	static FIELD_INFO _struct_LUA_COMMON_VALIDATE_INTERFACE_fieldinfo[] =
+	{
+		{TYPE_U8|TYPE_ARRAY, "ArrParams", 0, (_U16)ATLAS_OFFSETOF(LUA_COMMON_VALIDATE_INTERFACE, ArrParams), NULL, (_U16)-1, (_U16)LUA_COMMON_PARAM_MAX, (_U16)((size_t)(&((DDL::Array<_U8, LUA_COMMON_PARAM_MAX>*)NULL)->_Array)), (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_LUA_COMMON_VALIDATE_INTERFACE_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "LUA_COMMON_VALIDATE_INTERFACE", sizeof(LUA_COMMON_VALIDATE_INTERFACE), 1, _struct_LUA_COMMON_VALIDATE_INTERFACE_fieldinfo, _struct_LUA_COMMON_VALIDATE_INTERFACE_readproc, _struct_LUA_COMMON_VALIDATE_INTERFACE_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<LUA_COMMON_VALIDATE_INTERFACE>()
+	{
+		return &_rfl_struct_LUA_COMMON_VALIDATE_INTERFACE_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<KNIGHT_ATTRIBUTE_MODIFY_SETTING>(KNIGHT_ATTRIBUTE_MODIFY_SETTING& Value)
 	{
 		if(!Read<_U8>(Value.AttributeType)) return false;
@@ -212,7 +255,6 @@ namespace DDL
 	bool BufferReader::Read<KNIGHT_CALC_CONFIG>(KNIGHT_CALC_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
-		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
 		if(!Read<_F32>(Value.Influence)) return false;
 		return true;
 	}
@@ -220,7 +262,6 @@ namespace DDL
 	bool BufferWriter::Write<KNIGHT_CALC_CONFIG>(const KNIGHT_CALC_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
-		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
 		if(!Write<_F32>(Value.Influence)) return false;
 		return true;
 	}
@@ -241,10 +282,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_KNIGHT_CALC_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_CALC_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
 		{TYPE_F32, "Influence", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_CALC_CONFIG, Influence), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_KNIGHT_CALC_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_CALC_CONFIG", sizeof(KNIGHT_CALC_CONFIG), 2, _struct_KNIGHT_CALC_CONFIG_fieldinfo, _struct_KNIGHT_CALC_CONFIG_readproc, _struct_KNIGHT_CALC_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_KNIGHT_CALC_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_CALC_CONFIG", sizeof(KNIGHT_CALC_CONFIG), 1, _struct_KNIGHT_CALC_CONFIG_fieldinfo, _struct_KNIGHT_CALC_CONFIG_readproc, _struct_KNIGHT_CALC_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<KNIGHT_CALC_CONFIG>()
 	{
@@ -377,7 +417,7 @@ namespace DDL
 		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
-		if(!Read<_S32>(Value.Duration)) return false;
+		if(!Read<_U32>(Value.Duration)) return false;
 		if(!Read<_U8>(Value.IconType)) return false;
 		return true;
 	}
@@ -388,7 +428,7 @@ namespace DDL
 		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
 		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
 		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
-		if(!Write<_S32>(Value.Duration)) return false;
+		if(!Write<_U32>(Value.Duration)) return false;
 		if(!Write<_U8>(Value.IconType)) return false;
 		return true;
 	}
@@ -412,7 +452,7 @@ namespace DDLReflect
 		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
 		{TYPE_STRING, "RealName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, RealName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
 		{TYPE_STRING, "Desc", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, Desc), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
-		{TYPE_S32, "Duration", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, Duration), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_U32, "Duration", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, Duration), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U8, "IconType", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_CONFIG, IconType), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_KNIGHT_BUFF_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_BUFF_CONFIG", sizeof(KNIGHT_BUFF_CONFIG), 5, _struct_KNIGHT_BUFF_CONFIG_fieldinfo, _struct_KNIGHT_BUFF_CONFIG_readproc, _struct_KNIGHT_BUFF_CONFIG_writeproc };
@@ -610,12 +650,11 @@ namespace DDL
 	{
 		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		if(!ReadArray<_U8, KNIGHT_ARRAY_ELEMENT_MAX>(Value.BuffElemType)) return false;
-		if(!Read<_F32>(Value.BuffElemAtkCorrection)) return false;
-		if(!Read<_F32>(Value.BuffElemDefCorrection)) return false;
 		if(!Read<_U8>(Value.BuffElemDefMode)) return false;
-		if(!Read<_F32>(Value.ElementStrengthen)) return false;
-		if(!Read<_U8>(Value.ElementSeal)) return false;
-		if(!Read<_F32>(Value.ElementMiss)) return false;
+		if(!Read<_U8>(Value.BuffElemSeal)) return false;
+		if(!Read<_F32>(Value.BuffElemAtkEVT)) return false;
+		if(!Read<_F32>(Value.BuffElemDefEVT)) return false;
+		if(!Read<_F32>(Value.BuffElemMiss)) return false;
 		return true;
 	}
 	template<>
@@ -623,12 +662,11 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<KNIGHT_BUFF_CONFIG>(Value)) return false;
 		if(!WriteArray<_U8, KNIGHT_ARRAY_ELEMENT_MAX>(Value.BuffElemType)) return false;
-		if(!Write<_F32>(Value.BuffElemAtkCorrection)) return false;
-		if(!Write<_F32>(Value.BuffElemDefCorrection)) return false;
 		if(!Write<_U8>(Value.BuffElemDefMode)) return false;
-		if(!Write<_F32>(Value.ElementStrengthen)) return false;
-		if(!Write<_U8>(Value.ElementSeal)) return false;
-		if(!Write<_F32>(Value.ElementMiss)) return false;
+		if(!Write<_U8>(Value.BuffElemSeal)) return false;
+		if(!Write<_F32>(Value.BuffElemAtkEVT)) return false;
+		if(!Write<_F32>(Value.BuffElemDefEVT)) return false;
+		if(!Write<_F32>(Value.BuffElemMiss)) return false;
 		return true;
 	}
 }
@@ -649,14 +687,13 @@ namespace DDLReflect
 	static FIELD_INFO _struct_KNIGHT_BUFF_MAGIC_CORRECTION_fieldinfo[] =
 	{
 		{TYPE_U8|TYPE_ARRAY, "BuffElemType", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemType), NULL, (_U16)-1, (_U16)KNIGHT_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "BuffElemAtkCorrection", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemAtkCorrection), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "BuffElemDefCorrection", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemDefCorrection), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 		{TYPE_U8, "BuffElemDefMode", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemDefMode), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "ElementStrengthen", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, ElementStrengthen), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U8, "ElementSeal", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, ElementSeal), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "ElementMiss", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, ElementMiss), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U8, "BuffElemSeal", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemSeal), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "BuffElemAtkEVT", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemAtkEVT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "BuffElemDefEVT", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemDefEVT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "BuffElemMiss", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_MAGIC_CORRECTION, BuffElemMiss), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_KNIGHT_BUFF_MAGIC_CORRECTION_info = { &_rfl_struct_KNIGHT_BUFF_CONFIG_info, "KNIGHT_BUFF_MAGIC_CORRECTION", sizeof(KNIGHT_BUFF_MAGIC_CORRECTION), 7, _struct_KNIGHT_BUFF_MAGIC_CORRECTION_fieldinfo, _struct_KNIGHT_BUFF_MAGIC_CORRECTION_readproc, _struct_KNIGHT_BUFF_MAGIC_CORRECTION_writeproc };
+	STRUCT_INFO _rfl_struct_KNIGHT_BUFF_MAGIC_CORRECTION_info = { &_rfl_struct_KNIGHT_BUFF_CONFIG_info, "KNIGHT_BUFF_MAGIC_CORRECTION", sizeof(KNIGHT_BUFF_MAGIC_CORRECTION), 6, _struct_KNIGHT_BUFF_MAGIC_CORRECTION_fieldinfo, _struct_KNIGHT_BUFF_MAGIC_CORRECTION_readproc, _struct_KNIGHT_BUFF_MAGIC_CORRECTION_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_MAGIC_CORRECTION>()
 	{
@@ -716,6 +753,58 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_DOT>(KNIGHT_BUFF_DOT& Value)
+	{
+		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
+		if(!Read<_U8>(Value.Type)) return false;
+		if(!Read<_S32>(Value.AveValue)) return false;
+		if(!Read<_S32>(Value.Range)) return false;
+		if(!Read<_F32>(Value.Ratio)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_DOT>(const KNIGHT_BUFF_DOT& Value)
+	{
+		if(!BufferWriter::Write<KNIGHT_BUFF_CONFIG>(Value)) return false;
+		if(!Write<_U8>(Value.Type)) return false;
+		if(!Write<_S32>(Value.AveValue)) return false;
+		if(!Write<_S32>(Value.Range)) return false;
+		if(!Write<_F32>(Value.Ratio)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_KNIGHT_BUFF_DOT_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<KNIGHT_BUFF_DOT>(*((KNIGHT_BUFF_DOT*)data));
+	}
+
+	static bool _struct_KNIGHT_BUFF_DOT_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<KNIGHT_BUFF_DOT>(*((const KNIGHT_BUFF_DOT*)data));
+	}
+
+	static FIELD_INFO _struct_KNIGHT_BUFF_DOT_fieldinfo[] =
+	{
+		{TYPE_U8, "Type", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_DOT, Type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_S32, "AveValue", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_DOT, AveValue), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "Range", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_DOT, Range), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_F32, "Ratio", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_BUFF_DOT, Ratio), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_KNIGHT_BUFF_DOT_info = { &_rfl_struct_KNIGHT_BUFF_CONFIG_info, "KNIGHT_BUFF_DOT", sizeof(KNIGHT_BUFF_DOT), 4, _struct_KNIGHT_BUFF_DOT_fieldinfo, _struct_KNIGHT_BUFF_DOT_readproc, _struct_KNIGHT_BUFF_DOT_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_DOT>()
+	{
+		return &_rfl_struct_KNIGHT_BUFF_DOT_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<KNIGHT_BUFF_ATTACK_SLICES_CORRECTION>(KNIGHT_BUFF_ATTACK_SLICES_CORRECTION& Value)
 	{
 		if(!BufferReader::Read<KNIGHT_BUFF_CONFIG>(Value)) return false;
@@ -765,10 +854,60 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<KNIGHT_MANTRA_CONFIG>(KNIGHT_MANTRA_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
+		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Condition)) return false;
+		if(!Read<_S32>(Value.Cost)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<KNIGHT_MANTRA_CONFIG>(const KNIGHT_MANTRA_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
+		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.Condition)) return false;
+		if(!Write<_S32>(Value.Cost)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_KNIGHT_MANTRA_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<KNIGHT_MANTRA_CONFIG>(*((KNIGHT_MANTRA_CONFIG*)data));
+	}
+
+	static bool _struct_KNIGHT_MANTRA_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<KNIGHT_MANTRA_CONFIG>(*((const KNIGHT_MANTRA_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_KNIGHT_MANTRA_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "RealName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_MANTRA_CONFIG, RealName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
+		{TYPE_STRING, "Condition", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_MANTRA_CONFIG, Condition), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
+		{TYPE_S32, "Cost", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_MANTRA_CONFIG, Cost), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_KNIGHT_MANTRA_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_MANTRA_CONFIG", sizeof(KNIGHT_MANTRA_CONFIG), 3, _struct_KNIGHT_MANTRA_CONFIG_fieldinfo, _struct_KNIGHT_MANTRA_CONFIG_readproc, _struct_KNIGHT_MANTRA_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_MANTRA_CONFIG>()
+	{
+		return &_rfl_struct_KNIGHT_MANTRA_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<KNIGHT_ITEM_CONFIG>(KNIGHT_ITEM_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
 		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceUIURL)) return false;
 		return true;
 	}
 	template<>
@@ -776,6 +915,7 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
 		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceUIURL)) return false;
 		return true;
 	}
 }
@@ -796,8 +936,9 @@ namespace DDLReflect
 	static FIELD_INFO _struct_KNIGHT_ITEM_CONFIG_fieldinfo[] =
 	{
 		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ITEM_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
+		{TYPE_STRING, "ResourceUIURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ITEM_CONFIG, ResourceUIURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_KNIGHT_ITEM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_ITEM_CONFIG", sizeof(KNIGHT_ITEM_CONFIG), 1, _struct_KNIGHT_ITEM_CONFIG_fieldinfo, _struct_KNIGHT_ITEM_CONFIG_readproc, _struct_KNIGHT_ITEM_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_KNIGHT_ITEM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_ITEM_CONFIG", sizeof(KNIGHT_ITEM_CONFIG), 2, _struct_KNIGHT_ITEM_CONFIG_fieldinfo, _struct_KNIGHT_ITEM_CONFIG_readproc, _struct_KNIGHT_ITEM_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<KNIGHT_ITEM_CONFIG>()
 	{
@@ -816,6 +957,7 @@ namespace DDL
 		if(!Read<_U32>(Value.Level)) return false;
 		if(!Read<_U32>(Value.Rank)) return false;
 		if(!Read<_U32>(Value.MantraSize)) return false;
+		if(!Read<_U8>(Value.Type)) return false;
 		if(!ReadArray<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>(Value.InitialValue)) return false;
 		if(!ReadArray<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>(Value.GrowthValue)) return false;
 		if(!ReadStringArray<KNIGHT_ID_MAX, KNIGHT_ARRAY_ELEMENT_MAX>(Value.SkillIDs)) return false;
@@ -831,6 +973,7 @@ namespace DDL
 		if(!Write<_U32>(Value.Level)) return false;
 		if(!Write<_U32>(Value.Rank)) return false;
 		if(!Write<_U32>(Value.MantraSize)) return false;
+		if(!Write<_U8>(Value.Type)) return false;
 		if(!WriteArray<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>(Value.InitialValue)) return false;
 		if(!WriteArray<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>(Value.GrowthValue)) return false;
 		if(!WriteStringArray<KNIGHT_ID_MAX, KNIGHT_ARRAY_ELEMENT_MAX>(Value.SkillIDs)) return false;
@@ -859,12 +1002,13 @@ namespace DDLReflect
 		{TYPE_U32, "Level", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, Level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "Rank", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, Rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "MantraSize", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, MantraSize), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "Type", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, Type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "InitialValue", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, InitialValue), &_rfl_struct_KNIGHT_ATTRIBUTE_MODIFY_SETTING_info, (_U16)-1, (_U16)KNIGHT_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(KNIGHT_ATTRIBUTE_MODIFY_SETTING), NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "GrowthValue", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, GrowthValue), &_rfl_struct_KNIGHT_ATTRIBUTE_MODIFY_SETTING_info, (_U16)-1, (_U16)KNIGHT_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(KNIGHT_ATTRIBUTE_MODIFY_SETTING), NULL},
 		{TYPE_STRING|TYPE_ARRAY, "SkillIDs", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, SkillIDs), NULL, (_U16)KNIGHT_ID_MAX, (_U16)KNIGHT_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<DDL::String<KNIGHT_ID_MAX>, KNIGHT_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(DDL::String<KNIGHT_ID_MAX>), NULL},
 		{TYPE_STRING|TYPE_ARRAY, "BuffIDs", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_EQUIPMENT_CONFIG, BuffIDs), NULL, (_U16)KNIGHT_ID_MAX, (_U16)KNIGHT_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<DDL::String<KNIGHT_ID_MAX>, KNIGHT_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(DDL::String<KNIGHT_ID_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_KNIGHT_EQUIPMENT_CONFIG_info = { &_rfl_struct_KNIGHT_ITEM_CONFIG_info, "KNIGHT_EQUIPMENT_CONFIG", sizeof(KNIGHT_EQUIPMENT_CONFIG), 9, _struct_KNIGHT_EQUIPMENT_CONFIG_fieldinfo, _struct_KNIGHT_EQUIPMENT_CONFIG_readproc, _struct_KNIGHT_EQUIPMENT_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_KNIGHT_EQUIPMENT_CONFIG_info = { &_rfl_struct_KNIGHT_ITEM_CONFIG_info, "KNIGHT_EQUIPMENT_CONFIG", sizeof(KNIGHT_EQUIPMENT_CONFIG), 10, _struct_KNIGHT_EQUIPMENT_CONFIG_fieldinfo, _struct_KNIGHT_EQUIPMENT_CONFIG_readproc, _struct_KNIGHT_EQUIPMENT_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<KNIGHT_EQUIPMENT_CONFIG>()
 	{
@@ -989,14 +1133,12 @@ namespace DDL
 	bool BufferReader::Read<KNIGHT_WEAPON_CONFIG>(KNIGHT_WEAPON_CONFIG& Value)
 	{
 		if(!BufferReader::Read<KNIGHT_EQUIPMENT_CONFIG>(Value)) return false;
-		if(!Read<_U8>(Value.Type)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<KNIGHT_WEAPON_CONFIG>(const KNIGHT_WEAPON_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<KNIGHT_EQUIPMENT_CONFIG>(Value)) return false;
-		if(!Write<_U8>(Value.Type)) return false;
 		return true;
 	}
 }
@@ -1014,15 +1156,159 @@ namespace DDLReflect
 		return buf.Write<KNIGHT_WEAPON_CONFIG>(*((const KNIGHT_WEAPON_CONFIG*)data));
 	}
 
-	static FIELD_INFO _struct_KNIGHT_WEAPON_CONFIG_fieldinfo[] =
-	{
-		{TYPE_U8, "Type", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_WEAPON_CONFIG, Type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-	};
-	STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CONFIG_info = { &_rfl_struct_KNIGHT_EQUIPMENT_CONFIG_info, "KNIGHT_WEAPON_CONFIG", sizeof(KNIGHT_WEAPON_CONFIG), 1, _struct_KNIGHT_WEAPON_CONFIG_fieldinfo, _struct_KNIGHT_WEAPON_CONFIG_readproc, _struct_KNIGHT_WEAPON_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CONFIG_info = { &_rfl_struct_KNIGHT_EQUIPMENT_CONFIG_info, "KNIGHT_WEAPON_CONFIG", sizeof(KNIGHT_WEAPON_CONFIG), 0, NULL, _struct_KNIGHT_WEAPON_CONFIG_readproc, _struct_KNIGHT_WEAPON_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<KNIGHT_WEAPON_CONFIG>()
 	{
 		return &_rfl_struct_KNIGHT_WEAPON_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_MOUNT_CONFIG>(KNIGHT_MOUNT_CONFIG& Value)
+	{
+		if(!BufferReader::Read<KNIGHT_ITEM_CONFIG>(Value)) return false;
+		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
+		if(!ReadString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<KNIGHT_MOUNT_CONFIG>(const KNIGHT_MOUNT_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<KNIGHT_ITEM_CONFIG>(Value)) return false;
+		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.RealName)) return false;
+		if(!WriteString<KNIGHT_DESCRIPTION_MAX>(Value.Desc)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_KNIGHT_MOUNT_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<KNIGHT_MOUNT_CONFIG>(*((KNIGHT_MOUNT_CONFIG*)data));
+	}
+
+	static bool _struct_KNIGHT_MOUNT_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<KNIGHT_MOUNT_CONFIG>(*((const KNIGHT_MOUNT_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_KNIGHT_MOUNT_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "RealName", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_MOUNT_CONFIG, RealName), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
+		{TYPE_STRING, "Desc", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_MOUNT_CONFIG, Desc), NULL, (_U16)KNIGHT_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_DESCRIPTION_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_KNIGHT_MOUNT_CONFIG_info = { &_rfl_struct_KNIGHT_ITEM_CONFIG_info, "KNIGHT_MOUNT_CONFIG", sizeof(KNIGHT_MOUNT_CONFIG), 2, _struct_KNIGHT_MOUNT_CONFIG_fieldinfo, _struct_KNIGHT_MOUNT_CONFIG_readproc, _struct_KNIGHT_MOUNT_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_MOUNT_CONFIG>()
+	{
+		return &_rfl_struct_KNIGHT_MOUNT_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ATTACK_PHASE>(KNIGHT_ATTACK_PHASE& Value)
+	{
+		if(!Read<_U8>(Value.Type)) return false;
+		if(!Read<_U8>(Value.NumOfSlice)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<KNIGHT_ATTACK_PHASE>(const KNIGHT_ATTACK_PHASE& Value)
+	{
+		if(!Write<_U8>(Value.Type)) return false;
+		if(!Write<_U8>(Value.NumOfSlice)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_KNIGHT_ATTACK_PHASE_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<KNIGHT_ATTACK_PHASE>(*((KNIGHT_ATTACK_PHASE*)data));
+	}
+
+	static bool _struct_KNIGHT_ATTACK_PHASE_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<KNIGHT_ATTACK_PHASE>(*((const KNIGHT_ATTACK_PHASE*)data));
+	}
+
+	static FIELD_INFO _struct_KNIGHT_ATTACK_PHASE_fieldinfo[] =
+	{
+		{TYPE_U8, "Type", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_PHASE, Type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "NumOfSlice", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_PHASE, NumOfSlice), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_KNIGHT_ATTACK_PHASE_info = { NULL, "KNIGHT_ATTACK_PHASE", sizeof(KNIGHT_ATTACK_PHASE), 2, _struct_KNIGHT_ATTACK_PHASE_fieldinfo, _struct_KNIGHT_ATTACK_PHASE_readproc, _struct_KNIGHT_ATTACK_PHASE_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ATTACK_PHASE>()
+	{
+		return &_rfl_struct_KNIGHT_ATTACK_PHASE_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ATTACK_CONFIG>(KNIGHT_ATTACK_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!ReadArray<KNIGHT_ATTACK_PHASE, KNIGHT_ARRAY_ELEMENT_MAX>(Value.AttackPhases)) return false;
+		if(!ReadArray<_U8, KNIGHT_ARRAY_ELEMENT_MAX>(Value.CriticalStrikes)) return false;
+		if(!Read<_F32>(Value.Efficacy)) return false;
+		if(!Read<_U8>(Value.AppropriateWeapon)) return false;
+		if(!Read<_U8>(Value.bNoAction)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<KNIGHT_ATTACK_CONFIG>(const KNIGHT_ATTACK_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<KNIGHT_RESOURCE_URL_MAX>(Value.ResourceURL)) return false;
+		if(!WriteArray<KNIGHT_ATTACK_PHASE, KNIGHT_ARRAY_ELEMENT_MAX>(Value.AttackPhases)) return false;
+		if(!WriteArray<_U8, KNIGHT_ARRAY_ELEMENT_MAX>(Value.CriticalStrikes)) return false;
+		if(!Write<_F32>(Value.Efficacy)) return false;
+		if(!Write<_U8>(Value.AppropriateWeapon)) return false;
+		if(!Write<_U8>(Value.bNoAction)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_KNIGHT_ATTACK_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<KNIGHT_ATTACK_CONFIG>(*((KNIGHT_ATTACK_CONFIG*)data));
+	}
+
+	static bool _struct_KNIGHT_ATTACK_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<KNIGHT_ATTACK_CONFIG>(*((const KNIGHT_ATTACK_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_KNIGHT_ATTACK_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "ResourceURL", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_CONFIG, ResourceURL), NULL, (_U16)KNIGHT_RESOURCE_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<KNIGHT_RESOURCE_URL_MAX>), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "AttackPhases", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_CONFIG, AttackPhases), &_rfl_struct_KNIGHT_ATTACK_PHASE_info, (_U16)-1, (_U16)KNIGHT_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<KNIGHT_ATTACK_PHASE, KNIGHT_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(KNIGHT_ATTACK_PHASE), NULL},
+		{TYPE_U8|TYPE_ARRAY, "CriticalStrikes", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_CONFIG, CriticalStrikes), NULL, (_U16)-1, (_U16)KNIGHT_ARRAY_ELEMENT_MAX, (_U16)((size_t)(&((DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX>*)NULL)->_Array)), (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "Efficacy", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_CONFIG, Efficacy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U8, "AppropriateWeapon", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_CONFIG, AppropriateWeapon), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "bNoAction", 0, (_U16)ATLAS_OFFSETOF(KNIGHT_ATTACK_CONFIG, bNoAction), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_KNIGHT_ATTACK_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "KNIGHT_ATTACK_CONFIG", sizeof(KNIGHT_ATTACK_CONFIG), 6, _struct_KNIGHT_ATTACK_CONFIG_fieldinfo, _struct_KNIGHT_ATTACK_CONFIG_readproc, _struct_KNIGHT_ATTACK_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ATTACK_CONFIG>()
+	{
+		return &_rfl_struct_KNIGHT_ATTACK_CONFIG_info;
 	}
 }
 
@@ -1031,33 +1317,23 @@ namespace DDLReflect
 	static FIELD_INFO _class_KNIGHT_C2S_fieldinfos[] = 
 	{
 		// 0 Ping
-		// 1 Create
+		// 1 New
 		{TYPE_STRING, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 Delete
-		// 3 Set
+		// 2 Set
 		{TYPE_STRING, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 4 Get
-		// 5 Boardcast
+		// 3 Get
+		// 4 Boardcast
 		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 6 RoomJoin
-		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 7 RoomChat
-		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 8 RoomLeave
 	};
 	static FUNCTION_INFO _class_KNIGHT_C2S_funcinfos[] = 
 	{
 		{"Ping", 0, _class_KNIGHT_C2S_fieldinfos+0},
-		{"Create", 1, _class_KNIGHT_C2S_fieldinfos+0},
-		{"Delete", 0, _class_KNIGHT_C2S_fieldinfos+1},
+		{"New", 1, _class_KNIGHT_C2S_fieldinfos+0},
 		{"Set", 1, _class_KNIGHT_C2S_fieldinfos+1},
 		{"Get", 0, _class_KNIGHT_C2S_fieldinfos+2},
 		{"Boardcast", 1, _class_KNIGHT_C2S_fieldinfos+2},
-		{"RoomJoin", 1, _class_KNIGHT_C2S_fieldinfos+3},
-		{"RoomChat", 1, _class_KNIGHT_C2S_fieldinfos+4},
-		{"RoomLeave", 0, _class_KNIGHT_C2S_fieldinfos+5},
 	};
-	static CLASS_INFO _class_KNIGHT_C2S_info = { 0, "KNIGHT_C2S", 9, _class_KNIGHT_C2S_funcinfos };
+	static CLASS_INFO _class_KNIGHT_C2S_info = { 0, "KNIGHT_C2S", 5, _class_KNIGHT_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<KNIGHT_C2S>()
 	{
@@ -1076,23 +1352,14 @@ namespace DDLReflect
 		// 2 BoardcastCallback
 		{TYPE_U32, "uid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 3 RoomJoinCallback
-		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 4 RoomChatCallback
-		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_STRING, "msg", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 RoomLeaveCallback
 	};
 	static FUNCTION_INFO _class_KNIGHT_S2C_funcinfos[] = 
 	{
 		{"Pong", 0, _class_KNIGHT_S2C_fieldinfos+0},
 		{"GetCallback", 2, _class_KNIGHT_S2C_fieldinfos+0},
 		{"BoardcastCallback", 2, _class_KNIGHT_S2C_fieldinfos+2},
-		{"RoomJoinCallback", 1, _class_KNIGHT_S2C_fieldinfos+4},
-		{"RoomChatCallback", 2, _class_KNIGHT_S2C_fieldinfos+5},
-		{"RoomLeaveCallback", 0, _class_KNIGHT_S2C_fieldinfos+7},
 	};
-	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 6, _class_KNIGHT_S2C_funcinfos };
+	static CLASS_INFO _class_KNIGHT_S2C_info = { 0, "KNIGHT_S2C", 3, _class_KNIGHT_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<KNIGHT_S2C>()
 	{

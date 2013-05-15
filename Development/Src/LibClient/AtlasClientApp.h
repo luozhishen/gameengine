@@ -42,7 +42,7 @@ namespace Atlas
 		void SetParam(const char* name, const char* value);
 		const char* GetParam(const char* name, const char* default_value=NULL);
 		const Atlas::Map<Atlas::String, Atlas::String>& GetParams();
-		bool LoadParams();
+		bool LoadParams(const char* path = NULL);
 		bool SaveParams();
 
 		static CClientApp* GetDefault();

@@ -79,7 +79,12 @@ namespace Atlas
 		{"SG_NEWCOMER_GUIDE_STEP_CONFIG", "SG_NEWCOMER_GUIDE_STEP_CONFIG.json", "step_id"},
 		{"SG_DAILY_SEARCH_CONFIG", "SG_DAILY_SEARCH_CONFIG.json", "road_pt"},
 		{"SG_DAILY_SEARCH_REWARD_CONFIG", "SG_DAILY_SEARCH_REWARD_CONFIG.json", "circle_num"},
+		{"SG_LEAGUE_BATTLE_RANK_CONFIG", "SG_LEAGUE_BATTLE_RANK_CONFIG.json", "server_level_lower,server_level_upper,lower,upper"},
 		
+		{"SG_LEAGUE_MEMBER_WIN_CONFIG", "SG_LEAGUE_MEMBER_WIN_CONFIG.json", "server_level_lower,server_level_upper,win_times"},
+		{"SG_RECHARGE_CONFIG", "SG_RECHARGE_CONFIG.json", "index"},
+		{"SG_WORLD_BOSS_CONFIG", "SG_WORLD_BOSS_CONFIG.json", "world_level"},
+		{"SG_WORLD_BOSS_INSPIRE_CONFIG", "SG_WORLD_BOSS_INSPIRE_CONFIG.json", "times"},
 	};
 
 	const char* AtlasGameName()
@@ -222,7 +227,17 @@ namespace Atlas
 		pContentGroup->Register(DDLReflect::GetStruct< SG_DAILY_SEARCH_CONFIG >(), true, g_JsonContent[i++].keys);
 		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
 		pContentGroup->Register(DDLReflect::GetStruct< SG_DAILY_SEARCH_REWARD_CONFIG >(), true, g_JsonContent[i++].keys);
-				
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_LEAGUE_BATTLE_RANK_CONFIG >(), true, g_JsonContent[i++].keys);
+
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_LEAGUE_MEMBER_WIN_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_RECHARGE_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_WORLD_BOSS_CONFIG >(), true, g_JsonContent[i++].keys);
+		pContentGroup = ContentObject::CreateContentGroup(g_JsonContent[i].struct_type, g_JsonContent[i].file, true);
+		pContentGroup->Register(DDLReflect::GetStruct< SG_WORLD_BOSS_INSPIRE_CONFIG >(), true, g_JsonContent[i++].keys);
 	}
 
 	void InitLiveObjects()

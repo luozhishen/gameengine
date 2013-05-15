@@ -93,6 +93,36 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_DATATEST_BASE_CONFIG_info;
 }
 
+const _U32 LUA_COMMON_PARAM_MAX = 16;
+
+const _U8 LUA_COMMON_PARAM_TYPE_BOOL = 0;
+
+const _U8 LUA_COMMON_PARAM_TYPE_NUMBER = 1;
+
+const _U8 LUA_COMMON_PARAM_TYPE_STRING = 2;
+
+const _U8 LUA_COMMON_PARAM_TYPE_TABLE = 3;
+
+struct LUA_COMMON_VALIDATE_INTERFACE : A_CONTENT_OBJECT
+{
+	DDL::Array<_U8, LUA_COMMON_PARAM_MAX> ArrParams;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<LUA_COMMON_VALIDATE_INTERFACE>(LUA_COMMON_VALIDATE_INTERFACE& Value);
+	template<>
+	bool BufferWriter::Write<LUA_COMMON_VALIDATE_INTERFACE>(const LUA_COMMON_VALIDATE_INTERFACE& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<LUA_COMMON_VALIDATE_INTERFACE>();
+	extern STRUCT_INFO _rfl_struct_LUA_COMMON_VALIDATE_INTERFACE_info;
+}
+
 const _U32 KNIGHT_DESCRIPTION_MAX = 256;
 
 const _U32 KNIGHT_RESOURCE_URL_MAX = 128;
@@ -124,7 +154,6 @@ namespace DDLReflect
 
 struct KNIGHT_CALC_CONFIG : A_CONTENT_OBJECT
 {
-	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
 	_F32 Influence;
 };
 
@@ -198,7 +227,7 @@ struct KNIGHT_BUFF_CONFIG : A_CONTENT_OBJECT
 	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> RealName;
 	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
-	_S32 Duration;
+	_U32 Duration;
 	_U8 IconType;
 };
 
@@ -304,12 +333,11 @@ namespace DDLReflect
 struct KNIGHT_BUFF_MAGIC_CORRECTION : KNIGHT_BUFF_CONFIG
 {
 	DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX> BuffElemType;
-	_F32 BuffElemAtkCorrection;
-	_F32 BuffElemDefCorrection;
 	_U8 BuffElemDefMode;
-	_F32 ElementStrengthen;
-	_U8 ElementSeal;
-	_F32 ElementMiss;
+	_U8 BuffElemSeal;
+	_F32 BuffElemAtkEVT;
+	_F32 BuffElemDefEVT;
+	_F32 BuffElemMiss;
 };
 
 namespace DDL
@@ -349,6 +377,29 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_BUFF_CORRECTION_info;
 }
 
+struct KNIGHT_BUFF_DOT : KNIGHT_BUFF_CONFIG
+{
+	_U8 Type;
+	_S32 AveValue;
+	_S32 Range;
+	_F32 Ratio;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_BUFF_DOT>(KNIGHT_BUFF_DOT& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_BUFF_DOT>(const KNIGHT_BUFF_DOT& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_BUFF_DOT>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_DOT_info;
+}
+
 struct KNIGHT_BUFF_ATTACK_SLICES_CORRECTION : KNIGHT_BUFF_CONFIG
 {
 	_U8 AttackType;
@@ -371,9 +422,32 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_KNIGHT_BUFF_ATTACK_SLICES_CORRECTION_info;
 }
 
+struct KNIGHT_MANTRA_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<KNIGHT_DESCRIPTION_MAX> RealName;
+	DDL::String<KNIGHT_DESCRIPTION_MAX> Condition;
+	_S32 Cost;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_MANTRA_CONFIG>(KNIGHT_MANTRA_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_MANTRA_CONFIG>(const KNIGHT_MANTRA_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_MANTRA_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_MANTRA_CONFIG_info;
+}
+
 struct KNIGHT_ITEM_CONFIG : A_CONTENT_OBJECT
 {
 	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
+	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceUIURL;
 };
 
 namespace DDL
@@ -398,6 +472,7 @@ struct KNIGHT_EQUIPMENT_CONFIG : KNIGHT_ITEM_CONFIG
 	_U32 Level;
 	_U32 Rank;
 	_U32 MantraSize;
+	_U8 Type;
 	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> InitialValue;
 	DDL::Array<KNIGHT_ATTRIBUTE_MODIFY_SETTING, KNIGHT_ARRAY_ELEMENT_MAX> GrowthValue;
 	DDL::Array<DDL::String<KNIGHT_ID_MAX>,KNIGHT_ARRAY_ELEMENT_MAX> SkillIDs;
@@ -478,7 +553,6 @@ namespace DDLReflect
 
 struct KNIGHT_WEAPON_CONFIG : KNIGHT_EQUIPMENT_CONFIG
 {
-	_U8 Type;
 };
 
 namespace DDL
@@ -494,6 +568,73 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<KNIGHT_WEAPON_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_KNIGHT_WEAPON_CONFIG_info;
+}
+
+struct KNIGHT_MOUNT_CONFIG : KNIGHT_ITEM_CONFIG
+{
+	DDL::String<KNIGHT_DESCRIPTION_MAX> RealName;
+	DDL::String<KNIGHT_DESCRIPTION_MAX> Desc;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_MOUNT_CONFIG>(KNIGHT_MOUNT_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_MOUNT_CONFIG>(const KNIGHT_MOUNT_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_MOUNT_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_MOUNT_CONFIG_info;
+}
+
+struct KNIGHT_ATTACK_PHASE
+{
+	_U8 Type;
+	_U8 NumOfSlice;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ATTACK_PHASE>(KNIGHT_ATTACK_PHASE& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_ATTACK_PHASE>(const KNIGHT_ATTACK_PHASE& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ATTACK_PHASE>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_ATTACK_PHASE_info;
+}
+
+struct KNIGHT_ATTACK_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<KNIGHT_RESOURCE_URL_MAX> ResourceURL;
+	DDL::Array<KNIGHT_ATTACK_PHASE, KNIGHT_ARRAY_ELEMENT_MAX> AttackPhases;
+	DDL::Array<_U8, KNIGHT_ARRAY_ELEMENT_MAX> CriticalStrikes;
+	_F32 Efficacy;
+	_U8 AppropriateWeapon;
+	_U8 bNoAction;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<KNIGHT_ATTACK_CONFIG>(KNIGHT_ATTACK_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<KNIGHT_ATTACK_CONFIG>(const KNIGHT_ATTACK_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<KNIGHT_ATTACK_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_KNIGHT_ATTACK_CONFIG_info;
 }
 
 class KNIGHT_C2S;
@@ -534,18 +675,10 @@ namespace DDLStub
 				_prefix_value[__length] = '\0';
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->Create(Caller, _prefix_value);
+				DDLStub<CALLER, CLASS>::GetClass()->New(Caller, _prefix_value);
 				return true;
 			}
 			if(fid==2)
-			{
-
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->Delete(Caller);
-				return true;
-			}
-			if(fid==3)
 			{
 				_U32 __length;
 				char* _prefix_value;
@@ -561,7 +694,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Set(Caller, _prefix_value);
 				return true;
 			}
-			if(fid==4)
+			if(fid==3)
 			{
 
 
@@ -569,7 +702,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Get(Caller);
 				return true;
 			}
-			if(fid==5)
+			if(fid==4)
 			{
 				_U32 __length;
 				char* _prefix_msg;
@@ -583,41 +716,6 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->Boardcast(Caller, _prefix_msg);
-				return true;
-			}
-			if(fid==6)
-			{
-				_U32 _prefix_index;
-
-				// <_U32> <index> <> <>;
-				if(!Buf.Read(_prefix_index)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RoomJoin(Caller, _prefix_index);
-				return true;
-			}
-			if(fid==7)
-			{
-				_U32 __length;
-				char* _prefix_msg;
-
-				// <string> <msg> <> <>;
-				if(!Buf.Read(__length)) return false;
-				_prefix_msg = (char*)alloca(sizeof(_prefix_msg[0])*(__length+1));
-				if(!_prefix_msg) return false;
-				if(!Buf.ReadBuffer(_prefix_msg, (unsigned int)sizeof(_prefix_msg[0])*__length)) return false;
-				_prefix_msg[__length] = '\0';
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RoomChat(Caller, _prefix_msg);
-				return true;
-			}
-			if(fid==8)
-			{
-
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RoomLeave(Caller);
 				return true;
 			}
 			return false;
@@ -651,7 +749,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
 
-		bool Create(const char* value)
+		bool New(const char* value)
 		{
 			BUFFER Buf;
 			_U32 __length;
@@ -664,14 +762,6 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
 		}
 
-		bool Delete()
-		{
-			BUFFER Buf;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
-		}
-
 		bool Set(const char* value)
 		{
 			BUFFER Buf;
@@ -682,7 +772,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(value, (unsigned int)sizeof(value[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 
 		bool Get()
@@ -690,7 +780,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
 		}
 
 		bool Boardcast(const char* msg)
@@ -703,38 +793,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(msg, (unsigned int)sizeof(msg[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
-		}
-
-		bool RoomJoin(_U32 index)
-		{
-			BUFFER Buf;
-			// <_U32> <index> <> <>
-			if(!Buf.Write(index)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
-		}
-
-		bool RoomChat(const char* msg)
-		{
-			BUFFER Buf;
-			_U32 __length;
-			// <string> <msg> <> <>
-			__length = DDL::StringLength(msg);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(msg, (unsigned int)sizeof(msg[0])*__length)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
-		}
-
-		bool RoomLeave()
-		{
-			BUFFER Buf;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
 		}
 	};
 
@@ -805,44 +864,6 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BoardcastCallback(Caller, _prefix_uid, _prefix_msg);
 				return true;
 			}
-			if(fid==3)
-			{
-				_U32 _prefix_result;
-
-				// <_U32> <result> <> <>;
-				if(!Buf.Read(_prefix_result)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RoomJoinCallback(Caller, _prefix_result);
-				return true;
-			}
-			if(fid==4)
-			{
-				_U32 __length;
-				_U32 _prefix_index;
-				char* _prefix_msg;
-
-				// <_U32> <index> <> <>;
-				if(!Buf.Read(_prefix_index)) return false;
-				// <string> <msg> <> <>;
-				if(!Buf.Read(__length)) return false;
-				_prefix_msg = (char*)alloca(sizeof(_prefix_msg[0])*(__length+1));
-				if(!_prefix_msg) return false;
-				if(!Buf.ReadBuffer(_prefix_msg, (unsigned int)sizeof(_prefix_msg[0])*__length)) return false;
-				_prefix_msg[__length] = '\0';
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RoomChatCallback(Caller, _prefix_index, _prefix_msg);
-				return true;
-			}
-			if(fid==5)
-			{
-
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RoomLeaveCallback(Caller);
-				return true;
-			}
 			return false;
 		}
 	};
@@ -902,39 +923,6 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
-		}
-
-		bool RoomJoinCallback(_U32 result)
-		{
-			BUFFER Buf;
-			// <_U32> <result> <> <>
-			if(!Buf.Write(result)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
-		}
-
-		bool RoomChatCallback(_U32 index, const char* msg)
-		{
-			BUFFER Buf;
-			_U32 __length;
-			// <_U32> <index> <> <>
-			if(!Buf.Write(index)) return false;
-			// <string> <msg> <> <>
-			__length = DDL::StringLength(msg);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(msg, (unsigned int)sizeof(msg[0])*__length)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
-		}
-
-		bool RoomLeaveCallback()
-		{
-			BUFFER Buf;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
 		}
 	};
 

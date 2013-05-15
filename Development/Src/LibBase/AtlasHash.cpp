@@ -86,9 +86,10 @@ namespace Atlas
 		_U8 buf[1000];
 		CHashMD5 hash;
 		hash.Init();
+		fseek(fp, 0, SEEK_SET);
 		while(!feof(fp))
 		{
-			size_t size = fread(buf, sizeof(buf), 1, fp);
+			size_t size = fread(buf, 1, sizeof(buf), fp);
 			hash.Update(buf, (_U32)size);
 		}
 		hash.Final(out);

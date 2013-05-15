@@ -40,6 +40,7 @@ namespace Atlas
 		void SendRequest();
 
 	private:
+		bool m_bPullRequest;
 		Atlas::String m_BaseUrl;
 		MOREQUEST* m_pLoginRequest;
 		MOREQUEST* m_pLogoutRequest;

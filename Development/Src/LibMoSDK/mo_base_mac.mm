@@ -28,14 +28,7 @@ void MOInit(const char* appname)
 {
 	strcpy(g_AppName, appname);
 
-	if(!load_from_local(g_UDID, sizeof(g_UDID)))
-	{
-        if(get_ios_udid(g_UDID) || get_wifi_mac(g_UDID) || get_random_deviceid(g_UDID))
-		{
-			save_to_local(g_UDID);
-		}
-	}
-
+    MOGetDeviceUDID();
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     char type[100], version[100];
     strcpy(type, [[UIDevice currentDevice].model UTF8String]);
@@ -68,6 +61,15 @@ void MOFini()
 
 const char* MOGetDeviceUDID()
 {
+    if(strcmp(g_UDID,"UNKNOWN_UDID") == 0){
+        if(!load_from_local(g_UDID, sizeof(g_UDID)))
+	    {
+            if(get_ios_udid(g_UDID) || get_wifi_mac(g_UDID) || get_random_deviceid(g_UDID))
+	        {
+		        save_to_local(g_UDID);
+	        }
+	    }
+    }
 	return g_UDID;
 }
 

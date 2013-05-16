@@ -451,6 +451,7 @@ struct SG_NEWCOMER_GUIDE_STEP_CONFIG : A_CONTENT_OBJECT
 	_U32 down;
 	_U32 left;
 	_U32 right;
+	_U32 transparency;
 };
 
 namespace DDL

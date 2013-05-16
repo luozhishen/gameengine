@@ -464,6 +464,7 @@ namespace DDL
 		if(!Read<_U32>(Value.down)) return false;
 		if(!Read<_U32>(Value.left)) return false;
 		if(!Read<_U32>(Value.right)) return false;
+		if(!Read<_U32>(Value.transparency)) return false;
 		return true;
 	}
 	template<>
@@ -487,6 +488,7 @@ namespace DDL
 		if(!Write<_U32>(Value.down)) return false;
 		if(!Write<_U32>(Value.left)) return false;
 		if(!Write<_U32>(Value.right)) return false;
+		if(!Write<_U32>(Value.transparency)) return false;
 		return true;
 	}
 }
@@ -523,8 +525,9 @@ namespace DDLReflect
 		{TYPE_U32, "down", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, down), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "left", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, left), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "right", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, right), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "transparency", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, transparency), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_STEP_CONFIG", sizeof(SG_NEWCOMER_GUIDE_STEP_CONFIG), 17, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_STEP_CONFIG", sizeof(SG_NEWCOMER_GUIDE_STEP_CONFIG), 18, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_STEP_CONFIG>()
 	{

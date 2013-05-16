@@ -917,6 +917,46 @@ namespace Atlas
 		m_C2S.FinishNewcomerGuide(function_id);
 	}
 		
+	void CSGClient::QueryWorldBossRankInfo()
+	{
+		m_C2S.QueryWorldBossRankInfo();
+	}
+
+	void CSGClient::BeginWorldBossBattle(_U32 bInstantResurrection)
+	{
+		m_C2S.BeginWorldBossBattle(bInstantResurrection);
+	}
+
+	void CSGClient::InspireWorldBossBattle()
+	{
+		m_C2S.InspireWorldBossBattle();
+	}
+
+	void CSGClient::UpdateWorldBossBattle(_U32 damage)
+	{
+		m_C2S.UpdateWorldBossBattle(damage);
+	}
+
+	void CSGClient::EndWorldBossBattle(_U32 damage)
+	{
+		m_C2S.EndWorldBossBattle(damage);
+	}
+
+	void CSGClient::AwardWorldBossRank()
+	{
+		m_C2S.AwardWorldBossRank();
+	}
+
+	void CSGClient::AwardWorldBossAttendance()
+	{
+		m_C2S.AwardWorldBossAttendance();
+	}
+
+	void CSGClient::Recharge(_U32 index)
+	{
+		m_C2S.Recharge(index);
+	}
+
 	void CSGClient::Pong(CSGClient* pClient)
 	{
 		if(m_callback)
@@ -2489,6 +2529,142 @@ namespace Atlas
 		{
 			m_callback->QueryNewcomerGuideInfoResult(guide_list, count);
 		}
+	}
+
+	void CSGClient::QueryWorldBossRankInfoResult(CSGClient* pClient, const SG_WORLDBOSS_RANK_INFO& rank_info)
+	{
+		if(m_callback)
+		{
+			m_callback->QueryWorldBossRankInfoResult(rank_info);
+		}
+	}
+
+	void CSGClient::BeginWorldBossBattleResult(CSGClient* pClient, _U8 ret, const SG_PLAYER_PVE& selfPve, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& ranklist, const SG_PLAYER_INFO* otherPlayers, _U32 count1, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 count2, _U32 rmb)
+	{
+		if(m_callback)
+		{
+			if(ret == SG_SERVER_RESULT_SUCC)
+			{
+				if(gold)
+				{
+					m_player.gold += gold;
+					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				}
+
+				if(rmb)
+				{
+					m_player.rmb -= rmb;
+					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				}
+
+				if(count2)
+				{
+					//help to sync data
+					Atlas::Vector<_U8> vecSync;
+					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+				}
+			}
+
+			m_callback->BeginWorldBossBattleResult(ret, selfPve, bossInfo, ranklist, otherPlayers, count1, gold, drops, count2);
+		}
+	}
+
+	void CSGClient::InspireWorldBossBattleResult(CSGClient* pClient, _U8 ret, _U32 rmb)
+	{
+		if(m_callback)
+		{
+			//m_callback->InspireWorldBossBattleResult(ret);
+		}
+	}
+
+	void CSGClient::AwardWorldBossRankResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 reputation, const SG_DROP_ITEM_BASE* drops, _U32 count)
+	{
+		if(m_callback)
+		{
+			if(ret == SG_SERVER_RESULT_SUCC)
+			{
+				if(gold)
+				{
+					m_player.gold += gold;
+					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				}
+
+				if(reputation)
+				{
+					m_player.reputation += reputation;
+					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				}
+
+				if(count)
+				{
+					//help to sync data
+					Atlas::Vector<_U8> vecSync;
+					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+				}
+			}
+
+			m_callback->AwardWorldBossRankResult(ret, gold, reputation, drops, count);
+		}
+	}
+
+	void CSGClient::UpdateWorldBossBattleResult(CSGClient* pClient, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& rankinfo)
+	{
+		if(m_callback)
+		{
+			m_callback->UpdateWorldBossBattleResult(bossInfo, rankinfo);
+		}
+	}
+
+	void CSGClient::EndWorldBossBattleResult(CSGClient* pClient)
+	{
+		if(m_callback)
+		{
+			m_callback->EndWorldBossBattleResult();
+		}
+	}
+
+	void CSGClient::AwardWorldBossAttendanceResult(CSGClient* pClient, _U8 ret, _U32 gold, _U32 reputation, const SG_DROP_ITEM_BASE* drops, _U32 count)
+	{
+		if(m_callback)
+		{
+			if(ret == SG_SERVER_RESULT_SUCC)
+			{
+				if(gold)
+				{
+					m_player.gold += gold;
+					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				}
+
+				if(reputation)
+				{
+					m_player.reputation += reputation;
+					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				}
+
+				if(count)
+				{
+					//help to sync data
+					Atlas::Vector<_U8> vecSync;
+					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
+				}
+			}
+
+			m_callback->AwardWorldBossAttendanceResult(ret, gold, reputation, drops, count);
+		}
+	}
+
+	void CSGClient::RechargeResult(CSGClient* pClient, _U8 ret, _U32 rmb, const SG_PLAYER& selfplayer)
+	{
+		if(m_callback)
+		{
+			if(ret == SG_SERVER_RESULT_SUCC)
+			{
+				m_player = selfplayer;
+				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+			}
+
+			m_callback->RechargeResult(ret, rmb);
+		}	
 	}
 
 	void CSGClient::SellItemResult(CSGClient* pClient, _U8 result, const A_UUID& uuid, const _U32 item_id, const _U32 count)

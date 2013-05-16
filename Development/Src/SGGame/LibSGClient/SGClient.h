@@ -129,6 +129,16 @@ namespace Atlas
 
 		virtual void QueryDiceNumResult(_U8 ret, _U32 dice_num, _U32 reward_time, _U32 energy, _U32 rmb, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count, _U32 circle_num, _U32 step) = 0;
 		virtual void QueryNewcomerGuideInfoResult(const SG_NEWCOMER_GUIDE_INFO* guide_list, _U32 count) = 0;
+	
+		virtual void QueryWorldBossRankInfoResult(const SG_WORLDBOSS_RANK_INFO& rank_info) = 0;
+		virtual void BeginWorldBossBattleResult(_U8 ret, const SG_PLAYER_PVE& selfPve, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& ranklist, const SG_PLAYER_INFO* otherPlayers, _U32 count1, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 count2) = 0;
+		
+		virtual void AwardWorldBossRankResult(_U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* drops, _U32 count) = 0;
+		virtual void UpdateWorldBossBattleResult(const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& rankinfo) = 0;
+		virtual void EndWorldBossBattleResult() = 0;
+		virtual void AwardWorldBossAttendanceResult(_U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* drops, _U32 count) = 0;
+
+		virtual void RechargeResult(_U8 ret, _U32 rmb) = 0;
 	};
 
 	class CSGClient : public CClient
@@ -296,6 +306,16 @@ namespace Atlas
 		void ActivateNewcomerGuide(_U32 function_id);
 		void FinishNewcomerGuide(_U32 function_id);
 
+		void QueryWorldBossRankInfo();						
+		void BeginWorldBossBattle(_U32 bInstantResurrection);
+		void InspireWorldBossBattle();
+		void UpdateWorldBossBattle(_U32 damage);				
+		void EndWorldBossBattle(_U32 damage);
+		void AwardWorldBossRank();
+		void AwardWorldBossAttendance();
+
+		void Recharge(_U32 index);
+
 		//result
 		void Pong(CSGClient* pClient);
 
@@ -414,6 +434,16 @@ namespace Atlas
 
 		void QueryDiceNumResult(CSGClient* pClient, _U8 ret, _U32 dice_num, _U32 reward_time, _U32 energy, _U32 rmb, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count, _U32 circle_num, _U32 step);
 		void QueryNewcomerGuideInfoResult(CSGClient* pClient, const SG_NEWCOMER_GUIDE_INFO* guide_list, _U32 count);
+
+		void QueryWorldBossRankInfoResult(CSGClient* pClient, const SG_WORLDBOSS_RANK_INFO& rank_info);
+		void BeginWorldBossBattleResult(CSGClient* pClient, _U8 ret, const SG_PLAYER_PVE& selfPve, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& ranklist, const SG_PLAYER_INFO* otherPlayers, _U32 count1, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 count2, _U32 rmb);
+		void InspireWorldBossBattleResult(CSGClient* pClient, _U8 ret, _U32 rmb);
+		void AwardWorldBossRankResult(CSGClient* pClient, _U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* drops, _U32 count);
+		void UpdateWorldBossBattleResult(CSGClient* pClient, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& rankinfo);
+		void EndWorldBossBattleResult(CSGClient* pClient);
+		void AwardWorldBossAttendanceResult(CSGClient* pClient, _U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* drops, _U32 count);
+
+		void RechargeResult(CSGClient* pClient, _U8 ret, _U32 rmb, const SG_PLAYER& selfplayer);
 
 	public:
 		virtual void OnLoginDone();

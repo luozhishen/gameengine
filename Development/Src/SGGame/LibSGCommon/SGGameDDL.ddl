@@ -179,14 +179,16 @@ const _U32 SG_NEWCOMER_GUIDE_TIP_MAX = 128;
 const _U32 SG_NEWCOMER_UI_MAX = 128;
 const _U32 SG_NEWCOMER_GUIDER_LABEL_MAX = 128;
 
-
 //vip
 const _U32 SG_VIP_DESC_MAX = 512;
 
 //rmb_recharge
-const _U32 SG_RECHARGE_YUANBAO_DESC = 128;
-const _U32 SG_RECHARGE_PRICE_DESC = 128;
-const _U32 SG_RECHARGE_OTHER_DESC = 128;
+const _U32 SG_RECHARGE_YUANBAO_DESC = 512;
+const _U32 SG_RECHARGE_PRICE_DESC = 512;
+const _U32 SG_RECHARGE_OTHER_DESC = 512;
+
+//world boss
+const _U32 SG_WORLDBOSS_RANK_LIST_MAX = 10;
 
 //world boss
 struct SG_WORLD_BOSS_CONFIG : A_CONTENT_OBJECT
@@ -1757,6 +1759,35 @@ struct SG_NEWCOMER_GUIDE_INFO : A_LIVE_OBJECT
 task[GEN_STRUCT_SERIALIZE(SG_NEWCOMER_GUIDE_INFO)];
 task[GEN_STRUCT_REFLECT(SG_NEWCOMER_GUIDE_INFO)];
 
+//world boss
+struct SG_WORLDBOSS_RANK_ITEM
+{
+	string<SG_PLAYER_NAME_MAX>			nick;
+	_U32								rank;
+	_U32								total_damage;
+};
+task[GEN_STRUCT_SERIALIZE(SG_WORLDBOSS_RANK_ITEM)];
+task[GEN_STRUCT_REFLECT(SG_WORLDBOSS_RANK_ITEM)];
+
+struct SG_WORLDBOSS_RANK_INFO
+{
+	array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX> last_rank_list;
+	SG_WORLDBOSS_RANK_ITEM									  my_last_rank;
+	_U8														  attendance_reward;
+	_U8														  rank_reward;
+};
+task[GEN_STRUCT_SERIALIZE(SG_WORLDBOSS_RANK_INFO)];
+task[GEN_STRUCT_REFLECT(SG_WORLDBOSS_RANK_INFO)];
+
+struct SG_WORLDBOSS_INFO
+{
+	_U32								boss_id;
+	_U32								HP;
+	_U8									status;
+};
+task[GEN_STRUCT_SERIALIZE(SG_WORLDBOSS_INFO)];
+task[GEN_STRUCT_REFLECT(SG_WORLDBOSS_INFO)];
+
 class SGGAME_C2S
 {
 	Ping();
@@ -1912,6 +1943,16 @@ class SGGAME_C2S
 	QueryNewcomerGuideInfo();											//新手引导
 	ActivateNewcomerGuide(_U32 function_id);
 	FinishNewcomerGuide(_U32 function_id);
+
+	QueryWorldBossRankInfo();											//查询worldboss信息
+	BeginWorldBossBattle(_U32 bInstantResurrection);
+	InspireWorldBossBattle();
+	UpdateWorldBossBattle(_U32 damage);									//damage to boss per some seconds
+	EndWorldBossBattle(_U32 damage);
+	AwardWorldBossRank();
+	AwardWorldBossAttendance();
+
+	Recharge(_U32 index);
 };
 
 class SGGAME_S2C
@@ -2039,6 +2080,17 @@ class SGGAME_S2C
 	QueryDiceNumResult(_U8 ret, _U32 dice_num, _U32 reward_time, _U32 energy, _U32 rmb, SG_DROP_ITEM_CONFIG drops[drop_count], _U32 drop_count, _U32 circle_num, _U32 step);
 
 	QueryNewcomerGuideInfoResult(SG_NEWCOMER_GUIDE_INFO guide_list[count], _U32 count);
+
+	QueryWorldBossRankInfoResult(SG_WORLDBOSS_RANK_INFO rank_info);
+	BeginWorldBossBattleResult(_U8 ret, SG_PLAYER_PVE selfPve, SG_WORLDBOSS_INFO bossInfo, SG_WORLDBOSS_RANK_INFO ranklist, SG_PLAYER_INFO otherPlayers[count1], _U32 count1, _U32 gold, SG_DROP_ITEM_BASE drops[count2], _U32 count2, _U32 rmb);
+	//0-succ 1-the end 2-not begin 3-money out
+	InspireWorldBossBattleResult(_U8 ret, _U32 rmb);
+	AwardWorldBossRankResult(_U8 ret, _U32 Gold, _U32 Reputation, SG_DROP_ITEM_BASE ItemList[count], _U32 count);
+	UpdateWorldBossBattleResult(SG_WORLDBOSS_INFO bossInfo, SG_WORLDBOSS_RANK_INFO rankinfo);
+	EndWorldBossBattleResult();
+	AwardWorldBossAttendanceResult(_U8 ret, _U32 Gold, _U32 Reputation, SG_DROP_ITEM_BASE ItemList[count], _U32 count);
+
+	RechargeResult(_U8 ret, _U32 rmb, SG_PLAYER selfplayer);
 };
 
 task[GEN_CLASS_STUB(SGGAME_C2S)];

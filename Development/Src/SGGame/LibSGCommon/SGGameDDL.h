@@ -250,11 +250,13 @@ const _U32 SG_NEWCOMER_GUIDER_LABEL_MAX = 128;
 
 const _U32 SG_VIP_DESC_MAX = 512;
 
-const _U32 SG_RECHARGE_YUANBAO_DESC = 128;
+const _U32 SG_RECHARGE_YUANBAO_DESC = 512;
 
-const _U32 SG_RECHARGE_PRICE_DESC = 128;
+const _U32 SG_RECHARGE_PRICE_DESC = 512;
 
-const _U32 SG_RECHARGE_OTHER_DESC = 128;
+const _U32 SG_RECHARGE_OTHER_DESC = 512;
+
+const _U32 SG_WORLDBOSS_RANK_LIST_MAX = 10;
 
 struct SG_WORLD_BOSS_CONFIG : A_CONTENT_OBJECT
 {
@@ -2978,6 +2980,73 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_INFO_info;
 }
 
+struct SG_WORLDBOSS_RANK_ITEM
+{
+	DDL::String<SG_PLAYER_NAME_MAX> nick;
+	_U32 rank;
+	_U32 total_damage;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_WORLDBOSS_RANK_ITEM>(SG_WORLDBOSS_RANK_ITEM& Value);
+	template<>
+	bool BufferWriter::Write<SG_WORLDBOSS_RANK_ITEM>(const SG_WORLDBOSS_RANK_ITEM& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_RANK_ITEM>();
+	extern STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_ITEM_info;
+}
+
+struct SG_WORLDBOSS_RANK_INFO
+{
+	DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX> last_rank_list;
+	SG_WORLDBOSS_RANK_ITEM my_last_rank;
+	_U8 attendance_reward;
+	_U8 rank_reward;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_WORLDBOSS_RANK_INFO>(SG_WORLDBOSS_RANK_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_WORLDBOSS_RANK_INFO>(const SG_WORLDBOSS_RANK_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_RANK_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_INFO_info;
+}
+
+struct SG_WORLDBOSS_INFO
+{
+	_U32 boss_id;
+	_U32 HP;
+	_U8 status;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_WORLDBOSS_INFO>(SG_WORLDBOSS_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_WORLDBOSS_INFO>(const SG_WORLDBOSS_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_WORLDBOSS_INFO_info;
+}
+
 class SGGAME_C2S;
 
 class SGGAME_S2C;
@@ -4451,6 +4520,82 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->FinishNewcomerGuide(Caller, _prefix_function_id);
 				return true;
 			}
+			if(fid==123)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryWorldBossRankInfo(Caller);
+				return true;
+			}
+			if(fid==124)
+			{
+				_U32 _prefix_bInstantResurrection;
+
+				// <_U32> <bInstantResurrection> <> <>;
+				if(!Buf.Read(_prefix_bInstantResurrection)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BeginWorldBossBattle(Caller, _prefix_bInstantResurrection);
+				return true;
+			}
+			if(fid==125)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->InspireWorldBossBattle(Caller);
+				return true;
+			}
+			if(fid==126)
+			{
+				_U32 _prefix_damage;
+
+				// <_U32> <damage> <> <>;
+				if(!Buf.Read(_prefix_damage)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UpdateWorldBossBattle(Caller, _prefix_damage);
+				return true;
+			}
+			if(fid==127)
+			{
+				_U32 _prefix_damage;
+
+				// <_U32> <damage> <> <>;
+				if(!Buf.Read(_prefix_damage)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EndWorldBossBattle(Caller, _prefix_damage);
+				return true;
+			}
+			if(fid==128)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossRank(Caller);
+				return true;
+			}
+			if(fid==129)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossAttendance(Caller);
+				return true;
+			}
+			if(fid==130)
+			{
+				_U32 _prefix_index;
+
+				// <_U32> <index> <> <>;
+				if(!Buf.Read(_prefix_index)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Recharge(Caller, _prefix_index);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -5767,6 +5912,78 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 122, Buf);
+		}
+
+		bool QueryWorldBossRankInfo()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 123, Buf);
+		}
+
+		bool BeginWorldBossBattle(_U32 bInstantResurrection)
+		{
+			BUFFER Buf;
+			// <_U32> <bInstantResurrection> <> <>
+			if(!Buf.Write(bInstantResurrection)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 124, Buf);
+		}
+
+		bool InspireWorldBossBattle()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 125, Buf);
+		}
+
+		bool UpdateWorldBossBattle(_U32 damage)
+		{
+			BUFFER Buf;
+			// <_U32> <damage> <> <>
+			if(!Buf.Write(damage)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 126, Buf);
+		}
+
+		bool EndWorldBossBattle(_U32 damage)
+		{
+			BUFFER Buf;
+			// <_U32> <damage> <> <>
+			if(!Buf.Write(damage)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 127, Buf);
+		}
+
+		bool AwardWorldBossRank()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 128, Buf);
+		}
+
+		bool AwardWorldBossAttendance()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 129, Buf);
+		}
+
+		bool Recharge(_U32 index)
+		{
+			BUFFER Buf;
+			// <_U32> <index> <> <>
+			if(!Buf.Write(index)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 130, Buf);
 		}
 	};
 
@@ -7589,6 +7806,169 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryNewcomerGuideInfoResult(Caller, _prefix_guide_list, _prefix_count);
 				return true;
 			}
+			if(fid==99)
+			{
+				SG_WORLDBOSS_RANK_INFO _prefix_rank_info;
+
+				// <SG_WORLDBOSS_RANK_INFO> <rank_info> <> <>;
+				if(!Buf.Read(_prefix_rank_info)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryWorldBossRankInfoResult(Caller, _prefix_rank_info);
+				return true;
+			}
+			if(fid==100)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				SG_PLAYER_PVE _prefix_selfPve;
+				SG_WORLDBOSS_INFO _prefix_bossInfo;
+				SG_WORLDBOSS_RANK_INFO _prefix_ranklist;
+				SG_PLAYER_INFO* _prefix_otherPlayers;
+				_U32 _prefix_count1;
+				_U32 _prefix_gold;
+				SG_DROP_ITEM_BASE* _prefix_drops;
+				_U32 _prefix_count2;
+				_U32 _prefix_rmb;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <SG_PLAYER_PVE> <selfPve> <> <>;
+				if(!Buf.Read(_prefix_selfPve)) return false;
+				// <SG_WORLDBOSS_INFO> <bossInfo> <> <>;
+				if(!Buf.Read(_prefix_bossInfo)) return false;
+				// <SG_WORLDBOSS_RANK_INFO> <ranklist> <> <>;
+				if(!Buf.Read(_prefix_ranklist)) return false;
+				// <SG_PLAYER_INFO> <otherPlayers> <> <count1>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_otherPlayers = (SG_PLAYER_INFO*)alloca(sizeof(_prefix_otherPlayers[0])*__length);
+				if(!_prefix_otherPlayers) return false;
+				if(!Buf.ReadPointer(_prefix_otherPlayers, __length)) return false;
+				// <_U32> <count1> <> <>;
+				if(!Buf.Read(_prefix_count1)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <SG_DROP_ITEM_BASE> <drops> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_drops = (SG_DROP_ITEM_BASE*)alloca(sizeof(_prefix_drops[0])*__length);
+				if(!_prefix_drops) return false;
+				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BeginWorldBossBattleResult(Caller, _prefix_ret, _prefix_selfPve, _prefix_bossInfo, _prefix_ranklist, _prefix_otherPlayers, _prefix_count1, _prefix_gold, _prefix_drops, _prefix_count2, _prefix_rmb);
+				return true;
+			}
+			if(fid==101)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_rmb;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->InspireWorldBossBattleResult(Caller, _prefix_ret, _prefix_rmb);
+				return true;
+			}
+			if(fid==102)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_Gold;
+				_U32 _prefix_Reputation;
+				SG_DROP_ITEM_BASE* _prefix_ItemList;
+				_U32 _prefix_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <Gold> <> <>;
+				if(!Buf.Read(_prefix_Gold)) return false;
+				// <_U32> <Reputation> <> <>;
+				if(!Buf.Read(_prefix_Reputation)) return false;
+				// <SG_DROP_ITEM_BASE> <ItemList> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_ItemList = (SG_DROP_ITEM_BASE*)alloca(sizeof(_prefix_ItemList[0])*__length);
+				if(!_prefix_ItemList) return false;
+				if(!Buf.ReadPointer(_prefix_ItemList, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossRankResult(Caller, _prefix_ret, _prefix_Gold, _prefix_Reputation, _prefix_ItemList, _prefix_count);
+				return true;
+			}
+			if(fid==103)
+			{
+				SG_WORLDBOSS_INFO _prefix_bossInfo;
+				SG_WORLDBOSS_RANK_INFO _prefix_rankinfo;
+
+				// <SG_WORLDBOSS_INFO> <bossInfo> <> <>;
+				if(!Buf.Read(_prefix_bossInfo)) return false;
+				// <SG_WORLDBOSS_RANK_INFO> <rankinfo> <> <>;
+				if(!Buf.Read(_prefix_rankinfo)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UpdateWorldBossBattleResult(Caller, _prefix_bossInfo, _prefix_rankinfo);
+				return true;
+			}
+			if(fid==104)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EndWorldBossBattleResult(Caller);
+				return true;
+			}
+			if(fid==105)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_Gold;
+				_U32 _prefix_Reputation;
+				SG_DROP_ITEM_BASE* _prefix_ItemList;
+				_U32 _prefix_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <Gold> <> <>;
+				if(!Buf.Read(_prefix_Gold)) return false;
+				// <_U32> <Reputation> <> <>;
+				if(!Buf.Read(_prefix_Reputation)) return false;
+				// <SG_DROP_ITEM_BASE> <ItemList> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_ItemList = (SG_DROP_ITEM_BASE*)alloca(sizeof(_prefix_ItemList[0])*__length);
+				if(!_prefix_ItemList) return false;
+				if(!Buf.ReadPointer(_prefix_ItemList, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossAttendanceResult(Caller, _prefix_ret, _prefix_Gold, _prefix_Reputation, _prefix_ItemList, _prefix_count);
+				return true;
+			}
+			if(fid==106)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_rmb;
+				SG_PLAYER _prefix_selfplayer;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <SG_PLAYER> <selfplayer> <> <>;
+				if(!Buf.Read(_prefix_selfplayer)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RechargeResult(Caller, _prefix_ret, _prefix_rmb, _prefix_selfplayer);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -9085,6 +9465,137 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 98, Buf);
+		}
+
+		bool QueryWorldBossRankInfoResult(const SG_WORLDBOSS_RANK_INFO& rank_info)
+		{
+			BUFFER Buf;
+			// <SG_WORLDBOSS_RANK_INFO> <rank_info> <> <>
+			if(!Buf.Write(rank_info)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 99, Buf);
+		}
+
+		bool BeginWorldBossBattleResult(_U8 ret, const SG_PLAYER_PVE& selfPve, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& ranklist, const SG_PLAYER_INFO* otherPlayers, _U32 count1, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 count2, _U32 rmb)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <SG_PLAYER_PVE> <selfPve> <> <>
+			if(!Buf.Write(selfPve)) return false;
+			// <SG_WORLDBOSS_INFO> <bossInfo> <> <>
+			if(!Buf.Write(bossInfo)) return false;
+			// <SG_WORLDBOSS_RANK_INFO> <ranklist> <> <>
+			if(!Buf.Write(ranklist)) return false;
+			// <SG_PLAYER_INFO> <otherPlayers> <> <count1>
+			__length = (_U16)(count1);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(otherPlayers, __length)) return false;
+			// <_U32> <count1> <> <>
+			if(!Buf.Write(count1)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <SG_DROP_ITEM_BASE> <drops> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(drops, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 100, Buf);
+		}
+
+		bool InspireWorldBossBattleResult(_U8 ret, _U32 rmb)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 101, Buf);
+		}
+
+		bool AwardWorldBossRankResult(_U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* ItemList, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <Gold> <> <>
+			if(!Buf.Write(Gold)) return false;
+			// <_U32> <Reputation> <> <>
+			if(!Buf.Write(Reputation)) return false;
+			// <SG_DROP_ITEM_BASE> <ItemList> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(ItemList, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 102, Buf);
+		}
+
+		bool UpdateWorldBossBattleResult(const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& rankinfo)
+		{
+			BUFFER Buf;
+			// <SG_WORLDBOSS_INFO> <bossInfo> <> <>
+			if(!Buf.Write(bossInfo)) return false;
+			// <SG_WORLDBOSS_RANK_INFO> <rankinfo> <> <>
+			if(!Buf.Write(rankinfo)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 103, Buf);
+		}
+
+		bool EndWorldBossBattleResult()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 104, Buf);
+		}
+
+		bool AwardWorldBossAttendanceResult(_U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* ItemList, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <Gold> <> <>
+			if(!Buf.Write(Gold)) return false;
+			// <_U32> <Reputation> <> <>
+			if(!Buf.Write(Reputation)) return false;
+			// <SG_DROP_ITEM_BASE> <ItemList> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(ItemList, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 105, Buf);
+		}
+
+		bool RechargeResult(_U8 ret, _U32 rmb, const SG_PLAYER& selfplayer)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <SG_PLAYER> <selfplayer> <> <>
+			if(!Buf.Write(selfplayer)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 106, Buf);
 		}
 	};
 

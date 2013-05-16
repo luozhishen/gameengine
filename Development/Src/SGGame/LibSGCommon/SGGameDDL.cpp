@@ -6460,6 +6460,150 @@ namespace DDLReflect
 	}
 }
 
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_WORLDBOSS_RANK_ITEM>(SG_WORLDBOSS_RANK_ITEM& Value)
+	{
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Read<_U32>(Value.rank)) return false;
+		if(!Read<_U32>(Value.total_damage)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_WORLDBOSS_RANK_ITEM>(const SG_WORLDBOSS_RANK_ITEM& Value)
+	{
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Write<_U32>(Value.rank)) return false;
+		if(!Write<_U32>(Value.total_damage)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_WORLDBOSS_RANK_ITEM_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_WORLDBOSS_RANK_ITEM>(*((SG_WORLDBOSS_RANK_ITEM*)data));
+	}
+
+	static bool _struct_SG_WORLDBOSS_RANK_ITEM_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_WORLDBOSS_RANK_ITEM>(*((const SG_WORLDBOSS_RANK_ITEM*)data));
+	}
+
+	static FIELD_INFO _struct_SG_WORLDBOSS_RANK_ITEM_fieldinfo[] =
+	{
+		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_damage", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, total_damage), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_ITEM_info = { NULL, "SG_WORLDBOSS_RANK_ITEM", sizeof(SG_WORLDBOSS_RANK_ITEM), 3, _struct_SG_WORLDBOSS_RANK_ITEM_fieldinfo, _struct_SG_WORLDBOSS_RANK_ITEM_readproc, _struct_SG_WORLDBOSS_RANK_ITEM_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_RANK_ITEM>()
+	{
+		return &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_WORLDBOSS_RANK_INFO>(SG_WORLDBOSS_RANK_INFO& Value)
+	{
+		if(!ReadArray<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>(Value.last_rank_list)) return false;
+		if(!Read<SG_WORLDBOSS_RANK_ITEM>(Value.my_last_rank)) return false;
+		if(!Read<_U8>(Value.attendance_reward)) return false;
+		if(!Read<_U8>(Value.rank_reward)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_WORLDBOSS_RANK_INFO>(const SG_WORLDBOSS_RANK_INFO& Value)
+	{
+		if(!WriteArray<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>(Value.last_rank_list)) return false;
+		if(!Write<SG_WORLDBOSS_RANK_ITEM>(Value.my_last_rank)) return false;
+		if(!Write<_U8>(Value.attendance_reward)) return false;
+		if(!Write<_U8>(Value.rank_reward)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_WORLDBOSS_RANK_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_WORLDBOSS_RANK_INFO>(*((SG_WORLDBOSS_RANK_INFO*)data));
+	}
+
+	static bool _struct_SG_WORLDBOSS_RANK_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_WORLDBOSS_RANK_INFO>(*((const SG_WORLDBOSS_RANK_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_WORLDBOSS_RANK_INFO_fieldinfo[] =
+	{
+		{TYPE_STRUCT|TYPE_ARRAY, "last_rank_list", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, last_rank_list), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)SG_WORLDBOSS_RANK_LIST_MAX, (_U16)((size_t)(&((DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
+		{TYPE_STRUCT, "my_last_rank", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, my_last_rank), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
+		{TYPE_U8, "attendance_reward", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, attendance_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "rank_reward", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, rank_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_INFO_info = { NULL, "SG_WORLDBOSS_RANK_INFO", sizeof(SG_WORLDBOSS_RANK_INFO), 4, _struct_SG_WORLDBOSS_RANK_INFO_fieldinfo, _struct_SG_WORLDBOSS_RANK_INFO_readproc, _struct_SG_WORLDBOSS_RANK_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_RANK_INFO>()
+	{
+		return &_rfl_struct_SG_WORLDBOSS_RANK_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_WORLDBOSS_INFO>(SG_WORLDBOSS_INFO& Value)
+	{
+		if(!Read<_U32>(Value.boss_id)) return false;
+		if(!Read<_U32>(Value.HP)) return false;
+		if(!Read<_U8>(Value.status)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_WORLDBOSS_INFO>(const SG_WORLDBOSS_INFO& Value)
+	{
+		if(!Write<_U32>(Value.boss_id)) return false;
+		if(!Write<_U32>(Value.HP)) return false;
+		if(!Write<_U8>(Value.status)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_WORLDBOSS_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_WORLDBOSS_INFO>(*((SG_WORLDBOSS_INFO*)data));
+	}
+
+	static bool _struct_SG_WORLDBOSS_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_WORLDBOSS_INFO>(*((const SG_WORLDBOSS_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_WORLDBOSS_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "boss_id", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_INFO, boss_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "HP", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_INFO, HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_INFO_info = { NULL, "SG_WORLDBOSS_INFO", sizeof(SG_WORLDBOSS_INFO), 3, _struct_SG_WORLDBOSS_INFO_fieldinfo, _struct_SG_WORLDBOSS_INFO_readproc, _struct_SG_WORLDBOSS_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_INFO>()
+	{
+		return &_rfl_struct_SG_WORLDBOSS_INFO_info;
+	}
+}
+
 namespace DDLReflect
 {
 	static FIELD_INFO _class_SGGAME_C2S_fieldinfos[] = 
@@ -6714,6 +6858,18 @@ namespace DDLReflect
 		{TYPE_U32, "function_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 122 FinishNewcomerGuide
 		{TYPE_U32, "function_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 123 QueryWorldBossRankInfo
+		// 124 BeginWorldBossBattle
+		{TYPE_U32, "bInstantResurrection", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 125 InspireWorldBossBattle
+		// 126 UpdateWorldBossBattle
+		{TYPE_U32, "damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 127 EndWorldBossBattle
+		{TYPE_U32, "damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 128 AwardWorldBossRank
+		// 129 AwardWorldBossAttendance
+		// 130 Recharge
+		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
@@ -6840,8 +6996,16 @@ namespace DDLReflect
 		{"QueryNewcomerGuideInfo", 0, _class_SGGAME_C2S_fieldinfos+125},
 		{"ActivateNewcomerGuide", 1, _class_SGGAME_C2S_fieldinfos+125},
 		{"FinishNewcomerGuide", 1, _class_SGGAME_C2S_fieldinfos+126},
+		{"QueryWorldBossRankInfo", 0, _class_SGGAME_C2S_fieldinfos+127},
+		{"BeginWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+127},
+		{"InspireWorldBossBattle", 0, _class_SGGAME_C2S_fieldinfos+128},
+		{"UpdateWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+128},
+		{"EndWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+129},
+		{"AwardWorldBossRank", 0, _class_SGGAME_C2S_fieldinfos+130},
+		{"AwardWorldBossAttendance", 0, _class_SGGAME_C2S_fieldinfos+130},
+		{"Recharge", 1, _class_SGGAME_C2S_fieldinfos+130},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 123, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 131, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -7228,6 +7392,42 @@ namespace DDLReflect
 		// 98 QueryNewcomerGuideInfoResult
 		{TYPE_STRUCT|TYPE_ARRAY, "guide_list", 0, 0, &_rfl_struct_SG_NEWCOMER_GUIDE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 99 QueryWorldBossRankInfoResult
+		{TYPE_STRUCT, "rank_info", 0, 0, &_rfl_struct_SG_WORLDBOSS_RANK_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 100 BeginWorldBossBattleResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "selfPve", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "bossInfo", 0, 0, &_rfl_struct_SG_WORLDBOSS_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "ranklist", 0, 0, &_rfl_struct_SG_WORLDBOSS_RANK_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "otherPlayers", 0, 0, &_rfl_struct_SG_PLAYER_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 101 InspireWorldBossBattleResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 102 AwardWorldBossRankResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "Gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "Reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "ItemList", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 103 UpdateWorldBossBattleResult
+		{TYPE_STRUCT, "bossInfo", 0, 0, &_rfl_struct_SG_WORLDBOSS_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "rankinfo", 0, 0, &_rfl_struct_SG_WORLDBOSS_RANK_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 104 EndWorldBossBattleResult
+		// 105 AwardWorldBossAttendanceResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "Gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "Reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "ItemList", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 106 RechargeResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "selfplayer", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
@@ -7330,8 +7530,16 @@ namespace DDLReflect
 		{"AwardBossRushSupportResult", 8, _class_SGGAME_S2C_fieldinfos+257},
 		{"QueryDiceNumResult", 9, _class_SGGAME_S2C_fieldinfos+265},
 		{"QueryNewcomerGuideInfoResult", 2, _class_SGGAME_S2C_fieldinfos+274},
+		{"QueryWorldBossRankInfoResult", 1, _class_SGGAME_S2C_fieldinfos+276},
+		{"BeginWorldBossBattleResult", 10, _class_SGGAME_S2C_fieldinfos+277},
+		{"InspireWorldBossBattleResult", 2, _class_SGGAME_S2C_fieldinfos+287},
+		{"AwardWorldBossRankResult", 5, _class_SGGAME_S2C_fieldinfos+289},
+		{"UpdateWorldBossBattleResult", 2, _class_SGGAME_S2C_fieldinfos+294},
+		{"EndWorldBossBattleResult", 0, _class_SGGAME_S2C_fieldinfos+296},
+		{"AwardWorldBossAttendanceResult", 5, _class_SGGAME_S2C_fieldinfos+296},
+		{"RechargeResult", 3, _class_SGGAME_S2C_fieldinfos+301},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 99, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 107, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

@@ -1,16 +1,16 @@
 #ifndef __SGGAME_CLIENT_APP__
 #define __SGGAME_CLIENT_APP__
 
-namespace Atlas
+namespace Zion
 {
 
-	class CSGClientApp : public Atlas::CClientApp
+	class CSGClientApp : public Zion::CClientApp
 	{
 	public:
 		CSGClientApp(bool bThread);
 		virtual ~CSGClientApp();
 
-		virtual Atlas::CClient* NewClient();
+		virtual Zion::CClient* NewClient();
 	};
 
 }

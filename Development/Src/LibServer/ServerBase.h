@@ -3,7 +3,7 @@
 
 #include <list>
 
-namespace Atlas
+namespace Zion
 {
 	class CServerBase;
 	class CServerComponent;
@@ -32,7 +32,7 @@ namespace Atlas
 
 	private:
 		CServerApp* m_pServerApp;
-		Atlas::List<CServerComponent*> m_ComponentList;
+		Zion::List<CServerComponent*> m_ComponentList;
 	};
 
 	class CServerComponent : public CNoCopy

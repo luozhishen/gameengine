@@ -1,13 +1,13 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
+#include <ZionClientApp.h>
 
 #include "StressCase.h"
 #include "StressClient.h"
 #include "StressManager.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CStressManager::CStressManager()
@@ -21,7 +21,7 @@ namespace Atlas
 
 	CStressManager::~CStressManager()
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		for(i=m_mapCases.begin(); i!=m_mapCases.end(); i++)
 		{
 			delete i->second;
@@ -46,7 +46,7 @@ namespace Atlas
 
 	void CStressManager::DisconnectAll()
 	{	
-		Atlas::Map<_U32, CStressClient*>::iterator i;
+		Zion::Map<_U32, CStressClient*>::iterator i;
 		_U32 count = 1;
 		while(count>0)
 		{
@@ -91,7 +91,7 @@ namespace Atlas
 	CStressClient* CStressManager::GetClient(_U32 id)
 	{
 		CStressClient* pClient;
-		Atlas::Map<_U32, CStressClient*>::iterator i;
+		Zion::Map<_U32, CStressClient*>::iterator i;
 		A_MUTEX_LOCK(&m_mtxLocker);
 		i = m_mapClients.find(id);
 		pClient = (i==m_mapClients.end()?NULL:i->second);
@@ -99,10 +99,10 @@ namespace Atlas
 		return pClient;
 	}
 
-	void CStressManager::GetClients(Atlas::Vector<_U32>& clients)
+	void CStressManager::GetClients(Zion::Vector<_U32>& clients)
 	{
 		clients.clear();
-		Atlas::Map<_U32, CStressClient*>::iterator i;
+		Zion::Map<_U32, CStressClient*>::iterator i;
 		A_MUTEX_LOCK(&m_mtxLocker);
 		for(i=m_mapClients.begin(); i!=m_mapClients.end(); i++)
 		{
@@ -115,7 +115,7 @@ namespace Atlas
 	{
 		A_MUTEX_LOCK(&m_mtxLocker);
 		
-		Atlas::Map<_U32, CStressClient*>::iterator it = m_mapClients.begin();
+		Zion::Map<_U32, CStressClient*>::iterator it = m_mapClients.begin();
 		while(it != m_mapClients.end())
 		{
 			it->second->Tick();
@@ -130,9 +130,9 @@ namespace Atlas
 		m_mapCases[pCase->GetName()] = pCase;
 	}
 
-	void CStressManager::GetCases(Atlas::Vector<Atlas::String>& cases)
+	void CStressManager::GetCases(Zion::Vector<Zion::String>& cases)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		cases.clear();
 		for(i=m_mapCases.begin(); i!=m_mapCases.end(); i++)
 		{
@@ -142,7 +142,7 @@ namespace Atlas
 
 	CStressCase* CStressManager::CreateCase(const char* name)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return NULL;
 		return i->second->Create();
@@ -150,7 +150,7 @@ namespace Atlas
 
 	const DDLReflect::STRUCT_INFO* CStressManager::GetCaseConfigType(const char* name)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return NULL;
 		return i->second->GetConfigType();
@@ -158,7 +158,7 @@ namespace Atlas
 
 	bool CStressManager::GetCaseConfigDefault(const char* name, void* data, _U32 size)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return NULL;
 		return i->second->GetConfig(data, size);

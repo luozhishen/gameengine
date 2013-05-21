@@ -7,8 +7,8 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "ObjectDefineView.h"
 #include <wx/propgrid/propgrid.h>
@@ -61,14 +61,14 @@ CObjectDefineView::~CObjectDefineView()
 {
 }
 
-void CObjectDefineView::Add(const DDLReflect::STRUCT_INFO* root, Atlas::Map<int, const DDLReflect::STRUCT_INFO*>& list)
+void CObjectDefineView::Add(const DDLReflect::STRUCT_INFO* root, Zion::Map<int, const DDLReflect::STRUCT_INFO*>& list)
 {
 	wxString title;
 	GetObjectTitle(root, title);
 	wxTreeItemId tid = m_pTree->AppendItem(m_TreeRoot, title, -1, -1, ATLAS_NEW CObjectData(GetObjectId(root->name), root));
 	m_mapItems[root->name] = tid;
 
-	Atlas::Map<int, const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Map<int, const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		AddObject(i->second);
@@ -84,8 +84,8 @@ void CObjectDefineView::OnObjectActived(wxTreeEvent& event)
 
 _U16 CObjectDefineView::GetObjectId(const char* name)
 {
-	_U16 id = Atlas::ContentObject::GetTypeId(name);
-	if(id==(_U16)-1) id = Atlas::LiveObject::GetTypeId(name);
+	_U16 id = Zion::ContentObject::GetTypeId(name);
+	if(id==(_U16)-1) id = Zion::LiveObject::GetTypeId(name);
 	return id;
 }
 
@@ -112,7 +112,7 @@ void CObjectDefineView::AddObject(const DDLReflect::STRUCT_INFO* info)
 		AddObject(info->parent);
 	}
 
-	Atlas::Map<Atlas::String, wxTreeItemId>::iterator i;
+	Zion::Map<Zion::String, wxTreeItemId>::iterator i;
 	i = m_mapItems.find(info->parent->name);
 	wxString title;
 	GetObjectTitle(info, title);
@@ -120,7 +120,7 @@ void CObjectDefineView::AddObject(const DDLReflect::STRUCT_INFO* info)
 	m_mapItems[info->name] = tid;
 }
 
-bool StructParamType(const DDLReflect::FIELD_INFO* finfo, Atlas::String& type)
+bool StructParamType(const DDLReflect::FIELD_INFO* finfo, Zion::String& type)
 {
 	char name[100];
 	switch(finfo->type&DDLReflect::TYPE_MASK)
@@ -147,7 +147,7 @@ bool StructParamType(const DDLReflect::FIELD_INFO* finfo, Atlas::String& type)
 	}
 	else
 	{
-		type = Atlas::StringFormat("array<%s, %d>", name, finfo->alen);
+		type = Zion::StringFormat("array<%s, %d>", name, finfo->alen);
 	}
 	return true;
 }
@@ -166,7 +166,7 @@ void AddStruct(wxPropertyGrid* pGrid, const DDLReflect::STRUCT_INFO* info)
 	wxPGId prop_id = pGrid->Append(prop);
 	for(_U16 i=0; i<info->fcount; i++)
 	{
-		Atlas::String type;
+		Zion::String type;
 		StructParamType(info->finfos+i, type);
 		name = wxString::FromUTF8(info->finfos[i].name);
 		prop = ATLAS_NEW wxStringProperty(name, name, wxString::FromUTF8(type.c_str()));

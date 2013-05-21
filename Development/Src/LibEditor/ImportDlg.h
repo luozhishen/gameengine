@@ -21,9 +21,9 @@ protected:
 	virtual void EndModal(int retCode);
 	bool ProcessImport();
 
-	bool GetSelectSheets(Atlas::Vector<Atlas::String>& vSheets);
+	bool GetSelectSheets(Zion::Vector<Zion::String>& vSheets);
 	void OnSelectAll(wxCommandEvent& event);
-	bool CheckKeyCols(Atlas::Vector<Atlas::String>& vec);
+	bool CheckKeyCols(Zion::Vector<Zion::String>& vec);
 
 public:
 	wxComboBox* m_cbType;

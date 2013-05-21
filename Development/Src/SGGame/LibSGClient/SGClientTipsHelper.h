@@ -1,6 +1,6 @@
 #ifndef __SGGAME_CLIENT_TIPS_HELPER__
 #define __SGGAME_CLIENT_TIPS_HELPER__
-namespace Atlas
+namespace Zion
 {	
 	template<typename T>
 	class SGClientTipsHelper
@@ -13,7 +13,7 @@ namespace Atlas
 			m_data.push_back(t);
 		}
 
-		void GetNewList(Atlas::Vector<T>& data_list)
+		void GetNewList(Zion::Vector<T>& data_list)
 		{
 			data_list = m_data;
 		}
@@ -41,7 +41,7 @@ namespace Atlas
 			m_data.clear();
 		}
 
-		Atlas::Vector<T>& GetData()
+		Zion::Vector<T>& GetData()
 		{
 			return m_data;
 		}
@@ -52,7 +52,7 @@ namespace Atlas
 		}
 
 	private:
-		Atlas::Vector<T> m_data;
+		Zion::Vector<T> m_data;
 	};
 
 }

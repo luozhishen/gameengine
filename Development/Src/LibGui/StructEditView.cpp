@@ -7,7 +7,7 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
+#include <ZionBase.h>
 #include "StructEditView.h"
 
 enum

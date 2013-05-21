@@ -10,8 +10,8 @@
 #include <wx/button.h>
 #include <wx/statline.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "GenerateObjectDlg.h"
 
@@ -85,11 +85,11 @@ CGenerateObjectDlg::~CGenerateObjectDlg()
 
 void CGenerateObjectDlg::InitCombox()
 {
-	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*> mapTypes;
+	Zion::Map<Zion::String, const DDLReflect::STRUCT_INFO*> mapTypes;
 
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
-	Atlas::ContentObject::GetTypeList(list);
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Zion::ContentObject::GetTypeList(list);
+	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		m_comboBoxType->Insert(wxString::FromUTF8((*i)->name), m_comboBoxType->GetCount());

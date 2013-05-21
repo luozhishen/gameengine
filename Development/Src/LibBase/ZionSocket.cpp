@@ -15,8 +15,8 @@
 #include <winsock2.h>
 #endif
 
-#include "AtlasDefines.h"
-#include "AtlasSocket.h"
+#include "ZionDefines.h"
+#include "ZionSocket.h"
 
 #ifndef WIN32
 #define closesocket					close

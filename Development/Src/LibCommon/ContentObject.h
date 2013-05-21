@@ -3,7 +3,7 @@
 
 struct A_CONTENT_OBJECT;
 
-namespace Atlas
+namespace Zion
 {
 	namespace ContentObject
 	{
@@ -19,11 +19,11 @@ namespace Atlas
 		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook);
 		IContentGroup* GetContentGroup(const char* name);
 
-		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list);
+		void GetTypeList(Zion::Vector<const DDLReflect::STRUCT_INFO*>& list);
 		_U16 GetTypeId(const char* name);
 		const DDLReflect::STRUCT_INFO* GetType(const char* name);
 		const DDLReflect::STRUCT_INFO* GetType(_U16 id);
-		bool GetTypePrimaryKey(const char* name, Atlas::Set<Atlas::String>& keys);
+		bool GetTypePrimaryKey(const char* name, Zion::Set<Zion::String>& keys);
 
 		A_CONTENT_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid);
 		A_CONTENT_OBJECT* AllocObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid);
@@ -35,13 +35,13 @@ namespace Atlas
 		const A_CONTENT_OBJECT* QueryByName(const char* name, const DDLReflect::STRUCT_INFO* info=NULL);
 		const A_CONTENT_OBJECT* QueryByKey(const DDLReflect::STRUCT_INFO* info, const char* value1, const char* value2=NULL, const char* value3=NULL, const char* value4=NULL);
 		const A_CONTENT_OBJECT* QueryByUniqueId(const DDLReflect::STRUCT_INFO* info, const char* value1);
-		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Atlas::String& uid);
+		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Zion::String& uid);
 
 		bool BuildIndex(const DDLReflect::STRUCT_INFO* info=NULL);
-		const Atlas::String& BuildIndexGetErrorMsg();
+		const Zion::String& BuildIndexGetErrorMsg();
 
 		// will remove this function.
-		bool GetList(const DDLReflect::STRUCT_INFO* info, Atlas::Vector<A_UUID>& list, bool bExactMatch);
+		bool GetList(const DDLReflect::STRUCT_INFO* info, Zion::Vector<A_UUID>& list, bool bExactMatch);
 
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object);

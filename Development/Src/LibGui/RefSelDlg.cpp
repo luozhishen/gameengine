@@ -7,8 +7,8 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "RefSelDlg.h"
 
@@ -54,9 +54,9 @@ CRefSelDlg::~CRefSelDlg()
 
 void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 {
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
-	Atlas::ContentObject::GetTypeList(list);
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Zion::ContentObject::GetTypeList(list);
+	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 	const DDLReflect::STRUCT_INFO* info = NULL;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
@@ -79,7 +79,7 @@ void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 
 	if(info == NULL) return;
 
-	const A_CONTENT_OBJECT* object = Atlas::ContentObject::FindFirst(info, true);
+	const A_CONTENT_OBJECT* object = Zion::ContentObject::FindFirst(info, true);
 	while(object)
 	{
 		wxString strNameValue(object->name._Value, wxMBConvUTF8());
@@ -97,7 +97,7 @@ void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 		wxUIntPtr itemData = (wxUIntPtr)(&(object->uuid));
 		m_pUUIDList->SetItemPtrData(item_id, itemData);
 
-		object = Atlas::ContentObject::FindNext(info, true, object);
+		object = Zion::ContentObject::FindNext(info, true, object);
 	}
 }
 

@@ -4,7 +4,7 @@
 #define SESSION_IORECVBUF_SIZE		(1024)
 #define SESSION_IOSENDBUF_SIZE		(1024)
 
-namespace Atlas
+namespace Zion
 {
 	class CSessionClient;
 	class CSessionServer;

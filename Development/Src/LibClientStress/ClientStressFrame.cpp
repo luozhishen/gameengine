@@ -10,10 +10,10 @@
 #include <wx/combo.h>
 #include <wx/numdlg.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
+#include <ZionClientApp.h>
 #include <StressClient.h>
 #include <StressCase.h>
 #include <StressManager.h>
@@ -80,14 +80,14 @@ extern CClientStressApp* g_ClientStressApp;
 CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client Stress - "))
 {
 	wxString title = GetTitle();
-	title = title + wxString::FromUTF8(Atlas::AtlasGameName());
+	title = title + wxString::FromUTF8(Zion::AtlasGameName());
 	SetTitle(title);
 
 	m_nCurrentIndex = (_U32)-1;
 	m_nViewCount = 0;
 	m_Timer.SetOwner(this, ID_TIMER);
 
-	m_pCmdHistory = ATLAS_NEW Atlas::CmdHistory(Atlas::AtlasGameDir());
+	m_pCmdHistory = ATLAS_NEW Zion::CmdHistory(Zion::AtlasGameDir());
 
 	// create client
 	InitClient();
@@ -106,7 +106,7 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString(wxT("/"))+wxString::FromUTF8(Atlas::AtlasGameName()));
+		pConfig->SetPath(wxString(wxT("/"))+wxString::FromUTF8(Zion::AtlasGameName()));
 		m_FrameData.x = pConfig->Read(wxT("x"), 50);
 		m_FrameData.y = pConfig->Read(wxT("y"), 50);
 		m_FrameData.w = pConfig->Read(wxT("w"), 350);
@@ -121,12 +121,12 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 
 CClientStressFrame::~CClientStressFrame()
 {
-	Atlas::CStressManager::Get().DisconnectAll();
+	Zion::CStressManager::Get().DisconnectAll();
 
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Atlas::AtlasGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::AtlasGameName()));
 		pConfig->Write(wxT("x"), (long)m_FrameData.x);
 		pConfig->Write(wxT("y"), (long)m_FrameData.y);
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
@@ -207,7 +207,7 @@ void CClientStressFrame::InitClient()
 	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
 	m_pCmdText = ATLAS_NEW wxComboBox( pPanel, ID_CMDTEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER|wxCB_DROPDOWN|wxCB_SORT);
 	int n = m_pCmdHistory->GetHistoryNum();
-	Atlas::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
+	Zion::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
 	for(int i = 0; i < n; ++i)
 	{
 		m_pCmdText->Append(wxString::FromUTF8(cmds[i].c_str()));
@@ -235,7 +235,7 @@ void CClientStressFrame::OnQuit(wxCommandEvent&)
 void CClientStressFrame::OnAbout(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Atlas Client Stress for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Atlas::AtlasGameName()));
+	txt.Printf(wxT("Zion Client Stress for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::AtlasGameName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 
@@ -259,15 +259,15 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 
 	const DDLReflect::CLASS_INFO* cls;
 	_U16 fid;
-	if(!Atlas::GetServerFunctionStub((const char*)cmd.ToUTF8(), cls, fid))
+	if(!Zion::GetServerFunctionStub((const char*)cmd.ToUTF8(), cls, fid))
 	{
 		wxMessageBox(wxT("unknown command"), wxT("error"));
 		return;
 	}
 
-	Atlas::String json((const char*)arg.ToUTF8());
-	Atlas::Vector<Atlas::String> args;
-	Atlas::StringSplit(json, ' ', args);
+	Zion::String json((const char*)arg.ToUTF8());
+	Zion::Vector<Zion::String> args;
+	Zion::StringSplit(json, ' ', args);
 	if(cls->finfos[fid].fcount!=(_U16)args.size())
 	{
 		return;
@@ -276,18 +276,18 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	for(_U16 a=0; a<cls->finfos[fid].fcount; a++)
 	{
 		if(a>0)	json += ",";
-		json += Atlas::StringFormat("\"%s\":", cls->finfos[fid].finfos[a].name);
+		json += Zion::StringFormat("\"%s\":", cls->finfos[fid].finfos[a].name);
 		json += args[a];
 	}
 	json += "}";
 
 	if(!ProcessJsonCommand(cls, fid, json)) return;
 
-	Atlas::String line = (const char*)val.ToUTF8();
+	Zion::String line = (const char*)val.ToUTF8();
 	m_pCmdHistory->AddCmd(line);
 	m_pCmdText->Clear();
 	int n = m_pCmdHistory->GetHistoryNum();
-	Atlas::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
+	Zion::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
 	for(int i = 0; i < n; ++i)
 	{
 		wxString tmp(cmds[i].c_str(), wxMBConvUTF8());
@@ -308,7 +308,7 @@ void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 
 	for(int i=0; i<count; i++)
 	{
-		_U32 index = Atlas::CStressManager::Get().NewClient();
+		_U32 index = Zion::CStressManager::Get().NewClient();
 		NotifyClientAdd(index);
 	}
 	
@@ -325,11 +325,11 @@ void CClientStressFrame::OnSelectAll(wxCommandEvent& event)
 
 void CClientStressFrame::OnLogin(wxCommandEvent& event)
 {
-	Atlas::Vector<_U32> clients;
+	Zion::Vector<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
-		Atlas::CStressClient* pClient = Atlas::CStressManager::Get().GetClient(clients[i]);
+		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
 		ATLAS_ASSERT(pClient);
 		if(!pClient) continue;
 		pClient->Login();
@@ -339,11 +339,11 @@ void CClientStressFrame::OnLogin(wxCommandEvent& event)
 
 void CClientStressFrame::OnLogout(wxCommandEvent& event)
 {
-	Atlas::Vector<_U32> clients;
+	Zion::Vector<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
-		Atlas::CStressClient* pClient = Atlas::CStressManager::Get().GetClient(clients[i]);
+		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
 		ATLAS_ASSERT(pClient);
 		if(!pClient) continue;
 		pClient->Logout();
@@ -355,14 +355,14 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 	CCaseConfigDlg dlg(this);
 	if(dlg.ShowModal()==wxID_CANCEL) return;
 
-	Atlas::Vector<_U32> clients;
+	Zion::Vector<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
-		Atlas::CStressClient* pClient = Atlas::CStressManager::Get().GetClient(clients[i]);
+		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
 		ATLAS_ASSERT(pClient);
 		if(!pClient) continue;
-		Atlas::CStressCase* pCase = pClient->NewStressCase(dlg.GetCaseName().c_str());
+		Zion::CStressCase* pCase = pClient->NewStressCase(dlg.GetCaseName().c_str());
 		if(!pCase) continue;
 		if(dlg.GetCaseData()) pCase->SetConfig(dlg.GetCaseData(), dlg.GetCaseType()->size);
 		NotifyClientAddCase(pClient->GetIndex(), pCase);
@@ -371,7 +371,7 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 
 void CClientStressFrame::OnClientSelected(wxCommandEvent& event)
 {
-	Atlas::CStressClient* pClient = (Atlas::CStressClient*)event.GetClientData();
+	Zion::CStressClient* pClient = (Zion::CStressClient*)event.GetClientData();
 	if(!pClient) return;
 	m_nCurrentIndex = pClient->GetIndex();
 	for(int v=0; v<m_nViewCount; v++)
@@ -388,7 +388,7 @@ void CClientStressFrame::OnStressView(wxCommandEvent& event)
 
 void CClientStressFrame::OnRunScript(wxCommandEvent& event)
 {
-	Atlas::CStressLoader loader;
+	Zion::CStressLoader loader;
 	loader._OnNewClient.connect(this, &CClientStressFrame::NotifyClientAdd);
 	loader._OnNewCase.connect(this, &CClientStressFrame::NotifyClientAddCase);
 
@@ -440,23 +440,23 @@ void CClientStressFrame::OnShow(wxShowEvent& event)
 
 void CClientStressFrame::OnTimer(wxTimerEvent& event)
 {
-	if(Atlas::CClientApp::GetDefault()->Tick())
+	if(Zion::CClientApp::GetDefault()->Tick())
 	{
 		UpdateClientList();	
 	}
 
-	Atlas::Vector<_U32> clients;
-	Atlas::CStressManager::Get().GetClients(clients);
+	Zion::Vector<_U32> clients;
+	Zion::CStressManager::Get().GetClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
-		Atlas::CStressClient* pClient = Atlas::CStressManager::Get().GetClient(clients[i]);
+		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
 		if(pClient)
 		{
 			pClient->GetClient()->Tick();
 		}
 	}
 
-	Atlas::CStressManager::Get().UpdateAll();
+	Zion::CStressManager::Get().UpdateAll();
 }
 
 void CClientStressFrame::UpdateClientList()
@@ -464,7 +464,7 @@ void CClientStressFrame::UpdateClientList()
 	unsigned int count = m_pClientList->GetCount();
 	for(unsigned int i=0; i<count; i++)
 	{
-		Atlas::CStressClient* pClient = (Atlas::CStressClient*)m_pClientList->GetClientData(i);
+		Zion::CStressClient* pClient = (Zion::CStressClient*)m_pClientList->GetClientData(i);
 		if(pClient)
 		{
 			m_pClientList->SetString(i, wxString::FromUTF8(pClient->GetTitle().c_str()));
@@ -472,14 +472,14 @@ void CClientStressFrame::UpdateClientList()
 	}
 }
 
-void CClientStressFrame::GetSelectClients(Atlas::Vector<_U32>& clients)
+void CClientStressFrame::GetSelectClients(Zion::Vector<_U32>& clients)
 {
 	clients.clear();
 
 	for(unsigned int i=0; i<m_pClientList->GetCount(); i++)
 	{
 		if(!m_pClientList->IsSelected(i)) continue;
-		clients.push_back(((Atlas::CStressClient*)m_pClientList->GetClientData(i))->GetIndex());
+		clients.push_back(((Zion::CStressClient*)m_pClientList->GetClientData(i))->GetIndex());
 	}
 }
 
@@ -489,14 +489,14 @@ void CClientStressFrame::AddView(CStressFrameView* pView)
 	m_pViews[m_nViewCount++] = pView;
 }
 
-Atlas::CStressClient* CClientStressFrame::GetStressClient(_U32 id)
+Zion::CStressClient* CClientStressFrame::GetStressClient(_U32 id)
 {
-	return Atlas::CStressManager::Get().GetClient(id);
+	return Zion::CStressManager::Get().GetClient(id);
 }
 
 void CClientStressFrame::NotifyClientAdd(_U32 index)
 {
-	m_pClientList->Append(wxT(""), Atlas::CStressManager::Get().GetClient(index));
+	m_pClientList->Append(wxT(""), Zion::CStressManager::Get().GetClient(index));
 	for(int v=0; v<m_nViewCount; v++)
 	{
 		m_pViews[v]->OnNewClient(index);
@@ -504,7 +504,7 @@ void CClientStressFrame::NotifyClientAdd(_U32 index)
 	UpdateClientList();
 }
 
-void CClientStressFrame::NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCase)
+void CClientStressFrame::NotifyClientAddCase(_U32 index, Zion::CStressCase* pCase)
 {
 	for(int v=0; v<m_nViewCount; v++)
 	{
@@ -512,7 +512,7 @@ void CClientStressFrame::NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCa
 	}
 }
 
-bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Atlas::String& json)
+bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Zion::String& json)
 {
 	_U8 data[10000];
 	_U32 len = (_U32)sizeof(data);
@@ -522,7 +522,7 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 		return false;
 	}
 
-	Atlas::Vector<_U32> clients;
+	Zion::Vector<_U32> clients;
 	GetSelectClients(clients);
 	if(clients.size()<=0)
 	{
@@ -530,14 +530,14 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 		return false;
 	}
 
-	Atlas::Vector<_U32>::iterator i;
-	Atlas::CStressClient* pClient;
+	Zion::Vector<_U32>::iterator i;
+	Zion::CStressClient* pClient;
 
 	for(i=clients.begin(); i!=clients.end(); i++)
 	{
-		pClient = Atlas::CStressManager::Get().GetClient(m_nCurrentIndex);
+		pClient = Zion::CStressManager::Get().GetClient(m_nCurrentIndex);
 		if(!pClient) continue;
-		if(pClient->GetClient()->GetState()!=Atlas::CClient::STATE_LOGINED) continue;
+		if(pClient->GetClient()->GetState()!=Zion::CClient::STATE_LOGINED) continue;
 		pClient->GetClient()->SendData(classinfo->iid, fid, len, data);
 	}
 

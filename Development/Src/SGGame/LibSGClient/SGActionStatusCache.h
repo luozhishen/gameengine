@@ -1,7 +1,7 @@
 #ifndef __SGGAME_ACTION_STATUS_CACHE_H__
 #define __SGGAME_ACTION_STATUS_CACHE_H__
 
-namespace Atlas
+namespace Zion
 {
 	class SGActionStatusCache
 	{
@@ -31,17 +31,17 @@ namespace Atlas
 		void ActionPoll(_U32 nServerTime);
 
 		//在tick中遍历sg_daily_action_config, 根据time来判定对应的action，结果对应放入status中
-		void GetDailyActionEvent(_U32 time, Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& notifyVec);		//EActionNotifyType
+		void GetDailyActionEvent(_U32 time, Zion::Vector<_U32>& actionVec, Zion::Vector<_U8>& notifyVec);		//EActionNotifyType
 
 		bool IsExistInDailyActionCache(_U32 action_id);
 		bool IsExistInDailyActionCache(_U32 action_id, EActionPeriodType period_type);
 		void UpdateDailyActionCache(_U32 action_id, EActionPeriodType new_period_type);
 
 		//根据time来判定对应的action在什么状态下，结果对应放入status中
-		void GetDailActionStatus(_U32 time, Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec);		//EActionPeriodType
+		void GetDailActionStatus(_U32 time, Zion::Vector<_U32>& actionVec, Zion::Vector<_U8>& statusVec);		//EActionPeriodType
 
 	private:
-		Atlas::Vector<SG_DAILY_ACTION_CACHE> ms_dailyActionCacheList;
+		Zion::Vector<SG_DAILY_ACTION_CACHE> ms_dailyActionCacheList;
 	};
 }
 

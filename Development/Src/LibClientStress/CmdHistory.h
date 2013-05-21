@@ -1,24 +1,24 @@
 #ifndef _CMD_HISTORY_H__
 #define _CMD_HISTORY_H__
 
-namespace Atlas
+namespace Zion
 {
 	class CmdHistory
 	{
 	public:
-		typedef Atlas::Vector<Atlas::String> CMD_SET;
+		typedef Zion::Vector<Zion::String> CMD_SET;
 	public:
 		CmdHistory(const char* path = "./");
 		~CmdHistory();
 
-		void FindSimilarCmd(Atlas::String& cmd, CMD_SET& ret);
+		void FindSimilarCmd(Zion::String& cmd, CMD_SET& ret);
 		int GetHistoryNum();
 		CMD_SET& GetHistorySet();
-		Atlas::String GetHistory(int index);
-		void AddCmd(Atlas::String& cmd);
+		Zion::String GetHistory(int index);
+		void AddCmd(Zion::String& cmd);
 	private:
 		CMD_SET m_cmds;
-		Atlas::String m_path;
+		Zion::String m_path;
 	};
 }
 

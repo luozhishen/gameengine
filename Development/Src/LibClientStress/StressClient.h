@@ -5,7 +5,7 @@
 #include <map>
 #include <set>
 
-namespace Atlas
+namespace Zion
 {
 
 	class CClient;
@@ -17,13 +17,13 @@ namespace Atlas
 	{
 		friend class CStressCase;
 	public:
-		CStressClient(_U32 nIndex, Atlas::CClient* pClient);
+		CStressClient(_U32 nIndex, Zion::CClient* pClient);
 		~CStressClient();
 
 		_U32 GetIndex() { return m_nIndex; }
 		CClient* GetClient() { return m_pClient; }
-		const Atlas::String GetTitle();
-		const Atlas::String GetInfo();
+		const Zion::String GetTitle();
+		const Zion::String GetInfo();
 
 		void SetTitle(const char* title);
 		void SetInfo(const char* info);
@@ -41,7 +41,7 @@ namespace Atlas
 
 		bool IsExistCase(const char* name);
 		CStressCase* GetStressCase(const char* name);
-		void GetStressCases(Atlas::Set<CStressCase*>& cases);
+		void GetStressCases(Zion::Set<CStressCase*>& cases);
 		CStressCase* NewStressCase(const char* name);
 
 		sigslot::signal1<_U32>									_OnLoginDone;
@@ -57,9 +57,9 @@ namespace Atlas
 	private:
 		_U32 m_nIndex;
 		CClient* m_pClient;
-		Atlas::String m_Title;
-		Atlas::String m_Info;
-		Atlas::Map<Atlas::String, CStressCase*> m_Cases;
+		Zion::String m_Title;
+		Zion::String m_Info;
+		Zion::Map<Zion::String, CStressCase*> m_Cases;
 		HANDLE m_hTimer;
 	};
 

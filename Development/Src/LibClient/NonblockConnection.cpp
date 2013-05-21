@@ -1,10 +1,10 @@
-#include <AtlasBase.h>
-#include "AtlasClient.h"
-#include "AtlasClientApp.h"
+#include <ZionBase.h>
+#include "ZionClient.h"
+#include "ZionClientApp.h"
 #include "ClientConnection.h"
 #include "NonblockConnection.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CNonblockConnection::CNonblockConnection(CClient* pClient, _U32 recvsize) : CClientConnection(pClient, recvsize)

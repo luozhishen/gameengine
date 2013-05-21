@@ -13,7 +13,7 @@
 #define ALOG_ERROR(l, fmt, ...)				ALOG_HELPER(l, log4boost::priority::PL_ERROR, x)
 #define ALOG_FATAL(l, fmt, ...)				ALOG_HELPER(l, log4boost::priority::PL_FATAL, x)
 
-namespace Atlas
+namespace Zion
 {
 	class ALogger
 	{

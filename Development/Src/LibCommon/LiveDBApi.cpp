@@ -1,11 +1,11 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include "LiveDBApi.h"
 
 #include <string>
 #include <map>
 
-namespace Atlas
+namespace Zion
 {
 
 	CLiveDBTable::CLiveDBTable(CLiveDBTable::TABLE_TYPE Type, const char* Name)

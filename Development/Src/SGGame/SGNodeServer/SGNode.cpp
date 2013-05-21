@@ -1,11 +1,11 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasServer.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionServer.h>
 
 #include "SGCommon.h"
 #include "SGNode.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CSGGameServerComponent::CSGGameServerComponent(CSGNodeServer* pServer) : CServerComponent(pServer), m_Stub(this)

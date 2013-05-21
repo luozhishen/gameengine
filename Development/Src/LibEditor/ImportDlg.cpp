@@ -15,8 +15,8 @@
 #include <string>
 #include <map>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "ImportDlg.h"
 #include "ExcelImportor.h"
@@ -57,7 +57,7 @@ bool CImportDlg::LoadTemplateDefine(const char* filename)
 		return false;
 	}
 
-	Atlas::Vector<Atlas::String> list;
+	Zion::Vector<Zion::String> list;
 	m_pImportor->GetTemplateList(list);
 
 	for(size_t i=0; i<list.size(); i++)
@@ -154,14 +154,14 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 {
 	m_checkList->Clear();
 
-	Atlas::String strFilePath = (const char*)m_pFilePicker->GetPath().ToUTF8();
+	Zion::String strFilePath = (const char*)m_pFilePicker->GetPath().ToUTF8();
 	if(!m_pExcel->Open(strFilePath, false))
 	{
 		wxMessageBox(wxT("Failed to open excel file"), wxT("Error"));
 		return;
 	}
 
-	Atlas::Vector<Atlas::String> vSheets;
+	Zion::Vector<Zion::String> vSheets;
 	if(!m_pExcel->GetExcelSheets(vSheets))
 	{
 		wxMessageBox(wxT("Failed to read excel file"), wxT("Error"));
@@ -184,7 +184,7 @@ void CImportDlg::OnSelectAll(wxCommandEvent& event)
 	}
 }
 
-bool CImportDlg::GetSelectSheets(Atlas::Vector<Atlas::String>& vSheets)
+bool CImportDlg::GetSelectSheets(Zion::Vector<Zion::String>& vSheets)
 {
 	if(m_checkList->GetCount()==0)
 	{
@@ -213,13 +213,13 @@ void CImportDlg::EndModal(int retCode)
 
 bool CImportDlg::ProcessImport()
 {
-	if(!Atlas::ContentObject::BuildIndex())
+	if(!Zion::ContentObject::BuildIndex())
 	{
-		wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("Build Index Error"));
+		wxMessageBox(wxString::FromUTF8(Zion::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("Build Index Error"));
 		return false;
 	}
 
-	if(!Atlas::ContentObject::SaveContent())
+	if(!Zion::ContentObject::SaveContent())
 	{
 		wxMessageBox(wxT("Failed to save content"));
 		return false;
@@ -232,7 +232,7 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-	Atlas::Vector<Atlas::String> sheets;
+	Zion::Vector<Zion::String> sheets;
 	if(!GetSelectSheets(sheets) || sheets.empty())
 	{
 		wxMessageBox(wxT("no sheet selected!"));
@@ -256,7 +256,7 @@ bool CImportDlg::ProcessImport()
 	}
 	if(i!=sheets.size())
 	{
-		Atlas::ContentObject::LoadContent();
+		Zion::ContentObject::LoadContent();
 	}
 
 	return true;

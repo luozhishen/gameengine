@@ -8,7 +8,7 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 enum
 {
@@ -21,14 +21,14 @@ class StreesViewItemData : wxTreeItemData
 {
 public:
 	StreesViewItemData(_U32 uid);
-	StreesViewItemData(Atlas::String& strItem, _U32 uid);
+	StreesViewItemData(Zion::String& strItem, _U32 uid);
 	
 	_U32 GetUid();
-	Atlas::String& GetCaseName();
+	Zion::String& GetCaseName();
 
 private:
 	_U32 m_uid;
-	Atlas::String m_strCaseName;
+	Zion::String m_strCaseName;
 };
 
 class CStressViewTree :	public wxTreeCtrl

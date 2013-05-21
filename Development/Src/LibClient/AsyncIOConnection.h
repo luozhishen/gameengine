@@ -3,7 +3,7 @@
 #ifndef __ASYNCIO_CONNECTION__
 #define __ASYNCIO_CONNECTION__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CAsyncIOConnection : public CClientConnection

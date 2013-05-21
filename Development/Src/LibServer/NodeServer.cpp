@@ -1,4 +1,4 @@
-#include "AtlasBase.h"
+#include "ZionBase.h"
 #include "ServerApp.h"
 #include "ServerBase.h"
 #include "ServerUtils.h"
@@ -11,7 +11,7 @@
 #define TIEMR_PERIOD 2000
 #define MAX_CONNS 10000
 
-namespace Atlas
+namespace Zion
 {
 
 	static CObjectManager<CNodeClient, MAX_NODE_OBJECT> _global_node_object_manager(&CNodeClient::GetNNDX);
@@ -193,54 +193,54 @@ namespace Atlas
 
 }
 
-void NRPC_Connect(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U32 len, const _U8* data)
+void NRPC_Connect(Zion::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::HSERVER hServer = Atlas::GetRPCServer(hClient);
+	Zion::HSERVER hServer = Zion::GetRPCServer(hClient);
 	
 	ATLAS_ASSERT(hServer);
 	if(!hServer) return;
 
-	ATLAS_ASSERT(nodeid<sizeof(Atlas::_global_node_map)/sizeof(Atlas::_global_node_map[0]));
-	if(nodeid>=sizeof(Atlas::_global_node_map)/sizeof(Atlas::_global_node_map[0])) return;
-	ATLAS_ASSERT(Atlas::_global_node_map[nodeid]);
-	if(!Atlas::_global_node_map[nodeid]) return;
-	Atlas::_global_node_map[nodeid]->OnClusterConnect(hServer, cndx, nodeseq, len, data);
+	ATLAS_ASSERT(nodeid<sizeof(Zion::_global_node_map)/sizeof(Zion::_global_node_map[0]));
+	if(nodeid>=sizeof(Zion::_global_node_map)/sizeof(Zion::_global_node_map[0])) return;
+	ATLAS_ASSERT(Zion::_global_node_map[nodeid]);
+	if(!Zion::_global_node_map[nodeid]) return;
+	Zion::_global_node_map[nodeid]->OnClusterConnect(hServer, cndx, nodeseq, len, data);
 }
 
-void NRPC_SessionAck(Atlas::HCLIENT hClient, _U64 nndx, _U64 sndx)
+void NRPC_SessionAck(Zion::HCLIENT hClient, _U64 nndx, _U64 sndx)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CNodeClient> Locker(nndx);
+	Zion::CObjectLocker<Zion::CNodeClient> Locker(nndx);
 	if(!Locker.GetObject()) return;
-	Locker.GetObject()->GetServer()->OnSessionAck(Locker.GetObject(), Atlas::GetRPCServer(hClient), sndx);
+	Locker.GetObject()->GetServer()->OnSessionAck(Locker.GetObject(), Zion::GetRPCServer(hClient), sndx);
 }
 
-void NRPC_Disconnect(Atlas::HCLIENT hClient, _U64 nndx, _U32 nodeseq)
+void NRPC_Disconnect(Zion::HCLIENT hClient, _U64 nndx, _U32 nodeseq)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CNodeClient> Locker(nndx);
+	Zion::CObjectLocker<Zion::CNodeClient> Locker(nndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->GetServer()->OnClusterDisconnect(Locker.GetObject(), nodeseq);
 }
 
-void NRPC_OnUserData(Atlas::HCLIENT hClient, _U64 nndx, _U16 code, _U32 len, const _U8* data)
+void NRPC_OnUserData(Zion::HCLIENT hClient, _U64 nndx, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CNodeClient> Locker(nndx);
+	Zion::CObjectLocker<Zion::CNodeClient> Locker(nndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->GetServer()->OnClusterData(Locker.GetObject(), code, len, data);
 }
 
-void NRPC_OnForwardEvent(Atlas::HCLIENT hClient, _U64 nndx, _U16 code, _U32 len, const _U8* data)
+void NRPC_OnForwardEvent(Zion::HCLIENT hClient, _U64 nndx, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CNodeClient> Locker(nndx);
+	Zion::CObjectLocker<Zion::CNodeClient> Locker(nndx);
 	if(!Locker.GetObject()) return;
 //	Locker.GetObject()->OnEvent(code, len, data);
 }

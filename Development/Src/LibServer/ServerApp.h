@@ -1,7 +1,7 @@
 #ifndef __ATLAS_SERVER_APP__
 #define __ATLAS_SERVER_APP__
 
-namespace Atlas
+namespace Zion
 {
 	class CServerTask;
 	class CServerApp;

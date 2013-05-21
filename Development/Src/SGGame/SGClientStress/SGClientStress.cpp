@@ -5,10 +5,10 @@
 #include <wx/listctrl.h>
 #include <wx/config.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
+#include <ZionClientApp.h>
 
 #include <ClientStressApp.h>
 #include <StressManager.h>
@@ -37,7 +37,7 @@ public:
 	{
 	}
 
-	Atlas::CSGClientApp m_App;
+	Zion::CSGClientApp m_App;
 };
 
 IMPLEMENT_APP(CSGClientStressApp)

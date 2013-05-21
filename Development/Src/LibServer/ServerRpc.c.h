@@ -7,33 +7,33 @@
 
 #include "ServerInc.h"
 
-Atlas::RPC_RESULT SRPC_UserLoginDone(Atlas::HSERVER hServer, _U64 sndx, _U64 cndx);
-Atlas::RPC_RESULT SRPC_KickUser(Atlas::HSERVER hServer, _U64 sndx);
-Atlas::RPC_RESULT SRPC_ForwardUserData(Atlas::HSERVER hServer, _U64 sndx, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT SRPC_SetNode(Atlas::HSERVER hServer, _U64 sndx, _U32 nodeid, _U64 nndx, _U32 ip, _U16 port);
-Atlas::RPC_RESULT CRPC_UserLogin(Atlas::HSERVER hServer, _U32 uid, const char* token, _U64 sndx);
-Atlas::RPC_RESULT CRPC_UserLogout(Atlas::HSERVER hServer, _U32 uid, _U64 sndx);
-Atlas::RPC_RESULT CRPC_KickUser(Atlas::HSERVER hServer, _U32 uid);
-Atlas::RPC_RESULT CRPC_OnUserData(Atlas::HSERVER hServer, _U64 cndx, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT CRPC_ForwardUserDataByCNDX(Atlas::HSERVER hServer, _U64 cndx, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT CRPC_ForwardUserDataByUID(Atlas::HSERVER hServer, _U32 uid, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT CRPC_ForwardUserDataByAID(Atlas::HSERVER hServer, _U32 aid, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT CRPC_ForwardEventByCNDX(Atlas::HSERVER hServer, _U64 cndx, _U32 nodeid, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT CRPC_ForwardEventByUID(Atlas::HSERVER hServer, _U32 uid, _U32 nodeid, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT CRPC_ForwardEventByAID(Atlas::HSERVER hServer, _U32 aid, _U32 nodeid, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT CRPC_NodeConnect(Atlas::HSERVER hServer, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U64 nndx);
-Atlas::RPC_RESULT CRPC_NodeDisconnect(Atlas::HSERVER hServer, _U64 cndx, _U32 nodeid, _U32 nodeseq);
-Atlas::RPC_RESULT CRPC_SetSessionWorkload(Atlas::HSERVER hServer, const WORKLOAD_INFO& info);
-Atlas::RPC_RESULT CRPC_GetSessionWorkload(Atlas::HSERVER hServer);
-void CRPC_SessionWorkLoadResult(Atlas::HSERVER hServer, const WORKLOAD_INFO* info, _U32 count);
-Atlas::RPC_RESULT CRPC_SetNodeWorkload(Atlas::HSERVER hServer, const WORKLOAD_INFO& info, _U32 type);
-Atlas::RPC_RESULT CRPC_GetNodeWorkload(Atlas::HSERVER hServer, _U32 type);
-void CRPC_NodeWorkLoadResult(Atlas::HSERVER hServer, _U32 type, const WORKLOAD_INFO* info, _U32 count);
-Atlas::RPC_RESULT NRPC_Connect(Atlas::HSERVER hServer, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U32 len, const _U8* data);
-Atlas::RPC_RESULT NRPC_SessionAck(Atlas::HSERVER hServer, _U64 nndx, _U64 sndx);
-Atlas::RPC_RESULT NRPC_Disconnect(Atlas::HSERVER hServer, _U64 nndx, _U32 nodeseq);
-Atlas::RPC_RESULT NRPC_OnUserData(Atlas::HSERVER hServer, _U64 nndx, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT NRPC_OnForwardEvent(Atlas::HSERVER hServer, _U64 nndx, _U16 code, _U32 len, const _U8* data);
-Atlas::RPC_RESULT WRPC_DoRequest(Atlas::HSERVER hServer, _U64 tid, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT SRPC_UserLoginDone(Zion::HSERVER hServer, _U64 sndx, _U64 cndx);
+Zion::RPC_RESULT SRPC_KickUser(Zion::HSERVER hServer, _U64 sndx);
+Zion::RPC_RESULT SRPC_ForwardUserData(Zion::HSERVER hServer, _U64 sndx, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT SRPC_SetNode(Zion::HSERVER hServer, _U64 sndx, _U32 nodeid, _U64 nndx, _U32 ip, _U16 port);
+Zion::RPC_RESULT CRPC_UserLogin(Zion::HSERVER hServer, _U32 uid, const char* token, _U64 sndx);
+Zion::RPC_RESULT CRPC_UserLogout(Zion::HSERVER hServer, _U32 uid, _U64 sndx);
+Zion::RPC_RESULT CRPC_KickUser(Zion::HSERVER hServer, _U32 uid);
+Zion::RPC_RESULT CRPC_OnUserData(Zion::HSERVER hServer, _U64 cndx, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT CRPC_ForwardUserDataByCNDX(Zion::HSERVER hServer, _U64 cndx, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT CRPC_ForwardUserDataByUID(Zion::HSERVER hServer, _U32 uid, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT CRPC_ForwardUserDataByAID(Zion::HSERVER hServer, _U32 aid, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT CRPC_ForwardEventByCNDX(Zion::HSERVER hServer, _U64 cndx, _U32 nodeid, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT CRPC_ForwardEventByUID(Zion::HSERVER hServer, _U32 uid, _U32 nodeid, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT CRPC_ForwardEventByAID(Zion::HSERVER hServer, _U32 aid, _U32 nodeid, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT CRPC_NodeConnect(Zion::HSERVER hServer, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U64 nndx);
+Zion::RPC_RESULT CRPC_NodeDisconnect(Zion::HSERVER hServer, _U64 cndx, _U32 nodeid, _U32 nodeseq);
+Zion::RPC_RESULT CRPC_SetSessionWorkload(Zion::HSERVER hServer, const WORKLOAD_INFO& info);
+Zion::RPC_RESULT CRPC_GetSessionWorkload(Zion::HSERVER hServer);
+void CRPC_SessionWorkLoadResult(Zion::HSERVER hServer, const WORKLOAD_INFO* info, _U32 count);
+Zion::RPC_RESULT CRPC_SetNodeWorkload(Zion::HSERVER hServer, const WORKLOAD_INFO& info, _U32 type);
+Zion::RPC_RESULT CRPC_GetNodeWorkload(Zion::HSERVER hServer, _U32 type);
+void CRPC_NodeWorkLoadResult(Zion::HSERVER hServer, _U32 type, const WORKLOAD_INFO* info, _U32 count);
+Zion::RPC_RESULT NRPC_Connect(Zion::HSERVER hServer, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U32 len, const _U8* data);
+Zion::RPC_RESULT NRPC_SessionAck(Zion::HSERVER hServer, _U64 nndx, _U64 sndx);
+Zion::RPC_RESULT NRPC_Disconnect(Zion::HSERVER hServer, _U64 nndx, _U32 nodeseq);
+Zion::RPC_RESULT NRPC_OnUserData(Zion::HSERVER hServer, _U64 nndx, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT NRPC_OnForwardEvent(Zion::HSERVER hServer, _U64 nndx, _U16 code, _U32 len, const _U8* data);
+Zion::RPC_RESULT WRPC_DoRequest(Zion::HSERVER hServer, _U64 tid, _U16 code, _U32 len, const _U8* data);
 
 #endif

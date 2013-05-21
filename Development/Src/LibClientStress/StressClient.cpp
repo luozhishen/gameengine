@@ -1,7 +1,7 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
+#include <ZionClientApp.h>
 
 #include "StressCase.h"
 #include "StressClient.h"
@@ -9,7 +9,7 @@
 
 #define TIMER_PERIOD 100
 
-namespace Atlas
+namespace Zion
 {
 
 	void CALLBACK StressTimerProc(PVOID lpParam, BOOLEAN TimerOrWaitFired)
@@ -17,7 +17,7 @@ namespace Atlas
 		((CStressClient*)lpParam)->Tick();
 	}
 	
-	CStressClient::CStressClient(_U32 nIndex, Atlas::CClient* pClient)
+	CStressClient::CStressClient(_U32 nIndex, Zion::CClient* pClient)
 	{
 		m_nIndex = nIndex;
 		m_pClient = pClient;
@@ -59,18 +59,18 @@ namespace Atlas
 		m_pClient = NULL;
 	}
 
-	const Atlas::String CStressClient::GetTitle()
+	const Zion::String CStressClient::GetTitle()
 	{
-		Atlas::String ret;
+		Zion::String ret;
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 		ret = m_Title;
 		A_MUTEX_UNLOCK(&m_pClient->m_mtxClient);
 		return ret;
 	}
 	
-	const Atlas::String CStressClient::GetInfo()
+	const Zion::String CStressClient::GetInfo()
 	{
-		Atlas::String ret;
+		Zion::String ret;
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 		ret = m_Info;
 		A_MUTEX_UNLOCK(&m_pClient->m_mtxClient);
@@ -93,7 +93,7 @@ namespace Atlas
 	{
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		for(i=m_Cases.begin(); i!=m_Cases.end(); i++)
 		{
 			i->second->OnTick();
@@ -104,7 +104,7 @@ namespace Atlas
 
 	void CStressClient::Login()
 	{
-		if(m_pClient->GetState()==Atlas::CClient::STATE_NA || m_pClient->GetState()==Atlas::CClient::STATE_FAILED)
+		if(m_pClient->GetState()==Zion::CClient::STATE_NA || m_pClient->GetState()==Zion::CClient::STATE_FAILED)
 		{
 			if(m_pClient->LoginForStress(m_nIndex))
 			{
@@ -153,23 +153,23 @@ namespace Atlas
 
 	bool CStressClient::IsExistCase(const char* name)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_Cases.find(name);
 		return i!=m_Cases.end();
 	}
 
 	CStressCase* CStressClient::GetStressCase(const char* name)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_Cases.find(name);
 		if(i==m_Cases.end()) return NULL;
 		return i->second;
 	}
 
-	void CStressClient::GetStressCases( Atlas::Set<CStressCase*>& cases )
+	void CStressClient::GetStressCases( Zion::Set<CStressCase*>& cases )
 	{
 		cases.clear();
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		for(i=m_Cases.begin(); i!=m_Cases.end(); i++)
 		{
 			cases.insert(i->second);
@@ -182,7 +182,7 @@ namespace Atlas
 
 		A_MUTEX_LOCK(&m_pClient->m_mtxClient);
 
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_Cases.find(name);
 		if(i==m_Cases.end())
 		{
@@ -200,7 +200,7 @@ namespace Atlas
 
 	void CStressClient::CaseAttach(CStressCase* pCase)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_Cases.find(pCase->GetName());
 		ATLAS_ASSERT(i==m_Cases.end());
 		if(i!=m_Cases.end()) return;
@@ -210,7 +210,7 @@ namespace Atlas
 
 	void CStressClient::CaseDetach(CStressCase* pCase)
 	{
-		Atlas::Map<Atlas::String, CStressCase*>::iterator i;
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_Cases.find(pCase->GetName());
 		ATLAS_ASSERT(i!=m_Cases.end());
 		if(i==m_Cases.end()) return;

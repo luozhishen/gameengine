@@ -14,7 +14,7 @@
 #define	_buffer_alignof(L)		(((L)&(BUFFER_ALIGNMENT-1))?(((L)&~(BUFFER_ALIGNMENT-1))+BUFFER_ALIGNMENT):(L))
 #define	_aligned_sizeof(T)		_buffer_alignof(sizeof(T))
 
-namespace Atlas {
+namespace Zion {
 
 	struct RPC_PACKET {
 		_U32 len;

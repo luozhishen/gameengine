@@ -1,5 +1,5 @@
-#include "AtlasDefines.h"
-#include "AtlasUUID.h"
+#include "ZionDefines.h"
+#include "ZionUUID.h"
 
 #include <string.h>
 

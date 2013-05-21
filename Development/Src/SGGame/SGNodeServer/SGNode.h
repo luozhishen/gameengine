@@ -1,7 +1,7 @@
 #ifndef __SGGAME_NODE__
 #define __SGGAME_NODE__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CSGGameServerComponent;

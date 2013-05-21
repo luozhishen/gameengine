@@ -1,10 +1,10 @@
 //------------------------------------------------------------------------------
-// Atlas - Copyright (c) 2006-2012 by Epic Games China / Yingpei Games
+// Zion - Copyright (c) 2006-2012 by Epic Games China / Yingpei Games
 //------------------------------------------------------------------------------
 
 #include <wx/wx.h>
 #include <wx/string.h>
-#include <AtlasSTL.h>
+#include <ZionSTL.h>
 
 #include "OLEAutoExcelWrapper.h"
 #include <ole2.h>
@@ -145,7 +145,7 @@ bool COLEAutoExcelWrapper::Initialize()
 	return SUCCEEDED(m_hRes);
 }
 
-bool COLEAutoExcelWrapper::Open(const Atlas::String& sFileName, bool bVisible)
+bool COLEAutoExcelWrapper::Open(const Zion::String& sFileName, bool bVisible)
 {
 	if(!m_pExcelApp) 
 	{
@@ -216,7 +216,7 @@ bool COLEAutoExcelWrapper::Save()
 	return SUCCEEDED(m_hRes);
 }
 
-bool COLEAutoExcelWrapper::GetExcelSheets(Atlas::Vector<Atlas::String>& vSheets)
+bool COLEAutoExcelWrapper::GetExcelSheets(Zion::Vector<Zion::String>& vSheets)
 {
 	if(!m_pExcelSheets)
 	{
@@ -271,7 +271,7 @@ bool COLEAutoExcelWrapper::GetExcelSheets(Atlas::Vector<Atlas::String>& vSheets)
 	return true;
 }
 
-bool COLEAutoExcelWrapper::SetActiveSheet(const Atlas::String& sSheetName)
+bool COLEAutoExcelWrapper::SetActiveSheet(const Zion::String& sSheetName)
 {
 	if(!m_pExcelSheets)
 	{
@@ -303,7 +303,7 @@ bool COLEAutoExcelWrapper::SetActiveSheet(const Atlas::String& sSheetName)
 	return true;
 }
 
-bool COLEAutoExcelWrapper::SetCellValue(const Atlas::String& sRange, const Atlas::String& sValue)
+bool COLEAutoExcelWrapper::SetCellValue(const Zion::String& sRange, const Zion::String& sValue)
 {
 	if(!m_pActiveSheet)
 	{
@@ -339,7 +339,7 @@ bool COLEAutoExcelWrapper::SetCellValue(const Atlas::String& sRange, const Atlas
 	return SUCCEEDED(m_hRes);
 }
 
-bool COLEAutoExcelWrapper::GetCellValue(const Atlas::String& sRange, Atlas::String& sValue)
+bool COLEAutoExcelWrapper::GetCellValue(const Zion::String& sRange, Zion::String& sValue)
 {
 	if(!m_pActiveSheet)
 	{

@@ -1,10 +1,10 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include "ServerApp.h"
 #include "ServerBase.h"
 #include "ConnectionServer.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	static bool CS_ON_CONNECT(HCONNECT hConn);
@@ -101,7 +101,7 @@ namespace Atlas
 
 	void CConnectionClient::Disconnect()
 	{
-		if(m_hConn) Atlas::Disconnect(m_hConn);
+		if(m_hConn) Zion::Disconnect(m_hConn);
 	}
 
 	void CConnectionClient::OnRawConnected()

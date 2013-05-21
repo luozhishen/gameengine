@@ -1,11 +1,11 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasServer.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionServer.h>
 
 #include "SGCommon.h"
 #include "SGNode.h"
 
-class CNodeServerApp : public Atlas::CServerApp
+class CNodeServerApp : public Zion::CServerApp
 {
 public:
 	CNodeServerApp()
@@ -14,19 +14,19 @@ public:
 
 	virtual void InitApp()
 	{
-		Atlas::CServerApp::InitApp();
-		m_pNodeServer = ATLAS_NEW Atlas::CSGNodeServer(this);
+		Zion::CServerApp::InitApp();
+		m_pNodeServer = ATLAS_NEW Zion::CSGNodeServer(this);
 		m_pNodeServer->Start();
 	}
 
 	virtual void FiniApp()
 	{
 		m_pNodeServer->Stop();
-		Atlas::CServerApp::FiniApp();
+		Zion::CServerApp::FiniApp();
 	}
 
 private:
-	Atlas::CSGNodeServer* m_pNodeServer;
+	Zion::CSGNodeServer* m_pNodeServer;
 };
 
 int main(int argc, char* argv[])
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 	if(argc>1)
 	{
 		NodeServerApp.SetRPCAddrPort(argv[1]);
-		Atlas::SLog("Node Server Start rpc[%s]", argv[1]);
+		Zion::SLog("Node Server Start rpc[%s]", argv[1]);
 	}
 	else
 	{

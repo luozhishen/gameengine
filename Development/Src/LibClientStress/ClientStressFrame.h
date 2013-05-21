@@ -1,7 +1,7 @@
 #ifndef __CLIENT_STRESS_FRAME_INCLUDE__
 #define __CLIENT_STRESS_FRAME_INCLUDE__
 
-namespace Atlas
+namespace Zion
 {
 	class CStressClient;
 	class CStressManager;
@@ -34,7 +34,7 @@ public:
 	virtual void OnSwitchTo(_U32 index) { }
 	virtual void OnClear() { }
 	virtual void OnNewClient(_U32 index) { }
-	virtual void OnNewCase(_U32 index, Atlas::CStressCase* pCase) { }
+	virtual void OnNewCase(_U32 index, Zion::CStressCase* pCase) { }
 
 private:
 	CClientStressFrame* m_pFrame;
@@ -75,16 +75,16 @@ public:
 	void OnTimer(wxTimerEvent& event);
 
 	void UpdateClientList();
-	void GetSelectClients(Atlas::Vector<_U32>& clients);
+	void GetSelectClients(Zion::Vector<_U32>& clients);
 
 	void AddView(CStressFrameView* pView);
-	Atlas::CStressClient* GetStressClient(_U32 id);
+	Zion::CStressClient* GetStressClient(_U32 id);
 
 	void NotifyClientAdd(_U32 index);
-	void NotifyClientAddCase(_U32 index, Atlas::CStressCase* pCase);
+	void NotifyClientAddCase(_U32 index, Zion::CStressCase* pCase);
 
 protected:
-	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Atlas::String& json);
+	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Zion::String& json);
 
 private:
 	wxNotebook*				m_pTabView;
@@ -104,7 +104,7 @@ private:
 
 	_U32					m_nCurrentIndex;
 
-	Atlas::CmdHistory*		m_pCmdHistory;
+	Zion::CmdHistory*		m_pCmdHistory;
 };
 
 #endif

@@ -11,25 +11,25 @@ namespace JPatch
 	class CSection
 	{
 	public:
-		Atlas::String							_Name;
+		Zion::String							_Name;
 		_U32									_Offset;
 		_U32									_Size;
-		Atlas::String							_MD5;
+		Zion::String							_MD5;
 	};
 
 	class CFile
 	{
 	public:
 		//
-		Atlas::String							_Name;
-		Atlas::Vector<CSection>					_Sections;
-		Atlas::String							_MD5;
+		Zion::String							_Name;
+		Zion::Vector<CSection>					_Sections;
+		Zion::String							_MD5;
 		//
-		Atlas::Map<Atlas::String, CSection*>	_SectionMap;
+		Zion::Map<Zion::String, CSection*>	_SectionMap;
 		CBundle*								_Bundle;
 
-		CSection* GetSectionByMD5(Atlas::String& md5);
-		CSection* GetSectionByName(Atlas::String& name);
+		CSection* GetSectionByMD5(Zion::String& md5);
+		CSection* GetSectionByName(Zion::String& name);
 	};
 
 	class CBundle
@@ -37,8 +37,8 @@ namespace JPatch
 	public:
 		bool InitFromBLS(const char* bls, const char* basedir);
 
-		Atlas::String							_BaseDir;
-		Atlas::Map<Atlas::String, CFile>		_Files;
+		Zion::String							_BaseDir;
+		Zion::Map<Zion::String, CFile>		_Files;
 	};
 
 }

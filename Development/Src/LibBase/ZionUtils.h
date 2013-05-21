@@ -12,7 +12,7 @@
 	#define ATLAS_PATH_SLASH		'/'
 #endif
 
-namespace Atlas
+namespace Zion
 {
 
 	const char* GetExeDir();
@@ -20,7 +20,7 @@ namespace Atlas
 	void StringSplit(const String& value, char splitchar, Vector<String>& result);
 	String StringFormat(const char* fmt, ...);
 	String StringTrim(const char* str);
-	String StringTrim(const Atlas::String& str);
+	String StringTrim(const Zion::String& str);
 
 	bool MakeDirectory(const char* dir);
 	bool RemoveDirectory(const char* dir);

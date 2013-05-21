@@ -39,7 +39,7 @@ StreesViewItemData::StreesViewItemData(_U32 uid)
 	m_strCaseName.clear();
 }
 
-StreesViewItemData::StreesViewItemData(Atlas::String& strItem, _U32 uid)
+StreesViewItemData::StreesViewItemData(Zion::String& strItem, _U32 uid)
 {
 	m_strCaseName = strItem;
 	m_uid = uid;
@@ -50,7 +50,7 @@ _U32 StreesViewItemData::GetUid()
 	return m_uid;
 }
 
-Atlas::String& StreesViewItemData::GetCaseName()
+Zion::String& StreesViewItemData::GetCaseName()
 {
 	return m_strCaseName;
 }

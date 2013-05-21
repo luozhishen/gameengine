@@ -7,8 +7,8 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 #include "RefSelDlg.h"
 
 #include "PropertyEx.h"
@@ -32,7 +32,7 @@ bool wxObjectRefProperty::OnButtonClick(wxPropertyGrid* propGrid, wxString& strV
 
 void wxObjectRefProperty::UpdateValue()
 {
-	const A_CONTENT_OBJECT* obj = Atlas::ContentObject::QueryByUUID(*((A_UUID*)m_data));
+	const A_CONTENT_OBJECT* obj = Zion::ContentObject::QueryByUUID(*((A_UUID*)m_data));
 	if(obj)
 	{
 		char name[100];

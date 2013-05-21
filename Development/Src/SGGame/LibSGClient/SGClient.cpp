@@ -1,6 +1,6 @@
-#include <AtlasBase.h>
-#include <AtlasClient.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionClient.h>
+#include <ZionCommon.h>
 
 #include <time.h>
 #include "SGCommon.h"
@@ -11,15 +11,15 @@
 #include "SGActionStatusCache.h"
 #include "SGClientTipsHelper.h"
 
-namespace Atlas
+namespace Zion
 {
 	int CSGClient::ms_nLastRanderTime = 0;
-	static Atlas::SGActionStatusCache g_actionStatusCache;
-	static Atlas::CSGSyncDataManager g_syncDataManager;
+	static Zion::SGActionStatusCache g_actionStatusCache;
+	static Zion::CSGSyncDataManager g_syncDataManager;
 
-	Atlas::SGClientTipsHelper<_U32>		g_newSoldiers;		//新获得的可解锁的soldier
-	Atlas::SGClientTipsHelper<A_UUID>	g_newItemList;		//新获得的物品
-	Atlas::SGClientTipsHelper<_U32>		g_newApplyers;		//申请的战盟的玩家的信息
+	Zion::SGClientTipsHelper<_U32>		g_newSoldiers;		//新获得的可解锁的soldier
+	Zion::SGClientTipsHelper<A_UUID>	g_newItemList;		//新获得的物品
+	Zion::SGClientTipsHelper<_U32>		g_newApplyers;		//申请的战盟的玩家的信息
 
 	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), m_C2S(this), m_S2C(this)
 	{
@@ -151,9 +151,9 @@ namespace Atlas
 	void CSGClient::EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots)
 	{
 		SG_EQUIP_SLOTS tidy_slots;
-		for(Atlas::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
+		for(Zion::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
 		{
-			const DDLReflect::STRUCT_INFO* struct_info = Atlas::ContentObject::GetType("SG_EQUIPT_ITEM_CONFIG");
+			const DDLReflect::STRUCT_INFO* struct_info = Zion::ContentObject::GetType("SG_EQUIPT_ITEM_CONFIG");
 			A_UUID uuid; 
 			if(it->uuid == slots.head
 				||it->uuid == slots.weapon
@@ -170,15 +170,15 @@ namespace Atlas
 				continue;
 
 			const A_CONTENT_OBJECT* content_obj = NULL;
-			Atlas::Vector<A_UUID> content_list;
-			if(!Atlas::ContentObject::GetList(struct_info, content_list, true))
+			Zion::Vector<A_UUID> content_list;
+			if(!Zion::ContentObject::GetList(struct_info, content_list, true))
 			{
 				continue;
 			}
 
-			for(Atlas::Vector<A_UUID>::iterator it_uuid = content_list.begin(); it_uuid != content_list.end(); ++it_uuid)
+			for(Zion::Vector<A_UUID>::iterator it_uuid = content_list.begin(); it_uuid != content_list.end(); ++it_uuid)
 			{
-				content_obj = Atlas::ContentObject::QueryByUUID(*it_uuid, struct_info);
+				content_obj = Zion::ContentObject::QueryByUUID(*it_uuid, struct_info);
 				if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_id == it->item_id)
 				{
 					SGClientUtil::SetRightLocation(content_obj, tidy_slots, uuid);	
@@ -234,8 +234,8 @@ namespace Atlas
 
 		if(SGClientUtil::UnlockSoldier(m_player, m_soldiers, soldier_id))
 		{
-			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
-			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncSoldiers);
+			m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
+			m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncSoldiers);
 		}
 	}
 
@@ -245,8 +245,8 @@ namespace Atlas
 
 		if(SGClientUtil::EnhanceSoldier(m_player, m_soldiers, soldier_id))
 		{
-			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
-			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncSoldiers);
+			m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
+			m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncSoldiers);
 		}
 	}
 
@@ -270,7 +270,7 @@ namespace Atlas
 		m_C2S.EnhanceCoolDownClear();
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -280,7 +280,7 @@ namespace Atlas
 		m_C2S.IncreaseEquipCoolDown();
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -305,7 +305,7 @@ namespace Atlas
 		m_C2S.RefreshEquipDecideAccept(uuid);
 
 		////help to sync data
-		//Atlas::Vector<_U8> vecSync;
+		//Zion::Vector<_U8> vecSync;
 		//vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		//vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		//SyncSet(vecSync);
@@ -347,7 +347,7 @@ namespace Atlas
 		m_C2S.EquipGem(item_uuid, gem_id);
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
 	}
@@ -357,7 +357,7 @@ namespace Atlas
 		m_C2S.UnequipGem(item_uuid, gem_id);
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
 	}
@@ -367,7 +367,7 @@ namespace Atlas
 		m_C2S.GemCombine(item_id);
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
@@ -393,14 +393,14 @@ namespace Atlas
 
 			general_inst.general_id = general_id;
 			const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct<SG_PLAYER_TITLE_CONFIG>();
-			Atlas::Vector<A_UUID> uuid_list;
+			Zion::Vector<A_UUID> uuid_list;
 			if(!ContentObject::GetList(struct_info, uuid_list, true))
 			{
 				return;
 			}
 
 			_U32 general_limit_num = 0;
-			for(Atlas::Vector<A_UUID>::iterator it = uuid_list.begin(); it != uuid_list.end(); ++it)
+			for(Zion::Vector<A_UUID>::iterator it = uuid_list.begin(); it != uuid_list.end(); ++it)
 			{
 				const SG_PLAYER_TITLE_CONFIG* title_config = (const SG_PLAYER_TITLE_CONFIG*)ContentObject::QueryByUUID(*it, struct_info);
 				if(!title_config) continue;
@@ -422,7 +422,7 @@ namespace Atlas
 		m_C2S.SetGeneralStatus(general_id, status);
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		//vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 		SyncSet(vecSync);
@@ -435,7 +435,7 @@ namespace Atlas
 
 	void CSGClient::SaveQuestData(const SG_QUEST_LIVE_INFO& quest_info)
 	{
-		Atlas::Vector<SG_QUEST_LIVE_INFO>::iterator it; 
+		Zion::Vector<SG_QUEST_LIVE_INFO>::iterator it; 
 		for(it = m_quests.begin(); it != m_quests.end(); ++it)
 		{
 			SG_QUEST_LIVE_INFO& quest_item = (*it);
@@ -464,7 +464,7 @@ namespace Atlas
 	{
 		m_C2S.GetPaid();
 		
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -473,7 +473,7 @@ namespace Atlas
 	{
 		m_C2S.UpgradeTitle();
 
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -523,7 +523,7 @@ namespace Atlas
 		m_C2S.PVPDailyReward();
 
 		//sync player and bag
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -543,7 +543,7 @@ namespace Atlas
 		m_C2S.PVPCoolDownClear();
 
 		//sync player and bag
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -590,7 +590,7 @@ namespace Atlas
 		m_C2S.CreateLeague(league_name);
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -600,7 +600,7 @@ namespace Atlas
 		m_C2S.ApplyJoinLeague(league_id);
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -711,7 +711,7 @@ namespace Atlas
 		m_C2S.EquipTurboSkill(skill_slot);
 		
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -1039,14 +1039,14 @@ namespace Atlas
 		{
 			if(m_callback) 
 			{
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 		}
 		
 		//sync waitting...
 		if(nSync) 
 		{
-			g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncPlayer);
+			g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncPlayer);
 			return;
 		}
 
@@ -1055,7 +1055,7 @@ namespace Atlas
 
 	void CSGClient::QueryGeneralResult(CSGClient* pClient, const SG_GENERAL* generals, _U32 count, _U8 nSync)
 	{
-		Atlas::Vector<SG_GENERAL> generals_new;
+		Zion::Vector<SG_GENERAL> generals_new;
 		SGClientUtil::GenerateTempNewVec<SG_GENERAL>(generals, count, generals_new);
 
 		//if(SGClientUtil::DiffGenerals(m_generals, generals_new))
@@ -1067,13 +1067,13 @@ namespace Atlas
 
 		if(m_callback) 
 		{
-			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncGenerals);
+			m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncGenerals);
 		}
 
 		//sync waitting...
 		if(nSync)
 		{
-			g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncGenerals);
+			g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncGenerals);
 			return;
 		}
 			
@@ -1082,7 +1082,7 @@ namespace Atlas
 
 	void CSGClient::QuerySoldierResult(CSGClient* pClient, const SG_SOLDIER* soldiers, _U32 count, _U8 nSync)
 	{
-		Atlas::Vector<SG_SOLDIER> soldiers_new;
+		Zion::Vector<SG_SOLDIER> soldiers_new;
 		SGClientUtil::GenerateTempNewVec<SG_SOLDIER>(soldiers, count, soldiers_new);
 
 		if(SGClientUtil::DiffSoldiers(m_soldiers, soldiers_new))
@@ -1093,13 +1093,13 @@ namespace Atlas
 			
 			if(m_callback) 
 			{
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncSoldiers);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncSoldiers);
 			}
 		}
 
 		if(nSync)
 		{
-			g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncSoldiers);
+			g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncSoldiers);
 			return;
 		}
 
@@ -1108,13 +1108,13 @@ namespace Atlas
 
 	void CSGClient::QueryBagBegin(CSGClient* pClient)
 	{
-		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncBagBegin))
+		if(g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncBagBegin))
 			return;
 	}
 
 	void CSGClient::QueryBagEquipt(CSGClient* pClient, const SG_EQUIPT_ITEM* items, _U32 count)
 	{
-		Atlas::Vector<SG_EQUIPT_ITEM> equipts_new;
+		Zion::Vector<SG_EQUIPT_ITEM> equipts_new;
 		SGClientUtil::GenerateTempNewVec<SG_EQUIPT_ITEM>(items, count, equipts_new);
 
 		if(SGClientUtil::DiffEquipt(m_equipts, equipts_new))
@@ -1125,17 +1125,17 @@ namespace Atlas
 
 			if(m_callback) 
 			{
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncEquipt);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncEquipt);
 			}
 		}
 
-		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncEquipt))
+		if(g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncEquipt))
 			return;
 	}
 
 	void CSGClient::QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count)
 	{
-		Atlas::Vector<SG_USABLE_ITEM> usables_new;
+		Zion::Vector<SG_USABLE_ITEM> usables_new;
 		SGClientUtil::GenerateTempNewVec<SG_USABLE_ITEM>(items, count, usables_new);
 
 		if(SGClientUtil::DiffUsable(m_usables, usables_new))
@@ -1146,18 +1146,18 @@ namespace Atlas
 
 			if(m_callback) 
 			{
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncUsable);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncUsable);
 			}
 		}
 
 
-		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncUsable))
+		if(g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncUsable))
 			return;
 	}
 
 	void CSGClient::QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count)
 	{
-		Atlas::Vector<SG_GEM_ITEM> gems_new;
+		Zion::Vector<SG_GEM_ITEM> gems_new;
 		SGClientUtil::GenerateTempNewVec<SG_GEM_ITEM>(items, count, gems_new);
 
 		if(SGClientUtil::DiffGem(m_gems, gems_new))
@@ -1168,17 +1168,17 @@ namespace Atlas
 
 			if(m_callback) 
 			{
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncGem);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncGem);
 			}
 		}
 
-		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncGem))
+		if(g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncGem))
 			return;
 	}
 
 	void CSGClient::QueryBagMaterial(CSGClient* pClient, const SG_MATERIAL_ITEM* items, _U32 count)
 	{
-		Atlas::Vector<SG_MATERIAL_ITEM> new_materials;
+		Zion::Vector<SG_MATERIAL_ITEM> new_materials;
 		SGClientUtil::GenerateTempNewVec<SG_MATERIAL_ITEM>(items, count, new_materials);
 
 		if(SGClientUtil::DiffMaterial(m_materials, new_materials))
@@ -1188,17 +1188,17 @@ namespace Atlas
 			SGClientUtil::GenerateTempNewVec<SG_MATERIAL_ITEM>(items, count, m_materials);
 			if(m_callback) 
 			{
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncMaterial);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncMaterial);
 			}
 		}
 
-		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncMaterial))
+		if(g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncMaterial))
 			return;
 	}
 
 	void CSGClient::QueryBagEnd(CSGClient* pClient, _U8 nSync)
 	{
-		if(nSync && g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncBagEnd))
+		if(nSync && g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncBagEnd))
 		{
 			return;
 		}
@@ -1247,7 +1247,7 @@ namespace Atlas
 		if(ret == SG_SERVER_RESULT_SUCC)
 		{
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1296,7 +1296,7 @@ namespace Atlas
 			m_callback->EndBattleDone(level, exp_addition, gold, wake_pt, drop_lists, drop_count);
 
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -1314,7 +1314,7 @@ namespace Atlas
 
 	void CSGClient::RefreshEquipDone(CSGClient* pClient, const SG_EQUIPT_ITEM& equipt)
 	{
-		for(Atlas::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
+		for(Zion::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
 		{
 			if(it->uuid == equipt.uuid)
 			{
@@ -1328,7 +1328,7 @@ namespace Atlas
 		}
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -1374,7 +1374,7 @@ namespace Atlas
 		time_t t;
 		time(&t);
 		m_nServerTimeDelta = (int)(server_time - (_U32)t);
-		if(g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncServerTime))
+		if(g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncServerTime))
 			return;
 	}
 
@@ -1387,7 +1387,7 @@ namespace Atlas
 		}
 		
 		//sync ...
-		if(nSync && g_syncDataManager.ReceiveRequest(Atlas::CSGSyncDataManager::eSyncPlayerQuest))
+		if(nSync && g_syncDataManager.ReceiveRequest(Zion::CSGSyncDataManager::eSyncPlayerQuest))
 			return;
 
 		if(m_callback)
@@ -1400,7 +1400,7 @@ namespace Atlas
 	{
 		if(ret == SG_SERVER_RESULT_SUCC)
 		{
-			for(Atlas::Vector<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
+			for(Zion::Vector<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
 			{
 				SG_QUEST_LIVE_INFO& quest_item = (*it);
 				if(quest_item.quest_id == quest_id
@@ -1430,7 +1430,7 @@ namespace Atlas
 			}
 						
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
 		}
@@ -1466,7 +1466,7 @@ namespace Atlas
 		}
 
 		//help to sync data
-		Atlas::Vector<_U8> vecSync;
+		Zion::Vector<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
@@ -1482,7 +1482,7 @@ namespace Atlas
 		if(m_callback)
 		{
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1550,7 +1550,7 @@ namespace Atlas
 			m_callback->PVPBattleEndResult(reputation);
 
 			//sync player
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 		}
@@ -1563,7 +1563,7 @@ namespace Atlas
 			if(ret == SG_SERVER_RESULT_SUCC)
 			{
 				m_player.rmb -= cost;
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 
 			m_callback->PVPCoolDownClearResult();
@@ -1575,7 +1575,7 @@ namespace Atlas
 		if(m_callback)
 		{
 			//sync player
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1638,7 +1638,7 @@ namespace Atlas
 			m_callback->EndInstanceBattleResult(level, exp_addition, gold, wake_pt, result, drops, drop_count);
 
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -1683,7 +1683,7 @@ namespace Atlas
 		if(m_callback)
 		{
 			//SGClientUtil::GenerateTempNewVec<SG_LEAGUE_APPLYER>(applyers, count, g_newApplyers.GetData());
-			Atlas::Vector<_U32>& applyerVec = g_newApplyers.GetData();
+			Zion::Vector<_U32>& applyerVec = g_newApplyers.GetData();
 			g_newApplyers.Resize(count);
 
 			for(_U32 i = 0; i < count; ++i)
@@ -1732,7 +1732,7 @@ namespace Atlas
 		if(m_callback)
 		{
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1823,7 +1823,7 @@ namespace Atlas
 				if(times > 0)
 					SGClientUtil::SetDailyActionTimeInCache(m_player, 3001, times-1);
 
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 
 			m_callback->LeagueToastResult(ret, gold, rmb, reward_reputation, reward_league_xp);
@@ -1840,7 +1840,7 @@ namespace Atlas
 				m_player.gold += gold;
 			
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -1859,7 +1859,7 @@ namespace Atlas
 				m_player.gold += gold;
 
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -1882,7 +1882,7 @@ namespace Atlas
 			}
 
 			m_callback->BuyEnergyResult(ret, rmb, energy, times);
-			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+			m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 		}
 	}
 
@@ -1895,7 +1895,7 @@ namespace Atlas
 				m_player.turbo_level = turbo_level;
 				m_player.wake_pt = wake_pt;
 
-				Atlas::String skill_archetype;
+				Zion::String skill_archetype;
 				SGClientUtil::GetUnlockTurboSkill(m_player.general_id, turbo_level, skill_archetype);
 
 				if(!skill_archetype.empty())
@@ -1911,7 +1911,7 @@ namespace Atlas
 			}
 
 			m_callback->EnhanceTurboResult(ret, turbo_level, wake_pt);
-			m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+			m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 		}
 	}
 
@@ -1924,7 +1924,7 @@ namespace Atlas
 				g_newItemList.AddItem(new_euqipt.uuid);
 
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				SyncSet(vecSync);
@@ -1938,8 +1938,8 @@ namespace Atlas
 	{
 		if(m_callback)
 		{
-			Atlas::Vector<_U8> statusVec;
-			Atlas::Vector<_U32> actionVec;
+			Zion::Vector<_U8> statusVec;
+			Zion::Vector<_U32> actionVec;
 
 			SGClientUtil::GenerateTempNewVec(action_list, count, actionVec);
 			g_actionStatusCache.GetDailActionStatus(GetServerTime(), actionVec, statusVec);
@@ -2021,7 +2021,7 @@ namespace Atlas
 				m_player.reputation += reputation;
 			
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -2044,7 +2044,7 @@ namespace Atlas
 			
 			if(ret)
 			{
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 		}
 	}
@@ -2085,7 +2085,7 @@ namespace Atlas
 			if(!ret)
 			{
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -2110,7 +2110,7 @@ namespace Atlas
 			{
 				m_player.current_zhanxing_value = astrologer_id;
 				m_player.gold -= gold;
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 			m_callback->StrologyResult(ret, gold, ball_id, astrologer_id, last_astrologer_id);
 		}
@@ -2124,7 +2124,7 @@ namespace Atlas
 			{
 				m_player.current_zhanxing_value = astrologer_id;
 				m_player.gold -= gold;
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 
 			m_callback->StrologyAutoResult(ret, gold, ball_list, count, astrologer_id);
@@ -2136,7 +2136,7 @@ namespace Atlas
 		if(m_callback)
 		{
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -2198,7 +2198,7 @@ namespace Atlas
 
 				if(general.exp || general.level)
 				{
-					for(Atlas::Vector<SG_GENERAL>::iterator it = m_generals.begin(); it != m_generals.end(); ++it)
+					for(Zion::Vector<SG_GENERAL>::iterator it = m_generals.begin(); it != m_generals.end(); ++it)
 					{
 						if((*it).general_id == general.general_id)
 						{
@@ -2209,7 +2209,7 @@ namespace Atlas
 				}
 
 				//help to sync data no need
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				SyncSet(vecSync);
 			}
@@ -2230,7 +2230,7 @@ namespace Atlas
 				m_player.gold = gold;
 				m_player.rmb = rmb;
 
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 
 			m_callback->FeedHorseResult(ret, xp, xp_add, level, xp_add_type, feed_type);
@@ -2298,7 +2298,7 @@ namespace Atlas
 				}
 
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2358,7 +2358,7 @@ namespace Atlas
 				}
 
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2419,7 +2419,7 @@ namespace Atlas
 				}
 
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2464,7 +2464,7 @@ namespace Atlas
 				}
 
 				//help to sync data
-				Atlas::Vector<_U8> vecSync;
+				Zion::Vector<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2511,12 +2511,12 @@ namespace Atlas
 				if(drop_count)
 				{
 					//help to sync data
-					Atlas::Vector<_U8> vecSync;
+					Zion::Vector<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 					SyncSet(vecSync);
 				}
 
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 
 			m_callback->QueryDiceNumResult(ret, dice_num, reward_time, energy, rmb, drops, drop_count, circle_num, step);
@@ -2548,19 +2548,19 @@ namespace Atlas
 				if(gold)
 				{
 					m_player.gold += gold;
-					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+					m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 				}
 
 				if(rmb)
 				{
 					m_player.rmb -= rmb;
-					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+					m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 				}
 
 				if(count2)
 				{
 					//help to sync data
-					Atlas::Vector<_U8> vecSync;
+					Zion::Vector<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				}
 			}
@@ -2586,19 +2586,19 @@ namespace Atlas
 				if(gold)
 				{
 					m_player.gold += gold;
-					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+					m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 				}
 
 				if(reputation)
 				{
 					m_player.reputation += reputation;
-					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+					m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 				}
 
 				if(count)
 				{
 					//help to sync data
-					Atlas::Vector<_U8> vecSync;
+					Zion::Vector<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				}
 			}
@@ -2632,19 +2632,19 @@ namespace Atlas
 				if(gold)
 				{
 					m_player.gold += gold;
-					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+					m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 				}
 
 				if(reputation)
 				{
 					m_player.reputation += reputation;
-					m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+					m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 				}
 
 				if(count)
 				{
 					//help to sync data
-					Atlas::Vector<_U8> vecSync;
+					Zion::Vector<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				}
 			}
@@ -2660,7 +2660,7 @@ namespace Atlas
 			if(ret == SG_SERVER_RESULT_SUCC)
 			{
 				m_player = selfplayer;
-				m_callback->DataUpdate(Atlas::CSGSyncDataManager::eSyncPlayer);
+				m_callback->DataUpdate(Zion::CSGSyncDataManager::eSyncPlayer);
 			}
 
 			m_callback->RechargeResult(ret, rmb);
@@ -2679,7 +2679,7 @@ namespace Atlas
 			m_callback->SellItemResult(result, uuid, item_id, count);
 
 			//help to sync data
-			Atlas::Vector<_U8> vecSync;
+			Zion::Vector<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
@@ -2738,8 +2738,8 @@ namespace Atlas
 		if(GetServerTime() - ms_nLastRanderTime >= SG_CLIENT_EVENT_POLL_TIMEOUT)
 		{
 			//GetDailyAction
-			Atlas::Vector<_U32> actionVec;
-			Atlas::Vector<_U8>	notifyTypeVec;
+			Zion::Vector<_U32> actionVec;
+			Zion::Vector<_U8>	notifyTypeVec;
 			g_actionStatusCache.GetDailyActionEvent(GetServerTime(), actionVec, notifyTypeVec);
 
 			for(size_t i = 0; i < actionVec.size(); ++i)
@@ -2754,12 +2754,12 @@ namespace Atlas
 		}
 	}
 
-	const Atlas::Vector<SG_GENERAL>& CSGClient::GetGenerals()
+	const Zion::Vector<SG_GENERAL>& CSGClient::GetGenerals()
 	{
 		return m_generals;
 	}
 
-	const Atlas::Vector<SG_SOLDIER>& CSGClient::GetSoldiers()
+	const Zion::Vector<SG_SOLDIER>& CSGClient::GetSoldiers()
 	{
 		return m_soldiers;
 	}
@@ -2774,22 +2774,22 @@ namespace Atlas
 		return m_player;
 	}
 
-	const Atlas::Vector<SG_EQUIPT_ITEM>& CSGClient::GetEquiptItem()
+	const Zion::Vector<SG_EQUIPT_ITEM>& CSGClient::GetEquiptItem()
 	{
 		return m_equipts;
 	}
 	
-	const Atlas::Vector<SG_GEM_ITEM>& CSGClient::GetGemItem()
+	const Zion::Vector<SG_GEM_ITEM>& CSGClient::GetGemItem()
 	{
 		return m_gems;
 	}
 
-	const Atlas::Vector<SG_USABLE_ITEM>& CSGClient::GetUsableItem()
+	const Zion::Vector<SG_USABLE_ITEM>& CSGClient::GetUsableItem()
 	{
 		return m_usables;
 	}
 
-	const Atlas::Vector<SG_MATERIAL_ITEM>& CSGClient::GetMaterialItem()
+	const Zion::Vector<SG_MATERIAL_ITEM>& CSGClient::GetMaterialItem()
 	{
 		return m_materials;
 	}
@@ -2818,7 +2818,7 @@ namespace Atlas
 	SG_ITEM* CSGClient::GetItemByUUID(const A_UUID& uuid)
 	{
 		SG_ITEM* item = NULL;
-		for(Atlas::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
+		for(Zion::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
 		{
 			if((*it).uuid == uuid)
 			{
@@ -2826,7 +2826,7 @@ namespace Atlas
 			}
 		}
 		
-		for(Atlas::Vector<SG_USABLE_ITEM>::iterator it = m_usables.begin(); it != m_usables.end(); ++it)
+		for(Zion::Vector<SG_USABLE_ITEM>::iterator it = m_usables.begin(); it != m_usables.end(); ++it)
 		{
 			if((*it).uuid == uuid)
 			{
@@ -2834,7 +2834,7 @@ namespace Atlas
 			}
 		}
 
-		for(Atlas::Vector<SG_GEM_ITEM>::iterator it = m_gems.begin(); it != m_gems.end(); ++it)
+		for(Zion::Vector<SG_GEM_ITEM>::iterator it = m_gems.begin(); it != m_gems.end(); ++it)
 		{
 			if((*it).uuid == uuid)
 			{
@@ -2845,9 +2845,9 @@ namespace Atlas
 		return NULL;
 	}
 
-	void CSGClient::GetFinishedQuest(Atlas::Vector<SG_QUEST_LIVE_INFO>& quest_vec)
+	void CSGClient::GetFinishedQuest(Zion::Vector<SG_QUEST_LIVE_INFO>& quest_vec)
 	{
-		for(Atlas::Vector<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
+		for(Zion::Vector<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
 		{
 			if((*it).status == SG_QUEST_STATUS_FINISHED)
 			{
@@ -2856,7 +2856,7 @@ namespace Atlas
 		}
 	}
 
-	void CSGClient::GetNewSoldierList(Atlas::Vector<_U32>& soldier_lists)
+	void CSGClient::GetNewSoldierList(Zion::Vector<_U32>& soldier_lists)
 	{
 		g_newSoldiers.GetNewList(soldier_lists);
 	}
@@ -2876,7 +2876,7 @@ namespace Atlas
 		g_newSoldiers.ClearNewList();
 	}
 
-	void CSGClient::GetNewItemList(Atlas::Vector<A_UUID>& item_lists)
+	void CSGClient::GetNewItemList(Zion::Vector<A_UUID>& item_lists)
 	{
 		g_newItemList.GetNewList(item_lists);
 	}
@@ -2896,7 +2896,7 @@ namespace Atlas
 		g_newItemList.ClearNewList();
 	}
 
-	void CSGClient::GetNewApplyerList(Atlas::Vector<_U32>& applyer_list)
+	void CSGClient::GetNewApplyerList(Zion::Vector<_U32>& applyer_list)
 	{
 		g_newApplyers.GetNewList(applyer_list);
 	}
@@ -2922,7 +2922,7 @@ namespace Atlas
 		g_syncDataManager.SendSyncRequest();
 	}
 
-	void CSGClient::SyncSet(const Atlas::Vector<_U8> vecSync)
+	void CSGClient::SyncSet(const Zion::Vector<_U8> vecSync)
 	{
 		for(size_t i = 0; i < vecSync.size(); ++i)
 		{

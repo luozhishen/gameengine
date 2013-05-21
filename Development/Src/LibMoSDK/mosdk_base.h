@@ -18,8 +18,8 @@ typedef enum {
 	MOREQUESTSTATE_DONE,
 } MOREQUESTSTATE;
 
-MOREQUEST* MORequestString(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params);
-MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path, bool append);
+MOREQUEST* MORequestString(const char* url, const Zion::Map<Zion::String, Zion::String>& params);
+MOREQUEST* MODownloadFile(const char* url, const Zion::Map<Zion::String, Zion::String>& params, const char* path, bool append);
 MOREQUEST* MORequestString(const char* url, const char* postdata);
 MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* path, bool append);
 void MORequestDestory(MOREQUEST* request);

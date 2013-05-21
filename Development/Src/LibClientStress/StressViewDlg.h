@@ -9,7 +9,7 @@ public:
 	CStressViewDlg(wxWindow* pParent);
 	virtual ~CStressViewDlg();
 
-	void DisplayInfo(_U32 uid, Atlas::String& strCaseName);
+	void DisplayInfo(_U32 uid, Zion::String& strCaseName);
 
 private:
 	void InitClients();

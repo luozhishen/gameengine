@@ -408,7 +408,7 @@ namespace sigslot {
 	class has_slots : public mt_policy 
 	{
 	private:
-		typedef Atlas::Set<_signal_base<mt_policy> *> sender_set;
+		typedef Zion::Set<_signal_base<mt_policy> *> sender_set;
 		typedef typename sender_set::const_iterator const_iterator;
 
 	public:
@@ -468,7 +468,7 @@ namespace sigslot {
 	class _signal_base0 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base0<mt_policy> *>  connections_list;
+		typedef Zion::List<_connection_base0<mt_policy> *>  connections_list;
 
 		_signal_base0()
 		{
@@ -574,7 +574,7 @@ namespace sigslot {
 	class _signal_base1 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base1<arg1_type, mt_policy> *>  connections_list;
+		typedef Zion::List<_connection_base1<arg1_type, mt_policy> *>  connections_list;
 
 		_signal_base1()
 		{
@@ -681,7 +681,7 @@ namespace sigslot {
 	class _signal_base2 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base2<arg1_type, arg2_type, mt_policy> *>
+		typedef Zion::List<_connection_base2<arg1_type, arg2_type, mt_policy> *>
 			connections_list;
 
 		_signal_base2()
@@ -788,7 +788,7 @@ namespace sigslot {
 	class _signal_base3 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base3<arg1_type, arg2_type, arg3_type, mt_policy> *>
+		typedef Zion::List<_connection_base3<arg1_type, arg2_type, arg3_type, mt_policy> *>
 			connections_list;
 
 		_signal_base3()
@@ -895,7 +895,7 @@ namespace sigslot {
 	class _signal_base4 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base4<arg1_type, arg2_type, arg3_type,
+		typedef Zion::List<_connection_base4<arg1_type, arg2_type, arg3_type,
 			arg4_type, mt_policy> *>  connections_list;
 
 		_signal_base4()
@@ -1003,7 +1003,7 @@ namespace sigslot {
 	class _signal_base5 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base5<arg1_type, arg2_type, arg3_type,
+		typedef Zion::List<_connection_base5<arg1_type, arg2_type, arg3_type,
 			arg4_type, arg5_type, mt_policy> *>  connections_list;
 
 		_signal_base5()
@@ -1112,7 +1112,7 @@ namespace sigslot {
 	class _signal_base6 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base6<arg1_type, arg2_type, arg3_type, 
+		typedef Zion::List<_connection_base6<arg1_type, arg2_type, arg3_type, 
 			arg4_type, arg5_type, arg6_type, mt_policy> *>  connections_list;
 
 		_signal_base6()
@@ -1221,7 +1221,7 @@ namespace sigslot {
 	class _signal_base7 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base7<arg1_type, arg2_type, arg3_type, 
+		typedef Zion::List<_connection_base7<arg1_type, arg2_type, arg3_type, 
 			arg4_type, arg5_type, arg6_type, arg7_type, mt_policy> *>  connections_list;
 
 		_signal_base7()
@@ -1330,7 +1330,7 @@ namespace sigslot {
 	class _signal_base8 : public _signal_base<mt_policy>
 	{
 	public:
-		typedef Atlas::List<_connection_base8<arg1_type, arg2_type, arg3_type, 
+		typedef Zion::List<_connection_base8<arg1_type, arg2_type, arg3_type, 
 			arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, mt_policy> *>
 			connections_list;
 

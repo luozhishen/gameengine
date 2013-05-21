@@ -214,9 +214,9 @@ int ddlgen_code_open(const char* filename)
 	OutH(0, "#ifndef __%s_DDL_CODEGEN__\n", p1);
 	OutH(0, "#define __%s_DDL_CODEGEN__\n", p1);
 	OutH(0, "\n");
-	OutH(0, "#include <AtlasDefines.h>\n");
-	OutH(0, "#include <AtlasSTL.h>\n");
-	OutH(0, "#include <AtlasUUID.h>\n");
+	OutH(0, "#include <ZionDefines.h>\n");
+	OutH(0, "#include <ZionSTL.h>\n");
+	OutH(0, "#include <ZionUUID.h>\n");
 	OutH(0, "#include <DDL.h>\n");
 	OutH(0, "#include <DDLProxy.h>\n");
 	OutH(0, "#include <DDLStub.h>\n");

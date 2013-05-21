@@ -1,7 +1,7 @@
 #ifndef __ATLAS_NODE_SERVER__
 #define __ATLAS_NODE_SERVER__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CNodeClient;
@@ -55,7 +55,7 @@ namespace Atlas
 		_U32 m_nNodeID;
 		HANDLE m_hTimerQueue;
 		HANDLE m_hTimer;
-		Atlas::HSERVER m_hClusterServer;
+		Zion::HSERVER m_hClusterServer;
 		_U32 m_nConnCount;
 	};
 

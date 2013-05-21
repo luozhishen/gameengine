@@ -1,7 +1,7 @@
 #ifndef __STRESS_LOADER_H__
 #define __STRESS_LOADER_H__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CStressCase;
@@ -10,26 +10,26 @@ namespace Atlas
 	{
 		struct Script_Case
 		{
-			Atlas::String case_name;
-			Atlas::String param1;
-			Atlas::String param2;
-			Atlas::String param3;
+			Zion::String case_name;
+			Zion::String param1;
+			Zion::String param2;
+			Zion::String param3;
 		};
 
 		struct Stress_Case
 		{
 			_U32 count;
-			Atlas::Vector<Script_Case> scripts;
+			Zion::Vector<Script_Case> scripts;
 		};
 
 		struct Server_Param
 		{
-			Atlas::String key;
-			Atlas::String value;
+			Zion::String key;
+			Zion::String value;
 		};
 
-		typedef Atlas::Vector<Server_Param> SERVER_PARAMS;
-		typedef Atlas::Vector<Stress_Case> SERVER_CASES;
+		typedef Zion::Vector<Server_Param> SERVER_PARAMS;
+		typedef Zion::Vector<Stress_Case> SERVER_CASES;
 	public:
 		CStressLoader();
 		~CStressLoader();
@@ -48,7 +48,7 @@ namespace Atlas
 	private:
 		SERVER_CASES m_ServerCases;
 		SERVER_PARAMS m_ServerParams;
-		Atlas::String m_strPath;
+		Zion::String m_strPath;
 	};
 
 }

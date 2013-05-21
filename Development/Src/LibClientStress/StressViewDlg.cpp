@@ -7,7 +7,7 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
+#include <ZionBase.h>
 #include <StressManager.h>
 #include <StressCase.h>
 #include <StressClient.h>
@@ -62,8 +62,8 @@ CStressViewDlg::~CStressViewDlg()
 
 void CStressViewDlg::InitClients()
 {
-	Atlas::CStressManager& stressMgr = Atlas::CStressManager::Get();
-	Atlas::Vector<_U32> clients;
+	Zion::CStressManager& stressMgr = Zion::CStressManager::Get();
+	Zion::Vector<_U32> clients;
 	stressMgr.GetClients(clients);
 
 	if(clients.empty())
@@ -75,7 +75,7 @@ void CStressViewDlg::InitClients()
 
 	for(_U32 i = 0; i < clients.size(); ++i)
 	{
-		Atlas::CStressClient* pClient = stressMgr.GetClient(clients[i]);
+		Zion::CStressClient* pClient = stressMgr.GetClient(clients[i]);
 		if(pClient == NULL)
 			continue;
 
@@ -84,16 +84,16 @@ void CStressViewDlg::InitClients()
 		//data.SetId(clientItem);
 		m_pClientTree->SetItemData(clientItem, (wxTreeItemData*)data);
 
-		Atlas::Set<Atlas::CStressCase*> cases;
+		Zion::Set<Zion::CStressCase*> cases;
 		pClient->GetStressCases(cases);
 
 		if(cases.empty())
 			continue;
 
-		Atlas::Set<Atlas::CStressCase*>::iterator it = cases.begin();
+		Zion::Set<Zion::CStressCase*>::iterator it = cases.begin();
 		for( ; it != cases.end(); ++it)
 		{
-			Atlas::String strCaseName = (*it)->GetName();
+			Zion::String strCaseName = (*it)->GetName();
 
 			wxTreeItemId caseItem = m_pClientTree->AppendItem(clientItem, wxString::FromUTF8((*it)->GetName().c_str()), -1, -1);
 			StreesViewItemData* castData = ATLAS_NEW StreesViewItemData(strCaseName, pClient->GetIndex());
@@ -103,14 +103,14 @@ void CStressViewDlg::InitClients()
 	}
 }
 
-void CStressViewDlg::DisplayInfo(_U32 uid, Atlas::String& strCaseName)
+void CStressViewDlg::DisplayInfo(_U32 uid, Zion::String& strCaseName)
 {	
 	m_pClientInfo->Clear();
 	m_pClientCase->Clear();
 	m_pClientData->Clear();
 
-	Atlas::CStressManager& stressMgr = Atlas::CStressManager::Get();
-	Atlas::CStressClient* pClient = stressMgr.GetClient(uid);
+	Zion::CStressManager& stressMgr = Zion::CStressManager::Get();
+	Zion::CStressClient* pClient = stressMgr.GetClient(uid);
 	if(!pClient)
 	{
 		return;
@@ -118,7 +118,7 @@ void CStressViewDlg::DisplayInfo(_U32 uid, Atlas::String& strCaseName)
 
 	(*m_pClientInfo)<<wxString::FromUTF8(pClient->GetTitle().c_str());
 
-	Atlas::CStressCase* pCase = pClient->GetStressCase(strCaseName.c_str());
+	Zion::CStressCase* pCase = pClient->GetStressCase(strCaseName.c_str());
 	if(!pCase) return;
 		
 	(*m_pClientCase)<<wxString::FromUTF8(pCase->GetName().c_str());

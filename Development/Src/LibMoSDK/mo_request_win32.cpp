@@ -4,7 +4,7 @@
 #pragma warning(disable:4996)
 #pragma warning(disable:4121)
 
-#include <AtlasSTL.h>
+#include <ZionSTL.h>
 #include <crtdbg.h>
 #include "mosdk.h"
 #include "mo_common.h"
@@ -20,12 +20,12 @@ struct MOREQUEST
 {
 	HINTERNET _connect;
 	HINTERNET _request;
-	Atlas::String _result;
+	Zion::String _result;
 	FILE* _file;
 	int _length;
 	MOREQUESTSTATE _state;
-	Atlas::String _postdata;
-	Atlas::String _postheader;
+	Zion::String _postdata;
+	Zion::String _postheader;
 	char buf[1000];
 };
 
@@ -92,16 +92,16 @@ public:
 };
 static MO_REQUEST_WIN32_INIT g_MO_REQUEST_WIN32_INIT;
 
-MOREQUEST* MORequestString(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params)
+MOREQUEST* MORequestString(const char* url, const Zion::Map<Zion::String, Zion::String>& params)
 {
-	Atlas::String postdata;
+	Zion::String postdata;
 	build_http_param(postdata, params);
 	return MORequestString(url, postdata.c_str());
 }
 
-MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path, bool append)
+MOREQUEST* MODownloadFile(const char* url, const Zion::Map<Zion::String, Zion::String>& params, const char* path, bool append)
 {
-	Atlas::String postdata;
+	Zion::String postdata;
 	build_http_param(postdata, params);
 	return MODownloadFile(url, postdata.c_str(), path, append);
 }
@@ -203,7 +203,7 @@ bool http_request(MOREQUEST* request, const char* url, const char* header, const
 		request->_postdata = postdata;
 		DWORD flag = INTERNET_FLAG_NO_UI|INTERNET_FLAG_NO_CACHE_WRITE|INTERNET_FLAG_PRAGMA_NOCACHE|INTERNET_FLAG_RELOAD;
 		if(urlcomps.nScheme==INTERNET_SCHEME_HTTPS) flag |= INTERNET_FLAG_SECURE;
-		Atlas::String urlpath;
+		Zion::String urlpath;
 		urlpath = urlcomps.lpszUrlPath;
 		urlpath += urlcomps.lpszExtraInfo;
 		request->_request = HttpOpenRequestA(request->_connect, request->_postdata.empty()?"GET":"POST", urlpath.c_str(), NULL, NULL, NULL, flag, (DWORD_PTR)request);

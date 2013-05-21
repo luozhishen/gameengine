@@ -1,4 +1,4 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include "ContentObject.h"
 #include "CommonDDL.h"
@@ -10,7 +10,7 @@
 #include <fstream>
 #include "des64.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	const char* AtlasGameDir();
@@ -48,20 +48,20 @@ namespace Atlas
 			bool _cook;
 			bool _dirty;
 		};
-		static Atlas::Map<Atlas::String, CContentGroup> g_content_group_map;
+		static Zion::Map<Zion::String, CContentGroup> g_content_group_map;
 		// content object type
 		struct STRUCT_INTERNAL_INFO
 		{
 			_U16							type_id;
 			const DDLReflect::STRUCT_INFO*	info;
 			bool							bExactMatch;
-			Atlas::Vector<Atlas::String>	keys;
-			Atlas::Map<Atlas::String, A_CONTENT_OBJECT*> key_map;
+			Zion::Vector<Zion::String>	keys;
+			Zion::Map<Zion::String, A_CONTENT_OBJECT*> key_map;
 			CContentGroup*					group;
 		};
 		const _U16 g_typeid_base = 0x1000;
-		Atlas::Map<Atlas::String, _U16>		g_typemap;
-		Atlas::Vector<STRUCT_INTERNAL_INFO>	g_typearray;
+		Zion::Map<Zion::String, _U16>		g_typemap;
+		Zion::Vector<STRUCT_INTERNAL_INFO>	g_typearray;
 		// content object
 		class CContentObjectManager
 		{
@@ -75,21 +75,21 @@ namespace Atlas
 			}
 			void Clear()
 			{
-				Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+				Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 				for(i=m_object_map.begin(); i!=m_object_map.end(); i++)
 				{
 					DDLReflect::DestoryObject(i->second.second);
 				}
 				m_object_map.clear();
 			}
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>> m_object_map;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>> m_object_map;
 		};
 		static CContentObjectManager g_objct_manager;
 		static bool LoadContentFromJsonFile(const char* filename, bool ignore);
 
 		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook)
 		{
-			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			Zion::Map<Zion::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				ATLAS_ASSERT(strcmp(i->second._name, name)!=0);
@@ -103,7 +103,7 @@ namespace Atlas
 
 		IContentGroup* GetContentGroup(const char* name)
 		{
-			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			Zion::Map<Zion::String, CContentGroup>::iterator i;
 			i = g_content_group_map.find(name);
 			if(i==g_content_group_map.end()) return NULL;
 			return &i->second;
@@ -111,7 +111,7 @@ namespace Atlas
 
 		static CContentGroup* QueryContentGroup(const DDLReflect::STRUCT_INFO* info)
 		{
-			Atlas::Map<Atlas::String, _U16>::iterator i;
+			Zion::Map<Zion::String, _U16>::iterator i;
 			while(info)
 			{
 				i = g_typemap.find(info->name);
@@ -146,7 +146,7 @@ namespace Atlas
 				return NULL;
 			}
 
-			Atlas::Vector<Atlas::String> vkeys;
+			Zion::Vector<Zion::String> vkeys;
 			if(keys)
 			{
 				StringSplit(keys, ',', vkeys);
@@ -195,7 +195,7 @@ namespace Atlas
 			return this;
 		}
 
-		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list)
+		void GetTypeList(Zion::Vector<const DDLReflect::STRUCT_INFO*>& list)
 		{
 			list.resize(g_typearray.size());
 			for(size_t i=0; i<g_typearray.size(); i++)
@@ -206,7 +206,7 @@ namespace Atlas
 
 		_U16 GetTypeId(const char* name)
 		{
-			Atlas::Map<Atlas::String, _U16>::const_iterator i;
+			Zion::Map<Zion::String, _U16>::const_iterator i;
 			i = g_typemap.find(name);
 			if(i==g_typemap.end()) return (_U16)-1;
 			return i->second;
@@ -214,7 +214,7 @@ namespace Atlas
 
 		const DDLReflect::STRUCT_INFO* GetType(const char* name)
 		{
-			Atlas::Map<Atlas::String, _U16>::const_iterator i;
+			Zion::Map<Zion::String, _U16>::const_iterator i;
 			i = g_typemap.find(name);
 			if(i==g_typemap.end()) return NULL;
 			return g_typearray[i->second-g_typeid_base].info;
@@ -227,12 +227,12 @@ namespace Atlas
 			return g_typearray[id-g_typeid_base].info;
 		}
 
-		bool GetTypePrimaryKey(const char* name, Atlas::Set<Atlas::String>& keys)
+		bool GetTypePrimaryKey(const char* name, Zion::Set<Zion::String>& keys)
 		{
 			keys.clear();
 			_U16 id = GetTypeId(name);
 			if(id==(_U16)-1) return false;
-			Atlas::Vector<Atlas::String>& karray = g_typearray[id-g_typeid_base].keys;
+			Zion::Vector<Zion::String>& karray = g_typearray[id-g_typeid_base].keys;
 			if(karray.empty())
 			{
 				keys.insert("uuid");
@@ -266,7 +266,7 @@ namespace Atlas
 
 		void DeleteObject(const A_UUID& uuid)
 		{
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return;
 			DDLReflect::DestoryObject(i->second.second);
@@ -276,7 +276,7 @@ namespace Atlas
 
 		const DDLReflect::STRUCT_INFO* GetObjectType(const A_UUID& uuid)
 		{
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			return i->second.first;
@@ -284,7 +284,7 @@ namespace Atlas
 
 		A_CONTENT_OBJECT* Modify(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info)
 		{
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			if(info!=NULL && i->second.first!=info) return NULL;
@@ -294,7 +294,7 @@ namespace Atlas
 
 		const A_CONTENT_OBJECT* QueryByUUID(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info)
 		{
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			if(info!=NULL && i->second.first!=info) return NULL;
@@ -303,7 +303,7 @@ namespace Atlas
 
 		const A_CONTENT_OBJECT* QueryByName(const char* name, const DDLReflect::STRUCT_INFO* info)
 		{
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				if((info!=NULL || i->second.first==info) && strcmp(name, i->second.second->name._Value)==0)
@@ -334,7 +334,7 @@ namespace Atlas
 				return QueryByUUID(uuid, info);
 			}
 
-			Atlas::String keys_value;
+			Zion::String keys_value;
 			size_t keys_count = 1;
 			keys_value = v1;
 			if(v2)
@@ -359,7 +359,7 @@ namespace Atlas
 			ATLAS_ASSERT(internal_info.keys.size()==keys_count);
 			if(internal_info.keys.size()!=keys_count) return NULL;
 
-			Atlas::Map<Atlas::String, A_CONTENT_OBJECT*>::iterator i;
+			Zion::Map<Zion::String, A_CONTENT_OBJECT*>::iterator i;
 			i = internal_info.key_map.find(keys_value);
 			if(i==internal_info.key_map.end()) return NULL;
 			return i->second;
@@ -374,13 +374,13 @@ namespace Atlas
 			if(type_id==(_U16)-1) return NULL;
 
 			STRUCT_INTERNAL_INFO& internal_info = g_typearray[type_id-g_typeid_base];
-			Atlas::Map<Atlas::String, A_CONTENT_OBJECT*>::iterator i;
+			Zion::Map<Zion::String, A_CONTENT_OBJECT*>::iterator i;
 			i = internal_info.key_map.find(value1);
 			if(i==internal_info.key_map.end()) return NULL;
 			return i->second;
 		}
 
-		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Atlas::String& uid)
+		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Zion::String& uid)
 		{
 			if(id<g_typeid_base) return false;
 			if(id>=g_typeid_base+(_U16)g_typearray.size()) return false;
@@ -389,7 +389,7 @@ namespace Atlas
 			uid.clear();
 			for(size_t f=0; f<info.keys.size(); f++)
 			{
-				Atlas::String value;
+				Zion::String value;
 				if(!DDLReflect::StructParamToString(info.info, info.keys[f].c_str(), obj, value))
 				{
 					return false;
@@ -401,7 +401,7 @@ namespace Atlas
 			return true;
 		}
 
-		static Atlas::String g_buildindex_errmsg;
+		static Zion::String g_buildindex_errmsg;
 
 		bool BuildIndex(const DDLReflect::STRUCT_INFO* info)
 		{
@@ -426,12 +426,12 @@ namespace Atlas
 			internal_info.key_map.clear();
 			if(internal_info.keys.size()==0) return true;
 
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				if(info!=i->second.first && (internal_info.bExactMatch || !IsParent(i->second.first, info))) continue;
 
-				Atlas::String keys_value;
+				Zion::String keys_value;
 				if(!GenContentObjectUniqueId(type_id, i->second.second, keys_value))
 				{
 					g_buildindex_errmsg = StringFormat("error in GenContentObjectUniqueId");
@@ -452,16 +452,16 @@ namespace Atlas
 			return true;
 		}
 
-		const Atlas::String& BuildIndexGetErrorMsg()
+		const Zion::String& BuildIndexGetErrorMsg()
 		{
 			return g_buildindex_errmsg;
 		}
 
-		bool GetList(const DDLReflect::STRUCT_INFO* info, Atlas::Vector<A_UUID>& list, bool bExactMatch)
+		bool GetList(const DDLReflect::STRUCT_INFO* info, Zion::Vector<A_UUID>& list, bool bExactMatch)
 		{
 			list.clear();
 
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				if(i->second.first==info || (!bExactMatch && IsParent(i->second.first, info)))
@@ -475,7 +475,7 @@ namespace Atlas
 
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch)
 		{
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.begin();
 			while(i!=g_objct_manager.m_object_map.end())
 			{
@@ -487,7 +487,7 @@ namespace Atlas
 
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object)
 		{
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			i = g_objct_manager.m_object_map.find(object->uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			i++;
@@ -501,10 +501,10 @@ namespace Atlas
 
 		bool LoadContent(const char* path, bool ignore)
 		{
-			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			Zion::Map<Zion::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
-				String file = Atlas::StringFormat("%s%s%s", path?path:Atlas::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
+				String file = Zion::StringFormat("%s%s%s", path?path:Zion::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
 				if(LoadContentFromJsonFile(file.c_str(), ignore))
 				{
 					i->second._dirty = false;
@@ -583,7 +583,7 @@ namespace Atlas
 			DES_SetKey(key, keys);
 
 			FILE* fp = fopen(filename, "rb");
-			Atlas::String line;
+			Zion::String line;
 			_U8 rawdata[300*1024];
 
 			if(fread(rawdata, 1, 4, fp)!=4 || memcmp(rawdata, "DBNN", 4)!=0)
@@ -649,7 +649,7 @@ namespace Atlas
 
 		bool SaveContent(const char* path, bool force)
 		{
-			Atlas::String realpath;
+			Zion::String realpath;
 			if(path)
 			{
 				realpath = path;
@@ -659,10 +659,10 @@ namespace Atlas
 				realpath = StringFormat("%sContent/Json/", AtlasGameDir());
 			}
 
-			Atlas::Map<Atlas::String, std::ofstream*> vmap;
-			Atlas::Map<Atlas::String, bool> vmap_a;
+			Zion::Map<Zion::String, std::ofstream*> vmap;
+			Zion::Map<Zion::String, bool> vmap_a;
 
-			Atlas::Map<Atlas::String, CContentGroup>::iterator gi;
+			Zion::Map<Zion::String, CContentGroup>::iterator gi;
 			for(gi=g_content_group_map.begin(); gi!=g_content_group_map.end(); gi++)
 			{
 				if(!gi->second._dirty && !force) continue;
@@ -675,7 +675,7 @@ namespace Atlas
 				f.open(filepath, std::ifstream::binary);
 				if(!f.is_open())
 				{
-					Atlas::Map<Atlas::String, std::ofstream*>::iterator fi;
+					Zion::Map<Zion::String, std::ofstream*>::iterator fi;
 					for(fi=vmap.begin(); fi!=vmap.end(); fi++) delete fi->second;
 					vmap.clear();
 					return false;
@@ -687,7 +687,7 @@ namespace Atlas
 			}
 			if(vmap.size()==0) return true;
 
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator oi;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator oi;
 			for(oi=g_objct_manager.m_object_map.begin(); oi!=g_objct_manager.m_object_map.end(); oi++)
 			{
 				const char* file = QueryContentGroupName(oi->second.first);
@@ -704,7 +704,7 @@ namespace Atlas
 					f << "\t\t}," << std::endl;
 				}
 	
-				Atlas::String va;
+				Zion::String va;
 				if(!DDLReflect::Struct2Json(oi->second.first, (const _U8*)(oi->second.second), va))
 				{
 					ATLAS_ASSERT(0);
@@ -715,7 +715,7 @@ namespace Atlas
 				f << "\t\t\t" << "\"data\":" << va;
 			}
 
-			Atlas::Map<Atlas::String, std::ofstream*>::iterator fi;
+			Zion::Map<Zion::String, std::ofstream*>::iterator fi;
 			for(fi=vmap.begin(); fi!=vmap.end(); fi++)
 			{
 				std::ofstream& f = *(fi->second);
@@ -748,7 +748,7 @@ namespace Atlas
 			_U32 object_count = (_U32)g_objct_manager.m_object_map.size();
 			fwrite(&object_count, 1, sizeof(object_count), fp);
 
-			Atlas::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				CContentGroup* group = QueryContentGroup(i->second.first);
@@ -765,7 +765,7 @@ namespace Atlas
 				_U8* src = rawdata;
 				char buf[8], sbuf[8];
 				_U32 size = writer.GetSize();
-				_U16 tid = Atlas::ContentObject::GetTypeId(i->second.first->name);
+				_U16 tid = Zion::ContentObject::GetTypeId(i->second.first->name);
 				fwrite(&tid, 1, sizeof(tid), fp);
 				fwrite(&size, 1, sizeof(size), fp);
 				while(size>7)
@@ -810,7 +810,7 @@ namespace Atlas
 		{
 			g_objct_manager.Clear();
 			BuildIndex();
-			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			Zion::Map<Zion::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				i->second._dirty = true;
@@ -819,7 +819,7 @@ namespace Atlas
 
 		bool IsContentDirty()
 		{
-			Atlas::Map<Atlas::String, CContentGroup>::iterator i;
+			Zion::Map<Zion::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				if(i->second._dirty) return true;

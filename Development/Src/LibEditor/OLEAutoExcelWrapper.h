@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// Atlas - Copyright (c) 2006-2012 by Epic Games China / Yingpei Games
+// Zion - Copyright (c) 2006-2012 by Epic Games China / Yingpei Games
 //------------------------------------------------------------------------------
 
 #ifndef _OLEAUTOEXCELWRAPPER_H_
@@ -12,13 +12,13 @@ class COLEAutoExcelWrapper
 public:
 	COLEAutoExcelWrapper();
 	~COLEAutoExcelWrapper();
-	bool Open(const Atlas::String& sFileName, bool bVisible);
+	bool Open(const Zion::String& sFileName, bool bVisible);
 	bool Save();
 	bool Quit();
-	bool GetExcelSheets(Atlas::Vector<Atlas::String>& vSheets);
-	bool SetActiveSheet(const Atlas::String& sSheetName);
-	bool SetCellValue(const Atlas::String& sRange, const Atlas::String& sValue);
-	bool GetCellValue(const Atlas::String& sRange, Atlas::String& sValue);
+	bool GetExcelSheets(Zion::Vector<Zion::String>& vSheets);
+	bool SetActiveSheet(const Zion::String& sSheetName);
+	bool SetCellValue(const Zion::String& sRange, const Zion::String& sValue);
+	bool GetCellValue(const Zion::String& sRange, Zion::String& sValue);
 
 private:
 	bool Initialize();

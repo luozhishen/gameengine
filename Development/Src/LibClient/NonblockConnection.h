@@ -1,7 +1,7 @@
 #ifndef __NONBLOCK_CONNECTION__
 #define __NONBLOCK_CONNECTION__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CNonblockConnection : public CClientConnection

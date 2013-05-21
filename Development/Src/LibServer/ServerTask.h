@@ -3,7 +3,7 @@
 
 #include <functional>
 
-namespace Atlas
+namespace Zion
 {
 
 	// 1. 可以被异步处理的任务对象

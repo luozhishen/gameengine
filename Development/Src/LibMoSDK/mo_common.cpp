@@ -1,4 +1,4 @@
-#include <AtlasSTL.h>
+#include <ZionSTL.h>
 #include "mo_common.h"
 
 static const char HEXCHARS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -25,9 +25,9 @@ static char* urlencode(const char* in, char* out)
 	return ret;
 }
 
-void build_http_param(Atlas::String& value, const Atlas::Map<Atlas::String, Atlas::String>& params)
+void build_http_param(Zion::String& value, const Zion::Map<Zion::String, Zion::String>& params)
 {
-	Atlas::Map<Atlas::String, Atlas::String>::const_iterator i;
+	Zion::Map<Zion::String, Zion::String>::const_iterator i;
 	char txt[1024*10];
 	value = "";
 

@@ -1,6 +1,6 @@
-#include <AtlasBase.h>
-#include <AtlasClient.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionClient.h>
+#include <ZionCommon.h>
 
 #include <algorithm>
 #include <time.h>
@@ -9,7 +9,7 @@
 #include "SGSyncDataManager.h"
 #include "SGClientUtil.h"
 
-namespace Atlas
+namespace Zion
 {
 	void SGClientUtil::SetRightLocation(const A_CONTENT_OBJECT* content_obj, const SG_EQUIP_SLOTS& slots, const A_UUID& uuid)
 	{
@@ -46,17 +46,17 @@ namespace Atlas
 		}
 	}
 
-	void SGClientUtil::GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Atlas::Vector<_U32>& soldierVec, Atlas::Vector<SG_SOLDIER>& curSoldierVec)
+	void SGClientUtil::GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Zion::Vector<_U32>& soldierVec, Zion::Vector<SG_SOLDIER>& curSoldierVec)
 	{
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_SOLDIER_CONFIG >();
 		
-		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 		while(content_obj)
 		{
 			SG_SOLDIER_CONFIG* config = (SG_SOLDIER_CONFIG*)content_obj;
 
 			bool bFind = false;
-			for(Atlas::Vector<SG_SOLDIER>::iterator it_loop = curSoldierVec.begin(); it_loop != curSoldierVec.end(); ++it_loop)
+			for(Zion::Vector<SG_SOLDIER>::iterator it_loop = curSoldierVec.begin(); it_loop != curSoldierVec.end(); ++it_loop)
 			{
 				if(it_loop->soldier_id == config->soldier_id)
 				{
@@ -72,19 +72,19 @@ namespace Atlas
 				soldierVec.push_back(config->soldier_id);
 			}
 
-			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 
 		std::unique(soldierVec.begin(), soldierVec.end());
 	}
 	
-	void SGClientUtil::GetUnlockTurboSkill(_U32 general_id, _U32 turbo_level, Atlas::String& skill_archetype)
+	void SGClientUtil::GetUnlockTurboSkill(_U32 general_id, _U32 turbo_level, Zion::String& skill_archetype)
 	{
 		if(general_id == 11002)
 			general_id = 11001;
 
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_TURBO_CONFIG >();
-		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 		while(content_obj)
 		{
 			SG_TURBO_CONFIG* config = (SG_TURBO_CONFIG*)content_obj;
@@ -96,7 +96,7 @@ namespace Atlas
 				return;
 			}
 		
-			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 	}
 
@@ -117,12 +117,12 @@ namespace Atlas
 		return false;
 	}
 
-	bool SGClientUtil::DiffSoldiers(const Atlas::Vector<SG_SOLDIER>& soldiers_old, const Atlas::Vector<SG_SOLDIER>& soldiers_new)
+	bool SGClientUtil::DiffSoldiers(const Zion::Vector<SG_SOLDIER>& soldiers_old, const Zion::Vector<SG_SOLDIER>& soldiers_new)
 	{
 		return SGClientUtil::DiffDataVec(soldiers_old, soldiers_new);
 	}
 
-	bool SGClientUtil::DiffGenerals(const Atlas::Vector<SG_GENERAL>& generals_old, const Atlas::Vector<SG_GENERAL>& generals_new)
+	bool SGClientUtil::DiffGenerals(const Zion::Vector<SG_GENERAL>& generals_old, const Zion::Vector<SG_GENERAL>& generals_new)
 	{
 		return DiffDataVec(generals_old, generals_new);
 	}
@@ -208,7 +208,7 @@ namespace Atlas
 		return false;
 	}
 
-	bool SGClientUtil::DiffEquipt(const Atlas::Vector<SG_EQUIPT_ITEM>& equipts_old, const Atlas::Vector<SG_EQUIPT_ITEM>& equipts_new)
+	bool SGClientUtil::DiffEquipt(const Zion::Vector<SG_EQUIPT_ITEM>& equipts_old, const Zion::Vector<SG_EQUIPT_ITEM>& equipts_new)
 	{
 		if(equipts_old.size() != equipts_new.size())
 		{
@@ -226,7 +226,7 @@ namespace Atlas
 		return false;
 	}
 	
-	bool SGClientUtil::DiffUsable(const Atlas::Vector<SG_USABLE_ITEM>& usables_old, const Atlas::Vector<SG_USABLE_ITEM>& usables_new)
+	bool SGClientUtil::DiffUsable(const Zion::Vector<SG_USABLE_ITEM>& usables_old, const Zion::Vector<SG_USABLE_ITEM>& usables_new)
 	{
 		if(usables_old.size() != usables_new.size())
 		{
@@ -244,7 +244,7 @@ namespace Atlas
 		return false;
 	}
 	
-	bool SGClientUtil::DiffGem(const Atlas::Vector<SG_GEM_ITEM>& gems_old, const Atlas::Vector<SG_GEM_ITEM>& gems_new)
+	bool SGClientUtil::DiffGem(const Zion::Vector<SG_GEM_ITEM>& gems_old, const Zion::Vector<SG_GEM_ITEM>& gems_new)
 	{
 		if(gems_old.size() != gems_new.size())
 		{
@@ -262,7 +262,7 @@ namespace Atlas
 		return false;
 	}
 
-	bool SGClientUtil::DiffMaterial(const Atlas::Vector<SG_MATERIAL_ITEM>& material_old, const Atlas::Vector<SG_MATERIAL_ITEM>& material_new)
+	bool SGClientUtil::DiffMaterial(const Zion::Vector<SG_MATERIAL_ITEM>& material_old, const Zion::Vector<SG_MATERIAL_ITEM>& material_new)
 	{
 		if(material_old.size() != material_new.size())
 		{
@@ -280,7 +280,7 @@ namespace Atlas
 		return false;
 	}
 	
-	bool SGClientUtil::DiffQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_old, const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_new)
+	bool SGClientUtil::DiffQuests(const Zion::Vector<SG_QUEST_LIVE_INFO>& quests_old, const Zion::Vector<SG_QUEST_LIVE_INFO>& quests_new)
 	{
 		if(quests_old.size() != quests_new.size())
 		{
@@ -305,32 +305,32 @@ namespace Atlas
 		return player.avatar_id == 0;
 	}
 
-	bool SGClientUtil::IsEmptySoldier(const Atlas::Vector<SG_SOLDIER>& soldiers)
+	bool SGClientUtil::IsEmptySoldier(const Zion::Vector<SG_SOLDIER>& soldiers)
 	{
 		return soldiers.empty();
 	}
 
-	bool SGClientUtil::IsEmptyGeneral(const Atlas::Vector<SG_GENERAL>& generals)
+	bool SGClientUtil::IsEmptyGeneral(const Zion::Vector<SG_GENERAL>& generals)
 	{
 		return generals.empty();
 	}
 
-	bool SGClientUtil::IsEmptyEquipt(const Atlas::Vector<SG_EQUIPT_ITEM>& equipts)
+	bool SGClientUtil::IsEmptyEquipt(const Zion::Vector<SG_EQUIPT_ITEM>& equipts)
 	{
 		return equipts.empty();
 	}
 
-	bool SGClientUtil::IsEmptyUsable(const Atlas::Vector<SG_USABLE_ITEM>& usables)
+	bool SGClientUtil::IsEmptyUsable(const Zion::Vector<SG_USABLE_ITEM>& usables)
 	{
 		return usables.empty();
 	}
 
-	bool SGClientUtil::IsEmptyGem(const Atlas::Vector<SG_GEM_ITEM>& gems)
+	bool SGClientUtil::IsEmptyGem(const Zion::Vector<SG_GEM_ITEM>& gems)
 	{
 		return gems.empty();
 	}
 
-	bool SGClientUtil::IsEmptyQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests)
+	bool SGClientUtil::IsEmptyQuests(const Zion::Vector<SG_QUEST_LIVE_INFO>& quests)
 	{
 		return quests.empty();
 	}
@@ -367,10 +367,10 @@ namespace Atlas
 	{
 		bool bRet = false;
 
-		Atlas::Vector<SG_EQUIPT_ITEM>& equiptVec		= (Atlas::Vector<SG_EQUIPT_ITEM>&)pClient->GetEquiptItem();
-		Atlas::Vector<SG_GEM_ITEM>& gemVec				= (Atlas::Vector<SG_GEM_ITEM>&)pClient->GetGemItem();
-		Atlas::Vector<SG_USABLE_ITEM>& usableVec		= (Atlas::Vector<SG_USABLE_ITEM>&)pClient->GetUsableItem();
-		Atlas::Vector<SG_MATERIAL_ITEM>& materialVec	= (Atlas::Vector<SG_MATERIAL_ITEM>&)pClient->GetMaterialItem();
+		Zion::Vector<SG_EQUIPT_ITEM>& equiptVec		= (Zion::Vector<SG_EQUIPT_ITEM>&)pClient->GetEquiptItem();
+		Zion::Vector<SG_GEM_ITEM>& gemVec				= (Zion::Vector<SG_GEM_ITEM>&)pClient->GetGemItem();
+		Zion::Vector<SG_USABLE_ITEM>& usableVec		= (Zion::Vector<SG_USABLE_ITEM>&)pClient->GetUsableItem();
+		Zion::Vector<SG_MATERIAL_ITEM>& materialVec	= (Zion::Vector<SG_MATERIAL_ITEM>&)pClient->GetMaterialItem();
 
 		//if one item has been update then do not update next vec and return true
 		if(	!UpdateItemCountTemplateFun<SG_EQUIPT_ITEM>(equiptVec, uuid, count)
@@ -389,7 +389,7 @@ namespace Atlas
 	}
 
 
-	void SGClientUtil::UpdateGeneralSoulBall(SG_PLAYER& player_info, Atlas::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general)
+	void SGClientUtil::UpdateGeneralSoulBall(SG_PLAYER& player_info, Zion::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general)
 	{
 		if(new_general.general_id == player_info.general_id)
 		{
@@ -400,7 +400,7 @@ namespace Atlas
 			}
 		}
 
-		for(Atlas::Vector<SG_GENERAL>::iterator it = generals.begin(); it != generals.end(); ++it)
+		for(Zion::Vector<SG_GENERAL>::iterator it = generals.begin(); it != generals.end(); ++it)
 		{
 			if((*it).general_id == new_general.general_id)
 			{
@@ -419,7 +419,7 @@ namespace Atlas
 	{
 		_U32 exp_add = 0;
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_HORSE_CONFIG >();
-		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 		bool bFind = false;
 		SG_HORSE_CONFIG* config1 = NULL;
 		SG_HORSE_CONFIG* config2 = NULL;
@@ -437,7 +437,7 @@ namespace Atlas
 				config2 = config;
 			}
 
-			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 
 		if(config1 == config2)
@@ -452,7 +452,7 @@ namespace Atlas
 		return exp_add;
 	}
 
-	bool SGClientUtil::UpdateEquipt(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt)
+	bool SGClientUtil::UpdateEquipt(Zion::Vector<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt)
 	{
 		bool ret = false;
 
@@ -475,7 +475,7 @@ namespace Atlas
 		return ret;
 	}
 
-	bool SGClientUtil::UpdateEquiptTurboLevel(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level)
+	bool SGClientUtil::UpdateEquiptTurboLevel(Zion::Vector<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level)
 	{
 		bool ret = false;
 
@@ -492,13 +492,13 @@ namespace Atlas
 	}
 
 
-	bool SGClientUtil::UnlockSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id)
+	bool SGClientUtil::UnlockSoldier(SG_PLAYER& player_info, Zion::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id)
 	{
 		bool ret = false;
 		
 		_U32 req_gold = 0;
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_SOLDIER_CONFIG >();
-		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 		bool bFind = false;
 		SG_SOLDIER_CONFIG* config = NULL;
 		while(content_obj)
@@ -510,7 +510,7 @@ namespace Atlas
 				break;
 			}
 
-			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 		
 		if(bFind)
@@ -543,7 +543,7 @@ namespace Atlas
 		return ret;
 	}
 
-	bool SGClientUtil::EnhanceSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id)
+	bool SGClientUtil::EnhanceSoldier(SG_PLAYER& player_info, Zion::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id)
 	{
 		bool ret = false;
 		
@@ -552,7 +552,7 @@ namespace Atlas
 		_U32 level = 1;
 
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_SOLDIER_CONFIG >();
-		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 		bool bFind = false;
 		SG_SOLDIER_CONFIG* config = NULL;
 		while(content_obj)
@@ -564,7 +564,7 @@ namespace Atlas
 				break;
 			}
 
-			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 		
 		if(bFind)
@@ -577,7 +577,7 @@ namespace Atlas
 		}
 		
 		struct_info = DDLReflect::GetStruct< SG_SOLDIER_LEVEL_CONFIG >();
-		content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 		SG_SOLDIER_LEVEL_CONFIG* config1 = NULL;
 
 		size_t i = 0;
@@ -617,20 +617,20 @@ namespace Atlas
 				ret = true;
 				break;
 			}
-			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 
 		return ret;
 	}
 
 
-	bool SGClientUtil::UpdateGemItemCount(Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count)
+	bool SGClientUtil::UpdateGemItemCount(Zion::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count)
 	{
 		bool ret = false;
 		return ret;
 	}
 	
-	_U32 SGClientUtil::GetGemItemCount(const Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id)
+	_U32 SGClientUtil::GetGemItemCount(const Zion::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id)
 	{
 		_U32 count = 0;
 		for(size_t i = 0; i < cache_gems.size(); ++i)

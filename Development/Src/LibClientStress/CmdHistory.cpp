@@ -1,11 +1,11 @@
-#include <AtlasSTL.h>
+#include <ZionSTL.h>
 #include "CmdHistory.h"
 
 #include <fstream>
 #include <assert.h>
 #include <algorithm>
 
-namespace Atlas
+namespace Zion
 {
 
 	CmdHistory::CmdHistory(const char* path)
@@ -18,7 +18,7 @@ namespace Atlas
 		ifs.open(m_path.c_str(), std::ios_base::app|std::ios_base::in);
 		if(ifs.is_open())
 		{
-			Atlas::String line;
+			Zion::String line;
 			while(getline(ifs, line))
 			{
 				m_cmds.push_back(line);
@@ -42,12 +42,12 @@ namespace Atlas
 		}
 	}
 
-	void CmdHistory::FindSimilarCmd( Atlas::String& cmd, CMD_SET& ret)
+	void CmdHistory::FindSimilarCmd( Zion::String& cmd, CMD_SET& ret)
 	{
 		for(CMD_SET::iterator it = m_cmds.begin();
 			it != m_cmds.end(); ++it)
 		{
-			if((*it).find(cmd) != Atlas::String::npos)
+			if((*it).find(cmd) != Zion::String::npos)
 			{
 				ret.push_back((*it));
 			}
@@ -59,12 +59,12 @@ namespace Atlas
 		return m_cmds;
 	}
 
-	Atlas::String CmdHistory::GetHistory( int index )
+	Zion::String CmdHistory::GetHistory( int index )
 	{
 		return m_cmds[index];
 	}
 
-	void CmdHistory::AddCmd( Atlas::String& cmd )
+	void CmdHistory::AddCmd( Zion::String& cmd )
 	{
 		//std::unique(m_cmds.begin(), m_cmds.end());
 		CMD_SET::iterator it = find(m_cmds.begin(), m_cmds.end(), cmd);

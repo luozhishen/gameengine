@@ -39,10 +39,6 @@
     <ProjectGuid>{3627A8B0-207D-4E5C-A79C-4804B90A4C7C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <ProjectName>SGLoginServer</ProjectName>
-    <SccProjectName>SAK</SccProjectName>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,7 +79,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\..\Atlas.props" />
+    <Import Project="..\..\Zion.props" />
     <Import Project="..\SGGame.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />

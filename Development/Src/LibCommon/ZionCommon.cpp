@@ -1,9 +1,9 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "CommonDDL.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	static char _global_game_dir[400] = "";
@@ -133,7 +133,7 @@ namespace Atlas
 
 	bool GetServerFunctionStub(_U16 iid, _U16 fid, const DDLReflect::CLASS_INFO*& cls)
 	{
-		if(!Atlas::GetServerStub(iid, cls)) return false;
+		if(!Zion::GetServerStub(iid, cls)) return false;
 		if(fid>=cls->fcount) return false;
 		return true;
 	}
@@ -147,7 +147,7 @@ namespace Atlas
 		*(pos++) = '\0';
 
 		const DDLReflect::CLASS_INFO* pClassInfo;
-		if(!Atlas::GetServerStub(sname, pClassInfo)) return false;
+		if(!Zion::GetServerStub(sname, pClassInfo)) return false;
 
 		for(_U16 f=0; f<pClassInfo->fcount; f++)
 		{
@@ -164,7 +164,7 @@ namespace Atlas
 
 	bool GetClientFunctionStub(_U16 iid, _U16 fid, const DDLReflect::CLASS_INFO*& cls)
 	{
-		if(!Atlas::GetClientStub(iid, cls)) return false;
+		if(!Zion::GetClientStub(iid, cls)) return false;
 		if(fid>=cls->fcount) return false;
 		return true;
 	}
@@ -178,7 +178,7 @@ namespace Atlas
 		*(pos++) = '\0';
 
 		const DDLReflect::CLASS_INFO* pClassInfo;
-		if(!Atlas::GetClientStub(sname, pClassInfo)) return false;
+		if(!Zion::GetClientStub(sname, pClassInfo)) return false;
 
 		for(_U16 f=0; f<pClassInfo->fcount; f++)
 		{

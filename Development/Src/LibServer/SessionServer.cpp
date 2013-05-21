@@ -1,5 +1,5 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 #include "ServerApp.h"
 #include "ServerBase.h"
 #include "ServerUtils.h"
@@ -10,7 +10,7 @@
 
 #define MAX_CONNS			30000
 #define TIEMR_PERIOD        2000
-namespace Atlas
+namespace Zion
 {
 
 	static bool SS_ON_CONNECT(HCONNECT hConn);
@@ -276,12 +276,12 @@ namespace Atlas
 		if(len<=blen-sizeof(_U16)*2)
 		{
 			memcpy(buf+4, data, len);
-			Atlas::Send(m_hConnect, len+sizeof(_U16)*2, buf);
+			Zion::Send(m_hConnect, len+sizeof(_U16)*2, buf);
 			return;
 		}
 		else
 		{
-			Atlas::Send(m_hConnect, blen, buf);
+			Zion::Send(m_hConnect, blen, buf);
 			len -= blen - sizeof(_U16)*2;
 			data += blen - sizeof(_U16)*2;
 		}
@@ -292,13 +292,13 @@ namespace Atlas
 			if(len<=blen)
 			{
 				memcpy(buf, data, len);
-				Atlas::Send(m_hConnect, len, buf);
+				Zion::Send(m_hConnect, len, buf);
 				return;
 			}
 			else
 			{
 				memcpy(buf, data, blen);
-				Atlas::Send(m_hConnect, blen, buf);
+				Zion::Send(m_hConnect, blen, buf);
 				len -= blen;
 				buf += blen;
 			}
@@ -479,39 +479,39 @@ namespace Atlas
 
 }
 
-void SRPC_UserLoginDone(Atlas::HCLIENT hClient, _U64 sndx, _U64 cndx)
+void SRPC_UserLoginDone(Zion::HCLIENT hClient, _U64 sndx, _U64 cndx)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CSessionClient> Locker(sndx);
+	Zion::CObjectLocker<Zion::CSessionClient> Locker(sndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->UserLoginDone(cndx);
 }
 
-void SRPC_KickUser(Atlas::HCLIENT hClient, _U64 sndx)
+void SRPC_KickUser(Zion::HCLIENT hClient, _U64 sndx)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CSessionClient> Locker(sndx);
+	Zion::CObjectLocker<Zion::CSessionClient> Locker(sndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->KickUser();
 }
 
-void SRPC_ForwardUserData(Atlas::HCLIENT hClient, _U64 sndx, _U16 code, _U32 len, const _U8* data)
+void SRPC_ForwardUserData(Zion::HCLIENT hClient, _U64 sndx, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CSessionClient> Locker(sndx);
-	Atlas::CSessionClient* pClient = Locker.GetObject();
+	Zion::CObjectLocker<Zion::CSessionClient> Locker(sndx);
+	Zion::CSessionClient* pClient = Locker.GetObject();
 	if(!pClient) return;
 	pClient->SendRawData(code, len, data);
 }
 
-void SRPC_SetNode(Atlas::HCLIENT hClient, _U64 sndx, _U32 nodeid, _U64 nndx, _U32 ip, _U16 port)
+void SRPC_SetNode(Zion::HCLIENT hClient, _U64 sndx, _U32 nodeid, _U64 nndx, _U32 ip, _U16 port)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 
-	Atlas::CObjectLocker<Atlas::CSessionClient> Locker(sndx);
+	Zion::CObjectLocker<Zion::CSessionClient> Locker(sndx);
 	if(!Locker.GetObject()) return;
 	if(nndx==-1)
 	{
@@ -519,6 +519,6 @@ void SRPC_SetNode(Atlas::HCLIENT hClient, _U64 sndx, _U32 nodeid, _U64 nndx, _U3
 	}
 	else
 	{
-		Locker.GetObject()->NodeConnect(nodeid, Atlas::GetRPCServer(ip, port), nndx);
+		Locker.GetObject()->NodeConnect(nodeid, Zion::GetRPCServer(ip, port), nndx);
 	}
 }

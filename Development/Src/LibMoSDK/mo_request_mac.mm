@@ -1,6 +1,6 @@
 #ifndef _WIN32
 
-#include <AtlasSTL.h>
+#include <ZionSTL.h>
 #include "mosdk.h"
 #include "mo_common.h"
 #import <Foundation/Foundation.h>
@@ -9,7 +9,7 @@
 
 struct MOREQUEST
 {
-    Atlas::String _result;
+    Zion::String _result;
     FILE* _file;
 	int _length;
     MOREQUESTSTATE _state;
@@ -112,16 +112,16 @@ struct MOREQUEST
 
 @end
 
-MOREQUEST* MORequestString(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params)
+MOREQUEST* MORequestString(const char* url, const Zion::Map<Zion::String, Zion::String>& params)
 {
-	Atlas::String val;
+	Zion::String val;
 	build_http_param(val, params);
 	return MORequestString(url, val.c_str());
 }
 
-MOREQUEST* MODownloadFile(const char* url, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path, bool append)
+MOREQUEST* MODownloadFile(const char* url, const Zion::Map<Zion::String, Zion::String>& params, const char* path, bool append)
 {
-	Atlas::String val;
+	Zion::String val;
 	build_http_param(val, params);
 	return MODownloadFile(url, val.c_str(), path);
 }

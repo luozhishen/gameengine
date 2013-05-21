@@ -8,9 +8,9 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
 
 #include <wx/listctrl.h>
 #include <wx/wxchar.h>
@@ -61,9 +61,9 @@ void CClientCaseView::Flush(bool full)
 	{
 		m_pListCtrl->DeleteAllItems();
 
-		Atlas::Set<Atlas::CStressCase*> cases;
+		Zion::Set<Zion::CStressCase*> cases;
 		m_pCurrentClient->GetStressCases(cases);
-		Atlas::Set<Atlas::CStressCase*>::iterator i;
+		Zion::Set<Zion::CStressCase*>::iterator i;
 		for(i=cases.begin(); i!=cases.end(); i++)
 		{
 			int n = m_pListCtrl->InsertItem(m_pListCtrl->GetItemCount(), wxString::FromUTF8((*i)->GetName().c_str()));
@@ -74,7 +74,7 @@ void CClientCaseView::Flush(bool full)
 	{
 		for(int i=0; i<m_pListCtrl->GetItemCount(); i++)
 		{
-			Atlas::CStressCase* pCase = m_pCurrentClient->GetStressCase((const char*)m_pListCtrl->GetItemText(i).ToUTF8());
+			Zion::CStressCase* pCase = m_pCurrentClient->GetStressCase((const char*)m_pListCtrl->GetItemText(i).ToUTF8());
 			if(!pCase) continue;
 			m_pListCtrl->SetItem(i, 1, wxString::FromUTF8(pCase->GetInfo().c_str()));
 		}
@@ -83,7 +83,7 @@ void CClientCaseView::Flush(bool full)
 
 void CClientCaseView::OnSwitchTo(_U32 index)
 {
-	m_pCurrentClient = Atlas::CStressManager::Get().GetClient(index);
+	m_pCurrentClient = Zion::CStressManager::Get().GetClient(index);
 	Flush(true);
 }
 
@@ -93,7 +93,7 @@ void CClientCaseView::OnClear()
 	m_pCurrentClient = NULL;
 }
 
-void CClientCaseView::OnNewCase(_U32 index, Atlas::CStressCase* pCase)
+void CClientCaseView::OnNewCase(_U32 index, Zion::CStressCase* pCase)
 {
 	Flush(true);
 }

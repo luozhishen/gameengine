@@ -7,7 +7,7 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
+#include <ZionBase.h>
 #include <StressManager.h>
 
 #include "CaseConfigDlg.h"
@@ -38,9 +38,9 @@ CCaseConfigDlg::CCaseConfigDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizer1);
 
-	Atlas::Vector<Atlas::String> cases;
-	Atlas::CStressManager::Get().GetCases(cases);
-	Atlas::Vector<Atlas::String>::iterator i;
+	Zion::Vector<Zion::String> cases;
+	Zion::CStressManager::Get().GetCases(cases);
+	Zion::Vector<Zion::String>::iterator i;
 	for(i=cases.begin(); i!=cases.end(); i++)
 	{
 		m_CaseMap[*i] = m_pCaseList->Append(wxString::FromUTF8((*i).c_str()));
@@ -62,17 +62,17 @@ CCaseConfigDlg::~CCaseConfigDlg()
 
 void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
 {
-	Atlas::Map<Atlas::String, int>::iterator i;
+	Zion::Map<Zion::String, int>::iterator i;
 	i = m_CaseMap.find(name);
 	if(i==m_CaseMap.end()) return;
 	m_pCaseList->SetSelection(i->second);
 
-	m_pCaseType = Atlas::CStressManager::Get().GetCaseConfigType(name);
+	m_pCaseType = Zion::CStressManager::Get().GetCaseConfigType(name);
 	if(m_pCaseType)
 	{
 		_U8* pData = (_U8*)ATLAS_ALLOC(m_pCaseType->size);
-		Atlas::CStressManager::Get().GetCaseConfigDefault(name, pData, m_pCaseType->size);
-		Atlas::String json;
+		Zion::CStressManager::Get().GetCaseConfigDefault(name, pData, m_pCaseType->size);
+		Zion::String json;
 		DDLReflect::Struct2Json(m_pCaseType, pData, json);
 		ATLAS_FREE(pData);
 		m_pConfigText->SetValue(wxString::FromUTF8(json.c_str()));
@@ -106,7 +106,7 @@ void CCaseConfigDlg::OnConfirm(wxCommandEvent& event)
 		if(m_pCaseData) ATLAS_FREE(m_pCaseData);
 
 		m_pCaseData = (_U8*)ATLAS_ALLOC(m_pCaseType->size);
-		Atlas::String json;
+		Zion::String json;
 		bool bRet = DDLReflect::Json2Struct(m_pCaseType, *m_pConfigText->GetValue().ToUTF8(), m_pCaseData);
 		if(!bRet)
 		{

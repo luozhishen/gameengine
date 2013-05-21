@@ -4,7 +4,7 @@
 #include <hash_map>
 #include "ServerInc.h"
 
-namespace Atlas
+namespace Zion
 {
 	class CClusterServer;
 	class CClusterClient;
@@ -22,9 +22,9 @@ namespace Atlas
 	class CClusterServer : public CServerBase
 	{
 		//<session, workload>
-		typedef Atlas::Map<HSERVER, WORKLOAD_INFO> SESSION_WORKLOADS;
+		typedef Zion::Map<HSERVER, WORKLOAD_INFO> SESSION_WORKLOADS;
 		//<NODE, workload>
-		typedef Atlas::List< std::pair<HSERVER, WORKLOAD_INFO> > NODE_LOADLIST;
+		typedef Zion::List< std::pair<HSERVER, WORKLOAD_INFO> > NODE_LOADLIST;
 
 	public:
 		CClusterServer(CServerApp* pServerApp);

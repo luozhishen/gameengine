@@ -4,7 +4,7 @@
 #define LOGIN_IORECVBUF_SIZE		(1024)
 #define LOGIN_IOSENDBUF_SIZE		(1024)
 
-namespace Atlas
+namespace Zion
 {
 	class CLoginServer;
 	class CLoginClient;
@@ -23,7 +23,7 @@ namespace Atlas
 			_U64 nWorkCapacity;
 		};
 
-		typedef Atlas::Vector<WORKLOAD_INFO> SESSION_WORKLOADS;
+		typedef Zion::Vector<WORKLOAD_INFO> SESSION_WORKLOADS;
 
 	public:
 		CLoginServer(CServerApp* pServerApp);

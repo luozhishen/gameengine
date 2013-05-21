@@ -2,11 +2,11 @@
 
 #ifndef WIN32
 
-#include "AtlasDefines.h"
-#include "AtlasSocket.h"
+#include "ZionDefines.h"
+#include "ZionSocket.h"
 #include "AsyncSockIO.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	HWORKERS CreateWorkers(_U32 count)

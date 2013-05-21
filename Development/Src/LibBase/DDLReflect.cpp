@@ -1,4 +1,4 @@
-#include "AtlasBase.h"
+#include "ZionBase.h"
 
 namespace DDL
 {
@@ -41,7 +41,7 @@ namespace DDLReflect
 		return call_jsonwrite(buf, def->finfos, def->fcount, json);
 	}
 
-	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Atlas::String& json)
+	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Zion::String& json)
 	{
 		Json::Value root(Json::objectValue);
 		if(!Call2Json(def, len, data, root)) return false;
@@ -50,7 +50,7 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool Json2Call(const FUNCTION_INFO* def, const Atlas::String& json, _U32& len, _U8* data)
+	bool Json2Call(const FUNCTION_INFO* def, const Zion::String& json, _U32& len, _U8* data)
 	{
 		Json::Value root;
 		Json::Reader reader;
@@ -68,7 +68,7 @@ namespace DDLReflect
 		return struct_jsonwrite(Value, def, data, ignore);
 	}
 
-	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Atlas::String& json)
+	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Zion::String& json)
 	{
 		Json::Value root(Json::objectValue);
 		if(!struct_jsonread(data, def, root)) return false;
@@ -77,7 +77,7 @@ namespace DDLReflect
 		return true;
 	}
 
-	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data, bool ignore)
+	bool Json2Struct(const STRUCT_INFO* def, const Zion::String& json, _U8* data, bool ignore)
 	{
 		Json::Value root;
 		Json::Reader reader;
@@ -608,18 +608,18 @@ namespace DDLReflect
 			break;
 		case TYPE_STRING:
 			{
-				Atlas::String v;
+				Zion::String v;
 				if(value.isString())
 				{
 					v = value.asString();
 				}
 				else if(value.isIntegral())
 				{
-					v = Atlas::StringFormat("%d", value.asInt());
+					v = Zion::StringFormat("%d", value.asInt());
 				}
 				else if(value.isDouble())
 				{
-					v = Atlas::StringFormat("%f", value.asDouble());
+					v = Zion::StringFormat("%f", value.asDouble());
 				}
 				else
 				{
@@ -633,7 +633,7 @@ namespace DDLReflect
 		case TYPE_UUID_REF:
 			{
 				if(!value.isString()) return false;
-				Atlas::String v = value.asString();
+				Zion::String v = value.asString();
 				if(!AUuidFromString(v.c_str(), *((A_UUID*)data))) return false;
 			}
 			break;
@@ -661,10 +661,10 @@ namespace DDLReflect
 
 	_U32 GetStructFieldOffset(const STRUCT_INFO* info, const char* name, FIELD_INFO* finfo)
 	{
-		Atlas::Vector<Atlas::String> ns;
-		Atlas::StringSplit(name, '.', ns);
+		Zion::Vector<Zion::String> ns;
+		Zion::StringSplit(name, '.', ns);
 		if(ns.empty()) return (_U32)-1;
-		Atlas::String fname;
+		Zion::String fname;
 		int findex = -1;
 		size_t i=0, old_i=ns.size();
 		_U32 offset = 0;
@@ -793,12 +793,12 @@ namespace DDLReflect
 		return GetStructFieldData(info, name, (void*)data, finfo);
 	}
 
-	bool StructParamToString(const FIELD_INFO* finfo, const void* data, Atlas::String& str)
+	bool StructParamToString(const FIELD_INFO* finfo, const void* data, Zion::String& str)
 	{
 		if(finfo->type&TYPE_ARRAY)
 		{
 			str = "[";
-			Atlas::String item;
+			Zion::String item;
 			FIELD_INFO _finfo = *finfo;
 			_finfo.type &= TYPE_MASK;
 			for(_U32 i=0; i<*(_U32*)data; i++)
@@ -814,42 +814,42 @@ namespace DDLReflect
 			switch(finfo->type)
 			{
 			case TYPE_U8:
-				str = Atlas::StringFormat("%u", (unsigned int)*((const _U8*)data));
+				str = Zion::StringFormat("%u", (unsigned int)*((const _U8*)data));
 				break;
 			case TYPE_U16:
-				str = Atlas::StringFormat("%u", (unsigned int)*((const _U16*)data));
+				str = Zion::StringFormat("%u", (unsigned int)*((const _U16*)data));
 				break;
 			case TYPE_U32:
-				str = Atlas::StringFormat("%u", *((const _U32*)data));
+				str = Zion::StringFormat("%u", *((const _U32*)data));
 				break;
 			case TYPE_U64:
 #ifdef WIN32
-				str = Atlas::StringFormat("%I64u", *((const _U64*)data));
+				str = Zion::StringFormat("%I64u", *((const _U64*)data));
 #else
-				str = Atlas::StringFormat("%llu", *((const _U64*)data));
+				str = Zion::StringFormat("%llu", *((const _U64*)data));
 #endif
 				break;
 			case TYPE_S8:
-				str = Atlas::StringFormat("%d", (int)*((const _S8*)data));
+				str = Zion::StringFormat("%d", (int)*((const _S8*)data));
 				break;
 			case TYPE_S16:
-				str = Atlas::StringFormat("%d", (int)*((const _S16*)data));
+				str = Zion::StringFormat("%d", (int)*((const _S16*)data));
 				break;
 			case TYPE_S32:
-				str = Atlas::StringFormat("%d", *((const _S32*)data));
+				str = Zion::StringFormat("%d", *((const _S32*)data));
 				break;
 			case TYPE_S64:
 #ifdef WIN32
-				str = Atlas::StringFormat("%I64d", *((const _S64*)data));
+				str = Zion::StringFormat("%I64d", *((const _S64*)data));
 #else
-				str = Atlas::StringFormat("%lld", *((const _S64*)data));
+				str = Zion::StringFormat("%lld", *((const _S64*)data));
 #endif
 				break;
 			case TYPE_F32:
-				str = Atlas::StringFormat("%G", (double)*((const _F32*)data));
+				str = Zion::StringFormat("%G", (double)*((const _F32*)data));
 				break;
 			case TYPE_F64:
-				str = Atlas::StringFormat("%G", *((const _F64*)data));
+				str = Zion::StringFormat("%G", *((const _F64*)data));
 				break;
 			case TYPE_STRING:
 				str = (const char*)data;
@@ -876,23 +876,23 @@ namespace DDLReflect
 		FIELD_INFO _finfo = *finfo;
 		STRUCT_INFO _sinfo = { NULL, "_sinfo", 0, 1, &_finfo };
 		_finfo.offset = 0;
-		Atlas::String json;
+		Zion::String json;
 		if(finfo->type==TYPE_STRING || finfo->type==TYPE_UUID || finfo->type==TYPE_UUID_REF)
 		{
-			json = Atlas::StringFormat("{\"%s\":\"%s\"}", finfo->name, str);
+			json = Zion::StringFormat("{\"%s\":\"%s\"}", finfo->name, str);
 		}
 		else if(finfo->type==TYPE_F32 || finfo->type==TYPE_F64)
 		{
-			json = Atlas::StringFormat("{\"%s\":%s%s}", finfo->name, *str=='.'?"0":"", str);
+			json = Zion::StringFormat("{\"%s\":%s%s}", finfo->name, *str=='.'?"0":"", str);
 		}
 		else
 		{
-			json = Atlas::StringFormat("{\"%s\":%s}", finfo->name, str);
+			json = Zion::StringFormat("{\"%s\":%s}", finfo->name, str);
 		}
 		return Json2Struct(&_sinfo, json, (_U8*)data);
 	}
 
-	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Atlas::String& str, FIELD_INFO* ofinfo)
+	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Zion::String& str, FIELD_INFO* ofinfo)
 	{
 		FIELD_INFO finfo;
 		const void* fdata = GetStructFieldData(info, name, data, finfo);

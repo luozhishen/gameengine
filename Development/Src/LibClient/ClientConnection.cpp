@@ -1,12 +1,12 @@
 #include <stdarg.h>
 
-#include "AtlasBase.h"
-#include "AtlasCommon.h"
-#include "AtlasClientApp.h"
-#include "AtlasClient.h"
+#include "ZionBase.h"
+#include "ZionCommon.h"
+#include "ZionClientApp.h"
+#include "ZionClient.h"
 #include "ClientConnection.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CClientConnection::CClientConnection(CClient* pClient, _U32 recvsize) : CClientConnectionBase(pClient)

@@ -22,13 +22,13 @@
     <ClCompile Include="AsyncRPC.cpp" />
     <ClCompile Include="AsyncSockIO_Unix.cpp" />
     <ClCompile Include="AsyncSockIO_Win32.cpp" />
-    <ClCompile Include="AtlasBase.cpp" />
-    <ClCompile Include="AtlasHash.cpp" />
-    <ClCompile Include="AtlasLog.cpp" />
-    <ClCompile Include="AtlasSocket.cpp" />
-    <ClCompile Include="AtlasSTL.cpp" />
-    <ClCompile Include="AtlasUUID.cpp" />
-    <ClCompile Include="AtlasUtils.cpp" />
+    <ClCompile Include="ZionBase.cpp" />
+    <ClCompile Include="ZionHash.cpp" />
+    <ClCompile Include="ZionLog.cpp" />
+    <ClCompile Include="ZionSocket.cpp" />
+    <ClCompile Include="ZionSTL.cpp" />
+    <ClCompile Include="ZionUUID.cpp" />
+    <ClCompile Include="ZionUtils.cpp" />
     <ClCompile Include="DDLReflect.cpp" />
     <ClCompile Include="JsonCpp.cpp">
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TreatWarningAsError>
@@ -45,14 +45,14 @@
     <ClInclude Include="AsyncRPC.h" />
     <ClInclude Include="AsyncRPCImpl.h" />
     <ClInclude Include="AsyncSockIO.h" />
-    <ClInclude Include="AtlasBase.h" />
-    <ClInclude Include="AtlasDefines.h" />
-    <ClInclude Include="AtlasHash.h" />
-    <ClInclude Include="AtlasLog.h" />
-    <ClInclude Include="AtlasSocket.h" />
-    <ClInclude Include="AtlasSTL.h" />
-    <ClInclude Include="AtlasUUID.h" />
-    <ClInclude Include="AtlasUtils.h" />
+    <ClInclude Include="ZionBase.h" />
+    <ClInclude Include="ZionDefines.h" />
+    <ClInclude Include="ZionHash.h" />
+    <ClInclude Include="ZionLog.h" />
+    <ClInclude Include="ZionSocket.h" />
+    <ClInclude Include="ZionSTL.h" />
+    <ClInclude Include="ZionUUID.h" />
+    <ClInclude Include="ZionUtils.h" />
     <ClInclude Include="DDL.h" />
     <ClInclude Include="DDLProxy.h" />
     <ClInclude Include="DDLReflect.h" />
@@ -63,10 +63,6 @@
     <ProjectGuid>{73A3A0DA-85DB-4571-9381-686CD246E80B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LibBase</RootNamespace>
-    <SccProjectName>SAK</SccProjectName>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -107,7 +103,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\Atlas.props" />
+    <Import Project="..\Zion.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

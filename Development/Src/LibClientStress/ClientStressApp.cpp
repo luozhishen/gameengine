@@ -6,10 +6,10 @@
 #include <wx/treectrl.h>
 #include <wx/config.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
+#include <ZionClientApp.h>
 
 #include "ClientStressApp.h"
 #include "ClientStressFrame.h"
@@ -21,7 +21,7 @@ CClientStressApp* g_ClientStressApp = NULL;
 CClientStressApp::CClientStressApp()
 {
 	g_ClientStressApp = this;
-	chdir(Atlas::GetExeDir());
+	chdir(Zion::GetExeDir());
 }
 
 CClientStressApp::~CClientStressApp()
@@ -30,11 +30,11 @@ CClientStressApp::~CClientStressApp()
 
 bool CClientStressApp::OnInit()
 {
-	Atlas::CClientApp::GetDefault()->InitApp();
+	Zion::CClientApp::GetDefault()->InitApp();
 
 	wxImage::AddHandler(ATLAS_NEW wxPNGHandler);
 
-	SetVendorName(wxT("Atlas"));
+	SetVendorName(wxT("Zion"));
 	SetAppName(wxT("ClientStress"));
 
 	wxConfigBase *pConfig = wxConfigBase::Get();
@@ -49,7 +49,7 @@ bool CClientStressApp::OnInit()
 
 int CClientStressApp::OnExit()
 {
-	Atlas::CClientApp::GetDefault()->FiniApp();
+	Zion::CClientApp::GetDefault()->FiniApp();
 
 	delete wxConfigBase::Set(NULL);
 	return 0;

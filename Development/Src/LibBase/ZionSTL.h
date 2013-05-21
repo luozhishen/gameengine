@@ -7,7 +7,7 @@
 #include <set>
 #include <list>
 
-namespace Atlas
+namespace Zion
 {
 
 	void* AtlasMalloc(unsigned int size);

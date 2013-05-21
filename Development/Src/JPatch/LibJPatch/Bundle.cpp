@@ -1,4 +1,4 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include "bundle.h"
 
@@ -14,7 +14,7 @@ namespace JPatch
 		return s1._Offset < s2._Offset;
 	}
 
-	CSection* CFile::GetSectionByMD5(Atlas::String& md5)
+	CSection* CFile::GetSectionByMD5(Zion::String& md5)
 	{
 		for(_U32 i=0; i<_Sections.size(); i++)
 		{
@@ -23,7 +23,7 @@ namespace JPatch
 		return NULL;
 	}
 
-	CSection* CFile::GetSectionByName(Atlas::String& name)
+	CSection* CFile::GetSectionByName(Zion::String& name)
 	{
 		for(_U32 i=0; i<_Sections.size(); i++)
 		{
@@ -45,16 +45,16 @@ namespace JPatch
 		}
 
 		CFile* file = NULL;
-		Atlas::String line;
+		Zion::String line;
 		while(!f.eof())
 		{
 			std::getline(f, line);
-			line = Atlas::StringTrim(line);
+			line = Zion::StringTrim(line);
 			if(line.size()==0) continue;
 			if(line[0]=='*')
 			{
-				Atlas::Vector<Atlas::String> rs;
-				Atlas::StringSplit(line, ' ', rs);
+				Zion::Vector<Zion::String> rs;
+				Zion::StringSplit(line, ' ', rs);
 
 				rs[0] = rs[0].substr(1);
 				if(_Files.find(rs[0])!=_Files.end())
@@ -74,8 +74,8 @@ namespace JPatch
 					printf("%s : no file\n", bls);
 					return false;
 				}
-				Atlas::Vector<Atlas::String> rs;
-				Atlas::StringSplit(line, ' ', rs);
+				Zion::Vector<Zion::String> rs;
+				Zion::StringSplit(line, ' ', rs);
 				if(rs.size()!=3 && rs.size()!=4)
 				{
 					printf("%s : error data\n", bls);
@@ -91,7 +91,7 @@ namespace JPatch
 			}
 		}
 
-		Atlas::Map<Atlas::String, CFile>::iterator i;
+		Zion::Map<Zion::String, CFile>::iterator i;
 		for(i=_Files.begin(); i!=_Files.end(); i++)
 		{
 			file = &i->second;

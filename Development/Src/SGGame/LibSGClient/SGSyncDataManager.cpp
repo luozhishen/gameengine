@@ -1,11 +1,11 @@
-#include <AtlasBase.h>
-#include <AtlasClient.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionClient.h>
+#include <ZionCommon.h>
 #include "SGCommon.h"
 #include "SGClient.h"
 #include "SGSyncDataManager.h"
 
-namespace Atlas
+namespace Zion
 {
 	#define SYNC_SEQ_MAX 9
 

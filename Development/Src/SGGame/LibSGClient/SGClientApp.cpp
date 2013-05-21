@@ -1,18 +1,18 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
+#include <ZionClientApp.h>
 
 #include "SGCommon.h"
 #include "SGClientApp.h"
 #include "SGClient.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CSGClientApp::CSGClientApp(bool bThread) : CClientApp("SGGame", bThread)
 	{
-		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://192.168.0.96/Atlas/action/%s.php");
+		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://192.168.0.96/Zion/action/%s.php");
 		if(!GetParam("ConnectType")) SetParam("ConnectType", "http");
 	}
 
@@ -20,9 +20,9 @@ namespace Atlas
 	{
 	}
 
-	Atlas::CClient* CSGClientApp::NewClient()
+	Zion::CClient* CSGClientApp::NewClient()
 	{
-		Atlas::CClient* pClient = ATLAS_NEW CSGClient(this);
+		Zion::CClient* pClient = ATLAS_NEW CSGClient(this);
 		if(!pClient) return NULL;
 		pClient->InitializeComponents();
 		return pClient;

@@ -4,8 +4,8 @@
 #include <wx/grid.h>
 #include <wx/wx.h>
 
-#include <AtlasBase.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionClientApp.h>
 
 #include "StressLoader.h"
 
@@ -47,8 +47,8 @@ void ServerParamDlg::InitCtrls()
 	m_pPropGrid = ATLAS_NEW wxPropertyGrid(this, ID_PROPERTY_GRID, wxDefaultPosition, wxDefaultSize, 
             wxPG_AUTO_SORT | wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
 	
-	Atlas::Map<Atlas::String, Atlas::String> params = Atlas::CClientApp::GetDefault()->GetParams();
-	Atlas::Map<Atlas::String, Atlas::String>::iterator it = params.begin();
+	Zion::Map<Zion::String, Zion::String> params = Zion::CClientApp::GetDefault()->GetParams();
+	Zion::Map<Zion::String, Zion::String>::iterator it = params.begin();
 
 	for(int i = 0; it != params.end(); ++it, ++i)
 	{
@@ -63,7 +63,7 @@ void ServerParamDlg::InitCtrls()
 
 void ServerParamDlg::OnConfirm(wxCommandEvent& event)
 {
-	Atlas::CStressLoader loader;
+	Zion::CStressLoader loader;
 	//wxFileDialog dlg(this, wxT("save script file"), wxT(""), wxT(""), wxT("xml files (*.xml) | *.xml"), wxFD_OPEN|wxFD_FILE_MUST_EXIST);
 	//if(dlg.ShowModal() == wxID_CANCEL)
 	//{
@@ -78,10 +78,10 @@ void ServerParamDlg::OnConfirm(wxCommandEvent& event)
 		wxString strKey = p->GetName();
 		wxString strValue = p->GetValueAsString();
 
-		Atlas::CClientApp::GetDefault()->SetParam((char*)strKey.ToUTF8().data(), (char*)strValue.ToUTF8().data());
+		Zion::CClientApp::GetDefault()->SetParam((char*)strKey.ToUTF8().data(), (char*)strValue.ToUTF8().data());
 	}
 	
-	Atlas::CClientApp::GetDefault()->SaveParams();
+	Zion::CClientApp::GetDefault()->SaveParams();
 
 
 	//loader.LoadScript((const char*)strPath.c_str());

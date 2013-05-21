@@ -36,7 +36,7 @@ public:
 		m_Logs[index] = msg;
 	}
 
-	Atlas::Vector<Atlas::String> m_Logs;
+	Zion::Vector<Zion::String> m_Logs;
 	size_t m_nStart, m_nCount;
 	bool m_bEnable;
 };
@@ -67,7 +67,7 @@ private:
 	wxCheckBox*			m_pEnable;
 	wxCheckBox*			m_pAutoReflush;
 	wxTextCtrl*			m_pLog;
-	Atlas::Map<_U32, CClientLogItem> m_Clients;
+	Zion::Map<_U32, CClientLogItem> m_Clients;
 };
 
 #endif

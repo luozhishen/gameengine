@@ -1,4 +1,4 @@
-#include <AtlasDefines.h>
+#include <ZionDefines.h>
 
 #include <wx/wxprec.h>
 #include <wx/wx.h>
@@ -10,8 +10,8 @@
 #include <wx/utils.h>
 #include <wx/clipbrd.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "EditorFrame.h"
 #include "ObjectDefineView.h"
@@ -51,10 +51,10 @@ BEGIN_EVENT_TABLE(CEditorFrame, wxFrame)
 	EVT_SHOW(CEditorFrame::OnShow)
 END_EVENT_TABLE()
 
-CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Atlas Editor - "))
+CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Zion Editor - "))
 {
 	wxString title = GetTitle();
-	title = title + wxString::FromUTF8(Atlas::AtlasGameName());
+	title = title + wxString::FromUTF8(Zion::AtlasGameName());
 	SetTitle(title);
 
 	// menu
@@ -69,7 +69,7 @@ CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Atlas Editor - "))
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Atlas::AtlasGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::AtlasGameName()));
 		m_FrameData.x = pConfig->Read(wxT("x"), 50);
 		m_FrameData.y = pConfig->Read(wxT("y"), 50);
 		m_FrameData.w = pConfig->Read(wxT("w"), 350);
@@ -85,7 +85,7 @@ CEditorFrame::~CEditorFrame()
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Atlas::AtlasGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::AtlasGameName()));
 		pConfig->Write(wxT("x"), (long)m_FrameData.x);
 		pConfig->Write(wxT("y"), (long)m_FrameData.y);
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
@@ -120,20 +120,20 @@ void CEditorFrame::InitClient()
 {
 	wxNotebook* pTab = ATLAS_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
 
-	Atlas::Map<int, const DDLReflect::STRUCT_INFO*> content;
-	Atlas::Map<int, const DDLReflect::STRUCT_INFO*> live;
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Map<int, const DDLReflect::STRUCT_INFO*> content;
+	Zion::Map<int, const DDLReflect::STRUCT_INFO*> live;
+	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 
-	Atlas::ContentObject::GetTypeList(list);
+	Zion::ContentObject::GetTypeList(list);
 	for(i=list.begin(); i!=list.end(); i++)
 	{
-		content[Atlas::ContentObject::GetTypeId((*i)->name)] = *i;
+		content[Zion::ContentObject::GetTypeId((*i)->name)] = *i;
 	}
-	Atlas::LiveObject::GetTypeList(list);
+	Zion::LiveObject::GetTypeList(list);
 	for(i=list.begin(); i!=list.end(); i++)
 	{
-		live[Atlas::LiveObject::GetTypeId((*i)->name)] = *i;
+		live[Zion::LiveObject::GetTypeId((*i)->name)] = *i;
 	}
 
 	CObjectDefineView* pView = ATLAS_NEW CObjectDefineView(pTab);
@@ -160,7 +160,7 @@ void CEditorFrame::OnFileMenu(wxCommandEvent& event)
 	case ID_RELOAD:
 		if(m_pContentDataView->CheckModify(true))
 		{
-			if(!Atlas::ContentObject::LoadContent(NULL, false))
+			if(!Zion::ContentObject::LoadContent(NULL, false))
 			{
 				wxMessageBox(wxT("Failed to load content"), wxT("Error"));
 			}
@@ -188,7 +188,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 	case ID_COOK_SAVE:
 		if(m_pContentDataView->CheckModify(false))
 		{
-			if(!Atlas::ContentObject::SaveContentToBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+			if(!Zion::ContentObject::SaveContentToBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
 			{
 				wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
 			}
@@ -201,8 +201,8 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 	case ID_COOK_LOAD:
 		if(m_pContentDataView->CheckModify(true))
 		{
-			Atlas::ContentObject::ClearContents();
-			if(!Atlas::ContentObject::LoadContentFromBinaryFile(Atlas::StringFormat("%s/Content/CookedData.xxx", Atlas::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+			Zion::ContentObject::ClearContents();
+			if(!Zion::ContentObject::LoadContentFromBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
 			{
 				wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
 			}
@@ -216,7 +216,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		if(m_pContentDataView->CheckModify(true))
 		{
 			CImportDlg dlg(this);
-			Atlas::String path = Atlas::StringFormat("%s%s", Atlas::AtlasGameDir(), "Config/ContentTemplate.json");
+			Zion::String path = Zion::StringFormat("%s%s", Zion::AtlasGameDir(), "Config/ContentTemplate.json");
 			if(dlg.LoadTemplateDefine(path.c_str()))
 			{
 				dlg.ShowModal();
@@ -236,9 +236,9 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		}
 		break;
 	case ID_BUILD_INDEX:
-		if(!Atlas::ContentObject::BuildIndex())
+		if(!Zion::ContentObject::BuildIndex())
 		{
-			wxMessageBox(wxString::FromUTF8(Atlas::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("BUILD INDEX ERROR"));
+			wxMessageBox(wxString::FromUTF8(Zion::ContentObject::BuildIndexGetErrorMsg().c_str()), wxT("BUILD INDEX ERROR"));
 		}
 		else
 		{
@@ -250,7 +250,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 void CEditorFrame::OnHelpMenu(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Atlas Editor for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Atlas::AtlasGameName()));
+	txt.Printf(wxT("Zion Editor for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::AtlasGameName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 
@@ -287,7 +287,7 @@ bool CEditorFrame::SaveContent(bool exit)
 
 	if(exit)
 	{
-		if(!Atlas::ContentObject::IsContentDirty())
+		if(!Zion::ContentObject::IsContentDirty())
 		{
 			return true;
 		}
@@ -297,7 +297,7 @@ bool CEditorFrame::SaveContent(bool exit)
 		if(ret==wxNO) return true;
 	}
 
-	if(!Atlas::ContentObject::SaveContent(NULL, true))
+	if(!Zion::ContentObject::SaveContent(NULL, true))
 	{
 		wxMessageBox(wxT("Save content failed"), wxT("!!!"));
 		return false;

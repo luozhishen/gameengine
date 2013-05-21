@@ -1,9 +1,9 @@
 #ifndef WITHOUT_ATLAS_ASYNCIO
 
-#include "AtlasBase.h"
+#include "ZionBase.h"
 #include "AsyncRPCImpl.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	template <typename pool_t>
@@ -234,7 +234,7 @@ namespace Atlas
 		TURBO_ALLOCATOR<HIOPOOL> allocator;
 		HWORKERS hworkers;
 		A_MUTEX maplock;
-		Atlas::Map<_U64, RPC_SERVER*> servers;
+		Zion::Map<_U64, RPC_SERVER*> servers;
 
 		RPC_ENGINE() {
 			ASockIOInit();
@@ -243,7 +243,7 @@ namespace Atlas
 			ATLAS_ASSERT(hworkers);
 		}
 		~RPC_ENGINE() {
-			for(Atlas::Map<_U64, RPC_SERVER*>::const_iterator citer=servers.begin(); citer!=servers.end(); ++citer) {
+			for(Zion::Map<_U64, RPC_SERVER*>::const_iterator citer=servers.begin(); citer!=servers.end(); ++citer) {
 				if(citer->second) {
 					citer->second->fini();
 					ATLAS_ALIGN_FREE(citer->second);
@@ -432,7 +432,7 @@ namespace Atlas
 		HWORKERS hworkers;
 		HTCPEP hep;
 		A_MUTEX maplock;
-		Atlas::Map<HCONNECT, RPC_CLIENT*> conns;
+		Zion::Map<HCONNECT, RPC_CLIENT*> conns;
 		SOCK_ADDR sockaddr;
 
 		bool Add(HCONNECT hConn, RPC_CLIENT* pclt) {
@@ -517,7 +517,7 @@ namespace Atlas
 			StopEP(hep);
 			do {
 				A_MUTEX_LOCK(&maplock);
-				for(Atlas::Map<HCONNECT, RPC_CLIENT*>::const_iterator citer=conns.begin(); citer!=conns.end(); ++citer) {
+				for(Zion::Map<HCONNECT, RPC_CLIENT*>::const_iterator citer=conns.begin(); citer!=conns.end(); ++citer) {
 					Disconnect(citer->first);
 				}
 				A_MUTEX_UNLOCK(&maplock);
@@ -606,7 +606,7 @@ namespace Atlas
 			RPCClientOnData,
 			(PFN_ON_CONNECTFAILED)RPCClientOnConnectFailed
 		};
-		return Atlas::Connect(sain, handler, theRpcEngine.allocator.GetMaxPool(), theRpcEngine.hworkers, this);
+		return Zion::Connect(sain, handler, theRpcEngine.allocator.GetMaxPool(), theRpcEngine.hworkers, this);
 	}
 
 	HSERVER GetRPCServer(const _STR ep)

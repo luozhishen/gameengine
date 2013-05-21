@@ -10,8 +10,8 @@
 #include <process.h>
 #pragma comment(lib, "ws2_32")
 
-#include "AtlasDefines.h"
-#include "AtlasSocket.h"
+#include "ZionDefines.h"
+#include "ZionSocket.h"
 #include "AsyncSockIO.h"
 
 #include <pshpack8.h>
@@ -25,7 +25,7 @@
 #define	SIOP_RECVFROM	6
 #define	SIOP_SENDTO		7
 
-namespace Atlas
+namespace Zion
 {
 
 	// Number of bytes allowed to be in the WSASend callback pending state before stalling sends

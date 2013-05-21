@@ -3,7 +3,7 @@
 
 #include <list>
 
-namespace Atlas
+namespace Zion
 {
 
 	class CClient;
@@ -41,7 +41,7 @@ namespace Atlas
 
 		void SetParam(const char* name, const char* value);
 		const char* GetParam(const char* name, const char* default_value=NULL);
-		const Atlas::Map<Atlas::String, Atlas::String>& GetParams();
+		const Zion::Map<Zion::String, Zion::String>& GetParams();
 		bool LoadParams(const char* path = NULL);
 		bool SaveParams();
 
@@ -67,13 +67,13 @@ namespace Atlas
 		void UnregisterClient(CClient* pClient);
 
 	private:
-		Atlas::Map<Atlas::String, Atlas::String> m_Params;
+		Zion::Map<Zion::String, Zion::String> m_Params;
 		A_MUTEX m_mtxQueue;
-		Atlas::List<CLIENTAPP_ITEM> m_Queue;
+		Zion::List<CLIENTAPP_ITEM> m_Queue;
 		bool m_bThread;
 		bool m_bEnableTick;
 		_U32 m_nRecvSize, m_nSendSize;
-		Atlas::Set<CClient*> m_Clients;
+		Zion::Set<CClient*> m_Clients;
 	};
 
 }

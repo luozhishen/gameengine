@@ -1,7 +1,7 @@
-#include "AtlasBase.h"
+#include "ZionBase.h"
 #include "ServerUtils.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CServerIndexMap::CServerIndexMap()

@@ -1,7 +1,7 @@
 #ifndef __ATLAS_HASH__
 #define __ATLAS_HASH__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CHashMD5

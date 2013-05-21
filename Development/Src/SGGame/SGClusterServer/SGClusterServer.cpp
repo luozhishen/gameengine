@@ -1,10 +1,10 @@
-#include <AtlasBase.h>
-#include <AtlasServer.h>
+#include <ZionBase.h>
+#include <ZionServer.h>
 
 #include "SGCluster.h"
 #include "SGCommon.h"
 
-class CClusterServerApp : public Atlas::CServerApp
+class CClusterServerApp : public Zion::CServerApp
 {
 public:
 	CClusterServerApp()
@@ -13,19 +13,19 @@ public:
 
 	virtual void InitApp()
 	{
-		Atlas::CServerApp::InitApp();
-		m_pClusterServer = ATLAS_NEW Atlas::CSGClusterServer(this);
+		Zion::CServerApp::InitApp();
+		m_pClusterServer = ATLAS_NEW Zion::CSGClusterServer(this);
 		m_pClusterServer->Start();
 	}
 
 	virtual void FiniApp()
 	{
 		m_pClusterServer->Stop();
-		Atlas::CServerApp::FiniApp();
+		Zion::CServerApp::FiniApp();
 	}
 
 private:
-	Atlas::CSGClusterServer* m_pClusterServer;
+	Zion::CSGClusterServer* m_pClusterServer;
 };
 
 int main(int argc, char* argv[])
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 	if(argc>1)
 	{
 		ClusterServerApp.SetRPCAddrPort(argv[1]);
-		Atlas::SLog("Cluster Server Start rpc[%s]", argv[1]);
+		Zion::SLog("Cluster Server Start rpc[%s]", argv[1]);
 	}
 	else
 	{

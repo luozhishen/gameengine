@@ -1,12 +1,12 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
 
 #include "StressCase.h"
 #include "StressClient.h"
 #include "StressManager.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CStressCase::CStressCase(const char* name)
@@ -43,9 +43,9 @@ namespace Atlas
 		return bRet;
 	}
 
-	const Atlas::String CStressCase::GetInfo()
+	const Zion::String CStressCase::GetInfo()
 	{
-		Atlas::String info;
+		Zion::String info;
 		A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
 		_GetInfo(info);
 		A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);

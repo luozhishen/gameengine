@@ -13,13 +13,13 @@ public:
 
 	virtual void OnSwitchTo(_U32 index);
 	virtual void OnClear();
-	virtual void OnNewCase(_U32 index, Atlas::CStressCase* pCase);
+	virtual void OnNewCase(_U32 index, Zion::CStressCase* pCase);
 
 	void OnTimer(wxTimerEvent& event);
 
 private:
 	wxListCtrl* m_pListCtrl;
-	Atlas::CStressClient* m_pCurrentClient;
+	Zion::CStressClient* m_pCurrentClient;
 	wxTimer m_StressTimer;
 
 };

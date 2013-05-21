@@ -1,10 +1,10 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "SGGameDDL.h"
 #include <ContentObject.h>
 
-namespace Atlas
+namespace Zion
 {
 	struct JsonContent
 	{
@@ -94,7 +94,7 @@ namespace Atlas
 
 	void InitDDLStub()
 	{
-		Atlas::Engine::InitDDLStub();
+		Zion::Engine::InitDDLStub();
 
 		RegisterClientStub<SGGAME_S2C>();
 		RegisterServerStub<SGGAME_C2S>(0);
@@ -103,7 +103,7 @@ namespace Atlas
 	void InitContentObjects()
 	{
 
-		//Atlas::Engine::InitContentObjects();
+		//Zion::Engine::InitContentObjects();
 		//ContentObject::IContentGroup* pContentGroup = ContentObject::CreateContentGroup("SGGame", "sggame.json", true);
 
 		int nSum = sizeof(g_JsonContent)/sizeof(g_JsonContent[0]);
@@ -242,7 +242,7 @@ namespace Atlas
 
 	void InitLiveObjects()
 	{
-		Atlas::Engine::InitLiveObjects();
+		Zion::Engine::InitLiveObjects();
 		LiveObject::Register(DDLReflect::GetStruct<SG_PLAYER>());
 	}
 

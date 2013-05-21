@@ -3,7 +3,7 @@
 
 #include <hash_map>
 
-namespace Atlas
+namespace Zion
 {
 
 	template<class T, _U32 count>

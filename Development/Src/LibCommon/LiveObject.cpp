@@ -1,4 +1,4 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include "LiveObject.h"
 #include "CommonDDL.h"
@@ -6,12 +6,12 @@
 #include <string>
 #include <map>
 
-namespace Atlas
+namespace Zion
 {
 	namespace LiveObject
 	{
-		static Atlas::Map<Atlas::String, std::pair<int, const DDLReflect::STRUCT_INFO*>> g_type_map;
-		static Atlas::Map<_U16, const DDLReflect::STRUCT_INFO*> g_typeid_map;
+		static Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*>> g_type_map;
+		static Zion::Map<_U16, const DDLReflect::STRUCT_INFO*> g_typeid_map;
 		static _U16 g_typeid_max = 0x2000;
 
 		bool Register(const DDLReflect::STRUCT_INFO* info)
@@ -29,10 +29,10 @@ namespace Atlas
 			return true;
 		}
 
-		void GetTypeList(Atlas::Vector<const DDLReflect::STRUCT_INFO*>& list)
+		void GetTypeList(Zion::Vector<const DDLReflect::STRUCT_INFO*>& list)
 		{
 			list.clear();
-			Atlas::Map<_U16, const DDLReflect::STRUCT_INFO*>::const_iterator i;
+			Zion::Map<_U16, const DDLReflect::STRUCT_INFO*>::const_iterator i;
 			for(i=g_typeid_map.begin(); i!=g_typeid_map.end(); i++)
 			{
 				list.push_back(i->second);
@@ -41,7 +41,7 @@ namespace Atlas
 
 		_U16 GetTypeId(const char* name)
 		{
-			Atlas::Map<Atlas::String, std::pair<int, const DDLReflect::STRUCT_INFO*>>::const_iterator i;
+			Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*>>::const_iterator i;
 			i = g_type_map.find(name);
 			if(i==g_type_map.end()) return (_U16)-1;
 			return (_U16)i->second.first;
@@ -49,7 +49,7 @@ namespace Atlas
 
 		const DDLReflect::STRUCT_INFO* GetType(const char* name)
 		{
-			Atlas::Map<Atlas::String, std::pair<int, const DDLReflect::STRUCT_INFO*>>::const_iterator i;
+			Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*>>::const_iterator i;
 			i = g_type_map.find(name);
 			if(i==g_type_map.end()) return NULL;
 			return i->second.second;
@@ -57,7 +57,7 @@ namespace Atlas
 
 		const DDLReflect::STRUCT_INFO* GetType(_U16 id)
 		{
-			Atlas::Map<_U16, const DDLReflect::STRUCT_INFO*>::const_iterator i;
+			Zion::Map<_U16, const DDLReflect::STRUCT_INFO*>::const_iterator i;
 			i = g_typeid_map.find(id);
 			if(i==g_typeid_map.end()) return NULL;
 			return i->second;

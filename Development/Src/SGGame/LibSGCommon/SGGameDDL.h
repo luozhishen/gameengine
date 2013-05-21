@@ -5,9 +5,9 @@
 #ifndef __SGGAMEDDL_DDL_CODEGEN__
 #define __SGGAMEDDL_DDL_CODEGEN__
 
-#include <AtlasDefines.h>
-#include <AtlasSTL.h>
-#include <AtlasUUID.h>
+#include <ZionDefines.h>
+#include <ZionSTL.h>
+#include <ZionUUID.h>
 #include <DDL.h>
 #include <DDLProxy.h>
 #include <DDLStub.h>

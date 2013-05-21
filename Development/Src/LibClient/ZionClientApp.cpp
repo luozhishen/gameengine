@@ -1,13 +1,13 @@
-#include "AtlasBase.h"
-#include "AtlasCommon.h"
-#include "AtlasClientApp.h"
-#include "AtlasClient.h"
+#include "ZionBase.h"
+#include "ZionCommon.h"
+#include "ZionClientApp.h"
+#include "ZionClient.h"
 #include "mosdk.h"
 #include "ClientConnection.h"
 #include "AsyncIOConnection.h"
 #include <fstream>
 
-namespace Atlas
+namespace Zion
 {
 	static CClientApp* __global_client_app = NULL;
 
@@ -59,13 +59,13 @@ namespace Atlas
 	
 	const char* CClientApp::GetParam(const char* name, const char* default_value)
 	{
-		Atlas::Map<Atlas::String, Atlas::String>::iterator i;
+		Zion::Map<Zion::String, Zion::String>::iterator i;
 		i = m_Params.find(name);
 		if(i==m_Params.end()) return default_value;
 		return i->second.c_str();
 	}
 	
-	const Atlas::Map<Atlas::String, Atlas::String>& CClientApp::GetParams()
+	const Zion::Map<Zion::String, Zion::String>& CClientApp::GetParams()
 	{
 		return m_Params;
 	}
@@ -74,10 +74,10 @@ namespace Atlas
 	{
 		m_Params.clear();
 
-		Atlas::String strXmlFile = path?path:Atlas::AtlasGameDir();
+		Zion::String strXmlFile = path?path:Zion::AtlasGameDir();
 		if(path)
 		{
-			strXmlFile = Atlas::StringFormat("%s%s", path, "Client.json");
+			strXmlFile = Zion::StringFormat("%s%s", path, "Client.json");
 		}
 		else
 		{
@@ -97,9 +97,9 @@ namespace Atlas
 		
 		for(Json::UInt i = 0; i < root.size(); ++i)
 		{
-			Atlas::Vector<Atlas::String> vec = root.getMemberNames();
-			Atlas::String strKey = vec[i];
-			Atlas::String strValue = root[strKey.c_str()].asString();
+			Zion::Vector<Zion::String> vec = root.getMemberNames();
+			Zion::String strKey = vec[i];
+			Zion::String strValue = root[strKey.c_str()].asString();
 
 			m_Params[strKey] = strValue;
 		}
@@ -114,13 +114,13 @@ namespace Atlas
 		Json::Value root;
 		Json::FastWriter writer;
 		
-		for(Atlas::Map<Atlas::String, Atlas::String>::const_iterator it = m_Params.begin(); it != m_Params.end(); ++it)
+		for(Zion::Map<Zion::String, Zion::String>::const_iterator it = m_Params.begin(); it != m_Params.end(); ++it)
 		{
 			root[it->first] = it->second;
 		}
 
-		Atlas::String json_file = writer.write(root);
-		Atlas::String strXmlFile = Atlas::AtlasGameDir();
+		Zion::String json_file = writer.write(root);
+		Zion::String strXmlFile = Zion::AtlasGameDir();
 		strXmlFile += "\\Config\\Client.json";
 		std::ofstream ofs;
 		ofs.open(strXmlFile.c_str());
@@ -207,7 +207,7 @@ namespace Atlas
 			}
 		}
 
-		Atlas::Set<CClient*>::iterator it;
+		Zion::Set<CClient*>::iterator it;
 		for(it=m_Clients.begin(); it!=m_Clients.end(); it++)
 		{
 			(*it)->Tick();

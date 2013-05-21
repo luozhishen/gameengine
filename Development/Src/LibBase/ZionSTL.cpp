@@ -1,6 +1,7 @@
-#include "AtlasSTL.h"
+#include <ZionSTL.h>
+#include <stdlib.h>
 
-namespace Atlas
+namespace Zion
 {
 
 	void* AtlasMalloc(unsigned int size)

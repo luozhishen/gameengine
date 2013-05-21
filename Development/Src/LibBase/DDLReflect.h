@@ -99,23 +99,23 @@ namespace DDLReflect
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Json::Value& json);
 	bool Json2Call(const FUNCTION_INFO* def, const Json::Value& json, _U32& len, _U8* data);
 
-	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Atlas::String& json);
-	bool Json2Call(const FUNCTION_INFO* def, const Atlas::String& json, _U32& len, _U8* data);
+	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Zion::String& json);
+	bool Json2Call(const FUNCTION_INFO* def, const Zion::String& json, _U32& len, _U8* data);
 
 	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Json::Value& Value);
 	bool Json2Struct(const STRUCT_INFO* def, const Json::Value& Value, _U8* data, bool ignore=false);
 
-	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Atlas::String& json);
-	bool Json2Struct(const STRUCT_INFO* def, const Atlas::String& json, _U8* data, bool ignore=false);
+	bool Struct2Json(const STRUCT_INFO* def, const _U8* data, Zion::String& json);
+	bool Json2Struct(const STRUCT_INFO* def, const Zion::String& json, _U8* data, bool ignore=false);
 
 	template<typename T>
-	inline bool Struct2Json(const T& data, Atlas::String& json)
+	inline bool Struct2Json(const T& data, Zion::String& json)
 	{
 		return Struct2Json(GetStruct<T>(), (const _U8*)&data, json);
 	}
 
 	template<typename T>
-	inline bool Json2Struct(const Atlas::String& json, T& data)
+	inline bool Json2Struct(const Zion::String& json, T& data)
 	{
 		return Json2Struct(GetStruct<T>(), json, (_U8*)&data);
 	}
@@ -127,9 +127,9 @@ namespace DDLReflect
 	void* GetStructFieldData(const STRUCT_INFO* info, const char* name, void* data, FIELD_INFO& finfo);
 	const void* GetStructFieldData(const STRUCT_INFO* info, const char* name, const void* data, FIELD_INFO& finfo);
 
-	bool StructParamToString(const FIELD_INFO* finfo, const void* data, Atlas::String& str);
+	bool StructParamToString(const FIELD_INFO* finfo, const void* data, Zion::String& str);
 	bool StructParamFromString(const FIELD_INFO* finfo, void* data, const char* str);
-	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Atlas::String& str, FIELD_INFO* finfo=NULL);
+	bool StructParamToString(const STRUCT_INFO* info, const char* name, const void* data, Zion::String& str, FIELD_INFO* finfo=NULL);
 	bool StructParamFromString(const STRUCT_INFO* info, const char* name, void* data, const char* str);
 
 	void* CreateObject(const STRUCT_INFO* info);

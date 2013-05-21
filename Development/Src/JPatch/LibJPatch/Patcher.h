@@ -46,20 +46,20 @@ namespace JPatch
 		virtual void endApply(bool error) = 0;
 
 	private:
-		bool getDataVersion(Atlas::String& ver);
-		bool setDataVersion(Atlas::String ver);
+		bool getDataVersion(Zion::String& ver);
+		bool setDataVersion(Zion::String ver);
 
 	private:
-		Atlas::String _SourceDir;
-		Atlas::String _UserDir;
-		Atlas::String _TempDir;
-		Atlas::String _UpdateUrl;
-		Atlas::String _ProgramVersion;
+		Zion::String _SourceDir;
+		Zion::String _UserDir;
+		Zion::String _TempDir;
+		Zion::String _UpdateUrl;
+		Zion::String _ProgramVersion;
 
 		bool _SelfUpdate;
-		Atlas::String _PatchUrl;
-		Atlas::String _PatchVer;
-		Atlas::String _PatchMD5;
+		Zion::String _PatchUrl;
+		Zion::String _PatchVer;
+		Zion::String _PatchMD5;
 		int _PatchSize;
 
 		MOREQUEST* _checkVersion;

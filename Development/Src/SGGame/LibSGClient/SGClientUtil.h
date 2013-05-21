@@ -1,6 +1,6 @@
 #ifndef __SGGAME_CLIENT_UTIL__
 #define __SGGAME_CLIENT_UTIL__
-namespace Atlas
+namespace Zion
 {	
 	class SGClientUtil
 	{
@@ -8,26 +8,26 @@ namespace Atlas
 		static void SetRightLocation(const A_CONTENT_OBJECT* content_obj, const SG_EQUIP_SLOTS& slots, const A_UUID& uuid);
 
 		//把[lowerLevel uppperLevel]之间的小兵加到soldierVec里面
-		static void GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Atlas::Vector<_U32>& soldierVec, Atlas::Vector<SG_SOLDIER>& curSoldierVec);
-		static void GetUnlockTurboSkill(_U32 general_id, _U32 turbo_level, Atlas::String& skill_archetype);
+		static void GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Zion::Vector<_U32>& soldierVec, Zion::Vector<SG_SOLDIER>& curSoldierVec);
+		static void GetUnlockTurboSkill(_U32 general_id, _U32 turbo_level, Zion::String& skill_archetype);
 
 		static bool DiffPlayerInfo(const SG_PLAYER& player_old, const SG_PLAYER& player_new);
-		static bool DiffSoldiers(const Atlas::Vector<SG_SOLDIER>& soldiers_old, const Atlas::Vector<SG_SOLDIER>& soldiers_new);
-		static bool DiffGenerals(const Atlas::Vector<SG_GENERAL>& generals_old, const Atlas::Vector<SG_GENERAL>& generals_new);
+		static bool DiffSoldiers(const Zion::Vector<SG_SOLDIER>& soldiers_old, const Zion::Vector<SG_SOLDIER>& soldiers_new);
+		static bool DiffGenerals(const Zion::Vector<SG_GENERAL>& generals_old, const Zion::Vector<SG_GENERAL>& generals_new);
 		static bool DiffBag();
-		static bool DiffEquipt(const Atlas::Vector<SG_EQUIPT_ITEM>& equipts_old, const Atlas::Vector<SG_EQUIPT_ITEM>& equipts_new);
-		static bool DiffUsable(const Atlas::Vector<SG_USABLE_ITEM>& usables_old, const Atlas::Vector<SG_USABLE_ITEM>& usables_new);
-		static bool DiffGem(const Atlas::Vector<SG_GEM_ITEM>& gems_old, const Atlas::Vector<SG_GEM_ITEM>& gems_new);
-		static bool DiffMaterial(const Atlas::Vector<SG_MATERIAL_ITEM>& material_old, const Atlas::Vector<SG_MATERIAL_ITEM>& material_new);
-		static bool DiffQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_old, const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests_new);
+		static bool DiffEquipt(const Zion::Vector<SG_EQUIPT_ITEM>& equipts_old, const Zion::Vector<SG_EQUIPT_ITEM>& equipts_new);
+		static bool DiffUsable(const Zion::Vector<SG_USABLE_ITEM>& usables_old, const Zion::Vector<SG_USABLE_ITEM>& usables_new);
+		static bool DiffGem(const Zion::Vector<SG_GEM_ITEM>& gems_old, const Zion::Vector<SG_GEM_ITEM>& gems_new);
+		static bool DiffMaterial(const Zion::Vector<SG_MATERIAL_ITEM>& material_old, const Zion::Vector<SG_MATERIAL_ITEM>& material_new);
+		static bool DiffQuests(const Zion::Vector<SG_QUEST_LIVE_INFO>& quests_old, const Zion::Vector<SG_QUEST_LIVE_INFO>& quests_new);
 
 		static bool IsEmptyPlayerInfo(const SG_PLAYER& player);
-		static bool IsEmptySoldier(const Atlas::Vector<SG_SOLDIER>& soldiers);
-		static bool IsEmptyGeneral(const Atlas::Vector<SG_GENERAL>& generals);
-		static bool IsEmptyEquipt(const Atlas::Vector<SG_EQUIPT_ITEM>& equipts);
-		static bool IsEmptyUsable(const Atlas::Vector<SG_USABLE_ITEM>& usables);
-		static bool IsEmptyGem(const Atlas::Vector<SG_GEM_ITEM>& gems);
-		static bool IsEmptyQuests(const Atlas::Vector<SG_QUEST_LIVE_INFO>& quests);
+		static bool IsEmptySoldier(const Zion::Vector<SG_SOLDIER>& soldiers);
+		static bool IsEmptyGeneral(const Zion::Vector<SG_GENERAL>& generals);
+		static bool IsEmptyEquipt(const Zion::Vector<SG_EQUIPT_ITEM>& equipts);
+		static bool IsEmptyUsable(const Zion::Vector<SG_USABLE_ITEM>& usables);
+		static bool IsEmptyGem(const Zion::Vector<SG_GEM_ITEM>& gems);
+		static bool IsEmptyQuests(const Zion::Vector<SG_QUEST_LIVE_INFO>& quests);
 
 		static _U32 GetDailyActionTime(const SG_PLAYER& player_info, _U32 action_id);
 		static bool SetDailyActionTimeInCache(SG_PLAYER& player_info, _U32 action_id, _U32 times);
@@ -35,7 +35,7 @@ namespace Atlas
 		static bool UpdateItemCountByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count);
 
 		template<typename T>
-		static void GenerateTempNewVec(const T* t, _U32 count, Atlas::Vector<T>& vec)
+		static void GenerateTempNewVec(const T* t, _U32 count, Zion::Vector<T>& vec)
 		{
 			for(_U32 i = 0; i < count; ++i)
 			{
@@ -44,11 +44,11 @@ namespace Atlas
 		}
 
 		template<typename T1, typename T2>
-		static void GenerateTempNewVec(const T1* t, _U32 count, Atlas::Vector<T2>& vec);
+		static void GenerateTempNewVec(const T1* t, _U32 count, Zion::Vector<T2>& vec);
 		
 		//warning !!! apple`s complier will set it as error
 		//template<>
-		//static void GenerateTempNewVec<SG_LEAGUE_APPLYER, _U32>(const SG_LEAGUE_APPLYER* t, _U32 count, Atlas::Vector<_U32>& vec)
+		//static void GenerateTempNewVec<SG_LEAGUE_APPLYER, _U32>(const SG_LEAGUE_APPLYER* t, _U32 count, Zion::Vector<_U32>& vec)
 		//{
 		//	for(_U32 i = 0; i < count; ++i)
 		//	{
@@ -76,7 +76,7 @@ namespace Atlas
 		}
 
 		template<typename T>
-		static bool DiffDataVec(const Atlas::Vector<T>& old_data, const Atlas::Vector<T>& new_data)
+		static bool DiffDataVec(const Zion::Vector<T>& old_data, const Zion::Vector<T>& new_data)
 		{
 			if(old_data.size() != new_data.size())
 				return true;
@@ -93,10 +93,10 @@ namespace Atlas
 		}
 
 
-		static void UpdateGeneralSoulBall(SG_PLAYER& player_info, Atlas::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general);
+		static void UpdateGeneralSoulBall(SG_PLAYER& player_info, Zion::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general);
 
 		template<typename T, typename CT>
-		static void AddItem(Atlas::Vector<T>& cacheVec, const SG_ITEM& item)
+		static void AddItem(Zion::Vector<T>& cacheVec, const SG_ITEM& item)
 		{
 			T t;
 			t.item_id = item.item_id;
@@ -106,7 +106,7 @@ namespace Atlas
 			_U32 count = item.count;
 
 			const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< CT >();
-			const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+			const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 			bool bFind = false;
 			while(content_obj)
 			{
@@ -117,7 +117,7 @@ namespace Atlas
 					break;
 				}
 
-				content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+				content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 			}
 
 			if(bFind)
@@ -125,7 +125,7 @@ namespace Atlas
 				stack_max = config->stack_max;
 			}
 			
-			for(typename Atlas::Vector<T>::iterator it = cacheVec.begin(); it != cacheVec.end(); ++it)
+			for(typename Zion::Vector<T>::iterator it = cacheVec.begin(); it != cacheVec.end(); ++it)
 			{
 				if((*it).item_id == item.item_id)
 				{
@@ -155,9 +155,9 @@ namespace Atlas
 		}
 
 		template<typename T>
-		static bool UpdateItemCountTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, _U32 count)
+		static bool UpdateItemCountTemplateFun(Zion::Vector<T>& vec, const A_UUID& uuid, _U32 count)
 		{
-			for(typename Atlas::Vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
+			for(typename Zion::Vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
 			{
 				if((*it).uuid == uuid)
 				{
@@ -178,7 +178,7 @@ namespace Atlas
 		}
 
 		/*template<typename T>
-		static bool UpdateItemTemplateFun(Atlas::Vector<T>& vec, const A_UUID& uuid, const T& newT)
+		static bool UpdateItemTemplateFun(Zion::Vector<T>& vec, const A_UUID& uuid, const T& newT)
 		{
 			return false;
 		}*/
@@ -186,15 +186,15 @@ namespace Atlas
 
 		static _U32 GetHorseXpAdd(_U32 cur_level, _U32 new_level, _U32 cur_exp, _U32 exp);
 		
-		static bool UpdateEquipt(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt);
-		static bool UpdateEquiptTurboLevel(Atlas::Vector<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level);
+		static bool UpdateEquipt(Zion::Vector<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt);
+		static bool UpdateEquiptTurboLevel(Zion::Vector<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level);
 
-		static bool UnlockSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
+		static bool UnlockSoldier(SG_PLAYER& player_info, Zion::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
 
-		static bool EnhanceSoldier(SG_PLAYER& player_info, Atlas::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
+		static bool EnhanceSoldier(SG_PLAYER& player_info, Zion::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
 
-		static bool UpdateGemItemCount(Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count);
-		static _U32 GetGemItemCount(const Atlas::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id);
+		static bool UpdateGemItemCount(Zion::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count);
+		static _U32 GetGemItemCount(const Zion::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id);
 
 	};
 }

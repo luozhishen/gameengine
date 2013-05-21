@@ -7,7 +7,7 @@
 #error	C++ compiler needed
 #endif
 
-namespace Atlas {
+namespace Zion {
 
 	typedef struct RPC_SERVER* HSERVER;
 	typedef struct RPC_CLIENT* HCLIENT;

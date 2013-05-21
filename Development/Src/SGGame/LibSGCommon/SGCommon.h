@@ -3,7 +3,7 @@
 
 #include "SGGameDDL.h"
 
-namespace Atlas
+namespace Zion
 {
 	void InitDDLStub();
 	void InitContentObjects();

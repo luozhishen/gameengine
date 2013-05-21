@@ -7,9 +7,9 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
-#include <AtlasClient.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
+#include <ZionClient.h>
 
 #include "ClientStressFrame.h"
 #include "ClientLogView.h"
@@ -94,7 +94,7 @@ void CClientLogView::OnClear()
 void CClientLogView::OnNewClient(_U32 index)
 {
 	m_Clients[index];
-	Atlas::CStressClient* pClient = GetFrame()->GetStressClient(index);
+	Zion::CStressClient* pClient = GetFrame()->GetStressClient(index);
 	if(!pClient) return;
 	pClient->_OnLoginDone.connect(this, &CClientLogView::OnLoginDone);
 	pClient->_OnLoginFailed.connect(this, &CClientLogView::OnLoginFailed);
@@ -117,9 +117,9 @@ void CClientLogView::OnData(_U32 index, _U16 iid, _U16 fid, _U32 len, const _U8*
 {
 	char msg[10000];
 	const DDLReflect::CLASS_INFO* cls;
-	if(Atlas::GetClientFunctionStub(iid, fid, cls))
+	if(Zion::GetClientFunctionStub(iid, fid, cls))
 	{
-		Atlas::String json;
+		Zion::String json;
 		DDLReflect::Call2Json(&cls->finfos[fid], len, data, json);
 		sprintf(msg, "ondata : %s.%s %s", cls->name, cls->finfos[fid].name, json.c_str());
 	}

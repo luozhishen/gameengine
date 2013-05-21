@@ -21,8 +21,8 @@ void MOLogout(MOCLIENT* client);
 MOCLIENTSTATE MOGetClientState(MOCLIENT* client);
 const char* MOGetSessionKey(MOCLIENT* client);
 const char* MOGetClientBaseUrl(MOCLIENT* client);
-MOREQUEST* MOClientRequestString(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params);
-MOREQUEST* MOClientDownloadFile(MOCLIENT* client, const char* method, const Atlas::Map<Atlas::String, Atlas::String>& params, const char* path);
+MOREQUEST* MOClientRequestString(MOCLIENT* client, const char* method, const Zion::Map<Zion::String, Zion::String>& params);
+MOREQUEST* MOClientDownloadFile(MOCLIENT* client, const char* method, const Zion::Map<Zion::String, Zion::String>& params, const char* path);
 int MOClientGetResultCode(MOREQUEST* request);
 const char* MOClientGetResultString(MOREQUEST* request);
 

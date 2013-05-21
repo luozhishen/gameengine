@@ -52,10 +52,6 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LibSGCommon</RootNamespace>
     <ProjectName>LibSGCommon</ProjectName>
-    <SccProjectName>SAK</SccProjectName>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -96,7 +92,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\..\Atlas.props" />
+    <Import Project="..\..\Zion.props" />
     <Import Project="..\SGGame.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />

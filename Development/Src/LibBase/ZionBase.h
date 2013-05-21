@@ -8,19 +8,19 @@
 #include <functional>
 #endif
 
-#include "AtlasDefines.h"
-#include "AtlasSTL.h"
-#include "AtlasSocket.h"
+#include "ZionDefines.h"
+#include "ZionSTL.h"
+#include "ZionSocket.h"
 #include "AsyncSockIO.h"
 #include "DDL.h"
 #include "DDLReflect.h"
-#include "AtlasUtils.h"
+#include "ZionUtils.h"
 #include "AsyncRPC.h"
-#include "AtlasUUID.h"
-#include "AtlasHash.h"
+#include "ZionUUID.h"
+#include "ZionHash.h"
 #include "sigslot.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	void AtlasInit();

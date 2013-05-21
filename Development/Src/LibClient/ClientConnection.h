@@ -1,7 +1,7 @@
 #ifndef __ATLAS_CLIENT_CONNECTION__
 #define __ATLAS_CLIENT_CONNECTION__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CClientConnection : public CClientConnectionBase

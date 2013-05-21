@@ -1,15 +1,15 @@
 #include <stdarg.h>
 
-#include "AtlasBase.h"
-#include "AtlasCommon.h"
-#include "AtlasClientApp.h"
-#include "AtlasClient.h"
+#include "ZionBase.h"
+#include "ZionCommon.h"
+#include "ZionClientApp.h"
+#include "ZionClient.h"
 #include "ClientConnection.h"
 #include "AsyncIOConnection.h"
 #include "NonblockConnection.h"
 #include "HttpClientConnection.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CClient::CClient(CClientApp* pClientApp, _U32 recvsize) : m_pClientApp(pClientApp)
@@ -59,7 +59,7 @@ namespace Atlas
 		return m_pClientConnection->GetErrorCode();
 	}
 
-	const Atlas::String& CClient::GetClientConnectionType()
+	const Zion::String& CClient::GetClientConnectionType()
 	{
 		return m_ClientConnectionType;
 	}
@@ -113,7 +113,7 @@ namespace Atlas
 
 	void CClient::Tick()
 	{
-		Atlas::List<CClientComponent*>::iterator i;
+		Zion::List<CClientComponent*>::iterator i;
 		for(i=m_Components.begin(); i!=m_Components.end(); i++)
 		{
 			(*i)->Tick();

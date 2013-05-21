@@ -1,5 +1,5 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 #include "ServerApp.h"
 #include "ServerBase.h"
 #include "ServerUtils.h"
@@ -14,7 +14,7 @@
 #define TOKE_LEN            256
 #define TIMER_PERIOD        2000
 
-namespace Atlas
+namespace Zion
 {
 
 	static bool SS_ON_CONNECT(HCONNECT hConn);
@@ -243,7 +243,7 @@ namespace Atlas
 
 	bool SS_ON_CONNECT(HCONNECT hConn)
 	{
-		Atlas::SLog("%s", __FUNCTION__);
+		Zion::SLog("%s", __FUNCTION__);
 		HTCPEP hep = HepOf(hConn);
 		ATLAS_ASSERT(hep);
 		CLoginServer* pServer = (CLoginServer*)KeyOf(hep);
@@ -254,7 +254,7 @@ namespace Atlas
 
 	void SS_ON_DISCONNECT(HCONNECT hConn)
 	{
-		Atlas::SLog("%s", __FUNCTION__);
+		Zion::SLog("%s", __FUNCTION__);
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
 		ATLAS_ASSERT(pConn);
 		pConn->GetServer()->OnDisconnected(hConn);
@@ -263,7 +263,7 @@ namespace Atlas
 
 	void SS_ON_DATA(HCONNECT hConn, _U32 len, const _U8* data)
 	{
-		Atlas::SLog("%s", __FUNCTION__);
+		Zion::SLog("%s", __FUNCTION__);
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
 		ATLAS_ASSERT(pConn);
 		pConn->GetServer()->OnData(hConn, len, data);
@@ -347,12 +347,12 @@ namespace Atlas
 		if(len<=blen-sizeof(_U16)*2)
 		{
 			memcpy(buf+4, data, len);
-			Atlas::Send(m_hConnect, len+sizeof(_U16)*2, buf);
+			Zion::Send(m_hConnect, len+sizeof(_U16)*2, buf);
 			return;
 		}
 		else
 		{
-			Atlas::Send(m_hConnect, blen, buf);
+			Zion::Send(m_hConnect, blen, buf);
 			len -= blen - sizeof(_U16)*2;
 			data += blen - sizeof(_U16)*2;
 		}
@@ -363,13 +363,13 @@ namespace Atlas
 			if(len<=blen)
 			{
 				memcpy(buf, data, len);
-				Atlas::Send(m_hConnect, len, buf);
+				Zion::Send(m_hConnect, len, buf);
 				return;
 			}
 			else
 			{
 				memcpy(buf, data, blen);
-				Atlas::Send(m_hConnect, blen, buf);
+				Zion::Send(m_hConnect, blen, buf);
 				len -= blen;
 				buf += blen;
 			}
@@ -454,13 +454,13 @@ namespace Atlas
 
 }
 
-void CRPC_SessionWorkLoadResult(Atlas::HSERVER hServer, const WORKLOAD_INFO* info, _U32 count)
+void CRPC_SessionWorkLoadResult(Zion::HSERVER hServer, const WORKLOAD_INFO* info, _U32 count)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::_global_login_server_inst->UpdateWorkLoadInfo(info, count);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::_global_login_server_inst->UpdateWorkLoadInfo(info, count);
 }
 
-void CRPC_NodeWorkLoadResult(Atlas::HSERVER hServer, _U32 type, const WORKLOAD_INFO* info, _U32 count)
+void CRPC_NodeWorkLoadResult(Zion::HSERVER hServer, _U32 type, const WORKLOAD_INFO* info, _U32 count)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 }

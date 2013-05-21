@@ -7,8 +7,8 @@
 #include <wx/config.h>
 #include <wx/utils.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "ProtocalDlg.h"
 
@@ -67,10 +67,10 @@ CProtocalDialog::CProtocalDialog(wxWindow* pParent) : wxDialog(pParent, wxID_ANY
 	m_C2S_id = m_pClassTree->AppendItem(m_pClassTree->GetRootItem(), wxT("C2S"));
 	m_S2C_id = m_pClassTree->AppendItem(m_pClassTree->GetRootItem(), wxT("S2C"));
 
-	for(_U32 i=0; i<Atlas::GetStubCount(); i++)
+	for(_U32 i=0; i<Zion::GetStubCount(); i++)
 	{
-		const DDLReflect::CLASS_INFO* pClient = Atlas::GetClientStub(i);
-		const DDLReflect::CLASS_INFO* pServer = Atlas::GetServerStub(i);
+		const DDLReflect::CLASS_INFO* pClient = Zion::GetClientStub(i);
+		const DDLReflect::CLASS_INFO* pServer = Zion::GetServerStub(i);
 		if(pClient)
 		{
 			m_pClassTree->AppendItem(m_S2C_id, wxString::FromUTF8(pClient->name), -1, -1, ATLAS_NEW CProtocalObject(true, pClient));

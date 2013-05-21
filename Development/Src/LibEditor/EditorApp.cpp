@@ -1,4 +1,4 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include <wx/wxprec.h>
 #include <wx/wx.h>
@@ -11,12 +11,12 @@
 #include "EditorApp.h"
 #include "EditorFrame.h"
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 CEditorApp::CEditorApp()
 {
-	chdir(Atlas::GetExeDir());
+	chdir(Zion::GetExeDir());
 }
 
 CEditorApp::~CEditorApp()
@@ -25,14 +25,14 @@ CEditorApp::~CEditorApp()
 
 bool CEditorApp::OnInit()
 {
-	Atlas::InitDDLStub();
-	Atlas::InitContentObjects();
-	Atlas::InitLiveObjects();
-	Atlas::ContentObject::LoadContent();
+	Zion::InitDDLStub();
+	Zion::InitContentObjects();
+	Zion::InitLiveObjects();
+	Zion::ContentObject::LoadContent();
 
 	wxImage::AddHandler(ATLAS_NEW wxPNGHandler);
 
-	SetVendorName(wxT("Atlas"));
+	SetVendorName(wxT("Zion"));
 	SetAppName(wxT("Editor"));
 
 	wxConfigBase *pConfig = wxConfigBase::Get();

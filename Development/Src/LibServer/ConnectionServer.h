@@ -1,7 +1,7 @@
 #ifndef __CONNECTION_SERVER__
 #define __CONNECTION_SERVER__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CConnectionClient;

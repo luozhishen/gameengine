@@ -1,8 +1,8 @@
-#include "AtlasBase.h"
+#include "ZionBase.h"
 #include "ServerApp.h"
 #include "ServerBase.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	void SLog(const char* format, ...)
@@ -20,7 +20,7 @@ namespace Atlas
 
 	CServerBase::~CServerBase()
 	{
-		Atlas::List<CServerComponent*>::iterator i;
+		Zion::List<CServerComponent*>::iterator i;
 		for(i=m_ComponentList.begin(); i!=m_ComponentList.end(); i++)
 		{
 			delete *i;
@@ -30,7 +30,7 @@ namespace Atlas
 
 	bool CServerBase::Start()
 	{
-		Atlas::List<CServerComponent*>::iterator i;
+		Zion::List<CServerComponent*>::iterator i;
 		for(i=m_ComponentList.begin(); i!=m_ComponentList.end(); i++)
 		{
 			(*i)->InitComponent();

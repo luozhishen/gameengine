@@ -1,9 +1,9 @@
-#include "AtlasDefines.h"
-#include "AtlasSTL.h"
-#include "AtlasHash.h"
-#include "AtlasUtils.h"
+#include "ZionDefines.h"
+#include "ZionSTL.h"
+#include "ZionHash.h"
+#include "ZionUtils.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	static inline _U32 MD5_F(_U32 x, _U32 y, _U32 z)

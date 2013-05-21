@@ -6,28 +6,28 @@
 #include <sys/stat.h>
 #endif
 
-#include "AtlasBase.h"
+#include "ZionBase.h"
 
 #include <sstream>
 
-namespace Atlas
+namespace Zion
 {
 
-	void StringSplit(const Atlas::String& value, char splitchar, Atlas::Vector<Atlas::String>& result)
+	void StringSplit(const Zion::String& value, char splitchar, Zion::Vector<Zion::String>& result)
 	{
 		result.clear();
-		Atlas::StringStream sstr(value);
-		Atlas::String tmp;
+		Zion::StringStream sstr(value);
+		Zion::String tmp;
 	    while(std::getline(sstr, tmp, splitchar))
 		{
 			result.push_back(tmp);
 		}
 	}
 
-	Atlas::String StringFormat(const char* fmt, ...)
+	Zion::String StringFormat(const char* fmt, ...)
 	{
 		size_t size=10;
-		Atlas::String str;
+		Zion::String str;
 		va_list ap;
 		for(;;)
 		{
@@ -53,11 +53,11 @@ namespace Atlas
 		return StringTrim(v);
 	}
 
-	String StringTrim(const Atlas::String& v)
+	String StringTrim(const Zion::String& v)
 	{
-		Atlas::String str = v;
-		Atlas::String::size_type pos = str.find_last_not_of(' ');
-		if(pos != Atlas::String::npos) 
+		Zion::String str = v;
+		Zion::String::size_type pos = str.find_last_not_of(' ');
+		if(pos != Zion::String::npos) 
 		{
 			str.erase(pos + 1);
 			pos = str.find_first_not_of(' ');

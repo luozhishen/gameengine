@@ -1,7 +1,7 @@
-#include "AtlasDefines.h"
-#include "AtlasLog.h"
+#include "ZionDefines.h"
+#include "ZionLog.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	ALogger::ALogger()

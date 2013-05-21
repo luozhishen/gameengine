@@ -1,4 +1,4 @@
-#include "AtlasBase.h"
+#include "ZionBase.h"
 #include "ServerApp.h"
 #include "ServerBase.h"
 #include "ServerUtils.h"
@@ -11,7 +11,7 @@
 #define SESSION_WORKLOAD_LIST_LEN 100
 #define NODE_WORKLOAD_LIST_LEN 255
 
-namespace Atlas
+namespace Zion
 {
 
 	static CObjectManager<CClusterClient, MAX_CLIENTS> _global_cluster_object_manager(&CClusterClient::GetCNDX);
@@ -75,7 +75,7 @@ namespace Atlas
 		_U64 cndx;
 		if(GetCNDXByUID(nUID, cndx))
 		{
-			Atlas::CObjectLocker<Atlas::CClusterClient> Locker(cndx);
+			Zion::CObjectLocker<Zion::CClusterClient> Locker(cndx);
 			if(Locker.GetObject())
 			{
 				if(Locker.GetObject()->GetSNDX()==nSNDX)
@@ -120,7 +120,7 @@ namespace Atlas
 	void CClusterServer::UpdateSessionWorkLoad(HSERVER hServer, const WORKLOAD_INFO& WORKLOAD_INFO)
 	{
 		A_MUTEX_LOCK(&m_mtxWorkLoad);
-		Atlas::SLog("%s", __FUNCTION__);
+		Zion::SLog("%s", __FUNCTION__);
 		SESSION_WORKLOADS::iterator it = m_WorkLoads.find(hServer);
 		if(it != m_WorkLoads.end())
 		{
@@ -467,88 +467,88 @@ namespace Atlas
 
 }
 
-void CRPC_UserLogin(Atlas::HCLIENT hClient, _U32 uid, const char* token, _U64 sndx)
+void CRPC_UserLogin(Zion::HCLIENT hClient, _U32 uid, const char* token, _U64 sndx)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::_global_cluster_singleton->ClientLogin(GetRPCServer(hClient), uid, token, sndx);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::_global_cluster_singleton->ClientLogin(GetRPCServer(hClient), uid, token, sndx);
 }
 
-void CRPC_UserLogout(Atlas::HCLIENT hClient, _U32 uid, _U64 sndx)
+void CRPC_UserLogout(Zion::HCLIENT hClient, _U32 uid, _U64 sndx)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::_global_cluster_singleton->ClientLogout(uid, sndx);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::_global_cluster_singleton->ClientLogout(uid, sndx);
 }
 
-void CRPC_KickUser(Atlas::HCLIENT hClient, _U32 uid)
+void CRPC_KickUser(Zion::HCLIENT hClient, _U32 uid)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 	_U64 cndx;
-	if(!Atlas::_global_cluster_singleton->GetCNDXByUID(uid, cndx)) return;
-	Atlas::CObjectLocker<Atlas::CClusterClient> Locker(cndx);
+	if(!Zion::_global_cluster_singleton->GetCNDXByUID(uid, cndx)) return;
+	Zion::CObjectLocker<Zion::CClusterClient> Locker(cndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->KickUser();
 }
 
-void CRPC_OnUserData(Atlas::HCLIENT hClient, _U64 cndx, _U16 code, _U32 len, const _U8* data)
+void CRPC_OnUserData(Zion::HCLIENT hClient, _U64 cndx, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::CObjectLocker<Atlas::CClusterClient> Locker(cndx);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::CObjectLocker<Zion::CClusterClient> Locker(cndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->OnUserData(code, len, data);
 }
 
-void CRPC_ForwardUserDataByCNDX(Atlas::HCLIENT hClient, _U64 cndx, _U16 code, _U32 len, const _U8* data)
+void CRPC_ForwardUserDataByCNDX(Zion::HCLIENT hClient, _U64 cndx, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::CObjectLocker<Atlas::CClusterClient> Locker(cndx);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::CObjectLocker<Zion::CClusterClient> Locker(cndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->ForwardUserData(code, len, data);
 }
 
-void CRPC_ForwardUserDataByUID(Atlas::HCLIENT hClient, _U32 uid, _U16 code, _U32 len, const _U8* data)
+void CRPC_ForwardUserDataByUID(Zion::HCLIENT hClient, _U32 uid, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 	_U64 cndx;
-	if(!Atlas::_global_cluster_singleton->GetCNDXByUID(uid, cndx)) return;
+	if(!Zion::_global_cluster_singleton->GetCNDXByUID(uid, cndx)) return;
 	CRPC_ForwardUserDataByCNDX(hClient, cndx, code, len, data);
 }
 
-void CRPC_ForwardUserDataByAID(Atlas::HCLIENT hClient, _U32 aid, _U16 code, _U32 len, const _U8* data)
+void CRPC_ForwardUserDataByAID(Zion::HCLIENT hClient, _U32 aid, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 	_U64 cndx;
-	if(!Atlas::_global_cluster_singleton->GetCNDXByAID(aid, cndx)) return;
+	if(!Zion::_global_cluster_singleton->GetCNDXByAID(aid, cndx)) return;
 	CRPC_ForwardUserDataByCNDX(hClient, cndx, code, len, data);
 }
 
-void CRPC_ForwardEventByCNDX(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U16 code, _U32 len, const _U8* data)
+void CRPC_ForwardEventByCNDX(Zion::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::CObjectLocker<Atlas::CClusterClient> Locker(cndx);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::CObjectLocker<Zion::CClusterClient> Locker(cndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->ForwardEvent(nodeid, code, len, data);
 }
 
-void CRPC_ForwardEventByUID(Atlas::HCLIENT hClient, _U32 uid, _U32 nodeid, _U16 code, _U32 len, const _U8* data)
+void CRPC_ForwardEventByUID(Zion::HCLIENT hClient, _U32 uid, _U32 nodeid, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 	_U64 cndx;
-	if(!Atlas::_global_cluster_singleton->GetCNDXByUID(uid, cndx)) return;
+	if(!Zion::_global_cluster_singleton->GetCNDXByUID(uid, cndx)) return;
 	CRPC_ForwardEventByCNDX(hClient, cndx, nodeid, code, len, data);
 }
 
-void CRPC_ForwardEventByAID(Atlas::HCLIENT hClient, _U32 aid, _U32 nodeid, _U16 code, _U32 len, const _U8* data)
+void CRPC_ForwardEventByAID(Zion::HCLIENT hClient, _U32 aid, _U32 nodeid, _U16 code, _U32 len, const _U8* data)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 	_U64 cndx;
-	if(!Atlas::_global_cluster_singleton->GetCNDXByAID(aid, cndx)) return;
+	if(!Zion::_global_cluster_singleton->GetCNDXByAID(aid, cndx)) return;
 	CRPC_ForwardEventByCNDX(hClient, cndx, nodeid, code, len, data);
 }
 
-void CRPC_NodeConnect(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U64 nndx)
+void CRPC_NodeConnect(Zion::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq, _U64 nndx)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::CObjectLocker<Atlas::CClusterClient> Locker(cndx);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::CObjectLocker<Zion::CClusterClient> Locker(cndx);
 	if(!Locker.GetObject()) return;
 	if(nndx==-1)
 	{
@@ -560,41 +560,41 @@ void CRPC_NodeConnect(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodes
 	}
 }
 
-void CRPC_NodeDisconnect(Atlas::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq)
+void CRPC_NodeDisconnect(Zion::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::CObjectLocker<Atlas::CClusterClient> Locker(cndx);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::CObjectLocker<Zion::CClusterClient> Locker(cndx);
 	if(!Locker.GetObject()) return;
 	Locker.GetObject()->OnNodeDisconnected(nodeid, nodeseq);
 }
 
-void CRPC_SetSessionWorkload(Atlas::HCLIENT hClient, const WORKLOAD_INFO& info)
+void CRPC_SetSessionWorkload(Zion::HCLIENT hClient, const WORKLOAD_INFO& info)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::HSERVER hServer = GetRPCServer(hClient);
-	Atlas::_global_cluster_singleton->UpdateSessionWorkLoad(hServer, info);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::HSERVER hServer = GetRPCServer(hClient);
+	Zion::_global_cluster_singleton->UpdateSessionWorkLoad(hServer, info);
 }
 
-void CRPC_GetSessionWorkload(Atlas::HCLIENT hClient)
+void CRPC_GetSessionWorkload(Zion::HCLIENT hClient)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 	WORKLOAD_INFO infoes[SESSION_WORKLOAD_LIST_LEN];
-	_U32 count = Atlas::_global_cluster_singleton->GetSessionWorkLoads(infoes);
+	_U32 count = Zion::_global_cluster_singleton->GetSessionWorkLoads(infoes);
 	CRPC_SessionWorkLoadResult(hClient, infoes, count);
 }
 
-void CRPC_SetNodeWorkload(Atlas::HCLIENT hClient, const WORKLOAD_INFO& info, _U32 type)
+void CRPC_SetNodeWorkload(Zion::HCLIENT hClient, const WORKLOAD_INFO& info, _U32 type)
 {
-	Atlas::SLog("%s", __FUNCTION__);
-	Atlas::HSERVER hServer = GetRPCServer(hClient);
-	Atlas::_global_cluster_singleton->NotifyNodeWorkLoad(hServer, info, type);
+	Zion::SLog("%s", __FUNCTION__);
+	Zion::HSERVER hServer = GetRPCServer(hClient);
+	Zion::_global_cluster_singleton->NotifyNodeWorkLoad(hServer, info, type);
 }
 
-void CRPC_GetNodeWorkload(Atlas::HCLIENT hClient, _U32 type)
+void CRPC_GetNodeWorkload(Zion::HCLIENT hClient, _U32 type)
 {
-	Atlas::SLog("%s", __FUNCTION__);
+	Zion::SLog("%s", __FUNCTION__);
 	WORKLOAD_INFO infoes[NODE_WORKLOAD_LIST_LEN];
-	_U32 count = Atlas::_global_cluster_singleton->GetNodeWorkLoad(infoes, type);
+	_U32 count = Zion::_global_cluster_singleton->GetNodeWorkLoad(infoes, type);
 	CRPC_NodeWorkLoadResult(hClient, type, infoes, count);
 }
 

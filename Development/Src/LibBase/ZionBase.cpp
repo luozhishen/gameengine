@@ -1,6 +1,6 @@
-#include "AtlasBase.h"
+#include "ZionBase.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	void AtlasInit()

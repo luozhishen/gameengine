@@ -5,7 +5,7 @@
 #include "LiveObject.h"
 #include "CommonDDL.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	const char* AtlasGameName();

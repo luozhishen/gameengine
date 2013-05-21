@@ -1,12 +1,12 @@
-#include "AtlasBase.h"
-#include "ServerApp.h"
-#include "ServerBase.h"
+#include <ZionBase.h>
+#include <ServerApp.h>
+#include <ServerBase.h>
 #include "WorkerServer.h"
 
-#include "ServerRpc.s.h"
-#include "ServerRpc.c.h"
+#include <ServerRpc.s.h>
+#include <ServerRpc.c.h>
 
-namespace Atlas
+namespace Zion
 {
 
 	CWorkerServer::CWorkerServer(CServerApp* pServerApp) : CServerBase(pServerApp)
@@ -19,6 +19,6 @@ namespace Atlas
 
 }
 
-void WRPC_DoRequest(Atlas::HCLIENT hClient, _U64 tid, _U16 code, _U32 len, const _U8* data)
+void WRPC_DoRequest(Zion::HCLIENT hClient, _U64 tid, _U16 code, _U32 len, const _U8* data)
 {
 }

@@ -1,10 +1,10 @@
-#include <AtlasBase.h>
-#include <AtlasServer.h>
+#include <ZionBase.h>
+#include <ZionServer.h>
 
 #include "SGCluster.h"
 #include "SGGameDDL.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CSGClusterServer::CSGClusterServer(CServerApp* pServerApp) : CClusterServer(pServerApp)

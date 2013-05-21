@@ -1,7 +1,7 @@
 #ifndef __ATLAS_WORKER_SERVER__
 #define __ATLAS_WORKER_SERVER__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CServerTask;

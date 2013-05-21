@@ -1,7 +1,7 @@
-#include <AtlasBase.h>
-#include <AtlasServer.h>
+#include <ZionBase.h>
+#include <ZionServer.h>
 
-class CSessionServerApp : public Atlas::CServerApp
+class CSessionServerApp : public Zion::CServerApp
 {
 public:
 	CSessionServerApp()
@@ -10,19 +10,19 @@ public:
 
 	virtual void InitApp()
 	{
-		Atlas::CServerApp::InitApp();
-		m_pSessionServer = ATLAS_NEW Atlas::CSessionServer(this);
+		Zion::CServerApp::InitApp();
+		m_pSessionServer = ATLAS_NEW Zion::CSessionServer(this);
 		m_pSessionServer->Start();
 	}
 
 	virtual void FiniApp()
 	{
 		m_pSessionServer->Stop();
-		Atlas::CServerApp::FiniApp();
+		Zion::CServerApp::FiniApp();
 	}
 
 private:
-	Atlas::CSessionServer* m_pSessionServer;
+	Zion::CSessionServer* m_pSessionServer;
 };
 
 int main(int argc, char* argv[])
@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 		SessionApp.SetListenAddrPort(argv[1]);
 		SessionApp.SetRPCAddrPort(argv[2]);
 		SessionApp.SetClusterRpcEP(argv[3]);
-		Atlas::SLog("Session Server Start port[%s] rpc[%s] cluster[%s]", argv[1], argv[2], argv[3]);
+		Zion::SLog("Session Server Start port[%s] rpc[%s] cluster[%s]", argv[1], argv[2], argv[3]);
 	}
 	else
 	{

@@ -3,7 +3,7 @@
 
 #include <mosdk.h>
 
-namespace Atlas
+namespace Zion
 {
 
 	class CHttpClientConnection : public CClientConnectionBase
@@ -41,13 +41,13 @@ namespace Atlas
 
 	private:
 		bool m_bPullRequest;
-		Atlas::String m_BaseUrl;
+		Zion::String m_BaseUrl;
 		MOREQUEST* m_pLoginRequest;
 		MOREQUEST* m_pLogoutRequest;
 		MOREQUEST* m_pPullRequest;
 		MOREQUEST* m_pCurrentRequest;
-		Atlas::String m_SessionKey;
-		Atlas::List<Atlas::String> m_SendQueue;
+		Zion::String m_SessionKey;
+		Zion::List<Zion::String> m_SendQueue;
 		STATE m_nHttpState;
 		STATE_CALLBACK m_StateCallback;
 		_U32 m_nRequestSeq, m_nPullSeq, m_nLogoutRetry;

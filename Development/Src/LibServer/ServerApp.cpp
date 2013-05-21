@@ -1,11 +1,11 @@
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "ServerApp.h"
 #include "ServerBase.h"
 #include "ServerTask.h"
 
-namespace Atlas
+namespace Zion
 {
 	class CServerTaskManagerSingleton : public CServerTaskManager { };
 	static CServerTaskManagerSingleton _GlobalServerTaskManager;
@@ -109,9 +109,9 @@ namespace Atlas
 
 	void CServerApp::InitApp()
 	{
-		Atlas::InitDDLStub();
-		Atlas::InitContentObjects();
-		Atlas::InitLiveObjects();
+		Zion::InitDDLStub();
+		Zion::InitContentObjects();
+		Zion::InitLiveObjects();
 	}
 
 	void CServerApp::FiniApp()

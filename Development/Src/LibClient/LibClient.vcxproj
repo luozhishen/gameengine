@@ -20,16 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsyncIOConnection.cpp" />
-    <ClCompile Include="AtlasClient.cpp" />
-    <ClCompile Include="AtlasClientApp.cpp" />
+    <ClCompile Include="ZionClient.cpp" />
+    <ClCompile Include="ZionClientApp.cpp" />
     <ClCompile Include="ClientConnection.cpp" />
     <ClCompile Include="HttpClientConnection.cpp" />
     <ClCompile Include="NonblockConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncIOConnection.h" />
-    <ClInclude Include="AtlasClient.h" />
-    <ClInclude Include="AtlasClientApp.h" />
+    <ClInclude Include="ZionClient.h" />
+    <ClInclude Include="ZionClientApp.h" />
     <ClInclude Include="ClientConnection.h" />
     <ClInclude Include="HttpClientConnection.h" />
     <ClInclude Include="NonblockConnection.h" />
@@ -38,10 +38,6 @@
     <ProjectGuid>{50D67152-761F-4BE9-8EA8-958CFAF1029A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LibClient</RootNamespace>
-    <SccProjectName>SAK</SccProjectName>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -82,7 +78,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\Atlas.props" />
+    <Import Project="..\Zion.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

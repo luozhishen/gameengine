@@ -3,7 +3,7 @@
 
 #include "SGClient.h"
 
-namespace Atlas
+namespace Zion
 {
 	#define SYNC_SEQ_MAX 9
 
@@ -44,7 +44,7 @@ namespace Atlas
 
 	private:
 		std::map<int, bool> m_nSeqContainer;
-		Atlas::CSGClient* m_pClient;
+		Zion::CSGClient* m_pClient;
 		_U8	m_nStatus;
 		_U8 m_nLastSendReq;
 	};

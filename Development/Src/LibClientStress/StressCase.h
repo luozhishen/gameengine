@@ -1,7 +1,7 @@
 #ifndef __ATLAS_STRESS_CASE__
 #define __ATLAS_STRESS_CASE__
 
-namespace Atlas
+namespace Zion
 {
 
 	class CClient;
@@ -18,12 +18,12 @@ namespace Atlas
 
 		CClient* GetClient();
 		CStressClient* GetStressClient() { return m_pClient; }
-		const Atlas::String& GetName() { return m_strName; }
+		const Zion::String& GetName() { return m_strName; }
 
 		virtual const DDLReflect::STRUCT_INFO* GetConfigType() { return NULL; }
 		bool GetConfig(void* pConfig, _U32 size);
 		bool SetConfig(const void* pConfig, _U32 size);
-		const Atlas::String GetInfo();
+		const Zion::String GetInfo();
 
 		virtual void OnAttach()	{}
 		virtual void OnTick()	{}
@@ -35,10 +35,10 @@ namespace Atlas
 		void Detach(CStressClient* pClient);
 		virtual bool _GetConfig(void* pConfig, _U32 size) { return false; }
 		virtual bool _SetConfig(const void* pConfig, _U32 size) { return false; }
-		virtual void _GetInfo(Atlas::String& info) { }
+		virtual void _GetInfo(Zion::String& info) { }
 
 	private:
-		Atlas::String m_strName;
+		Zion::String m_strName;
 		CStressClient* m_pClient;
 	};
 

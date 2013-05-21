@@ -9,8 +9,8 @@
 #include <wx/combo.h>
 #include <wx/statline.h>
 
-#include <AtlasBase.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionCommon.h>
 
 #include "GenerateObjectDlg.h"
 #include "ContentDataView.h"
@@ -122,9 +122,9 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 	pSizerAll->Add(pSplitter, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizerAll);
 
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*> list;
-	Atlas::ContentObject::GetTypeList(list);
-	Atlas::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Zion::ContentObject::GetTypeList(list);
+	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		const DDLReflect::STRUCT_INFO* p = *i;
@@ -137,7 +137,7 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 			p = p->parent;
 		}
 	}
-	Atlas::Map<Atlas::String, const DDLReflect::STRUCT_INFO*>::iterator in;
+	Zion::Map<Zion::String, const DDLReflect::STRUCT_INFO*>::iterator in;
 	int nTypeIndex = -1;
 	for(in=m_mapTypes.begin(); in!=m_mapTypes.end(); in++)
 	{
@@ -174,8 +174,8 @@ void CContentDataView::OnObjectActived(wxListEvent& event)
 
 	wxUIntPtr pData = m_pList->GetItemData(nSelectIndex);
 	A_UUID& uuid = *(A_UUID*)pData;
-	const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetObjectType(uuid);
-	const A_CONTENT_OBJECT* object = Atlas::ContentObject::QueryByUUID(uuid, info);
+	const DDLReflect::STRUCT_INFO* info = Zion::ContentObject::GetObjectType(uuid);
+	const A_CONTENT_OBJECT* object = Zion::ContentObject::QueryByUUID(uuid, info);
 	SetCurrentObject(nSelectIndex, info, object);
 }
 
@@ -184,9 +184,9 @@ void CContentDataView::OnObjectAdd(wxCommandEvent& event)
 	if(!CheckModify(false)) return;
 
 	if(m_dlgGenerateObject.ShowModal()!=wxID_OK) return;
-	const DDLReflect::STRUCT_INFO* info = Atlas::ContentObject::GetType(m_dlgGenerateObject.GetType().ToUTF8());
+	const DDLReflect::STRUCT_INFO* info = Zion::ContentObject::GetType(m_dlgGenerateObject.GetType().ToUTF8());
 	A_UUID uuid;
-	A_CONTENT_OBJECT* pObject = Atlas::ContentObject::CreateObject(info, uuid);
+	A_CONTENT_OBJECT* pObject = Zion::ContentObject::CreateObject(info, uuid);
 	if(!pObject) return;
 
 	pObject->name = (const char*)m_dlgGenerateObject.GetName().ToUTF8();
@@ -197,7 +197,7 @@ void CContentDataView::OnObjectSave(wxCommandEvent& event)
 {
 	if(!m_pCurInfo || !m_pCurData) return;
 
-	A_CONTENT_OBJECT* data = Atlas::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
+	A_CONTENT_OBJECT* data = Zion::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
 	if(!m_pInfo->Get(m_pCurInfo, data))
 	{
 		wxMessageBox(wxT("invalid data or no select item"));
@@ -256,18 +256,18 @@ void CContentDataView::OnMenuCopy(wxCommandEvent& event)
 
 void CContentDataView::OnMenuPaste(wxCommandEvent& event)
 {
-	const A_CONTENT_OBJECT* pSrc = Atlas::ContentObject::QueryByUUID(m_copyUUID);
+	const A_CONTENT_OBJECT* pSrc = Zion::ContentObject::QueryByUUID(m_copyUUID);
 	if(!pSrc)
 	{
 		wxMessageBox(wxT("no copy instance exists"));
 		return;
 	}
 
-	const DDLReflect::STRUCT_INFO* pInfo = Atlas::ContentObject::GetObjectType(m_copyUUID);
+	const DDLReflect::STRUCT_INFO* pInfo = Zion::ContentObject::GetObjectType(m_copyUUID);
 	if(!pInfo) return;
 
 	A_UUID uuid;
-	A_CONTENT_OBJECT* pDest = Atlas::ContentObject::CreateObject(pInfo, uuid);
+	A_CONTENT_OBJECT* pDest = Zion::ContentObject::CreateObject(pInfo, uuid);
 	if(!pDest)
 	{
 		wxMessageBox(wxT("no copy instance exists"));
@@ -355,7 +355,7 @@ bool CContentDataView::CheckModify(bool bClear)
 			return false;
 		}
 
-		A_CONTENT_OBJECT* data = Atlas::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
+		A_CONTENT_OBJECT* data = Zion::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
 		if(!m_pInfo->Get(m_pCurInfo, data))
 		{
 			wxMessageBox(wxT("error in ContentObject::Modify"));
@@ -394,7 +394,7 @@ void CContentDataView::RemoveObject(const A_UUID& uuid)
 		}
 	}
 	
-	Atlas::ContentObject::DeleteObject(uuid);
+	Zion::ContentObject::DeleteObject(uuid);
 }
 
 void CContentDataView::SelectObject(const A_UUID& uuid)
@@ -437,8 +437,8 @@ void CContentDataView::SetCurrentObject(long nSelectObject, const DDLReflect::ST
 
 struct SEARCH_CONDITION
 {
-	Atlas::String name;
-	Atlas::String value;
+	Zion::String name;
+	Zion::String value;
 	const char* opt;
 };
 static char* opts[] = { "!=", "<=", ">=", "=", "<", ">" };
@@ -450,19 +450,19 @@ void CContentDataView::FlashList()
 
 	const DDLReflect::STRUCT_INFO* info = m_mapTypes[(const char*)m_pObjectType->GetValue().ToUTF8()];
 
-	Atlas::Vector<SEARCH_CONDITION> conds;
-	Atlas::Vector<Atlas::String> condstrs;
-	Atlas::StringSplit((const char*)m_pSearchText->GetValue().ToUTF8(), ' ', condstrs);
+	Zion::Vector<SEARCH_CONDITION> conds;
+	Zion::Vector<Zion::String> condstrs;
+	Zion::StringSplit((const char*)m_pSearchText->GetValue().ToUTF8(), ' ', condstrs);
 	if(condstrs.size()>0)
 	{
 		for(size_t i=0; i<condstrs.size(); i++)
 		{
-			Atlas::String& condstr = condstrs[i];
+			Zion::String& condstr = condstrs[i];
 			size_t c;
 			for(c=0; c<sizeof(opts)/sizeof(opts[0]); c++)
 			{
 				size_t offset = condstr.find(opts[c]);
-				if(offset==Atlas::String::npos) continue;
+				if(offset==Zion::String::npos) continue;
 
 				SEARCH_CONDITION cond;
 				cond.name = condstr.substr(0, offset);
@@ -520,14 +520,14 @@ void CContentDataView::FlashList()
 		}
 	}
 
-	const A_CONTENT_OBJECT* object = Atlas::ContentObject::FindFirst(info, false);
+	const A_CONTENT_OBJECT* object = Zion::ContentObject::FindFirst(info, false);
 	unsigned int count = 0;
 	while(object)
 	{
 		bool skip = false;
 		for(size_t c=0; c<conds.size() && !skip; c++)
 		{
-			Atlas::String val;
+			Zion::String val;
 			DDLReflect::FIELD_INFO finfo;
 			if(!DDLReflect::StructParamToString(info, conds[c].name.c_str(), object, val, &finfo))
 			{
@@ -612,11 +612,11 @@ void CContentDataView::FlashList()
 		}
 		if(!skip)
 		{
-			AppendObject(Atlas::ContentObject::GetObjectType(object->uuid), object);
+			AppendObject(Zion::ContentObject::GetObjectType(object->uuid), object);
 			count++;
 		}
 
-		object = Atlas::ContentObject::FindNext(info, false, object);
+		object = Zion::ContentObject::FindNext(info, false, object);
 	}
 
 	if(count>0)

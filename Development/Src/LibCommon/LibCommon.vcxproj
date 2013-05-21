@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AtlasCommon.cpp" />
+    <ClCompile Include="ZionCommon.cpp" />
     <ClCompile Include="CommonDDL.cpp" />
     <ClCompile Include="ContentObject.cpp" />
     <ClCompile Include="des64.cpp" />
@@ -27,7 +27,7 @@
     <ClCompile Include="LiveObject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AtlasCommon.h" />
+    <ClInclude Include="ZionCommon.h" />
     <ClInclude Include="CommonDDL.h" />
     <ClInclude Include="ContentObject.h" />
     <ClInclude Include="des64.h" />
@@ -53,10 +53,6 @@
     <ProjectGuid>{78DB340F-F6FE-41CC-8704-60E805039BD8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LibCommon</RootNamespace>
-    <SccProjectName>SAK</SccProjectName>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -97,7 +93,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\Atlas.props" />
+    <Import Project="..\Zion.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

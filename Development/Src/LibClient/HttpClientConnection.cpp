@@ -1,10 +1,10 @@
-#include <AtlasBase.h>
-#include "AtlasCommon.h"
-#include "AtlasClient.h"
-#include "AtlasClientApp.h"
+#include <ZionBase.h>
+#include "ZionCommon.h"
+#include "ZionClient.h"
+#include "ZionClientApp.h"
 #include "HttpClientConnection.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	CHttpClientConnection::CHttpClientConnection(CClient* pClient) : CClientConnectionBase(pClient)
@@ -59,7 +59,7 @@ namespace Atlas
 		if(m_pPullRequest) return false;
 		if(m_pCurrentRequest) return false;
 
-		Atlas::Map<Atlas::String, Atlas::String> params;
+		Zion::Map<Zion::String, Zion::String> params;
 		params["token"] = pToken;
 		String url = StringFormat(pUrl, "login");
 		m_pLoginRequest = MORequestString(url.c_str(), params);
@@ -86,7 +86,7 @@ namespace Atlas
 			m_bInLogout = true;
 			m_nLogoutRetry = 1;
 			String url = StringFormat(m_BaseUrl.c_str(), "logout");
-			Atlas::Map<Atlas::String, Atlas::String> params;
+			Zion::Map<Zion::String, Zion::String> params;
 			params["session_key"] = m_SessionKey;
 			m_pLogoutRequest = MORequestString(url.c_str(), params);
 		}
@@ -213,7 +213,7 @@ namespace Atlas
 				if(m_nLogoutRetry<3)
 				{
 					String url = StringFormat(m_BaseUrl.c_str(), "logout");
-					Atlas::Map<Atlas::String, Atlas::String> params;
+					Zion::Map<Zion::String, Zion::String> params;
 					params["session_key"] = m_SessionKey;
 					m_pLogoutRequest = MORequestString(url.c_str(), params);
 					m_nLogoutRetry++;
@@ -284,9 +284,9 @@ namespace Atlas
 		{
 			if(m_bInLogout || !m_bPullRequest) return;
 
-			Atlas::Map<Atlas::String, Atlas::String> params;
+			Zion::Map<Zion::String, Zion::String> params;
 			params["session_key"] = m_SessionKey;
-			params["seq"] = Atlas::StringFormat("%d", m_nPullSeq);
+			params["seq"] = Zion::StringFormat("%d", m_nPullSeq);
 			String url = StringFormat(m_BaseUrl.c_str(), "pull");
 			m_pPullRequest = MORequestString(url.c_str(), params);
 			if(!m_pPullRequest) return;
@@ -381,10 +381,10 @@ namespace Atlas
 
 	void CHttpClientConnection::SendRequest()
 	{
-		Atlas::Map<Atlas::String, Atlas::String> params;
+		Zion::Map<Zion::String, Zion::String> params;
 		params["session_key"] = m_SessionKey;
 		params["request"] = m_SendQueue.front();
-		params["seq"] = Atlas::StringFormat("%d", m_nRequestSeq);
+		params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
 		String url = StringFormat(m_BaseUrl.c_str(), "request");
 		m_pCurrentRequest = MORequestString(url.c_str(), params);
 	}

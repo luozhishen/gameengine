@@ -1,4 +1,4 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include "PatchApply.h"
 #include "bzlib.h"
@@ -25,9 +25,9 @@ namespace JPatch
 		return mem;
 	}
 
-	static bool GetMD5(FILE* fp, Atlas::String& md5_v)
+	static bool GetMD5(FILE* fp, Zion::String& md5_v)
 	{
-		Atlas::CHashMD5 md5;
+		Zion::CHashMD5 md5;
 		fseek(fp, 0, SEEK_SET);
 		char buf[2000];
 		while(!feof(fp))
@@ -111,7 +111,7 @@ namespace JPatch
 				}
 				else
 				{
-					Atlas::String del_filename = Atlas::StringFormat("%s%s", m_path, fname);
+					Zion::String del_filename = Zion::StringFormat("%s%s", m_path, fname);
 					if(_unlink(del_filename.c_str())!=0 && errno!=ENOENT)
 					{
 						printf("failed to delete %s\n", del_filename.c_str());
@@ -158,8 +158,8 @@ namespace JPatch
 			}
 			dst_md5[len] = '\0';
 
-			Atlas::String dst_filename = Atlas::StringFormat("%s%s", m_path, fname);
-			Atlas::String tmp_filename = Atlas::StringFormat("%s.t", dst_filename.c_str());
+			Zion::String dst_filename = Zion::StringFormat("%s%s", m_path, fname);
+			Zion::String tmp_filename = Zion::StringFormat("%s.t", dst_filename.c_str());
 			bool skip = false;
 
 			if(src_md5[0]!='\0')
@@ -169,7 +169,7 @@ namespace JPatch
 				{
 					if(p_path)
 					{
-						Atlas::String p_filename = Atlas::StringFormat("%s%s", p_path, fname);
+						Zion::String p_filename = Zion::StringFormat("%s%s", p_path, fname);
 						src_file = fopen(p_filename.c_str(), "rb");
 					}
 					if(src_file==NULL)
@@ -179,7 +179,7 @@ namespace JPatch
 					}
 				}
 
-				Atlas::String md5;
+				Zion::String md5;
 				if(!GetMD5(src_file, md5))
 				{
 					printf("error in GetMD5\n");
@@ -201,7 +201,7 @@ namespace JPatch
 
 			if(!skip)
 			{
-				//if(!Atlas::MakeDirectory(tmp_filename.c_str()))
+				//if(!Zion::MakeDirectory(tmp_filename.c_str()))
 				//{
 				//	printf("error in MakeDirectory\n");
 				//	goto error;

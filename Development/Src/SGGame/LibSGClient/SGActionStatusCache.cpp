@@ -1,6 +1,6 @@
-#include <AtlasBase.h>
-#include <AtlasClient.h>
-#include <AtlasCommon.h>
+#include <ZionBase.h>
+#include <ZionClient.h>
+#include <ZionCommon.h>
 
 #include <time.h>
 
@@ -9,12 +9,12 @@
 
 #include "SGActionStatusCache.h"
 
-namespace Atlas
+namespace Zion
 {
-	void SGActionStatusCache::GetDailyActionEvent(_U32 time, Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& notifyVec)
+	void SGActionStatusCache::GetDailyActionEvent(_U32 time, Zion::Vector<_U32>& actionVec, Zion::Vector<_U8>& notifyVec)
 	{
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_DAILY_ACTION_CONFIG >();
-		const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+		const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 
 		tm *tblock;
 		time_t server_time = (time_t)time;
@@ -30,7 +30,7 @@ namespace Atlas
 			if(!config
 				|| (config->hour == config->end_hour && config->min == config->end_min))	//daily action event has no notify
 			{
-				content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+				content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 				continue;
 			}
 
@@ -82,7 +82,7 @@ namespace Atlas
 				}
 			}
 
-			content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+			content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 		}
 	}
 
@@ -124,7 +124,7 @@ namespace Atlas
 		}
 	}
 
-	void SGActionStatusCache::GetDailActionStatus(_U32 time, Atlas::Vector<_U32>& actionVec, Atlas::Vector<_U8>& statusVec)
+	void SGActionStatusCache::GetDailActionStatus(_U32 time, Zion::Vector<_U32>& actionVec, Zion::Vector<_U8>& statusVec)
 	{
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_DAILY_ACTION_CONFIG >();
 		tm *tblock;
@@ -133,7 +133,7 @@ namespace Atlas
 
 		for(size_t i = 0; i < actionVec.size(); ++i)
 		{
-			const A_CONTENT_OBJECT* content_obj = Atlas::ContentObject::FindFirst(struct_info, true);
+			const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
 
 			//convert time to the same day's
 			tm today_tm = *tblock;
@@ -144,7 +144,7 @@ namespace Atlas
 				SG_DAILY_ACTION_CONFIG* config = (SG_DAILY_ACTION_CONFIG*)content_obj;
 				if(!config || config->action_id != actionVec[i])
 				{
-					content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+					content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 					continue;
 				}
 
@@ -178,7 +178,7 @@ namespace Atlas
 					break;
 				}
 
-				//content_obj = Atlas::ContentObject::FindNext(struct_info, true, content_obj);
+				//content_obj = Zion::ContentObject::FindNext(struct_info, true, content_obj);
 			}
 		}
 	}

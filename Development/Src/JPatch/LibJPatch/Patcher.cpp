@@ -1,4 +1,4 @@
-#include <AtlasBase.h>
+#include <ZionBase.h>
 #include <MoSDK.h>
 
 #include "Patcher.h"
@@ -50,7 +50,7 @@ namespace JPatch
 
 		// if userdir!=sourcedir and userdir<sourcedir then delete all file in userdir
 
-		Atlas::Map<Atlas::String, Atlas::String> params;
+		Zion::Map<Zion::String, Zion::String> params;
 		params["PROGRAM_VERSION"] = _ProgramVersion;
 		params["DATA_VERSION"] = _ProgramVersion;
 
@@ -88,8 +88,8 @@ namespace JPatch
 			}
 			else if(MOREQUESTSTATE_DONE==MORequestStatus(_checkVersion))
 			{
-				Atlas::Vector<Atlas::String> params;
-				Atlas::StringSplit(MORequestGetResult(_checkVersion), ' ', params);
+				Zion::Vector<Zion::String> params;
+				Zion::StringSplit(MORequestGetResult(_checkVersion), ' ', params);
 				MORequestDestory(_checkVersion);
 				_checkVersion = NULL;
 				if(params.size()==1 && params[0]=="LASTEST")
@@ -152,12 +152,12 @@ namespace JPatch
 
 	}
 
-	bool CPatcher::getDataVersion(Atlas::String& ver)
+	bool CPatcher::getDataVersion(Zion::String& ver)
 	{
 		return true;
 	}
 
-	bool CPatcher::setDataVersion(Atlas::String ver)
+	bool CPatcher::setDataVersion(Zion::String ver)
 	{
 		return true;
 	}

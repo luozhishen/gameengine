@@ -3,7 +3,7 @@
 
 #include <ClusterServer.h>
 
-namespace Atlas
+namespace Zion
 {
 
 	class CSGClusterServer : public CClusterServer

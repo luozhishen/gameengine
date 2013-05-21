@@ -5,12 +5,12 @@
 {	\
 	if(client->GetLogCallback())	\
 	{	\
-		Atlas::String str = Atlas::StringFormat(fmt, ##__VA_ARGS__);	\
+		Zion::String str = Zion::StringFormat(fmt, ##__VA_ARGS__);	\
 		(client->GetLogCallback())(str.c_str());	\
 	}	\
 }
 
-namespace Atlas
+namespace Zion
 {
 
 	class CClientComponent;
@@ -49,7 +49,7 @@ namespace Atlas
 		CLIENT_STATE GetState();
 		_U32 GetErrorCode();
 
-		const Atlas::String& GetClientConnectionType();
+		const Zion::String& GetClientConnectionType();
 		CClientConnectionBase* GetClientConnection();
 		void SetLogCallback(LOG_CALLBACK logproc);
 		LOG_CALLBACK GetLogCallback();
@@ -84,9 +84,9 @@ namespace Atlas
 
 	private:
 		CClientApp* m_pClientApp;
-		Atlas::String m_ClientConnectionType;
+		Zion::String m_ClientConnectionType;
 		CClientConnectionBase* m_pClientConnection;
-		Atlas::List<CClientComponent*> m_Components;
+		Zion::List<CClientComponent*> m_Components;
 		LOG_CALLBACK m_LogCallback;
 	};
 

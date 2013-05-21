@@ -1,12 +1,12 @@
 #ifndef WITHOUT_ATLAS_ASYNCIO
 
-#include "AtlasBase.h"
-#include "AtlasClient.h"
-#include "AtlasClientApp.h"
+#include "ZionBase.h"
+#include "ZionClient.h"
+#include "ZionClientApp.h"
 #include "ClientConnection.h"
 #include "AsyncIOConnection.h"
 
-namespace Atlas
+namespace Zion
 {
 
 	static bool CLT_ON_CONNECT(HCONNECT);
@@ -64,7 +64,7 @@ namespace Atlas
 		{
 			m_pSendBuf = NULL;
 			m_bConnecting = true;
-			bRet = Atlas::Connect(sa, g_client_handler, g_client_iopool, g_client_workers, this);
+			bRet = Zion::Connect(sa, g_client_handler, g_client_iopool, g_client_workers, this);
 			if(!bRet) m_bConnecting = false;
 		}
 
@@ -76,7 +76,7 @@ namespace Atlas
 	void CAsyncIOConnection::Disconnect()
 	{
 		A_MUTEX_LOCK(&m_mtxLock);
-		if(m_hConn) Atlas::Disconnect(m_hConn);
+		if(m_hConn) Zion::Disconnect(m_hConn);
 		A_MUTEX_UNLOCK(&m_mtxLock);
 	}
 

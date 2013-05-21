@@ -1,12 +1,12 @@
-#include <AtlasBase.h>
-#include <AtlasClientApp.h>
+#include <ZionBase.h>
+#include <ZionClientApp.h>
 
 #include <tinyxml.h>
 #include "StressLoader.h"
 #include "StressManager.h"
 #include "StressClient.h"
 
-namespace Atlas
+namespace Zion
 {
 	CStressLoader::CStressLoader()
 	{
@@ -100,7 +100,7 @@ namespace Atlas
 				CStressClient* pClient = stressMgr.GetClient(uid);
 				_OnNewClient(uid);
 
-				Atlas::Vector<Script_Case>::iterator script_it = (*it).scripts.begin();
+				Zion::Vector<Script_Case>::iterator script_it = (*it).scripts.begin();
 				for(; script_it != (*it).scripts.end(); ++script_it)
 				{
 					CStressCase* pCase = pClient->NewStressCase((*script_it).case_name.c_str());
@@ -141,8 +141,8 @@ namespace Atlas
 		TiXmlElement* ParamElem = ATLAS_NEW TiXmlElement("SERVER_PARAM");
 		rootElem->LinkEndChild(ParamElem);
 		
-		Atlas::Map<Atlas::String, Atlas::String> params = Atlas::CClientApp::GetDefault()->GetParams();
-		Atlas::Map<Atlas::String, Atlas::String>::iterator it = params.begin();
+		Zion::Map<Zion::String, Zion::String> params = Zion::CClientApp::GetDefault()->GetParams();
+		Zion::Map<Zion::String, Zion::String>::iterator it = params.begin();
 		for(int i = 0; it != params.end(); ++it, ++i)
 		{
 			TiXmlElement* elem = ATLAS_NEW TiXmlElement("PARAM");

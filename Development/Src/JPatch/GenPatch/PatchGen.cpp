@@ -4,7 +4,7 @@
 #include <bzlib.h>
 #include <direct.h>
 
-#include <AtlasBase.h>
+#include <ZionBase.h>
 
 #include <Bundle.h>
 #include <PatchApply.h>
@@ -32,7 +32,7 @@ namespace JPatch
 
 	static bool JReadFile(CFile& file, void*& mem, _U32& size)
 	{
-		Atlas::String name = file._Bundle->_BaseDir + file._Name;
+		Zion::String name = file._Bundle->_BaseDir + file._Name;
 		return JReadFile(name.c_str(), mem, size);
 	}
 
@@ -108,7 +108,7 @@ namespace JPatch
 			return true;
 		}
 
-		bool DelFile(const Atlas::String& file)
+		bool DelFile(const Zion::String& file)
 		{
 			if(!WriteOp()) return false;
 			printf("file %s delete\n", file.c_str());
@@ -123,7 +123,7 @@ namespace JPatch
 			return true;
 		}
 
-		bool AddFile(const Atlas::String& file, const Atlas::String& src_md5, const Atlas::String& dst_md5)
+		bool AddFile(const Zion::String& file, const Zion::String& src_md5, const Zion::String& dst_md5)
 		{
 			if(!WriteOp()) return false;
 			printf("file %s\n", file.c_str());
@@ -259,7 +259,7 @@ namespace JPatch
 			return true;
 		}
 
-		Atlas::String _stubname;
+		Zion::String _stubname;
 		FILE* _patch;
 		BZFILE* _bzpatch;
 		FILE* _stub;
@@ -306,7 +306,7 @@ namespace JPatch
 
 		if(!patcher.Open(patch_file)) return false;
 
-		Atlas::Map<Atlas::String, CFile>::iterator i;
+		Zion::Map<Zion::String, CFile>::iterator i;
 		for(i=Origin._Files.begin(); i!=Origin._Files.end(); i++)
 		{
 			if(Lastest._Files.find(i->first)==Lastest._Files.end())

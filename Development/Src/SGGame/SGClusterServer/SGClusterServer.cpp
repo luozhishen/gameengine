@@ -14,7 +14,7 @@ public:
 	virtual void InitApp()
 	{
 		Zion::CServerApp::InitApp();
-		m_pClusterServer = ATLAS_NEW Zion::CSGClusterServer(this);
+		m_pClusterServer = ZION_NEW Zion::CSGClusterServer(this);
 		m_pClusterServer->Start();
 	}
 

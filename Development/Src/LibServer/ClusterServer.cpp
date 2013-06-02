@@ -32,7 +32,7 @@ namespace Zion
 
 	CClusterServer::CClusterServer(CServerApp* pServerApp) : CServerBase(pServerApp)
 	{
-		ATLAS_ASSERT(!_global_cluster_singleton);
+		ZION_ASSERT(!_global_cluster_singleton);
 		_global_cluster_singleton = this;
 		ClusterRpc_Server_Register();
 		A_MUTEX_INIT(&m_mtxWorkLoad);
@@ -45,7 +45,7 @@ namespace Zion
 
 	CClusterClient* CClusterServer::NewClusterClient(_U64 nCNDX)
 	{
-		return ATLAS_NEW CClusterClient(this, nCNDX);
+		return ZION_NEW CClusterClient(this, nCNDX);
 	}
 
 	void CClusterServer::ClientLogin(HSERVER hServer, _U32 nUID, const char* pToken, _U64 nSNDX)
@@ -248,7 +248,7 @@ namespace Zion
 
 	void CClusterClient::OnUserLogout()
 	{
-		ATLAS_ASSERT(m_nState==STATE_DISCONNECTED);
+		ZION_ASSERT(m_nState==STATE_DISCONNECTED);
 		if(m_nState!=STATE_DISCONNECTED) return;
 		m_nState = STATE_DELETE;
 	}
@@ -260,13 +260,13 @@ namespace Zion
 	static _U32 _global_node_seq = 1980;
 	bool CClusterClient::OnNodeConnected(_U32 nodeid, _U64 nndx, _U32 nodeseq)
 	{
-		ATLAS_ASSERT(nodeid<=NODETYPE_MAX);
+		ZION_ASSERT(nodeid<=NODETYPE_MAX);
 		if(nodeid>NODETYPE_MAX) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.hServer);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.hServer);
 		if(!m_NodeStubs[nodeid].Current.hServer) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.nNNDX==-1);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.nNNDX==-1);
 		if(m_NodeStubs[nodeid].Current.nNNDX!=-1) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.connect_seq==nodeseq);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.connect_seq==nodeseq);
 		if(m_NodeStubs[nodeid].Current.connect_seq!=nodeseq) return false;
 		m_NodeStubs[nodeid].Current.nNNDX = nndx;
 		if(m_NodeStubs[nodeid].Current.disconnect_seq!=-1)
@@ -283,13 +283,13 @@ namespace Zion
 
 	bool CClusterClient::OnNodeConnectFailed(_U32 nodeid, _U32 nodeseq)
 	{
-		ATLAS_ASSERT(nodeid<=NODETYPE_MAX);
+		ZION_ASSERT(nodeid<=NODETYPE_MAX);
 		if(nodeid>NODETYPE_MAX) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.hServer);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.hServer);
 		if(!m_NodeStubs[nodeid].Current.hServer) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.nNNDX==-1);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.nNNDX==-1);
 		if(m_NodeStubs[nodeid].Current.nNNDX!=-1) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.connect_seq==nodeseq);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.connect_seq==nodeseq);
 		if(m_NodeStubs[nodeid].Current.connect_seq!=nodeseq) return false;
 
 		if(m_NodeStubs[nodeid].Next.hServer)
@@ -314,15 +314,15 @@ namespace Zion
 
 	bool CClusterClient::OnNodeDisconnected(_U32 nodeid, _U32 nodeseq)
 	{
-		ATLAS_ASSERT(nodeid<=NODETYPE_MAX);
+		ZION_ASSERT(nodeid<=NODETYPE_MAX);
 		if(nodeid>NODETYPE_MAX) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.hServer);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.hServer);
 		if(!m_NodeStubs[nodeid].Current.hServer) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.nNNDX!=-1);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.nNNDX!=-1);
 		if(m_NodeStubs[nodeid].Current.nNNDX==-1) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.disconnect_seq!=-1);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.disconnect_seq!=-1);
 		if(m_NodeStubs[nodeid].Current.disconnect_seq==-1) return false;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].Current.disconnect_seq==nodeseq);
+		ZION_ASSERT(m_NodeStubs[nodeid].Current.disconnect_seq==nodeseq);
 		if(m_NodeStubs[nodeid].Current.disconnect_seq!=nodeseq) return false;
 
 		if(m_nState==STATE_CONNECT) SRPC_SetNode(m_hSession, m_nSNDX, nodeid, (_U64)-1, 0, 0);
@@ -355,7 +355,7 @@ namespace Zion
 	{
 		if(m_nState!=STATE_CONNECT) return;
 
-		ATLAS_ASSERT(nodeid<NODETYPE_MAX);
+		ZION_ASSERT(nodeid<NODETYPE_MAX);
 		if(nodeid>NODETYPE_MAX) return;
 		if(m_NodeStubs[nodeid].Current.hServer)
 		{
@@ -364,7 +364,7 @@ namespace Zion
 			m_NodeStubs[nodeid].Next.len = len;
 			if(len>0)
 			{
-				m_NodeStubs[nodeid].Next.data = ATLAS_NEW _U8[len];
+				m_NodeStubs[nodeid].Next.data = ZION_NEW _U8[len];
 				memcpy(m_NodeStubs[nodeid].Next.data, data, len);
 			}
 		}
@@ -380,7 +380,7 @@ namespace Zion
 
 	void CClusterClient::NodeDisconnect(_U32 nodeid)
 	{
-		ATLAS_ASSERT(nodeid<NODETYPE_MAX);
+		ZION_ASSERT(nodeid<NODETYPE_MAX);
 		if(nodeid>NODETYPE_MAX) return;
 		if(m_NodeStubs[nodeid].Current.nNNDX==-1)
 		{
@@ -421,7 +421,7 @@ namespace Zion
 		}
 		else
 		{
-			ATLAS_ASSERT(nodeid<=NODETYPE_MAX);
+			ZION_ASSERT(nodeid<=NODETYPE_MAX);
 			if(nodeid>NODETYPE_MAX) return;
 			if(m_NodeStubs[nodeid].Current.hServer)
 			{
@@ -435,7 +435,7 @@ namespace Zion
 
 	bool CClusterClient::BindUser(_U32 nUID, const char* pToken, HSERVER hSession, _U64 nSNDX)
 	{
-		ATLAS_ASSERT(m_nUID==-1);
+		ZION_ASSERT(m_nUID==-1);
 		if(m_nUID!=-1) return false;
 
 		if(!m_pServer->UIDBindCNDX(nUID, this)) return false;
@@ -452,7 +452,7 @@ namespace Zion
 
 	bool CClusterClient::BindAvatar(_U32 nAID)
 	{
-		ATLAS_ASSERT(m_nAID==-1);
+		ZION_ASSERT(m_nAID==-1);
 		if(m_nAID!=-1) return false;
 
 		if(!m_pServer->AIDBindCNDX(nAID, this)) return false;

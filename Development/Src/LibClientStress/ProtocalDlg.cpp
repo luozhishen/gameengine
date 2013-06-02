@@ -40,12 +40,12 @@ CProtocalDialog::CProtocalDialog(wxWindow* pParent) : wxDialog(pParent, wxID_ANY
 {
 	m_pCurrentClass = NULL;
 
-	wxSplitterWindow* pSplitter1 = ATLAS_NEW wxSplitterWindow(this);
-	wxSplitterWindow* pSplitter2 = ATLAS_NEW wxSplitterWindow(pSplitter1);
+	wxSplitterWindow* pSplitter1 = ZION_NEW wxSplitterWindow(this);
+	wxSplitterWindow* pSplitter2 = ZION_NEW wxSplitterWindow(pSplitter1);
 
-	m_pClassTree = ATLAS_NEW wxTreeCtrl(pSplitter1, ID_CLASS_TREE);
-	m_pFunctionView = ATLAS_NEW wxListCtrl(pSplitter2, ID_FUNCTION_VIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_HRULES|wxLC_VRULES);
-	m_pArgementView = ATLAS_NEW wxListCtrl(pSplitter2, ID_ARGEMENT_VIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_HRULES|wxLC_VRULES);
+	m_pClassTree = ZION_NEW wxTreeCtrl(pSplitter1, ID_CLASS_TREE);
+	m_pFunctionView = ZION_NEW wxListCtrl(pSplitter2, ID_FUNCTION_VIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_HRULES|wxLC_VRULES);
+	m_pArgementView = ZION_NEW wxListCtrl(pSplitter2, ID_ARGEMENT_VIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_HRULES|wxLC_VRULES);
 
 	m_pFunctionView->SetAutoLayout(true);
 	m_pArgementView->SetAutoLayout(true);
@@ -58,7 +58,7 @@ CProtocalDialog::CProtocalDialog(wxWindow* pParent) : wxDialog(pParent, wxID_ANY
 	pSplitter2->SplitHorizontally(m_pFunctionView, m_pArgementView);
 	pSplitter1->SplitVertically(m_pClassTree, pSplitter2);
 
-	wxBoxSizer* pSizer = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer->Add(pSplitter1, 1, wxGROW|wxALIGN_CENTER);
 
 	SetSizer(pSizer);
@@ -73,11 +73,11 @@ CProtocalDialog::CProtocalDialog(wxWindow* pParent) : wxDialog(pParent, wxID_ANY
 		const DDLReflect::CLASS_INFO* pServer = Zion::GetServerStub(i);
 		if(pClient)
 		{
-			m_pClassTree->AppendItem(m_S2C_id, wxString::FromUTF8(pClient->name), -1, -1, ATLAS_NEW CProtocalObject(true, pClient));
+			m_pClassTree->AppendItem(m_S2C_id, wxString::FromUTF8(pClient->name), -1, -1, ZION_NEW CProtocalObject(true, pClient));
 		}
 		if(pServer)
 		{
-			m_pClassTree->AppendItem(m_C2S_id, wxString::FromUTF8(pServer->name), -1, -1, ATLAS_NEW CProtocalObject(false, pServer));
+			m_pClassTree->AppendItem(m_C2S_id, wxString::FromUTF8(pServer->name), -1, -1, ZION_NEW CProtocalObject(false, pServer));
 		}
 	}
 }

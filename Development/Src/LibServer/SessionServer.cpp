@@ -58,12 +58,12 @@ namespace Zion
 
 	CSessionClient* CSessionServer::NewSessionClient(HCONNECT hConn, _U64 nSNDX)
 	{
-		return ATLAS_NEW CSessionClient(this, hConn, nSNDX);
+		return ZION_NEW CSessionClient(this, hConn, nSNDX);
 	}
 
 	HSERVER CSessionServer::GetDefaultCluster()
 	{
-		ATLAS_ASSERT(m_hDefaultCluster);
+		ZION_ASSERT(m_hDefaultCluster);
 		return m_hDefaultCluster;
 		//return GetLocalRPCServer() ? GetLocalRPCServer() : m_hDefaultCluster;
 	}
@@ -84,15 +84,15 @@ namespace Zion
 			NULL
 		};
 		m_hEp = NewEP(m_saEndPoint, handler, m_hPool, GetServerApp()->GetIOWorkers(), this);
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		if(!m_hEp) return false;
 		StartEP(m_hEp);
 
 		m_hTimerQueue = CreateTimerQueue();
-		ATLAS_ASSERT(m_hTimerQueue != NULL );
+		ZION_ASSERT(m_hTimerQueue != NULL );
 		
 		BOOL ret = CreateTimerQueueTimer(&m_hTimer, m_hTimerQueue, SessionTimerProc, this, 100, TIEMR_PERIOD, 0);
-		ATLAS_ASSERT(ret);
+		ZION_ASSERT(ret);
 
 		return true;
 	}
@@ -114,7 +114,7 @@ namespace Zion
 		DeleteTimerQueue(m_hTimerQueue);
 		m_hTimerQueue = NULL;
 
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		StopEP(m_hEp);
 		while(IsRunning(m_hEp))
 		{
@@ -153,7 +153,7 @@ namespace Zion
 	void CSessionServer::OnData(HCONNECT hConn, _U32 len, const _U8* data)
 	{
 		CSessionClient* pConn = (CSessionClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		if(!pConn) return;
 		_global_session_object_manager.Lock(pConn->GetSNDX());
 		pConn->OnRawData(len, data);
@@ -163,7 +163,7 @@ namespace Zion
 	void CSessionServer::OnDisconnected(HCONNECT hConn)
 	{
 		CSessionClient* pConn = (CSessionClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		if(!pConn) return;
 		_U64 sndx = pConn->GetSNDX();
 		_global_session_object_manager.Lock(sndx);
@@ -209,7 +209,7 @@ namespace Zion
 		m_nCNDX = (_U64)-1;
 		if(recvsize)
 		{
-			m_pRecvBuff = (_U8*)ATLAS_ALLOC(recvsize);
+			m_pRecvBuff = (_U8*)ZION_ALLOC(recvsize);
 			m_nRecvBuffLen = 0;
 			m_nRecvBuffSize = recvsize;
 		}
@@ -226,7 +226,7 @@ namespace Zion
 			m_pServer->Unbind(m_nUID, m_nSNDX);
 		}
 
-		if(m_pRecvBuff) ATLAS_FREE(m_pRecvBuff);
+		if(m_pRecvBuff) ZION_FREE(m_pRecvBuff);
 		_global_session_object_manager.UnbindObject(m_nSNDX, this);
 	}
 
@@ -331,9 +331,9 @@ namespace Zion
 
 	void CSessionClient::NodeConnect(_U32 nodeid, HSERVER hServer, _U64 nndx)
 	{
-		ATLAS_ASSERT(nodeid<sizeof(m_NodeStubs)/sizeof(m_NodeStubs[0]));
+		ZION_ASSERT(nodeid<sizeof(m_NodeStubs)/sizeof(m_NodeStubs[0]));
 		if(nodeid>=sizeof(m_NodeStubs)/sizeof(m_NodeStubs[0])) return;
-		ATLAS_ASSERT(!m_NodeStubs[nodeid].hServer);
+		ZION_ASSERT(!m_NodeStubs[nodeid].hServer);
 		m_NodeStubs[nodeid].hServer = hServer;
 		m_NodeStubs[nodeid].nNNDX = nndx;
 		NRPC_SessionAck(hServer, nndx, m_nSNDX);
@@ -341,9 +341,9 @@ namespace Zion
 
 	void CSessionClient::NodeDisconnect(_U32 nodeid)
 	{
-		ATLAS_ASSERT(nodeid<sizeof(m_NodeStubs)/sizeof(m_NodeStubs[0]));
+		ZION_ASSERT(nodeid<sizeof(m_NodeStubs)/sizeof(m_NodeStubs[0]));
 		if(nodeid>=sizeof(m_NodeStubs)/sizeof(m_NodeStubs[0])) return;
-		ATLAS_ASSERT(m_NodeStubs[nodeid].hServer);
+		ZION_ASSERT(m_NodeStubs[nodeid].hServer);
 		m_NodeStubs[nodeid].hServer = NULL;
 		m_NodeStubs[nodeid].nNNDX = (_U64)-1;
 	}
@@ -359,7 +359,7 @@ namespace Zion
 
 	void CSessionClient::OnRawConnect()
 	{
-		ATLAS_ASSERT(m_pRecvBuff);
+		ZION_ASSERT(m_pRecvBuff);
 		m_nRecvBuffLen = 0;
 		OnConnected();
 	}
@@ -438,7 +438,7 @@ namespace Zion
 
 	void CSessionClient::ClusterLogin(HSERVER hServer)
 	{
-		ATLAS_ASSERT(!m_hCluster);
+		ZION_ASSERT(!m_hCluster);
 		m_hCluster = hServer;
 		CRPC_UserLogin(m_hCluster, m_nUID, m_sToken, m_nSNDX);
 	}
@@ -455,9 +455,9 @@ namespace Zion
 	bool SS_ON_CONNECT(HCONNECT hConn)
 	{
 		HTCPEP hep = HepOf(hConn);
-		ATLAS_ASSERT(hep);
+		ZION_ASSERT(hep);
 		CSessionServer* pServer = (CSessionServer*)KeyOf(hep);
-		ATLAS_ASSERT(pServer);
+		ZION_ASSERT(pServer);
 		pServer->OnConnected(hConn);
 		return true;
 	}
@@ -465,7 +465,7 @@ namespace Zion
 	void SS_ON_DISCONNECT(HCONNECT hConn)
 	{
 		CSessionClient* pConn = (CSessionClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		pConn->GetServer()->OnDisconnected(hConn);
 		CloseConn(hConn);
 	}
@@ -473,7 +473,7 @@ namespace Zion
 	void SS_ON_DATA(HCONNECT hConn, _U32 len, const _U8* data)
 	{
 		CSessionClient* pConn = (CSessionClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		pConn->GetServer()->OnData(hConn, len, data);
 	}
 

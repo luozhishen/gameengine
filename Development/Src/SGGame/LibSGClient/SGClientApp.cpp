@@ -22,7 +22,7 @@ namespace Zion
 
 	Zion::CClient* CSGClientApp::NewClient()
 	{
-		Zion::CClient* pClient = ATLAS_NEW CSGClient(this);
+		Zion::CClient* pClient = ZION_NEW CSGClient(this);
 		if(!pClient) return NULL;
 		pClient->InitializeComponents();
 		return pClient;

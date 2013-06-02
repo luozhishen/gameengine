@@ -36,7 +36,7 @@ CContentExcelImportor::~CContentExcelImportor()
 	ClearTemplateDefine();
 }
 
-void CContentExcelImportor::GetTemplateList(Zion::Vector<Zion::String>& list)
+void CContentExcelImportor::GetTemplateList(Zion::Array<Zion::String>& list)
 {
 	list.clear();
 
@@ -446,14 +446,14 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				return false;
 			}
 			old_obj = Zion::ContentObject::Modify(old_obj->uuid, tmpl.info);
-			ATLAS_ASSERT(old_obj);
+			ZION_ASSERT(old_obj);
 			obj->uuid = old_obj->uuid;
 			if(oldobjs.find(obj->uuid)!=oldobjs.end()) oldobjs.erase(obj->uuid);
 		}
 		else
 		{
 			old_obj = Zion::ContentObject::CreateObject(tmpl.info, obj->uuid);
-			ATLAS_ASSERT(old_obj);
+			ZION_ASSERT(old_obj);
 			if(!sUUID.empty())
 			{
 				Zion::String range = Zion::StringFormat("%s%d", sUUID.c_str(), row);

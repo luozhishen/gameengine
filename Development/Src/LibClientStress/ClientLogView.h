@@ -36,7 +36,7 @@ public:
 		m_Logs[index] = msg;
 	}
 
-	Zion::Vector<Zion::String> m_Logs;
+	Zion::Array<Zion::String> m_Logs;
 	size_t m_nStart, m_nCount;
 	bool m_bEnable;
 };

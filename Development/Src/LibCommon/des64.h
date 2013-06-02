@@ -1,5 +1,5 @@
-#ifndef __ATLAS_DES64__
-#define __ATLAS_DES64__
+#ifndef __ZION_DES64__
+#define __ZION_DES64__
 
 typedef bool DES_KEY_S[16][48];
 typedef char DES_KEY[8];

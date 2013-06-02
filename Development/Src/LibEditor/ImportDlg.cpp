@@ -57,7 +57,7 @@ bool CImportDlg::LoadTemplateDefine(const char* filename)
 		return false;
 	}
 
-	Zion::Vector<Zion::String> list;
+	Zion::Array<Zion::String> list;
 	m_pImportor->GetTemplateList(list);
 
 	for(size_t i=0; i<list.size(); i++)
@@ -74,19 +74,19 @@ void CImportDlg::InitClient()
 	SetSizeHints( wxDefaultSize, wxDefaultSize );
 
 	wxBoxSizer* m_mainSizer;
-	m_mainSizer = ATLAS_NEW wxBoxSizer( wxVERTICAL );
+	m_mainSizer = ZION_NEW wxBoxSizer( wxVERTICAL );
 
-	wxPanel* panel1 = ATLAS_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxPanel* panel1 = ZION_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1;
-	bSizer1 = ATLAS_NEW wxBoxSizer( wxHORIZONTAL );
+	bSizer1 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
 
-	wxStaticText* staticTextType = ATLAS_NEW wxStaticText( panel1, wxID_ANY, wxT("Type"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	wxStaticText* staticTextType = ZION_NEW wxStaticText( panel1, wxID_ANY, wxT("Type"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	staticTextType->Wrap( -1 );
 	staticTextType->SetMinSize( wxSize( 50,-1 ) );
 
 	bSizer1->Add( staticTextType, 0, wxALL, 5 );
 
-	m_cbType = ATLAS_NEW wxComboBox( panel1, ID_COMBO, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
+	m_cbType = ZION_NEW wxComboBox( panel1, ID_COMBO, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
 	bSizer1->Add( m_cbType, 1, wxALL, 5 );
 
 	panel1->SetSizer( bSizer1 );
@@ -94,17 +94,17 @@ void CImportDlg::InitClient()
 	bSizer1->Fit( panel1 );
 	m_mainSizer->Add( panel1, 0, wxEXPAND | wxALL, 5 );
 
-	wxPanel* panel2 = ATLAS_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxPanel* panel2 = ZION_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer2;
-	bSizer2 = ATLAS_NEW wxBoxSizer( wxHORIZONTAL );
+	bSizer2 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
 
-	wxStaticText* staticTextPath = ATLAS_NEW wxStaticText( panel2, wxID_ANY, wxT("ExcelFile"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	wxStaticText* staticTextPath = ZION_NEW wxStaticText( panel2, wxID_ANY, wxT("ExcelFile"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	staticTextPath->Wrap( -1 );
 	staticTextPath->SetMinSize( wxSize( 50,-1 ) );
 
 	bSizer2->Add( staticTextPath, 0, wxALL, 5 );
 
-	m_pFilePicker = ATLAS_NEW wxFilePickerCtrl( panel2, ID_FILEPICER, wxEmptyString, wxT("Select a Excel File"), wxT("excel files (*.xlsx) | *.xlsx"), wxDefaultPosition, wxDefaultSize );
+	m_pFilePicker = ZION_NEW wxFilePickerCtrl( panel2, ID_FILEPICER, wxEmptyString, wxT("Select a Excel File"), wxT("excel files (*.xlsx) | *.xlsx"), wxDefaultPosition, wxDefaultSize );
 	bSizer2->Add( m_pFilePicker, 1, wxALL, 5 );
 
 	panel2->SetSizer( bSizer2 );
@@ -112,25 +112,25 @@ void CImportDlg::InitClient()
 	bSizer2->Fit( panel2 );
 	m_mainSizer->Add( panel2, 0, wxEXPAND | wxALL, 5 );
 
-	wxPanel* panel3 = ATLAS_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxPanel* panel3 = ZION_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer3;
-	bSizer3 = ATLAS_NEW wxBoxSizer( wxHORIZONTAL );
+	bSizer3 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
 
-	wxStaticText* staticTextSheet = ATLAS_NEW wxStaticText( panel3, wxID_ANY, wxT("Sheet"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	wxStaticText* staticTextSheet = ZION_NEW wxStaticText( panel3, wxID_ANY, wxT("Sheet"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	staticTextSheet->Wrap( -1 );
 	staticTextSheet->SetMinSize( wxSize( 50,-1 ) );
 
 	bSizer3->Add( staticTextSheet, 0, wxALL, 5 );
 
 	wxBoxSizer* bSizer6;
-	bSizer6 = ATLAS_NEW wxBoxSizer( wxVERTICAL );
+	bSizer6 = ZION_NEW wxBoxSizer( wxVERTICAL );
 
 	wxArrayString m_checkListChoices;
-	m_checkList = ATLAS_NEW wxCheckListBox( panel3, ID_CHECKLIST, wxDefaultPosition, wxDefaultSize, m_checkListChoices, wxLB_MULTIPLE );
+	m_checkList = ZION_NEW wxCheckListBox( panel3, ID_CHECKLIST, wxDefaultPosition, wxDefaultSize, m_checkListChoices, wxLB_MULTIPLE );
 
 	bSizer6->Add( m_checkList, 1, wxALL|wxEXPAND, 5 );
 
-	m_checkBoxSelAll = ATLAS_NEW wxCheckBox( panel3, ID_CHECKBOX_SELECT_ALL, wxT("Select All Sheet"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxSelAll = ZION_NEW wxCheckBox( panel3, ID_CHECKBOX_SELECT_ALL, wxT("Select All Sheet"), wxDefaultPosition, wxDefaultSize, 0 );
 
 	bSizer6->Add( m_checkBoxSelAll, 0, wxALL, 5 );
 
@@ -141,10 +141,10 @@ void CImportDlg::InitClient()
 	bSizer3->Fit( panel3 );
 	m_mainSizer->Add( panel3, 1, wxEXPAND | wxALL, 5 );
 
-	wxStaticLine *m_staticline1 = ATLAS_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	wxStaticLine *m_staticline1 = ZION_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	m_mainSizer->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
 
-	m_btnOK = ATLAS_NEW wxButton( this, wxID_OK, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_btnOK = ZION_NEW wxButton( this, wxID_OK, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_mainSizer->Add( m_btnOK, 0, wxALL|wxALIGN_RIGHT, 5 );
 	SetSizer( m_mainSizer );
 	Layout();
@@ -161,7 +161,7 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 		return;
 	}
 
-	Zion::Vector<Zion::String> vSheets;
+	Zion::Array<Zion::String> vSheets;
 	if(!m_pExcel->GetExcelSheets(vSheets))
 	{
 		wxMessageBox(wxT("Failed to read excel file"), wxT("Error"));
@@ -184,7 +184,7 @@ void CImportDlg::OnSelectAll(wxCommandEvent& event)
 	}
 }
 
-bool CImportDlg::GetSelectSheets(Zion::Vector<Zion::String>& vSheets)
+bool CImportDlg::GetSelectSheets(Zion::Array<Zion::String>& vSheets)
 {
 	if(m_checkList->GetCount()==0)
 	{
@@ -232,7 +232,7 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-	Zion::Vector<Zion::String> sheets;
+	Zion::Array<Zion::String> sheets;
 	if(!GetSelectSheets(sheets) || sheets.empty())
 	{
 		wxMessageBox(wxT("no sheet selected!"));

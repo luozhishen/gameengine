@@ -61,7 +61,7 @@ namespace Zion
 				m_nSendLen += (_U32)len;
 				if(m_SendQueue.front().second==m_nSendLen)
 				{
-					ATLAS_FREE(m_SendQueue.front().first);
+					ZION_FREE(m_SendQueue.front().first);
 					m_SendQueue.erase(m_SendQueue.begin());
 					m_nSendLen = 0;
 				}								
@@ -77,7 +77,7 @@ namespace Zion
 
 	bool CNonblockConnection::Connect(const SOCK_ADDR& sa)
 	{
-		ATLAS_ASSERT(m_hSocket==SOCK_INVALID_HANDLE);
+		ZION_ASSERT(m_hSocket==SOCK_INVALID_HANDLE);
 		if(m_hSocket!=SOCK_INVALID_HANDLE) return false;
 		Clear();
 		m_hSocket = sock_connect(&sa, SOCK_NONBLOCK);
@@ -97,7 +97,7 @@ namespace Zion
 	void CNonblockConnection::SendData(_U32 len, const _U8* data, bool bPending)
 	{
 		if(len==0) return;
-		_U8* mdata = (_U8*)ATLAS_ALLOC(len);
+		_U8* mdata = (_U8*)ZION_ALLOC(len);
 		memcpy(mdata, data, len);
 		m_SendQueue.push_back(std::pair<_U8*, _U32>(mdata, len));
 	}
@@ -106,7 +106,7 @@ namespace Zion
 	{
 		while(!m_SendQueue.empty())
 		{
-			ATLAS_FREE((*m_SendQueue.begin()).first);
+			ZION_FREE((*m_SendQueue.begin()).first);
 			m_SendQueue.erase(m_SendQueue.begin());
 		}
 		m_nSendLen = 0;

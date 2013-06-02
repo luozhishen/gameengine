@@ -21,34 +21,34 @@ END_EVENT_TABLE()
 
 CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Stress View")), wxDefaultPosition, wxSize(pParent->GetSize()), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
-	wxNotebook* pViewTab = ATLAS_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
-	wxPanel* pClientPanel = ATLAS_NEW wxPanel(pViewTab);
+	wxNotebook* pViewTab = ZION_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
+	wxPanel* pClientPanel = ZION_NEW wxPanel(pViewTab);
 
-	m_pClientTree = ATLAS_NEW CStressViewTree(pClientPanel, ID_CLIENT_TREE, wxDefaultPosition, wxSize(180, -1));
+	m_pClientTree = ZION_NEW CStressViewTree(pClientPanel, ID_CLIENT_TREE, wxDefaultPosition, wxSize(180, -1));
 	((CStressViewTree*)m_pClientTree)->SetParentWindow(this);
 	
-	m_pClientInfo = ATLAS_NEW wxTextCtrl(pClientPanel, wxID_ANY);
-	m_pClientCase = ATLAS_NEW wxTextCtrl(pClientPanel, wxID_ANY);
-	m_pClientData = ATLAS_NEW wxTextCtrl(pClientPanel, wxID_ANY);	
+	m_pClientInfo = ZION_NEW wxTextCtrl(pClientPanel, wxID_ANY);
+	m_pClientCase = ZION_NEW wxTextCtrl(pClientPanel, wxID_ANY);
+	m_pClientData = ZION_NEW wxTextCtrl(pClientPanel, wxID_ANY);	
 
-	wxBoxSizer* pClientTop = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	pClientTop->Add(ATLAS_NEW wxStaticText(pClientPanel, wxID_ANY, wxT("Client")), 0, wxALIGN_CENTER|wxALL, 5);
+	wxBoxSizer* pClientTop = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pClientTop->Add(ZION_NEW wxStaticText(pClientPanel, wxID_ANY, wxT("Client")), 0, wxALIGN_CENTER|wxALL, 5);
 	pClientTop->Add(m_pClientInfo, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
-	pClientTop->Add(ATLAS_NEW wxStaticText(pClientPanel, wxID_ANY, wxT("Case")), 0, wxALIGN_CENTER|wxALL, 5);
+	pClientTop->Add(ZION_NEW wxStaticText(pClientPanel, wxID_ANY, wxT("Case")), 0, wxALIGN_CENTER|wxALL, 5);
 	pClientTop->Add(m_pClientCase, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
 	
-	wxBoxSizer* pClientRight = ATLAS_NEW wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* pClientRight = ZION_NEW wxBoxSizer(wxVERTICAL);
 	pClientRight->Add(pClientTop, 0, wxGROW|wxALIGN_CENTER);
 	pClientRight->Add(m_pClientData, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
 	
-	wxBoxSizer* pClientRoot = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pClientRoot = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pClientRoot->Add(m_pClientTree, 0, wxGROW|wxALIGN_CENTER|wxALL, 5);
 	pClientRoot->Add(pClientRight, 1, wxGROW|wxALIGN_CENTER);
 	pClientPanel->SetSizer(pClientRoot);
 	
 	pViewTab->AddPage(pClientPanel, wxT("Clients"));
 
-	wxBoxSizer* pSizerRoot = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizerRoot = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizerRoot->Add(pViewTab, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
 	SetSizer(pSizerRoot);
 
@@ -63,7 +63,7 @@ CStressViewDlg::~CStressViewDlg()
 void CStressViewDlg::InitClients()
 {
 	Zion::CStressManager& stressMgr = Zion::CStressManager::Get();
-	Zion::Vector<_U32> clients;
+	Zion::Array<_U32> clients;
 	stressMgr.GetClients(clients);
 
 	if(clients.empty())
@@ -80,7 +80,7 @@ void CStressViewDlg::InitClients()
 			continue;
 
 		wxTreeItemId clientItem = m_pClientTree->AppendItem(rootItem, wxString::FromUTF8(pClient->GetTitle().c_str()), -1, -1);
-		StreesViewItemData* data = ATLAS_NEW StreesViewItemData(pClient->GetIndex());
+		StreesViewItemData* data = ZION_NEW StreesViewItemData(pClient->GetIndex());
 		//data.SetId(clientItem);
 		m_pClientTree->SetItemData(clientItem, (wxTreeItemData*)data);
 
@@ -96,7 +96,7 @@ void CStressViewDlg::InitClients()
 			Zion::String strCaseName = (*it)->GetName();
 
 			wxTreeItemId caseItem = m_pClientTree->AppendItem(clientItem, wxString::FromUTF8((*it)->GetName().c_str()), -1, -1);
-			StreesViewItemData* castData = ATLAS_NEW StreesViewItemData(strCaseName, pClient->GetIndex());
+			StreesViewItemData* castData = ZION_NEW StreesViewItemData(strCaseName, pClient->GetIndex());
 			//castData.SetId(caseItem);
 			m_pClientTree->SetItemData(caseItem, (wxTreeItemData*)castData);
 		}

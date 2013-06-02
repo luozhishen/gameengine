@@ -25,8 +25,8 @@ END_EVENT_TABLE()
 CStructEditView::CStructEditView(wxWindow* pParent, wxWindow* pDataViewWindow) : wxPanel(pParent)
 {
 	wxBoxSizer* m_pSizer;
-	m_pSizer = ATLAS_NEW wxBoxSizer(wxVERTICAL);
-	m_pPropGrid = ATLAS_NEW wxPropertyGrid(this, ID_OBJECT_GRID, wxDefaultPosition, wxDefaultSize, wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
+	m_pSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
+	m_pPropGrid = ZION_NEW wxPropertyGrid(this, ID_OBJECT_GRID, wxDefaultPosition, wxDefaultSize, wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
 	m_pPropGrid->SetExtraStyle( wxPG_EX_HELP_AS_TOOLTIPS );
 	m_pPropGrid->SetColumnProportion(0, 30);
 	m_pPropGrid->SetColumnProportion(1, 70);
@@ -130,7 +130,7 @@ void CStructEditView::OnPropertyGridChange(wxPropertyGridEvent &event)
 			((CPropertyEx<wxString, wxStringProperty>*)prop)->ModifyValue(value);
 			break;
 		default:
-			ATLAS_ASSERT(0);
+			ZION_ASSERT(0);
 			return;
 		}
 	}
@@ -165,7 +165,7 @@ void CStructEditView::InitPropGrid(const DDLReflect::STRUCT_INFO* info, const vo
 
 	wxString name;
 	name.Printf(wxT("{%s}"), wxString::FromUTF8(info->name));
-	wxPGProperty* prop = ATLAS_NEW wxPropertyCategory(name);
+	wxPGProperty* prop = ZION_NEW wxPropertyCategory(name);
 	prop->ChangeFlag(wxPG_PROP_READONLY, true);
 	wxPGId prop_id = m_pPropGrid->Append(prop);
 
@@ -203,11 +203,11 @@ void CStructEditView::CreateStruct(wxPGId id, const wxString& name, const DDLRef
 
 void CStructEditView::CreateArray(wxPGId id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data)
 {
-	ATLAS_ASSERT(finfo->type|DDLReflect::TYPE_ARRAY);
+	ZION_ASSERT(finfo->type|DDLReflect::TYPE_ARRAY);
 
 	_U32& count = *((_U32*)data);
 	wxString label(finfo->name, wxMBConvUTF8());
-	wxArrayProperty* prop = ATLAS_NEW wxArrayProperty(label+wxString::Format(wxT("[%d]"), finfo->alen), name, finfo, data);//wxPG_LABEL, wxString::Format(wxT("array %d"), count));
+	wxArrayProperty* prop = ZION_NEW wxArrayProperty(label+wxString::Format(wxT("[%d]"), finfo->alen), name, finfo, data);//wxPG_LABEL, wxString::Format(wxT("array %d"), count));
 	prop->ChangeFlag(wxPG_PROP_COLLAPSED, true);
 	wxPGId prog_id = m_pPropGrid->AppendIn(id, prop);
 	for(_U32 i=0; i<(_U32)finfo->alen; i++)
@@ -237,54 +237,54 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 	switch(finfo->type&DDLReflect::TYPE_MASK)
 	{
 	case DDLReflect::TYPE_U8:
-		prop = ATLAS_NEW CPropertyEx<_U8, wxUIntProperty>(strLabel, name, finfo, data, *((const _U8*)data));
+		prop = ZION_NEW CPropertyEx<_U8, wxUIntProperty>(strLabel, name, finfo, data, *((const _U8*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_U16:	
-		prop = ATLAS_NEW CPropertyEx<_U16, wxUIntProperty>(strLabel, name, finfo, data, *((const _U16*)data));
+		prop = ZION_NEW CPropertyEx<_U16, wxUIntProperty>(strLabel, name, finfo, data, *((const _U16*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_U32:	
-		prop = ATLAS_NEW CPropertyEx<_U32, wxUIntProperty>(strLabel, name, finfo, data, *((const _U32*)data));
+		prop = ZION_NEW CPropertyEx<_U32, wxUIntProperty>(strLabel, name, finfo, data, *((const _U32*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_U64:	
-		prop = ATLAS_NEW CPropertyEx<_U64, wxUIntProperty>(strLabel, name, finfo, data, *((const _U64*)data));
+		prop = ZION_NEW CPropertyEx<_U64, wxUIntProperty>(strLabel, name, finfo, data, *((const _U64*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_S8:
-		prop = ATLAS_NEW CPropertyEx<_S8, wxIntProperty>(strLabel, name, finfo, data, *((const _S8*)data));
+		prop = ZION_NEW CPropertyEx<_S8, wxIntProperty>(strLabel, name, finfo, data, *((const _S8*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_S16:
-		prop = ATLAS_NEW CPropertyEx<_S16, wxIntProperty>(strLabel, name, finfo, data, *((const _S16*)data));
+		prop = ZION_NEW CPropertyEx<_S16, wxIntProperty>(strLabel, name, finfo, data, *((const _S16*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_S32:	
-		prop = ATLAS_NEW CPropertyEx<_S32, wxIntProperty>(strLabel, name, finfo, data, *((const _S32*)data));
+		prop = ZION_NEW CPropertyEx<_S32, wxIntProperty>(strLabel, name, finfo, data, *((const _S32*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_S64:
-		prop = ATLAS_NEW CPropertyEx<_S64, wxIntProperty>(strLabel, name, finfo, data, *((const _S64*)data));
+		prop = ZION_NEW CPropertyEx<_S64, wxIntProperty>(strLabel, name, finfo, data, *((const _S64*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_F32:	
-		prop = ATLAS_NEW CPropertyEx<_F32, wxFloatProperty>(strLabel, name, finfo, data, *((const _F32*)data));
+		prop = ZION_NEW CPropertyEx<_F32, wxFloatProperty>(strLabel, name, finfo, data, *((const _F32*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_F64:
-		prop = ATLAS_NEW CPropertyEx<_F64, wxFloatProperty>(strLabel, name, finfo, data, *((const _F64*)data));
+		prop = ZION_NEW CPropertyEx<_F64, wxFloatProperty>(strLabel, name, finfo, data, *((const _F64*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_STRING:
-		prop = ATLAS_NEW CPropertyEx<wxString, wxStringProperty>(strLabel, name, finfo, data, wxString((const char*)data, wxMBConvUTF8()));
+		prop = ZION_NEW CPropertyEx<wxString, wxStringProperty>(strLabel, name, finfo, data, wxString((const char*)data, wxMBConvUTF8()));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	case DDLReflect::TYPE_UUID:
 		{
 			char value[100];
 			AUuidToString(*((A_UUID*)data), value);
-			prop = ATLAS_NEW CPropertyEx<wxString, wxStringProperty>(strLabel, name, finfo, data, wxString(value, wxMBConvUTF8()));
+			prop = ZION_NEW CPropertyEx<wxString, wxStringProperty>(strLabel, name, finfo, data, wxString(value, wxMBConvUTF8()));
 			prog_id = m_pPropGrid->AppendIn(id, prop);
 		}
 		break;
@@ -292,18 +292,18 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 		{
 			wxString value(wxT("struct "));
 			value += wxString(finfo->sinfo->name, wxMBConvUTF8());
-			prop = ATLAS_NEW CPropertyEx<wxString, wxStringProperty>(strLabel, name, finfo, data, value);
+			prop = ZION_NEW CPropertyEx<wxString, wxStringProperty>(strLabel, name, finfo, data, value);
 			prop->ChangeFlag(wxPG_PROP_READONLY, true);
 			prop->ChangeFlag(wxPG_PROP_COLLAPSED, true);
 			prog_id = m_pPropGrid->AppendIn(id, prop);
 		}
 		break;
 	case DDLReflect::TYPE_UUID_REF:
-		prop = ATLAS_NEW wxObjectRefProperty(strLabel, name, finfo, data);
+		prop = ZION_NEW wxObjectRefProperty(strLabel, name, finfo, data);
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
 	default:
-		ATLAS_ASSERT(0);
+		ZION_ASSERT(0);
 		return NULL;
 	}
 

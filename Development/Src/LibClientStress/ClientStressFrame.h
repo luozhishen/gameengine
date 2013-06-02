@@ -75,7 +75,7 @@ public:
 	void OnTimer(wxTimerEvent& event);
 
 	void UpdateClientList();
-	void GetSelectClients(Zion::Vector<_U32>& clients);
+	void GetSelectClients(Zion::Array<_U32>& clients);
 
 	void AddView(CStressFrameView* pView);
 	Zion::CStressClient* GetStressClient(_U32 id);

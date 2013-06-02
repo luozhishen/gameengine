@@ -1,5 +1,5 @@
-#ifndef __ATLAS_COMMON__
-#define __ATLAS_COMMON__
+#ifndef __ZION_COMMON__
+#define __ZION_COMMON__
 
 #include "ContentObject.h"
 #include "LiveObject.h"
@@ -8,9 +8,9 @@
 namespace Zion
 {
 
-	const char* AtlasGameName();
-	const char* AtlasGameDir();
-	void AtlasSetGameDir(const char* path);
+	const char* ZionGameName();
+	const char* ZionGameDir();
+	void ZionSetGameDir(const char* path);
 
 	_U16 RegisterClientStub(const DDLReflect::CLASS_INFO* pClassInfo);
 	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo, _U32 nodeid);
@@ -36,7 +36,7 @@ namespace Zion
 	_U16 RegisterClientStub()
 	{
 		const DDLReflect::CLASS_INFO* pClassInfo = DDLReflect::GetClass<T>();
-		ATLAS_ASSERT(pClassInfo);
+		ZION_ASSERT(pClassInfo);
 		if(!pClassInfo) return (_U16)-1;
 		return RegisterClientStub(pClassInfo);
 	}
@@ -44,7 +44,7 @@ namespace Zion
 	_U16 RegisterServerStub(_U32 nodeid)
 	{
 		const DDLReflect::CLASS_INFO* pClassInfo = DDLReflect::GetClass<T>();
-		ATLAS_ASSERT(pClassInfo);
+		ZION_ASSERT(pClassInfo);
 		if(!pClassInfo) return (_U16)-1;
 		return RegisterServerStub(pClassInfo, nodeid);
 	}

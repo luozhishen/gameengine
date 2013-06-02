@@ -23,7 +23,7 @@ namespace Zion
 			_U64 nWorkCapacity;
 		};
 
-		typedef Zion::Vector<WORKLOAD_INFO> SESSION_WORKLOADS;
+		typedef Zion::Array<WORKLOAD_INFO> SESSION_WORKLOADS;
 
 	public:
 		CLoginServer(CServerApp* pServerApp);
@@ -91,7 +91,7 @@ namespace Zion
 
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
-			ATLAS_ASSERT(iid<256 && fid<256);
+			ZION_ASSERT(iid<256 && fid<256);
 			SendRawData(iid|(fid<<8), Buf.GetSize(), Buf.GetBuf());
 			return true;
 		}

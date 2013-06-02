@@ -33,10 +33,10 @@ namespace Zion
 
 	bool CConnectionServer::Start()
 	{
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		ASOCKIO_HANDLER handler = { CS_ON_CONNECT, CS_ON_DISCONNECT, CS_ON_DATA, NULL };
 		m_hEp = NewEP(m_saAddr, handler, m_hPool, GetServerApp()->GetIOWorkers(), this);
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		if(!m_hEp) return false;
 		StartEP(m_hEp);
 
@@ -45,7 +45,7 @@ namespace Zion
 
 	void CConnectionServer::Stop()
 	{
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		StopEP(m_hEp);
 		while(IsRunning(m_hEp))
 		{
@@ -68,14 +68,14 @@ namespace Zion
 		m_bLogining = true;
 		m_hConn = hConn;
 		m_nNDX = ndx;
-		m_pRecvBuff = (_U8*)ATLAS_ALLOC(recvsize);;
+		m_pRecvBuff = (_U8*)ZION_ALLOC(recvsize);;
 		m_nRecvBuffLen = 0;
 		m_nRecvBuffSize = recvsize;
 	}
 
 	CConnectionClient::~CConnectionClient()
 	{
-		ATLAS_FREE(m_pRecvBuff);
+		ZION_FREE(m_pRecvBuff);
 		m_pRecvBuff = NULL;
 	}
 
@@ -148,16 +148,16 @@ namespace Zion
 	bool CS_ON_CONNECT(HCONNECT hConn)
 	{
 		HTCPEP hep = HepOf(hConn);
-		ATLAS_ASSERT(hep);
+		ZION_ASSERT(hep);
 		CConnectionServer* pServer = (CConnectionServer*)KeyOf(hep);
-		ATLAS_ASSERT(pServer);
+		ZION_ASSERT(pServer);
 		return pServer->OnConnected(hConn);
 	}
 
 	void CS_ON_DISCONNECT(HCONNECT hConn)
 	{
 		CConnectionClient* pConn = (CConnectionClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		pConn->OnRawDisconnected();
 		CloseConn(hConn);
 	}
@@ -165,7 +165,7 @@ namespace Zion
 	void CS_ON_DATA(HCONNECT hConn, _U32 len, const _U8* data)
 	{
 		CConnectionClient* pConn = (CConnectionClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		pConn->OnRawData(len, data);
 	}
 

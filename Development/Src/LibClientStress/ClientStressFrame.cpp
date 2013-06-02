@@ -80,14 +80,14 @@ extern CClientStressApp* g_ClientStressApp;
 CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client Stress - "))
 {
 	wxString title = GetTitle();
-	title = title + wxString::FromUTF8(Zion::AtlasGameName());
+	title = title + wxString::FromUTF8(Zion::ZionGameName());
 	SetTitle(title);
 
 	m_nCurrentIndex = (_U32)-1;
 	m_nViewCount = 0;
 	m_Timer.SetOwner(this, ID_TIMER);
 
-	m_pCmdHistory = ATLAS_NEW Zion::CmdHistory(Zion::AtlasGameDir());
+	m_pCmdHistory = ZION_NEW Zion::CmdHistory(Zion::ZionGameDir());
 
 	// create client
 	InitClient();
@@ -106,7 +106,7 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString(wxT("/"))+wxString::FromUTF8(Zion::AtlasGameName()));
+		pConfig->SetPath(wxString(wxT("/"))+wxString::FromUTF8(Zion::ZionGameName()));
 		m_FrameData.x = pConfig->Read(wxT("x"), 50);
 		m_FrameData.y = pConfig->Read(wxT("y"), 50);
 		m_FrameData.w = pConfig->Read(wxT("w"), 350);
@@ -126,7 +126,7 @@ CClientStressFrame::~CClientStressFrame()
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::AtlasGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::ZionGameName()));
 		pConfig->Write(wxT("x"), (long)m_FrameData.x);
 		pConfig->Write(wxT("y"), (long)m_FrameData.y);
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
@@ -143,12 +143,12 @@ CClientStressFrame::~CClientStressFrame()
 
 void CClientStressFrame::InitMenu()
 {
-	SetMenuBar(ATLAS_NEW wxMenuBar);
-	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
+	SetMenuBar(ZION_NEW wxMenuBar);
+	GetMenuBar()->Append(ZION_NEW wxMenu, wxT("&File"));
 	GetMenuBar()->GetMenu(0)->Append(ID_PROTOCAL, wxT("Protocal"), wxT("Show protocal dailog"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SVR_PARAM_DLG, wxT("Server Params"), wxT("Set Server Params"));
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
-	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
+	GetMenuBar()->Append(ZION_NEW wxMenu, wxT("&Help"));
 	GetMenuBar()->GetMenu(1)->Append(ID_ABOUT, wxT("&About"), wxT("Show About Dailog"));
 }
 
@@ -196,23 +196,23 @@ void CClientStressFrame::InitToolBar()
 
 void CClientStressFrame::InitClient()
 {
-	m_pSplitter = ATLAS_NEW wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
+	m_pSplitter = ZION_NEW wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
     m_pSplitter->SetSashGravity(0);
-	wxNotebook* pClientTab = ATLAS_NEW wxNotebook(m_pSplitter, wxID_ANY, wxDefaultPosition, wxSize(180,-1), wxBK_TOP);
-	m_pClientList = ATLAS_NEW wxListBox(pClientTab, ID_CLIENT_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_EXTENDED);
+	wxNotebook* pClientTab = ZION_NEW wxNotebook(m_pSplitter, wxID_ANY, wxDefaultPosition, wxSize(180,-1), wxBK_TOP);
+	m_pClientList = ZION_NEW wxListBox(pClientTab, ID_CLIENT_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_EXTENDED);
 	pClientTab->AddPage(m_pClientList, wxT("Clients"));
-	wxPanel* pPanel = ATLAS_NEW wxPanel(m_pSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	wxBoxSizer* pSizer1 = ATLAS_NEW wxBoxSizer(wxVERTICAL);
-	m_pTabView = ATLAS_NEW wxNotebook(pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
-	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	m_pCmdText = ATLAS_NEW wxComboBox( pPanel, ID_CMDTEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER|wxCB_DROPDOWN|wxCB_SORT);
+	wxPanel* pPanel = ZION_NEW wxPanel(m_pSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxVERTICAL);
+	m_pTabView = ZION_NEW wxNotebook(pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
+	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	m_pCmdText = ZION_NEW wxComboBox( pPanel, ID_CMDTEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER|wxCB_DROPDOWN|wxCB_SORT);
 	int n = m_pCmdHistory->GetHistoryNum();
 	Zion::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
 	for(int i = 0; i < n; ++i)
 	{
 		m_pCmdText->Append(wxString::FromUTF8(cmds[i].c_str()));
 	}
-    m_pCmdButton = ATLAS_NEW wxButton( pPanel, ID_DOCMD, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
+    m_pCmdButton = ZION_NEW wxButton( pPanel, ID_DOCMD, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
     pSizer2->Add(m_pCmdText, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxUP|wxDOWN, 5 );
     pSizer2->Add(m_pCmdButton, 0, wxALIGN_CENTER|wxALL, 5 );
 	pSizer1->Add(m_pTabView, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
@@ -235,7 +235,7 @@ void CClientStressFrame::OnQuit(wxCommandEvent&)
 void CClientStressFrame::OnAbout(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Zion Client Stress for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::AtlasGameName()));
+	txt.Printf(wxT("Zion Client Stress for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::ZionGameName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 
@@ -266,7 +266,7 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	}
 
 	Zion::String json((const char*)arg.ToUTF8());
-	Zion::Vector<Zion::String> args;
+	Zion::Array<Zion::String> args;
 	Zion::StringSplit(json, ' ', args);
 	if(cls->finfos[fid].fcount!=(_U16)args.size())
 	{
@@ -325,12 +325,12 @@ void CClientStressFrame::OnSelectAll(wxCommandEvent& event)
 
 void CClientStressFrame::OnLogin(wxCommandEvent& event)
 {
-	Zion::Vector<_U32> clients;
+	Zion::Array<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
 		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
-		ATLAS_ASSERT(pClient);
+		ZION_ASSERT(pClient);
 		if(!pClient) continue;
 		pClient->Login();
 	}
@@ -339,12 +339,12 @@ void CClientStressFrame::OnLogin(wxCommandEvent& event)
 
 void CClientStressFrame::OnLogout(wxCommandEvent& event)
 {
-	Zion::Vector<_U32> clients;
+	Zion::Array<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
 		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
-		ATLAS_ASSERT(pClient);
+		ZION_ASSERT(pClient);
 		if(!pClient) continue;
 		pClient->Logout();
 	}
@@ -355,12 +355,12 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 	CCaseConfigDlg dlg(this);
 	if(dlg.ShowModal()==wxID_CANCEL) return;
 
-	Zion::Vector<_U32> clients;
+	Zion::Array<_U32> clients;
 	GetSelectClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
 		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
-		ATLAS_ASSERT(pClient);
+		ZION_ASSERT(pClient);
 		if(!pClient) continue;
 		Zion::CStressCase* pCase = pClient->NewStressCase(dlg.GetCaseName().c_str());
 		if(!pCase) continue;
@@ -445,7 +445,7 @@ void CClientStressFrame::OnTimer(wxTimerEvent& event)
 		UpdateClientList();	
 	}
 
-	Zion::Vector<_U32> clients;
+	Zion::Array<_U32> clients;
 	Zion::CStressManager::Get().GetClients(clients);
 	for(size_t i=0; i<clients.size(); i++)
 	{
@@ -472,7 +472,7 @@ void CClientStressFrame::UpdateClientList()
 	}
 }
 
-void CClientStressFrame::GetSelectClients(Zion::Vector<_U32>& clients)
+void CClientStressFrame::GetSelectClients(Zion::Array<_U32>& clients)
 {
 	clients.clear();
 
@@ -522,7 +522,7 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 		return false;
 	}
 
-	Zion::Vector<_U32> clients;
+	Zion::Array<_U32> clients;
 	GetSelectClients(clients);
 	if(clients.size()<=0)
 	{
@@ -530,7 +530,7 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 		return false;
 	}
 
-	Zion::Vector<_U32>::iterator i;
+	Zion::Array<_U32>::iterator i;
 	Zion::CStressClient* pClient;
 
 	for(i=clients.begin(); i!=clients.end(); i++)

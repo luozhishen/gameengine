@@ -13,7 +13,7 @@ namespace Zion
 
 	CClientApp::CClientApp(const char* appname, bool bThread)
 	{
-		ATLAS_ASSERT(!__global_client_app);
+		ZION_ASSERT(!__global_client_app);
 		__global_client_app = this;
 		m_bThread = bThread;
 		m_bEnableTick = true;
@@ -74,7 +74,7 @@ namespace Zion
 	{
 		m_Params.clear();
 
-		Zion::String strXmlFile = path?path:Zion::AtlasGameDir();
+		Zion::String strXmlFile = path?path:Zion::ZionGameDir();
 		if(path)
 		{
 			strXmlFile = Zion::StringFormat("%s%s", path, "Client.json");
@@ -97,7 +97,7 @@ namespace Zion
 		
 		for(Json::UInt i = 0; i < root.size(); ++i)
 		{
-			Zion::Vector<Zion::String> vec = root.getMemberNames();
+			Zion::Array<Zion::String> vec = root.getMemberNames();
 			Zion::String strKey = vec[i];
 			Zion::String strValue = root[strKey.c_str()].asString();
 
@@ -120,7 +120,7 @@ namespace Zion
 		}
 
 		Zion::String json_file = writer.write(root);
-		Zion::String strXmlFile = Zion::AtlasGameDir();
+		Zion::String strXmlFile = Zion::ZionGameDir();
 		strXmlFile += "\\Config\\Client.json";
 		std::ofstream ofs;
 		ofs.open(strXmlFile.c_str());
@@ -144,24 +144,24 @@ namespace Zion
 
 		if(!ContentObject::BuildIndex())
 		{
-			ATLAS_ASSERT(0);
+			ZION_ASSERT(0);
 		}
 
-#ifndef WITHOUT_ATLAS_ASYNCIO
+#ifndef WITHOUT_ZION_ASYNCIO
 		CAsyncIOConnection::Init(1);
 #endif
 	}
 
 	void CClientApp::FiniApp()
 	{
-#ifndef WITHOUT_ATLAS_ASYNCIO
+#ifndef WITHOUT_ZION_ASYNCIO
 		CAsyncIOConnection::Fini();
 #endif
 	}
 
 	CClient* CClientApp::NewClient()
 	{
-		return ATLAS_NEW CClient(this);
+		return ZION_NEW CClient(this);
 	}
 
 	void CClientApp::EnableTick(bool bEnable)
@@ -202,7 +202,7 @@ namespace Zion
 				break;
 			case 3:
 				i.pClient->OnData(i.iid, i.fid, i.len, i.data);
-				ATLAS_FREE(i.data);
+				ZION_FREE(i.data);
 				break;
 			}
 		}
@@ -267,7 +267,7 @@ namespace Zion
 		}
 
 		CLIENTAPP_ITEM i = { 3, pClient, iid, fid, len, NULL };
-		i.data = (_U8*)ATLAS_ALLOC(len);
+		i.data = (_U8*)ZION_ALLOC(len);
 		memcpy(i.data, data, len);
 		A_MUTEX_LOCK(&m_mtxQueue);
 		m_Queue.push_back(i);
@@ -276,7 +276,7 @@ namespace Zion
 
 	void CClientApp::QueueTask(CClient* pClient, CClientTask* pTask)
 	{
-		ATLAS_ASSERT(!m_bThread);
+		ZION_ASSERT(!m_bThread);
 
 		CLIENTAPP_ITEM i = { 4, pClient, 0, 0, 0, NULL };
 		A_MUTEX_LOCK(&m_mtxQueue);

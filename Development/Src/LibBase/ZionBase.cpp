@@ -3,11 +3,11 @@
 namespace Zion
 {
 
-	void AtlasInit()
+	void ZionInit()
 	{
 	}
 
-	void AtlasFini()
+	void ZionFini()
 	{
 	}
 

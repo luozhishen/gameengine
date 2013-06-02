@@ -1,9 +1,9 @@
-#ifndef	__ATLAS_DEFINES__
-#define	__ATLAS_DEFINES__
+#ifndef	__ZION_DEFINES__
+#define	__ZION_DEFINES__
 
 typedef unsigned char			_U8;
 typedef unsigned short			_U16;
-typedef unsigned long			_U32;
+typedef unsigned int			_U32;
 typedef unsigned long long		_U64;
 typedef char					_S8;
 typedef short					_S16;
@@ -16,12 +16,12 @@ typedef char*					_STR;
 #define ALIGN_SIZE(x)			((sizeof(x)+7) / 8 * 8)
 
 #include <assert.h>
-#define ATLAS_ASSERT(x)			assert(x)
+#define ZION_ASSERT(x)			assert(x)
 
 #ifdef	_DEBUG
-#define ATLAS_VERIFY(x)			assert(x)
+#define ZION_VERIFY(x)			assert(x)
 #else
-#define	ATLAS_VERIFY(expr)		(void)(expr)
+#define	ZION_VERIFY(expr)		(void)(expr)
 #endif
 
 #ifdef _WIN32
@@ -29,19 +29,19 @@ typedef char*					_STR;
 	#include <stdlib.h>
 	#include <crtdbg.h>
 	#include <malloc.h>
-	#define ATLAS_ALLOC(x)			malloc(x)
-	#define ATLAS_FREE(x)			free(x)
-	#define ATLAS_ALIGN_ALLOC(x)	_aligned_malloc(x, 16)
-	#define ATLAS_ALIGN_FREE(x)		_aligned_free(x)
+	#define ZION_ALLOC(x)			malloc(x)
+	#define ZION_FREE(x)			free(x)
+	#define ZION_ALIGN_ALLOC(x)	_aligned_malloc(x, 16)
+	#define ZION_ALIGN_FREE(x)		_aligned_free(x)
 	#ifdef _DEBUG
-	#define ATLAS_NEW				new(_NORMAL_BLOCK, __FILE__, __LINE__)
+	#define ZION_NEW				new(_NORMAL_BLOCK, __FILE__, __LINE__)
 	#else
-	#define ATLAS_NEW				new
+	#define ZION_NEW				new
 	#endif
-	#define ATLAS_DELETE			delete
-	#define ATLAS_ALLOCA(x)			_alloca(x)
+	#define ZION_DELETE			delete
+	#define ZION_ALLOCA(x)			_alloca(x)
 
-	#define ATLAS_SLEEP(x)			Sleep(x)
+	#define ZION_SLEEP(x)			Sleep(x)
 
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
@@ -61,22 +61,21 @@ typedef char*					_STR;
 	#define A_SLIST_INIT			InitializeSListHead
 	#define A_SLIST_PUSH			InterlockedPushEntrySList
 	#define A_SLIST_POP				InterlockedPopEntrySList
-
 #else
 	#include <stdlib.h>
-	#define ATLAS_ALLOC(x)			malloc(x)
-	#define ATLAS_FREE(x)			free(x)
-	#define ATLAS_ALIGN_ALLOC(x)	malloc(x)
-	#define ATLAS_ALIGN_FREE(x)		free(x)
+	#define ZION_ALLOC(x)			malloc(x)
+	#define ZION_FREE(x)			free(x)
+	#define ZION_ALIGN_ALLOC(x)		malloc(x)
+	#define ZION_ALIGN_FREE(x)		free(x)
 	#ifdef _DEBUG
-	#define ATLAS_NEW				new
+	#define ZION_NEW				new
 	#else
-	#define ATLAS_NEW				new
+	#define ZION_NEW				new
 	#endif
-	#define ATLAS_DELETE			delete
-	#define ATLAS_ALLOCA(x)			_alloca(x)
+	#define ZION_DELETE				delete
+	#define ZION_ALLOCA(x)			_alloca(x)
 
-	#define ATLAS_SLEEP(x)			sleep(x*1000)
+	#define ZION_SLEEP(x)			sleep(x*1000)
 
 	#include <pthread.h>
 	#define A_MUTEX					pthread_mutex_t
@@ -103,6 +102,6 @@ typedef char*					_STR;
 #pragma warning(disable:4996)
 #pragma warning(disable:4127)
 
-#define ATLAS_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
+#define ZION_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 
 #endif

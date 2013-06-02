@@ -1,5 +1,5 @@
-#ifndef __ATLAS_CONTENT_DB_API__
-#define __ATLAS_CONTENT_DB_API__
+#ifndef __ZION_CONTENT_DB_API__
+#define __ZION_CONTENT_DB_API__
 
 struct A_CONTENT_OBJECT;
 
@@ -19,7 +19,7 @@ namespace Zion
 		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook);
 		IContentGroup* GetContentGroup(const char* name);
 
-		void GetTypeList(Zion::Vector<const DDLReflect::STRUCT_INFO*>& list);
+		void GetTypeList(Zion::Array<const DDLReflect::STRUCT_INFO*>& list);
 		_U16 GetTypeId(const char* name);
 		const DDLReflect::STRUCT_INFO* GetType(const char* name);
 		const DDLReflect::STRUCT_INFO* GetType(_U16 id);
@@ -41,7 +41,7 @@ namespace Zion
 		const Zion::String& BuildIndexGetErrorMsg();
 
 		// will remove this function.
-		bool GetList(const DDLReflect::STRUCT_INFO* info, Zion::Vector<A_UUID>& list, bool bExactMatch);
+		bool GetList(const DDLReflect::STRUCT_INFO* info, Zion::Array<A_UUID>& list, bool bExactMatch);
 
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object);

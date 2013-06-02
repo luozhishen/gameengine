@@ -25,47 +25,47 @@ CGenerateObjectDlg::CGenerateObjectDlg() : wxDialog(NULL, wxID_ANY, wxT("Create 
 	SetSizeHints( wxDefaultSize, wxDefaultSize );
 
 	wxBoxSizer* bMainSizer;
-	bMainSizer = ATLAS_NEW wxBoxSizer( wxVERTICAL );
+	bMainSizer = ZION_NEW wxBoxSizer( wxVERTICAL );
 
 	wxBoxSizer* bSizerTop;
-	bSizerTop = ATLAS_NEW wxBoxSizer( wxVERTICAL );
+	bSizerTop = ZION_NEW wxBoxSizer( wxVERTICAL );
 
-	wxStaticText* staticText2 = ATLAS_NEW wxStaticText( this, wxID_ANY, wxT("Choose Content Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText* staticText2 = ZION_NEW wxStaticText( this, wxID_ANY, wxT("Choose Content Type"), wxDefaultPosition, wxDefaultSize, 0 );
 	staticText2->Wrap( -1 );
 	bSizerTop->Add( staticText2, 0, wxALL, 5 );
 
 	wxBoxSizer* bSizer32;
-	bSizer32 = ATLAS_NEW wxBoxSizer( wxHORIZONTAL );
+	bSizer32 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
 
-	m_comboBoxType = ATLAS_NEW wxComboBox( this, wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL,  wxCB_READONLY); 
+	m_comboBoxType = ZION_NEW wxComboBox( this, wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL,  wxCB_READONLY); 
 	bSizer32->Add( m_comboBoxType, 1, wxALL, 5 );
 	bSizerTop->Add( bSizer32, 1, wxEXPAND, 5 );
 
 	bMainSizer->Add( bSizerTop, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizerMid;
-	bSizerMid = ATLAS_NEW wxBoxSizer( wxVERTICAL );
+	bSizerMid = ZION_NEW wxBoxSizer( wxVERTICAL );
 
-	wxStaticText* staticText1 = ATLAS_NEW wxStaticText( this, wxID_ANY, wxT("Input content name"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText* staticText1 = ZION_NEW wxStaticText( this, wxID_ANY, wxT("Input content name"), wxDefaultPosition, wxDefaultSize, 0 );
 	staticText1->Wrap( -1 );
 	bSizerMid->Add( staticText1, 1, wxALL|wxALIGN_BOTTOM, 5 );
 
 	bMainSizer->Add( bSizerMid, 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer31;
-	bSizer31 = ATLAS_NEW wxBoxSizer( wxHORIZONTAL );
+	bSizer31 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
 
-	m_textCtrlName = ATLAS_NEW wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlName = ZION_NEW wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer31->Add( m_textCtrlName, 1, wxALL, 5 );
 	bSizerMid->Add( bSizer31, 1, wxEXPAND, 5 );
 
-	wxStaticLine* m_staticline1 = ATLAS_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	wxStaticLine* m_staticline1 = ZION_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bMainSizer->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
 
-	wxStdDialogButtonSizer* sdbSizer1 = ATLAS_NEW wxStdDialogButtonSizer();
-	m_sdbSizerOK = ATLAS_NEW wxButton( this, wxID_OK );
+	wxStdDialogButtonSizer* sdbSizer1 = ZION_NEW wxStdDialogButtonSizer();
+	m_sdbSizerOK = ZION_NEW wxButton( this, wxID_OK );
 	sdbSizer1->AddButton( m_sdbSizerOK );
-	m_sdbSizerCancel = ATLAS_NEW wxButton( this, wxID_CANCEL );
+	m_sdbSizerCancel = ZION_NEW wxButton( this, wxID_CANCEL );
 	sdbSizer1->AddButton( m_sdbSizerCancel );
 	sdbSizer1->Realize();
 	sdbSizer1->SetMinSize(400, 33);
@@ -87,9 +87,9 @@ void CGenerateObjectDlg::InitCombox()
 {
 	Zion::Map<Zion::String, const DDLReflect::STRUCT_INFO*> mapTypes;
 
-	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Zion::Array<const DDLReflect::STRUCT_INFO*> list;
 	Zion::ContentObject::GetTypeList(list);
-	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Array<const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		m_comboBoxType->Insert(wxString::FromUTF8((*i)->name), m_comboBoxType->GetCount());

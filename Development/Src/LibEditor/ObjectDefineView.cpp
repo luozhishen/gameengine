@@ -38,15 +38,15 @@ public:
 
 CObjectDefineView::CObjectDefineView(wxWindow* pParent) : wxPanel(pParent)
 {
-	wxBoxSizer* pSizer1 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxVERTICAL);
-	m_pSearchText = ATLAS_NEW wxTextCtrl(this, ID_SEARCH_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
+	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxVERTICAL);
+	m_pSearchText = ZION_NEW wxTextCtrl(this, ID_SEARCH_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
 	pSizer1->Add(m_pSearchText, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	pSizer1->Add(ATLAS_NEW wxButton(this, ID_SEARCH_BUTTON, wxT("Search")), 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	pSizer1->Add(ZION_NEW wxButton(this, ID_SEARCH_BUTTON, wxT("Search")), 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-	wxSplitterWindow* pSplitter = ATLAS_NEW wxSplitterWindow(this);
-	m_pTree = ATLAS_NEW wxTreeCtrl(pSplitter, ID_OBJECT_TREE, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT | wxTR_HIDE_ROOT);
-	m_pInfo = ATLAS_NEW wxPropertyGrid(pSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
+	wxSplitterWindow* pSplitter = ZION_NEW wxSplitterWindow(this);
+	m_pTree = ZION_NEW wxTreeCtrl(pSplitter, ID_OBJECT_TREE, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT | wxTR_HIDE_ROOT);
+	m_pInfo = ZION_NEW wxPropertyGrid(pSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
 
 	pSplitter->SplitVertically(m_pTree, m_pInfo, 200);
 
@@ -65,7 +65,7 @@ void CObjectDefineView::Add(const DDLReflect::STRUCT_INFO* root, Zion::Map<int, 
 {
 	wxString title;
 	GetObjectTitle(root, title);
-	wxTreeItemId tid = m_pTree->AppendItem(m_TreeRoot, title, -1, -1, ATLAS_NEW CObjectData(GetObjectId(root->name), root));
+	wxTreeItemId tid = m_pTree->AppendItem(m_TreeRoot, title, -1, -1, ZION_NEW CObjectData(GetObjectId(root->name), root));
 	m_mapItems[root->name] = tid;
 
 	Zion::Map<int, const DDLReflect::STRUCT_INFO*>::iterator i;
@@ -116,7 +116,7 @@ void CObjectDefineView::AddObject(const DDLReflect::STRUCT_INFO* info)
 	i = m_mapItems.find(info->parent->name);
 	wxString title;
 	GetObjectTitle(info, title);
-	wxTreeItemId tid = m_pTree->AppendItem(i->second, title, -1, -1, ATLAS_NEW CObjectData(GetObjectId(info->name), info));
+	wxTreeItemId tid = m_pTree->AppendItem(i->second, title, -1, -1, ZION_NEW CObjectData(GetObjectId(info->name), info));
 	m_mapItems[info->name] = tid;
 }
 
@@ -161,7 +161,7 @@ void AddStruct(wxPropertyGrid* pGrid, const DDLReflect::STRUCT_INFO* info)
 
 	wxString name;
 	name.Printf(wxT("{%s}"), wxString::FromUTF8(info->name));
-	wxPGProperty* prop = ATLAS_NEW wxPropertyCategory(name);
+	wxPGProperty* prop = ZION_NEW wxPropertyCategory(name);
 	prop->ChangeFlag(wxPG_PROP_READONLY, true);
 	wxPGId prop_id = pGrid->Append(prop);
 	for(_U16 i=0; i<info->fcount; i++)
@@ -169,7 +169,7 @@ void AddStruct(wxPropertyGrid* pGrid, const DDLReflect::STRUCT_INFO* info)
 		Zion::String type;
 		StructParamType(info->finfos+i, type);
 		name = wxString::FromUTF8(info->finfos[i].name);
-		prop = ATLAS_NEW wxStringProperty(name, name, wxString::FromUTF8(type.c_str()));
+		prop = ZION_NEW wxStringProperty(name, name, wxString::FromUTF8(type.c_str()));
 		prop->ChangeFlag(wxPG_PROP_READONLY, true);
 		pGrid->AppendIn(prop_id, prop);
 	}

@@ -53,7 +53,7 @@ namespace JPatch
 			if(line.size()==0) continue;
 			if(line[0]=='*')
 			{
-				Zion::Vector<Zion::String> rs;
+				Zion::Array<Zion::String> rs;
 				Zion::StringSplit(line, ' ', rs);
 
 				rs[0] = rs[0].substr(1);
@@ -74,7 +74,7 @@ namespace JPatch
 					printf("%s : no file\n", bls);
 					return false;
 				}
-				Zion::Vector<Zion::String> rs;
+				Zion::Array<Zion::String> rs;
 				Zion::StringSplit(line, ' ', rs);
 				if(rs.size()!=3 && rs.size()!=4)
 				{

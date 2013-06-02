@@ -151,7 +151,7 @@ namespace Zion
 	void CSGClient::EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots)
 	{
 		SG_EQUIP_SLOTS tidy_slots;
-		for(Zion::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
+		for(Zion::Array<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
 		{
 			const DDLReflect::STRUCT_INFO* struct_info = Zion::ContentObject::GetType("SG_EQUIPT_ITEM_CONFIG");
 			A_UUID uuid; 
@@ -170,13 +170,13 @@ namespace Zion
 				continue;
 
 			const A_CONTENT_OBJECT* content_obj = NULL;
-			Zion::Vector<A_UUID> content_list;
+			Zion::Array<A_UUID> content_list;
 			if(!Zion::ContentObject::GetList(struct_info, content_list, true))
 			{
 				continue;
 			}
 
-			for(Zion::Vector<A_UUID>::iterator it_uuid = content_list.begin(); it_uuid != content_list.end(); ++it_uuid)
+			for(Zion::Array<A_UUID>::iterator it_uuid = content_list.begin(); it_uuid != content_list.end(); ++it_uuid)
 			{
 				content_obj = Zion::ContentObject::QueryByUUID(*it_uuid, struct_info);
 				if(((SG_EQUIPT_ITEM_CONFIG*)content_obj)->item_id == it->item_id)
@@ -270,7 +270,7 @@ namespace Zion
 		m_C2S.EnhanceCoolDownClear();
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -280,7 +280,7 @@ namespace Zion
 		m_C2S.IncreaseEquipCoolDown();
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -305,7 +305,7 @@ namespace Zion
 		m_C2S.RefreshEquipDecideAccept(uuid);
 
 		////help to sync data
-		//Zion::Vector<_U8> vecSync;
+		//Zion::Array<_U8> vecSync;
 		//vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		//vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		//SyncSet(vecSync);
@@ -347,7 +347,7 @@ namespace Zion
 		m_C2S.EquipGem(item_uuid, gem_id);
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
 	}
@@ -357,7 +357,7 @@ namespace Zion
 		m_C2S.UnequipGem(item_uuid, gem_id);
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
 	}
@@ -367,7 +367,7 @@ namespace Zion
 		m_C2S.GemCombine(item_id);
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
@@ -393,14 +393,14 @@ namespace Zion
 
 			general_inst.general_id = general_id;
 			const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct<SG_PLAYER_TITLE_CONFIG>();
-			Zion::Vector<A_UUID> uuid_list;
+			Zion::Array<A_UUID> uuid_list;
 			if(!ContentObject::GetList(struct_info, uuid_list, true))
 			{
 				return;
 			}
 
 			_U32 general_limit_num = 0;
-			for(Zion::Vector<A_UUID>::iterator it = uuid_list.begin(); it != uuid_list.end(); ++it)
+			for(Zion::Array<A_UUID>::iterator it = uuid_list.begin(); it != uuid_list.end(); ++it)
 			{
 				const SG_PLAYER_TITLE_CONFIG* title_config = (const SG_PLAYER_TITLE_CONFIG*)ContentObject::QueryByUUID(*it, struct_info);
 				if(!title_config) continue;
@@ -422,7 +422,7 @@ namespace Zion
 		m_C2S.SetGeneralStatus(general_id, status);
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		//vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 		SyncSet(vecSync);
@@ -435,7 +435,7 @@ namespace Zion
 
 	void CSGClient::SaveQuestData(const SG_QUEST_LIVE_INFO& quest_info)
 	{
-		Zion::Vector<SG_QUEST_LIVE_INFO>::iterator it; 
+		Zion::Array<SG_QUEST_LIVE_INFO>::iterator it; 
 		for(it = m_quests.begin(); it != m_quests.end(); ++it)
 		{
 			SG_QUEST_LIVE_INFO& quest_item = (*it);
@@ -464,7 +464,7 @@ namespace Zion
 	{
 		m_C2S.GetPaid();
 		
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -473,7 +473,7 @@ namespace Zion
 	{
 		m_C2S.UpgradeTitle();
 
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -523,7 +523,7 @@ namespace Zion
 		m_C2S.PVPDailyReward();
 
 		//sync player and bag
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -543,7 +543,7 @@ namespace Zion
 		m_C2S.PVPCoolDownClear();
 
 		//sync player and bag
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -590,7 +590,7 @@ namespace Zion
 		m_C2S.CreateLeague(league_name);
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -600,7 +600,7 @@ namespace Zion
 		m_C2S.ApplyJoinLeague(league_id);
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -711,7 +711,7 @@ namespace Zion
 		m_C2S.EquipTurboSkill(skill_slot);
 		
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -1055,7 +1055,7 @@ namespace Zion
 
 	void CSGClient::QueryGeneralResult(CSGClient* pClient, const SG_GENERAL* generals, _U32 count, _U8 nSync)
 	{
-		Zion::Vector<SG_GENERAL> generals_new;
+		Zion::Array<SG_GENERAL> generals_new;
 		SGClientUtil::GenerateTempNewVec<SG_GENERAL>(generals, count, generals_new);
 
 		//if(SGClientUtil::DiffGenerals(m_generals, generals_new))
@@ -1082,7 +1082,7 @@ namespace Zion
 
 	void CSGClient::QuerySoldierResult(CSGClient* pClient, const SG_SOLDIER* soldiers, _U32 count, _U8 nSync)
 	{
-		Zion::Vector<SG_SOLDIER> soldiers_new;
+		Zion::Array<SG_SOLDIER> soldiers_new;
 		SGClientUtil::GenerateTempNewVec<SG_SOLDIER>(soldiers, count, soldiers_new);
 
 		if(SGClientUtil::DiffSoldiers(m_soldiers, soldiers_new))
@@ -1114,7 +1114,7 @@ namespace Zion
 
 	void CSGClient::QueryBagEquipt(CSGClient* pClient, const SG_EQUIPT_ITEM* items, _U32 count)
 	{
-		Zion::Vector<SG_EQUIPT_ITEM> equipts_new;
+		Zion::Array<SG_EQUIPT_ITEM> equipts_new;
 		SGClientUtil::GenerateTempNewVec<SG_EQUIPT_ITEM>(items, count, equipts_new);
 
 		if(SGClientUtil::DiffEquipt(m_equipts, equipts_new))
@@ -1135,7 +1135,7 @@ namespace Zion
 
 	void CSGClient::QueryBagUsable(CSGClient* pClient, const SG_USABLE_ITEM* items, _U32 count)
 	{
-		Zion::Vector<SG_USABLE_ITEM> usables_new;
+		Zion::Array<SG_USABLE_ITEM> usables_new;
 		SGClientUtil::GenerateTempNewVec<SG_USABLE_ITEM>(items, count, usables_new);
 
 		if(SGClientUtil::DiffUsable(m_usables, usables_new))
@@ -1157,7 +1157,7 @@ namespace Zion
 
 	void CSGClient::QueryBagGen(CSGClient* pClient, const SG_GEM_ITEM* items, _U32 count)
 	{
-		Zion::Vector<SG_GEM_ITEM> gems_new;
+		Zion::Array<SG_GEM_ITEM> gems_new;
 		SGClientUtil::GenerateTempNewVec<SG_GEM_ITEM>(items, count, gems_new);
 
 		if(SGClientUtil::DiffGem(m_gems, gems_new))
@@ -1178,7 +1178,7 @@ namespace Zion
 
 	void CSGClient::QueryBagMaterial(CSGClient* pClient, const SG_MATERIAL_ITEM* items, _U32 count)
 	{
-		Zion::Vector<SG_MATERIAL_ITEM> new_materials;
+		Zion::Array<SG_MATERIAL_ITEM> new_materials;
 		SGClientUtil::GenerateTempNewVec<SG_MATERIAL_ITEM>(items, count, new_materials);
 
 		if(SGClientUtil::DiffMaterial(m_materials, new_materials))
@@ -1247,7 +1247,7 @@ namespace Zion
 		if(ret == SG_SERVER_RESULT_SUCC)
 		{
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1296,7 +1296,7 @@ namespace Zion
 			m_callback->EndBattleDone(level, exp_addition, gold, wake_pt, drop_lists, drop_count);
 
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -1314,7 +1314,7 @@ namespace Zion
 
 	void CSGClient::RefreshEquipDone(CSGClient* pClient, const SG_EQUIPT_ITEM& equipt)
 	{
-		for(Zion::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
+		for(Zion::Array<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
 		{
 			if(it->uuid == equipt.uuid)
 			{
@@ -1328,7 +1328,7 @@ namespace Zion
 		}
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		SyncSet(vecSync);
 	}
@@ -1400,7 +1400,7 @@ namespace Zion
 	{
 		if(ret == SG_SERVER_RESULT_SUCC)
 		{
-			for(Zion::Vector<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
+			for(Zion::Array<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
 			{
 				SG_QUEST_LIVE_INFO& quest_item = (*it);
 				if(quest_item.quest_id == quest_id
@@ -1430,7 +1430,7 @@ namespace Zion
 			}
 						
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
 		}
@@ -1466,7 +1466,7 @@ namespace Zion
 		}
 
 		//help to sync data
-		Zion::Vector<_U8> vecSync;
+		Zion::Array<_U8> vecSync;
 		vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 		vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 		SyncSet(vecSync);
@@ -1482,7 +1482,7 @@ namespace Zion
 		if(m_callback)
 		{
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1550,7 +1550,7 @@ namespace Zion
 			m_callback->PVPBattleEndResult(reputation);
 
 			//sync player
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 		}
@@ -1575,7 +1575,7 @@ namespace Zion
 		if(m_callback)
 		{
 			//sync player
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1638,7 +1638,7 @@ namespace Zion
 			m_callback->EndInstanceBattleResult(level, exp_addition, gold, wake_pt, result, drops, drop_count);
 
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -1683,7 +1683,7 @@ namespace Zion
 		if(m_callback)
 		{
 			//SGClientUtil::GenerateTempNewVec<SG_LEAGUE_APPLYER>(applyers, count, g_newApplyers.GetData());
-			Zion::Vector<_U32>& applyerVec = g_newApplyers.GetData();
+			Zion::Array<_U32>& applyerVec = g_newApplyers.GetData();
 			g_newApplyers.Resize(count);
 
 			for(_U32 i = 0; i < count; ++i)
@@ -1732,7 +1732,7 @@ namespace Zion
 		if(m_callback)
 		{
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -1840,7 +1840,7 @@ namespace Zion
 				m_player.gold += gold;
 			
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -1859,7 +1859,7 @@ namespace Zion
 				m_player.gold += gold;
 
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -1924,7 +1924,7 @@ namespace Zion
 				g_newItemList.AddItem(new_euqipt.uuid);
 
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				SyncSet(vecSync);
@@ -1938,8 +1938,8 @@ namespace Zion
 	{
 		if(m_callback)
 		{
-			Zion::Vector<_U8> statusVec;
-			Zion::Vector<_U32> actionVec;
+			Zion::Array<_U8> statusVec;
+			Zion::Array<_U32> actionVec;
 
 			SGClientUtil::GenerateTempNewVec(action_list, count, actionVec);
 			g_actionStatusCache.GetDailActionStatus(GetServerTime(), actionVec, statusVec);
@@ -2021,7 +2021,7 @@ namespace Zion
 				m_player.reputation += reputation;
 			
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -2085,7 +2085,7 @@ namespace Zion
 			if(!ret)
 			{
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				SyncSet(vecSync);
 			}
@@ -2136,7 +2136,7 @@ namespace Zion
 		if(m_callback)
 		{
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			SyncSet(vecSync);
 
@@ -2198,7 +2198,7 @@ namespace Zion
 
 				if(general.exp || general.level)
 				{
-					for(Zion::Vector<SG_GENERAL>::iterator it = m_generals.begin(); it != m_generals.end(); ++it)
+					for(Zion::Array<SG_GENERAL>::iterator it = m_generals.begin(); it != m_generals.end(); ++it)
 					{
 						if((*it).general_id == general.general_id)
 						{
@@ -2209,7 +2209,7 @@ namespace Zion
 				}
 
 				//help to sync data no need
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				SyncSet(vecSync);
 			}
@@ -2298,7 +2298,7 @@ namespace Zion
 				}
 
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2358,7 +2358,7 @@ namespace Zion
 				}
 
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2419,7 +2419,7 @@ namespace Zion
 				}
 
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2464,7 +2464,7 @@ namespace Zion
 				}
 
 				//help to sync data
-				Zion::Vector<_U8> vecSync;
+				Zion::Array<_U8> vecSync;
 				vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 				vecSync.push_back(CSGSyncDataManager::eSyncGenerals);
 				vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
@@ -2511,7 +2511,7 @@ namespace Zion
 				if(drop_count)
 				{
 					//help to sync data
-					Zion::Vector<_U8> vecSync;
+					Zion::Array<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 					SyncSet(vecSync);
 				}
@@ -2560,7 +2560,7 @@ namespace Zion
 				if(count2)
 				{
 					//help to sync data
-					Zion::Vector<_U8> vecSync;
+					Zion::Array<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				}
 			}
@@ -2598,7 +2598,7 @@ namespace Zion
 				if(count)
 				{
 					//help to sync data
-					Zion::Vector<_U8> vecSync;
+					Zion::Array<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				}
 			}
@@ -2644,7 +2644,7 @@ namespace Zion
 				if(count)
 				{
 					//help to sync data
-					Zion::Vector<_U8> vecSync;
+					Zion::Array<_U8> vecSync;
 					vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 				}
 			}
@@ -2679,7 +2679,7 @@ namespace Zion
 			m_callback->SellItemResult(result, uuid, item_id, count);
 
 			//help to sync data
-			Zion::Vector<_U8> vecSync;
+			Zion::Array<_U8> vecSync;
 			vecSync.push_back(CSGSyncDataManager::eSyncPlayer);
 			vecSync.push_back(CSGSyncDataManager::eSyncBagBegin);
 			SyncSet(vecSync);
@@ -2738,8 +2738,8 @@ namespace Zion
 		if(GetServerTime() - ms_nLastRanderTime >= SG_CLIENT_EVENT_POLL_TIMEOUT)
 		{
 			//GetDailyAction
-			Zion::Vector<_U32> actionVec;
-			Zion::Vector<_U8>	notifyTypeVec;
+			Zion::Array<_U32> actionVec;
+			Zion::Array<_U8>	notifyTypeVec;
 			g_actionStatusCache.GetDailyActionEvent(GetServerTime(), actionVec, notifyTypeVec);
 
 			for(size_t i = 0; i < actionVec.size(); ++i)
@@ -2754,12 +2754,12 @@ namespace Zion
 		}
 	}
 
-	const Zion::Vector<SG_GENERAL>& CSGClient::GetGenerals()
+	const Zion::Array<SG_GENERAL>& CSGClient::GetGenerals()
 	{
 		return m_generals;
 	}
 
-	const Zion::Vector<SG_SOLDIER>& CSGClient::GetSoldiers()
+	const Zion::Array<SG_SOLDIER>& CSGClient::GetSoldiers()
 	{
 		return m_soldiers;
 	}
@@ -2774,22 +2774,22 @@ namespace Zion
 		return m_player;
 	}
 
-	const Zion::Vector<SG_EQUIPT_ITEM>& CSGClient::GetEquiptItem()
+	const Zion::Array<SG_EQUIPT_ITEM>& CSGClient::GetEquiptItem()
 	{
 		return m_equipts;
 	}
 	
-	const Zion::Vector<SG_GEM_ITEM>& CSGClient::GetGemItem()
+	const Zion::Array<SG_GEM_ITEM>& CSGClient::GetGemItem()
 	{
 		return m_gems;
 	}
 
-	const Zion::Vector<SG_USABLE_ITEM>& CSGClient::GetUsableItem()
+	const Zion::Array<SG_USABLE_ITEM>& CSGClient::GetUsableItem()
 	{
 		return m_usables;
 	}
 
-	const Zion::Vector<SG_MATERIAL_ITEM>& CSGClient::GetMaterialItem()
+	const Zion::Array<SG_MATERIAL_ITEM>& CSGClient::GetMaterialItem()
 	{
 		return m_materials;
 	}
@@ -2804,7 +2804,7 @@ namespace Zion
 			}
 		}
 		
-		//ATLAS_ASSERT(0);
+		//ZION_ASSERT(0);
 		return m_serverList[0];
 	}
 
@@ -2818,7 +2818,7 @@ namespace Zion
 	SG_ITEM* CSGClient::GetItemByUUID(const A_UUID& uuid)
 	{
 		SG_ITEM* item = NULL;
-		for(Zion::Vector<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
+		for(Zion::Array<SG_EQUIPT_ITEM>::iterator it = m_equipts.begin(); it != m_equipts.end(); ++it)
 		{
 			if((*it).uuid == uuid)
 			{
@@ -2826,7 +2826,7 @@ namespace Zion
 			}
 		}
 		
-		for(Zion::Vector<SG_USABLE_ITEM>::iterator it = m_usables.begin(); it != m_usables.end(); ++it)
+		for(Zion::Array<SG_USABLE_ITEM>::iterator it = m_usables.begin(); it != m_usables.end(); ++it)
 		{
 			if((*it).uuid == uuid)
 			{
@@ -2834,7 +2834,7 @@ namespace Zion
 			}
 		}
 
-		for(Zion::Vector<SG_GEM_ITEM>::iterator it = m_gems.begin(); it != m_gems.end(); ++it)
+		for(Zion::Array<SG_GEM_ITEM>::iterator it = m_gems.begin(); it != m_gems.end(); ++it)
 		{
 			if((*it).uuid == uuid)
 			{
@@ -2845,9 +2845,9 @@ namespace Zion
 		return NULL;
 	}
 
-	void CSGClient::GetFinishedQuest(Zion::Vector<SG_QUEST_LIVE_INFO>& quest_vec)
+	void CSGClient::GetFinishedQuest(Zion::Array<SG_QUEST_LIVE_INFO>& quest_vec)
 	{
-		for(Zion::Vector<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
+		for(Zion::Array<SG_QUEST_LIVE_INFO>::iterator it = m_quests.begin(); it != m_quests.end(); ++it)
 		{
 			if((*it).status == SG_QUEST_STATUS_FINISHED)
 			{
@@ -2856,7 +2856,7 @@ namespace Zion
 		}
 	}
 
-	void CSGClient::GetNewSoldierList(Zion::Vector<_U32>& soldier_lists)
+	void CSGClient::GetNewSoldierList(Zion::Array<_U32>& soldier_lists)
 	{
 		g_newSoldiers.GetNewList(soldier_lists);
 	}
@@ -2876,7 +2876,7 @@ namespace Zion
 		g_newSoldiers.ClearNewList();
 	}
 
-	void CSGClient::GetNewItemList(Zion::Vector<A_UUID>& item_lists)
+	void CSGClient::GetNewItemList(Zion::Array<A_UUID>& item_lists)
 	{
 		g_newItemList.GetNewList(item_lists);
 	}
@@ -2896,7 +2896,7 @@ namespace Zion
 		g_newItemList.ClearNewList();
 	}
 
-	void CSGClient::GetNewApplyerList(Zion::Vector<_U32>& applyer_list)
+	void CSGClient::GetNewApplyerList(Zion::Array<_U32>& applyer_list)
 	{
 		g_newApplyers.GetNewList(applyer_list);
 	}
@@ -2922,7 +2922,7 @@ namespace Zion
 		g_syncDataManager.SendSyncRequest();
 	}
 
-	void CSGClient::SyncSet(const Zion::Vector<_U8> vecSync)
+	void CSGClient::SyncSet(const Zion::Array<_U8> vecSync)
 	{
 		for(size_t i = 0; i < vecSync.size(); ++i)
 		{

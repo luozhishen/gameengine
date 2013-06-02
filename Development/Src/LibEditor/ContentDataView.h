@@ -1,5 +1,5 @@
-#ifndef __ATLAS_OBJECT_DATA_VIEW__
-#define __ATLAS_OBJECT_DATA_VIEW__
+#ifndef __ZION_OBJECT_DATA_VIEW__
+#define __ZION_OBJECT_DATA_VIEW__
 
 class CStructEditView;
 

@@ -25,22 +25,22 @@ END_EVENT_TABLE()
 
 CCaseConfigDlg::CCaseConfigDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxT("Case Config"), wxDefaultPosition, wxSize(300, 300), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
-	m_pCaseList = ATLAS_NEW wxComboBox(this, ID_CASELIST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
-	m_pConfigText = ATLAS_NEW wxTextCtrl(this, ID_CASETEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+	m_pCaseList = ZION_NEW wxComboBox(this, ID_CASELIST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
+	m_pConfigText = ZION_NEW wxTextCtrl(this, ID_CASETEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 
-	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer2->AddStretchSpacer();
-	pSizer2->Add(ATLAS_NEW wxButton(this, wxID_OK, wxT("Confirm")), 0, wxALIGN_RIGHT | wxALL, 5);
-	pSizer2->Add(ATLAS_NEW wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALIGN_RIGHT | wxALL, 5);
-	wxBoxSizer* pSizer1 = ATLAS_NEW wxBoxSizer(wxVERTICAL);
+	pSizer2->Add(ZION_NEW wxButton(this, wxID_OK, wxT("Confirm")), 0, wxALIGN_RIGHT | wxALL, 5);
+	pSizer2->Add(ZION_NEW wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALIGN_RIGHT | wxALL, 5);
+	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxVERTICAL);
 	pSizer1->Add(m_pCaseList, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizer1->Add(m_pConfigText, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizer1);
 
-	Zion::Vector<Zion::String> cases;
+	Zion::Array<Zion::String> cases;
 	Zion::CStressManager::Get().GetCases(cases);
-	Zion::Vector<Zion::String>::iterator i;
+	Zion::Array<Zion::String>::iterator i;
 	for(i=cases.begin(); i!=cases.end(); i++)
 	{
 		m_CaseMap[*i] = m_pCaseList->Append(wxString::FromUTF8((*i).c_str()));
@@ -70,11 +70,11 @@ void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
 	m_pCaseType = Zion::CStressManager::Get().GetCaseConfigType(name);
 	if(m_pCaseType)
 	{
-		_U8* pData = (_U8*)ATLAS_ALLOC(m_pCaseType->size);
+		_U8* pData = (_U8*)ZION_ALLOC(m_pCaseType->size);
 		Zion::CStressManager::Get().GetCaseConfigDefault(name, pData, m_pCaseType->size);
 		Zion::String json;
 		DDLReflect::Struct2Json(m_pCaseType, pData, json);
-		ATLAS_FREE(pData);
+		ZION_FREE(pData);
 		m_pConfigText->SetValue(wxString::FromUTF8(json.c_str()));
 		m_pConfigText->Enable();
 	}
@@ -92,7 +92,7 @@ void CCaseConfigDlg::OnCaseSelect(wxCommandEvent& event)
 {
 	if(m_pCaseData)
 	{
-		ATLAS_FREE(m_pCaseData);
+		ZION_FREE(m_pCaseData);
 		m_pCaseData = NULL;
 	}
 }
@@ -103,9 +103,9 @@ void CCaseConfigDlg::OnConfirm(wxCommandEvent& event)
 
 	if(m_pCaseType)
 	{
-		if(m_pCaseData) ATLAS_FREE(m_pCaseData);
+		if(m_pCaseData) ZION_FREE(m_pCaseData);
 
-		m_pCaseData = (_U8*)ATLAS_ALLOC(m_pCaseType->size);
+		m_pCaseData = (_U8*)ZION_ALLOC(m_pCaseType->size);
 		Zion::String json;
 		bool bRet = DDLReflect::Json2Struct(m_pCaseType, *m_pConfigText->GetValue().ToUTF8(), m_pCaseData);
 		if(!bRet)

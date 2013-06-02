@@ -11,7 +11,7 @@
 
 namespace Zion
 {
-	void SGActionStatusCache::GetDailyActionEvent(_U32 time, Zion::Vector<_U32>& actionVec, Zion::Vector<_U8>& notifyVec)
+	void SGActionStatusCache::GetDailyActionEvent(_U32 time, Zion::Array<_U32>& actionVec, Zion::Array<_U8>& notifyVec)
 	{
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_DAILY_ACTION_CONFIG >();
 		const A_CONTENT_OBJECT* content_obj = Zion::ContentObject::FindFirst(struct_info, true);
@@ -124,7 +124,7 @@ namespace Zion
 		}
 	}
 
-	void SGActionStatusCache::GetDailActionStatus(_U32 time, Zion::Vector<_U32>& actionVec, Zion::Vector<_U8>& statusVec)
+	void SGActionStatusCache::GetDailActionStatus(_U32 time, Zion::Array<_U32>& actionVec, Zion::Array<_U8>& statusVec)
 	{
 		const DDLReflect::STRUCT_INFO* struct_info = DDLReflect::GetStruct< SG_DAILY_ACTION_CONFIG >();
 		tm *tblock;

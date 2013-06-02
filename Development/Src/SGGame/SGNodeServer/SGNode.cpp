@@ -40,7 +40,7 @@ namespace Zion
 
 	CSGNodeServer::CSGNodeServer(CServerApp* pServerApp) : CNodeServer(pServerApp, 0)
 	{
-		AddComponent(ATLAS_NEW CSGGameServerComponent(this));
+		AddComponent(ZION_NEW CSGGameServerComponent(this));
 	}
 
 	CSGNodeServer::~CSGNodeServer()
@@ -49,7 +49,7 @@ namespace Zion
 
 	CNodeClient* CSGNodeServer::NewNodeClient(_U64 nndx, _U64 cndx, HSERVER hCluster)
 	{
-		return ATLAS_NEW CSGNodeClient(this, nndx, cndx, hCluster);
+		return ZION_NEW CSGNodeClient(this, nndx, cndx, hCluster);
 	}
 
 	CSGNodeClient::CSGNodeClient(CSGNodeServer* pServer, _U64 nndx, _U64 cndx, HSERVER hCluster) : CNodeClient(pServer, nndx, cndx, hCluster), m_Sender(this)

@@ -1,5 +1,5 @@
-#ifndef __ATLAS_CLIENT__
-#define __ATLAS_CLIENT__
+#ifndef __ZION_CLIENT__
+#define __ZION_CLIENT__
 
 #define CLIENT_LOG(client, fmt, ...)	\
 {	\
@@ -69,7 +69,7 @@ namespace Zion
 		void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
-			ATLAS_ASSERT(iid<256 && fid<256);
+			ZION_ASSERT(iid<256 && fid<256);
 			SendData(iid, fid, Buf.GetSize(), Buf.GetBuf());
 			return true;
 		}

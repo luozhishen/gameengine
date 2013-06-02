@@ -661,7 +661,7 @@ namespace DDLReflect
 
 	_U32 GetStructFieldOffset(const STRUCT_INFO* info, const char* name, FIELD_INFO* finfo)
 	{
-		Zion::Vector<Zion::String> ns;
+		Zion::Array<Zion::String> ns;
 		Zion::StringSplit(name, '.', ns);
 		if(ns.empty()) return (_U32)-1;
 		Zion::String fname;

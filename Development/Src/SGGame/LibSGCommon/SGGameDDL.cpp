@@ -77,27 +77,27 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLD_BOSS_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "world_level", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, world_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "boss_id", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, boss_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "base_gold", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, base_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "total_gold", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, total_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "total_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, total_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "loot", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, loot), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_loot1", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_loot1_rate", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot1_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward_loot2", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_loot2_rate", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot2_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_STRING, "reward1", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward1), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward2", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward2), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward3", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward3), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward4", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward4), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward5", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward5), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward6", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward6), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward7", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward7), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward8", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward8), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward9", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward9), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRING, "reward10", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward10), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_U32, "world_level", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, world_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "boss_id", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, boss_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "base_gold", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, base_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_gold", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, total_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_reputation", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, total_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "loot", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, loot), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_loot1", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_loot1_rate", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot1_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward_loot2", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_loot2_rate", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward_loot2_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_STRING, "reward1", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward1), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward2", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward2), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward3", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward3), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward4", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward4), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward5", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward5), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward6", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward6), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward7", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward7), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward8", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward8), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward9", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward9), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "reward10", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_CONFIG, reward10), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_WORLD_BOSS_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_WORLD_BOSS_CONFIG", sizeof(SG_WORLD_BOSS_CONFIG), 21, _struct_SG_WORLD_BOSS_CONFIG_fieldinfo, _struct_SG_WORLD_BOSS_CONFIG_readproc, _struct_SG_WORLD_BOSS_CONFIG_writeproc };
 	template<>
@@ -142,8 +142,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "times", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "consume_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "times", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_rmb", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_WORLD_BOSS_INSPIRE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_WORLD_BOSS_INSPIRE_CONFIG", sizeof(SG_WORLD_BOSS_INSPIRE_CONFIG), 2, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_readproc, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_writeproc };
 	template<>
@@ -208,18 +208,18 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_RECHARGE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "index", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, index), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "yuanbao", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, yuanbao), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "extra_yuanbao", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, extra_yuanbao), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "yuanbao_desc", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, yuanbao_desc), NULL, (_U16)SG_RECHARGE_YUANBAO_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_RECHARGE_YUANBAO_DESC>), NULL},
-		{TYPE_U32, "price", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, price), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "price_desc", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, price_desc), NULL, (_U16)SG_RECHARGE_PRICE_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_RECHARGE_PRICE_DESC>), NULL},
-		{TYPE_STRING, "other_desc", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, other_desc), NULL, (_U16)SG_RECHARGE_OTHER_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_RECHARGE_OTHER_DESC>), NULL},
-		{TYPE_STRING, "icon", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_RECHARGE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "index", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, index), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "yuanbao", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, yuanbao), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "extra_yuanbao", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, extra_yuanbao), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "yuanbao_desc", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, yuanbao_desc), NULL, (_U16)SG_RECHARGE_YUANBAO_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_RECHARGE_YUANBAO_DESC>), NULL},
+		{TYPE_U32, "price", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, price), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "price_desc", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, price_desc), NULL, (_U16)SG_RECHARGE_PRICE_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_RECHARGE_PRICE_DESC>), NULL},
+		{TYPE_STRING, "other_desc", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, other_desc), NULL, (_U16)SG_RECHARGE_OTHER_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_RECHARGE_OTHER_DESC>), NULL},
+		{TYPE_STRING, "icon", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_RECHARGE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_RECHARGE_CONFIG", sizeof(SG_RECHARGE_CONFIG), 12, _struct_SG_RECHARGE_CONFIG_fieldinfo, _struct_SG_RECHARGE_CONFIG_readproc, _struct_SG_RECHARGE_CONFIG_writeproc };
 	template<>
@@ -308,30 +308,30 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "function_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, function_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "process_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, process_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "remain_time", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, remain_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "condition1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "condition1_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "condition1_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "condition2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "condition2_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "condition2_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "open_function", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, open_function), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, desc), NULL, (_U16)SG_NEWCOMER_GUIDE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_DESC_MAX>), NULL},
-		{TYPE_STRING, "guider_pic", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, guider_pic), NULL, (_U16)SG_NEWCOMER_GUIDE_PIC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_PIC_MAX>), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "icon", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
-		{TYPE_U32, "U2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "guider_label", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, guider_label), NULL, (_U16)SG_NEWCOMER_GUIDER_LABEL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDER_LABEL_MAX>), NULL},
-		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "function_id", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, function_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "process_id", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, process_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "type", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "remain_time", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, remain_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition1", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition1_param1", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "condition1_param2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition1_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition2_param1", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "condition2_param2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, condition2_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "open_function", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, open_function), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, desc), NULL, (_U16)SG_NEWCOMER_GUIDE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_DESC_MAX>), NULL},
+		{TYPE_STRING, "guider_pic", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, guider_pic), NULL, (_U16)SG_NEWCOMER_GUIDE_PIC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_PIC_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "icon", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
+		{TYPE_U32, "U2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "guider_label", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, guider_label), NULL, (_U16)SG_NEWCOMER_GUIDER_LABEL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDER_LABEL_MAX>), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_CONFIG", sizeof(SG_NEWCOMER_GUIDE_CONFIG), 24, _struct_SG_NEWCOMER_GUIDE_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_CONFIG_writeproc };
 	template<>
@@ -412,26 +412,26 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "process_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, process_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "group", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, group), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "close_level", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, close_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "termial_type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, termial_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "step1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step3", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step4", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step5", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step6", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step7", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step7), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step8", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step8), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step9", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step9), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step10", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step10), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step11", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step11), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step12", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step12), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step13", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step13), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step14", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step14), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "step15", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step15), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "process_id", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, process_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "type", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, group), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "close_level", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, close_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "termial_type", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, termial_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "step1", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step3", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step4", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step5", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step6", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step7", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step7), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step8", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step8), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step9", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step9), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step10", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step10), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step11", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step11), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step12", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step12), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step13", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step13), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step14", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step14), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step15", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_PROCESS_CONFIG, step15), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_PROCESS_CONFIG", sizeof(SG_NEWCOMER_GUIDE_PROCESS_CONFIG), 20, _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_PROCESS_CONFIG_writeproc };
 	template<>
@@ -508,24 +508,24 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "step_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, step_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "open_ui", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, open_ui), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
-		{TYPE_STRING, "ui_condition", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, ui_condition), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
-		{TYPE_U8, "complete_type", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "complete_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_param1), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
-		{TYPE_U32, "complete_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "button_tip", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_tip), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "button_param1", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_param1), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
-		{TYPE_U32, "button_param2", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "arrow_direction", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, arrow_direction), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "offset_x", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_x), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "offset_y", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_y), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tip_desc", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, tip_desc), NULL, (_U16)SG_NEWCOMER_GUIDE_TIP_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_TIP_MAX>), NULL},
-		{TYPE_U32, "up", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, up), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "down", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, down), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "left", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, left), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "right", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, right), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "transparency", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, transparency), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "step_id", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, step_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "open_ui", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, open_ui), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
+		{TYPE_STRING, "ui_condition", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, ui_condition), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
+		{TYPE_U8, "complete_type", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "complete_param1", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_param1), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
+		{TYPE_U32, "complete_param2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, complete_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "button_tip", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_tip), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "button_param1", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_param1), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
+		{TYPE_U32, "button_param2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, button_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "arrow_direction", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, arrow_direction), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "offset_x", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_x), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "offset_y", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_y), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tip_desc", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, tip_desc), NULL, (_U16)SG_NEWCOMER_GUIDE_TIP_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_TIP_MAX>), NULL},
+		{TYPE_U32, "up", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, up), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "down", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, down), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "left", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, left), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "right", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, right), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "transparency", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, transparency), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_STEP_CONFIG", sizeof(SG_NEWCOMER_GUIDE_STEP_CONFIG), 18, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_writeproc };
 	template<>
@@ -572,9 +572,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DAILY_SEARCH_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "road_pt", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_CONFIG, road_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "road_type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_CONFIG, road_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "param", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_CONFIG, param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "road_pt", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_CONFIG, road_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "road_type", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_CONFIG, road_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "param", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_CONFIG, param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DAILY_SEARCH_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_SEARCH_CONFIG", sizeof(SG_DAILY_SEARCH_CONFIG), 3, _struct_SG_DAILY_SEARCH_CONFIG_fieldinfo, _struct_SG_DAILY_SEARCH_CONFIG_readproc, _struct_SG_DAILY_SEARCH_CONFIG_writeproc };
 	template<>
@@ -629,13 +629,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DAILY_SEARCH_REWARD_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "circle_num", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, circle_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_energy", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item1", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item1_count", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item1_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item2", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item2_count", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item2_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "circle_num", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, circle_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_energy", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1_count", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item1_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2_count", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SEARCH_REWARD_CONFIG, reward_item2_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DAILY_SEARCH_REWARD_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_SEARCH_REWARD_CONFIG", sizeof(SG_DAILY_SEARCH_REWARD_CONFIG), 7, _struct_SG_DAILY_SEARCH_REWARD_CONFIG_fieldinfo, _struct_SG_DAILY_SEARCH_REWARD_CONFIG_readproc, _struct_SG_DAILY_SEARCH_REWARD_CONFIG_writeproc };
 	template<>
@@ -708,22 +708,22 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ZHANJIANG_LEVEL_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "level_id", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "general_tex", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, general_tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "LD_map", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, LD_map), NULL, (_U16)SG_ZHANJIANG_LEVEL_LD_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ZHANJIANG_LEVEL_LD_MAX>), NULL},
-		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_exp", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item1", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_rate1", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward_item2", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_rate2", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward_item3", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_rate3", 0, (_U16)ATLAS_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "level_id", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "general_tex", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, general_tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "LD_map", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, LD_map), NULL, (_U16)SG_ZHANJIANG_LEVEL_LD_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ZHANJIANG_LEVEL_LD_MAX>), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_exp", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputation", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_rate1", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_rate2", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward_item3", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_rate3", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ZHANJIANG_LEVEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ZHANJIANG_LEVEL_CONFIG", sizeof(SG_ZHANJIANG_LEVEL_CONFIG), 16, _struct_SG_ZHANJIANG_LEVEL_CONFIG_fieldinfo, _struct_SG_ZHANJIANG_LEVEL_CONFIG_readproc, _struct_SG_ZHANJIANG_LEVEL_CONFIG_writeproc };
 	template<>
@@ -812,30 +812,30 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_HORSE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "horse_level", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "horse_name", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, horse_name), NULL, (_U16)SG_HORSE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_NAME_MAX>), NULL},
-		{TYPE_U8, "horse_star", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, horse_star), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "req_exp", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, req_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "consume_gold", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, consume_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "gold_exp", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, gold_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "gold_10_rate", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, gold_10_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "consume_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "rmb_exp", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, rmb_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "rmb_levelup_rate", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, rmb_levelup_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "rmb_10_rate", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, rmb_10_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "restore_hp_rate", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, restore_hp_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "soldier_hp", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, soldier_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "soldier_atk", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, soldier_atk), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "soldier_def", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, soldier_def), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "general_hp", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, general_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "general_atk", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, general_atk), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "general_def", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, general_def), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "mesh", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, mesh), NULL, (_U16)SG_HORSE_MESH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_MESH_MAX>), NULL},
-		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "horse_level", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "horse_name", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, horse_name), NULL, (_U16)SG_HORSE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_NAME_MAX>), NULL},
+		{TYPE_U8, "horse_star", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, horse_star), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "req_exp", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, req_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_gold", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, consume_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "gold_exp", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, gold_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "gold_10_rate", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, gold_10_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "consume_rmb", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "rmb_exp", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, rmb_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "rmb_levelup_rate", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, rmb_levelup_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "rmb_10_rate", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, rmb_10_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "restore_hp_rate", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, restore_hp_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "soldier_hp", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, soldier_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "soldier_atk", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, soldier_atk), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "soldier_def", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, soldier_def), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_hp", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, general_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_atk", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, general_atk), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_def", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, general_def), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "mesh", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, mesh), NULL, (_U16)SG_HORSE_MESH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_MESH_MAX>), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_HORSE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_HORSE_CONFIG", sizeof(SG_HORSE_CONFIG), 24, _struct_SG_HORSE_CONFIG_fieldinfo, _struct_SG_HORSE_CONFIG_readproc, _struct_SG_HORSE_CONFIG_writeproc };
 	template<>
@@ -892,14 +892,14 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_HORSE_SETTING_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "unlock_level", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "horse_name", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, horse_name), NULL, (_U16)SG_HORSE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_NAME_MAX>), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, desc), NULL, (_U16)SG_HORSE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_DESC_MAX>), NULL},
-		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_HORSE_SETTING_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "unlock_level", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "horse_name", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, horse_name), NULL, (_U16)SG_HORSE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_NAME_MAX>), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, desc), NULL, (_U16)SG_HORSE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_DESC_MAX>), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_HORSE_SETTING_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_HORSE_SETTING_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_HORSE_SETTING_CONFIG", sizeof(SG_HORSE_SETTING_CONFIG), 8, _struct_SG_HORSE_SETTING_CONFIG_fieldinfo, _struct_SG_HORSE_SETTING_CONFIG_readproc, _struct_SG_HORSE_SETTING_CONFIG_writeproc };
 	template<>
@@ -994,33 +994,33 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ASTROLOGER_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "astrologer_id", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, astrologer_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "astrologer_name", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, astrologer_name), NULL, (_U16)SG_ASTROLOGER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGER_NAME_MAX>), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, desc), NULL, (_U16)SG_ASTROLOGER_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGER_DESC_MAX>), NULL},
-		{TYPE_U32, "consume_gold", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, consume_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "level_up_percent", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, level_up_percent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "failed_percent", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, failed_percent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward1", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_percent1", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_percent2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward3", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_percent3", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward4", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_percent4", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "reward5", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_percent5", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
-		{TYPE_U32, "U2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tex2", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGER_CONFIG, tex2), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "astrologer_id", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, astrologer_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "astrologer_name", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, astrologer_name), NULL, (_U16)SG_ASTROLOGER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGER_NAME_MAX>), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, desc), NULL, (_U16)SG_ASTROLOGER_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGER_DESC_MAX>), NULL},
+		{TYPE_U32, "consume_gold", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, consume_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "level_up_percent", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, level_up_percent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "failed_percent", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, failed_percent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward1", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent1", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward2", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent2", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward3", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent3", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward4", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent4", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward5", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_percent5", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, reward_percent5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U2", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V2", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL2", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL2", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex2", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGER_CONFIG, tex2), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ASTROLOGER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ASTROLOGER_CONFIG", sizeof(SG_ASTROLOGER_CONFIG), 27, _struct_SG_ASTROLOGER_CONFIG_fieldinfo, _struct_SG_ASTROLOGER_CONFIG_readproc, _struct_SG_ASTROLOGER_CONFIG_writeproc };
 	template<>
@@ -1067,9 +1067,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "general_level_upper", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "general_level_lower", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "slot_num", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, slot_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_level_upper", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_level_lower", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, general_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "slot_num", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_ASTROLOG_SLOT_CONFIG, slot_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_ASTROLOG_SLOT_CONFIG", sizeof(SG_GENERAL_ASTROLOG_SLOT_CONFIG), 3, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_fieldinfo, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_readproc, _struct_SG_GENERAL_ASTROLOG_SLOT_CONFIG_writeproc };
 	template<>
@@ -1114,8 +1114,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_FRIEND_NUM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "player_level", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_NUM_CONFIG, player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "upper_friend_limit", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_NUM_CONFIG, upper_friend_limit), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "player_level", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_NUM_CONFIG, player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "upper_friend_limit", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_NUM_CONFIG, upper_friend_limit), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_FRIEND_NUM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_FRIEND_NUM_CONFIG", sizeof(SG_FRIEND_NUM_CONFIG), 2, _struct_SG_FRIEND_NUM_CONFIG_fieldinfo, _struct_SG_FRIEND_NUM_CONFIG_readproc, _struct_SG_FRIEND_NUM_CONFIG_writeproc };
 	template<>
@@ -1164,10 +1164,10 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ENERGY_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "restore_energy", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, restore_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "buy_unit_energy", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, buy_unit_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "consume_pve", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_CONFIG, consume_pve), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "restore_energy", 0, (_U16)ZION_OFFSETOF(SG_ENERGY_CONFIG, restore_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "buy_unit_energy", 0, (_U16)ZION_OFFSETOF(SG_ENERGY_CONFIG, buy_unit_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_time", 0, (_U16)ZION_OFFSETOF(SG_ENERGY_CONFIG, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_pve", 0, (_U16)ZION_OFFSETOF(SG_ENERGY_CONFIG, consume_pve), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ENERGY_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ENERGY_CONFIG", sizeof(SG_ENERGY_CONFIG), 4, _struct_SG_ENERGY_CONFIG_fieldinfo, _struct_SG_ENERGY_CONFIG_readproc, _struct_SG_ENERGY_CONFIG_writeproc };
 	template<>
@@ -1212,8 +1212,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ENERGY_BUY_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "times", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_BUY_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "consume_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_ENERGY_BUY_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "times", 0, (_U16)ZION_OFFSETOF(SG_ENERGY_BUY_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_rmb", 0, (_U16)ZION_OFFSETOF(SG_ENERGY_BUY_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ENERGY_BUY_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ENERGY_BUY_CONFIG", sizeof(SG_ENERGY_BUY_CONFIG), 2, _struct_SG_ENERGY_BUY_CONFIG_fieldinfo, _struct_SG_ENERGY_BUY_CONFIG_readproc, _struct_SG_ENERGY_BUY_CONFIG_writeproc };
 	template<>
@@ -1272,15 +1272,15 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_CHAT_CHANNEL_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "channel_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "channel_name", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, channel_name), NULL, (_U16)SG_CHAT_CHANNEL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CHANNEL_NAME_MAX>), NULL},
-		{TYPE_U8, "scope", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, scope), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "shield", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, shield), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "interval_times", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, interval_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "interval_period", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, interval_period), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "content_length_max", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, content_length_max), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "color", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, color), NULL, (_U16)SG_CHAT_CHANNEL_COLOR_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CHANNEL_COLOR_MAX>), NULL},
+		{TYPE_U32, "channel_id", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "channel_name", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, channel_name), NULL, (_U16)SG_CHAT_CHANNEL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CHANNEL_NAME_MAX>), NULL},
+		{TYPE_U8, "scope", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, scope), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "shield", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, shield), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "interval_times", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, interval_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "interval_period", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, interval_period), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "content_length_max", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, content_length_max), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "color", 0, (_U16)ZION_OFFSETOF(SG_CHAT_CHANNEL_CONFIG, color), NULL, (_U16)SG_CHAT_CHANNEL_COLOR_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CHANNEL_COLOR_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_CHAT_CHANNEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_CHAT_CHANNEL_CONFIG", sizeof(SG_CHAT_CHANNEL_CONFIG), 9, _struct_SG_CHAT_CHANNEL_CONFIG_fieldinfo, _struct_SG_CHAT_CHANNEL_CONFIG_readproc, _struct_SG_CHAT_CHANNEL_CONFIG_writeproc };
 	template<>
@@ -1355,23 +1355,23 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_CHAT_TAB_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "tab_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, tab_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tab_name", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, tab_name), NULL, (_U16)SG_CHAT_TAP_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_TAP_NAME_MAX>), NULL},
-		{TYPE_U32, "channel_id1", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id2", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id3", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id4", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id5", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id6", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id7", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id7), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id8", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id8), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id9", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id9), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id10", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id10), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id11", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id11), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id12", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id12), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id13", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id13), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id14", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id14), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "channel_id15", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id15), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "tab_id", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, tab_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tab_name", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, tab_name), NULL, (_U16)SG_CHAT_TAP_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_TAP_NAME_MAX>), NULL},
+		{TYPE_U32, "channel_id1", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id2", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id3", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id4", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id5", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id6", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id7", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id7), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id8", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id8), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id9", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id9), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id10", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id10), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id11", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id11), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id12", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id12), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id13", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id13), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id14", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id14), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "channel_id15", 0, (_U16)ZION_OFFSETOF(SG_CHAT_TAB_CONFIG, channel_id15), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_CHAT_TAB_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_CHAT_TAB_CONFIG", sizeof(SG_CHAT_TAB_CONFIG), 17, _struct_SG_CHAT_TAB_CONFIG_fieldinfo, _struct_SG_CHAT_TAB_CONFIG_readproc, _struct_SG_CHAT_TAB_CONFIG_writeproc };
 	template<>
@@ -1450,25 +1450,25 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_TURBO_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "turbo_level", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "skill_name", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_name), NULL, (_U16)SG_SKILL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_NAME_MAX>), NULL},
-		{TYPE_U8, "charpter_id", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, charpter_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "charpter_name", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, charpter_name), NULL, (_U16)SG_TURBO_CHARPTER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TURBO_CHARPTER_NAME_MAX>), NULL},
-		{TYPE_U32, "req_wake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, req_wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "skill_type", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "HP", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "POW", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, POW), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "INT", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, INT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "ATK", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, ATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "DEF", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, DEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "HIT", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, HIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "EVASION", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, EVASION), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "CRIT", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, CRIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "X", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, X), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Y", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, Y), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_STRING, "skill_archetype", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
-		{TYPE_STRING, "skill_desc", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_CONFIG, skill_desc), NULL, (_U16)SG_SKILL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_DESC_MAX>), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "turbo_level", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "skill_name", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, skill_name), NULL, (_U16)SG_SKILL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_NAME_MAX>), NULL},
+		{TYPE_U8, "charpter_id", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, charpter_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "charpter_name", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, charpter_name), NULL, (_U16)SG_TURBO_CHARPTER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TURBO_CHARPTER_NAME_MAX>), NULL},
+		{TYPE_U32, "req_wake_pt", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, req_wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "skill_type", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, skill_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "HP", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "POW", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, POW), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "INT", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, INT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "ATK", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, ATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "DEF", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, DEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "HIT", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, HIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "EVASION", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, EVASION), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "CRIT", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, CRIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "X", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, X), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Y", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, Y), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_STRING, "skill_archetype", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, skill_archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRING, "skill_desc", 0, (_U16)ZION_OFFSETOF(SG_TURBO_CONFIG, skill_desc), NULL, (_U16)SG_SKILL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_DESC_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_TURBO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_TURBO_CONFIG", sizeof(SG_TURBO_CONFIG), 19, _struct_SG_TURBO_CONFIG_fieldinfo, _struct_SG_TURBO_CONFIG_readproc, _struct_SG_TURBO_CONFIG_writeproc };
 	template<>
@@ -1513,9 +1513,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_TURBO_SKILL_SLOT_fieldinfo[] =
 	{
-		{TYPE_STRING, "skill_archetype1", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype1), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
-		{TYPE_STRING, "skill_archetype2", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype2), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
-		{TYPE_STRING, "skill_archetype3", 0, (_U16)ATLAS_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype3), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRING, "skill_archetype1", 0, (_U16)ZION_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype1), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRING, "skill_archetype2", 0, (_U16)ZION_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype2), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRING, "skill_archetype3", 0, (_U16)ZION_OFFSETOF(SG_TURBO_SKILL_SLOT, skill_archetype3), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_TURBO_SKILL_SLOT_info = { NULL, "SG_TURBO_SKILL_SLOT", sizeof(SG_TURBO_SKILL_SLOT), 3, _struct_SG_TURBO_SKILL_SLOT_fieldinfo, _struct_SG_TURBO_SKILL_SLOT_readproc, _struct_SG_TURBO_SKILL_SLOT_writeproc };
 	template<>
@@ -1588,22 +1588,22 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_VIP_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "vip_level", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "recharge_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, recharge_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "pay_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, pay_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "energy_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, energy_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "energy_upper", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, energy_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reset_instance_times", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, reset_instance_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "hangup_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, hangup_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "enhance_free", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, enhance_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "enhance_friend_num", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, enhance_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "auto_atrology", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, auto_atrology), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, desc), NULL, (_U16)SG_VIP_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_VIP_DESC_MAX>), NULL},
-		{TYPE_STRING, "res", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, res), NULL, (_U16)SG_VIP_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_VIP_ICON_MAX>), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_VIP_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "vip_level", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "recharge_rmb", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, recharge_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "pay_times", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, pay_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "energy_times", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, energy_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "energy_upper", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, energy_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_instance_times", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, reset_instance_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "hangup_free", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, hangup_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "enhance_free", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, enhance_free), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "enhance_friend_num", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, enhance_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "auto_atrology", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, auto_atrology), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, desc), NULL, (_U16)SG_VIP_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_VIP_DESC_MAX>), NULL},
+		{TYPE_STRING, "res", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, res), NULL, (_U16)SG_VIP_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_VIP_ICON_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_VIP_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_VIP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_VIP_CONFIG", sizeof(SG_VIP_CONFIG), 16, _struct_SG_VIP_CONFIG_fieldinfo, _struct_SG_VIP_CONFIG_readproc, _struct_SG_VIP_CONFIG_writeproc };
 	template<>
@@ -1650,9 +1650,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PAY_CONSUME_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "apply_times", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_CONSUME_CONFIG, apply_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "consume_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_CONSUME_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "reward_rate", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_CONSUME_CONFIG, reward_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "apply_times", 0, (_U16)ZION_OFFSETOF(SG_PAY_CONSUME_CONFIG, apply_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_rmb", 0, (_U16)ZION_OFFSETOF(SG_PAY_CONSUME_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "reward_rate", 0, (_U16)ZION_OFFSETOF(SG_PAY_CONSUME_CONFIG, reward_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PAY_CONSUME_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PAY_CONSUME_CONFIG", sizeof(SG_PAY_CONSUME_CONFIG), 3, _struct_SG_PAY_CONSUME_CONFIG_fieldinfo, _struct_SG_PAY_CONSUME_CONFIG_readproc, _struct_SG_PAY_CONSUME_CONFIG_writeproc };
 	template<>
@@ -1697,8 +1697,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PAY_REWARD_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "player_level", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_REWARD_CONFIG, player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_PAY_REWARD_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "player_level", 0, (_U16)ZION_OFFSETOF(SG_PAY_REWARD_CONFIG, player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_PAY_REWARD_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PAY_REWARD_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PAY_REWARD_CONFIG", sizeof(SG_PAY_REWARD_CONFIG), 2, _struct_SG_PAY_REWARD_CONFIG_fieldinfo, _struct_SG_PAY_REWARD_CONFIG_readproc, _struct_SG_PAY_REWARD_CONFIG_writeproc };
 	template<>
@@ -1755,14 +1755,14 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_INSTANCE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "instance_id", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, instance_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "total_maps", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, total_maps), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "reward_normal1", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reward_normal1), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
-		{TYPE_STRING, "reward_normal2", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reward_normal2), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
-		{TYPE_STRING, "reward_hard1", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reward_hard1), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
-		{TYPE_STRING, "reward_hard2", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reward_hard2), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
-		{TYPE_U32, "reset_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, reset_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "wake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "instance_id", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, instance_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "total_maps", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, total_maps), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "reward_normal1", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, reward_normal1), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
+		{TYPE_STRING, "reward_normal2", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, reward_normal2), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
+		{TYPE_STRING, "reward_hard1", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, reward_hard1), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
+		{TYPE_STRING, "reward_hard2", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, reward_hard2), NULL, (_U16)SG_INSTANCE_REWARD_DES_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_INSTANCE_REWARD_DES_MAX>), NULL},
+		{TYPE_U32, "reset_rmb", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, reset_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "wake_pt", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_INSTANCE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_INSTANCE_CONFIG", sizeof(SG_INSTANCE_CONFIG), 8, _struct_SG_INSTANCE_CONFIG_fieldinfo, _struct_SG_INSTANCE_CONFIG_readproc, _struct_SG_INSTANCE_CONFIG_writeproc };
 	template<>
@@ -1817,13 +1817,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_INSTANCE_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "instance_id", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, instance_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "difficulty", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, difficulty), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_S8, "progress", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, progress), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
-		{TYPE_U8, "num_today", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, num_today), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "normal_completed", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, normal_completed), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_S8, "furthest_normal", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, furthest_normal), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
-		{TYPE_S8, "furthest_hard", 0, (_U16)ATLAS_OFFSETOF(SG_INSTANCE_INFO, furthest_hard), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
+		{TYPE_U32, "instance_id", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_INFO, instance_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "difficulty", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_INFO, difficulty), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_S8, "progress", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_INFO, progress), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
+		{TYPE_U8, "num_today", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_INFO, num_today), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "normal_completed", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_INFO, normal_completed), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_S8, "furthest_normal", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_INFO, furthest_normal), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
+		{TYPE_S8, "furthest_hard", 0, (_U16)ZION_OFFSETOF(SG_INSTANCE_INFO, furthest_hard), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_INSTANCE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_INSTANCE_INFO", sizeof(SG_INSTANCE_INFO), 7, _struct_SG_INSTANCE_INFO_fieldinfo, _struct_SG_INSTANCE_INFO_readproc, _struct_SG_INSTANCE_INFO_writeproc };
 	template<>
@@ -1874,11 +1874,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_BOSSRUSH_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "level_id", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "boss_hp", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, boss_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "next_reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, next_reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8|TYPE_ARRAY, "daily_progress", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_INFO, daily_progress), NULL, (_U16)-1, (_U16)128, (_U16)((size_t)(&((DDL::Array<_U8, 128>*)NULL)->_Array)), (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "level_id", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_INFO, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "boss_hp", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_INFO, boss_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "next_reset_time", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_INFO, next_reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8|TYPE_ARRAY, "daily_progress", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_INFO, daily_progress), NULL, (_U16)-1, (_U16)128, (_U16)((size_t)(&((DDL::Array<_U8, 128>*)NULL)->_Array)), (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_BOSSRUSH_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_BOSSRUSH_INFO", sizeof(SG_BOSSRUSH_INFO), 5, _struct_SG_BOSSRUSH_INFO_fieldinfo, _struct_SG_BOSSRUSH_INFO_readproc, _struct_SG_BOSSRUSH_INFO_writeproc };
 	template<>
@@ -1931,12 +1931,12 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_BOSSRUSH_SUPPORT_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "friend_id", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, friend_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "friend_nick", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, friend_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "level_id", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "boss_hp", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, boss_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "next_reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, next_reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "friend_id", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, friend_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "friend_nick", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, friend_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "level_id", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "boss_hp", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, boss_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "next_reset_time", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_SUPPORT_INFO, next_reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_BOSSRUSH_SUPPORT_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_BOSSRUSH_SUPPORT_INFO", sizeof(SG_BOSSRUSH_SUPPORT_INFO), 6, _struct_SG_BOSSRUSH_SUPPORT_INFO_fieldinfo, _struct_SG_BOSSRUSH_SUPPORT_INFO_readproc, _struct_SG_BOSSRUSH_SUPPORT_INFO_writeproc };
 	template<>
@@ -1991,13 +1991,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "league_level", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_CONFIG, league_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "XP", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_CONFIG, XP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "members_count", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_CONFIG, members_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "rmb_xp_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_CONFIG, rmb_xp_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "rmb_contribution_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_CONFIG, rmb_contribution_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "energy_xp_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_CONFIG, energy_xp_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "energy_contribution_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_CONFIG, energy_contribution_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "league_level", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_CONFIG, league_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "XP", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_CONFIG, XP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "members_count", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_CONFIG, members_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "rmb_xp_rate", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_CONFIG, rmb_xp_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "rmb_contribution_rate", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_CONFIG, rmb_contribution_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "energy_xp_rate", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_CONFIG, energy_xp_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "energy_contribution_rate", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_CONFIG, energy_contribution_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_CONFIG", sizeof(SG_LEAGUE_CONFIG), 7, _struct_SG_LEAGUE_CONFIG_fieldinfo, _struct_SG_LEAGUE_CONFIG_readproc, _struct_SG_LEAGUE_CONFIG_writeproc };
 	template<>
@@ -2046,10 +2046,10 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_POW_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U8, "pow_type", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_POW_CONFIG, pow_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "master_pow", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_POW_CONFIG, master_pow), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "vice_master_pow", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_POW_CONFIG, vice_master_pow), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "member_pow", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_POW_CONFIG, member_pow), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "pow_type", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_POW_CONFIG, pow_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "master_pow", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_POW_CONFIG, master_pow), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "vice_master_pow", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_POW_CONFIG, vice_master_pow), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "member_pow", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_POW_CONFIG, member_pow), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_POW_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_POW_CONFIG", sizeof(SG_LEAGUE_POW_CONFIG), 4, _struct_SG_LEAGUE_POW_CONFIG_fieldinfo, _struct_SG_LEAGUE_POW_CONFIG_readproc, _struct_SG_LEAGUE_POW_CONFIG_writeproc };
 	template<>
@@ -2096,9 +2096,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_MEMBER_SETTING_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "master_num", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_SETTING_CONFIG, master_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "vice_master_num", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_SETTING_CONFIG, vice_master_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "member_num", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_SETTING_CONFIG, member_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "master_num", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_SETTING_CONFIG, master_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "vice_master_num", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_SETTING_CONFIG, vice_master_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "member_num", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_SETTING_CONFIG, member_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_MEMBER_SETTING_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_MEMBER_SETTING_CONFIG", sizeof(SG_LEAGUE_MEMBER_SETTING_CONFIG), 3, _struct_SG_LEAGUE_MEMBER_SETTING_CONFIG_fieldinfo, _struct_SG_LEAGUE_MEMBER_SETTING_CONFIG_readproc, _struct_SG_LEAGUE_MEMBER_SETTING_CONFIG_writeproc };
 	template<>
@@ -2147,10 +2147,10 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_ACTION_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "action_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "action_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, action_name), NULL, (_U16)SG_DAILY_ACTION_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_NAME_MAX>), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, desc), NULL, (_U16)SG_DAILY_ACTION_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_DESC>), NULL},
-		{TYPE_U32, "sort_seq", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, sort_seq), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "action_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "action_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, action_name), NULL, (_U16)SG_DAILY_ACTION_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_NAME_MAX>), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, desc), NULL, (_U16)SG_DAILY_ACTION_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_DESC>), NULL},
+		{TYPE_U32, "sort_seq", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_ACTION_CONFIG, sort_seq), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_ACTION_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_ACTION_CONFIG", sizeof(SG_LEAGUE_ACTION_CONFIG), 4, _struct_SG_LEAGUE_ACTION_CONFIG_fieldinfo, _struct_SG_LEAGUE_ACTION_CONFIG_readproc, _struct_SG_LEAGUE_ACTION_CONFIG_writeproc };
 	template<>
@@ -2205,13 +2205,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_TOAST_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U8, "wine_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, wine_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "wine_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, wine_name), NULL, (_U16)SG_LEAGUE_LOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_LOG_MAX>), NULL},
-		{TYPE_U32, "req_vid", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, req_vid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "consume_gold", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, consume_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "consume_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_league_xp", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, reward_league_xp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "wine_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, wine_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "wine_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, wine_name), NULL, (_U16)SG_LEAGUE_LOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_LOG_MAX>), NULL},
+		{TYPE_U32, "req_vid", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, req_vid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_gold", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, consume_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_rmb", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputation", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_league_xp", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_TOAST_CONFIG, reward_league_xp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_TOAST_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_TOAST_CONFIG", sizeof(SG_LEAGUE_TOAST_CONFIG), 7, _struct_SG_LEAGUE_TOAST_CONFIG_fieldinfo, _struct_SG_LEAGUE_TOAST_CONFIG_readproc, _struct_SG_LEAGUE_TOAST_CONFIG_writeproc };
 	template<>
@@ -2256,8 +2256,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_DIANJIANG_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "consume_npc_gold", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_CONFIG, consume_npc_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "consume_npc_gold", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_DIANJIANG_CONFIG, consume_npc_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputation", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_DIANJIANG_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_DIANJIANG_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_DIANJIANG_CONFIG", sizeof(SG_LEAGUE_DIANJIANG_CONFIG), 2, _struct_SG_LEAGUE_DIANJIANG_CONFIG_fieldinfo, _struct_SG_LEAGUE_DIANJIANG_CONFIG_readproc, _struct_SG_LEAGUE_DIANJIANG_CONFIG_writeproc };
 	template<>
@@ -2328,21 +2328,21 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_BATTLE_RANK_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "server_level_lower", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, server_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "server_level_upper", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, server_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "lower", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "upper", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_exp", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_contribution", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_contribution), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item1", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item_count1", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item_count1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item2", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item_count2", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item_count2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item3", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item_count3", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item_count3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_level_lower", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, server_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_level_upper", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, server_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "lower", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "upper", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_exp", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputation", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_contribution", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_contribution), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item_count1", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item_count1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item_count2", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item_count2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item_count3", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK_CONFIG, reward_item_count3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_RANK_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_BATTLE_RANK_CONFIG", sizeof(SG_LEAGUE_BATTLE_RANK_CONFIG), 15, _struct_SG_LEAGUE_BATTLE_RANK_CONFIG_fieldinfo, _struct_SG_LEAGUE_BATTLE_RANK_CONFIG_readproc, _struct_SG_LEAGUE_BATTLE_RANK_CONFIG_writeproc };
 	template<>
@@ -2411,20 +2411,20 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_MEMBER_WIN_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "server_level_lower", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, server_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "server_level_upper", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, server_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "win_times", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, win_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_exp", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_contribution", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_contribution), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item1", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item_count1", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item_count1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item2", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item_count2", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item_count2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item3", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item_count3", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item_count3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_level_lower", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, server_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_level_upper", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, server_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "win_times", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, win_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_exp", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputation", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_contribution", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_contribution), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item_count1", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item_count1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item_count2", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item_count2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item_count3", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER_WIN_CONFIG, reward_item_count3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_MEMBER_WIN_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_MEMBER_WIN_CONFIG", sizeof(SG_LEAGUE_MEMBER_WIN_CONFIG), 14, _struct_SG_LEAGUE_MEMBER_WIN_CONFIG_fieldinfo, _struct_SG_LEAGUE_MEMBER_WIN_CONFIG_readproc, _struct_SG_LEAGUE_MEMBER_WIN_CONFIG_writeproc };
 	template<>
@@ -2477,12 +2477,12 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PVP_RECORD_ITEM_fieldinfo[] =
 	{
-		{TYPE_U32, "challenger", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RECORD_ITEM, challenger), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "defender", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RECORD_ITEM, defender), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "defender_name", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RECORD_ITEM, defender_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RECORD_ITEM, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "time", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RECORD_ITEM, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "param", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RECORD_ITEM, param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "challenger", 0, (_U16)ZION_OFFSETOF(SG_PVP_RECORD_ITEM, challenger), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "defender", 0, (_U16)ZION_OFFSETOF(SG_PVP_RECORD_ITEM, defender), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "defender_name", 0, (_U16)ZION_OFFSETOF(SG_PVP_RECORD_ITEM, defender_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U8, "type", 0, (_U16)ZION_OFFSETOF(SG_PVP_RECORD_ITEM, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "time", 0, (_U16)ZION_OFFSETOF(SG_PVP_RECORD_ITEM, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "param", 0, (_U16)ZION_OFFSETOF(SG_PVP_RECORD_ITEM, param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PVP_RECORD_ITEM_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_PVP_RECORD_ITEM", sizeof(SG_PVP_RECORD_ITEM), 6, _struct_SG_PVP_RECORD_ITEM_fieldinfo, _struct_SG_PVP_RECORD_ITEM_readproc, _struct_SG_PVP_RECORD_ITEM_writeproc };
 	template<>
@@ -2545,17 +2545,17 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PVP_INFO_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "server_level_lower", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, server_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "server_level_upper", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, server_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "lower", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "upper", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "span", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, span), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "daily_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, daily_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, reward_item), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item_count", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, reward_item_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "succ_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, succ_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "failed_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_INFO_CONFIG, failed_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_level_lower", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, server_level_lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_level_upper", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, server_level_upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "lower", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, lower), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "upper", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, upper), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "span", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, span), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "daily_reputation", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, daily_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, reward_item), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item_count", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, reward_item_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "succ_reputation", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, succ_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "failed_reputation", 0, (_U16)ZION_OFFSETOF(SG_PVP_INFO_CONFIG, failed_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PVP_INFO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PVP_INFO_CONFIG", sizeof(SG_PVP_INFO_CONFIG), 11, _struct_SG_PVP_INFO_CONFIG_fieldinfo, _struct_SG_PVP_INFO_CONFIG_readproc, _struct_SG_PVP_INFO_CONFIG_writeproc };
 	template<>
@@ -2598,7 +2598,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PVP_SETTING_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "increase_pay_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_SETTING_CONFIG, increase_pay_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "increase_pay_rmb", 0, (_U16)ZION_OFFSETOF(SG_PVP_SETTING_CONFIG, increase_pay_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PVP_SETTING_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PVP_SETTING_CONFIG", sizeof(SG_PVP_SETTING_CONFIG), 1, _struct_SG_PVP_SETTING_CONFIG_fieldinfo, _struct_SG_PVP_SETTING_CONFIG_readproc, _struct_SG_PVP_SETTING_CONFIG_writeproc };
 	template<>
@@ -2665,19 +2665,19 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GOODS_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "good_id", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, good_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "display_condition", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, display_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "display_param1", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, display_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "display_param2", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, display_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "buy_condition", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, buy_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "buy_param1", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, buy_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "buy_param2", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, buy_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "item_id", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "count", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "price_condition", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, price_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "price_param1", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, price_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "price_param2", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, price_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "price_discount", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_CONFIG, price_discount), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "good_id", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, good_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "display_condition", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, display_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "display_param1", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, display_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "display_param2", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, display_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "buy_condition", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, buy_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "buy_param1", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, buy_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "buy_param2", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, buy_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "item_id", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "count", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "price_condition", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, price_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "price_param1", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, price_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "price_param2", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, price_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "price_discount", 0, (_U16)ZION_OFFSETOF(SG_GOODS_CONFIG, price_discount), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GOODS_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GOODS_CONFIG", sizeof(SG_GOODS_CONFIG), 13, _struct_SG_GOODS_CONFIG_fieldinfo, _struct_SG_GOODS_CONFIG_readproc, _struct_SG_GOODS_CONFIG_writeproc };
 	template<>
@@ -2722,8 +2722,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GOODS_GROUP_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "goods_group_id", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_GROUP_CONFIG, goods_group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "good_id", 0, (_U16)ATLAS_OFFSETOF(SG_GOODS_GROUP_CONFIG, good_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "goods_group_id", 0, (_U16)ZION_OFFSETOF(SG_GOODS_GROUP_CONFIG, goods_group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "good_id", 0, (_U16)ZION_OFFSETOF(SG_GOODS_GROUP_CONFIG, good_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GOODS_GROUP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GOODS_GROUP_CONFIG", sizeof(SG_GOODS_GROUP_CONFIG), 2, _struct_SG_GOODS_GROUP_CONFIG_fieldinfo, _struct_SG_GOODS_GROUP_CONFIG_readproc, _struct_SG_GOODS_GROUP_CONFIG_writeproc };
 	template<>
@@ -2770,9 +2770,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_SHOP_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "shop_id", 0, (_U16)ATLAS_OFFSETOF(SG_SHOP_CONFIG, shop_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "goods_group_name", 0, (_U16)ATLAS_OFFSETOF(SG_SHOP_CONFIG, goods_group_name), NULL, (_U16)SG_GOODS_GROUP_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GOODS_GROUP_NAME_MAX>), NULL},
-		{TYPE_U32, "goods_group_id", 0, (_U16)ATLAS_OFFSETOF(SG_SHOP_CONFIG, goods_group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "shop_id", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, shop_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "goods_group_name", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, goods_group_name), NULL, (_U16)SG_GOODS_GROUP_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GOODS_GROUP_NAME_MAX>), NULL},
+		{TYPE_U32, "goods_group_id", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, goods_group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_SHOP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SHOP_CONFIG", sizeof(SG_SHOP_CONFIG), 3, _struct_SG_SHOP_CONFIG_fieldinfo, _struct_SG_SHOP_CONFIG_readproc, _struct_SG_SHOP_CONFIG_writeproc };
 	template<>
@@ -2833,16 +2833,16 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_fieldinfo[] =
 	{
-		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "league_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, league_name), NULL, (_U16)SG_LEAGUE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_NAME_MAX>), NULL},
-		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "member_num", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, member_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "exp", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "create_time", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, create_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "owner_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, owner_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "owner_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, owner_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_STRING, "post_content", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE, post_content), NULL, (_U16)SG_LEAGUE_NOTICE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_NOTICE_MAX>), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "league_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, league_name), NULL, (_U16)SG_LEAGUE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_NAME_MAX>), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "member_num", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, member_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "exp", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "create_time", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, create_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "owner_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, owner_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "owner_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, owner_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "post_content", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE, post_content), NULL, (_U16)SG_LEAGUE_NOTICE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_NOTICE_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE", sizeof(SG_LEAGUE), 10, _struct_SG_LEAGUE_fieldinfo, _struct_SG_LEAGUE_readproc, _struct_SG_LEAGUE_writeproc };
 	template<>
@@ -2905,17 +2905,17 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_MEMBER_fieldinfo[] =
 	{
-		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "member_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, member_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "member_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, member_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "member_level", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, member_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "member_battle_value", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, member_battle_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "pvp_rank", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, pvp_rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "position", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, position), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "contribution_value", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, contribution_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "total_contribution_value", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, total_contribution_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "last_ol_time", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_MEMBER, last_ol_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "member_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, member_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "member_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, member_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "member_level", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, member_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "member_battle_value", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, member_battle_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "pvp_rank", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, pvp_rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "position", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, position), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "contribution_value", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, contribution_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_contribution_value", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, total_contribution_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "last_ol_time", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_MEMBER, last_ol_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_MEMBER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_MEMBER", sizeof(SG_LEAGUE_MEMBER), 11, _struct_SG_LEAGUE_MEMBER_fieldinfo, _struct_SG_LEAGUE_MEMBER_readproc, _struct_SG_LEAGUE_MEMBER_writeproc };
 	template<>
@@ -2970,13 +2970,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_APPLYER_fieldinfo[] =
 	{
-		{TYPE_U32, "applyer_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, applyer_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "applyer_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, applyer_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "reason", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_APPLYER, reason), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "applyer_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_APPLYER, applyer_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "applyer_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_APPLYER, applyer_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_APPLYER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_APPLYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_APPLYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_APPLYER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "reason", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_APPLYER, reason), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_APPLYER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_APPLYER", sizeof(SG_LEAGUE_APPLYER), 7, _struct_SG_LEAGUE_APPLYER_fieldinfo, _struct_SG_LEAGUE_APPLYER_readproc, _struct_SG_LEAGUE_APPLYER_writeproc };
 	template<>
@@ -3025,10 +3025,10 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_LOG_fieldinfo[] =
 	{
-		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "result_time", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, result_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "type", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "log", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_LOG, log), NULL, (_U16)SG_LEAGUE_LOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_LOG_MAX>), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_LOG, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "result_time", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_LOG, result_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "type", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_LOG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "log", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_LOG, log), NULL, (_U16)SG_LEAGUE_LOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_LOG_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_LOG_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_LOG", sizeof(SG_LEAGUE_LOG), 4, _struct_SG_LEAGUE_LOG_fieldinfo, _struct_SG_LEAGUE_LOG_readproc, _struct_SG_LEAGUE_LOG_writeproc };
 	template<>
@@ -3079,11 +3079,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEAGUE_DIANJIANG_JOINER_fieldinfo[] =
 	{
-		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "member_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, member_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "member_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, member_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U8, "role", 0, (_U16)ATLAS_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, role), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "member_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, member_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "member_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, member_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U8, "role", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_DIANJIANG_JOINER, role), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_DIANJIANG_JOINER", sizeof(SG_LEAGUE_DIANJIANG_JOINER), 5, _struct_SG_LEAGUE_DIANJIANG_JOINER_fieldinfo, _struct_SG_LEAGUE_DIANJIANG_JOINER_readproc, _struct_SG_LEAGUE_DIANJIANG_JOINER_writeproc };
 	template<>
@@ -3138,13 +3138,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_HALO_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "halo_level", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_CONFIG, halo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "EXP", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_CONFIG, EXP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "ATK", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_CONFIG, ATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "DEF", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_CONFIG, DEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "HIT", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_CONFIG, HIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "EVASION", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_CONFIG, EVASION), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "CRIT", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_CONFIG, CRIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "halo_level", 0, (_U16)ZION_OFFSETOF(SG_HALO_CONFIG, halo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "EXP", 0, (_U16)ZION_OFFSETOF(SG_HALO_CONFIG, EXP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "ATK", 0, (_U16)ZION_OFFSETOF(SG_HALO_CONFIG, ATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "DEF", 0, (_U16)ZION_OFFSETOF(SG_HALO_CONFIG, DEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "HIT", 0, (_U16)ZION_OFFSETOF(SG_HALO_CONFIG, HIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "EVASION", 0, (_U16)ZION_OFFSETOF(SG_HALO_CONFIG, EVASION), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "CRIT", 0, (_U16)ZION_OFFSETOF(SG_HALO_CONFIG, CRIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_HALO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_HALO_CONFIG", sizeof(SG_HALO_CONFIG), 7, _struct_SG_HALO_CONFIG_fieldinfo, _struct_SG_HALO_CONFIG_readproc, _struct_SG_HALO_CONFIG_writeproc };
 	template<>
@@ -3191,9 +3191,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_HALO_LEVELUP_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_LEVELUP_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "EXP", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_LEVELUP_CONFIG, EXP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "CD", 0, (_U16)ATLAS_OFFSETOF(SG_HALO_LEVELUP_CONFIG, CD), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_HALO_LEVELUP_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "EXP", 0, (_U16)ZION_OFFSETOF(SG_HALO_LEVELUP_CONFIG, EXP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "CD", 0, (_U16)ZION_OFFSETOF(SG_HALO_LEVELUP_CONFIG, CD), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_HALO_LEVELUP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_HALO_LEVELUP_CONFIG", sizeof(SG_HALO_LEVELUP_CONFIG), 3, _struct_SG_HALO_LEVELUP_CONFIG_fieldinfo, _struct_SG_HALO_LEVELUP_CONFIG_readproc, _struct_SG_HALO_LEVELUP_CONFIG_writeproc };
 	template<>
@@ -3276,27 +3276,27 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PLAYER_TITLE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U8, "title_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, title_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "title_name", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, title_name), NULL, (_U16)SG_PLAYER_TITLE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_TITLE_NAME_MAX>), NULL},
-		{TYPE_U8, "title_star", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, title_star), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "req_level_up_reputaion", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, req_level_up_reputaion), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "daily_reputation_deduct", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, daily_reputation_deduct), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "general_limit_num", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, general_limit_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "daily_salary_gold", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, daily_salary_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "daily_reward_reserve", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, daily_reward_reserve), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "STRAddition", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, STRAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "INTAddition", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, INTAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "HP_AddExtra", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, HP_AddExtra), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "ATK_AddExtra", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, ATK_AddExtra), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "DEF_AddExtra", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, DEF_AddExtra), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "employ_general_prop_desc", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, employ_general_prop_desc), NULL, (_U16)SG_TITLE_PROP_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_PROP_DESC>), NULL},
-		{TYPE_STRING, "employ_general_desc", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, employ_general_desc), NULL, (_U16)SG_TITLE_GENERAL_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_GENERAL_DESC>), NULL},
-		{TYPE_STRING, "wusheng_male", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, wusheng_male), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
-		{TYPE_STRING, "wusheng_female", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, wusheng_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
-		{TYPE_STRING, "junshi_male", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, junshi_male), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
-		{TYPE_STRING, "junshi_female", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, junshi_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
-		{TYPE_STRING, "jianshen_male", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, jianshen_male), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
-		{TYPE_STRING, "jianshen_female", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_TITLE_CONFIG, jianshen_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
+		{TYPE_U8, "title_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, title_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "title_name", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, title_name), NULL, (_U16)SG_PLAYER_TITLE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_TITLE_NAME_MAX>), NULL},
+		{TYPE_U8, "title_star", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, title_star), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "req_level_up_reputaion", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, req_level_up_reputaion), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "daily_reputation_deduct", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, daily_reputation_deduct), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "general_limit_num", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, general_limit_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "daily_salary_gold", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, daily_salary_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "daily_reward_reserve", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, daily_reward_reserve), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "STRAddition", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, STRAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "INTAddition", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, INTAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "HP_AddExtra", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, HP_AddExtra), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "ATK_AddExtra", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, ATK_AddExtra), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "DEF_AddExtra", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, DEF_AddExtra), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "employ_general_prop_desc", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, employ_general_prop_desc), NULL, (_U16)SG_TITLE_PROP_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_PROP_DESC>), NULL},
+		{TYPE_STRING, "employ_general_desc", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, employ_general_desc), NULL, (_U16)SG_TITLE_GENERAL_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_GENERAL_DESC>), NULL},
+		{TYPE_STRING, "wusheng_male", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, wusheng_male), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
+		{TYPE_STRING, "wusheng_female", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, wusheng_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
+		{TYPE_STRING, "junshi_male", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, junshi_male), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
+		{TYPE_STRING, "junshi_female", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, junshi_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
+		{TYPE_STRING, "jianshen_male", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, jianshen_male), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
+		{TYPE_STRING, "jianshen_female", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, jianshen_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PLAYER_TITLE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PLAYER_TITLE_CONFIG", sizeof(SG_PLAYER_TITLE_CONFIG), 21, _struct_SG_PLAYER_TITLE_CONFIG_fieldinfo, _struct_SG_PLAYER_TITLE_CONFIG_readproc, _struct_SG_PLAYER_TITLE_CONFIG_writeproc };
 	template<>
@@ -3343,9 +3343,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_QUEST_LIVE_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "quest_id", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_LIVE_INFO, quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "counter", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_LIVE_INFO, counter), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_LIVE_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "quest_id", 0, (_U16)ZION_OFFSETOF(SG_QUEST_LIVE_INFO, quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "counter", 0, (_U16)ZION_OFFSETOF(SG_QUEST_LIVE_INFO, counter), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_QUEST_LIVE_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_QUEST_LIVE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_QUEST_LIVE_INFO", sizeof(SG_QUEST_LIVE_INFO), 3, _struct_SG_QUEST_LIVE_INFO_fieldinfo, _struct_SG_QUEST_LIVE_INFO_readproc, _struct_SG_QUEST_LIVE_INFO_writeproc };
 	template<>
@@ -3490,58 +3490,58 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_QUEST_INFO_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "quest_id", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "quest_type", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "quest_name", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_name), NULL, (_U16)SG_QUEST_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_NAME_MAX>), NULL},
-		{TYPE_STRING, "quest_goal_desc", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_desc), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
-		{TYPE_STRING, "quest_goal_short_desc", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_short_desc), NULL, (_U16)SG_QUEST_GOAL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_DESC_MAX>), NULL},
-		{TYPE_U8, "trigger_type", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, trigger_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "giver_url", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, giver_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
-		{TYPE_U8, "submitee_type", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, submitee_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "submitee_url", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, submitee_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
-		{TYPE_U32, "pre_quest_id", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, pre_quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "condition1_type", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "condition1_param1", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_param1), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
-		{TYPE_STRING, "condition1_param2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_param2), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
-		{TYPE_U8, "condition2_type", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "condition2_param1", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_param1), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
-		{TYPE_STRING, "condition2_param2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_param2), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
-		{TYPE_U8, "quest_goal_type", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "goal_string_param", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_string_param), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
-		{TYPE_U32, "goal_int_param", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_int_param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "goal_string_param2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_string_param2), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
-		{TYPE_U32, "goal_int_param2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_int_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "goal_pathfinding_url", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_pathfinding_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
-		{TYPE_U32, "goal_pathfinding_prority", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_pathfinding_prority), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "req_pack_slot", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, req_pack_slot), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "reward_xp", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_xp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_gold", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_reputation", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_energy", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item1", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item1_num", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item1_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item2_num", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item2_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item3", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item3_num", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item3_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item4", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reward_item4_num", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item4_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "dialog_giving_npc1", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_giving_answer1", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_giving_npc2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_giving_answer2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_giving_npc3", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc3), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_giving_answer3", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer3), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_giving_npc4", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc4), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_giving_answer4", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer4), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_submit_npc1", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_npc1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_submit_answer1", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_answer1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_submit_npc2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_npc2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_submit_answer2", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_answer2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_wip_npc", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_wip_npc), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
-		{TYPE_STRING, "dialog_wip_answer", 0, (_U16)ATLAS_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_wip_answer), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_U32, "quest_id", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "quest_type", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "quest_name", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_name), NULL, (_U16)SG_QUEST_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_NAME_MAX>), NULL},
+		{TYPE_STRING, "quest_goal_desc", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_desc), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
+		{TYPE_STRING, "quest_goal_short_desc", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_short_desc), NULL, (_U16)SG_QUEST_GOAL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_DESC_MAX>), NULL},
+		{TYPE_U8, "trigger_type", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, trigger_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "giver_url", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, giver_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
+		{TYPE_U8, "submitee_type", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, submitee_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "submitee_url", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, submitee_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
+		{TYPE_U32, "pre_quest_id", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, pre_quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition1_type", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "condition1_param1", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_param1), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_STRING, "condition1_param2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, condition1_param2), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_U8, "condition2_type", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "condition2_param1", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_param1), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_STRING, "condition2_param2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, condition2_param2), NULL, (_U16)SG_QUEST_COND_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_COND_MAX>), NULL},
+		{TYPE_U8, "quest_goal_type", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, quest_goal_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "goal_string_param", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_string_param), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
+		{TYPE_U32, "goal_int_param", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_int_param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "goal_string_param2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_string_param2), NULL, (_U16)SG_QUEST_GOAL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_GOAL_MAX>), NULL},
+		{TYPE_U32, "goal_int_param2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_int_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "goal_pathfinding_url", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_pathfinding_url), NULL, (_U16)SG_QUEST_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_URL_MAX>), NULL},
+		{TYPE_U32, "goal_pathfinding_prority", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, goal_pathfinding_prority), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "req_pack_slot", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, req_pack_slot), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "reward_xp", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_xp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_reputation", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_energy", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1_num", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item1_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2_num", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item2_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3_num", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item3_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item4", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item4_num", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, reward_item4_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "dialog_giving_npc1", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer1", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_npc2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_npc3", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc3), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer3", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer3), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_npc4", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_npc4), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_giving_answer4", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_giving_answer4), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_npc1", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_npc1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_answer1", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_answer1), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_npc2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_npc2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_submit_answer2", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_submit_answer2), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_wip_npc", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_wip_npc), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
+		{TYPE_STRING, "dialog_wip_answer", 0, (_U16)ZION_OFFSETOF(SG_QUEST_INFO_CONFIG, dialog_wip_answer), NULL, (_U16)SG_QUEST_DIALOG_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_QUEST_DIALOG_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_QUEST_INFO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_QUEST_INFO_CONFIG", sizeof(SG_QUEST_INFO_CONFIG), 52, _struct_SG_QUEST_INFO_CONFIG_fieldinfo, _struct_SG_QUEST_INFO_CONFIG_readproc, _struct_SG_QUEST_INFO_CONFIG_writeproc };
 	template<>
@@ -3628,29 +3628,29 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEVEL_INFO_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "level_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "next_level", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, next_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "description", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
-		{TYPE_U32, "req_player_level", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, req_player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "wake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "soldier_name1", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name1), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name2", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name2), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name3", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name3), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name4", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name4), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name5", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name5), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name6", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name6), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_U8, "atk_type1", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type2", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type3", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type4", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type5", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type6", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type1", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type2", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type3", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type4", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type5", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type6", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "level_id", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "next_level", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, next_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "description", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
+		{TYPE_U32, "req_player_level", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, req_player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "wake_pt", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "soldier_name1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name1), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name2), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name3), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name4), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name5", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name5), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "soldier_name6", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name6), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_U8, "atk_type1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type5", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type6", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type5", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "wpt_type6", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEVEL_INFO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_INFO_CONFIG", sizeof(SG_LEVEL_INFO_CONFIG), 23, _struct_SG_LEVEL_INFO_CONFIG_fieldinfo, _struct_SG_LEVEL_INFO_CONFIG_readproc, _struct_SG_LEVEL_INFO_CONFIG_writeproc };
 	template<>
@@ -3693,7 +3693,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DIRTY_WORD_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "dirty_word", 0, (_U16)ATLAS_OFFSETOF(SG_DIRTY_WORD_CONFIG, dirty_word), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "dirty_word", 0, (_U16)ZION_OFFSETOF(SG_DIRTY_WORD_CONFIG, dirty_word), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DIRTY_WORD_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DIRTY_WORD_CONFIG", sizeof(SG_DIRTY_WORD_CONFIG), 1, _struct_SG_DIRTY_WORD_CONFIG_fieldinfo, _struct_SG_DIRTY_WORD_CONFIG_readproc, _struct_SG_DIRTY_WORD_CONFIG_writeproc };
 	template<>
@@ -3740,9 +3740,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PLAYER_RANDOM_NAME_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "family_name", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, family_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_STRING, "male_name", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, male_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_STRING, "female_name", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, female_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "family_name", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, family_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "male_name", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, male_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "female_name", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_RANDOM_NAME_CONFIG, female_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PLAYER_RANDOM_NAME_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PLAYER_RANDOM_NAME_CONFIG", sizeof(SG_PLAYER_RANDOM_NAME_CONFIG), 3, _struct_SG_PLAYER_RANDOM_NAME_CONFIG_fieldinfo, _struct_SG_PLAYER_RANDOM_NAME_CONFIG_readproc, _struct_SG_PLAYER_RANDOM_NAME_CONFIG_writeproc };
 	template<>
@@ -3813,21 +3813,21 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEVEL_DROP_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "level_name", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, level_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_U32, "exp", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "gold", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reputation", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "level_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "next_level", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, next_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "group1_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group1_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "group1_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group1_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "group2_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group2_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "group2_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group2_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "group3_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group3_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "group3_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group3_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "group4_id", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "group4_rate", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "wake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_LEVEL_DROP_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "level_name", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, level_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_U32, "exp", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "gold", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reputation", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level_id", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, level_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "next_level", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, next_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "group1_id", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group1_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group1_rate", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group1_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group2_id", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group2_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group2_rate", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group2_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group3_id", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group3_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group3_rate", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group3_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group4_id", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "group4_rate", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "wake_pt", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LEVEL_DROP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_DROP_CONFIG", sizeof(SG_LEVEL_DROP_CONFIG), 15, _struct_SG_LEVEL_DROP_CONFIG_fieldinfo, _struct_SG_LEVEL_DROP_CONFIG_readproc, _struct_SG_LEVEL_DROP_CONFIG_writeproc };
 	template<>
@@ -3872,8 +3872,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DROP_ITEM_BASE_fieldinfo[] =
 	{
-		{TYPE_U32, "item_id", 0, (_U16)ATLAS_OFFSETOF(SG_DROP_ITEM_BASE, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "count", 0, (_U16)ATLAS_OFFSETOF(SG_DROP_ITEM_BASE, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "item_id", 0, (_U16)ZION_OFFSETOF(SG_DROP_ITEM_BASE, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "count", 0, (_U16)ZION_OFFSETOF(SG_DROP_ITEM_BASE, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DROP_ITEM_BASE_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DROP_ITEM_BASE", sizeof(SG_DROP_ITEM_BASE), 2, _struct_SG_DROP_ITEM_BASE_fieldinfo, _struct_SG_DROP_ITEM_BASE_readproc, _struct_SG_DROP_ITEM_BASE_writeproc };
 	template<>
@@ -3918,8 +3918,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DROP_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "group_id", 0, (_U16)ATLAS_OFFSETOF(SG_DROP_ITEM_CONFIG, group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "rate", 0, (_U16)ATLAS_OFFSETOF(SG_DROP_ITEM_CONFIG, rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "group_id", 0, (_U16)ZION_OFFSETOF(SG_DROP_ITEM_CONFIG, group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "rate", 0, (_U16)ZION_OFFSETOF(SG_DROP_ITEM_CONFIG, rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DROP_ITEM_CONFIG_info = { &_rfl_struct_SG_DROP_ITEM_BASE_info, "SG_DROP_ITEM_CONFIG", sizeof(SG_DROP_ITEM_CONFIG), 2, _struct_SG_DROP_ITEM_CONFIG_fieldinfo, _struct_SG_DROP_ITEM_CONFIG_readproc, _struct_SG_DROP_ITEM_CONFIG_writeproc };
 	template<>
@@ -3988,20 +3988,20 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LOOT_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "loot_id", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, loot_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "num", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "group_id1", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "group_rate1", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "group_id2", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "group_rate2", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "group_id3", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "group_rate3", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "group_id4", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "group_rate4", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "group_id5", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "group_rate5", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "group_id6", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "group_rate6", 0, (_U16)ATLAS_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "loot_id", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, loot_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "num", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "group_id1", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate1", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id2", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate2", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id3", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate3", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id4", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate4", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id5", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate5", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "group_id6", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_id6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "group_rate6", 0, (_U16)ZION_OFFSETOF(SG_LOOT_ITEM_CONFIG, group_rate6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_LOOT_ITEM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LOOT_ITEM_CONFIG", sizeof(SG_LOOT_ITEM_CONFIG), 14, _struct_SG_LOOT_ITEM_CONFIG_fieldinfo, _struct_SG_LOOT_ITEM_CONFIG_readproc, _struct_SG_LOOT_ITEM_CONFIG_writeproc };
 	template<>
@@ -4084,28 +4084,28 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ATTR_MOD_CONFIG_fieldinfo[] =
 	{
-		{TYPE_F32, "MOD_HPAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_HPAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_HPPercent", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_HPPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ExtraHP", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraHP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ATKAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ATKAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ATKPercent", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ATKPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ExtraATK", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_DEFAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_DEFAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_DEFPercent", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_DEFPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ExtraDEF", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraDEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_HITAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_HITAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_EvasionAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_EvasionAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_CRITAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_CRITAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_SPAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_SPAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_WSAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_WSAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_WSPercent", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_WSPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ExtraWS", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraWS), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_STRAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_STRAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_STRPercent", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_STRPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ExtraSTR", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraSTR), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_INTAddition", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_INTAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_INTPercent", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_INTPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MOD_ExtraINT", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraINT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_HPAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_HPAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_HPPercent", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_HPPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ExtraHP", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraHP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ATKAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ATKAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ATKPercent", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ATKPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ExtraATK", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_DEFAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_DEFAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_DEFPercent", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_DEFPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ExtraDEF", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraDEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_HITAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_HITAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_EvasionAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_EvasionAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_CRITAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_CRITAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_SPAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_SPAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_WSAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_WSAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_WSPercent", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_WSPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ExtraWS", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraWS), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_STRAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_STRAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_STRPercent", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_STRPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ExtraSTR", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraSTR), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_INTAddition", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_INTAddition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_INTPercent", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_INTPercent), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MOD_ExtraINT", 0, (_U16)ZION_OFFSETOF(SG_ATTR_MOD_CONFIG, MOD_ExtraINT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ATTR_MOD_CONFIG_info = { NULL, "SG_ATTR_MOD_CONFIG", sizeof(SG_ATTR_MOD_CONFIG), 22, _struct_SG_ATTR_MOD_CONFIG_fieldinfo, _struct_SG_ATTR_MOD_CONFIG_readproc, _struct_SG_ATTR_MOD_CONFIG_writeproc };
 	template<>
@@ -4164,16 +4164,16 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ATTR_BASE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_F32, "Base_HP", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_ATK", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_ATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_DEF", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_DEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_HIT", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_HIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_Evasion", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_Evasion), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_CRIT", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_CRIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_SP", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_SP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_WS", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_WS), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_STR", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_STR), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "Base_INT", 0, (_U16)ATLAS_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_INT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_HP", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_ATK", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_ATK), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_DEF", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_DEF), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_HIT", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_HIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_Evasion", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_Evasion), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_CRIT", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_CRIT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_SP", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_SP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_WS", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_WS), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_STR", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_STR), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "Base_INT", 0, (_U16)ZION_OFFSETOF(SG_ATTR_BASE_CONFIG, Base_INT), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ATTR_BASE_CONFIG_info = { NULL, "SG_ATTR_BASE_CONFIG", sizeof(SG_ATTR_BASE_CONFIG), 10, _struct_SG_ATTR_BASE_CONFIG_fieldinfo, _struct_SG_ATTR_BASE_CONFIG_readproc, _struct_SG_ATTR_BASE_CONFIG_writeproc };
 	template<>
@@ -4216,8 +4216,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PAWN_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRUCT, "BaseConfig", 0, (_U16)ATLAS_OFFSETOF(SG_PAWN_CONFIG, BaseConfig), &_rfl_struct_SG_ATTR_BASE_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_BASE_CONFIG), NULL},
-		{TYPE_STRUCT, "SigmaConfig", 0, (_U16)ATLAS_OFFSETOF(SG_PAWN_CONFIG, SigmaConfig), &_rfl_struct_SG_ATTR_MOD_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_MOD_CONFIG), NULL},
+		{TYPE_STRUCT, "BaseConfig", 0, (_U16)ZION_OFFSETOF(SG_PAWN_CONFIG, BaseConfig), &_rfl_struct_SG_ATTR_BASE_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_BASE_CONFIG), NULL},
+		{TYPE_STRUCT, "SigmaConfig", 0, (_U16)ZION_OFFSETOF(SG_PAWN_CONFIG, SigmaConfig), &_rfl_struct_SG_ATTR_MOD_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_MOD_CONFIG), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PAWN_CONFIG_info = { NULL, "SG_PAWN_CONFIG", sizeof(SG_PAWN_CONFIG), 2, _struct_SG_PAWN_CONFIG_fieldinfo, _struct_SG_PAWN_CONFIG_readproc, _struct_SG_PAWN_CONFIG_writeproc };
 	template<>
@@ -4278,16 +4278,16 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "item_id", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "stack_max", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, stack_max), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "price", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, price), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "tex", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
-		{TYPE_STRING, "item_name", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, item_name), NULL, (_U16)SG_ITEM_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ITEM_NAME_MAX>), NULL},
-		{TYPE_U8, "quality", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM_CONFIG, quality), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "item_id", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "stack_max", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, stack_max), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "price", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, price), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_STRING, "item_name", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, item_name), NULL, (_U16)SG_ITEM_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ITEM_NAME_MAX>), NULL},
+		{TYPE_U8, "quality", 0, (_U16)ZION_OFFSETOF(SG_ITEM_CONFIG, quality), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ITEM_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ITEM_CONFIG", sizeof(SG_ITEM_CONFIG), 10, _struct_SG_ITEM_CONFIG_fieldinfo, _struct_SG_ITEM_CONFIG_readproc, _struct_SG_ITEM_CONFIG_writeproc };
 	template<>
@@ -4332,8 +4332,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_MATERIAL_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_MATERIAL_CONFIG, desc), NULL, (_U16)SG_MATERIAL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MATERIAL_DESC_MAX>), NULL},
-		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_MATERIAL_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_MATERIAL_CONFIG, desc), NULL, (_U16)SG_MATERIAL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MATERIAL_DESC_MAX>), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ZION_OFFSETOF(SG_MATERIAL_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_MATERIAL_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_MATERIAL_CONFIG", sizeof(SG_MATERIAL_CONFIG), 2, _struct_SG_MATERIAL_CONFIG_fieldinfo, _struct_SG_MATERIAL_CONFIG_readproc, _struct_SG_MATERIAL_CONFIG_writeproc };
 	template<>
@@ -4420,29 +4420,29 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_EQUIPT_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRUCT, "mod_config", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, mod_config), &_rfl_struct_SG_ATTR_MOD_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_MOD_CONFIG), NULL},
-		{TYPE_U8, "item_type", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, item_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "quality_rate", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, quality_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "major_attr", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, major_attr), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "major_attr_num", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, major_attr_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "turbo_rate", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, turbo_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U8, "minor_attr_num", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, minor_attr_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "HP_MAX", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, HP_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "POW_MAX", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, POW_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "ITEM_INT_MAX", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, ITEM_INT_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_F32, "HIT_MAX", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, HIT_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "CRIT_MAX", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, CRIT_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "MISS_MAX", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, MISS_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "SLOT_NUM", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, SLOT_NUM), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "HAS_SKILL", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, HAS_SKILL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "COM_MATERIAL", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, COM_MATERIAL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "COM_REQ_NUM", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, COM_REQ_NUM), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "KEY_MATERIAL", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, KEY_MATERIAL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "KEY_REQ_NUM", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, KEY_REQ_NUM), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "COMBINE_COST", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, COMBINE_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "TURBO_BASE_COST", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, TURBO_BASE_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "RESET_COST", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, RESET_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT, "mod_config", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, mod_config), &_rfl_struct_SG_ATTR_MOD_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_MOD_CONFIG), NULL},
+		{TYPE_U8, "item_type", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, item_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "quality_rate", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, quality_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "major_attr", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, major_attr), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "major_attr_num", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, major_attr_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "turbo_rate", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, turbo_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U8, "minor_attr_num", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, minor_attr_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "HP_MAX", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, HP_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "POW_MAX", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, POW_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "ITEM_INT_MAX", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, ITEM_INT_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "HIT_MAX", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, HIT_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "CRIT_MAX", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, CRIT_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "MISS_MAX", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, MISS_MAX), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "SLOT_NUM", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, SLOT_NUM), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "HAS_SKILL", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, HAS_SKILL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "COM_MATERIAL", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, COM_MATERIAL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "COM_REQ_NUM", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, COM_REQ_NUM), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "KEY_MATERIAL", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, KEY_MATERIAL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "KEY_REQ_NUM", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, KEY_REQ_NUM), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "COMBINE_COST", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, COMBINE_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "TURBO_BASE_COST", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, TURBO_BASE_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "RESET_COST", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM_CONFIG, RESET_COST), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_EQUIPT_ITEM_CONFIG", sizeof(SG_EQUIPT_ITEM_CONFIG), 23, _struct_SG_EQUIPT_ITEM_CONFIG_fieldinfo, _struct_SG_EQUIPT_ITEM_CONFIG_readproc, _struct_SG_EQUIPT_ITEM_CONFIG_writeproc };
 	template<>
@@ -4497,13 +4497,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_USABLE_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, desc), NULL, (_U16)SG_USABLE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_USABLE_DESC_MAX>), NULL},
-		{TYPE_U8, "salablity", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, salablity), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "usage_type", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, usage_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "attri_value1", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "attri_value2", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_F32, "attri_value3", 0, (_U16)ATLAS_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_USABLE_ITEM_CONFIG, desc), NULL, (_U16)SG_USABLE_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_USABLE_DESC_MAX>), NULL},
+		{TYPE_U8, "salablity", 0, (_U16)ZION_OFFSETOF(SG_USABLE_ITEM_CONFIG, salablity), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ZION_OFFSETOF(SG_USABLE_ITEM_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "usage_type", 0, (_U16)ZION_OFFSETOF(SG_USABLE_ITEM_CONFIG, usage_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "attri_value1", 0, (_U16)ZION_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "attri_value2", 0, (_U16)ZION_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_F32, "attri_value3", 0, (_U16)ZION_OFFSETOF(SG_USABLE_ITEM_CONFIG, attri_value3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_USABLE_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_USABLE_ITEM_CONFIG", sizeof(SG_USABLE_ITEM_CONFIG), 7, _struct_SG_USABLE_ITEM_CONFIG_fieldinfo, _struct_SG_USABLE_ITEM_CONFIG_readproc, _struct_SG_USABLE_ITEM_CONFIG_writeproc };
 	template<>
@@ -4556,12 +4556,12 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GEM_ITEM_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, desc), NULL, (_U16)SG_GEM_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GEM_DESC_MAX>), NULL},
-		{TYPE_U8, "level", 0, (_U16)ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "attri_type", 0, (_U16)ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "attri", 0, (_U16)ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, attri), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "compose_next", 0, (_U16)ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, compose_next), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "compose_num", 0, (_U16)ATLAS_OFFSETOF(SG_GEM_ITEM_CONFIG, compose_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_GEM_ITEM_CONFIG, desc), NULL, (_U16)SG_GEM_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GEM_DESC_MAX>), NULL},
+		{TYPE_U8, "level", 0, (_U16)ZION_OFFSETOF(SG_GEM_ITEM_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "attri_type", 0, (_U16)ZION_OFFSETOF(SG_GEM_ITEM_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "attri", 0, (_U16)ZION_OFFSETOF(SG_GEM_ITEM_CONFIG, attri), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "compose_next", 0, (_U16)ZION_OFFSETOF(SG_GEM_ITEM_CONFIG, compose_next), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "compose_num", 0, (_U16)ZION_OFFSETOF(SG_GEM_ITEM_CONFIG, compose_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GEM_ITEM_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_GEM_ITEM_CONFIG", sizeof(SG_GEM_ITEM_CONFIG), 6, _struct_SG_GEM_ITEM_CONFIG_fieldinfo, _struct_SG_GEM_ITEM_CONFIG_readproc, _struct_SG_GEM_ITEM_CONFIG_writeproc };
 	template<>
@@ -4618,14 +4618,14 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, desc), NULL, (_U16)SG_ASTROLOGY_BALL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGY_BALL_DESC_MAX>), NULL},
-		{TYPE_U8, "attri_type", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_F32, "attri_num", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
-		{TYPE_U32, "levelup_ball", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, levelup_ball), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "req_levelup", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, req_levelup), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "swllaow_obtain", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, swllaow_obtain), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "archetype", 0, (_U16)ATLAS_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, desc), NULL, (_U16)SG_ASTROLOGY_BALL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ASTROLOGY_BALL_DESC_MAX>), NULL},
+		{TYPE_U8, "attri_type", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_F32, "attri_num", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, attri_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "levelup_ball", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, levelup_ball), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_levelup", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, req_levelup), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "swllaow_obtain", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, swllaow_obtain), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "archetype", 0, (_U16)ZION_OFFSETOF(SG_ASTROLOGY_BALL_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_CONFIG_info = { &_rfl_struct_SG_ITEM_CONFIG_info, "SG_ASTROLOGY_BALL_CONFIG", sizeof(SG_ASTROLOGY_BALL_CONFIG), 8, _struct_SG_ASTROLOGY_BALL_CONFIG_fieldinfo, _struct_SG_ASTROLOGY_BALL_CONFIG_readproc, _struct_SG_ASTROLOGY_BALL_CONFIG_writeproc };
 	template<>
@@ -4670,8 +4670,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ENEMY_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "enemy_id", 0, (_U16)ATLAS_OFFSETOF(SG_ENEMY_CONFIG, enemy_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ATLAS_OFFSETOF(SG_ENEMY_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
+		{TYPE_U32, "enemy_id", 0, (_U16)ZION_OFFSETOF(SG_ENEMY_CONFIG, enemy_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ZION_OFFSETOF(SG_ENEMY_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ENEMY_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ENEMY_CONFIG", sizeof(SG_ENEMY_CONFIG), 2, _struct_SG_ENEMY_CONFIG_fieldinfo, _struct_SG_ENEMY_CONFIG_readproc, _struct_SG_ENEMY_CONFIG_writeproc };
 	template<>
@@ -4728,14 +4728,14 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_SOLDIER_LEVEL_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "attr_id", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
-		{TYPE_U32, "exp", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_S32, "levelup_gold", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, levelup_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "levelup_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, levelup_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "levelup_XP", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, levelup_XP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_U16, "mod_scale", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, mod_scale), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
+		{TYPE_U32, "attr_id", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
+		{TYPE_U32, "exp", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_S32, "levelup_gold", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, levelup_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "levelup_rmb", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, levelup_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "levelup_XP", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, levelup_XP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_U16, "mod_scale", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_LEVEL_CONFIG, mod_scale), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_SOLDIER_LEVEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SOLDIER_LEVEL_CONFIG", sizeof(SG_SOLDIER_LEVEL_CONFIG), 8, _struct_SG_SOLDIER_LEVEL_CONFIG_fieldinfo, _struct_SG_SOLDIER_LEVEL_CONFIG_readproc, _struct_SG_SOLDIER_LEVEL_CONFIG_writeproc };
 	template<>
@@ -4788,12 +4788,12 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GENERAL_LEVEL_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "attr_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
-		{TYPE_S32, "levelup_gold", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "levelup_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "levelup_XP", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_XP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_U32, "attr_id", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
+		{TYPE_S32, "levelup_gold", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "levelup_rmb", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "levelup_XP", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_LEVEL_CONFIG, levelup_XP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GENERAL_LEVEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_LEVEL_CONFIG", sizeof(SG_GENERAL_LEVEL_CONFIG), 6, _struct_SG_GENERAL_LEVEL_CONFIG_fieldinfo, _struct_SG_GENERAL_LEVEL_CONFIG_readproc, _struct_SG_GENERAL_LEVEL_CONFIG_writeproc };
 	template<>
@@ -4858,18 +4858,18 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_SOLDIER_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "soldier_id", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, soldier_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "attr_id", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "def_type", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "description", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
-		{TYPE_S32, "req_gold", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "req_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "unlock_level", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "pre_general_id", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "pre_level", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_STRING, "archetype", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_U32, "soldier_id", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, soldier_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "attr_id", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "type", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_type", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "def_type", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "description", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
+		{TYPE_S32, "req_gold", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "req_rmb", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "unlock_level", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "pre_general_id", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "pre_level", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_STRING, "archetype", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_SOLDIER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SOLDIER_CONFIG", sizeof(SG_SOLDIER_CONFIG), 12, _struct_SG_SOLDIER_CONFIG_fieldinfo, _struct_SG_SOLDIER_CONFIG_readproc, _struct_SG_SOLDIER_CONFIG_writeproc };
 	template<>
@@ -4944,23 +4944,23 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GENERAL_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "attr_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRING, "description", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
-		{TYPE_S32, "req_title", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "req_gold", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "req_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "unlock_level", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "pre_general_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_S32, "pre_level", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_STRING, "archetype", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
-		{TYPE_U32, "gift_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, gift_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "skill_name", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, skill_name), NULL, (_U16)SG_SKILL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_DESC_MAX>), NULL},
-		{TYPE_STRING, "skill_desc", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, skill_desc), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
-		{TYPE_S32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
-		{TYPE_U8, "atk_type", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "def_type", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "attr_id", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, attr_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "type", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "description", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
+		{TYPE_S32, "req_title", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, req_title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "req_gold", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "req_rmb", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "unlock_level", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "pre_general_id", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, pre_general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "pre_level", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_STRING, "archetype", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_U32, "gift_id", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, gift_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "skill_name", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, skill_name), NULL, (_U16)SG_SKILL_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_DESC_MAX>), NULL},
+		{TYPE_STRING, "skill_desc", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, skill_desc), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
+		{TYPE_S32, "rank", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_U8, "atk_type", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "def_type", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 17, _struct_SG_GENERAL_CONFIG_fieldinfo, _struct_SG_GENERAL_CONFIG_readproc, _struct_SG_GENERAL_CONFIG_writeproc };
 	template<>
@@ -5003,8 +5003,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_EQUIPPED_UNIT_PVE_fieldinfo[] =
 	{
-		{TYPE_STRING, "ArchetypeURL", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPPED_UNIT_PVE, ArchetypeURL), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
-		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPPED_UNIT_PVE, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
+		{TYPE_STRING, "ArchetypeURL", 0, (_U16)ZION_OFFSETOF(SG_EQUIPPED_UNIT_PVE, ArchetypeURL), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ZION_OFFSETOF(SG_EQUIPPED_UNIT_PVE, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_EQUIPPED_UNIT_PVE_info = { NULL, "SG_EQUIPPED_UNIT_PVE", sizeof(SG_EQUIPPED_UNIT_PVE), 2, _struct_SG_EQUIPPED_UNIT_PVE_fieldinfo, _struct_SG_EQUIPPED_UNIT_PVE_readproc, _struct_SG_EQUIPPED_UNIT_PVE_writeproc };
 	template<>
@@ -5059,14 +5059,14 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PLAYER_PVE_fieldinfo[] =
 	{
-		{TYPE_STRING, "ArchetypeURL", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, ArchetypeURL), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
-		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
-		{TYPE_STRUCT|TYPE_ARRAY, "EquippedGenerals", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, EquippedGenerals), &_rfl_struct_SG_EQUIPPED_UNIT_PVE_info, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<SG_EQUIPPED_UNIT_PVE, 2>*)NULL)->_Array)), (_U16)sizeof(SG_EQUIPPED_UNIT_PVE), NULL},
-		{TYPE_STRUCT|TYPE_ARRAY, "EquippedSoldiers", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, EquippedSoldiers), &_rfl_struct_SG_EQUIPPED_UNIT_PVE_info, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<SG_EQUIPPED_UNIT_PVE, 3>*)NULL)->_Array)), (_U16)sizeof(SG_EQUIPPED_UNIT_PVE), NULL},
-		{TYPE_STRING, "Nick", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, Nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "Avatar_ID", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, Avatar_ID), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "horse_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "halo_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_PVE, halo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "ArchetypeURL", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, ArchetypeURL), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "EquippedGenerals", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, EquippedGenerals), &_rfl_struct_SG_EQUIPPED_UNIT_PVE_info, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<SG_EQUIPPED_UNIT_PVE, 2>*)NULL)->_Array)), (_U16)sizeof(SG_EQUIPPED_UNIT_PVE), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "EquippedSoldiers", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, EquippedSoldiers), &_rfl_struct_SG_EQUIPPED_UNIT_PVE_info, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<SG_EQUIPPED_UNIT_PVE, 3>*)NULL)->_Array)), (_U16)sizeof(SG_EQUIPPED_UNIT_PVE), NULL},
+		{TYPE_STRING, "Nick", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, Nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "Avatar_ID", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, Avatar_ID), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "horse_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "halo_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_PVE, halo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PLAYER_PVE_info = { NULL, "SG_PLAYER_PVE", sizeof(SG_PLAYER_PVE), 8, _struct_SG_PLAYER_PVE_fieldinfo, _struct_SG_PLAYER_PVE_readproc, _struct_SG_PLAYER_PVE_writeproc };
 	template<>
@@ -5117,12 +5117,12 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_EQUIP_SLOTS_fieldinfo[] =
 	{
-		{TYPE_UUID, "head", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIP_SLOTS, head), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
-		{TYPE_UUID, "weapon", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIP_SLOTS, weapon), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
-		{TYPE_UUID, "shoulder", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIP_SLOTS, shoulder), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
-		{TYPE_UUID, "chest", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIP_SLOTS, chest), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
-		{TYPE_UUID, "leg", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIP_SLOTS, leg), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
-		{TYPE_UUID, "decoration", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIP_SLOTS, decoration), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "head", 0, (_U16)ZION_OFFSETOF(SG_EQUIP_SLOTS, head), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "weapon", 0, (_U16)ZION_OFFSETOF(SG_EQUIP_SLOTS, weapon), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "shoulder", 0, (_U16)ZION_OFFSETOF(SG_EQUIP_SLOTS, shoulder), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "chest", 0, (_U16)ZION_OFFSETOF(SG_EQUIP_SLOTS, chest), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "leg", 0, (_U16)ZION_OFFSETOF(SG_EQUIP_SLOTS, leg), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "decoration", 0, (_U16)ZION_OFFSETOF(SG_EQUIP_SLOTS, decoration), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_EQUIP_SLOTS_info = { NULL, "SG_EQUIP_SLOTS", sizeof(SG_EQUIP_SLOTS), 6, _struct_SG_EQUIP_SLOTS_fieldinfo, _struct_SG_EQUIP_SLOTS_readproc, _struct_SG_EQUIP_SLOTS_writeproc };
 	template<>
@@ -5175,12 +5175,12 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GENERAL_fieldinfo[] =
 	{
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U16, "level", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
-		{TYPE_U32, "exp", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_STRUCT, "equip_slots", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL, equip_slots), &_rfl_struct_SG_EQUIP_SLOTS_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_EQUIP_SLOTS), NULL},
-		{TYPE_U32|TYPE_ARRAY, "minghun_slots", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL, minghun_slots), NULL, (_U16)-1, (_U16)6, (_U16)((size_t)(&((DDL::Array<_U32, 6>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_GENERAL, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U16, "level", 0, (_U16)ZION_OFFSETOF(SG_GENERAL, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
+		{TYPE_U32, "exp", 0, (_U16)ZION_OFFSETOF(SG_GENERAL, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_GENERAL, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRUCT, "equip_slots", 0, (_U16)ZION_OFFSETOF(SG_GENERAL, equip_slots), &_rfl_struct_SG_EQUIP_SLOTS_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_EQUIP_SLOTS), NULL},
+		{TYPE_U32|TYPE_ARRAY, "minghun_slots", 0, (_U16)ZION_OFFSETOF(SG_GENERAL, minghun_slots), NULL, (_U16)-1, (_U16)6, (_U16)((size_t)(&((DDL::Array<_U32, 6>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GENERAL_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_GENERAL", sizeof(SG_GENERAL), 6, _struct_SG_GENERAL_fieldinfo, _struct_SG_GENERAL_readproc, _struct_SG_GENERAL_writeproc };
 	template<>
@@ -5225,8 +5225,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_SOLDIER_fieldinfo[] =
 	{
-		{TYPE_U32, "soldier_id", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER, soldier_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U16, "level", 0, (_U16)ATLAS_OFFSETOF(SG_SOLDIER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
+		{TYPE_U32, "soldier_id", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER, soldier_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U16, "level", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U16), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_SOLDIER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_SOLDIER", sizeof(SG_SOLDIER), 2, _struct_SG_SOLDIER_fieldinfo, _struct_SG_SOLDIER_readproc, _struct_SG_SOLDIER_writeproc };
 	template<>
@@ -5315,30 +5315,30 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DAILY_ACTION_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "action_id", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "action_name", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, action_name), NULL, (_U16)SG_DAILY_ACTION_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_NAME_MAX>), NULL},
-		{TYPE_U8, "display_position", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, display_position), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "req_league_level", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, req_league_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "req_level", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "condition1_type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition1_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "condition1_param1", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition1_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "condition2_type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition2_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "condition2_param1", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition2_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "hour", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "end_hour", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, end_hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "end_min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, end_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "times", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "prepare_min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, prepare_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reset_hour", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, reset_hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reset_min", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, reset_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "icon", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
-		{TYPE_U32, "U", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "V", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "UL", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "VL", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "sort_seq", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_CONFIG, sort_seq), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "action_id", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "action_name", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, action_name), NULL, (_U16)SG_DAILY_ACTION_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_NAME_MAX>), NULL},
+		{TYPE_U8, "display_position", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, display_position), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "type", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "req_league_level", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, req_league_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "req_level", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, req_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition1_type", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition1_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition1_param1", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition1_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "condition2_type", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition2_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition2_param1", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, condition2_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "hour", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "min", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "end_hour", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, end_hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "end_min", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, end_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "times", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "prepare_min", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, prepare_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_hour", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, reset_hour), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_min", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, reset_min), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "icon", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "sort_seq", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, sort_seq), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DAILY_ACTION_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_ACTION_CONFIG", sizeof(SG_DAILY_ACTION_CONFIG), 24, _struct_SG_DAILY_ACTION_CONFIG_fieldinfo, _struct_SG_DAILY_ACTION_CONFIG_readproc, _struct_SG_DAILY_ACTION_CONFIG_writeproc };
 	template<>
@@ -5389,11 +5389,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DAILY_ACTION_DESC_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "action_id", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "action_name", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, action_name), NULL, (_U16)SG_DAILY_ACTION_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_NAME_MAX>), NULL},
-		{TYPE_STRING, "desc", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, desc), NULL, (_U16)SG_DAILY_ACTION_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_DESC>), NULL},
-		{TYPE_U8, "display_type", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, display_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "sort_seq", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, sort_seq), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "action_id", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "action_name", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, action_name), NULL, (_U16)SG_DAILY_ACTION_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_NAME_MAX>), NULL},
+		{TYPE_STRING, "desc", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, desc), NULL, (_U16)SG_DAILY_ACTION_DESC, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DAILY_ACTION_DESC>), NULL},
+		{TYPE_U8, "display_type", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, display_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "sort_seq", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_DESC_CONFIG, sort_seq), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DAILY_ACTION_DESC_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_ACTION_DESC_CONFIG", sizeof(SG_DAILY_ACTION_DESC_CONFIG), 5, _struct_SG_DAILY_ACTION_DESC_CONFIG_fieldinfo, _struct_SG_DAILY_ACTION_DESC_CONFIG_readproc, _struct_SG_DAILY_ACTION_DESC_CONFIG_writeproc };
 	template<>
@@ -5440,9 +5440,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_DAILY_ACTION_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "action_id", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_INFO, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "times", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_INFO, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "reset_time", 0, (_U16)ATLAS_OFFSETOF(SG_DAILY_ACTION_INFO, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "action_id", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_INFO, action_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "times", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_INFO, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reset_time", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_INFO, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_DAILY_ACTION_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_DAILY_ACTION_INFO", sizeof(SG_DAILY_ACTION_INFO), 3, _struct_SG_DAILY_ACTION_INFO_fieldinfo, _struct_SG_DAILY_ACTION_INFO_readproc, _struct_SG_DAILY_ACTION_INFO_writeproc };
 	template<>
@@ -5549,39 +5549,39 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PLAYER_fieldinfo[] =
 	{
-		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "avatar_id", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "total_rmb", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, total_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "gold", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "rmb", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32|TYPE_ARRAY, "equip_generals", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, equip_generals), NULL, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<_U32, 2>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
-		{TYPE_U32|TYPE_ARRAY, "equip_soldiers", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, equip_soldiers), NULL, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<_U32, 3>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "increase_equipt_times", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, increase_equipt_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "title", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "reputation", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "energy", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "halo_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, halo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "halo_exp", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, halo_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRUCT|TYPE_ARRAY, "daily_actions", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, daily_actions), &_rfl_struct_SG_DAILY_ACTION_INFO_info, (_U16)-1, (_U16)SG_DAILY_ACTION_TYPE_MAX, (_U16)((size_t)(&((DDL::Array<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_DAILY_ACTION_INFO), NULL},
-		{TYPE_U32, "next_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, next_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "last_rank", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "vip_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32|TYPE_ARRAY, "league_apply_list", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, league_apply_list), NULL, (_U16)-1, (_U16)SG_LEAGUE_APPLY_MAX, (_U16)((size_t)(&((DDL::Array<_U32, SG_LEAGUE_APPLY_MAX>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "wake_pt", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "turbo_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING|TYPE_ARRAY, "skills", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, skills), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)SG_TURBO_UNLOCK_SKILL_MAX, (_U16)((size_t)(&((DDL::Array<DDL::String<ARCHETYPE_URL_LENGTH_MAX>, SG_TURBO_UNLOCK_SKILL_MAX>*)NULL)->_Array)), (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
-		{TYPE_STRUCT, "turbo_skill_slot", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, turbo_skill_slot), &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_TURBO_SKILL_SLOT), NULL},
-		{TYPE_U32, "last_operation_time", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_operation_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "last_town_map", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, last_town_map), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
-		{TYPE_U32, "minghun_value", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, minghun_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "current_zhanxing_value", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, current_zhanxing_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "horse_exp", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, horse_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "horse_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "furthest_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, furthest_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "xunbao_circle", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, xunbao_circle), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "xunbao_step", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER, xunbao_step), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_rmb", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, total_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "gold", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "rmb", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32|TYPE_ARRAY, "equip_generals", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, equip_generals), NULL, (_U16)-1, (_U16)2, (_U16)((size_t)(&((DDL::Array<_U32, 2>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U32|TYPE_ARRAY, "equip_soldiers", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, equip_soldiers), NULL, (_U16)-1, (_U16)3, (_U16)((size_t)(&((DDL::Array<_U32, 3>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "increase_equipt_times", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, increase_equipt_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "title", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "reputation", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "energy", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "halo_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, halo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "halo_exp", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, halo_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "daily_actions", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, daily_actions), &_rfl_struct_SG_DAILY_ACTION_INFO_info, (_U16)-1, (_U16)SG_DAILY_ACTION_TYPE_MAX, (_U16)((size_t)(&((DDL::Array<SG_DAILY_ACTION_INFO, SG_DAILY_ACTION_TYPE_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_DAILY_ACTION_INFO), NULL},
+		{TYPE_U32, "next_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, next_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "last_rank", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, last_rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "vip_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32|TYPE_ARRAY, "league_apply_list", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, league_apply_list), NULL, (_U16)-1, (_U16)SG_LEAGUE_APPLY_MAX, (_U16)((size_t)(&((DDL::Array<_U32, SG_LEAGUE_APPLY_MAX>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "wake_pt", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "turbo_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING|TYPE_ARRAY, "skills", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, skills), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)SG_TURBO_UNLOCK_SKILL_MAX, (_U16)((size_t)(&((DDL::Array<DDL::String<ARCHETYPE_URL_LENGTH_MAX>, SG_TURBO_UNLOCK_SKILL_MAX>*)NULL)->_Array)), (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
+		{TYPE_STRUCT, "turbo_skill_slot", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, turbo_skill_slot), &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_TURBO_SKILL_SLOT), NULL},
+		{TYPE_U32, "last_operation_time", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, last_operation_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "last_town_map", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, last_town_map), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
+		{TYPE_U32, "minghun_value", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, minghun_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "current_zhanxing_value", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, current_zhanxing_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "horse_exp", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, horse_exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "horse_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "furthest_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, furthest_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "xunbao_circle", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, xunbao_circle), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "xunbao_step", 0, (_U16)ZION_OFFSETOF(SG_PLAYER, xunbao_step), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PLAYER_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER", sizeof(SG_PLAYER), 33, _struct_SG_PLAYER_fieldinfo, _struct_SG_PLAYER_readproc, _struct_SG_PLAYER_writeproc };
 	template<>
@@ -5638,14 +5638,14 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PLAYER_INFO_fieldinfo[] =
 	{
-		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "avatar_id", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "title", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32, "reputation", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "vip_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "league_id", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "horse_level", 0, (_U16)ATLAS_OFFSETOF(SG_PLAYER_INFO, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "title", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "reputation", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "vip_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "horse_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PLAYER_INFO_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER_INFO", sizeof(SG_PLAYER_INFO), 8, _struct_SG_PLAYER_INFO_fieldinfo, _struct_SG_PLAYER_INFO_readproc, _struct_SG_PLAYER_INFO_writeproc };
 	template<>
@@ -5692,9 +5692,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_ITEM_fieldinfo[] =
 	{
-		{TYPE_U32, "item_id", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "count", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "expired_time", 0, (_U16)ATLAS_OFFSETOF(SG_ITEM, expired_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "item_id", 0, (_U16)ZION_OFFSETOF(SG_ITEM, item_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "count", 0, (_U16)ZION_OFFSETOF(SG_ITEM, count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "expired_time", 0, (_U16)ZION_OFFSETOF(SG_ITEM, expired_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_ITEM_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_ITEM", sizeof(SG_ITEM), 3, _struct_SG_ITEM_fieldinfo, _struct_SG_ITEM_readproc, _struct_SG_ITEM_writeproc };
 	template<>
@@ -5741,9 +5741,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_EQUIPT_ITEM_fieldinfo[] =
 	{
-		{TYPE_STRUCT, "mod_config", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM, mod_config), &_rfl_struct_SG_ATTR_MOD_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_MOD_CONFIG), NULL},
-		{TYPE_U8, "turbo_level", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U32|TYPE_ARRAY, "gems_slots", 0, (_U16)ATLAS_OFFSETOF(SG_EQUIPT_ITEM, gems_slots), NULL, (_U16)-1, (_U16)SG_EUQIPT_GEM_SLOTS_MAX, (_U16)((size_t)(&((DDL::Array<_U32, SG_EUQIPT_GEM_SLOTS_MAX>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT, "mod_config", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM, mod_config), &_rfl_struct_SG_ATTR_MOD_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_ATTR_MOD_CONFIG), NULL},
+		{TYPE_U8, "turbo_level", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32|TYPE_ARRAY, "gems_slots", 0, (_U16)ZION_OFFSETOF(SG_EQUIPT_ITEM, gems_slots), NULL, (_U16)-1, (_U16)SG_EUQIPT_GEM_SLOTS_MAX, (_U16)((size_t)(&((DDL::Array<_U32, SG_EUQIPT_GEM_SLOTS_MAX>*)NULL)->_Array)), (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_EQUIPT_ITEM_info = { &_rfl_struct_SG_ITEM_info, "SG_EQUIPT_ITEM", sizeof(SG_EQUIPT_ITEM), 3, _struct_SG_EQUIPT_ITEM_fieldinfo, _struct_SG_EQUIPT_ITEM_readproc, _struct_SG_EQUIPT_ITEM_writeproc };
 	template<>
@@ -5823,7 +5823,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GEM_ITEM_fieldinfo[] =
 	{
-		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_GEM_ITEM, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_GEM_ITEM, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GEM_ITEM_info = { &_rfl_struct_SG_ITEM_info, "SG_GEM_ITEM", sizeof(SG_GEM_ITEM), 1, _struct_SG_GEM_ITEM_fieldinfo, _struct_SG_GEM_ITEM_readproc, _struct_SG_GEM_ITEM_writeproc };
 	template<>
@@ -5948,11 +5948,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_FRIEND_BASE_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "avatar_id", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "title", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "battle_value", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_BASE_INFO, battle_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "title", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "battle_value", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, battle_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_FRIEND_BASE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_FRIEND_BASE_INFO", sizeof(SG_FRIEND_BASE_INFO), 5, _struct_SG_FRIEND_BASE_INFO_fieldinfo, _struct_SG_FRIEND_BASE_INFO_readproc, _struct_SG_FRIEND_BASE_INFO_writeproc };
 	template<>
@@ -5995,7 +5995,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_FRIEND_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "recent_op_time", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_INFO, recent_op_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "recent_op_time", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_INFO, recent_op_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_FRIEND_INFO_info = { &_rfl_struct_SG_FRIEND_BASE_INFO_info, "SG_FRIEND_INFO", sizeof(SG_FRIEND_INFO), 1, _struct_SG_FRIEND_INFO_fieldinfo, _struct_SG_FRIEND_INFO_readproc, _struct_SG_FRIEND_INFO_writeproc };
 	template<>
@@ -6040,8 +6040,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_FRIEND_SEARCH_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "current_friend_num", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_SEARCH_INFO, current_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "max_friend_num", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_SEARCH_INFO, max_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "current_friend_num", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_SEARCH_INFO, current_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "max_friend_num", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_SEARCH_INFO, max_friend_num), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_FRIEND_SEARCH_INFO_info = { &_rfl_struct_SG_FRIEND_BASE_INFO_info, "SG_FRIEND_SEARCH_INFO", sizeof(SG_FRIEND_SEARCH_INFO), 2, _struct_SG_FRIEND_SEARCH_INFO_fieldinfo, _struct_SG_FRIEND_SEARCH_INFO_readproc, _struct_SG_FRIEND_SEARCH_INFO_writeproc };
 	template<>
@@ -6084,7 +6084,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_FRIEND_INVITATION_fieldinfo[] =
 	{
-		{TYPE_U32, "recent_op_time", 0, (_U16)ATLAS_OFFSETOF(SG_FRIEND_INVITATION, recent_op_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "recent_op_time", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_INVITATION, recent_op_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_FRIEND_INVITATION_info = { &_rfl_struct_SG_FRIEND_BASE_INFO_info, "SG_FRIEND_INVITATION", sizeof(SG_FRIEND_INVITATION), 1, _struct_SG_FRIEND_INVITATION_fieldinfo, _struct_SG_FRIEND_INVITATION_readproc, _struct_SG_FRIEND_INVITATION_writeproc };
 	template<>
@@ -6137,13 +6137,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_SERVER_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "server_id", 0, (_U16)ATLAS_OFFSETOF(SG_SERVER_INFO, server_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "server_name", 0, (_U16)ATLAS_OFFSETOF(SG_SERVER_INFO, server_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_U32, "server_state", 0, (_U16)ATLAS_OFFSETOF(SG_SERVER_INFO, server_state), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "avatar_nick", 0, (_U16)ATLAS_OFFSETOF(SG_SERVER_INFO, avatar_nick), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_SERVER_INFO, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_SERVER_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "server_level", 0, (_U16)ATLAS_OFFSETOF(SG_SERVER_INFO, server_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_id", 0, (_U16)ZION_OFFSETOF(SG_SERVER_INFO, server_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "server_name", 0, (_U16)ZION_OFFSETOF(SG_SERVER_INFO, server_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_U32, "server_state", 0, (_U16)ZION_OFFSETOF(SG_SERVER_INFO, server_state), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "avatar_nick", 0, (_U16)ZION_OFFSETOF(SG_SERVER_INFO, avatar_nick), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_SERVER_INFO, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_SERVER_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_level", 0, (_U16)ZION_OFFSETOF(SG_SERVER_INFO, server_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_SERVER_INFO_info = { NULL, "SG_SERVER_INFO", sizeof(SG_SERVER_INFO), 7, _struct_SG_SERVER_INFO_fieldinfo, _struct_SG_SERVER_INFO_readproc, _struct_SG_SERVER_INFO_writeproc };
 	template<>
@@ -6190,10 +6190,10 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_GENERAL_QUERY_INFO_fieldinfo[] =
 	{
-		{TYPE_STRUCT, "general", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_QUERY_INFO, general), &_rfl_struct_SG_GENERAL_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_GENERAL), NULL},
-		{TYPE_STRUCT, "general_config", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_QUERY_INFO, general_config), &_rfl_struct_SG_GENERAL_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_GENERAL_CONFIG), NULL},
-		{TYPE_STRUCT, "level_config", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_QUERY_INFO, level_config), &_rfl_struct_SG_GENERAL_LEVEL_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_GENERAL_LEVEL_CONFIG), NULL},
-		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ATLAS_OFFSETOF(SG_GENERAL_QUERY_INFO, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
+		{TYPE_STRUCT, "general", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_QUERY_INFO, general), &_rfl_struct_SG_GENERAL_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_GENERAL), NULL},
+		{TYPE_STRUCT, "general_config", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_QUERY_INFO, general_config), &_rfl_struct_SG_GENERAL_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_GENERAL_CONFIG), NULL},
+		{TYPE_STRUCT, "level_config", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_QUERY_INFO, level_config), &_rfl_struct_SG_GENERAL_LEVEL_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_GENERAL_LEVEL_CONFIG), NULL},
+		{TYPE_STRUCT, "PawnConfig", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_QUERY_INFO, PawnConfig), &_rfl_struct_SG_PAWN_CONFIG_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_PAWN_CONFIG), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_GENERAL_QUERY_INFO_info = { NULL, "SG_GENERAL_QUERY_INFO", sizeof(SG_GENERAL_QUERY_INFO), 4, _struct_SG_GENERAL_QUERY_INFO_fieldinfo, _struct_SG_GENERAL_QUERY_INFO_readproc, _struct_SG_GENERAL_QUERY_INFO_writeproc };
 	template<>
@@ -6244,11 +6244,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_CHAT_SEND_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "channel_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "receiver_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, receiver_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "receiver_nick", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, receiver_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "time", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "content", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_SEND_INFO, content), NULL, (_U16)SG_CHAT_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CONTENT_MAX>), NULL},
+		{TYPE_U32, "channel_id", 0, (_U16)ZION_OFFSETOF(SG_CHAT_SEND_INFO, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "receiver_id", 0, (_U16)ZION_OFFSETOF(SG_CHAT_SEND_INFO, receiver_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "receiver_nick", 0, (_U16)ZION_OFFSETOF(SG_CHAT_SEND_INFO, receiver_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "time", 0, (_U16)ZION_OFFSETOF(SG_CHAT_SEND_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "content", 0, (_U16)ZION_OFFSETOF(SG_CHAT_SEND_INFO, content), NULL, (_U16)SG_CHAT_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CONTENT_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_CHAT_SEND_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_CHAT_SEND_INFO", sizeof(SG_CHAT_SEND_INFO), 5, _struct_SG_CHAT_SEND_INFO_fieldinfo, _struct_SG_CHAT_SEND_INFO_readproc, _struct_SG_CHAT_SEND_INFO_writeproc };
 	template<>
@@ -6299,11 +6299,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_CHAT_RECV_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "channel_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "sender_id", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, sender_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "sender_nick", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, sender_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "time", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "content", 0, (_U16)ATLAS_OFFSETOF(SG_CHAT_RECV_INFO, content), NULL, (_U16)SG_CHAT_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CONTENT_MAX>), NULL},
+		{TYPE_U32, "channel_id", 0, (_U16)ZION_OFFSETOF(SG_CHAT_RECV_INFO, channel_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "sender_id", 0, (_U16)ZION_OFFSETOF(SG_CHAT_RECV_INFO, sender_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "sender_nick", 0, (_U16)ZION_OFFSETOF(SG_CHAT_RECV_INFO, sender_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "time", 0, (_U16)ZION_OFFSETOF(SG_CHAT_RECV_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "content", 0, (_U16)ZION_OFFSETOF(SG_CHAT_RECV_INFO, content), NULL, (_U16)SG_CHAT_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_CHAT_CONTENT_MAX>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_CHAT_RECV_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_CHAT_RECV_INFO", sizeof(SG_CHAT_RECV_INFO), 5, _struct_SG_CHAT_RECV_INFO_fieldinfo, _struct_SG_CHAT_RECV_INFO_readproc, _struct_SG_CHAT_RECV_INFO_writeproc };
 	template<>
@@ -6350,9 +6350,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PVP_HEROLIST_PLAYER_fieldinfo[] =
 	{
-		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_HEROLIST_PLAYER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_HEROLIST_PLAYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_HEROLIST_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_PVP_HEROLIST_PLAYER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_PVP_HEROLIST_PLAYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_PVP_HEROLIST_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PVP_HEROLIST_PLAYER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_PVP_HEROLIST_PLAYER", sizeof(SG_PVP_HEROLIST_PLAYER), 3, _struct_SG_PVP_HEROLIST_PLAYER_fieldinfo, _struct_SG_PVP_HEROLIST_PLAYER_readproc, _struct_SG_PVP_HEROLIST_PLAYER_writeproc };
 	template<>
@@ -6403,11 +6403,11 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_PVP_RANK_PLAYER_fieldinfo[] =
 	{
-		{TYPE_U32, "avatar_id", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RANK_PLAYER, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "general_id", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RANK_PLAYER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RANK_PLAYER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "level", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RANK_PLAYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_PVP_RANK_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_PVP_RANK_PLAYER, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_PVP_RANK_PLAYER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_PVP_RANK_PLAYER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_PVP_RANK_PLAYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_PVP_RANK_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_PVP_RANK_PLAYER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_PVP_RANK_PLAYER", sizeof(SG_PVP_RANK_PLAYER), 5, _struct_SG_PVP_RANK_PLAYER_fieldinfo, _struct_SG_PVP_RANK_PLAYER_readproc, _struct_SG_PVP_RANK_PLAYER_writeproc };
 	template<>
@@ -6452,8 +6452,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "function_id", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_INFO, function_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_NEWCOMER_GUIDE_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "function_id", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_INFO, function_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_NEWCOMER_GUIDE_INFO", sizeof(SG_NEWCOMER_GUIDE_INFO), 2, _struct_SG_NEWCOMER_GUIDE_INFO_fieldinfo, _struct_SG_NEWCOMER_GUIDE_INFO_readproc, _struct_SG_NEWCOMER_GUIDE_INFO_writeproc };
 	template<>
@@ -6498,9 +6498,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLDBOSS_RANK_ITEM_fieldinfo[] =
 	{
-		{TYPE_STRING, "nick", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
-		{TYPE_U32, "rank", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "total_damage", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, total_damage), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_damage", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, total_damage), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_ITEM_info = { NULL, "SG_WORLDBOSS_RANK_ITEM", sizeof(SG_WORLDBOSS_RANK_ITEM), 3, _struct_SG_WORLDBOSS_RANK_ITEM_fieldinfo, _struct_SG_WORLDBOSS_RANK_ITEM_readproc, _struct_SG_WORLDBOSS_RANK_ITEM_writeproc };
 	template<>
@@ -6547,10 +6547,10 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLDBOSS_RANK_INFO_fieldinfo[] =
 	{
-		{TYPE_STRUCT|TYPE_ARRAY, "last_rank_list", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, last_rank_list), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)SG_WORLDBOSS_RANK_LIST_MAX, (_U16)((size_t)(&((DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
-		{TYPE_STRUCT, "my_last_rank", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, my_last_rank), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
-		{TYPE_U8, "attendance_reward", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, attendance_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "rank_reward", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_RANK_INFO, rank_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "last_rank_list", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, last_rank_list), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)SG_WORLDBOSS_RANK_LIST_MAX, (_U16)((size_t)(&((DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
+		{TYPE_STRUCT, "my_last_rank", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, my_last_rank), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
+		{TYPE_U8, "attendance_reward", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, attendance_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "rank_reward", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, rank_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_INFO_info = { NULL, "SG_WORLDBOSS_RANK_INFO", sizeof(SG_WORLDBOSS_RANK_INFO), 4, _struct_SG_WORLDBOSS_RANK_INFO_fieldinfo, _struct_SG_WORLDBOSS_RANK_INFO_readproc, _struct_SG_WORLDBOSS_RANK_INFO_writeproc };
 	template<>
@@ -6595,9 +6595,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLDBOSS_INFO_fieldinfo[] =
 	{
-		{TYPE_U32, "boss_id", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_INFO, boss_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "HP", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_INFO, HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U8, "status", 0, (_U16)ATLAS_OFFSETOF(SG_WORLDBOSS_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "boss_id", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_INFO, boss_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "HP", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_INFO, HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_INFO_info = { NULL, "SG_WORLDBOSS_INFO", sizeof(SG_WORLDBOSS_INFO), 3, _struct_SG_WORLDBOSS_INFO_fieldinfo, _struct_SG_WORLDBOSS_INFO_readproc, _struct_SG_WORLDBOSS_INFO_writeproc };
 	template<>

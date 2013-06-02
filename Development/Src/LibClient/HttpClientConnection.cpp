@@ -22,9 +22,9 @@ namespace Zion
 
 	CHttpClientConnection::~CHttpClientConnection()
 	{
-		ATLAS_ASSERT(!m_pLoginRequest);
-		ATLAS_ASSERT(!m_pPullRequest);
-		ATLAS_ASSERT(!m_pCurrentRequest);
+		ZION_ASSERT(!m_pLoginRequest);
+		ZION_ASSERT(!m_pPullRequest);
+		ZION_ASSERT(!m_pCurrentRequest);
 	}
 
 	void CHttpClientConnection::Tick()
@@ -50,10 +50,10 @@ namespace Zion
 
 	bool CHttpClientConnection::Login(const char* pUrl, const char* pToken)
 	{
-		ATLAS_ASSERT(m_nState==CClient::STATE_NA || m_nState==CClient::STATE_FAILED);
-		ATLAS_ASSERT(!m_pLoginRequest);
-		ATLAS_ASSERT(!m_pPullRequest);
-		ATLAS_ASSERT(!m_pCurrentRequest);
+		ZION_ASSERT(m_nState==CClient::STATE_NA || m_nState==CClient::STATE_FAILED);
+		ZION_ASSERT(!m_pLoginRequest);
+		ZION_ASSERT(!m_pPullRequest);
+		ZION_ASSERT(!m_pCurrentRequest);
 		if(m_nState!=CClient::STATE_NA && m_nState!=CClient::STATE_FAILED) return false;
 		if(m_pLoginRequest) return false;
 		if(m_pPullRequest) return false;
@@ -96,12 +96,12 @@ namespace Zion
 	{
 		const DDLReflect::CLASS_INFO* classinfo;
 		bool bRet = GetServerFunctionStub(iid, fid, classinfo);
-		ATLAS_ASSERT(bRet);
+		ZION_ASSERT(bRet);
 		if(!bRet) return;
 		Json::Value root(Json::objectValue);
 		Json::Value message(Json::objectValue);
 		bRet = Call2Json(classinfo->finfos+fid, len, data, message);
-		ATLAS_ASSERT(bRet);
+		ZION_ASSERT(bRet);
 		if(!bRet) return;
 		root["method"] = StringFormat("%s.%s", classinfo->name, classinfo->finfos[fid].name);
 		root["message"] = message;
@@ -130,7 +130,7 @@ namespace Zion
 
 	void CHttpClientConnection::ProcessLoginRequest()
 	{
-		ATLAS_ASSERT(m_pLoginRequest);
+		ZION_ASSERT(m_pLoginRequest);
 
 		if(MORequestStatus(m_pLoginRequest)==MOREQUESTSTATE_PENDING) return;
 		if(MORequestStatus(m_pLoginRequest)==MOREQUESTSTATE_DONE)
@@ -173,7 +173,7 @@ namespace Zion
 		}
 		if(MORequestStatus(m_pLoginRequest)==MOREQUESTSTATE_FAILED)
 		{
-			ATLAS_ASSERT(m_nState==CClient::STATE_LOGINING);
+			ZION_ASSERT(m_nState==CClient::STATE_LOGINING);
 			SetErrorCode(CClient::ERRCODE_NETWORK);
 			m_nState = CClient::STATE_FAILED;
 			CLIENT_LOG(GetClient(), "http_connection : http failed for login");
@@ -261,7 +261,7 @@ namespace Zion
 				return;
 			}
 
-			ATLAS_ASSERT(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_DONE);
+			ZION_ASSERT(MORequestStatus(m_pCurrentRequest)==MOREQUESTSTATE_DONE);
 
 			if(ProcessRequest(m_pCurrentRequest)==MOERROR_NOERROR)
 			{
@@ -363,18 +363,18 @@ namespace Zion
 			}
 
 			_U32 len = 300*1024;
-			_U8* data = (_U8*)ATLAS_ALLOC(len);
+			_U8* data = (_U8*)ZION_ALLOC(len);
 			if(!DDLReflect::Json2Call(&cls->finfos[fid], elm["message"], len, data))
 			{
 				Json::FastWriter writer;
 				String json = writer.write(elm["message"]);
 				CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", fid, json.c_str());
-				ATLAS_FREE(data);
+				ZION_FREE(data);
 				break;
 			}
 
 			GetClient()->GetClientApp()->QueueData(GetClient(), cls->iid, fid, len, data);
-			ATLAS_FREE(data);
+			ZION_FREE(data);
 		}
 		return (i==_array.size())?MOERROR_NOERROR:MOERROR_UNKNOWN;
 	}

@@ -1,5 +1,5 @@
-#ifndef __ATLAS_LIVE_DB_API__
-#define __ATLAS_LIVE_DB_API__
+#ifndef __ZION_LIVE_DB_API__
+#define __ZION_LIVE_DB_API__
 
 #include "CommonDDL.h"
 
@@ -40,7 +40,7 @@ namespace Zion
 		virtual bool Get(DDLReflect::STRUCT_INFO* pInfo, _U32 id, const void* data) = 0;
 		virtual bool Del(DDLReflect::STRUCT_INFO* pInfo, _U32 id) = 0;
 
-		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, Zion::Vector<A_LIVE_OBJECT>& list) = 0;
+		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, Zion::Array<A_LIVE_OBJECT>& list) = 0;
 
 	};
 
@@ -54,7 +54,7 @@ namespace Zion
 		virtual bool Del(DDLReflect::STRUCT_INFO* pInfo, _U32 id, const A_UUID& uuid) = 0;
 		virtual bool Del(DDLReflect::STRUCT_INFO* pInfo, _U32 id) = 0;
 
-		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, Zion::Vector<A_LIVE_OBJECT>& list) = 0;
+		virtual bool GetList(DDLReflect::STRUCT_INFO* pInfo, _U32 id, Zion::Array<A_LIVE_OBJECT>& list) = 0;
 	};
 
 	class CLiveDBProvider

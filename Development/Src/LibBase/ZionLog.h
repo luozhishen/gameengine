@@ -1,5 +1,5 @@
-#ifndef __ATLAS_LOG__
-#define __ATLAS_LOG__
+#ifndef __ZION_LOG__
+#define __ZION_LOG__
 
 #define ALOGLVL_DEBUG		0
 #define ALOGLVL_INFO		1

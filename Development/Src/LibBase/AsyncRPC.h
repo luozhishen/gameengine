@@ -1,4 +1,4 @@
-#ifndef WITHOUT_ATLAS_ASYNCIO
+#ifndef WITHOUT_ZION_ASYNCIO
 
 #ifndef	__LWRPC__
 #define	__LWRPC__

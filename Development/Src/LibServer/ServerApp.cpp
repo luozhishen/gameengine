@@ -78,7 +78,7 @@ namespace Zion
 
 	SOCK_ADDR& CServerApp::GetListenAddrPort()
 	{
-		ATLAS_ASSERT(m_saListen.ip&&m_saListen.port);
+		ZION_ASSERT(m_saListen.ip&&m_saListen.port);
 		return m_saListen;
 	}
 

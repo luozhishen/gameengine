@@ -31,16 +31,16 @@ END_EVENT_TABLE()
 
 CClientLogView::CClientLogView(CClientStressFrame* pFrame, wxWindow* pParent) : CStressFrameView(pFrame, pParent, wxT("Client Log"))
 {
-	wxBoxSizer* pSizer1 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxVERTICAL);
-	m_pEnable	= ATLAS_NEW wxCheckBox(this, ID_CTRL_ENABLE, wxT("Enable"), wxDefaultPosition, wxSize(70, -1));
-	m_pAutoReflush = ATLAS_NEW wxCheckBox(this, ID_CTRL_AUTO, wxT("Auto"), wxDefaultPosition, wxSize(70, -1));
+	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxVERTICAL);
+	m_pEnable	= ZION_NEW wxCheckBox(this, ID_CTRL_ENABLE, wxT("Enable"), wxDefaultPosition, wxSize(70, -1));
+	m_pAutoReflush = ZION_NEW wxCheckBox(this, ID_CTRL_AUTO, wxT("Auto"), wxDefaultPosition, wxSize(70, -1));
 	pSizer1->Add(m_pAutoReflush, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizer1->Add(m_pEnable, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	pSizer1->Add(ATLAS_NEW wxButton(this, ID_CTRL_CLEAR, wxT("Clear")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	pSizer1->Add(ZION_NEW wxButton(this, ID_CTRL_CLEAR, wxT("Clear")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizer1->AddSpacer(5);
-	pSizer1->Add(ATLAS_NEW wxButton(this, ID_CTRL_FLUSH, wxT("Flush")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	m_pLog = ATLAS_NEW wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+	pSizer1->Add(ZION_NEW wxButton(this, ID_CTRL_FLUSH, wxT("Flush")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	m_pLog = ZION_NEW wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 	pSizer2->Add(pSizer1, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	pSizer2->Add(m_pLog, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizer2);

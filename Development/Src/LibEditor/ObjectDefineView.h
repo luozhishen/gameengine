@@ -1,5 +1,5 @@
-#ifndef __ATLAS_OBJECT_DEFINE_VIEW__
-#define __ATLAS_OBJECT_DEFINE_VIEW__
+#ifndef __ZION_OBJECT_DEFINE_VIEW__
+#define __ZION_OBJECT_DEFINE_VIEW__
 
 class wxPropertyGrid;
 

@@ -1,5 +1,5 @@
-#ifndef __ATLAS_STRESS_CASE__
-#define __ATLAS_STRESS_CASE__
+#ifndef __ZION_STRESS_CASE__
+#define __ZION_STRESS_CASE__
 
 namespace Zion
 {

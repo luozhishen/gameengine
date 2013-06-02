@@ -1,5 +1,5 @@
-#ifndef __ATLAS_NODE_SERVER__
-#define __ATLAS_NODE_SERVER__
+#ifndef __ZION_NODE_SERVER__
+#define __ZION_NODE_SERVER__
 
 namespace Zion
 {
@@ -91,7 +91,7 @@ namespace Zion
 		void SendData(_U16 code, _U32 len, const _U8* data);
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
-			ATLAS_ASSERT(iid<256 && fid<256);
+			ZION_ASSERT(iid<256 && fid<256);
 			SendData(iid|(fid<<8), Buf.GetSize(), Buf.GetBuf());
 			return true;
 		}

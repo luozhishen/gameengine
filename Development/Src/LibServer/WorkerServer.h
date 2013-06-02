@@ -1,5 +1,5 @@
-#ifndef __ATLAS_WORKER_SERVER__
-#define __ATLAS_WORKER_SERVER__
+#ifndef __ZION_WORKER_SERVER__
+#define __ZION_WORKER_SERVER__
 
 namespace Zion
 {

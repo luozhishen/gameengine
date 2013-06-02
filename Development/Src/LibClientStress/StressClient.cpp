@@ -202,7 +202,7 @@ namespace Zion
 	{
 		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_Cases.find(pCase->GetName());
-		ATLAS_ASSERT(i==m_Cases.end());
+		ZION_ASSERT(i==m_Cases.end());
 		if(i!=m_Cases.end()) return;
 		m_Cases[pCase->GetName()] = pCase;
 		pCase->Attach(this);
@@ -212,7 +212,7 @@ namespace Zion
 	{
 		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		i = m_Cases.find(pCase->GetName());
-		ATLAS_ASSERT(i!=m_Cases.end());
+		ZION_ASSERT(i!=m_Cases.end());
 		if(i==m_Cases.end()) return;
 		pCase->Detach(this);
 		m_Cases.erase(i);		

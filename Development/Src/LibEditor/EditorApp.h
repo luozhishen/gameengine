@@ -1,5 +1,5 @@
-#ifndef __ATLAS_EDITOR_APP__
-#define __ATLAS_EDITOR_APP__
+#ifndef __ZION_EDITOR_APP__
+#define __ZION_EDITOR_APP__
 
 class CEditorApp : public wxApp
 {

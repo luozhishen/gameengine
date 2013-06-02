@@ -35,16 +35,16 @@ ServerParamDlg::~ServerParamDlg()
 
 void ServerParamDlg::InitCtrls()
 {
-	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer2->AddStretchSpacer();
-	pSizer2->Add(ATLAS_NEW wxButton(this, ID_NEW_LINE, wxT("New")), 0, wxALIGN_RIGHT | wxALL, 5);
-	pSizer2->Add(ATLAS_NEW wxButton(this, ID_DELETE_LINE, wxT("Delete")), 0, wxALIGN_RIGHT | wxALL, 5);
+	pSizer2->Add(ZION_NEW wxButton(this, ID_NEW_LINE, wxT("New")), 0, wxALIGN_RIGHT | wxALL, 5);
+	pSizer2->Add(ZION_NEW wxButton(this, ID_DELETE_LINE, wxT("Delete")), 0, wxALIGN_RIGHT | wxALL, 5);
 
-	pSizer2->Add(ATLAS_NEW wxButton(this, wxID_OK, wxT("Save")), 0, wxALIGN_RIGHT | wxALL, 5);
-	pSizer2->Add(ATLAS_NEW wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALIGN_RIGHT | wxALL, 5);
+	pSizer2->Add(ZION_NEW wxButton(this, wxID_OK, wxT("Save")), 0, wxALIGN_RIGHT | wxALL, 5);
+	pSizer2->Add(ZION_NEW wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALIGN_RIGHT | wxALL, 5);
 
-	wxBoxSizer* pSizer1 = ATLAS_NEW wxBoxSizer(wxVERTICAL);
-	m_pPropGrid = ATLAS_NEW wxPropertyGrid(this, ID_PROPERTY_GRID, wxDefaultPosition, wxDefaultSize, 
+	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxVERTICAL);
+	m_pPropGrid = ZION_NEW wxPropertyGrid(this, ID_PROPERTY_GRID, wxDefaultPosition, wxDefaultSize, 
             wxPG_AUTO_SORT | wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE );
 	
 	Zion::Map<Zion::String, Zion::String> params = Zion::CClientApp::GetDefault()->GetParams();
@@ -52,7 +52,7 @@ void ServerParamDlg::InitCtrls()
 
 	for(int i = 0; it != params.end(); ++it, ++i)
 	{
-		wxPGProperty* propGrid = ATLAS_NEW wxStringProperty(wxString::FromUTF8(it->first.c_str()), wxPG_LABEL, wxString::FromUTF8(it->second.c_str()));
+		wxPGProperty* propGrid = ZION_NEW wxStringProperty(wxString::FromUTF8(it->first.c_str()), wxPG_LABEL, wxString::FromUTF8(it->second.c_str()));
 		m_pPropGrid->Append(propGrid);
 	}	
 	
@@ -97,7 +97,7 @@ void ServerParamDlg::OnNewLine(wxCommandEvent& event)
 	if(Dialog.ShowModal()==wxID_OK)
 	{
 		strValue = Dialog.GetValue();
-		wxPGProperty* propGrid = ATLAS_NEW wxStringProperty(strValue, wxPG_LABEL, wxT(""));
+		wxPGProperty* propGrid = ZION_NEW wxStringProperty(strValue, wxPG_LABEL, wxT(""));
 		m_pPropGrid->Append(propGrid);
 		m_pPropGrid->RefreshGrid();
 	}

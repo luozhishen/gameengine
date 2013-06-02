@@ -18,18 +18,18 @@ namespace Zion
 		{
 			if(!DDLReflect::IsParent(info, DDLReflect::GetStruct<A_LIVE_OBJECT>()))
 			{
-				ATLAS_ASSERT(0);
+				ZION_ASSERT(0);
 				return false;
 			}
 
-			ATLAS_ASSERT(g_type_map.find(info->name)==g_type_map.end());
+			ZION_ASSERT(g_type_map.find(info->name)==g_type_map.end());
 			if(g_type_map.find(info->name)!=g_type_map.end()) return false;
 			g_type_map[info->name] = std::pair<int, const DDLReflect::STRUCT_INFO*>(g_typeid_max, info);
 			g_typeid_map[g_typeid_max++] = info;
 			return true;
 		}
 
-		void GetTypeList(Zion::Vector<const DDLReflect::STRUCT_INFO*>& list)
+		void GetTypeList(Zion::Array<const DDLReflect::STRUCT_INFO*>& list)
 		{
 			list.clear();
 			Zion::Map<_U16, const DDLReflect::STRUCT_INFO*>::const_iterator i;

@@ -1,5 +1,5 @@
-#ifndef	__ATLAS_UTILS__
-#define	__ATLAS_UTILS__
+#ifndef	__ZION_UTILS__
+#define	__ZION_UTILS__
 
 #include <string>
 #include <vector>
@@ -7,9 +7,9 @@
 #include <functional>
 
 #ifdef WIN32
-	#define ATLAS_PATH_SLASH		'\\'
+	#define ZION_PATH_SLASH		'\\'
 #else
-	#define ATLAS_PATH_SLASH		'/'
+	#define ZION_PATH_SLASH		'/'
 #endif
 
 namespace Zion
@@ -17,7 +17,7 @@ namespace Zion
 
 	const char* GetExeDir();
 
-	void StringSplit(const String& value, char splitchar, Vector<String>& result);
+	void StringSplit(const String& value, char splitchar, Array<String>& result);
 	String StringFormat(const char* fmt, ...);
 	String StringTrim(const char* str);
 	String StringTrim(const Zion::String& str);

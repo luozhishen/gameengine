@@ -68,12 +68,12 @@ namespace Zion
 
 	CLoginClient* CLoginServer::NewLoginClient(HCONNECT hConn, _U64 nLNDX)
 	{
-		return ATLAS_NEW CLoginClient(this, hConn, nLNDX);
+		return ZION_NEW CLoginClient(this, hConn, nLNDX);
 	}
 		
 	HSERVER CLoginServer::GetDefaultCluster()
 	{
-		ATLAS_ASSERT(m_hDefaultCluster);
+		ZION_ASSERT(m_hDefaultCluster);
 		return m_hDefaultCluster;
 	}
 
@@ -93,15 +93,15 @@ namespace Zion
 		};
 
 		m_hEp = NewEP(m_saEndPoint, handler, m_hPool, GetServerApp()->GetIOWorkers(), this);
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		if(!m_hEp) return false;
 		StartEP(m_hEp);
 
 		m_hTimerQueue = CreateTimerQueue();
-		ATLAS_ASSERT(m_hTimerQueue != NULL );
+		ZION_ASSERT(m_hTimerQueue != NULL );
 		
 		BOOL ret = CreateTimerQueueTimer(&m_hTimer, m_hTimerQueue, LoginTimerProc, this, 100, TIMER_PERIOD, 0);
-		ATLAS_ASSERT(ret);
+		ZION_ASSERT(ret);
 
 		return true;
 	}
@@ -122,14 +122,14 @@ namespace Zion
 		DeleteTimerQueue(m_hTimerQueue);
 		m_hTimerQueue = NULL;
 
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		StopEP(m_hEp);
 		while(IsRunning(m_hEp))
 		{
 			SwitchToThread();
 		}
 
-		ATLAS_ASSERT(m_hEp);
+		ZION_ASSERT(m_hEp);
 		StopEP(m_hEp);
 		while(IsRunning(m_hEp))
 		{
@@ -167,7 +167,7 @@ namespace Zion
 	void CLoginServer::OnData(HCONNECT hConn, _U32 len, const _U8* data)
 	{
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		if(!pConn) return;
 		_global_login_object_manager.Lock(pConn->GetLNDX());
 		pConn->OnRawData(len, data);
@@ -177,7 +177,7 @@ namespace Zion
 	void CLoginServer::OnDisconnected(HCONNECT hConn)
 	{
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		if(!pConn) return;
 		_U64 lndx = pConn->GetLNDX();
 		_global_login_object_manager.Lock(lndx);
@@ -245,9 +245,9 @@ namespace Zion
 	{
 		Zion::SLog("%s", __FUNCTION__);
 		HTCPEP hep = HepOf(hConn);
-		ATLAS_ASSERT(hep);
+		ZION_ASSERT(hep);
 		CLoginServer* pServer = (CLoginServer*)KeyOf(hep);
-		ATLAS_ASSERT(pServer);
+		ZION_ASSERT(pServer);
 		pServer->OnConnected(hConn);
 		return true;
 	}
@@ -256,7 +256,7 @@ namespace Zion
 	{
 		Zion::SLog("%s", __FUNCTION__);
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		pConn->GetServer()->OnDisconnected(hConn);
 		CloseConn(hConn);
 	}
@@ -265,7 +265,7 @@ namespace Zion
 	{
 		Zion::SLog("%s", __FUNCTION__);
 		CLoginClient* pConn = (CLoginClient*)KeyOf(hConn);
-		ATLAS_ASSERT(pConn);
+		ZION_ASSERT(pConn);
 		pConn->GetServer()->OnData(hConn, len, data);
 	}
 
@@ -280,7 +280,7 @@ namespace Zion
 
 		if(recvsize)
 		{
-			m_pRecvBuff = (_U8*)ATLAS_ALLOC(recvsize);
+			m_pRecvBuff = (_U8*)ZION_ALLOC(recvsize);
 			m_nRecvBuffLen = 0;
 			m_nRecvBuffSize = recvsize;
 		}
@@ -297,7 +297,7 @@ namespace Zion
 			//m_pServer->Unbind(m_nUID, m_nLNDX);
 		}
 
-		if(m_pRecvBuff) ATLAS_FREE(m_pRecvBuff);
+		if(m_pRecvBuff) ZION_FREE(m_pRecvBuff);
 		_global_login_object_manager.UnbindObject(m_nLNDX, this);
 	}
 	

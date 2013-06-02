@@ -1,5 +1,5 @@
-#ifndef __ATLAS_SERVER_BASE__
-#define __ATLAS_SERVER_BASE__
+#ifndef __ZION_SERVER_BASE__
+#define __ZION_SERVER_BASE__
 
 #include <list>
 

@@ -17,7 +17,7 @@ public:
 
 	const char* GetErrorInfo() { return m_errmsg.c_str(); }
 
-	void GetTemplateList(Zion::Vector<Zion::String>& list);
+	void GetTemplateList(Zion::Array<Zion::String>& list);
 
 	void ClearTemplateDefine();
 	bool LoadTemplateDefine(const char* filename);

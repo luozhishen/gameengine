@@ -28,9 +28,9 @@ namespace Zion
 		virtual void QueryPlayerResult(const SG_PLAYER& player) = 0;
 		virtual void QueryOtherPlayersResult(const SG_PLAYER* players, _U32 count) = 0;
 
-		virtual void QueryGeneralsDone(const Zion::Vector<SG_GENERAL>& generals) = 0;
-		virtual void QuerySoldiersDone(const Zion::Vector<SG_SOLDIER>& soldiers) = 0;
-		virtual void QueryBagDone(Zion::Vector<SG_EQUIPT_ITEM>& equipts, Zion::Vector<SG_USABLE_ITEM>& usables, Zion::Vector<SG_GEM_ITEM>& gems, Zion::Vector<SG_MATERIAL_ITEM>& material) = 0;
+		virtual void QueryGeneralsDone(const Zion::Array<SG_GENERAL>& generals) = 0;
+		virtual void QuerySoldiersDone(const Zion::Array<SG_SOLDIER>& soldiers) = 0;
+		virtual void QueryBagDone(Zion::Array<SG_EQUIPT_ITEM>& equipts, Zion::Array<SG_USABLE_ITEM>& usables, Zion::Array<SG_GEM_ITEM>& gems, Zion::Array<SG_MATERIAL_ITEM>& material) = 0;
 		virtual void EnhanceCoolDownResult(_U32 time) = 0;
 		virtual void RefreshEquipDone(const SG_EQUIPT_ITEM& euipt) = 0;
 		virtual void GemCombineResult(const SG_GEM_ITEM& gem) = 0;
@@ -86,7 +86,7 @@ namespace Zion
 
 		virtual void EnhanceTurboResult(_U8 ret, _U32 turbo_level,  _U32 wake_pt) = 0;
 		virtual void MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material) = 0;
-		virtual void QueryActionStatusResult(const _U32 *action_list, const Zion::Vector<_U8>& statusVec, const _U32 *available_list, _U32 count) = 0;
+		virtual void QueryActionStatusResult(const _U32 *action_list, const Zion::Array<_U8>& statusVec, const _U32 *available_list, _U32 count) = 0;
 
 		virtual void SellItemResult(_U8 ret, const A_UUID& uuid, _U32 item_id, _U32 count) = 0;
 
@@ -454,54 +454,54 @@ namespace Zion
 	public:
 		const _U32 GetLastServerID();
 		const SG_PLAYER& GetPlayerInfo();
-		const Zion::Vector<SG_GENERAL>& GetGenerals();
-		const Zion::Vector<SG_SOLDIER>& GetSoldiers();
-		const Zion::Vector<SG_EQUIPT_ITEM>& GetEquiptItem();
-		const Zion::Vector<SG_GEM_ITEM>& GetGemItem();
-		const Zion::Vector<SG_USABLE_ITEM>& GetUsableItem();
-		const Zion::Vector<SG_MATERIAL_ITEM>& GetMaterialItem();
-		const Zion::Vector<SG_INSTANCE_INFO>& GetInstanceInfo();
+		const Zion::Array<SG_GENERAL>& GetGenerals();
+		const Zion::Array<SG_SOLDIER>& GetSoldiers();
+		const Zion::Array<SG_EQUIPT_ITEM>& GetEquiptItem();
+		const Zion::Array<SG_GEM_ITEM>& GetGemItem();
+		const Zion::Array<SG_USABLE_ITEM>& GetUsableItem();
+		const Zion::Array<SG_MATERIAL_ITEM>& GetMaterialItem();
+		const Zion::Array<SG_INSTANCE_INFO>& GetInstanceInfo();
 		const SG_SERVER_INFO& GetCurrentServerInfo();
 
 		const int GetServerTime();
 		SG_ITEM* GetItemByUUID(const A_UUID& uuid);
-		void GetFinishedQuest(Zion::Vector<SG_QUEST_LIVE_INFO>& quest_vec);
+		void GetFinishedQuest(Zion::Array<SG_QUEST_LIVE_INFO>& quest_vec);
 
-		void GetNewSoldierList(Zion::Vector<_U32>& soldier_lists);
+		void GetNewSoldierList(Zion::Array<_U32>& soldier_lists);
 		bool HasNewSoldier();
 		bool IsNewSoldier(_U32 soldier_id);
 		void ClearNewSoldierList();
 
-		void GetNewItemList(Zion::Vector<A_UUID>& item_lists);
+		void GetNewItemList(Zion::Array<A_UUID>& item_lists);
 		bool HasNewItem();
 		bool IsNewItem(const A_UUID& uuid);
 		void ClearNewItemList();
 
-		void GetNewApplyerList(Zion::Vector<_U32>& applyer_list);
+		void GetNewApplyerList(Zion::Array<_U32>& applyer_list);
 		bool HasNewApplyer();
 		bool IsNewApplyer(_U32 applyer_id);
 		void ClearNewApplyerList();
 
 		void SyncForInit();
-		void SyncSet(const Zion::Vector<_U8> vecSync);
+		void SyncSet(const Zion::Array<_U8> vecSync);
 		void SyncSuccNotify();
 
 	private:
 		CSGClientCallback* m_callback;
 		SG_PLAYER m_player;
-		Zion::Vector<SG_GENERAL> m_generals;
-		Zion::Vector<SG_SOLDIER> m_soldiers;
-		Zion::Vector<SG_EQUIPT_ITEM> m_equipts;
-		Zion::Vector<SG_USABLE_ITEM> m_usables;
-		Zion::Vector<SG_GEM_ITEM> m_gems;
-		Zion::Vector<SG_MATERIAL_ITEM> m_materials;
-		Zion::Vector<SG_QUEST_LIVE_INFO> m_quests;
-		Zion::Vector<SG_INSTANCE_INFO> m_instances;
+		Zion::Array<SG_GENERAL> m_generals;
+		Zion::Array<SG_SOLDIER> m_soldiers;
+		Zion::Array<SG_EQUIPT_ITEM> m_equipts;
+		Zion::Array<SG_USABLE_ITEM> m_usables;
+		Zion::Array<SG_GEM_ITEM> m_gems;
+		Zion::Array<SG_MATERIAL_ITEM> m_materials;
+		Zion::Array<SG_QUEST_LIVE_INFO> m_quests;
+		Zion::Array<SG_INSTANCE_INFO> m_instances;
 
 		int m_nServerTimeDelta;
 		_U64 m_nConnectPingTime;
 
-		Zion::Vector<SG_SERVER_INFO> m_serverList;		//目前的server
+		Zion::Array<SG_SERVER_INFO> m_serverList;		//目前的server
 		_U32 m_lastServerID;							//最后一次登陆的server的ID
 
 		static int ms_nLastRanderTime;					//上次一tick的时间

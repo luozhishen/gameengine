@@ -26,16 +26,16 @@ END_EVENT_TABLE()
 
 CRefSelDlg::CRefSelDlg(wxWindow* pParent, wxString wxRefType) : wxDialog(pParent, wxID_ANY, wxT("Ref Select"), wxDefaultPosition, wxSize(600, 300), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
-	m_pTextCtrl = ATLAS_NEW wxTextCtrl(this, ID_REF_TEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_LEFT);
+	m_pTextCtrl = ZION_NEW wxTextCtrl(this, ID_REF_TEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_LEFT);
 
-	wxBoxSizer* pSizer2 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer2->AddStretchSpacer();
-	pSizer2->Add(ATLAS_NEW wxButton(this, wxID_OK, wxT("Confirm")), 0, wxALIGN_RIGHT | wxALL, 5);
-	pSizer2->Add(ATLAS_NEW wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALIGN_RIGHT | wxALL, 5);
+	pSizer2->Add(ZION_NEW wxButton(this, wxID_OK, wxT("Confirm")), 0, wxALIGN_RIGHT | wxALL, 5);
+	pSizer2->Add(ZION_NEW wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALIGN_RIGHT | wxALL, 5);
 
-	wxBoxSizer* pSizer1 = ATLAS_NEW wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxVERTICAL);
 	pSizer1->Add(m_pTextCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	m_pUUIDList = ATLAS_NEW wxListCtrl(this, ID_REF_LIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+	m_pUUIDList = ZION_NEW wxListCtrl(this, ID_REF_LIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
 	pSizer1->Add(m_pUUIDList, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
@@ -54,9 +54,9 @@ CRefSelDlg::~CRefSelDlg()
 
 void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 {
-	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Zion::Array<const DDLReflect::STRUCT_INFO*> list;
 	Zion::ContentObject::GetTypeList(list);
-	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Array<const DDLReflect::STRUCT_INFO*>::iterator i;
 	const DDLReflect::STRUCT_INFO* info = NULL;
 	for(i=list.begin(); i!=list.end(); i++)
 	{

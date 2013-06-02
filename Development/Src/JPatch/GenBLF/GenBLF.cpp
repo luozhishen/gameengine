@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <ZionBase.h>
 
-static bool _dir_listfile(Zion::String basepath, Zion::String path, Zion::Vector<Zion::String>& files)
+static bool _dir_listfile(Zion::String basepath, Zion::String path, Zion::Array<Zion::String>& files)
 {
 	_finddata_t info;
 	Zion::String strfind = basepath + path + "*";
@@ -35,7 +35,7 @@ static bool _dir_listfile(Zion::String basepath, Zion::String path, Zion::Vector
 	return true;
 }
 
-bool dir_listfile(const char* basepath, Zion::Vector<Zion::String>& files)
+bool dir_listfile(const char* basepath, Zion::Array<Zion::String>& files)
 {
 	files.clear();
 	return _dir_listfile(basepath, "", files);
@@ -59,7 +59,7 @@ bool load_patchinfo(const char* filename, std::map<Zion::String, std::list<SECTI
 		if(line.empty()) continue;
 		if(line.find("[PATCHINFO]")==Zion::String::npos) continue;
 
-		Zion::Vector<Zion::String> fields;
+		Zion::Array<Zion::String> fields;
 		Zion::StringSplit(line, ' ', fields);
 		if(fields.size()!=7) continue;
 
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 	}
 
 	Zion::String basedir = argv[2];
-	Zion::Vector<Zion::String> list;
+	Zion::Array<Zion::String> list;
 	dir_listfile(basedir.c_str(), list);
 	FILE* fp;
 	char* mem;

@@ -100,7 +100,7 @@ namespace Zion
 				CStressClient* pClient = stressMgr.GetClient(uid);
 				_OnNewClient(uid);
 
-				Zion::Vector<Script_Case>::iterator script_it = (*it).scripts.begin();
+				Zion::Array<Script_Case>::iterator script_it = (*it).scripts.begin();
 				for(; script_it != (*it).scripts.end(); ++script_it)
 				{
 					CStressCase* pCase = pClient->NewStressCase((*script_it).case_name.c_str());
@@ -135,34 +135,34 @@ namespace Zion
 			m_strPath = "svr_case.xml";
 		}
 
-		TiXmlElement* rootElem = ATLAS_NEW TiXmlElement("ROOT");
+		TiXmlElement* rootElem = ZION_NEW TiXmlElement("ROOT");
 		xmldoc.LinkEndChild(rootElem);
 
-		TiXmlElement* ParamElem = ATLAS_NEW TiXmlElement("SERVER_PARAM");
+		TiXmlElement* ParamElem = ZION_NEW TiXmlElement("SERVER_PARAM");
 		rootElem->LinkEndChild(ParamElem);
 		
 		Zion::Map<Zion::String, Zion::String> params = Zion::CClientApp::GetDefault()->GetParams();
 		Zion::Map<Zion::String, Zion::String>::iterator it = params.begin();
 		for(int i = 0; it != params.end(); ++it, ++i)
 		{
-			TiXmlElement* elem = ATLAS_NEW TiXmlElement("PARAM");
+			TiXmlElement* elem = ZION_NEW TiXmlElement("PARAM");
 			elem->SetAttribute("key", it->first.c_str());
 			elem->SetAttribute("value", it->second.c_str());
 			ParamElem->LinkEndChild(elem);
 		}
 
-		TiXmlElement* ScriptElem = ATLAS_NEW TiXmlElement("SCRIPT");
+		TiXmlElement* ScriptElem = ZION_NEW TiXmlElement("SCRIPT");
 		rootElem->LinkEndChild(ScriptElem);
 		
 		
 		for(SERVER_CASES::iterator it = m_ServerCases.begin(); it != m_ServerCases.end(); ++it)
 		{
-			TiXmlElement* ClientElem = ATLAS_NEW TiXmlElement("CLIENT");
+			TiXmlElement* ClientElem = ZION_NEW TiXmlElement("CLIENT");
 			ClientElem->SetAttribute("count", (*it).count);
 			
 			for(_U32 i = 0; i < (*it).scripts.size(); ++i)
 			{
-				TiXmlElement* CaseElem = ATLAS_NEW TiXmlElement("CASE");
+				TiXmlElement* CaseElem = ZION_NEW TiXmlElement("CASE");
 				CaseElem->SetAttribute("casename", (*it).scripts[i].case_name.c_str());
 				CaseElem->SetAttribute("param1", (*it).scripts[i].param1.c_str());
 				ClientElem->InsertEndChild(*(TiXmlNode*)CaseElem);

@@ -13,7 +13,7 @@
 namespace Zion
 {
 
-	void StringSplit(const Zion::String& value, char splitchar, Zion::Vector<Zion::String>& result)
+	void StringSplit(const Zion::String& value, char splitchar, Zion::Array<Zion::String>& result)
 	{
 		result.clear();
 		Zion::StringStream sstr(value);
@@ -68,20 +68,20 @@ namespace Zion
 	}
 
 #ifndef IPHONE
-	class CAtlasExeDirInit
+	class CZionExeDirInit
 	{
 	public:
-		CAtlasExeDirInit()
+		CZionExeDirInit()
 		{
 #ifdef WIN32
 			if(GetModuleFileNameA(NULL, path, sizeof(path)))
 			{
 				char curpath[400];
 				*(strrchr(path, '\\')+1) = '\0';
-				ATLAS_VERIFY(getcwd(curpath, sizeof(curpath)));
-				ATLAS_VERIFY(chdir(path)==0);
-				ATLAS_VERIFY(getcwd(path, sizeof(path)));
-				ATLAS_VERIFY(chdir(curpath)==0);
+				ZION_VERIFY(getcwd(curpath, sizeof(curpath)));
+				ZION_VERIFY(chdir(path)==0);
+				ZION_VERIFY(getcwd(path, sizeof(path)));
+				ZION_VERIFY(chdir(curpath)==0);
 			}
 			else
 #endif
@@ -97,7 +97,7 @@ namespace Zion
 #endif
 				{
 					char curpath[400];
-					ATLAS_VERIFY(getcwd(curpath, sizeof(curpath)));
+					ZION_VERIFY(getcwd(curpath, sizeof(curpath)));
 					char exepath[300];
 					strcpy(exepath, __argv[0]);
 					char* pos1 = strrchr(exepath, '\\');
@@ -111,23 +111,23 @@ namespace Zion
 					{
 						*pos1 = '\0';
 						chdir(exepath);
-						ATLAS_VERIFY(getcwd(path, sizeof(path)));
+						ZION_VERIFY(getcwd(path, sizeof(path)));
 						chdir(curpath);
 					}
 				}
 			}
 
 			size_t slen = strlen(path);
-			ATLAS_ASSERT(slen>0);
+			ZION_ASSERT(slen>0);
 			if(path[slen-1]!='\\' && path[slen-1]!='/')
 			{
-				path[slen] = ATLAS_PATH_SLASH;
+				path[slen] = ZION_PATH_SLASH;
 				path[slen+1] = '\0';
 			}
 		}
 		char path[400];
 	};
-	static CAtlasExeDirInit __global_exe_dir_init;
+	static CZionExeDirInit __global_exe_dir_init;
 	const char* GetExeDir()
 	{
 		return __global_exe_dir_init.path;

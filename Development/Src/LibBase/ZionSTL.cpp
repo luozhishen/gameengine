@@ -4,15 +4,15 @@
 namespace Zion
 {
 
-	void* AtlasMalloc(unsigned int size)
+	void* ZionMalloc(unsigned int size)
 	{
 		return malloc((size_t)size);
 	}
-	void* AtlasRealloc(void* p, unsigned int size)
+	void* ZionRealloc(void* p, unsigned int size)
 	{
 		return realloc(p, (size_t)size);
 	}
-	void AtlasFree(void* p)
+	void ZionFree(void* p)
 	{
 		free(p);
 	}

@@ -15,7 +15,7 @@ public:
 	bool Open(const Zion::String& sFileName, bool bVisible);
 	bool Save();
 	bool Quit();
-	bool GetExcelSheets(Zion::Vector<Zion::String>& vSheets);
+	bool GetExcelSheets(Zion::Array<Zion::String>& vSheets);
 	bool SetActiveSheet(const Zion::String& sSheetName);
 	bool SetCellValue(const Zion::String& sRange, const Zion::String& sValue);
 	bool GetCellValue(const Zion::String& sRange, Zion::String& sValue);

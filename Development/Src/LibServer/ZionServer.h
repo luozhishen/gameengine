@@ -1,5 +1,5 @@
-#ifndef __ATLAS_SERVER__
-#define __ATLAS_SERVER__
+#ifndef __ZION_SERVER__
+#define __ZION_SERVER__
 
 #include "ServerTask.h"
 #include "ServerApp.h"

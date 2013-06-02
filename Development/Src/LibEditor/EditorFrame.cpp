@@ -54,7 +54,7 @@ END_EVENT_TABLE()
 CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Zion Editor - "))
 {
 	wxString title = GetTitle();
-	title = title + wxString::FromUTF8(Zion::AtlasGameName());
+	title = title + wxString::FromUTF8(Zion::ZionGameName());
 	SetTitle(title);
 
 	// menu
@@ -69,7 +69,7 @@ CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Zion Editor - "))
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::AtlasGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::ZionGameName()));
 		m_FrameData.x = pConfig->Read(wxT("x"), 50);
 		m_FrameData.y = pConfig->Read(wxT("y"), 50);
 		m_FrameData.w = pConfig->Read(wxT("w"), 350);
@@ -85,7 +85,7 @@ CEditorFrame::~CEditorFrame()
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::AtlasGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::ZionGameName()));
 		pConfig->Write(wxT("x"), (long)m_FrameData.x);
 		pConfig->Write(wxT("y"), (long)m_FrameData.y);
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
@@ -96,14 +96,14 @@ CEditorFrame::~CEditorFrame()
 
 void CEditorFrame::InitMenu()
 {
-	SetMenuBar(ATLAS_NEW wxMenuBar);
-	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&File"));
+	SetMenuBar(ZION_NEW wxMenuBar);
+	GetMenuBar()->Append(ZION_NEW wxMenu, wxT("&File"));
 	GetMenuBar()->GetMenu(0)->Append(ID_RELOAD, wxT("&Reload Content\tAlt-F"), wxT("Discard current modify"));
 	GetMenuBar()->GetMenu(0)->Append(ID_SAVE, wxT("&Save Content\tAlt-S"), wxT("Save content to file"));
 	GetMenuBar()->GetMenu(0)->AppendSeparator();
 	GetMenuBar()->GetMenu(0)->Append(ID_QUIT, wxT("E&xit\tAlt-X"), wxT("Exit the program"));
 
-	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Tools"));
+	GetMenuBar()->Append(ZION_NEW wxMenu, wxT("&Tools"));
 	GetMenuBar()->GetMenu(1)->Append(ID_COOK_SAVE, wxT("Save Cook Data"), wxT("Import from excel"));
 	GetMenuBar()->GetMenu(1)->Append(ID_COOK_LOAD, wxT("Load Cook Data"), wxT("Import from excel"));
 	GetMenuBar()->GetMenu(1)->AppendSeparator();
@@ -112,18 +112,18 @@ void CEditorFrame::InitMenu()
 	GetMenuBar()->GetMenu(1)->Append(ID_GEN_DESKEY, wxT("&Generate DESKEY..."), wxT("Generate DESKEY"));
 	GetMenuBar()->GetMenu(1)->Append(ID_BUILD_INDEX, wxT("&Build Index"), wxT("Build index for Content Object"));
 
-	GetMenuBar()->Append(ATLAS_NEW wxMenu, wxT("&Help"));
+	GetMenuBar()->Append(ZION_NEW wxMenu, wxT("&Help"));
 	GetMenuBar()->GetMenu(2)->Append(ID_ABOUT, wxT("&About"), wxT("Show About Dailog"));
 }
 
 void CEditorFrame::InitClient()
 {
-	wxNotebook* pTab = ATLAS_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
+	wxNotebook* pTab = ZION_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
 
 	Zion::Map<int, const DDLReflect::STRUCT_INFO*> content;
 	Zion::Map<int, const DDLReflect::STRUCT_INFO*> live;
-	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
-	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Array<const DDLReflect::STRUCT_INFO*> list;
+	Zion::Array<const DDLReflect::STRUCT_INFO*>::iterator i;
 
 	Zion::ContentObject::GetTypeList(list);
 	for(i=list.begin(); i!=list.end(); i++)
@@ -136,9 +136,9 @@ void CEditorFrame::InitClient()
 		live[Zion::LiveObject::GetTypeId((*i)->name)] = *i;
 	}
 
-	CObjectDefineView* pView = ATLAS_NEW CObjectDefineView(pTab);
+	CObjectDefineView* pView = ZION_NEW CObjectDefineView(pTab);
 	pTab->AddPage(pView, wxT("Object Define"));
-	m_pContentDataView = ATLAS_NEW CContentDataView(pTab);
+	m_pContentDataView = ZION_NEW CContentDataView(pTab);
 	pTab->AddPage(m_pContentDataView, wxT("Content Editor"));
 
 	pView->Add(DDLReflect::GetStruct<A_CONTENT_OBJECT>(), content);
@@ -188,7 +188,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 	case ID_COOK_SAVE:
 		if(m_pContentDataView->CheckModify(false))
 		{
-			if(!Zion::ContentObject::SaveContentToBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+			if(!Zion::ContentObject::SaveContentToBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::ZionGameDir()).c_str(), "e80cb90fe7042fd9"))
 			{
 				wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
 			}
@@ -202,7 +202,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		if(m_pContentDataView->CheckModify(true))
 		{
 			Zion::ContentObject::ClearContents();
-			if(!Zion::ContentObject::LoadContentFromBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::AtlasGameDir()).c_str(), "e80cb90fe7042fd9"))
+			if(!Zion::ContentObject::LoadContentFromBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::ZionGameDir()).c_str(), "e80cb90fe7042fd9"))
 			{
 				wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
 			}
@@ -216,7 +216,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		if(m_pContentDataView->CheckModify(true))
 		{
 			CImportDlg dlg(this);
-			Zion::String path = Zion::StringFormat("%s%s", Zion::AtlasGameDir(), "Config/ContentTemplate.json");
+			Zion::String path = Zion::StringFormat("%s%s", Zion::ZionGameDir(), "Config/ContentTemplate.json");
 			if(dlg.LoadTemplateDefine(path.c_str()))
 			{
 				dlg.ShowModal();
@@ -250,7 +250,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 void CEditorFrame::OnHelpMenu(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Zion Editor for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::AtlasGameName()));
+	txt.Printf(wxT("Zion Editor for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::ZionGameName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 

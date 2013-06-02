@@ -1,5 +1,5 @@
-#ifndef __ATLAS_EDITOR_FRAME__
-#define __ATLAS_EDITOR_FRAME__
+#ifndef __ZION_EDITOR_FRAME__
+#define __ZION_EDITOR_FRAME__
 
 class CContentDataView;
 

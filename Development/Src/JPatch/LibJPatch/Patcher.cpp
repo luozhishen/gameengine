@@ -88,7 +88,7 @@ namespace JPatch
 			}
 			else if(MOREQUESTSTATE_DONE==MORequestStatus(_checkVersion))
 			{
-				Zion::Vector<Zion::String> params;
+				Zion::Array<Zion::String> params;
 				Zion::StringSplit(MORequestGetResult(_checkVersion), ' ', params);
 				MORequestDestory(_checkVersion);
 				_checkVersion = NULL;

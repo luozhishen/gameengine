@@ -216,7 +216,7 @@ bool COLEAutoExcelWrapper::Save()
 	return SUCCEEDED(m_hRes);
 }
 
-bool COLEAutoExcelWrapper::GetExcelSheets(Zion::Vector<Zion::String>& vSheets)
+bool COLEAutoExcelWrapper::GetExcelSheets(Zion::Array<Zion::String>& vSheets)
 {
 	if(!m_pExcelSheets)
 	{

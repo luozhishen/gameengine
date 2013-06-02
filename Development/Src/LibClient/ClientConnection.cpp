@@ -14,7 +14,7 @@ namespace Zion
 		m_nLoginDataSize = 0;
 		m_nState = CClient::STATE_NA;
 		m_nErrCode = CClient::ERRCODE_SUCCESSED;
-		m_pRecvBuff = (_U8*)ATLAS_ALLOC(recvsize);
+		m_pRecvBuff = (_U8*)ZION_ALLOC(recvsize);
 		m_nRecvBuffLen = 0;
 		m_nRecvBuffSize = recvsize;
 		m_bNeedRedirect = false;
@@ -22,7 +22,7 @@ namespace Zion
 
 	CClientConnection::~CClientConnection()
 	{
-		ATLAS_FREE(m_pRecvBuff);
+		ZION_FREE(m_pRecvBuff);
 	}
 
 	bool CClientConnection::Login(const char* pUrl, const char* pToken)
@@ -62,7 +62,7 @@ namespace Zion
 			Disconnect();
 			break;
 		default:
-			ATLAS_ASSERT(0);
+			ZION_ASSERT(0);
 		}
 	}
 
@@ -127,7 +127,7 @@ namespace Zion
 		}
 		else
 		{
-			ATLAS_ASSERT(m_nState!=CClient::STATE_NA);
+			ZION_ASSERT(m_nState!=CClient::STATE_NA);
 			if(m_nState==CClient::STATE_LOGINED)
 			{
 				m_nState = CClient::STATE_NA;
@@ -191,7 +191,7 @@ namespace Zion
 				Disconnect();
 				break;
 			default:
-				ATLAS_ASSERT(0);
+				ZION_ASSERT(0);
 				SetErrorCode(CClient::ERRCODE_UNKOWN);
 				Disconnect();
 				break;
@@ -213,7 +213,7 @@ namespace Zion
 		}
 		else
 		{
-			ATLAS_ASSERT(!"invalid client state");
+			ZION_ASSERT(!"invalid client state");
 		}
 	}
 

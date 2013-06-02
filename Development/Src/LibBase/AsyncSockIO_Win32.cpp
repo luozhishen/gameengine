@@ -1,4 +1,4 @@
-#ifndef WITHOUT_ATLAS_ASYNCIO
+#ifndef WITHOUT_ZION_ASYNCIO
 
 #ifdef WIN32
 
@@ -72,7 +72,7 @@ namespace Zion
 			InitializeSListHead(&input_buffers);
 			InitializeSListHead(&output_buffers);
 			while(input_count<icount) {
-				AIO_CONTEXT* ctx = (AIO_CONTEXT*)ATLAS_ALIGN_ALLOC(AIO_CONTEXT_SIZE+isize);
+				AIO_CONTEXT* ctx = (AIO_CONTEXT*)ZION_ALIGN_ALLOC(AIO_CONTEXT_SIZE+isize);
 				if(ctx) {
 					ZeroMemory(&ctx->overlapped, sizeof(WSAOVERLAPPED));
 					ctx->wsabuf.buf = (char *)ctx->buffer;
@@ -85,7 +85,7 @@ namespace Zion
 				}
 			}
 			while(output_count<ocount) {
-				AIO_CONTEXT* ctx = (AIO_CONTEXT*)ATLAS_ALIGN_ALLOC(AIO_CONTEXT_SIZE+osize);
+				AIO_CONTEXT* ctx = (AIO_CONTEXT*)ZION_ALIGN_ALLOC(AIO_CONTEXT_SIZE+osize);
 				if(ctx) {
 					ZeroMemory(&ctx->overlapped, sizeof(WSAOVERLAPPED));
 					ctx->wsabuf.buf = (char *)ctx->buffer;
@@ -105,7 +105,7 @@ namespace Zion
 			while(deleted!=input_count) {
 				p = InterlockedPopEntrySList(&input_buffers);
 				if(p) {
-					ATLAS_ALIGN_FREE(p);
+					ZION_ALIGN_FREE(p);
 					++deleted;
 				} else {
 					Sleep(1);
@@ -115,7 +115,7 @@ namespace Zion
 			while(deleted!=output_count) {
 				p = InterlockedPopEntrySList(&output_buffers);
 				if(p) {
-					ATLAS_ALIGN_FREE(p);
+					ZION_ALIGN_FREE(p);
 					++deleted;
 				} else {
 					Sleep(1);
@@ -125,7 +125,7 @@ namespace Zion
 		AIO_CONTEXT* LockInputContext() {
 			AIO_CONTEXT* ctx = (AIO_CONTEXT*)InterlockedPopEntrySList(&input_buffers);
 			if(!ctx) {
-				ctx = (AIO_CONTEXT*)ATLAS_ALIGN_ALLOC(AIO_CONTEXT_SIZE+input_size);
+				ctx = (AIO_CONTEXT*)ZION_ALIGN_ALLOC(AIO_CONTEXT_SIZE+input_size);
 				if(!ctx) {
 					return NULL;
 				} else {
@@ -141,7 +141,7 @@ namespace Zion
 		AIO_CONTEXT* LockOutputContext() {
 			AIO_CONTEXT* ctx = (AIO_CONTEXT*)InterlockedPopEntrySList(&output_buffers);
 			if(!ctx) {
-				ctx = (AIO_CONTEXT*)ATLAS_ALIGN_ALLOC(AIO_CONTEXT_SIZE+output_size);
+				ctx = (AIO_CONTEXT*)ZION_ALIGN_ALLOC(AIO_CONTEXT_SIZE+output_size);
 				if(!ctx) {
 					return NULL;
 				} else {
@@ -168,13 +168,13 @@ namespace Zion
 
 	HIOPOOL AllocIoBufferPool(_U32 isize, _U32 osize, _U32 icount, _U32 ocount)
 	{
-		AIO_BUFFER_POOL* ret = (AIO_BUFFER_POOL*)ATLAS_ALIGN_ALLOC(sizeof(AIO_BUFFER_POOL));
+		AIO_BUFFER_POOL* ret = (AIO_BUFFER_POOL*)ZION_ALIGN_ALLOC(sizeof(AIO_BUFFER_POOL));
 		if(ret) {
 			if(ret->init(isize, icount, osize, ocount)) {
 				return ret;
 			}
 			ret->fini();
-			ATLAS_ALIGN_FREE(ret);
+			ZION_ALIGN_FREE(ret);
 		}
 		return NULL;
 	}
@@ -182,7 +182,7 @@ namespace Zion
 	void FreeIoBufferPool(HIOPOOL hpool)
 	{
 		((AIO_BUFFER_POOL*)hpool)->fini();
-		ATLAS_ALIGN_FREE(hpool);
+		ZION_ALIGN_FREE(hpool);
 	}
 
 	_U8* LockIoBuffer(HIOPOOL hpool)
@@ -243,7 +243,7 @@ namespace Zion
 	#else
 				if(!lpfnDisconnectEx(sock, &static_ctx.overlapped, end_point ? TF_REUSE_SOCKET : 0, 0)) {
 	#endif
-					ATLAS_ASSERT(WSAGetLastError()==ERROR_IO_PENDING);
+					ZION_ASSERT(WSAGetLastError()==ERROR_IO_PENDING);
 				}
 			}
 		}
@@ -298,7 +298,7 @@ namespace Zion
 		}
 		void Stop() {
 			running = 0;
-			ATLAS_ASSERT(lpCancelIoEx);
+			ZION_ASSERT(lpCancelIoEx);
 			if(sock!=INVALID_SOCKET) lpCancelIoEx((HANDLE)sock, NULL);
 		}
 		bool init(LPSOCKADDR_IN addr, ASOCKIO_HANDLER& handler, AIO_BUFFER_POOL* hpool, AIO_WORKERS* hworkers, PVOID key, DWORD count);
@@ -325,7 +325,7 @@ namespace Zion
 		}
 		void Stop() {
 			running = 0;
-			ATLAS_ASSERT(lpCancelIoEx);
+			ZION_ASSERT(lpCancelIoEx);
 			if(sock!=INVALID_SOCKET) lpCancelIoEx((HANDLE)sock, NULL);
 		}
 		bool init(PSOCKADDR_IN, PFN_ON_DATAGRAM, AIO_BUFFER_POOL*, AIO_WORKERS*, PVOID);
@@ -363,7 +363,7 @@ namespace Zion
 	static inline void DelConn(AIO_CONNECTION* conn)
 	{
 		closesocket(conn->sock);
-		ATLAS_ALIGN_FREE(conn);
+		ZION_ALIGN_FREE(conn);
 	}
 
 	struct AIO_WORKERS {
@@ -374,7 +374,7 @@ namespace Zion
 		bool init(DWORD count) {
 			worker_count = 0;
 			worker_mark = TlsAlloc();
-			ATLAS_ASSERT(TLS_OUT_OF_INDEXES!=worker_mark);
+			ZION_ASSERT(TLS_OUT_OF_INDEXES!=worker_mark);
 			iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 			if(!iocp) return false;
 			for(DWORD iter=0; iter<count; ++iter) {
@@ -414,7 +414,7 @@ namespace Zion
 						conn = tcpep->current_conn;
 						tcpep->Accept(res);
 						if(res) {
-							ATLAS_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (const char *)&tcpep->sock, sizeof(tcpep->sock))==0);
+							ZION_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (const char *)&tcpep->sock, sizeof(tcpep->sock))==0);
 							conn->connected = 1;
 							InterlockedIncrement(&conn->iorefs);
 							bool ret = conn->handler.OnConnected((HCONNECT)conn);
@@ -435,7 +435,7 @@ namespace Zion
 					case SIOP_CONNECT:
 						conn = (AIO_CONNECTION*)key;
 						if(res) {
-							ATLAS_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0)==0);
+							ZION_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0)==0);
 							conn->connected = 1;
 							InterlockedIncrement(&conn->iorefs);
 							bool ret = conn->handler.OnConnected((HCONNECT)conn);
@@ -552,19 +552,19 @@ namespace Zion
 
 	static AIO_CONNECTION* NewConn(ASOCKIO_HANDLER& handler, AIO_BUFFER_POOL* pp, AIO_WORKERS* pw, AIO_TCP_END_POINT* pep)
 	{
-		AIO_CONNECTION* conn = (AIO_CONNECTION*)ATLAS_ALIGN_ALLOC(sizeof(AIO_CONNECTION));
+		AIO_CONNECTION* conn = (AIO_CONNECTION*)ZION_ALIGN_ALLOC(sizeof(AIO_CONNECTION));
 		if(conn) {
 			conn->sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 			if(conn->sock!=INVALID_SOCKET) {
 				if(CreateIoCompletionPort((HANDLE)conn->sock, pw->iocp, (ULONG_PTR)conn, 0)) {
 					DWORD val;
 					val = 0;
-					ATLAS_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
+					ZION_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
 					val = 256*1024;
-					ATLAS_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
+					ZION_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
 					val = 1;
-					ATLAS_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val))==0);
-					ATLAS_VERIFY(setsockopt(conn->sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val))==0);
+					ZION_VERIFY(setsockopt(conn->sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val))==0);
+					ZION_VERIFY(setsockopt(conn->sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val))==0);
 					conn->handler = handler;
 					conn->buffer_pool = pp;
 					conn->workers = pw;
@@ -586,15 +586,15 @@ namespace Zion
 				}
 				closesocket(conn->sock);
 			}
-			ATLAS_ALIGN_FREE(conn);
+			ZION_ALIGN_FREE(conn);
 		}
 		return NULL;
 	}
 
 	BOOL AIO_CONNECTION::Refresh()
 	{
-		ATLAS_ASSERT(0==iorefs);
-		ATLAS_ASSERT(0==iopends);
+		ZION_ASSERT(0==iorefs);
+		ZION_ASSERT(0==iopends);
 		ioreflimit = iopendlimit = LONG_MAX;
 	#ifndef	NO_OS_BUG_FIX
 		closesocket(sock);
@@ -603,12 +603,12 @@ namespace Zion
 			if(CreateIoCompletionPort((HANDLE)sock, workers->iocp, (ULONG_PTR)this, 0)) {
 				DWORD val;
 				val = 0;
-				ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
+				ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
 				val = 256*1024;
-				ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
+				ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
 				val = 1;
-				ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val))==0);
-				ATLAS_VERIFY(setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val))==0);
+				ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val))==0);
+				ZION_VERIFY(setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val))==0);
 				return TRUE;
 			}
 			closesocket(sock);
@@ -627,13 +627,13 @@ namespace Zion
 		if((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))==INVALID_SOCKET) return false;
 		DWORD val;
 		val = 0;
-		ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
+		ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
 		val = 256*1024;
-		ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
+		ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
 		val = 1;
-		ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val))==0);
-		ATLAS_VERIFY(setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val))==0);
-		free_conns = (PSLIST_HEADER)ATLAS_ALIGN_ALLOC(sizeof(SLIST_HEADER));
+		ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val))==0);
+		ZION_VERIFY(setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val))==0);
+		free_conns = (PSLIST_HEADER)ZION_ALIGN_ALLOC(sizeof(SLIST_HEADER));
 		if(!free_conns) return false;
 		InitializeSListHead(free_conns);
 		ZeroMemory(&static_ctx.overlapped, sizeof(WSAOVERLAPPED));
@@ -665,12 +665,12 @@ namespace Zion
 		DWORD dwBytesReturned;
 		DWORD val;
 		val = 0;
-		ATLAS_VERIFY(WSAIoctl(sock, SIO_UDP_CONNRESET, &val, sizeof(val), NULL, 0, &dwBytesReturned, NULL, NULL)==0);
-		ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
+		ZION_VERIFY(WSAIoctl(sock, SIO_UDP_CONNRESET, &val, sizeof(val), NULL, 0, &dwBytesReturned, NULL, NULL)==0);
+		ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val))==0);
 		val = 1024*1024;
-		ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
+		ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val))==0);
 		val = 1;
-		ATLAS_VERIFY(setsockopt(sock, SOL_SOCKET, SO_BROADCAST, (const char *)&val, sizeof(val))==0);
+		ZION_VERIFY(setsockopt(sock, SOL_SOCKET, SO_BROADCAST, (const char *)&val, sizeof(val))==0);
 		if(CreateIoCompletionPort((HANDLE)sock, pw->iocp, (ULONG_PTR)this, 0) && bind(sock, (const sockaddr *)addr, sizeof(*addr))==0) {
 			pfnOnDatagram = pfn;
 			buffer_pool = pp;
@@ -690,7 +690,7 @@ namespace Zion
 			while(QueryDepthSList(free_conns)) {
 				DelConn((AIO_CONNECTION*)InterlockedPopEntrySList(free_conns));
 			}
-			ATLAS_ALIGN_FREE(free_conns);
+			ZION_ALIGN_FREE(free_conns);
 		}
 		if(sock!=INVALID_SOCKET) closesocket(sock);
 	}
@@ -735,7 +735,7 @@ namespace Zion
 				InterlockedPushEntrySList(free_conns, save_curr_conn);
 			} else {
 				InterlockedDecrement((LONG *)&total_conns);
-				ATLAS_ALIGN_FREE(save_curr_conn);
+				ZION_ALIGN_FREE(save_curr_conn);
 			}
 			InterlockedDecrement(&iorefs);
 		}
@@ -743,13 +743,13 @@ namespace Zion
 
 	HWORKERS CreateWorkers(_U32 count)
 	{
-		AIO_WORKERS* ret = (AIO_WORKERS*)ATLAS_ALIGN_ALLOC(sizeof(AIO_WORKERS));
+		AIO_WORKERS* ret = (AIO_WORKERS*)ZION_ALIGN_ALLOC(sizeof(AIO_WORKERS));
 		if(ret) {
 			if(ret->init(count)) {
 				return((HWORKERS)ret);
 			}
 			ret->fini();
-			ATLAS_ALIGN_FREE(ret);
+			ZION_ALIGN_FREE(ret);
 		}
 		return NULL;
 	}
@@ -757,7 +757,7 @@ namespace Zion
 	void KillWorkers(HWORKERS hworkers)
 	{
 		((AIO_WORKERS*)hworkers)->fini();
-		ATLAS_ALIGN_FREE(hworkers);
+		ZION_ALIGN_FREE(hworkers);
 	}
 
 	bool IncWorker(HWORKERS hworkers)
@@ -877,7 +877,7 @@ namespace Zion
 
 	HTCPEP NewEP(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key, _U32 count)
 	{
-		AIO_TCP_END_POINT* ep = (AIO_TCP_END_POINT*)ATLAS_ALIGN_ALLOC(sizeof(AIO_TCP_END_POINT));
+		AIO_TCP_END_POINT* ep = (AIO_TCP_END_POINT*)ZION_ALIGN_ALLOC(sizeof(AIO_TCP_END_POINT));
 		if(ep) {
 			SOCKADDR_IN addr;
 			addr.sin_family = AF_INET;
@@ -887,14 +887,14 @@ namespace Zion
 				return((HTCPEP)ep);
 			}
 			ep->fini();
-			ATLAS_ALIGN_FREE(ep);
+			ZION_ALIGN_FREE(ep);
 		}
 		return NULL;
 	}
 
 	HUDPEP NewEP(const SOCK_ADDR& sa, PFN_ON_DATAGRAM pfn, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
 	{
-		AIO_UDP_END_POINT* ep = (AIO_UDP_END_POINT*)ATLAS_ALIGN_ALLOC(sizeof(AIO_UDP_END_POINT));
+		AIO_UDP_END_POINT* ep = (AIO_UDP_END_POINT*)ZION_ALIGN_ALLOC(sizeof(AIO_UDP_END_POINT));
 		if(ep) {
 			SOCKADDR_IN addr;
 			addr.sin_family = AF_INET;
@@ -904,7 +904,7 @@ namespace Zion
 				return((HUDPEP)ep);
 			}
 			ep->fini();
-			ATLAS_ALIGN_FREE(ep);
+			ZION_ALIGN_FREE(ep);
 		}
 		return NULL;
 	}
@@ -912,13 +912,13 @@ namespace Zion
 	void DelEP(HTCPEP hep)
 	{
 		((AIO_TCP_END_POINT*)hep)->fini();
-		ATLAS_ALIGN_FREE(hep);
+		ZION_ALIGN_FREE(hep);
 	}
 
 	void DelEP(HUDPEP hep)
 	{
 		((AIO_UDP_END_POINT*)hep)->fini();
-		ATLAS_ALIGN_FREE(hep);
+		ZION_ALIGN_FREE(hep);
 	}
 
 	void StartEP(HTCPEP hep)
@@ -981,15 +981,15 @@ namespace Zion
 	void CloseConn(HCONNECT hConn)
 	{
 		AIO_CONNECTION* conn = (AIO_CONNECTION*)hConn;
-		ATLAS_ASSERT(!conn->iorefs);
-		ATLAS_ASSERT(!conn->connected);
+		ZION_ASSERT(!conn->iorefs);
+		ZION_ASSERT(!conn->connected);
 		if(conn->iorefs || conn->connected) return;
 		if(conn->end_point) {
 			if(conn->Refresh()) {
 				InterlockedPushEntrySList(conn->end_point->free_conns, conn);
 			} else {
 				InterlockedDecrement((LONG *)&conn->end_point->total_conns);
-				ATLAS_ALIGN_FREE(conn);
+				ZION_ALIGN_FREE(conn);
 			}
 		} else {
 			DelConn(conn);
@@ -999,8 +999,8 @@ namespace Zion
 	void Send(HCONNECT hConn, _U32 len, _U8* buf)
 	{
 		AIO_CONTEXT* ctx = CtxOfBuf(buf);
-		ATLAS_ASSERT(ctx->operation==SIOP_SEND);
-		ATLAS_ASSERT(len<=ctx->buffer_pool->output_size);
+		ZION_ASSERT(ctx->operation==SIOP_SEND);
+		ZION_ASSERT(len<=ctx->buffer_pool->output_size);
 		ctx->wsabuf.len = len;
 		((AIO_CONNECTION*)hConn)->Send(ctx);
 	}
@@ -1008,8 +1008,8 @@ namespace Zion
 	void Send(HUDPEP hep, PSOCKADDR_IN addr, _U32 len, _U8* buf)
 	{
 		AIO_CONTEXT* ctx = CtxOfBuf(buf);
-		ATLAS_ASSERT(ctx->operation==SIOP_SEND);
-		ATLAS_ASSERT(len<=ctx->buffer_pool->output_size);
+		ZION_ASSERT(ctx->operation==SIOP_SEND);
+		ZION_ASSERT(len<=ctx->buffer_pool->output_size);
 		ctx->wsabuf.len = len;
 		ctx->operation = SIOP_SENDTO;
 		((AIO_UDP_END_POINT*)hep)->Send(addr, ctx);
@@ -1052,14 +1052,14 @@ namespace Zion
 		if((g_asockio_init_count++)==0)
 		{
 			WSADATA wsaData;
-			ATLAS_VERIFY(WSAStartup(0x0202, &wsaData)==0);
+			ZION_VERIFY(WSAStartup(0x0202, &wsaData)==0);
 			SOCKET s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-			ATLAS_ASSERT(s!=INVALID_SOCKET);
+			ZION_ASSERT(s!=INVALID_SOCKET);
 			DWORD cb;
 			GUID GuidAcceptEx = WSAID_ACCEPTEX, GuidConnectEx = WSAID_CONNECTEX, GuidDisconnectEx = WSAID_DISCONNECTEX;
-			ATLAS_VERIFY(WSAIoctl(s, SIO_GET_EXTENSION_FUNCTION_POINTER, &GuidAcceptEx, sizeof(GuidAcceptEx), &lpfnAcceptEx, sizeof(lpfnAcceptEx), &cb, NULL, NULL)==0);
-			ATLAS_VERIFY(WSAIoctl(s, SIO_GET_EXTENSION_FUNCTION_POINTER, &GuidConnectEx, sizeof(GuidConnectEx), &lpfnConnectEx, sizeof(lpfnConnectEx), &cb, NULL, NULL)==0);
-			ATLAS_VERIFY(WSAIoctl(s, SIO_GET_EXTENSION_FUNCTION_POINTER, &GuidDisconnectEx, sizeof(GuidDisconnectEx), &lpfnDisconnectEx, sizeof(lpfnDisconnectEx), &cb, NULL, NULL)==0);
+			ZION_VERIFY(WSAIoctl(s, SIO_GET_EXTENSION_FUNCTION_POINTER, &GuidAcceptEx, sizeof(GuidAcceptEx), &lpfnAcceptEx, sizeof(lpfnAcceptEx), &cb, NULL, NULL)==0);
+			ZION_VERIFY(WSAIoctl(s, SIO_GET_EXTENSION_FUNCTION_POINTER, &GuidConnectEx, sizeof(GuidConnectEx), &lpfnConnectEx, sizeof(lpfnConnectEx), &cb, NULL, NULL)==0);
+			ZION_VERIFY(WSAIoctl(s, SIO_GET_EXTENSION_FUNCTION_POINTER, &GuidDisconnectEx, sizeof(GuidDisconnectEx), &lpfnDisconnectEx, sizeof(lpfnDisconnectEx), &cb, NULL, NULL)==0);
 			closesocket(s);
 			lpCancelIoEx = (LPFN_CANCELIOEX)GetProcAddress(GetModuleHandle(TEXT("KERNEL32.DLL")), "CancelIoEx");
 		}

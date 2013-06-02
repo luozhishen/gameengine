@@ -1,5 +1,5 @@
-#ifndef	__ATLAS_BASE__
-#define	__ATLAS_BASE__
+#ifndef	__ZION_BASE__
+#define	__ZION_BASE__
 
 #include <string>
 #ifndef _WIN32
@@ -23,8 +23,8 @@
 namespace Zion
 {
 
-	void AtlasInit();
-	void AtlasFini();
+	void ZionInit();
+	void ZionFini();
 
 };
 

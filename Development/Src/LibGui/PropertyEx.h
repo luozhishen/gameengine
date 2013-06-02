@@ -61,7 +61,7 @@ public:
 				std::string val = (const char*)value.GetString().ToUTF8();
 				if((size_t)m_finfo->slen<=val.size())
 				{
-					ATLAS_ASSERT(0);
+					ZION_ASSERT(0);
 					return false;
 				}
 				strcpy((char*)m_data, val.c_str());
@@ -72,13 +72,13 @@ public:
 				std::string val = (const char*)value.GetString().ToUTF8();
 				if(!AUuidFromString(val.c_str(), *((A_UUID*)m_data)))
 				{
-					ATLAS_ASSERT(0);
+					ZION_ASSERT(0);
 					return false;
 				}
 			}
 			break;
 		default:
-			ATLAS_ASSERT(0);
+			ZION_ASSERT(0);
 			return false;
 		}
 		return true;
@@ -106,7 +106,7 @@ public:
 	virtual bool ModifyValue(const wxVariant& value);
 
 	DDLReflect::FIELD_INFO m_static_finfo;
-	Zion::Vector<wxPGProperty*> m_items;
+	Zion::Array<wxPGProperty*> m_items;
 };
 
 #endif //_PROPERTY_EX_H__

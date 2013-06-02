@@ -1,4 +1,4 @@
-#ifndef WITHOUT_ATLAS_ASYNCIO
+#ifndef WITHOUT_ZION_ASYNCIO
 
 #ifndef	__ASYNC_SOCK_IO__
 #define	__ASYNC_SOCK_IO__

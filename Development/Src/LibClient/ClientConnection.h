@@ -1,5 +1,5 @@
-#ifndef __ATLAS_CLIENT_CONNECTION__
-#define __ATLAS_CLIENT_CONNECTION__
+#ifndef __ZION_CLIENT_CONNECTION__
+#define __ZION_CLIENT_CONNECTION__
 
 namespace Zion
 {

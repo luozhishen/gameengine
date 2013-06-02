@@ -13,7 +13,7 @@ namespace Zion
 			m_data.push_back(t);
 		}
 
-		void GetNewList(Zion::Vector<T>& data_list)
+		void GetNewList(Zion::Array<T>& data_list)
 		{
 			data_list = m_data;
 		}
@@ -41,7 +41,7 @@ namespace Zion
 			m_data.clear();
 		}
 
-		Zion::Vector<T>& GetData()
+		Zion::Array<T>& GetData()
 		{
 			return m_data;
 		}
@@ -52,7 +52,7 @@ namespace Zion
 		}
 
 	private:
-		Zion::Vector<T> m_data;
+		Zion::Array<T> m_data;
 	};
 
 }

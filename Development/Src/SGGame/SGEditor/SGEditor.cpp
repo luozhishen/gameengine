@@ -17,10 +17,10 @@ public:
 
 	virtual bool OnInit()
 	{
-		Zion::String path = Zion::StringFormat("%s../../../../%s/", Zion::AtlasGameDir(), Zion::AtlasGameName());
+		Zion::String path = Zion::StringFormat("%s../../../../%s/", Zion::ZionGameDir(), Zion::ZionGameName());
 		if(_access(path.c_str(), 0)!=-1)
 		{
-			Zion::AtlasSetGameDir(path.c_str());
+			Zion::ZionSetGameDir(path.c_str());
 		}
 		return CEditorApp::OnInit();
 	}

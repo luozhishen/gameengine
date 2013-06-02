@@ -13,7 +13,7 @@
 namespace Zion
 {
 
-	const char* AtlasGameDir();
+	const char* ZionGameDir();
 
 	namespace ContentObject
 	{
@@ -55,13 +55,13 @@ namespace Zion
 			_U16							type_id;
 			const DDLReflect::STRUCT_INFO*	info;
 			bool							bExactMatch;
-			Zion::Vector<Zion::String>	keys;
+			Zion::Array<Zion::String>	keys;
 			Zion::Map<Zion::String, A_CONTENT_OBJECT*> key_map;
 			CContentGroup*					group;
 		};
 		const _U16 g_typeid_base = 0x1000;
 		Zion::Map<Zion::String, _U16>		g_typemap;
-		Zion::Vector<STRUCT_INTERNAL_INFO>	g_typearray;
+		Zion::Array<STRUCT_INTERNAL_INFO>	g_typearray;
 		// content object
 		class CContentObjectManager
 		{
@@ -92,8 +92,8 @@ namespace Zion
 			Zion::Map<Zion::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
-				ATLAS_ASSERT(strcmp(i->second._name, name)!=0);
-				ATLAS_ASSERT(strcmp(i->second._file, file)!=0);
+				ZION_ASSERT(strcmp(i->second._name, name)!=0);
+				ZION_ASSERT(strcmp(i->second._file, file)!=0);
 			}
 
 			CContentGroup group(name, file, cook);
@@ -142,17 +142,17 @@ namespace Zion
 		{
 			if(!DDLReflect::IsParent(info, DDLReflect::GetStruct<A_CONTENT_OBJECT>()))
 			{
-				ATLAS_ASSERT(0);
+				ZION_ASSERT(0);
 				return NULL;
 			}
 
-			Zion::Vector<Zion::String> vkeys;
+			Zion::Array<Zion::String> vkeys;
 			if(keys)
 			{
 				StringSplit(keys, ',', vkeys);
 				if(vkeys.size()>4 || vkeys.empty())
 				{
-					ATLAS_ASSERT(0);
+					ZION_ASSERT(0);
 					return NULL;
 				}
 				for(size_t i=0; i<vkeys.size(); i++)
@@ -161,7 +161,7 @@ namespace Zion
 					{
 						if(vkeys.size()!=1)
 						{
-							ATLAS_ASSERT(0);
+							ZION_ASSERT(0);
 							return NULL;
 						}
 						else
@@ -173,13 +173,13 @@ namespace Zion
 
 					if(DDLReflect::GetStructFieldOffset(info, vkeys[i].c_str())==(_U32)-1)
 					{
-						ATLAS_ASSERT(0);
+						ZION_ASSERT(0);
 						return NULL;
 					}
 				}
 			}
 
-			ATLAS_ASSERT(g_typemap.find(info->name)==g_typemap.end());
+			ZION_ASSERT(g_typemap.find(info->name)==g_typemap.end());
 			if(g_typemap.find(info->name)!=g_typemap.end()) return NULL;
 
 			STRUCT_INTERNAL_INFO internal_info;
@@ -195,7 +195,7 @@ namespace Zion
 			return this;
 		}
 
-		void GetTypeList(Zion::Vector<const DDLReflect::STRUCT_INFO*>& list)
+		void GetTypeList(Zion::Array<const DDLReflect::STRUCT_INFO*>& list)
 		{
 			list.resize(g_typearray.size());
 			for(size_t i=0; i<g_typearray.size(); i++)
@@ -232,7 +232,7 @@ namespace Zion
 			keys.clear();
 			_U16 id = GetTypeId(name);
 			if(id==(_U16)-1) return false;
-			Zion::Vector<Zion::String>& karray = g_typearray[id-g_typeid_base].keys;
+			Zion::Array<Zion::String>& karray = g_typearray[id-g_typeid_base].keys;
 			if(karray.empty())
 			{
 				keys.insert("uuid");
@@ -316,7 +316,7 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* QueryByKey(const DDLReflect::STRUCT_INFO* info, const char* v1, const char* v2, const char* v3, const char* v4)
 		{
-			ATLAS_ASSERT(info && v1);
+			ZION_ASSERT(info && v1);
 			if(!info || !v1) return NULL;
 
 			_U16 type_id = GetTypeId(info->name);
@@ -326,7 +326,7 @@ namespace Zion
 
 			if(internal_info.keys.empty())
 			{
-				ATLAS_ASSERT(v2==NULL && v3==NULL && v4==NULL);
+				ZION_ASSERT(v2==NULL && v3==NULL && v4==NULL);
 				if(v2!=NULL || v3!=NULL || v4!=NULL) return NULL;
 				A_UUID uuid;
 				
@@ -356,7 +356,7 @@ namespace Zion
 				}
 			}
 
-			ATLAS_ASSERT(internal_info.keys.size()==keys_count);
+			ZION_ASSERT(internal_info.keys.size()==keys_count);
 			if(internal_info.keys.size()!=keys_count) return NULL;
 
 			Zion::Map<Zion::String, A_CONTENT_OBJECT*>::iterator i;
@@ -367,7 +367,7 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* QueryByUniqueId(const DDLReflect::STRUCT_INFO* info, const char* value1)
 		{
-			ATLAS_ASSERT(info);
+			ZION_ASSERT(info);
 			if(!info) return NULL;
 
 			_U16 type_id = GetTypeId(info->name);
@@ -457,7 +457,7 @@ namespace Zion
 			return g_buildindex_errmsg;
 		}
 
-		bool GetList(const DDLReflect::STRUCT_INFO* info, Zion::Vector<A_UUID>& list, bool bExactMatch)
+		bool GetList(const DDLReflect::STRUCT_INFO* info, Zion::Array<A_UUID>& list, bool bExactMatch)
 		{
 			list.clear();
 
@@ -504,7 +504,7 @@ namespace Zion
 			Zion::Map<Zion::String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
-				String file = Zion::StringFormat("%s%s%s", path?path:Zion::AtlasGameDir(), path?"":"Content/Json/", i->second._file);
+				String file = Zion::StringFormat("%s%s%s", path?path:Zion::ZionGameDir(), path?"":"Content/Json/", i->second._file);
 				if(LoadContentFromJsonFile(file.c_str(), ignore))
 				{
 					i->second._dirty = false;
@@ -656,7 +656,7 @@ namespace Zion
 			}
 			else
 			{
-				realpath = StringFormat("%sContent/Json/", AtlasGameDir());
+				realpath = StringFormat("%sContent/Json/", ZionGameDir());
 			}
 
 			Zion::Map<Zion::String, std::ofstream*> vmap;
@@ -670,7 +670,7 @@ namespace Zion
 				char filepath[1000];
 				sprintf(filepath, "%s%s", realpath.c_str(), gi->second._file);
 				vmap_a[gi->first.c_str()] = true;
-				vmap[gi->first.c_str()] = ATLAS_NEW std::ofstream();
+				vmap[gi->first.c_str()] = ZION_NEW std::ofstream();
 				std::ofstream& f = *(vmap[gi->first.c_str()]);
 				f.open(filepath, std::ifstream::binary);
 				if(!f.is_open())
@@ -707,7 +707,7 @@ namespace Zion
 				Zion::String va;
 				if(!DDLReflect::Struct2Json(oi->second.first, (const _U8*)(oi->second.second), va))
 				{
-					ATLAS_ASSERT(0);
+					ZION_ASSERT(0);
 				}
 
 				f << "\t\t{" << std::endl;

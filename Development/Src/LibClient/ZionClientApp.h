@@ -1,5 +1,5 @@
-#ifndef __ATLAS_CLIENT_APP__
-#define __ATLAS_CLIENT_APP__
+#ifndef __ZION_CLIENT_APP__
+#define __ZION_CLIENT_APP__
 
 #include <list>
 

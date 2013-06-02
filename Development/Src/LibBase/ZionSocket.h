@@ -1,5 +1,5 @@
-#ifndef __ATLAS_SOCKET__
-#define __ATLAS_SOCKET__
+#ifndef __ZION_SOCKET__
+#define __ZION_SOCKET__
 
 #ifdef __cplusplus
 extern "C" {

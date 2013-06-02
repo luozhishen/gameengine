@@ -11,7 +11,7 @@ public:
 	virtual void InitApp()
 	{
 		Zion::CServerApp::InitApp();
-		m_pSessionServer = ATLAS_NEW Zion::CSessionServer(this);
+		m_pSessionServer = ZION_NEW Zion::CSessionServer(this);
 		m_pSessionServer->Start();
 	}
 

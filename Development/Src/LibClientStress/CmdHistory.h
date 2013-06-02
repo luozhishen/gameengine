@@ -6,7 +6,7 @@ namespace Zion
 	class CmdHistory
 	{
 	public:
-		typedef Zion::Vector<Zion::String> CMD_SET;
+		typedef Zion::Array<Zion::String> CMD_SET;
 	public:
 		CmdHistory(const char* path = "./");
 		~CmdHistory();

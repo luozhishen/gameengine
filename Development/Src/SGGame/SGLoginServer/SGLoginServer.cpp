@@ -11,7 +11,7 @@ public:
 	virtual void InitApp()
 	{
 		Zion::CServerApp::InitApp();
-		m_pLoginServer = ATLAS_NEW Zion::CLoginServer(this);
+		m_pLoginServer = ZION_NEW Zion::CLoginServer(this);
 		m_pLoginServer->Start();
 	}
 

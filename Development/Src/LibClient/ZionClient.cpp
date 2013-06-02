@@ -20,19 +20,19 @@ namespace Zion
 		m_ClientConnectionType = m_pClientApp->GetParam("ConnectType");
 		if(m_ClientConnectionType=="nonblock")
 		{
-			m_pClientConnection = ATLAS_NEW CNonblockConnection(this, recvsize);
+			m_pClientConnection = ZION_NEW CNonblockConnection(this, recvsize);
 		}
 		else if(m_ClientConnectionType=="http")
 		{
-			m_pClientConnection = ATLAS_NEW CHttpClientConnection(this);
+			m_pClientConnection = ZION_NEW CHttpClientConnection(this);
 		}
 		else if(m_ClientConnectionType=="async")
 		{
-			m_pClientConnection = ATLAS_NEW CAsyncIOConnection(this, recvsize);
+			m_pClientConnection = ZION_NEW CAsyncIOConnection(this, recvsize);
 		}
 		else
 		{
-			ATLAS_ASSERT(0);
+			ZION_ASSERT(0);
 		}
 
 		AddComponent(m_pClientConnection);
@@ -42,7 +42,7 @@ namespace Zion
 	{
 		while(!m_Components.empty())
 		{
-			ATLAS_DELETE *m_Components.begin();
+			ZION_DELETE *m_Components.begin();
 			m_Components.erase(m_Components.begin());
 		}
 		A_MUTEX_DESTROY(&m_mtxClient);

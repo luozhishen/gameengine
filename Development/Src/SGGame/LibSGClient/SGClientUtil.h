@@ -8,26 +8,26 @@ namespace Zion
 		static void SetRightLocation(const A_CONTENT_OBJECT* content_obj, const SG_EQUIP_SLOTS& slots, const A_UUID& uuid);
 
 		//把[lowerLevel uppperLevel]之间的小兵加到soldierVec里面
-		static void GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Zion::Vector<_U32>& soldierVec, Zion::Vector<SG_SOLDIER>& curSoldierVec);
+		static void GetUnlockSoldierByLevel(_U32 lowerLevel, _U32 upperLevel, Zion::Array<_U32>& soldierVec, Zion::Array<SG_SOLDIER>& curSoldierVec);
 		static void GetUnlockTurboSkill(_U32 general_id, _U32 turbo_level, Zion::String& skill_archetype);
 
 		static bool DiffPlayerInfo(const SG_PLAYER& player_old, const SG_PLAYER& player_new);
-		static bool DiffSoldiers(const Zion::Vector<SG_SOLDIER>& soldiers_old, const Zion::Vector<SG_SOLDIER>& soldiers_new);
-		static bool DiffGenerals(const Zion::Vector<SG_GENERAL>& generals_old, const Zion::Vector<SG_GENERAL>& generals_new);
+		static bool DiffSoldiers(const Zion::Array<SG_SOLDIER>& soldiers_old, const Zion::Array<SG_SOLDIER>& soldiers_new);
+		static bool DiffGenerals(const Zion::Array<SG_GENERAL>& generals_old, const Zion::Array<SG_GENERAL>& generals_new);
 		static bool DiffBag();
-		static bool DiffEquipt(const Zion::Vector<SG_EQUIPT_ITEM>& equipts_old, const Zion::Vector<SG_EQUIPT_ITEM>& equipts_new);
-		static bool DiffUsable(const Zion::Vector<SG_USABLE_ITEM>& usables_old, const Zion::Vector<SG_USABLE_ITEM>& usables_new);
-		static bool DiffGem(const Zion::Vector<SG_GEM_ITEM>& gems_old, const Zion::Vector<SG_GEM_ITEM>& gems_new);
-		static bool DiffMaterial(const Zion::Vector<SG_MATERIAL_ITEM>& material_old, const Zion::Vector<SG_MATERIAL_ITEM>& material_new);
-		static bool DiffQuests(const Zion::Vector<SG_QUEST_LIVE_INFO>& quests_old, const Zion::Vector<SG_QUEST_LIVE_INFO>& quests_new);
+		static bool DiffEquipt(const Zion::Array<SG_EQUIPT_ITEM>& equipts_old, const Zion::Array<SG_EQUIPT_ITEM>& equipts_new);
+		static bool DiffUsable(const Zion::Array<SG_USABLE_ITEM>& usables_old, const Zion::Array<SG_USABLE_ITEM>& usables_new);
+		static bool DiffGem(const Zion::Array<SG_GEM_ITEM>& gems_old, const Zion::Array<SG_GEM_ITEM>& gems_new);
+		static bool DiffMaterial(const Zion::Array<SG_MATERIAL_ITEM>& material_old, const Zion::Array<SG_MATERIAL_ITEM>& material_new);
+		static bool DiffQuests(const Zion::Array<SG_QUEST_LIVE_INFO>& quests_old, const Zion::Array<SG_QUEST_LIVE_INFO>& quests_new);
 
 		static bool IsEmptyPlayerInfo(const SG_PLAYER& player);
-		static bool IsEmptySoldier(const Zion::Vector<SG_SOLDIER>& soldiers);
-		static bool IsEmptyGeneral(const Zion::Vector<SG_GENERAL>& generals);
-		static bool IsEmptyEquipt(const Zion::Vector<SG_EQUIPT_ITEM>& equipts);
-		static bool IsEmptyUsable(const Zion::Vector<SG_USABLE_ITEM>& usables);
-		static bool IsEmptyGem(const Zion::Vector<SG_GEM_ITEM>& gems);
-		static bool IsEmptyQuests(const Zion::Vector<SG_QUEST_LIVE_INFO>& quests);
+		static bool IsEmptySoldier(const Zion::Array<SG_SOLDIER>& soldiers);
+		static bool IsEmptyGeneral(const Zion::Array<SG_GENERAL>& generals);
+		static bool IsEmptyEquipt(const Zion::Array<SG_EQUIPT_ITEM>& equipts);
+		static bool IsEmptyUsable(const Zion::Array<SG_USABLE_ITEM>& usables);
+		static bool IsEmptyGem(const Zion::Array<SG_GEM_ITEM>& gems);
+		static bool IsEmptyQuests(const Zion::Array<SG_QUEST_LIVE_INFO>& quests);
 
 		static _U32 GetDailyActionTime(const SG_PLAYER& player_info, _U32 action_id);
 		static bool SetDailyActionTimeInCache(SG_PLAYER& player_info, _U32 action_id, _U32 times);
@@ -35,7 +35,7 @@ namespace Zion
 		static bool UpdateItemCountByUUID(CSGClient* pClient, const A_UUID& uuid, _U32 count);
 
 		template<typename T>
-		static void GenerateTempNewVec(const T* t, _U32 count, Zion::Vector<T>& vec)
+		static void GenerateTempNewVec(const T* t, _U32 count, Zion::Array<T>& vec)
 		{
 			for(_U32 i = 0; i < count; ++i)
 			{
@@ -44,11 +44,11 @@ namespace Zion
 		}
 
 		template<typename T1, typename T2>
-		static void GenerateTempNewVec(const T1* t, _U32 count, Zion::Vector<T2>& vec);
+		static void GenerateTempNewVec(const T1* t, _U32 count, Zion::Array<T2>& vec);
 		
 		//warning !!! apple`s complier will set it as error
 		//template<>
-		//static void GenerateTempNewVec<SG_LEAGUE_APPLYER, _U32>(const SG_LEAGUE_APPLYER* t, _U32 count, Zion::Vector<_U32>& vec)
+		//static void GenerateTempNewVec<SG_LEAGUE_APPLYER, _U32>(const SG_LEAGUE_APPLYER* t, _U32 count, Zion::Array<_U32>& vec)
 		//{
 		//	for(_U32 i = 0; i < count; ++i)
 		//	{
@@ -76,7 +76,7 @@ namespace Zion
 		}
 
 		template<typename T>
-		static bool DiffDataVec(const Zion::Vector<T>& old_data, const Zion::Vector<T>& new_data)
+		static bool DiffDataVec(const Zion::Array<T>& old_data, const Zion::Array<T>& new_data)
 		{
 			if(old_data.size() != new_data.size())
 				return true;
@@ -93,10 +93,10 @@ namespace Zion
 		}
 
 
-		static void UpdateGeneralSoulBall(SG_PLAYER& player_info, Zion::Vector<SG_GENERAL>& generals, const SG_GENERAL& new_general);
+		static void UpdateGeneralSoulBall(SG_PLAYER& player_info, Zion::Array<SG_GENERAL>& generals, const SG_GENERAL& new_general);
 
 		template<typename T, typename CT>
-		static void AddItem(Zion::Vector<T>& cacheVec, const SG_ITEM& item)
+		static void AddItem(Zion::Array<T>& cacheVec, const SG_ITEM& item)
 		{
 			T t;
 			t.item_id = item.item_id;
@@ -125,7 +125,7 @@ namespace Zion
 				stack_max = config->stack_max;
 			}
 			
-			for(typename Zion::Vector<T>::iterator it = cacheVec.begin(); it != cacheVec.end(); ++it)
+			for(typename Zion::Array<T>::iterator it = cacheVec.begin(); it != cacheVec.end(); ++it)
 			{
 				if((*it).item_id == item.item_id)
 				{
@@ -155,9 +155,9 @@ namespace Zion
 		}
 
 		template<typename T>
-		static bool UpdateItemCountTemplateFun(Zion::Vector<T>& vec, const A_UUID& uuid, _U32 count)
+		static bool UpdateItemCountTemplateFun(Zion::Array<T>& vec, const A_UUID& uuid, _U32 count)
 		{
-			for(typename Zion::Vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
+			for(typename Zion::Array<T>::iterator it = vec.begin(); it != vec.end(); ++it)
 			{
 				if((*it).uuid == uuid)
 				{
@@ -178,7 +178,7 @@ namespace Zion
 		}
 
 		/*template<typename T>
-		static bool UpdateItemTemplateFun(Zion::Vector<T>& vec, const A_UUID& uuid, const T& newT)
+		static bool UpdateItemTemplateFun(Zion::Array<T>& vec, const A_UUID& uuid, const T& newT)
 		{
 			return false;
 		}*/
@@ -186,15 +186,15 @@ namespace Zion
 
 		static _U32 GetHorseXpAdd(_U32 cur_level, _U32 new_level, _U32 cur_exp, _U32 exp);
 		
-		static bool UpdateEquipt(Zion::Vector<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt);
-		static bool UpdateEquiptTurboLevel(Zion::Vector<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level);
+		static bool UpdateEquipt(Zion::Array<SG_EQUIPT_ITEM>& cache_equipt, const SG_EQUIPT_ITEM& new_equipt);
+		static bool UpdateEquiptTurboLevel(Zion::Array<SG_EQUIPT_ITEM>& cache_equipt, const A_UUID& uuid, const _U8 turbo_level);
 
-		static bool UnlockSoldier(SG_PLAYER& player_info, Zion::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
+		static bool UnlockSoldier(SG_PLAYER& player_info, Zion::Array<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
 
-		static bool EnhanceSoldier(SG_PLAYER& player_info, Zion::Vector<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
+		static bool EnhanceSoldier(SG_PLAYER& player_info, Zion::Array<SG_SOLDIER>& cache_soldiers, _U32 soldier_id);
 
-		static bool UpdateGemItemCount(Zion::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count);
-		static _U32 GetGemItemCount(const Zion::Vector<SG_GEM_ITEM>& cache_gems, _U32 gem_id);
+		static bool UpdateGemItemCount(Zion::Array<SG_GEM_ITEM>& cache_gems, _U32 gem_id, _U32 count);
+		static _U32 GetGemItemCount(const Zion::Array<SG_GEM_ITEM>& cache_gems, _U32 gem_id);
 
 	};
 }

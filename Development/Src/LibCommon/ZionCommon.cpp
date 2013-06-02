@@ -7,21 +7,21 @@ namespace Zion
 {
 
 	static char _global_game_dir[400] = "";
-	const char* AtlasGameDir()
+	const char* ZionGameDir()
 	{
 		if(_global_game_dir[0]) return _global_game_dir;
 		if(!GetExeDir()) return "";
 		char path[400];
 		char* p;
 		strcpy(path, GetExeDir());
-		p = strrchr(path, ATLAS_PATH_SLASH);
+		p = strrchr(path, ZION_PATH_SLASH);
 		if(!p) return NULL;
-		sprintf(p, "%c..%c..%c%s%c", ATLAS_PATH_SLASH, ATLAS_PATH_SLASH, ATLAS_PATH_SLASH, AtlasGameName(), ATLAS_PATH_SLASH);
+		sprintf(p, "%c..%c..%c%s%c", ZION_PATH_SLASH, ZION_PATH_SLASH, ZION_PATH_SLASH, ZionGameName(), ZION_PATH_SLASH);
 		strcpy(_global_game_dir, path);
 		return _global_game_dir;
 	}
 
-	void AtlasSetGameDir(const char* path)
+	void ZionSetGameDir(const char* path)
 	{
 		strcpy(_global_game_dir, path);
 	}

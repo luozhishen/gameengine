@@ -1,5 +1,5 @@
-#ifndef __ATLAS_HASH__
-#define __ATLAS_HASH__
+#ifndef __ZION_HASH__
+#define __ZION_HASH__
 
 namespace Zion
 {

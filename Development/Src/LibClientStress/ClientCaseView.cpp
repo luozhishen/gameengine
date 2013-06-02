@@ -36,12 +36,12 @@ END_EVENT_TABLE()
 
 CClientCaseView::CClientCaseView( CClientStressFrame* pFrame, wxWindow* pParent ) : CStressFrameView(pFrame, pParent, wxT("Case Status")), m_pCurrentClient(NULL)
 {
-	m_pListCtrl = ATLAS_NEW wxListCtrl(this, ID_CASEVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+	m_pListCtrl = ZION_NEW wxListCtrl(this, ID_CASEVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
 	m_pListCtrl->SetBackgroundColour(*wxWHITE);
 	m_pListCtrl->InsertColumn(0, wxT("name"), 0, 200);
 	m_pListCtrl->InsertColumn(1, wxT("status"), 0, 600);
 
-	wxBoxSizer* pSizer = ATLAS_NEW wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* pSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
 	pSizer->Add(m_pListCtrl, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizer);
 

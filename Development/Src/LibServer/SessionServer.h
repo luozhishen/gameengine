@@ -1,5 +1,5 @@
-#ifndef __ATLAS_SESSION_SERVER__
-#define __ATLAS_SESSION_SERVER__
+#ifndef __ZION_SESSION_SERVER__
+#define __ZION_SESSION_SERVER__
 
 #define SESSION_IORECVBUF_SIZE		(1024)
 #define SESSION_IOSENDBUF_SIZE		(1024)
@@ -65,7 +65,7 @@ namespace Zion
 
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
-			ATLAS_ASSERT(iid<256 && fid<256);
+			ZION_ASSERT(iid<256 && fid<256);
 			SendRawData(iid|(fid<<8), Buf.GetSize(), Buf.GetBuf());
 			return true;
 		}

@@ -1,4 +1,4 @@
-#ifndef WITHOUT_ATLAS_ASYNCIO
+#ifndef WITHOUT_ZION_ASYNCIO
 
 #include "ZionBase.h"
 #include "AsyncRPCImpl.h"
@@ -199,11 +199,11 @@ namespace Zion
 		}
 		void fini() {
 			if(InterlockedCompareExchange(&state, RPC_SERVER_STOPPING, RPC_SERVER_FAILED)==RPC_SERVER_FAILED) {
-				while(state==RPC_SERVER_STOPPING) ATLAS_SLEEP(100);
+				while(state==RPC_SERVER_STOPPING) ZION_SLEEP(100);
 			}
 			if(state==RPC_SERVER_CONNECTED) {
 				Disconnect(hConn);
-				while(state==RPC_SERVER_CONNECTED) ATLAS_SLEEP(100);
+				while(state==RPC_SERVER_CONNECTED) ZION_SLEEP(100);
 			}
 			if(state==RPC_SERVER_DISCONNECTED) CloseConn(hConn);
 			A_MUTEX_DESTROY(&lock);
@@ -218,7 +218,7 @@ namespace Zion
 			if(state==RPC_SERVER_NONE) {
 				state = RPC_SERVER_CONNECTING;
 				if(Connect()) {
-					while(state==RPC_SERVER_CONNECTING) ATLAS_SLEEP(100);
+					while(state==RPC_SERVER_CONNECTING) ZION_SLEEP(100);
 					if(state==RPC_SERVER_CONNECTED) return hConn;
 				} else {
 					state = RPC_SERVER_NONE;
@@ -240,13 +240,13 @@ namespace Zion
 			ASockIOInit();
 			A_MUTEX_INIT(&maplock);
 			hworkers = CreateWorkers(1);
-			ATLAS_ASSERT(hworkers);
+			ZION_ASSERT(hworkers);
 		}
 		~RPC_ENGINE() {
 			for(Zion::Map<_U64, RPC_SERVER*>::const_iterator citer=servers.begin(); citer!=servers.end(); ++citer) {
 				if(citer->second) {
 					citer->second->fini();
-					ATLAS_ALIGN_FREE(citer->second);
+					ZION_ALIGN_FREE(citer->second);
 				}
 			}
 			KillWorkers(hworkers);
@@ -266,11 +266,11 @@ namespace Zion
 			}
 			if(ret) {
 				if(!*ret) {
-					*ret = (RPC_SERVER*)ATLAS_ALIGN_ALLOC(sizeof(RPC_SERVER));
+					*ret = (RPC_SERVER*)ZION_ALIGN_ALLOC(sizeof(RPC_SERVER));
 					if(*ret) {
 						if(!(*ret)->init(ip, port)) {
 							(*ret)->fini();
-							ATLAS_ALIGN_FREE(*ret);
+							ZION_ALIGN_FREE(*ret);
 							*ret = NULL;
 						}
 					}
@@ -330,7 +330,7 @@ namespace Zion
 
 		bool MakeCall(_U16 iid, _U16 fid, _U32 len, const _U8* buf) {
 			if(iid==(_U16)-1 && fid==(_U16)-1) {
-				ATLAS_ASSERT(len==2);
+				ZION_ASSERT(len==2);
 				hserver = GetRPCServer(GetRPCClientAddr(this), *((_U16*)buf));
 				return true;
 			} else if(iid==(_U16)-1 && fid==0xfffe) {
@@ -459,10 +459,10 @@ namespace Zion
 
 	bool RPCServerOnConnect(HCONNECT hConn)
 	{
-		RPC_CLIENT* pclt = (RPC_CLIENT*)ATLAS_ALIGN_ALLOC(sizeof(RPC_CLIENT));
+		RPC_CLIENT* pclt = (RPC_CLIENT*)ZION_ALIGN_ALLOC(sizeof(RPC_CLIENT));
 		if(!pclt) return false;
 		if(!theRpcManager.Add(hConn, pclt)) {
-			ATLAS_ALIGN_FREE(pclt);
+			ZION_ALIGN_FREE(pclt);
 			return false;
 		}
 		pclt->hConn = hConn;
@@ -477,7 +477,7 @@ namespace Zion
 		RPC_CLIENT* pclt = (RPC_CLIENT*)KeyOf(hConn);
 		if(pclt) {
 			theRpcManager.Del(hConn);
-			ATLAS_ALIGN_FREE(pclt);
+			ZION_ALIGN_FREE(pclt);
 		}
 		CloseConn(hConn);
 	}
@@ -521,7 +521,7 @@ namespace Zion
 					Disconnect(citer->first);
 				}
 				A_MUTEX_UNLOCK(&maplock);
-				ATLAS_SLEEP(100);
+				ZION_SLEEP(100);
 			} while(!conns.empty());
 			DelEP(hep);
 			hep = NULL;
@@ -581,7 +581,7 @@ namespace Zion
 	_U32 GetRPCClientAddr(HCLIENT hClient)
 	{
 		SOCK_ADDR sain;
-		ATLAS_VERIFY(GetPeerAddr(((RPC_CLIENT*)hClient)->hConn, sain));
+		ZION_VERIFY(GetPeerAddr(((RPC_CLIENT*)hClient)->hConn, sain));
 		return sain.ip;
 	}
 

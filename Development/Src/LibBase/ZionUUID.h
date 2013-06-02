@@ -1,5 +1,5 @@
-#ifndef __ATLAS_UUID_INCLUDE__
-#define __ATLAS_UUID_INCLUDE__
+#ifndef __ZION_UUID_INCLUDE__
+#define __ZION_UUID_INCLUDE__
 
 struct A_UUID
 {
@@ -30,4 +30,4 @@ void AUuidToString(const A_UUID& uuid, char* str);
 bool AUuidFromString(const char* str, A_UUID& uuid);
 void AUuidGenerate(A_UUID& uuid);
 
-#endif // __ATLAS_UUID_INCLUDE__
+#endif // __ZION_UUID_INCLUDE__

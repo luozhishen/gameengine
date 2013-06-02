@@ -87,7 +87,7 @@ namespace Zion
 		{"SG_WORLD_BOSS_INSPIRE_CONFIG", "SG_WORLD_BOSS_INSPIRE_CONFIG.json", "times"},
 	};
 
-	const char* AtlasGameName()
+	const char* ZionGameName()
 	{
 		return "SGGame";
 	}

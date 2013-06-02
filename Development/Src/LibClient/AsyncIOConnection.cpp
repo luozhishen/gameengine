@@ -1,4 +1,4 @@
-#ifndef WITHOUT_ATLAS_ASYNCIO
+#ifndef WITHOUT_ZION_ASYNCIO
 
 #include "ZionBase.h"
 #include "ZionClient.h"
@@ -20,8 +20,8 @@ namespace Zion
 	void CAsyncIOConnection::Init(_U32 tcount)
 	{
 		ASockIOInit();
-		ATLAS_ASSERT(!g_client_workers);
-		ATLAS_ASSERT(!g_client_iopool);
+		ZION_ASSERT(!g_client_workers);
+		ZION_ASSERT(!g_client_iopool);
 		g_client_workers = CreateWorkers(tcount);
 		g_client_iopool = AllocIoBufferPool(1024, 1024, 0, 0);
 	}
@@ -53,9 +53,9 @@ namespace Zion
 
 		A_MUTEX_LOCK(&m_mtxLock);
 
-		ATLAS_ASSERT(!m_pSendBuf);
-		ATLAS_ASSERT(!m_hConn);
-		ATLAS_ASSERT(!m_bConnecting);
+		ZION_ASSERT(!m_pSendBuf);
+		ZION_ASSERT(!m_hConn);
+		ZION_ASSERT(!m_bConnecting);
 		if(m_hConn || m_bConnecting)
 		{
 			bRet = false;
@@ -120,7 +120,7 @@ namespace Zion
 	void CAsyncIOConnection::OnRawConnected(HCONNECT hConn)
 	{
 		A_MUTEX_LOCK(&m_mtxLock);
-		ATLAS_ASSERT(!m_hConn);
+		ZION_ASSERT(!m_hConn);
 		m_hConn = hConn;
 		m_bConnecting = false;
 		A_MUTEX_UNLOCK(&m_mtxLock);

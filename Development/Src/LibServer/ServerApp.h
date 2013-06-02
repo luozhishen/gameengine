@@ -1,5 +1,5 @@
-#ifndef __ATLAS_SERVER_APP__
-#define __ATLAS_SERVER_APP__
+#ifndef __ZION_SERVER_APP__
+#define __ZION_SERVER_APP__
 
 namespace Zion
 {

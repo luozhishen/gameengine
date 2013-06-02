@@ -32,7 +32,7 @@ bool CClientStressApp::OnInit()
 {
 	Zion::CClientApp::GetDefault()->InitApp();
 
-	wxImage::AddHandler(ATLAS_NEW wxPNGHandler);
+	wxImage::AddHandler(ZION_NEW wxPNGHandler);
 
 	SetVendorName(wxT("Zion"));
 	SetAppName(wxT("ClientStress"));
@@ -40,7 +40,7 @@ bool CClientStressApp::OnInit()
 	wxConfigBase *pConfig = wxConfigBase::Get();
 
 	CClientStressFrame* pMainFrame;
-	pMainFrame = ATLAS_NEW CClientStressFrame;
+	pMainFrame = ZION_NEW CClientStressFrame;
 	pMainFrame->Show(true);
 	SetTopWindow(pMainFrame);
 
@@ -57,6 +57,6 @@ int CClientStressApp::OnExit()
 
 void CClientStressApp::InitClientView(CClientStressFrame* pFrame, wxWindow* pParent)
 {
-	pFrame->AddView(ATLAS_NEW CClientLogView(pFrame, pParent));
-	pFrame->AddView(ATLAS_NEW CClientCaseView(pFrame, pParent));
+	pFrame->AddView(ZION_NEW CClientLogView(pFrame, pParent));
+	pFrame->AddView(ZION_NEW CClientCaseView(pFrame, pParent));
 }

@@ -47,7 +47,7 @@ namespace DDL
 
 		char* operator=(const char* Value)
 		{
-			if(!Assign(Value)) ATLAS_ASSERT(0);
+			if(!Assign(Value)) ZION_ASSERT(0);
 			return _Value;
 		}
 

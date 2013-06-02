@@ -19,7 +19,7 @@ namespace Zion
 		struct Stress_Case
 		{
 			_U32 count;
-			Zion::Vector<Script_Case> scripts;
+			Zion::Array<Script_Case> scripts;
 		};
 
 		struct Server_Param
@@ -28,8 +28,8 @@ namespace Zion
 			Zion::String value;
 		};
 
-		typedef Zion::Vector<Server_Param> SERVER_PARAMS;
-		typedef Zion::Vector<Stress_Case> SERVER_CASES;
+		typedef Zion::Array<Server_Param> SERVER_PARAMS;
+		typedef Zion::Array<Stress_Case> SERVER_CASES;
 	public:
 		CStressLoader();
 		~CStressLoader();

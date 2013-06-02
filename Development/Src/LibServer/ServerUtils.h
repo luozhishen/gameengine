@@ -1,5 +1,5 @@
-#ifndef __ATLAS_SERVER_UTILS__
-#define __ATLAS_SERVER_UTILS__
+#ifndef __ZION_SERVER_UTILS__
+#define __ZION_SERVER_UTILS__
 
 #include <hash_map>
 
@@ -25,7 +25,7 @@ namespace Zion
 		{
 			for(_U32 i=0; i<count; i++)
 			{
-				ATLAS_ASSERT(!m_GlobalObjects[i]);
+				ZION_ASSERT(!m_GlobalObjects[i]);
 				A_MUTEX_DESTROY(&m_csGlobalObjects[i]);
 			}
 		}
@@ -63,7 +63,7 @@ namespace Zion
 		void Unlock(_U64 ndx)
 		{
 			ndx = (ndx&0xffffffff);
-			ATLAS_ASSERT(ndx<(_U64)count);
+			ZION_ASSERT(ndx<(_U64)count);
 			if(!m_GlobalObjects[ndx])
 			{
 				A_SLIST_PUSH(&m_GlobalFreeObjects, &m_etGlobalObjects[ndx]);
@@ -84,8 +84,8 @@ namespace Zion
 		void BindObject(_U64 ndx, T* pObj)
 		{
 			ndx = (ndx&0xffffffff);
-			ATLAS_ASSERT(ndx<(_U64)count);
-			ATLAS_ASSERT(m_GlobalObjects[ndx]==NULL);
+			ZION_ASSERT(ndx<(_U64)count);
+			ZION_ASSERT(m_GlobalObjects[ndx]==NULL);
 			if(ndx>=(_U64)count) return;
 			m_GlobalObjects[ndx] = pObj;
 		}
@@ -93,8 +93,8 @@ namespace Zion
 		void UnbindObject(_U64 ndx, T* pObj)
 		{
 			ndx = (ndx&0xffffffff);
-			ATLAS_ASSERT(ndx<(_U64)count);
-			ATLAS_ASSERT(m_GlobalObjects[ndx]==pObj);
+			ZION_ASSERT(ndx<(_U64)count);
+			ZION_ASSERT(m_GlobalObjects[ndx]==pObj);
 			if(ndx>=(_U64)count) return;
 			m_GlobalObjects[ndx] = NULL;
 		}
@@ -102,7 +102,7 @@ namespace Zion
 		T* GetObject(_U64 ndx)
 		{
 			ndx = (ndx&0xffffffff);
-			ATLAS_ASSERT(ndx<(_U64)count);
+			ZION_ASSERT(ndx<(_U64)count);
 			if(ndx>=(_U64)count) return NULL;
 			return m_GlobalObjects[ndx];
 		}

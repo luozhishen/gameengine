@@ -15,7 +15,7 @@ public:
 	virtual void InitApp()
 	{
 		Zion::CServerApp::InitApp();
-		m_pNodeServer = ATLAS_NEW Zion::CSGNodeServer(this);
+		m_pNodeServer = ZION_NEW Zion::CSGNodeServer(this);
 		m_pNodeServer->Start();
 	}
 

@@ -57,53 +57,53 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 	m_pCurInfo = NULL;
 	m_pCurData = NULL;
 
-	wxBoxSizer* pSizerTop = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	wxSplitterWindow* pSplitter = ATLAS_NEW wxSplitterWindow(this);
+	wxBoxSizer* pSizerTop = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	wxSplitterWindow* pSplitter = ZION_NEW wxSplitterWindow(this);
 
 	// left
-	wxPanel* pPanel1 = ATLAS_NEW wxPanel(pSplitter);
-	wxBoxSizer* pSizerLeft = ATLAS_NEW wxBoxSizer(wxVERTICAL);
+	wxPanel* pPanel1 = ZION_NEW wxPanel(pSplitter);
+	wxBoxSizer* pSizerLeft = ZION_NEW wxBoxSizer(wxVERTICAL);
 
 	wxBitmap bmpAdd;
 	wxBitmap bmpRemove;
 	wxBitmap bmpReflush;
-	bmpAdd.LoadFile(wxT("../wxRes/AtlasEditor/Add.png"),			wxBITMAP_TYPE_PNG);
-	bmpRemove.LoadFile(wxT("../wxRes/AtlasEditor/Remove.png"),		wxBITMAP_TYPE_PNG);
-	bmpReflush.LoadFile(wxT("../wxRes/AtlasEditor/Reflush.png"),	wxBITMAP_TYPE_PNG);
+	bmpAdd.LoadFile(wxT("../wxRes/ZionEditor/Add.png"),			wxBITMAP_TYPE_PNG);
+	bmpRemove.LoadFile(wxT("../wxRes/ZionEditor/Remove.png"),		wxBITMAP_TYPE_PNG);
+	bmpReflush.LoadFile(wxT("../wxRes/ZionEditor/Reflush.png"),	wxBITMAP_TYPE_PNG);
 	
-	m_pObjectType = ATLAS_NEW wxComboBox(this, ID_OBJECT_TYPE, wxEmptyString, wxDefaultPosition, wxSize(200, -1), 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
-	m_pSearchText = ATLAS_NEW wxTextCtrl(this, ID_SEARCH_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	wxButton* pSearchBtn = ATLAS_NEW wxButton(this, ID_SEARCH_BUTTON, wxT("Search"));
+	m_pObjectType = ZION_NEW wxComboBox(this, ID_OBJECT_TYPE, wxEmptyString, wxDefaultPosition, wxSize(200, -1), 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
+	m_pSearchText = ZION_NEW wxTextCtrl(this, ID_SEARCH_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	wxButton* pSearchBtn = ZION_NEW wxButton(this, ID_SEARCH_BUTTON, wxT("Search"));
 
 	pSizerTop->Add(m_pObjectType, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizerTop->Add(m_pSearchText, 1, wxGROW|wxALIGN_LEFT|wxALL, 5);
 	pSizerTop->Add(pSearchBtn, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-	m_pList = ATLAS_NEW wxListCtrl(pPanel1, ID_OBJECT_LIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL);
-	m_pSearchResult = ATLAS_NEW wxStaticText(pPanel1, wxID_ANY, wxT("NOT FOUND"));
+	m_pList = ZION_NEW wxListCtrl(pPanel1, ID_OBJECT_LIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL);
+	m_pSearchResult = ZION_NEW wxStaticText(pPanel1, wxID_ANY, wxT("NOT FOUND"));
 	pSizerLeft->Add(m_pSearchResult, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizerLeft->Add(m_pList, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL);
 	pPanel1->SetSizer(pSizerLeft);
 	
 	// right
-	wxPanel* pPanel2 = ATLAS_NEW wxPanel(pSplitter);
-	wxBoxSizer* pSizer11 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* pSizer13 = ATLAS_NEW wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* pSizerRight = ATLAS_NEW wxBoxSizer(wxVERTICAL);
+	wxPanel* pPanel2 = ZION_NEW wxPanel(pSplitter);
+	wxBoxSizer* pSizer11 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizer13 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* pSizerRight = ZION_NEW wxBoxSizer(wxVERTICAL);
 
 	wxBitmap bmpSave;
 	wxBitmap bmpUndo;
-	bmpSave.LoadFile(wxT("../wxRes/AtlasEditor/Save.bmp"),			wxBITMAP_TYPE_BMP);
-	bmpUndo.LoadFile(wxT("../wxRes/AtlasEditor/Undo.png"),			wxBITMAP_TYPE_PNG);
+	bmpSave.LoadFile(wxT("../wxRes/ZionEditor/Save.bmp"),			wxBITMAP_TYPE_BMP);
+	bmpUndo.LoadFile(wxT("../wxRes/ZionEditor/Undo.png"),			wxBITMAP_TYPE_PNG);
 
-	m_pObjectName = ATLAS_NEW wxTextCtrl(pPanel2, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
-	m_pInfo = ATLAS_NEW CStructEditView(pPanel2, this);
-	pSizerRight->Add(ATLAS_NEW wxStaticText(pPanel2, wxID_ANY, wxT("Object Edit")), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	m_pObjectName = ZION_NEW wxTextCtrl(pPanel2, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
+	m_pInfo = ZION_NEW CStructEditView(pPanel2, this);
+	pSizerRight->Add(ZION_NEW wxStaticText(pPanel2, wxID_ANY, wxT("Object Edit")), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 	pSizer11->Add(m_pObjectName, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-	pSizer11->Add(ATLAS_NEW wxBitmapButton(pPanel2, ID_OBJECT_SAVE, bmpSave), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-	pSizer11->Add(ATLAS_NEW wxBitmapButton(pPanel2, ID_OBJECT_REMOVE, bmpRemove), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-	pSizer11->Add(ATLAS_NEW wxBitmapButton(pPanel2, ID_OBJECT_UNDO, bmpUndo), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pSizer11->Add(ZION_NEW wxBitmapButton(pPanel2, ID_OBJECT_SAVE, bmpSave), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pSizer11->Add(ZION_NEW wxBitmapButton(pPanel2, ID_OBJECT_REMOVE, bmpRemove), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pSizer11->Add(ZION_NEW wxBitmapButton(pPanel2, ID_OBJECT_UNDO, bmpUndo), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
 	pSizerRight->Add(pSizer13, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	pSizerRight->AddSpacer(5);
@@ -115,16 +115,16 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 
 	// main
 	pSplitter->SplitVertically(pPanel1, pPanel2, 300);
-	wxBoxSizer* pSizerAll = ATLAS_NEW wxBoxSizer(wxVERTICAL);
-	pSizerAll->Add(ATLAS_NEW wxStaticText(this, wxID_ANY, wxT("Search")), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxUP, 5);
+	wxBoxSizer* pSizerAll = ZION_NEW wxBoxSizer(wxVERTICAL);
+	pSizerAll->Add(ZION_NEW wxStaticText(this, wxID_ANY, wxT("Search")), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxUP, 5);
 	pSizerAll->Add(pSizerTop, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
-	pSizerAll->Add(ATLAS_NEW wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL), 0, wxGROW|wxALIGN_CENTER_VERTICAL); 
+	pSizerAll->Add(ZION_NEW wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL), 0, wxGROW|wxALIGN_CENTER_VERTICAL); 
 	pSizerAll->Add(pSplitter, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizerAll);
 
-	Zion::Vector<const DDLReflect::STRUCT_INFO*> list;
+	Zion::Array<const DDLReflect::STRUCT_INFO*> list;
 	Zion::ContentObject::GetTypeList(list);
-	Zion::Vector<const DDLReflect::STRUCT_INFO*>::iterator i;
+	Zion::Array<const DDLReflect::STRUCT_INFO*>::iterator i;
 	for(i=list.begin(); i!=list.end(); i++)
 	{
 		const DDLReflect::STRUCT_INFO* p = *i;
@@ -331,7 +331,7 @@ void CContentDataView::UpdateItemName(wxString& strItemValue, A_UUID& uuid)
 bool CContentDataView::CheckModify(bool bClear)
 {
 	if(!m_pCurInfo || !m_pCurData) return true;
-	ATLAS_ASSERT(m_pCurInfo && m_pCurData);
+	ZION_ASSERT(m_pCurInfo && m_pCurData);
 
 	m_pInfo->Updata();
 
@@ -450,8 +450,8 @@ void CContentDataView::FlashList()
 
 	const DDLReflect::STRUCT_INFO* info = m_mapTypes[(const char*)m_pObjectType->GetValue().ToUTF8()];
 
-	Zion::Vector<SEARCH_CONDITION> conds;
-	Zion::Vector<Zion::String> condstrs;
+	Zion::Array<SEARCH_CONDITION> conds;
+	Zion::Array<Zion::String> condstrs;
 	Zion::StringSplit((const char*)m_pSearchText->GetValue().ToUTF8(), ' ', condstrs);
 	if(condstrs.size()>0)
 	{

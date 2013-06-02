@@ -669,7 +669,7 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 			{
 				strcat(ref_flags, "|FLAG_NOTNULL");
 			}
-			OutC(2, "{%s, \"%s\", %s, (_U16)ATLAS_OFFSETOF(%s, %s), %s, (_U16)%s, (_U16)%s, (_U16)%s, (_U16)%s, %s},\n", type, str->args[a].name, ref_flags, str->name, str->args[a].name, sinfo,
+			OutC(2, "{%s, \"%s\", %s, (_U16)ZION_OFFSETOF(%s, %s), %s, (_U16)%s, (_U16)%s, (_U16)%s, (_U16)%s, %s},\n", type, str->args[a].name, ref_flags, str->name, str->args[a].name, sinfo,
 				strcmp(str->args[a].type, "string")!=0?"-1":str->args[a].size,
 				str->args[a].count[0]=='\0'?"-1":str->args[a].count,
 				prefix, elen, ref_type

@@ -30,7 +30,7 @@ bool CEditorApp::OnInit()
 	Zion::InitLiveObjects();
 	Zion::ContentObject::LoadContent();
 
-	wxImage::AddHandler(ATLAS_NEW wxPNGHandler);
+	wxImage::AddHandler(ZION_NEW wxPNGHandler);
 
 	SetVendorName(wxT("Zion"));
 	SetAppName(wxT("Editor"));
@@ -39,7 +39,7 @@ bool CEditorApp::OnInit()
 	pConfig->SetRecordDefaults();
 
 	CEditorFrame* pMainFrame;
-	pMainFrame = ATLAS_NEW CEditorFrame;
+	pMainFrame = ZION_NEW CEditorFrame;
 	pMainFrame->Show(true);
 	SetTopWindow(pMainFrame);
 

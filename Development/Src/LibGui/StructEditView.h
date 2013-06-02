@@ -1,5 +1,5 @@
-#ifndef __ATLAS_STRUCT_EDITOR_VIEW__
-#define __ATLAS_STRUCT_EDITOR_VIEW__
+#ifndef __ZION_STRUCT_EDITOR_VIEW__
+#define __ZION_STRUCT_EDITOR_VIEW__
 
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/advprops.h>

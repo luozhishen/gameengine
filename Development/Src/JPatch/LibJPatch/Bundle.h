@@ -22,7 +22,7 @@ namespace JPatch
 	public:
 		//
 		Zion::String							_Name;
-		Zion::Vector<CSection>					_Sections;
+		Zion::Array<CSection>					_Sections;
 		Zion::String							_MD5;
 		//
 		Zion::Map<Zion::String, CSection*>	_SectionMap;

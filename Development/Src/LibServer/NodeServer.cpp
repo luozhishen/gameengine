@@ -37,16 +37,16 @@ namespace Zion
 	static CNodeServer* _global_node_map[256] = { NULL };
 	CNodeServer::CNodeServer(CServerApp* pServerApp, _U32 nodeid) : CServerBase(pServerApp), m_nNodeID(nodeid)
 	{
-		ATLAS_ASSERT(nodeid<sizeof(_global_node_map)/sizeof(_global_node_map[0]));
-		ATLAS_ASSERT(!_global_node_map[nodeid]);
+		ZION_ASSERT(nodeid<sizeof(_global_node_map)/sizeof(_global_node_map[0]));
+		ZION_ASSERT(!_global_node_map[nodeid]);
 		_global_node_map[nodeid] = this;
 		NodeRpc_Server_Register();
 		
 		m_hTimerQueue = CreateTimerQueue();
-		ATLAS_ASSERT(m_hTimerQueue != NULL );
+		ZION_ASSERT(m_hTimerQueue != NULL );
 
 		BOOL ret = CreateTimerQueueTimer(&m_hTimer, m_hTimerQueue, NodeTimerProc, this, 100, TIEMR_PERIOD, 0);
-		ATLAS_ASSERT(ret);
+		ZION_ASSERT(ret);
 		
 		m_hClusterServer = GetRPCServer("127.0.0.1:1982");
 		m_nConnCount = 0;
@@ -138,7 +138,7 @@ namespace Zion
 
 	void CNodeClient::Disconnect()
 	{
-		ATLAS_ASSERT(m_nState==STATE_DISCONNECTING);
+		ZION_ASSERT(m_nState==STATE_DISCONNECTING);
 		if(m_nState==STATE_DISCONNECTING)
 		{
 			m_nState = STATE_DISCONNECTED;
@@ -157,7 +157,7 @@ namespace Zion
 
 	void CNodeClient::SendData(_U16 code, _U32 len, const _U8* data)
 	{
-		ATLAS_ASSERT(m_nSNDX!=-1 && m_hSession!=NULL);
+		ZION_ASSERT(m_nSNDX!=-1 && m_hSession!=NULL);
 		if(m_nSNDX==-1 || m_hSession==NULL) return;
 		SRPC_ForwardUserData(m_hSession, m_nSNDX, code, len, data);
 	}
@@ -168,7 +168,7 @@ namespace Zion
 		if(m_ConnectData.data) delete [] m_ConnectData.data;
 		if(len>0)
 		{
-			m_ConnectData.data = ATLAS_NEW _U8[len];
+			m_ConnectData.data = ZION_NEW _U8[len];
 			memcpy(m_ConnectData.data, data, len);
 		}
 		m_ConnectData.len = len;
@@ -199,12 +199,12 @@ void NRPC_Connect(Zion::HCLIENT hClient, _U64 cndx, _U32 nodeid, _U32 nodeseq, _
 
 	Zion::HSERVER hServer = Zion::GetRPCServer(hClient);
 	
-	ATLAS_ASSERT(hServer);
+	ZION_ASSERT(hServer);
 	if(!hServer) return;
 
-	ATLAS_ASSERT(nodeid<sizeof(Zion::_global_node_map)/sizeof(Zion::_global_node_map[0]));
+	ZION_ASSERT(nodeid<sizeof(Zion::_global_node_map)/sizeof(Zion::_global_node_map[0]));
 	if(nodeid>=sizeof(Zion::_global_node_map)/sizeof(Zion::_global_node_map[0])) return;
-	ATLAS_ASSERT(Zion::_global_node_map[nodeid]);
+	ZION_ASSERT(Zion::_global_node_map[nodeid]);
 	if(!Zion::_global_node_map[nodeid]) return;
 	Zion::_global_node_map[nodeid]->OnClusterConnect(hServer, cndx, nodeseq, len, data);
 }

@@ -1,5 +1,5 @@
-#ifndef __ATLAS_STRESS_CLIENT__
-#define __ATLAS_STRESS_CLIENT__
+#ifndef __ZION_STRESS_CLIENT__
+#define __ZION_STRESS_CLIENT__
 
 #include <string>
 #include <map>

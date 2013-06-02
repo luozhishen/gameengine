@@ -76,7 +76,7 @@ namespace Zion
 	_U32 CStressManager::NewClient()
 	{
 		_U32 index = A_ATOM_INC(&m_nIDSeq);
-		CStressClient* pClient = ATLAS_NEW CStressClient(index, CClientApp::GetDefault()->NewClient());
+		CStressClient* pClient = ZION_NEW CStressClient(index, CClientApp::GetDefault()->NewClient());
 		A_MUTEX_LOCK(&m_mtxLocker);
 		m_mapClients[index] = pClient;
 		A_MUTEX_UNLOCK(&m_mtxLocker);
@@ -99,7 +99,7 @@ namespace Zion
 		return pClient;
 	}
 
-	void CStressManager::GetClients(Zion::Vector<_U32>& clients)
+	void CStressManager::GetClients(Zion::Array<_U32>& clients)
 	{
 		clients.clear();
 		Zion::Map<_U32, CStressClient*>::iterator i;
@@ -130,7 +130,7 @@ namespace Zion
 		m_mapCases[pCase->GetName()] = pCase;
 	}
 
-	void CStressManager::GetCases(Zion::Vector<Zion::String>& cases)
+	void CStressManager::GetCases(Zion::Array<Zion::String>& cases)
 	{
 		Zion::Map<Zion::String, CStressCase*>::iterator i;
 		cases.clear();

@@ -67,9 +67,9 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 	wxBitmap bmpAdd;
 	wxBitmap bmpRemove;
 	wxBitmap bmpReflush;
-	bmpAdd.LoadFile(wxT("../wxRes/ZionEditor/Add.png"),			wxBITMAP_TYPE_PNG);
-	bmpRemove.LoadFile(wxT("../wxRes/ZionEditor/Remove.png"),		wxBITMAP_TYPE_PNG);
-	bmpReflush.LoadFile(wxT("../wxRes/ZionEditor/Reflush.png"),	wxBITMAP_TYPE_PNG);
+	bmpAdd.LoadFile(wxT("../wxRes/Editor/Add.png"),			wxBITMAP_TYPE_PNG);
+	bmpRemove.LoadFile(wxT("../wxRes/Editor/Remove.png"),		wxBITMAP_TYPE_PNG);
+	bmpReflush.LoadFile(wxT("../wxRes/Editor/Reflush.png"),	wxBITMAP_TYPE_PNG);
 	
 	m_pObjectType = ZION_NEW wxComboBox(this, ID_OBJECT_TYPE, wxEmptyString, wxDefaultPosition, wxSize(200, -1), 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
 	m_pSearchText = ZION_NEW wxTextCtrl(this, ID_SEARCH_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
@@ -93,8 +93,8 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 
 	wxBitmap bmpSave;
 	wxBitmap bmpUndo;
-	bmpSave.LoadFile(wxT("../wxRes/ZionEditor/Save.bmp"),			wxBITMAP_TYPE_BMP);
-	bmpUndo.LoadFile(wxT("../wxRes/ZionEditor/Undo.png"),			wxBITMAP_TYPE_PNG);
+	bmpSave.LoadFile(wxT("../wxRes/Editor/Save.bmp"),			wxBITMAP_TYPE_BMP);
+	bmpUndo.LoadFile(wxT("../wxRes/Editor/Undo.png"),			wxBITMAP_TYPE_PNG);
 
 	m_pObjectName = ZION_NEW wxTextCtrl(pPanel2, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
 	m_pInfo = ZION_NEW CStructEditView(pPanel2, this);

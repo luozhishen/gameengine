@@ -25,6 +25,9 @@ END_EVENT_TABLE()
 
 CCaseConfigDlg::CCaseConfigDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxT("Case Config"), wxDefaultPosition, wxSize(300, 300), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
+	m_pCaseType = NULL;
+	m_pCaseData = NULL;
+
 	m_pCaseList = ZION_NEW wxComboBox(this, ID_CASELIST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
 	m_pConfigText = ZION_NEW wxTextCtrl(this, ID_CASETEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 
@@ -58,6 +61,11 @@ CCaseConfigDlg::CCaseConfigDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 
 CCaseConfigDlg::~CCaseConfigDlg()
 {
+	if(m_pCaseData)
+	{
+		ZION_FREE(m_pCaseData);
+		m_pCaseData = NULL;
+	}
 }
 
 void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
@@ -67,6 +75,7 @@ void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
 	if(i==m_CaseMap.end()) return;
 	m_pCaseList->SetSelection(i->second);
 
+	m_CaseName = name;
 	m_pCaseType = Zion::CStressManager::Get().GetCaseConfigType(name);
 	if(m_pCaseType)
 	{
@@ -85,35 +94,33 @@ void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
 	}
 
 	if(bForce) m_pCaseList->Disable();
-	m_pCaseData = NULL;
 }
 
 void CCaseConfigDlg::OnCaseSelect(wxCommandEvent& event)
 {
-	if(m_pCaseData)
-	{
-		ZION_FREE(m_pCaseData);
-		m_pCaseData = NULL;
-	}
 }
 
 void CCaseConfigDlg::OnConfirm(wxCommandEvent& event)
 {
 	if(m_pCaseList->GetValue()==wxT("")) return;
 
+	if(m_pCaseData)
+	{
+		ZION_FREE(m_pCaseData);
+		m_pCaseData = NULL;
+	}
+
 	if(m_pCaseType)
 	{
-		if(m_pCaseData) ZION_FREE(m_pCaseData);
-
 		m_pCaseData = (_U8*)ZION_ALLOC(m_pCaseType->size);
-		Zion::String json;
-		bool bRet = DDLReflect::Json2Struct(m_pCaseType, *m_pConfigText->GetValue().ToUTF8(), m_pCaseData);
+		Zion::String json = (const char*)m_pConfigText->GetValue().ToUTF8();
+		bool bRet = DDLReflect::Json2Struct(m_pCaseType, json, m_pCaseData);
 		if(!bRet)
 		{
 			wxMessageBox(wxT("invalid config data"), wxT("Error"));
 			return;
 		}
 	}
-	m_CaseName = *m_pCaseList->GetValue().ToUTF8();
+
 	EndDialog(wxID_OK);
 }

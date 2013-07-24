@@ -426,7 +426,7 @@ namespace DDLReflect
 					}
 					else
 					{
-						if(!struct_jsonread(buf+def[i].offset+def[i].prefix+def[i].elen*a, def[i].type&TYPE_MASK, def[i].alen, svalue))
+						if(!struct_jsonread(buf+def[i].offset+def[i].prefix+def[i].elen*a, def[i].type&TYPE_MASK, def[i].slen, svalue))
 						{
 							return false;
 						}

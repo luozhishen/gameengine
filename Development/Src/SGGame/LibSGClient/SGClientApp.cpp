@@ -12,7 +12,7 @@ namespace Zion
 
 	CSGClientApp::CSGClientApp(bool bThread) : CClientApp("SGGame", bThread)
 	{
-		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://192.168.0.96/Zion/action/%s.php");
+		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://127.0.0.1:1982/game-api/%s");
 		if(!GetParam("ConnectType")) SetParam("ConnectType", "http");
 	}
 

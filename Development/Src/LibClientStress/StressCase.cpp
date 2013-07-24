@@ -28,18 +28,18 @@ namespace Zion
 	bool CStressCase::GetConfig(void* pConfig, _U32 size)
 	{
 		bool bRet;
-		A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
+		if(m_pClient) A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
 		bRet = _GetConfig(pConfig, size);
-		A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);
+		if(m_pClient) A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);
 		return bRet;
 	}
 
 	bool CStressCase::SetConfig(const void* pConfig, _U32 size)
 	{
 		bool bRet;
-		A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
+		if(m_pClient) A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
 		bRet = _SetConfig(pConfig, size);
-		A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);
+		if(m_pClient) A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);
 		return bRet;
 	}
 

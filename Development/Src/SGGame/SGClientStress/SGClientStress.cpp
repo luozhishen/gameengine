@@ -13,6 +13,7 @@
 #include <ClientStressApp.h>
 #include <StressManager.h>
 #include <StressCase.h>
+#include <StressCases.h>
 
 #include "SGCommon.h"
 #include "SGClientApp.h"
@@ -35,9 +36,11 @@ public:
 
 	virtual void InitCase()
 	{
+		Zion::CStressManager::Get().RegisterCase(&m_CaseLogin);
 	}
 
 	Zion::CSGClientApp m_App;
+	Zion::StressCases::CLogin m_CaseLogin;
 };
 
 IMPLEMENT_APP(CSGClientStressApp)

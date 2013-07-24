@@ -28,6 +28,8 @@
     <ClCompile Include="ProtocalDlg.cpp" />
     <ClCompile Include="ServerParamDlg.cpp" />
     <ClCompile Include="StressCase.cpp" />
+    <ClCompile Include="StressCaseConfig.cpp" />
+    <ClCompile Include="StressCases.cpp" />
     <ClCompile Include="StressClient.cpp" />
     <ClCompile Include="StressLoader.cpp" />
     <ClCompile Include="StressManager.cpp" />
@@ -45,11 +47,34 @@
     <ClInclude Include="ProtocalDlg.h" />
     <ClInclude Include="ServerParamDlg.h" />
     <ClInclude Include="StressCase.h" />
+    <ClInclude Include="StressCaseConfig.h" />
+    <ClInclude Include="StressCases.h" />
     <ClInclude Include="StressClient.h" />
     <ClInclude Include="StressLoader.h" />
     <ClInclude Include="StressManager.h" />
     <ClInclude Include="StressViewDlg.h" />
     <ClInclude Include="StressViewTree.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="StressCaseConfig.ddl">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compile %(Filename).ddl ...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compile %(Filename).ddl ...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compile %(Filename).ddl ...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compile %(Filename).ddl ...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h;%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h;%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h;%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h;%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+    </CustomBuild>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7F6B584F-7FB3-43DF-B91D-1D182F21635D}</ProjectGuid>

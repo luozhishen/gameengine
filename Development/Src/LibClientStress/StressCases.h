@@ -1,28 +1,32 @@
 #ifndef __STRESS_CASES__
 #define __STRESS_CASES__
 
-namespace Atlas
+#include "StressCaseConfig.h"
+
+namespace Zion
 {
-
-	class CLoginCase : public CStressCase
+	namespace StressCases
 	{
-	public:
-		CLoginCase();
-		virtual ~CLoginCase();
 
-		virtual void OnAttach();
-		virtual void OnTick();
-		virtual void OnDetach();
+		class CLogin : public TStressCase<STRESSCASE_LOGIN_CONFIG>
+		{
+		public:
+			CLogin();
+			virtual ~CLogin();
 
-		void OnLoginFailed();
-		void OnLoginDone();
-		void OnDisconnected();
+			virtual void OnTick();
 
-	protected:
-		virtual CStressCase* Create();
-		virtual void _GetInfo(std::string& info);
+			void OnLoginFailed();
+			void OnLoginDone();
+			void OnDisconnected();
 
-	};
+		protected:
+			virtual CStressCase* Create();
+			virtual void _GetInfo(std::string& info);
+
+		};
+
+	}
 }
 
 #endif  // __STRESS_CASES__

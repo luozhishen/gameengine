@@ -31,6 +31,7 @@ namespace Zion
 
 	protected:
 		virtual CStressCase* Create() = 0;
+
 		void Attach(CStressClient* pClient);
 		void Detach(CStressClient* pClient);
 		virtual bool _GetConfig(void* pConfig, _U32 size) { return false; }
@@ -40,6 +41,42 @@ namespace Zion
 	private:
 		Zion::String m_strName;
 		CStressClient* m_pClient;
+	};
+
+	template <typename T>
+	class TStressCase : public CStressCase
+	{
+	public:
+		TStressCase(const char* Name) : CStressCase(Name)
+		{
+			memset(&m_Config, 0, sizeof(m_Config));
+		}
+		virtual ~TStressCase()
+		{
+		}
+
+		virtual const DDLReflect::STRUCT_INFO* GetConfigType()
+		{
+			return DDLReflect::GetStruct<T>();
+		}
+
+	protected:
+		virtual bool _GetConfig(void* pConfig, _U32 size)
+		{
+			if(size!=sizeof(T)) return false;
+			memcpy(pConfig, &m_Config, sizeof(T));
+			return true;
+		}
+
+		virtual bool _SetConfig(const void* pConfig, _U32 size)
+		{
+			if(size!=sizeof(T)) return false;
+			memcpy(&m_Config, pConfig, sizeof(T));
+			return true;
+		}
+
+	private:
+		T m_Config;
 	};
 
 }

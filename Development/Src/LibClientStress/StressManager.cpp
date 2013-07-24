@@ -21,11 +21,6 @@ namespace Zion
 
 	CStressManager::~CStressManager()
 	{
-		Zion::Map<Zion::String, CStressCase*>::iterator i;
-		for(i=m_mapCases.begin(); i!=m_mapCases.end(); i++)
-		{
-			delete i->second;
-		}
 		m_mapCases.clear();
 
 		if(m_hTimerQueue)

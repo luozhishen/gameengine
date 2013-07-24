@@ -16,6 +16,7 @@ namespace Zion
 		CLogin::CLogin() : TStressCase<STRESSCASE_LOGIN_CONFIG>("Login")
 		{
 			m_retry_time = 0;
+			m_disconnect_time = 0;
 		}
 
 		CLogin::~CLogin()
@@ -46,6 +47,21 @@ namespace Zion
 					m_retry_time = 0;
 				}
 			}
+			if(GetClient()->GetState()==CClient::STATE_LOGINED)
+			{
+				if(m_Config.disconnect_time!=0)
+				{
+					if(m_disconnect_time==0)
+					{
+						m_disconnect_time = (_U32)time(NULL) + m_Config.disconnect_time;
+					}
+					if(m_disconnect_time<(_U32)time(NULL))
+					{
+						GetClient()->Logout();
+						m_disconnect_time = 0;
+					}
+				}
+			}
 		}
 
 		void CLogin::OnLoginFailed()
@@ -54,6 +70,10 @@ namespace Zion
 
 		void CLogin::OnLoginDone()
 		{
+			if(m_Config.disconnect_time)
+			{
+				m_disconnect_time = (_U32)time(NULL) + m_Config.disconnect_time;
+			}
 		}
 
 		void CLogin::OnDisconnected()

@@ -27,6 +27,7 @@ namespace Zion
 		private:
 			_U32 m_retry_time;
 			_U32 m_reset_time;
+			_U32 m_disconnect_time;
 		};
 
 	}

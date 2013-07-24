@@ -21,8 +21,9 @@ namespace DDLReflect
 	{
 		{TYPE_U32, "reset_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_LOGIN_CONFIG, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "retry_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_LOGIN_CONFIG, retry_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "disconnect_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_LOGIN_CONFIG, disconnect_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_STRESSCASE_LOGIN_CONFIG_info = { NULL, "STRESSCASE_LOGIN_CONFIG", sizeof(STRESSCASE_LOGIN_CONFIG), 2, _struct_STRESSCASE_LOGIN_CONFIG_fieldinfo, _struct_STRESSCASE_LOGIN_CONFIG_readproc, _struct_STRESSCASE_LOGIN_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_STRESSCASE_LOGIN_CONFIG_info = { NULL, "STRESSCASE_LOGIN_CONFIG", sizeof(STRESSCASE_LOGIN_CONFIG), 3, _struct_STRESSCASE_LOGIN_CONFIG_fieldinfo, _struct_STRESSCASE_LOGIN_CONFIG_readproc, _struct_STRESSCASE_LOGIN_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<STRESSCASE_LOGIN_CONFIG>()
 	{

@@ -32,6 +32,7 @@ CCaseConfigDlg::CCaseConfigDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 
 	m_pCaseList = ZION_NEW wxComboBox(this, ID_CASELIST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
 	m_pDataView = ZION_NEW CStructEditView(this);
+	m_pCaseList->Connect(wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler(CCaseConfigDlg::OnCaseSelect), NULL, this); 
 
 	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer2->AddStretchSpacer();

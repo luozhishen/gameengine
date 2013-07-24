@@ -25,9 +25,9 @@ namespace Zion
 		bool SetConfig(const void* pConfig, _U32 size);
 		const Zion::String GetInfo();
 
-		virtual void OnAttach()	{}
+		virtual void OnAttach() {}
 		virtual void OnTick()	{}
-		virtual void OnDetach()	{}
+		virtual void OnDetach() {}
 
 	protected:
 		virtual CStressCase* Create() = 0;
@@ -75,7 +75,7 @@ namespace Zion
 			return true;
 		}
 
-	private:
+	protected:
 		T m_Config;
 	};
 

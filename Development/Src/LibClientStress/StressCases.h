@@ -24,6 +24,9 @@ namespace Zion
 			virtual CStressCase* Create();
 			virtual void _GetInfo(std::string& info);
 
+		private:
+			_U32 m_retry_time;
+			_U32 m_reset_time;
 		};
 
 	}

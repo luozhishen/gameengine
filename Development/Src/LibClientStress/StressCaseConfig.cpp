@@ -31,3 +31,29 @@ namespace DDLReflect
 	}
 }
 
+namespace DDLReflect
+{
+
+	static bool _struct_STRESSCASE_LOGIN_STATUS_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<STRESSCASE_LOGIN_STATUS>(*((STRESSCASE_LOGIN_STATUS*)data));
+	}
+
+	static bool _struct_STRESSCASE_LOGIN_STATUS_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<STRESSCASE_LOGIN_STATUS>(*((const STRESSCASE_LOGIN_STATUS*)data));
+	}
+
+	static FIELD_INFO _struct_STRESSCASE_LOGIN_STATUS_fieldinfo[] =
+	{
+		{TYPE_U32, "failed_times", 0, (_U16)ZION_OFFSETOF(STRESSCASE_LOGIN_STATUS, failed_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "sucess_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_LOGIN_STATUS, sucess_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_STRESSCASE_LOGIN_STATUS_info = { NULL, "STRESSCASE_LOGIN_STATUS", sizeof(STRESSCASE_LOGIN_STATUS), 2, _struct_STRESSCASE_LOGIN_STATUS_fieldinfo, _struct_STRESSCASE_LOGIN_STATUS_readproc, _struct_STRESSCASE_LOGIN_STATUS_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<STRESSCASE_LOGIN_STATUS>()
+	{
+		return &_rfl_struct_STRESSCASE_LOGIN_STATUS_info;
+	}
+}
+

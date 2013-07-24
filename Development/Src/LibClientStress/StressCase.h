@@ -21,9 +21,12 @@ namespace Zion
 		const Zion::String& GetName() { return m_strName; }
 
 		virtual const DDLReflect::STRUCT_INFO* GetConfigType() { return NULL; }
-		bool GetConfig(void* pConfig, _U32 size);
-		bool SetConfig(const void* pConfig, _U32 size);
-		const Zion::String GetInfo();
+		virtual bool GetConfig(void* pConfig, _U32 size) { return false; }
+		virtual bool SetConfig(const void* pConfig, _U32 size) { return false; }
+
+		virtual const DDLReflect::STRUCT_INFO* GetStatusType() { return NULL; }
+		virtual const _U8* GetStatusData() { return NULL; }
+		const Zion::String GetStatusInfo();
 
 		virtual void OnAttach() {}
 		virtual void OnTick()	{}
@@ -34,22 +37,20 @@ namespace Zion
 
 		void Attach(CStressClient* pClient);
 		void Detach(CStressClient* pClient);
-		virtual bool _GetConfig(void* pConfig, _U32 size) { return false; }
-		virtual bool _SetConfig(const void* pConfig, _U32 size) { return false; }
-		virtual void _GetInfo(Zion::String& info) { }
 
 	private:
 		Zion::String m_strName;
 		CStressClient* m_pClient;
 	};
 
-	template <typename T>
+	template <typename T, typename S>
 	class TStressCase : public CStressCase
 	{
 	public:
 		TStressCase(const char* Name) : CStressCase(Name)
 		{
 			memset(&m_Config, 0, sizeof(m_Config));
+			memset(&m_Status, 0, sizeof(m_Status));
 		}
 		virtual ~TStressCase()
 		{
@@ -60,23 +61,33 @@ namespace Zion
 			return DDLReflect::GetStruct<T>();
 		}
 
-	protected:
-		virtual bool _GetConfig(void* pConfig, _U32 size)
+		virtual bool GetConfig(void* pConfig, _U32 size)
 		{
 			if(size!=sizeof(T)) return false;
 			memcpy(pConfig, &m_Config, sizeof(T));
 			return true;
 		}
 
-		virtual bool _SetConfig(const void* pConfig, _U32 size)
+		virtual bool SetConfig(const void* pConfig, _U32 size)
 		{
 			if(size!=sizeof(T)) return false;
 			memcpy(&m_Config, pConfig, sizeof(T));
 			return true;
 		}
 
+		virtual const DDLReflect::STRUCT_INFO* GetStatusType()
+		{
+			return DDLReflect::GetStruct<S>();
+		}
+
+		virtual const _U8* GetStatusData()
+		{
+			return (const _U8*)&m_Status;
+		}
+
 	protected:
 		T m_Config;
+		S m_Status;
 	};
 
 }

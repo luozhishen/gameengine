@@ -1,6 +1,8 @@
 #ifndef _CASE_CONFIG_DLG_H__
 #define _CASE_CONFIG_DLG_H__
 
+class CStructEditView;
+
 class CCaseConfigDlg : public wxDialog
 {
 	DECLARE_EVENT_TABLE()
@@ -20,7 +22,7 @@ public:
 
 private:
 	wxComboBox* m_pCaseList;
-	wxTextCtrl* m_pConfigText;
+	CStructEditView* m_pDataView;
 	Zion::Map<Zion::String, int> m_CaseMap;
 	Zion::String m_CaseName;
 	const DDLReflect::STRUCT_INFO* m_pCaseType;

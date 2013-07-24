@@ -13,7 +13,7 @@ namespace Zion
 	namespace StressCases
 	{
 
-		CLogin::CLogin() : TStressCase<STRESSCASE_LOGIN_CONFIG>("Login")
+		CLogin::CLogin() : TStressCase<STRESSCASE_LOGIN_CONFIG, STRESSCASE_LOGIN_STATUS>("Login")
 		{
 			m_retry_time = 0;
 			m_disconnect_time = 0;
@@ -83,10 +83,6 @@ namespace Zion
 		CStressCase* CLogin::Create()
 		{
 			return ZION_NEW CLogin();
-		}
-
-		void CLogin::_GetInfo(std::string& info)
-		{
 		}
 
 	}

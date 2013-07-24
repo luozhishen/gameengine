@@ -67,7 +67,7 @@ void CClientCaseView::Flush(bool full)
 		for(i=cases.begin(); i!=cases.end(); i++)
 		{
 			int n = m_pListCtrl->InsertItem(m_pListCtrl->GetItemCount(), wxString::FromUTF8((*i)->GetName().c_str()));
-			m_pListCtrl->SetItem(n, 1, wxString::FromUTF8((*i)->GetInfo().c_str()));
+			m_pListCtrl->SetItem(n, 1, wxString::FromUTF8((*i)->GetStatusInfo().c_str()));
 		}
 	}
 	else
@@ -76,7 +76,7 @@ void CClientCaseView::Flush(bool full)
 		{
 			Zion::CStressCase* pCase = m_pCurrentClient->GetStressCase((const char*)m_pListCtrl->GetItemText(i).ToUTF8());
 			if(!pCase) continue;
-			m_pListCtrl->SetItem(i, 1, wxString::FromUTF8(pCase->GetInfo().c_str()));
+			m_pListCtrl->SetItem(i, 1, wxString::FromUTF8(pCase->GetStatusInfo().c_str()));
 		}
 	}
 }

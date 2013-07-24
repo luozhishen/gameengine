@@ -10,7 +10,7 @@ class CStructEditView : public wxPanel
 	DECLARE_EVENT_TABLE()
 
 public:
-	CStructEditView(wxWindow* pParent, wxWindow* pDataViewWindow);
+	CStructEditView(wxWindow* pParent);
 	virtual ~CStructEditView();
 		
 	void Clear();

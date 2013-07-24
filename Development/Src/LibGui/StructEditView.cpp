@@ -22,7 +22,7 @@ BEGIN_EVENT_TABLE(CStructEditView, wxPanel)
 	EVT_PG_CHANGING(ID_OBJECT_GRID, CStructEditView::OnPropertyGridChanging)
 END_EVENT_TABLE()
 
-CStructEditView::CStructEditView(wxWindow* pParent, wxWindow* pDataViewWindow) : wxPanel(pParent)
+CStructEditView::CStructEditView(wxWindow* pParent) : wxPanel(pParent)
 {
 	wxBoxSizer* m_pSizer;
 	m_pSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
@@ -64,10 +64,13 @@ bool CStructEditView::Set(const DDLReflect::STRUCT_INFO* info, const void* data)
 {
 	Clear();
 
-	m_pData = DDLReflect::CreateObject(info);
-	memcpy(m_pData, data, (size_t)info->size);
-	m_pInfo = info;
-	InitPropGrid(info, m_pData);
+	if(info!=NULL && data!=NULL)
+	{
+		m_pData = DDLReflect::CreateObject(info);
+		memcpy(m_pData, data, (size_t)info->size);
+		m_pInfo = info;
+		InitPropGrid(info, m_pData);
+	}
 
 	return true;
 }

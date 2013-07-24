@@ -30,6 +30,19 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_STRESSCASE_LOGIN_CONFIG_info;
 }
 
+struct STRESSCASE_LOGIN_STATUS
+{
+	_U32 failed_times;
+	_U32 sucess_time;
+};
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<STRESSCASE_LOGIN_STATUS>();
+	extern STRUCT_INFO _rfl_struct_STRESSCASE_LOGIN_STATUS_info;
+}
+
 
 #pragma pack(pop)
 

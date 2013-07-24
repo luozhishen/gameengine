@@ -10,6 +10,8 @@
 #include <ZionBase.h>
 #include <StressManager.h>
 
+
+#include <StructEditView.h>
 #include "CaseConfigDlg.h"
 
 enum
@@ -29,7 +31,7 @@ CCaseConfigDlg::CCaseConfigDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	m_pCaseData = NULL;
 
 	m_pCaseList = ZION_NEW wxComboBox(this, ID_CASELIST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
-	m_pConfigText = ZION_NEW wxTextCtrl(this, ID_CASETEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+	m_pDataView = ZION_NEW CStructEditView(this);
 
 	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer2->AddStretchSpacer();
@@ -37,8 +39,7 @@ CCaseConfigDlg::CCaseConfigDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	pSizer2->Add(ZION_NEW wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALIGN_RIGHT | wxALL, 5);
 	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxVERTICAL);
 	pSizer1->Add(m_pCaseList, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	pSizer1->Add(m_pConfigText, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
+	pSizer1->Add(m_pDataView, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pSizer1);
 
 	Zion::Array<Zion::String> cases;
@@ -73,24 +74,24 @@ void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
 	Zion::Map<Zion::String, int>::iterator i;
 	i = m_CaseMap.find(name);
 	if(i==m_CaseMap.end()) return;
+
+
 	m_pCaseList->SetSelection(i->second);
+	m_pDataView->Set(NULL, NULL);
 
 	m_CaseName = name;
 	m_pCaseType = Zion::CStressManager::Get().GetCaseConfigType(name);
+	if(m_pCaseData)
+	{
+		ZION_FREE(m_pCaseData);
+		m_pCaseData = NULL;
+	}
+
 	if(m_pCaseType)
 	{
-		_U8* pData = (_U8*)ZION_ALLOC(m_pCaseType->size);
-		Zion::CStressManager::Get().GetCaseConfigDefault(name, pData, m_pCaseType->size);
-		Zion::String json;
-		DDLReflect::Struct2Json(m_pCaseType, pData, json);
-		ZION_FREE(pData);
-		m_pConfigText->SetValue(wxString::FromUTF8(json.c_str()));
-		m_pConfigText->Enable();
-	}
-	else
-	{
-		m_pConfigText->SetValue(wxT("NO Config"));
-		m_pConfigText->Disable();
+		m_pCaseData = (_U8*)ZION_ALLOC(m_pCaseType->size);
+		Zion::CStressManager::Get().GetCaseConfigDefault(name, m_pCaseData, m_pCaseType->size);
+		m_pDataView->Set(m_pCaseType, m_pCaseData);
 	}
 
 	if(bForce) m_pCaseList->Disable();
@@ -98,6 +99,7 @@ void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
 
 void CCaseConfigDlg::OnCaseSelect(wxCommandEvent& event)
 {
+	ChangeCase((const char*)m_pCaseList->GetValue().ToUTF8());
 }
 
 void CCaseConfigDlg::OnConfirm(wxCommandEvent& event)
@@ -112,14 +114,11 @@ void CCaseConfigDlg::OnConfirm(wxCommandEvent& event)
 
 	if(m_pCaseType)
 	{
-		m_pCaseData = (_U8*)ZION_ALLOC(m_pCaseType->size);
-		Zion::String json = (const char*)m_pConfigText->GetValue().ToUTF8();
-		bool bRet = DDLReflect::Json2Struct(m_pCaseType, json, m_pCaseData);
-		if(!bRet)
+		if(!m_pCaseData)
 		{
-			wxMessageBox(wxT("invalid config data"), wxT("Error"));
-			return;
+			m_pCaseData = (_U8*)ZION_ALLOC(m_pCaseType->size);
 		}
+		m_pDataView->Get(m_pCaseType, m_pCaseData);
 	}
 
 	EndDialog(wxID_OK);

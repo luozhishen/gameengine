@@ -97,7 +97,7 @@ CContentDataView::CContentDataView(wxWindow* pParent) : wxPanel(pParent)
 	bmpUndo.LoadFile(wxT("../wxRes/Editor/Undo.png"),			wxBITMAP_TYPE_PNG);
 
 	m_pObjectName = ZION_NEW wxTextCtrl(pPanel2, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
-	m_pInfo = ZION_NEW CStructEditView(pPanel2, this);
+	m_pInfo = ZION_NEW CStructEditView(pPanel2);
 	pSizerRight->Add(ZION_NEW wxStaticText(pPanel2, wxID_ANY, wxT("Object Edit")), 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 	pSizer11->Add(m_pObjectName, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);

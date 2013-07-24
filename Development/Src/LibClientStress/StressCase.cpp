@@ -25,31 +25,14 @@ namespace Zion
 		return m_pClient->GetClient();
 	}
 
-	bool CStressCase::GetConfig(void* pConfig, _U32 size)
+	const Zion::String CStressCase::GetStatusInfo()
 	{
-		bool bRet;
-		if(m_pClient) A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
-		bRet = _GetConfig(pConfig, size);
-		if(m_pClient) A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);
-		return bRet;
-	}
+		const DDLReflect::STRUCT_INFO* pType = GetStatusType();
+		if(!pType) return "";
 
-	bool CStressCase::SetConfig(const void* pConfig, _U32 size)
-	{
-		bool bRet;
-		if(m_pClient) A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
-		bRet = _SetConfig(pConfig, size);
-		if(m_pClient) A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);
-		return bRet;
-	}
-
-	const Zion::String CStressCase::GetInfo()
-	{
-		Zion::String info;
-		A_MUTEX_LOCK(&m_pClient->GetClient()->m_mtxClient);
-		_GetInfo(info);
-		A_MUTEX_UNLOCK(&m_pClient->GetClient()->m_mtxClient);
-		return info;
+		Zion::String json;
+		DDLReflect::Struct2Json(pType, GetStatusData(), json);
+		return json;
 	}
 
 	void CStressCase::Attach(CStressClient* pClient)

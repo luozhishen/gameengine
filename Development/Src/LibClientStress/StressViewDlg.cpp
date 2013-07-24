@@ -122,5 +122,5 @@ void CStressViewDlg::DisplayInfo(_U32 uid, Zion::String& strCaseName)
 	if(!pCase) return;
 		
 	(*m_pClientCase)<<wxString::FromUTF8(pCase->GetName().c_str());
-	(*m_pClientData)<<wxString::FromUTF8(pCase->GetInfo().c_str());
+	(*m_pClientData)<<wxString::FromUTF8(pCase->GetStatusInfo().c_str());
 }

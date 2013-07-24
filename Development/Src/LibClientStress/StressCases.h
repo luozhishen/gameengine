@@ -8,7 +8,7 @@ namespace Zion
 	namespace StressCases
 	{
 
-		class CLogin : public TStressCase<STRESSCASE_LOGIN_CONFIG>
+		class CLogin : public TStressCase<STRESSCASE_LOGIN_CONFIG, STRESSCASE_LOGIN_STATUS>
 		{
 		public:
 			CLogin();
@@ -22,7 +22,6 @@ namespace Zion
 
 		protected:
 			virtual CStressCase* Create();
-			virtual void _GetInfo(std::string& info);
 
 		private:
 			_U32 m_retry_time;

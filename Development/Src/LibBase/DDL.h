@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "ZionUUID.h"
+
 namespace DDL
 {
 
@@ -60,6 +62,24 @@ namespace DDL
 		}
 
 		char _Value[N+1];
+	};
+
+	const void* GetPointerData(const A_UUID& uuid);
+
+	template<typename T>
+	class Pointer
+	{
+	public:
+		Pointer()
+		{
+		}
+
+		const T* Get()
+		{
+			return (const T*)GetPointerData(uuid);
+		}
+
+		A_UUID uuid;
 	};
 
 	class BufferReader

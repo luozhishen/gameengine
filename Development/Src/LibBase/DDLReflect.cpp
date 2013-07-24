@@ -11,6 +11,14 @@ namespace DDL
 		return length;
 	}
 
+	typedef const void* (*DDL_POINTER_GET_DATA_PROC)(const A_UUID& uuid);
+	DDL_POINTER_GET_DATA_PROC ddl_pointer_get_data = NULL;
+	const void* GetPointerData(const A_UUID& uuid)
+	{
+		if(!ddl_pointer_get_data) return NULL;
+		return ddl_pointer_get_data(uuid);
+	}
+
 }
 
 namespace DDLReflect

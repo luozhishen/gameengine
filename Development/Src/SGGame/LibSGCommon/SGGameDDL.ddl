@@ -222,6 +222,8 @@ task[GEN_STRUCT_REFLECT(SG_WORLD_BOSS_CONFIG)];
 
 struct SG_WORLD_BOSS_INSPIRE_CONFIG : A_CONTENT_OBJECT
 {
+	content_ref<SG_WORLD_BOSS_CONFIG>			cf;
+	array<content_ref<SG_WORLD_BOSS_CONFIG>, 10>			cfs;
 	_U32										times;				//次数
 	_U32										consume_rmb;		//花费元宝数
 };

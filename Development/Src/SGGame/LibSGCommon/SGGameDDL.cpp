@@ -113,6 +113,8 @@ namespace DDL
 	bool BufferReader::Read<SG_WORLD_BOSS_INSPIRE_CONFIG>(SG_WORLD_BOSS_INSPIRE_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<A_UUID>(Value.cf.uuid)) return false;
+		if(!ReadArray<A_UUID, 10>(*((DDL::Array<A_UUID, 10>*)&Value.cfs))) return false;
 		if(!Read<_U32>(Value.times)) return false;
 		if(!Read<_U32>(Value.consume_rmb)) return false;
 		return true;
@@ -121,6 +123,8 @@ namespace DDL
 	bool BufferWriter::Write<SG_WORLD_BOSS_INSPIRE_CONFIG>(const SG_WORLD_BOSS_INSPIRE_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<A_UUID>(Value.cf.uuid)) return false;
+		if(!WriteArray<A_UUID, 10>(*((const DDL::Array<A_UUID, 10>*)&Value.cfs))) return false;
 		if(!Write<_U32>(Value.times)) return false;
 		if(!Write<_U32>(Value.consume_rmb)) return false;
 		return true;
@@ -142,10 +146,12 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo[] =
 	{
+		{TYPE_UUID_REF, "cf", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, cf), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), "SG_WORLD_BOSS_CONFIG"},
+		{TYPE_UUID_REF|TYPE_ARRAY, "cfs", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, cfs), NULL, (_U16)-1, (_U16)10, (_U16)((size_t)(&((DDL::Array<A_UUID, 10>*)NULL)->_Array)), (_U16)sizeof(A_UUID), "SG_WORLD_BOSS_CONFIG"},
 		{TYPE_U32, "times", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "consume_rmb", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_WORLD_BOSS_INSPIRE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_WORLD_BOSS_INSPIRE_CONFIG", sizeof(SG_WORLD_BOSS_INSPIRE_CONFIG), 2, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_readproc, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_WORLD_BOSS_INSPIRE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_WORLD_BOSS_INSPIRE_CONFIG", sizeof(SG_WORLD_BOSS_INSPIRE_CONFIG), 4, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_readproc, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_WORLD_BOSS_INSPIRE_CONFIG>()
 	{

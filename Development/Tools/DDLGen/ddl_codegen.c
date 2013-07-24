@@ -87,9 +87,9 @@ const char* get_ctype(const DDL_ARG* arg, int is_class)
 
 	if(strcmp(arg->type, "content_ref")==0) {
 		if(!arg->count[0]) {
-			sprintf(ret, "A_UUID");
+			sprintf(ret, "DDL::Pointer<%s>", arg->size);
 		} else {
-			sprintf(ret, "DDL::Array<A_UUID, %s>", arg->count);
+			sprintf(ret, "DDL::Array<DDL::Pointer<%s>, %s>", arg->size, arg->count);
 		}
 		return ret;
 	}
@@ -538,9 +538,9 @@ int ddlgen_code_task_struct_serialize(const DDL_STR* str, const DDL_TASK* task)
 	for(a=0; a<str->args_count; a++) {
 		if(strcmp(str->args[a].type, "content_ref")==0) {
 			if(!str->args[a].count[0]) {
-			OutC(2, "if(!Read<A_UUID>(Value.%s)) return false;\n", str->args[a].name);
+			OutC(2, "if(!Read<A_UUID>(Value.%s.uuid)) return false;\n", str->args[a].name);
 			} else {
-			OutC(2, "if(!ReadArray<A_UUID, %s>(Value.%s)) return false;\n", str->args[a].count, str->args[a].name);
+			OutC(2, "if(!ReadArray<A_UUID, %s>(*((DDL::Array<A_UUID, %s>*)&Value.%s))) return false;\n", str->args[a].count, str->args[a].count, str->args[a].name);
 			}
 		} else if(strcmp(str->args[a].type, "string")==0) {
 			if(!str->args[a].count[0]) {
@@ -567,9 +567,9 @@ int ddlgen_code_task_struct_serialize(const DDL_STR* str, const DDL_TASK* task)
 	for(a=0; a<str->args_count; a++) {
 		if(strcmp(str->args[a].type, "content_ref")==0) {
 			if(!str->args[a].count[0]) {
-			OutC(2, "if(!Write<A_UUID>(Value.%s)) return false;\n", str->args[a].name);
+			OutC(2, "if(!Write<A_UUID>(Value.%s.uuid)) return false;\n", str->args[a].name);
 			} else {
-			OutC(2, "if(!WriteArray<A_UUID, %s>(Value.%s)) return false;\n", str->args[a].count, str->args[a].name);
+			OutC(2, "if(!WriteArray<A_UUID, %s>(*((const DDL::Array<A_UUID, %s>*)&Value.%s))) return false;\n", str->args[a].count, str->args[a].count, str->args[a].name);
 			}
 		} else if(strcmp(str->args[a].type, "string")==0) {
 			if(!str->args[a].count[0]) {

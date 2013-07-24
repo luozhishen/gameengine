@@ -300,6 +300,8 @@ namespace DDLReflect
 
 struct SG_WORLD_BOSS_INSPIRE_CONFIG : A_CONTENT_OBJECT
 {
+	DDL::Pointer<SG_WORLD_BOSS_CONFIG> cf;
+	DDL::Array<DDL::Pointer<SG_WORLD_BOSS_CONFIG>, 10> cfs;
 	_U32 times;
 	_U32 consume_rmb;
 };

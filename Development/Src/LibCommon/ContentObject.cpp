@@ -10,6 +10,18 @@
 #include <fstream>
 #include "des64.h"
 
+namespace DDL
+{
+
+	typedef const void* (*DDL_POINTER_GET_DATA_PROC)(const A_UUID& uuid);
+	extern DDL_POINTER_GET_DATA_PROC ddl_pointer_get_data;
+
+	const void* common_pointer_get_data(const A_UUID& uuid)
+	{
+		return Zion::ContentObject::QueryByUUID(uuid);
+	}
+}
+
 namespace Zion
 {
 
@@ -405,6 +417,8 @@ namespace Zion
 
 		bool BuildIndex(const DDLReflect::STRUCT_INFO* info)
 		{
+			DDL::ddl_pointer_get_data = &DDL::common_pointer_get_data;
+
 			if(info==NULL)
 			{
 				for(size_t i=0; i<g_typearray.size(); i++)

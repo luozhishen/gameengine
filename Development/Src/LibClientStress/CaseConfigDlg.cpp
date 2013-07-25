@@ -78,7 +78,7 @@ void CCaseConfigDlg::ChangeCase(const char* name, bool bForce)
 
 
 	m_pCaseList->SetSelection(i->second);
-	m_pDataView->Set(NULL, NULL);
+	m_pDataView->Clear();
 
 	m_CaseName = name;
 	m_pCaseType = Zion::CStressManager::Get().GetCaseConfigType(name);

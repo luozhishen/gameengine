@@ -21,8 +21,8 @@ namespace Zion
 		const Zion::String& GetName() { return m_strName; }
 
 		virtual const DDLReflect::STRUCT_INFO* GetConfigType() { return NULL; }
-		virtual bool GetConfig(void* pConfig, _U32 size) { return false; }
-		virtual bool SetConfig(const void* pConfig, _U32 size) { return false; }
+		virtual const void* GetConfig() { return NULL; }
+		bool SetConfig(const void* pConfig, _U32 size) { return false; }
 
 		virtual const DDLReflect::STRUCT_INFO* GetStatusType() { return NULL; }
 		virtual const _U8* GetStatusData() { return NULL; }
@@ -61,11 +61,9 @@ namespace Zion
 			return DDLReflect::GetStruct<T>();
 		}
 
-		virtual bool GetConfig(void* pConfig, _U32 size)
+		virtual const void* GetConfig()
 		{
-			if(size!=sizeof(T)) return false;
-			memcpy(pConfig, &m_Config, sizeof(T));
-			return true;
+			return &m_Config;
 		}
 
 		virtual bool SetConfig(const void* pConfig, _U32 size)

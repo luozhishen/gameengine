@@ -17,12 +17,19 @@ public:
 	virtual void OnClear();
 	virtual void OnNewCase(_U32 index, Zion::CStressCase* pCase);
 
+	void SelectCase(const char* name);
+
+protected:
 	void OnTimer(wxTimerEvent& event);
+	void OnCaseSelected(wxListEvent& event);
 
 private:
 	wxListCtrl* m_pListCtrl;
 	CStructEditView* m_pConfig;
 	CStructEditView* m_pStatus;
+
+	Zion::CStressCase* m_pCurrentCase;
+	Zion::String m_CurrentCaseName;
 
 	Zion::CStressClient* m_pCurrentClient;
 	wxTimer m_StressTimer;

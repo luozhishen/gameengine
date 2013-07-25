@@ -38,7 +38,7 @@ CStructEditView::CStructEditView(wxWindow* pParent) : wxPanel(pParent)
 
 CStructEditView::~CStructEditView()
 {
-	if(m_pData)
+	if(m_pData && m_bDataFree)
 	{
 		DDLReflect::DestoryObject(m_pData);
 		m_pData = NULL;
@@ -48,7 +48,7 @@ CStructEditView::~CStructEditView()
 void CStructEditView::Clear()
 {
 	m_pPropGrid->Clear();
-	if(m_pData) DDLReflect::DestoryObject(m_pData);
+	if(m_pData && m_bDataFree) DDLReflect::DestoryObject(m_pData);
 	m_pInfo = NULL;
 	m_pData = NULL;
 }
@@ -66,8 +66,24 @@ bool CStructEditView::Set(const DDLReflect::STRUCT_INFO* info, const void* data)
 
 	if(info!=NULL && data!=NULL)
 	{
+		m_bDataFree = true;
 		m_pData = DDLReflect::CreateObject(info);
 		memcpy(m_pData, data, (size_t)info->size);
+		m_pInfo = info;
+		InitPropGrid(info, m_pData);
+	}
+
+	return true;
+}
+
+bool CStructEditView::Set(const DDLReflect::STRUCT_INFO* info, void* data)
+{
+	Clear();
+
+	if(info!=NULL && data!=NULL)
+	{
+		m_bDataFree = false;
+		m_pData = data;
 		m_pInfo = info;
 		InitPropGrid(info, m_pData);
 	}

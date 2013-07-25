@@ -35,10 +35,12 @@ enum
 
 BEGIN_EVENT_TABLE(CClientCaseView, CStressFrameView)
 	EVT_TIMER(ID_CASETIMER,	CClientCaseView::OnTimer)
+	EVT_LIST_ITEM_FOCUSED(ID_CASEVIEW, CClientCaseView::OnCaseSelected)
 END_EVENT_TABLE()
 
 CClientCaseView::CClientCaseView( CClientStressFrame* pFrame, wxWindow* pParent ) : CStressFrameView(pFrame, pParent, wxT("Case Status")), m_pCurrentClient(NULL)
 {
+	m_pCurrentCase = NULL;
 
 	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxVERTICAL);
 	m_pConfig = ZION_NEW CStructEditView(this);
@@ -46,7 +48,7 @@ CClientCaseView::CClientCaseView( CClientStressFrame* pFrame, wxWindow* pParent 
 	pSizer1->Add(m_pConfig, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	pSizer1->Add(m_pStatus, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 
-	m_pListCtrl = ZION_NEW wxListCtrl(this, ID_CASEVIEW, wxDefaultPosition, wxSize(100, 10));
+	m_pListCtrl = ZION_NEW wxListCtrl(this, ID_CASEVIEW, wxDefaultPosition, wxSize(100, 10), wxLC_LIST|wxLC_SINGLE_SEL);
 
 	wxBoxSizer* pSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer->Add(m_pListCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
@@ -69,21 +71,33 @@ void CClientCaseView::Flush(bool full)
 	if(full)
 	{
 		m_pListCtrl->DeleteAllItems();
+		SelectCase(NULL);
 
 		Zion::Set<Zion::CStressCase*> cases;
 		m_pCurrentClient->GetStressCases(cases);
 		Zion::Set<Zion::CStressCase*>::iterator i;
 		for(i=cases.begin(); i!=cases.end(); i++)
 		{
-			int n = m_pListCtrl->InsertItem(m_pListCtrl->GetItemCount(), wxString::FromUTF8((*i)->GetName().c_str()));
+			long n = m_pListCtrl->InsertItem(m_pListCtrl->GetItemCount(), wxString::FromUTF8((*i)->GetName().c_str()));
+
+			if((*i)->GetName()==m_CurrentCaseName)
+			{
+				wxListItem item;
+				item.m_itemId = n;
+				item.m_mask = wxLIST_MASK_STATE;
+				item.m_state = wxLIST_STATE_SELECTED|wxLIST_STATE_FOCUSED;
+				item.m_stateMask = wxLIST_STATE_SELECTED|wxLIST_STATE_FOCUSED;
+				m_pListCtrl->SetItem(item);
+			}
 		}
+
+		SelectCase(m_CurrentCaseName.c_str());
 	}
 	else
 	{
-		for(int i=0; i<m_pListCtrl->GetItemCount(); i++)
+		if(m_pCurrentCase && m_pCurrentCase->GetStatusType())
 		{
-			Zion::CStressCase* pCase = m_pCurrentClient->GetStressCase((const char*)m_pListCtrl->GetItemText(i).ToUTF8());
-			if(!pCase) continue;
+			m_pStatus->Set(m_pCurrentCase->GetStatusType(), m_pCurrentCase->GetStatusData());
 		}
 	}
 }
@@ -91,6 +105,7 @@ void CClientCaseView::Flush(bool full)
 void CClientCaseView::OnSwitchTo(_U32 index)
 {
 	m_pCurrentClient = Zion::CStressManager::Get().GetClient(index);
+	m_pCurrentCase = NULL;
 	Flush(true);
 }
 
@@ -105,7 +120,35 @@ void CClientCaseView::OnNewCase(_U32 index, Zion::CStressCase* pCase)
 	Flush(true);
 }
 
+void CClientCaseView::SelectCase(const char* name)
+{
+	if(m_pCurrentCase!=NULL && name!=NULL && m_pCurrentCase->GetName()==name) return;
+
+	m_pConfig->Clear();
+	m_pStatus->Clear();
+
+	if(!name) return;
+	m_pCurrentCase = m_pCurrentClient->GetStressCase(name);
+	if(!m_pCurrentCase) return;
+	m_CurrentCaseName = name;
+
+	if(m_pCurrentCase->GetConfigType())
+	{
+		m_pConfig->Set(m_pCurrentCase->GetConfigType(), (void*)m_pCurrentCase->GetConfig());
+	}
+
+	if(m_pCurrentCase->GetStatusType())
+	{
+		m_pStatus->Set(m_pCurrentCase->GetStatusType(), m_pCurrentCase->GetStatusData());
+	}
+}
+
 void CClientCaseView::OnTimer(wxTimerEvent& event)
 {
 	Flush(false);
+}
+
+void CClientCaseView::OnCaseSelected(wxListEvent& event)
+{
+	SelectCase((const char*)event.GetItem().GetText().ToUTF8());
 }

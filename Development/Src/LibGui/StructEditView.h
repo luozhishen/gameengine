@@ -16,6 +16,7 @@ public:
 	void Clear();
 	void Updata();
 	bool Set(const DDLReflect::STRUCT_INFO* info, const void* data);
+	bool Set(const DDLReflect::STRUCT_INFO* info, void* data);
 	bool Get(const DDLReflect::STRUCT_INFO* info, void* data);
 
 	void OnPropertyGridChange(wxPropertyGridEvent& event); 
@@ -31,6 +32,7 @@ private:
 	wxPropertyGrid* m_pPropGrid;
 	const DDLReflect::STRUCT_INFO* m_pInfo;
 	void* m_pData;
+	bool m_bDataFree;
 };
 
 #endif

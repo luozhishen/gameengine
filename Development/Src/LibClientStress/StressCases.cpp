@@ -23,15 +23,19 @@ namespace Zion
 		{
 		}
 
-/*
 		void CLogin::OnAttach()
 		{
+			GetClient()->_OnLoginFailed.connect(this, &CLogin::OnLoginFailed);
+			GetClient()->_OnLoginDone.connect(this, &CLogin::OnLoginDone);
+			GetClient()->_OnDisconnected.connect(this, &CLogin::OnDisconnected);
 		}
 
 		void CLogin::OnDetach()
 		{
+			GetClient()->_OnLoginFailed.disconnect(this);
+			GetClient()->_OnLoginDone.disconnect(this);
+			GetClient()->_OnDisconnected.disconnect(this);
 		}
-*/
 
 		void CLogin::OnTick()
 		{
@@ -66,6 +70,7 @@ namespace Zion
 
 		void CLogin::OnLoginFailed()
 		{
+			m_Status.failed_times++;
 		}
 
 		void CLogin::OnLoginDone()
@@ -74,6 +79,7 @@ namespace Zion
 			{
 				m_disconnect_time = (_U32)time(NULL) + m_Config.disconnect_time;
 			}
+			m_Status.sucess_time++;
 		}
 
 		void CLogin::OnDisconnected()

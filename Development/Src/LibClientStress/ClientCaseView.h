@@ -1,6 +1,8 @@
 #ifndef _CLIENT_CASE_VIEW_H__
 #define _CLIENT_CASE_VIEW_H__
 
+class CStructEditView;
+
 class CClientCaseView : public CStressFrameView
 {
 	DECLARE_EVENT_TABLE()
@@ -19,6 +21,9 @@ public:
 
 private:
 	wxListCtrl* m_pListCtrl;
+	CStructEditView* m_pConfig;
+	CStructEditView* m_pStatus;
+
 	Zion::CStressClient* m_pCurrentClient;
 	wxTimer m_StressTimer;
 

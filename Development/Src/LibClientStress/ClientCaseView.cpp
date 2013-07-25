@@ -23,11 +23,14 @@
 #include <StressClient.h>
 #include <StressCase.h>
 #include <StressManager.h>
+#include <StructEditView.h>
 
 enum
 {
 	ID_CASEVIEW = wxID_HIGHEST + 1,
 	ID_CASETIMER,
+	ID_APPLY,
+	ID_RELOAD
 };
 
 BEGIN_EVENT_TABLE(CClientCaseView, CStressFrameView)
@@ -36,13 +39,19 @@ END_EVENT_TABLE()
 
 CClientCaseView::CClientCaseView( CClientStressFrame* pFrame, wxWindow* pParent ) : CStressFrameView(pFrame, pParent, wxT("Case Status")), m_pCurrentClient(NULL)
 {
-	m_pListCtrl = ZION_NEW wxListCtrl(this, ID_CASEVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
-	m_pListCtrl->SetBackgroundColour(*wxWHITE);
-	m_pListCtrl->InsertColumn(0, wxT("name"), 0, 200);
-	m_pListCtrl->InsertColumn(1, wxT("status"), 0, 600);
 
-	wxBoxSizer* pSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
-	pSizer->Add(m_pListCtrl, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
+	wxBoxSizer* pSizer1 = ZION_NEW wxBoxSizer(wxVERTICAL);
+	m_pConfig = ZION_NEW CStructEditView(this);
+	m_pStatus = ZION_NEW CStructEditView(this);
+	pSizer1->Add(m_pConfig, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
+	pSizer1->Add(m_pStatus, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
+
+	m_pListCtrl = ZION_NEW wxListCtrl(this, ID_CASEVIEW, wxDefaultPosition, wxSize(100, 10));
+
+	wxBoxSizer* pSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pSizer->Add(m_pListCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
+	pSizer->Add(pSizer1, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
+
 	SetSizer(pSizer);
 
 	m_StressTimer.SetOwner(this, ID_CASETIMER);
@@ -67,7 +76,6 @@ void CClientCaseView::Flush(bool full)
 		for(i=cases.begin(); i!=cases.end(); i++)
 		{
 			int n = m_pListCtrl->InsertItem(m_pListCtrl->GetItemCount(), wxString::FromUTF8((*i)->GetName().c_str()));
-			m_pListCtrl->SetItem(n, 1, wxString::FromUTF8((*i)->GetStatusInfo().c_str()));
 		}
 	}
 	else
@@ -76,7 +84,6 @@ void CClientCaseView::Flush(bool full)
 		{
 			Zion::CStressCase* pCase = m_pCurrentClient->GetStressCase((const char*)m_pListCtrl->GetItemText(i).ToUTF8());
 			if(!pCase) continue;
-			m_pListCtrl->SetItem(i, 1, wxString::FromUTF8(pCase->GetStatusInfo().c_str()));
 		}
 	}
 }

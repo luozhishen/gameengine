@@ -40,11 +40,13 @@ public:
 	{
 		Zion::CStressManager::Get().RegisterCase(&m_CaseLogin);
 		Zion::CStressManager::Get().RegisterCase(&m_CaseEcho);
+		Zion::CStressManager::Get().RegisterCase(&m_CaseEnterServer);
 	}
 
 	Zion::CSGClientApp m_App;
 	Zion::StressCases::CLogin m_CaseLogin;
 	Zion::StressCases::CEcho m_CaseEcho;
+	Zion::StressCases::CEnterServer m_CaseEnterServer;
 };
 
 IMPLEMENT_APP(CSGClientStressApp)

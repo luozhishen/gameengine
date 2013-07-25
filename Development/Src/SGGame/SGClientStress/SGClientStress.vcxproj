@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SGClientStress.cpp" />
+    <ClCompile Include="SGStressCaseConfig.cpp" />
     <ClCompile Include="SGStressCases.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -49,7 +50,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SGStressCaseConfig.h" />
     <ClInclude Include="SGStressCases.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SGStressCaseConfig.ddl">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compile %(Filename).ddl ...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compile %(Filename).ddl ...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compile %(Filename).ddl ...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compile %(Filename).ddl ...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h;%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h;%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h;%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h;%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+    </CustomBuild>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CC86F53D-C844-4FC1-83ED-140CC7C5E18C}</ProjectGuid>

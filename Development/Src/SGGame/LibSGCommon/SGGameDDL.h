@@ -48,6 +48,8 @@ const _U32 SG_MAP_URL_MAX = 256;
 
 const _U32 SG_TEX_MAX = 256;
 
+const _U32 SG_TIP_MAX = 48;
+
 const _U8 SG_SYNC_NONE = 0;
 
 const _U8 SG_SYNC_PLAYER = 1;
@@ -68,7 +70,7 @@ const _U8 SG_SYNC_PLAYERQUEST = 9;
 
 const _U32 SG_PLAYER_NAME_MAX = 32;
 
-const _U32 SG_PLAYER_TITLE_NAME_MAX = 12;
+const _U32 SG_PLAYER_TITLE_NAME_MAX = 96;
 
 const _U32 SG_PLAYER_WUSHENG_MALE_ID = 11001;
 
@@ -78,7 +80,7 @@ const _U32 SG_SOLDIER_NAME_MAX = 24;
 
 const _U32 SG_LEVEL_SOLDIERS_INFO_MAX = 6;
 
-const _U32 SG_SKILL_NAME_MAX = 10;
+const _U32 SG_SKILL_NAME_MAX = 24;
 
 const _U32 SG_SKILL_DESC_MAX = 256;
 
@@ -186,7 +188,7 @@ const _U8 SG_LEAGUE_CREATE_FAILED = 1;
 
 const _U8 SG_LEAUGE_WINE_NAME_MAX = 32;
 
-const _U32 SG_DAILY_ACTION_TYPE_MAX = 12;
+const _U32 SG_DAILY_ACTION_TYPE_MAX = 24;
 
 const _U8 SG_DAILY_ACTION_TYPE_PAID = 0;
 
@@ -232,6 +234,8 @@ const _U32 SG_HORSE_NAME_MAX = 32;
 
 const _U32 SG_HORSE_MESH_MAX = 512;
 
+const _U32 SG_HORSE_ANIM_MAX = 512;
+
 const _U32 SG_HORSE_DESC_MAX = 512;
 
 const _U32 SG_ZHANJIANG_LEVEL_LD_MAX = 512;
@@ -257,6 +261,142 @@ const _U32 SG_RECHARGE_PRICE_DESC = 512;
 const _U32 SG_RECHARGE_OTHER_DESC = 512;
 
 const _U32 SG_WORLDBOSS_RANK_LIST_MAX = 10;
+
+const _U32 SG_GOAL_NAME_MAX = 64;
+
+const _U32 SG_GOAL_CHAPTER_NAME_MAX = 64;
+
+const _U32 SG_GOAL_CHAPTER_DESC_MAX = 512;
+
+struct SG_MAP_URL : A_LIVE_OBJECT
+{
+	DDL::String<SG_MAP_URL_MAX> map_url;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_MAP_URL>(SG_MAP_URL& Value);
+	template<>
+	bool BufferWriter::Write<SG_MAP_URL>(const SG_MAP_URL& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAP_URL>();
+	extern STRUCT_INFO _rfl_struct_SG_MAP_URL_info;
+}
+
+struct SG_MAP_DOWNLOAD_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<SG_MAP_URL_MAX> map1;
+	DDL::String<SG_MAP_URL_MAX> map2;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_MAP_DOWNLOAD_CONFIG>(SG_MAP_DOWNLOAD_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_MAP_DOWNLOAD_CONFIG>(const SG_MAP_DOWNLOAD_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAP_DOWNLOAD_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_MAP_DOWNLOAD_CONFIG_info;
+}
+
+const _U32 SG_RECHARGE_BONUS_DISPLAY_TEXT_MAX = 512;
+
+const _U32 SG_MAIL_REAWRD_MAX = 4;
+
+const _U32 SG_MAIL_CONTENT_MAX = 1024;
+
+struct SG_DAILY_SIGNUP_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 day_id;
+	_F32 gold_rate;
+	_U32 reward_rmb;
+	_U32 energy;
+	_U32 reward_item;
+	_U32 reward_count;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SIGNUP_CONFIG>(SG_DAILY_SIGNUP_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SIGNUP_CONFIG>(const SG_DAILY_SIGNUP_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SIGNUP_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_DAILY_SIGNUP_CONFIG_info;
+}
+
+struct SG_DAILY_SIGNUP_TIMES_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 level;
+	_U32 gold;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SIGNUP_TIMES_CONFIG>(SG_DAILY_SIGNUP_TIMES_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SIGNUP_TIMES_CONFIG>(const SG_DAILY_SIGNUP_TIMES_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SIGNUP_TIMES_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_DAILY_SIGNUP_TIMES_CONFIG_info;
+}
+
+struct SG_RECHARGE_BONUS_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 bonus_id;
+	_U32 total_rmb;
+	_U8 unlock_type;
+	_U32 unlock_id;
+	DDL::String<SG_TEX_MAX> tex;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
+	DDL::String<SG_RECHARGE_BONUS_DISPLAY_TEXT_MAX> display_text;
+	_U32 reward_item1;
+	_U32 reward_item1_count;
+	_U32 reward_item2;
+	_U32 reward_item2_count;
+	_U32 reward_item3;
+	_U32 reward_item3_count;
+	_U32 reward_item4;
+	_U32 reward_item4_count;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_RECHARGE_BONUS_CONFIG>(SG_RECHARGE_BONUS_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_RECHARGE_BONUS_CONFIG>(const SG_RECHARGE_BONUS_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_RECHARGE_BONUS_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_RECHARGE_BONUS_CONFIG_info;
+}
 
 struct SG_WORLD_BOSS_CONFIG : A_CONTENT_OBJECT
 {
@@ -300,8 +440,6 @@ namespace DDLReflect
 
 struct SG_WORLD_BOSS_INSPIRE_CONFIG : A_CONTENT_OBJECT
 {
-	DDL::Pointer<SG_WORLD_BOSS_CONFIG> cf;
-	DDL::Array<DDL::Pointer<SG_WORLD_BOSS_CONFIG>, 10> cfs;
 	_U32 times;
 	_U32 consume_rmb;
 };
@@ -378,6 +516,7 @@ struct SG_NEWCOMER_GUIDE_CONFIG : A_CONTENT_OBJECT
 	_U32 VL2;
 	DDL::String<SG_NEWCOMER_GUIDER_LABEL_MAX> guider_label;
 	DDL::String<SG_TEX_MAX> tex;
+	_U8 skip_guider_tip;
 };
 
 namespace DDL
@@ -449,10 +588,10 @@ struct SG_NEWCOMER_GUIDE_STEP_CONFIG : A_CONTENT_OBJECT
 	_U32 offset_x;
 	_U32 offset_y;
 	DDL::String<SG_NEWCOMER_GUIDE_TIP_MAX> tip_desc;
-	_U32 up;
-	_U32 down;
-	_U32 left;
-	_U32 right;
+	_S32 up;
+	_S32 down;
+	_S32 left;
+	_S32 right;
 	_U32 transparency;
 };
 
@@ -469,6 +608,28 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_STEP_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info;
+}
+
+struct SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<SG_NEWCOMER_UI_MAX> button_name;
+	_U8 condition;
+	_U32 condition1_param;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>(SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>(const SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_info;
 }
 
 struct SG_DAILY_SEARCH_CONFIG : A_CONTENT_OBJECT
@@ -537,6 +698,7 @@ struct SG_ZHANJIANG_LEVEL_CONFIG : A_CONTENT_OBJECT
 	_F32 reward_rate2;
 	_U32 reward_item3;
 	_F32 reward_rate3;
+	_U32 boss_hp;
 };
 
 namespace DDL
@@ -575,6 +737,7 @@ struct SG_HORSE_CONFIG : A_CONTENT_OBJECT
 	_U32 general_atk;
 	_U32 general_def;
 	DDL::String<SG_HORSE_MESH_MAX> mesh;
+	DDL::String<SG_HORSE_ANIM_MAX> anim;
 	DDL::String<SG_TEX_MAX> tex;
 	_U32 U;
 	_U32 V;
@@ -1061,6 +1224,30 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_BOSSRUSH_SUPPORT_INFO_info;
 }
 
+struct SG_BOSSRUSH_FRIEND_DAMAGE : A_LIVE_OBJECT
+{
+	_U32 friend_id;
+	DDL::String<SG_PLAYER_NAME_MAX> friend_nick;
+	_U32 general_id;
+	_U32 turbo_level;
+	_U32 damage;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_BOSSRUSH_FRIEND_DAMAGE>(SG_BOSSRUSH_FRIEND_DAMAGE& Value);
+	template<>
+	bool BufferWriter::Write<SG_BOSSRUSH_FRIEND_DAMAGE>(const SG_BOSSRUSH_FRIEND_DAMAGE& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BOSSRUSH_FRIEND_DAMAGE>();
+	extern STRUCT_INFO _rfl_struct_SG_BOSSRUSH_FRIEND_DAMAGE_info;
+}
+
 struct SG_LEAGUE_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 league_level;
@@ -1269,6 +1456,27 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_MEMBER_WIN_CONFIG_info;
 }
 
+struct SG_LEAGUE_RANDOM_NAME_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<SG_PLAYER_NAME_MAX> prefix_name;
+	DDL::String<SG_PLAYER_NAME_MAX> postfix_name;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_RANDOM_NAME_CONFIG>(SG_LEAGUE_RANDOM_NAME_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_RANDOM_NAME_CONFIG>(const SG_LEAGUE_RANDOM_NAME_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_RANDOM_NAME_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_RANDOM_NAME_CONFIG_info;
+}
+
 struct SG_PVP_RECORD_ITEM : A_LIVE_OBJECT
 {
 	_U32 challenger;
@@ -1402,6 +1610,9 @@ struct SG_SHOP_CONFIG : A_CONTENT_OBJECT
 	_U32 shop_id;
 	DDL::String<SG_GOODS_GROUP_NAME_MAX> goods_group_name;
 	_U32 goods_group_id;
+	_U8 display_condition;
+	_U8 display_param1;
+	_U8 display_param2;
 };
 
 namespace DDL
@@ -1551,6 +1762,104 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info;
 }
 
+struct SG_LEAGUE_BATTLE_MEMBER : A_LIVE_OBJECT
+{
+	_U32 avatar_id;
+	_U32 general_id;
+	_U32 title;
+	_U32 horse_level;
+	DDL::String<SG_PLAYER_NAME_MAX> nick;
+	_U32 level;
+	_U32 before_hp;
+	_U32 after_hp;
+	_U32 total_hp;
+	_U32 kill_times;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_MEMBER>(SG_LEAGUE_BATTLE_MEMBER& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_MEMBER>(const SG_LEAGUE_BATTLE_MEMBER& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_MEMBER>();
+	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_MEMBER_info;
+}
+
+struct SG_LEAGUE_BATTLE_LOG : A_LIVE_OBJECT
+{
+	_U32 avatar_id;
+	_U32 enemy_id;
+	_U32 loop;
+	_U8 result;
+	DDL::String<SG_PLAYER_NAME_MAX> enemy_nick;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_LOG>(SG_LEAGUE_BATTLE_LOG& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_LOG>(const SG_LEAGUE_BATTLE_LOG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_LOG>();
+	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_LOG_info;
+}
+
+struct SG_LEAGUE_BATTLE_RANK
+{
+	_U32 league_id;
+	DDL::String<SG_LEAGUE_NAME_MAX> league_name;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_RANK>(SG_LEAGUE_BATTLE_RANK& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_RANK>(const SG_LEAGUE_BATTLE_RANK& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_RANK>();
+	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_RANK_info;
+}
+
+struct SG_LEAGUE_BATTLE_PLAYER_RANK
+{
+	_U32 avatar_id;
+	DDL::String<SG_PLAYER_NAME_MAX> nick;
+	_U32 league_id;
+	DDL::String<SG_LEAGUE_NAME_MAX> league_name;
+	_U32 kill_times;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_PLAYER_RANK>(SG_LEAGUE_BATTLE_PLAYER_RANK& Value);
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_PLAYER_RANK>(const SG_LEAGUE_BATTLE_PLAYER_RANK& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_PLAYER_RANK>();
+	extern STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_PLAYER_RANK_info;
+}
+
 struct SG_HALO_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 halo_level;
@@ -1622,6 +1931,12 @@ struct SG_PLAYER_TITLE_CONFIG : A_CONTENT_OBJECT
 	DDL::String<SG_TITLE_ACRHTYPE_MAX> junshi_female;
 	DDL::String<SG_TITLE_ACRHTYPE_MAX> jianshen_male;
 	DDL::String<SG_TITLE_ACRHTYPE_MAX> jianshen_female;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
+	DDL::String<SG_TEX_MAX> tex;
+	DDL::String<SG_PLAYER_TITLE_NAME_MAX> tips_name;
 };
 
 namespace DDL
@@ -1732,6 +2047,68 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_QUEST_INFO_CONFIG_info;
 }
 
+struct SG_GOAL_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 goal_id;
+	_U32 quest_id;
+	DDL::String<SG_GOAL_NAME_MAX> goal_name;
+	DDL::String<SG_ICON_MAX> icon;
+	_U32 U;
+	_U32 V;
+	_U32 UL;
+	_U32 VL;
+	_U32 chapter_id;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GOAL_CONFIG>(SG_GOAL_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_GOAL_CONFIG>(const SG_GOAL_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GOAL_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_GOAL_CONFIG_info;
+}
+
+struct SG_GOAL_CHAPTER_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 chapter_id;
+	DDL::String<SG_GOAL_CHAPTER_NAME_MAX> chapter_name;
+	DDL::String<SG_GOAL_CHAPTER_DESC_MAX> chapter_desc;
+	_U32 open_level;
+	_U32 goal1;
+	_U32 goal2;
+	_U32 goal3;
+	_U32 goal4;
+	_U32 goal5;
+	_U32 reward_gold;
+	_U32 reward_rmb;
+	_U32 reward_item1;
+	_U32 reward_count1;
+	_U32 reward_item2;
+	_U32 reward_count2;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GOAL_CHAPTER_CONFIG>(SG_GOAL_CHAPTER_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<SG_GOAL_CHAPTER_CONFIG>(const SG_GOAL_CHAPTER_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GOAL_CHAPTER_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_SG_GOAL_CHAPTER_CONFIG_info;
+}
+
 struct SG_LEVEL_INFO_CONFIG : A_CONTENT_OBJECT
 {
 	_U32 level_id;
@@ -1739,24 +2116,32 @@ struct SG_LEVEL_INFO_CONFIG : A_CONTENT_OBJECT
 	DDL::String<SG_DESCRIPTION_MAX> description;
 	_U32 req_player_level;
 	_U32 wake_pt;
-	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name1;
-	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name2;
-	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name3;
-	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name4;
-	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name5;
-	DDL::String<SG_SOLDIER_NAME_MAX> soldier_name6;
-	_U8 atk_type1;
-	_U8 atk_type2;
-	_U8 atk_type3;
-	_U8 atk_type4;
-	_U8 atk_type5;
-	_U8 atk_type6;
-	_U8 wpt_type1;
-	_U8 wpt_type2;
-	_U8 wpt_type3;
-	_U8 wpt_type4;
-	_U8 wpt_type5;
-	_U8 wpt_type6;
+	DDL::String<SG_SOLDIER_NAME_MAX> name1;
+	DDL::String<SG_SOLDIER_NAME_MAX> name2;
+	DDL::String<SG_SOLDIER_NAME_MAX> name3;
+	DDL::String<SG_SOLDIER_NAME_MAX> name4;
+	_U32 U1;
+	_U32 V1;
+	_U32 UL1;
+	_U32 VL1;
+	DDL::String<SG_TEX_MAX> tex1;
+	_U32 U2;
+	_U32 V2;
+	_U32 UL2;
+	_U32 VL2;
+	DDL::String<SG_TEX_MAX> tex2;
+	_U32 U3;
+	_U32 V3;
+	_U32 UL3;
+	_U32 VL3;
+	DDL::String<SG_TEX_MAX> tex3;
+	_U32 U4;
+	_U32 V4;
+	_U32 UL4;
+	_U32 VL4;
+	DDL::String<SG_TEX_MAX> tex4;
+	_U8 type1;
+	_U8 type2;
 };
 
 namespace DDL
@@ -1818,7 +2203,7 @@ namespace DDLReflect
 
 struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 {
-	DDL::String<100> level_name;
+	DDL::String<SG_MAP_URL_MAX> level_name;
 	_U32 exp;
 	_U32 gold;
 	_U32 reputation;
@@ -1833,6 +2218,7 @@ struct SG_LEVEL_DROP_CONFIG : A_CONTENT_OBJECT
 	_U32 group4_id;
 	_F32 group4_rate;
 	_U32 wake_pt;
+	DDL::String<SG_MAP_URL_MAX> map_url1;
 };
 
 namespace DDL
@@ -2267,6 +2653,8 @@ struct SG_SOLDIER_CONFIG : A_CONTENT_OBJECT
 	_U8 atk_type;
 	_U8 def_type;
 	DDL::String<SG_DESCRIPTION_MAX> description;
+	DDL::String<SG_SKILL_NAME_MAX> skill_name;
+	DDL::String<SG_DESCRIPTION_MAX> skill_description;
 	_S32 req_gold;
 	_S32 req_rmb;
 	_S32 unlock_level;
@@ -2309,6 +2697,9 @@ struct SG_GENERAL_CONFIG : A_CONTENT_OBJECT
 	_S32 rank;
 	_U8 atk_type;
 	_U8 def_type;
+	_U8 hp_score;
+	_U8 atk_score;
+	_U8 def_score;
 };
 
 namespace DDL
@@ -2470,6 +2861,11 @@ struct SG_DAILY_ACTION_CONFIG : A_CONTENT_OBJECT
 	_U32 V;
 	_U32 UL;
 	_U32 VL;
+	DDL::String<SG_ICON_MAX> icon2;
+	_U32 U2;
+	_U32 V2;
+	_U32 UL2;
+	_U32 VL2;
 	_U32 sort_seq;
 };
 
@@ -2596,6 +2992,7 @@ struct SG_PLAYER_INFO : SG_GENERAL
 	_U32 vip_level;
 	_U32 league_id;
 	_U32 horse_level;
+	_U32 turbo_level;
 };
 
 namespace DDL
@@ -2734,6 +3131,57 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_ASTROLOGY_BALL_ITEM_info;
 }
 
+struct SG_BATTLE_RESULT_INFO : A_LIVE_OBJECT
+{
+	_U32 level;
+	_U32 exp_addition;
+	_U32 exp;
+	_U32 gold;
+	_U32 wake_pt;
+	_U8 result;
+	DDL::Array<SG_DROP_ITEM_CONFIG, SG_AUTO_COMBAT_REWARD_MAX> drops;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_BATTLE_RESULT_INFO>(SG_BATTLE_RESULT_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_BATTLE_RESULT_INFO>(const SG_BATTLE_RESULT_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BATTLE_RESULT_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_BATTLE_RESULT_INFO_info;
+}
+
+struct SG_MAIL_INFO : A_LIVE_OBJECT
+{
+	_U32 mail_id;
+	DDL::String<SG_MAIL_CONTENT_MAX> mail_text;
+	_U32 time;
+	_U32 reward_gold;
+	_U32 reward_rmb;
+	DDL::Array<SG_ITEM, SG_MAIL_REAWRD_MAX> reward_list;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_MAIL_INFO>(SG_MAIL_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_MAIL_INFO>(const SG_MAIL_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAIL_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_MAIL_INFO_info;
+}
+
 struct SG_FRIEND_BASE_INFO : A_LIVE_OBJECT
 {
 	_U32 avatar_id;
@@ -2741,6 +3189,8 @@ struct SG_FRIEND_BASE_INFO : A_LIVE_OBJECT
 	_U32 title;
 	_U32 level;
 	_U32 battle_value;
+	_U32 turbo_level;
+	_U32 general_id;
 };
 
 namespace DDL
@@ -2921,6 +3371,7 @@ struct SG_PVP_HEROLIST_PLAYER : A_LIVE_OBJECT
 	DDL::String<SG_PLAYER_NAME_MAX> nick;
 	_U32 level;
 	_U32 rank;
+	_U32 avatar_id;
 };
 
 namespace DDL
@@ -2983,7 +3434,7 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_INFO_info;
 }
 
-struct SG_WORLDBOSS_RANK_ITEM
+struct SG_WORLDBOSS_RANK_ITEM : A_LIVE_OBJECT
 {
 	DDL::String<SG_PLAYER_NAME_MAX> nick;
 	_U32 rank;
@@ -3005,12 +3456,13 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_ITEM_info;
 }
 
-struct SG_WORLDBOSS_RANK_INFO
+struct SG_WORLDBOSS_RANK_INFO : A_LIVE_OBJECT
 {
-	DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX> last_rank_list;
-	SG_WORLDBOSS_RANK_ITEM my_last_rank;
+	DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX> rank_list;
+	SG_WORLDBOSS_RANK_ITEM my_rank;
 	_U8 attendance_reward;
 	_U8 rank_reward;
+	_U8 boss_status;
 };
 
 namespace DDL
@@ -3028,7 +3480,7 @@ namespace DDLReflect
 	extern STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_INFO_info;
 }
 
-struct SG_WORLDBOSS_INFO
+struct SG_WORLDBOSS_INFO : A_LIVE_OBJECT
 {
 	_U32 boss_id;
 	_U32 HP;
@@ -3048,6 +3500,27 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_INFO>();
 	extern STRUCT_INFO _rfl_struct_SG_WORLDBOSS_INFO_info;
+}
+
+struct SG_GOAL_CHAPTER_INFO : A_LIVE_OBJECT
+{
+	_U32 chapter_id;
+	_U8 status;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GOAL_CHAPTER_INFO>(SG_GOAL_CHAPTER_INFO& Value);
+	template<>
+	bool BufferWriter::Write<SG_GOAL_CHAPTER_INFO>(const SG_GOAL_CHAPTER_INFO& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GOAL_CHAPTER_INFO>();
+	extern STRUCT_INFO _rfl_struct_SG_GOAL_CHAPTER_INFO_info;
 }
 
 class SGGAME_C2S;
@@ -3077,13 +3550,43 @@ namespace DDLStub
 			}
 			if(fid==1)
 			{
+				_U32 __length;
+				char* _prefix_device_id;
+				char* _prefix_username;
+				char* _prefix_password;
+
+				// <string> <device_id> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_device_id = (char*)alloca(sizeof(_prefix_device_id[0])*(__length+1));
+				if(!_prefix_device_id) return false;
+				if(!Buf.ReadBuffer(_prefix_device_id, (unsigned int)sizeof(_prefix_device_id[0])*__length)) return false;
+				_prefix_device_id[__length] = '\0';
+				// <string> <username> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_username = (char*)alloca(sizeof(_prefix_username[0])*(__length+1));
+				if(!_prefix_username) return false;
+				if(!Buf.ReadBuffer(_prefix_username, (unsigned int)sizeof(_prefix_username[0])*__length)) return false;
+				_prefix_username[__length] = '\0';
+				// <string> <password> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_password = (char*)alloca(sizeof(_prefix_password[0])*(__length+1));
+				if(!_prefix_password) return false;
+				if(!Buf.ReadBuffer(_prefix_password, (unsigned int)sizeof(_prefix_password[0])*__length)) return false;
+				_prefix_password[__length] = '\0';
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BindAccount(Caller, _prefix_device_id, _prefix_username, _prefix_password);
+				return true;
+			}
+			if(fid==2)
+			{
 
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->GetServerList(Caller);
 				return true;
 			}
-			if(fid==2)
+			if(fid==3)
 			{
 				_U32 _prefix_server_id;
 
@@ -3094,7 +3597,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnterServer(Caller, _prefix_server_id);
 				return true;
 			}
-			if(fid==3)
+			if(fid==4)
 			{
 
 
@@ -3102,7 +3605,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatar(Caller);
 				return true;
 			}
-			if(fid==4)
+			if(fid==5)
 			{
 				_U32 __length;
 				char* _prefix_nick;
@@ -3121,7 +3624,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatar(Caller, _prefix_nick, _prefix_general_id);
 				return true;
 			}
-			if(fid==5)
+			if(fid==6)
 			{
 
 
@@ -3129,7 +3632,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->DeleteAvatar(Caller);
 				return true;
 			}
-			if(fid==6)
+			if(fid==7)
 			{
 
 
@@ -3137,7 +3640,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnterGame(Caller);
 				return true;
 			}
-			if(fid==7)
+			if(fid==8)
 			{
 
 
@@ -3145,23 +3648,12 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->LeaveGame(Caller);
 				return true;
 			}
-			if(fid==8)
+			if(fid==9)
 			{
 
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->QueryServerTime(Caller);
-				return true;
-			}
-			if(fid==9)
-			{
-				_U8 _prefix_nSync;
-
-				// <_U8> <nSync> <> <>;
-				if(!Buf.Read(_prefix_nSync)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayer(Caller, _prefix_nSync);
 				return true;
 			}
 			if(fid==10)
@@ -3172,7 +3664,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_nSync)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QueryGenerals(Caller, _prefix_nSync);
+				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayer(Caller, _prefix_nSync);
 				return true;
 			}
 			if(fid==11)
@@ -3183,7 +3675,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_nSync)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QuerySoldiers(Caller, _prefix_nSync);
+				DDLStub<CALLER, CLASS>::GetClass()->QueryGenerals(Caller, _prefix_nSync);
 				return true;
 			}
 			if(fid==12)
@@ -3194,10 +3686,32 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_nSync)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QueryBag(Caller, _prefix_nSync);
+				DDLStub<CALLER, CLASS>::GetClass()->QuerySoldiers(Caller, _prefix_nSync);
 				return true;
 			}
 			if(fid==13)
+			{
+				_U8 _prefix_nSync;
+
+				// <_U8> <nSync> <> <>;
+				if(!Buf.Read(_prefix_nSync)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBag(Caller, _prefix_nSync);
+				return true;
+			}
+			if(fid==14)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryOtherPlayer(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==15)
 			{
 				_U32 __length;
 				char* _prefix_current_town_map;
@@ -3216,7 +3730,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryOtherPlayers(Caller, _prefix_current_town_map, _prefix_num);
 				return true;
 			}
-			if(fid==14)
+			if(fid==16)
 			{
 				_U32 _prefix_general_id;
 				SG_EQUIP_SLOTS _prefix_slots;
@@ -3230,7 +3744,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EquipItem(Caller, _prefix_general_id, _prefix_slots);
 				return true;
 			}
-			if(fid==15)
+			if(fid==17)
 			{
 				_U32 __length;
 				_U32* _prefix_generals;
@@ -3248,7 +3762,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EquipGenerals(Caller, _prefix_generals, _prefix_count);
 				return true;
 			}
-			if(fid==16)
+			if(fid==18)
 			{
 				_U32 __length;
 				_U32* _prefix_soldiers;
@@ -3266,7 +3780,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EquipSoldiers(Caller, _prefix_soldiers, _prefix_count);
 				return true;
 			}
-			if(fid==17)
+			if(fid==19)
 			{
 				_U32 _prefix_soldier_id;
 
@@ -3277,7 +3791,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->UnLockSoldier(Caller, _prefix_soldier_id);
 				return true;
 			}
-			if(fid==18)
+			if(fid==20)
 			{
 				_U32 _prefix_soldier_id;
 
@@ -3288,7 +3802,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceSoldier(Caller, _prefix_soldier_id);
 				return true;
 			}
-			if(fid==19)
+			if(fid==21)
 			{
 				A_UUID _prefix_uuid;
 
@@ -3299,7 +3813,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceEquipt(Caller, _prefix_uuid);
 				return true;
 			}
-			if(fid==20)
+			if(fid==22)
 			{
 				A_UUID _prefix_uuid;
 				A_UUID _prefix_puuid;
@@ -3313,7 +3827,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ExtendEquipt(Caller, _prefix_uuid, _prefix_puuid);
 				return true;
 			}
-			if(fid==21)
+			if(fid==23)
 			{
 
 
@@ -3321,7 +3835,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceCoolDown(Caller);
 				return true;
 			}
-			if(fid==22)
+			if(fid==24)
 			{
 
 
@@ -3329,34 +3843,12 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceCoolDownClear(Caller);
 				return true;
 			}
-			if(fid==23)
+			if(fid==25)
 			{
 
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->IncreaseEquipCoolDown(Caller);
-				return true;
-			}
-			if(fid==24)
-			{
-				A_UUID _prefix_uuid;
-
-				// <A_UUID> <uuid> <> <>;
-				if(!Buf.Read(_prefix_uuid)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipNormal(Caller, _prefix_uuid);
-				return true;
-			}
-			if(fid==25)
-			{
-				A_UUID _prefix_uuid;
-
-				// <A_UUID> <uuid> <> <>;
-				if(!Buf.Read(_prefix_uuid)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipProperty(Caller, _prefix_uuid);
 				return true;
 			}
 			if(fid==26)
@@ -3367,7 +3859,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_uuid)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipAbility(Caller, _prefix_uuid);
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipNormal(Caller, _prefix_uuid);
 				return true;
 			}
 			if(fid==27)
@@ -3378,10 +3870,32 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_uuid)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipDecideAccept(Caller, _prefix_uuid);
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipProperty(Caller, _prefix_uuid);
 				return true;
 			}
 			if(fid==28)
+			{
+				A_UUID _prefix_uuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipAbility(Caller, _prefix_uuid);
+				return true;
+			}
+			if(fid==29)
+			{
+				A_UUID _prefix_uuid;
+
+				// <A_UUID> <uuid> <> <>;
+				if(!Buf.Read(_prefix_uuid)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipDecideAccept(Caller, _prefix_uuid);
+				return true;
+			}
+			if(fid==30)
 			{
 				_U32 __length;
 				char* _prefix_name;
@@ -3397,7 +3911,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBattle(Caller, _prefix_name);
 				return true;
 			}
-			if(fid==29)
+			if(fid==31)
 			{
 				_U32 __length;
 				char* _prefix_name;
@@ -3419,7 +3933,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndBattle(Caller, _prefix_name, _prefix_result, _prefix_auto_combat);
 				return true;
 			}
-			if(fid==30)
+			if(fid==32)
 			{
 				A_UUID _prefix_item_uuid;
 				_U32 _prefix_gem_id;
@@ -3433,7 +3947,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EquipGem(Caller, _prefix_item_uuid, _prefix_gem_id);
 				return true;
 			}
-			if(fid==31)
+			if(fid==33)
 			{
 				A_UUID _prefix_item_uuid;
 				_U32 _prefix_gem_id;
@@ -3447,7 +3961,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->UnequipGem(Caller, _prefix_item_uuid, _prefix_gem_id);
 				return true;
 			}
-			if(fid==32)
+			if(fid==34)
 			{
 				_U32 _prefix_item_id;
 
@@ -3458,7 +3972,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->GemCombine(Caller, _prefix_item_id);
 				return true;
 			}
-			if(fid==33)
+			if(fid==35)
 			{
 				_U32 _prefix_general_id;
 				_U8 _prefix_status;
@@ -3472,7 +3986,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetGeneralStatus(Caller, _prefix_general_id, _prefix_status);
 				return true;
 			}
-			if(fid==34)
+			if(fid==36)
 			{
 				_U8 _prefix_nSync;
 
@@ -3483,24 +3997,25 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayerQuest(Caller, _prefix_nSync);
 				return true;
 			}
-			if(fid==35)
+			if(fid==37)
 			{
-				_U32 _prefix_quest_id;
-				_U32 _prefix_counter;
-				_U8 _prefix_status;
+				_U32 __length;
+				SG_QUEST_LIVE_INFO* _prefix_quest_list;
+				_U32 _prefix_count;
 
-				// <_U32> <quest_id> <> <>;
-				if(!Buf.Read(_prefix_quest_id)) return false;
-				// <_U32> <counter> <> <>;
-				if(!Buf.Read(_prefix_counter)) return false;
-				// <_U8> <status> <> <>;
-				if(!Buf.Read(_prefix_status)) return false;
+				// <SG_QUEST_LIVE_INFO> <quest_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_quest_list = (SG_QUEST_LIVE_INFO*)alloca(sizeof(_prefix_quest_list[0])*__length);
+				if(!_prefix_quest_list) return false;
+				if(!Buf.ReadPointer(_prefix_quest_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->SaveQuestData(Caller, _prefix_quest_id, _prefix_counter, _prefix_status);
+				DDLStub<CALLER, CLASS>::GetClass()->SaveQuestData(Caller, _prefix_quest_list, _prefix_count);
 				return true;
 			}
-			if(fid==36)
+			if(fid==38)
 			{
 				_U32 _prefix_quest_id;
 				_U32 _prefix_rmb;
@@ -3514,7 +4029,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->FinishQuest(Caller, _prefix_quest_id, _prefix_rmb);
 				return true;
 			}
-			if(fid==37)
+			if(fid==39)
 			{
 
 
@@ -3522,7 +4037,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->HaloCoolDown(Caller);
 				return true;
 			}
-			if(fid==38)
+			if(fid==40)
 			{
 				_U8 _prefix_halo_type;
 
@@ -3533,7 +4048,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->HaloIncreaseEXP(Caller, _prefix_halo_type);
 				return true;
 			}
-			if(fid==39)
+			if(fid==41)
 			{
 
 
@@ -3541,7 +4056,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->HaloGetCoolDown(Caller);
 				return true;
 			}
-			if(fid==40)
+			if(fid==42)
 			{
 
 
@@ -3549,7 +4064,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->GetPaid(Caller);
 				return true;
 			}
-			if(fid==41)
+			if(fid==43)
 			{
 
 
@@ -3557,7 +4072,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->UpgradeTitle(Caller);
 				return true;
 			}
-			if(fid==42)
+			if(fid==44)
 			{
 				_U32 _prefix_item_id;
 
@@ -3568,7 +4083,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BuyGoods(Caller, _prefix_item_id);
 				return true;
 			}
-			if(fid==43)
+			if(fid==45)
 			{
 				A_UUID _prefix_uuid;
 				_U32 _prefix_item_id;
@@ -3585,7 +4100,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SellItem(Caller, _prefix_uuid, _prefix_item_id, _prefix_count);
 				return true;
 			}
-			if(fid==44)
+			if(fid==46)
 			{
 				_U32 _prefix_avatar_id;
 
@@ -3596,7 +4111,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayerPVPInfo(Caller, _prefix_avatar_id);
 				return true;
 			}
-			if(fid==45)
+			if(fid==47)
 			{
 
 
@@ -3604,7 +4119,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayerRankList(Caller);
 				return true;
 			}
-			if(fid==46)
+			if(fid==48)
 			{
 
 
@@ -3612,7 +4127,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPCoolDown(Caller);
 				return true;
 			}
-			if(fid==47)
+			if(fid==49)
 			{
 
 
@@ -3620,7 +4135,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPGetRestTime(Caller);
 				return true;
 			}
-			if(fid==48)
+			if(fid==50)
 			{
 
 
@@ -3628,7 +4143,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPRecord(Caller);
 				return true;
 			}
-			if(fid==49)
+			if(fid==51)
 			{
 
 
@@ -3636,7 +4151,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPHeroList(Caller);
 				return true;
 			}
-			if(fid==50)
+			if(fid==52)
 			{
 
 
@@ -3644,7 +4159,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPDailyReward(Caller);
 				return true;
 			}
-			if(fid==51)
+			if(fid==53)
 			{
 				_U32 _prefix_defender;
 
@@ -3655,7 +4170,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPBattleBegin(Caller, _prefix_defender);
 				return true;
 			}
-			if(fid==52)
+			if(fid==54)
 			{
 				_U32 _prefix_defender;
 				_U8 _prefix_ret;
@@ -3669,7 +4184,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPBattleEnd(Caller, _prefix_defender, _prefix_ret);
 				return true;
 			}
-			if(fid==53)
+			if(fid==55)
 			{
 
 
@@ -3677,7 +4192,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPCoolDownClear(Caller);
 				return true;
 			}
-			if(fid==54)
+			if(fid==56)
 			{
 
 
@@ -3685,7 +4200,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPIncreateBattleTimes(Caller);
 				return true;
 			}
-			if(fid==55)
+			if(fid==57)
 			{
 
 
@@ -3693,7 +4208,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryInstance(Caller);
 				return true;
 			}
-			if(fid==56)
+			if(fid==58)
 			{
 				_U32 _prefix_instance_id;
 				_U8 _prefix_difficulty;
@@ -3707,7 +4222,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnterInstance(Caller, _prefix_instance_id, _prefix_difficulty);
 				return true;
 			}
-			if(fid==57)
+			if(fid==59)
 			{
 				_U32 __length;
 				_U32 _prefix_instance_id;
@@ -3726,7 +4241,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginInstanceBattle(Caller, _prefix_instance_id, _prefix_map_url);
 				return true;
 			}
-			if(fid==58)
+			if(fid==60)
 			{
 				_U32 __length;
 				_U32 _prefix_instance_id;
@@ -3751,7 +4266,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndInstanceBattle(Caller, _prefix_instance_id, _prefix_map_url, _prefix_result, _prefix_auto_combat);
 				return true;
 			}
-			if(fid==59)
+			if(fid==61)
 			{
 				_U32 _prefix_instance_id;
 
@@ -3762,7 +4277,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ResetInstance(Caller, _prefix_instance_id);
 				return true;
 			}
-			if(fid==60)
+			if(fid==62)
 			{
 				_U32 __length;
 				char* _prefix_last_town_map;
@@ -3778,7 +4293,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SaveLastTownMap(Caller, _prefix_last_town_map);
 				return true;
 			}
-			if(fid==61)
+			if(fid==63)
 			{
 				_U32 __length;
 				char* _prefix_league_name;
@@ -3794,7 +4309,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->CreateLeague(Caller, _prefix_league_name);
 				return true;
 			}
-			if(fid==62)
+			if(fid==64)
 			{
 				_U32 _prefix_league_id;
 
@@ -3805,7 +4320,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ApplyJoinLeague(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==63)
+			if(fid==65)
 			{
 				_U32 _prefix_league_id;
 
@@ -3816,7 +4331,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueApplyList(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==64)
+			if(fid==66)
 			{
 				_U32 _prefix_league_id;
 
@@ -3827,15 +4342,18 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeague(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==65)
+			if(fid==67)
 			{
+				_U32 _prefix_start_index;
 
+				// <_U32> <start_index> <> <>;
+				if(!Buf.Read(_prefix_start_index)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueList(Caller);
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueList(Caller, _prefix_start_index);
 				return true;
 			}
-			if(fid==66)
+			if(fid==68)
 			{
 				_U32 _prefix_league_id;
 
@@ -3846,7 +4364,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueMemberList(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==67)
+			if(fid==69)
 			{
 				_U32 _prefix_member_id;
 
@@ -3857,7 +4375,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueMemberInfo(Caller, _prefix_member_id);
 				return true;
 			}
-			if(fid==68)
+			if(fid==70)
 			{
 				_U32 _prefix_rmb;
 				_U32 _prefix_energy;
@@ -3871,7 +4389,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ContributeLeague(Caller, _prefix_rmb, _prefix_energy);
 				return true;
 			}
-			if(fid==69)
+			if(fid==71)
 			{
 				_U32 _prefix_applyer_id;
 				_U8 _prefix_allowed;
@@ -3885,7 +4403,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->HandleApply(Caller, _prefix_applyer_id, _prefix_allowed);
 				return true;
 			}
-			if(fid==70)
+			if(fid==72)
 			{
 
 
@@ -3893,7 +4411,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueNotice(Caller);
 				return true;
 			}
-			if(fid==71)
+			if(fid==73)
 			{
 				_U32 __length;
 				_U32 _prefix_league_id;
@@ -3912,7 +4430,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetLeagueNotice(Caller, _prefix_league_id, _prefix_notice_content);
 				return true;
 			}
-			if(fid==72)
+			if(fid==74)
 			{
 				_U32 _prefix_member_id;
 
@@ -3923,7 +4441,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetLeagueOwner(Caller, _prefix_member_id);
 				return true;
 			}
-			if(fid==73)
+			if(fid==75)
 			{
 
 
@@ -3931,7 +4449,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->DissolveLeague(Caller);
 				return true;
 			}
-			if(fid==74)
+			if(fid==76)
 			{
 				_U32 _prefix_member_id;
 				_U8 _prefix_position;
@@ -3945,7 +4463,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetMemberPosition(Caller, _prefix_member_id, _prefix_position);
 				return true;
 			}
-			if(fid==75)
+			if(fid==77)
 			{
 				_U32 _prefix_member_id;
 
@@ -3956,7 +4474,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->DismissMember(Caller, _prefix_member_id);
 				return true;
 			}
-			if(fid==76)
+			if(fid==78)
 			{
 
 
@@ -3964,7 +4482,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ExitLeague(Caller);
 				return true;
 			}
-			if(fid==77)
+			if(fid==79)
 			{
 
 
@@ -3972,7 +4490,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueLog(Caller);
 				return true;
 			}
-			if(fid==78)
+			if(fid==80)
 			{
 				_U8 _prefix_wine_id;
 
@@ -3983,7 +4501,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->LeagueToast(Caller, _prefix_wine_id);
 				return true;
 			}
-			if(fid==79)
+			if(fid==81)
 			{
 
 
@@ -3991,7 +4509,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SalaryGet(Caller);
 				return true;
 			}
-			if(fid==80)
+			if(fid==82)
 			{
 
 
@@ -3999,7 +4517,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SalaryGetBat(Caller);
 				return true;
 			}
-			if(fid==81)
+			if(fid==83)
 			{
 
 
@@ -4007,7 +4525,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BuyEnergy(Caller);
 				return true;
 			}
-			if(fid==82)
+			if(fid==84)
 			{
 
 
@@ -4015,7 +4533,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceTurbo(Caller);
 				return true;
 			}
-			if(fid==83)
+			if(fid==85)
 			{
 				SG_TURBO_SKILL_SLOT _prefix_skill_slot;
 
@@ -4026,7 +4544,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EquipTurboSkill(Caller, _prefix_skill_slot);
 				return true;
 			}
-			if(fid==84)
+			if(fid==86)
 			{
 				_U32 _prefix_equipt_id;
 
@@ -4037,7 +4555,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->MakeEquipt(Caller, _prefix_equipt_id);
 				return true;
 			}
-			if(fid==85)
+			if(fid==87)
 			{
 				_U32 __length;
 				_U32* _prefix_action_list;
@@ -4055,7 +4573,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryActionAvailable(Caller, _prefix_action_list, _prefix_count);
 				return true;
 			}
-			if(fid==86)
+			if(fid==88)
 			{
 
 
@@ -4063,7 +4581,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendList(Caller);
 				return true;
 			}
-			if(fid==87)
+			if(fid==89)
 			{
 				_U32 __length;
 				char* _prefix_nick;
@@ -4079,34 +4597,12 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendSearchList(Caller, _prefix_nick);
 				return true;
 			}
-			if(fid==88)
+			if(fid==90)
 			{
 
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendInvitationList(Caller);
-				return true;
-			}
-			if(fid==89)
-			{
-				_U32 _prefix_avatar_id;
-
-				// <_U32> <avatar_id> <> <>;
-				if(!Buf.Read(_prefix_avatar_id)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->InviteFriend(Caller, _prefix_avatar_id);
-				return true;
-			}
-			if(fid==90)
-			{
-				_U32 _prefix_avatar_id;
-
-				// <_U32> <avatar_id> <> <>;
-				if(!Buf.Read(_prefix_avatar_id)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriend(Caller, _prefix_avatar_id);
 				return true;
 			}
 			if(fid==91)
@@ -4117,7 +4613,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_avatar_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->RefuseInvitation(Caller, _prefix_avatar_id);
+				DDLStub<CALLER, CLASS>::GetClass()->InviteFriend(Caller, _prefix_avatar_id);
 				return true;
 			}
 			if(fid==92)
@@ -4128,10 +4624,32 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_avatar_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->DelFriend(Caller, _prefix_avatar_id);
+				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriend(Caller, _prefix_avatar_id);
 				return true;
 			}
 			if(fid==93)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefuseInvitation(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==94)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->DelFriend(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==95)
 			{
 				SG_CHAT_SEND_INFO _prefix_send_info;
 
@@ -4142,7 +4660,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SendChat(Caller, _prefix_send_info);
 				return true;
 			}
-			if(fid==94)
+			if(fid==96)
 			{
 				_U32 __length;
 				_U32* _prefix_channel_list;
@@ -4160,7 +4678,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ReceiveChat(Caller, _prefix_channel_list, _prefix_count);
 				return true;
 			}
-			if(fid==95)
+			if(fid==97)
 			{
 				_U32 _prefix_league_id;
 
@@ -4171,7 +4689,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangList(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==96)
+			if(fid==98)
 			{
 				_U32 _prefix_league_id;
 
@@ -4182,7 +4700,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->JoinLeagueDianjiang(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==97)
+			if(fid==99)
 			{
 				_U32 _prefix_league_id;
 				_U32 _prefix_avatar_id;
@@ -4196,7 +4714,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangReward(Caller, _prefix_league_id, _prefix_avatar_id);
 				return true;
 			}
-			if(fid==98)
+			if(fid==100)
 			{
 				_U32 _prefix_league_id;
 
@@ -4207,7 +4725,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->LeagueDianjiangSummonNPC(Caller, _prefix_league_id);
 				return true;
 			}
-			if(fid==99)
+			if(fid==101)
 			{
 
 
@@ -4215,7 +4733,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAstrologyBag(Caller);
 				return true;
 			}
-			if(fid==100)
+			if(fid==102)
 			{
 				_U32 _prefix_item_id;
 
@@ -4226,7 +4744,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SaveToBag(Caller, _prefix_item_id);
 				return true;
 			}
-			if(fid==101)
+			if(fid==103)
 			{
 				_U32 _prefix_general_id;
 				_U32 _prefix_ball_id;
@@ -4243,7 +4761,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetAstrologyBallStatus(Caller, _prefix_general_id, _prefix_ball_id, _prefix_status);
 				return true;
 			}
-			if(fid==102)
+			if(fid==104)
 			{
 				_U32 _prefix_ball_id;
 				_U32 _prefix_general_id;
@@ -4260,7 +4778,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceAstrologyBall(Caller, _prefix_ball_id, _prefix_general_id, _prefix_index);
 				return true;
 			}
-			if(fid==103)
+			if(fid==105)
 			{
 				_U32 _prefix_astrologer_id;
 
@@ -4271,7 +4789,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Strology(Caller, _prefix_astrologer_id);
 				return true;
 			}
-			if(fid==104)
+			if(fid==106)
 			{
 				_U32 _prefix_RestSlotCount;
 
@@ -4282,7 +4800,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->StrologyAuto(Caller, _prefix_RestSlotCount);
 				return true;
 			}
-			if(fid==105)
+			if(fid==107)
 			{
 				_U8 _prefix_bag_type;
 
@@ -4293,7 +4811,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Devour(Caller, _prefix_bag_type);
 				return true;
 			}
-			if(fid==106)
+			if(fid==108)
 			{
 				A_UUID _prefix_uuid;
 				_U32 _prefix_item_id;
@@ -4313,7 +4831,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->UseItem(Caller, _prefix_uuid, _prefix_item_id, _prefix_count, _prefix_target_id);
 				return true;
 			}
-			if(fid==107)
+			if(fid==109)
 			{
 				_U8 _prefix_feed_type;
 
@@ -4324,7 +4842,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->FeedHorse(Caller, _prefix_feed_type);
 				return true;
 			}
-			if(fid==108)
+			if(fid==110)
 			{
 
 
@@ -4332,7 +4850,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushInfo(Caller);
 				return true;
 			}
-			if(fid==109)
+			if(fid==111)
 			{
 
 
@@ -4340,7 +4858,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushSupportInfo(Caller);
 				return true;
 			}
-			if(fid==110)
+			if(fid==112)
 			{
 				_U32 __length;
 				_U32 _prefix_level_id;
@@ -4362,7 +4880,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushBattle(Caller, _prefix_level_id, _prefix_level_url, _prefix_init_boss_hp);
 				return true;
 			}
-			if(fid==111)
+			if(fid==113)
 			{
 				_U32 __length;
 				char* _prefix_level_url;
@@ -4384,7 +4902,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushBattle(Caller, _prefix_level_url, _prefix_result, _prefix_total_damage);
 				return true;
 			}
-			if(fid==112)
+			if(fid==114)
 			{
 				_U32 __length;
 				_U32 _prefix_friend_id;
@@ -4406,7 +4924,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushSupportBattle(Caller, _prefix_friend_id, _prefix_level_id, _prefix_level_url);
 				return true;
 			}
-			if(fid==113)
+			if(fid==115)
 			{
 				_U32 __length;
 				_U32 _prefix_friend_id;
@@ -4431,7 +4949,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushSupportBattle(Caller, _prefix_friend_id, _prefix_level_url, _prefix_result, _prefix_total_damage);
 				return true;
 			}
-			if(fid==114)
+			if(fid==116)
 			{
 
 
@@ -4439,7 +4957,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->RequestBossRushSupport(Caller);
 				return true;
 			}
-			if(fid==115)
+			if(fid==117)
 			{
 
 
@@ -4447,7 +4965,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->CancelBossRush(Caller);
 				return true;
 			}
-			if(fid==116)
+			if(fid==118)
 			{
 
 
@@ -4455,7 +4973,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AddBossRushRemainingTimes(Caller);
 				return true;
 			}
-			if(fid==117)
+			if(fid==119)
 			{
 
 
@@ -4463,7 +4981,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRush(Caller);
 				return true;
 			}
-			if(fid==118)
+			if(fid==120)
 			{
 				_U32 __length;
 				_U32 _prefix_friend_id;
@@ -4485,7 +5003,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRushSupport(Caller, _prefix_friend_id, _prefix_level_id, _prefix_level_url);
 				return true;
 			}
-			if(fid==119)
+			if(fid==121)
 			{
 
 
@@ -4493,7 +5011,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryDiceNum(Caller);
 				return true;
 			}
-			if(fid==120)
+			if(fid==122)
 			{
 
 
@@ -4501,7 +5019,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryNewcomerGuideInfo(Caller);
 				return true;
 			}
-			if(fid==121)
+			if(fid==123)
 			{
 				_U32 _prefix_function_id;
 
@@ -4512,7 +5030,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ActivateNewcomerGuide(Caller, _prefix_function_id);
 				return true;
 			}
-			if(fid==122)
+			if(fid==124)
 			{
 				_U32 _prefix_function_id;
 
@@ -4523,7 +5041,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->FinishNewcomerGuide(Caller, _prefix_function_id);
 				return true;
 			}
-			if(fid==123)
+			if(fid==125)
 			{
 
 
@@ -4531,7 +5049,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryWorldBossRankInfo(Caller);
 				return true;
 			}
-			if(fid==124)
+			if(fid==126)
 			{
 				_U32 _prefix_bInstantResurrection;
 
@@ -4542,7 +5060,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginWorldBossBattle(Caller, _prefix_bInstantResurrection);
 				return true;
 			}
-			if(fid==125)
+			if(fid==127)
 			{
 
 
@@ -4550,7 +5068,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->InspireWorldBossBattle(Caller);
 				return true;
 			}
-			if(fid==126)
+			if(fid==128)
 			{
 				_U32 _prefix_damage;
 
@@ -4561,7 +5079,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->UpdateWorldBossBattle(Caller, _prefix_damage);
 				return true;
 			}
-			if(fid==127)
+			if(fid==129)
 			{
 				_U32 _prefix_damage;
 
@@ -4572,7 +5090,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndWorldBossBattle(Caller, _prefix_damage);
 				return true;
 			}
-			if(fid==128)
+			if(fid==130)
 			{
 
 
@@ -4580,7 +5098,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossRank(Caller);
 				return true;
 			}
-			if(fid==129)
+			if(fid==131)
 			{
 
 
@@ -4588,7 +5106,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossAttendance(Caller);
 				return true;
 			}
-			if(fid==130)
+			if(fid==132)
 			{
 				_U32 _prefix_index;
 
@@ -4597,6 +5115,180 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->Recharge(Caller, _prefix_index);
+				return true;
+			}
+			if(fid==133)
+			{
+				_U32 _prefix_league_id;
+				_U32 _prefix_loop_times;
+
+				// <_U32> <league_id> <> <>;
+				if(!Buf.Read(_prefix_league_id)) return false;
+				// <_U32> <loop_times> <> <>;
+				if(!Buf.Read(_prefix_loop_times)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattle(Caller, _prefix_league_id, _prefix_loop_times);
+				return true;
+			}
+			if(fid==134)
+			{
+				_U32 _prefix_type;
+
+				// <_U32> <type> <> <>;
+				if(!Buf.Read(_prefix_type)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardLeagueBattle(Caller, _prefix_type);
+				return true;
+			}
+			if(fid==135)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattleReward(Caller);
+				return true;
+			}
+			if(fid==136)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattleInfo(Caller);
+				return true;
+			}
+			if(fid==137)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattleRankInfo(Caller);
+				return true;
+			}
+			if(fid==138)
+			{
+				_U32 _prefix_action_id;
+
+				// <_U32> <action_id> <> <>;
+				if(!Buf.Read(_prefix_action_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SignUp(Caller, _prefix_action_id);
+				return true;
+			}
+			if(fid==139)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryGoal(Caller);
+				return true;
+			}
+			if(fid==140)
+			{
+				_U32 _prefix_chapter_id;
+
+				// <_U32> <chapter_id> <> <>;
+				if(!Buf.Read(_prefix_chapter_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardGoalChapter(Caller, _prefix_chapter_id);
+				return true;
+			}
+			if(fid==141)
+			{
+				_U32 _prefix_action_id;
+
+				// <_U32> <action_id> <> <>;
+				if(!Buf.Read(_prefix_action_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardAction(Caller, _prefix_action_id);
+				return true;
+			}
+			if(fid==142)
+			{
+				_U32 __length;
+				char* _prefix_name;
+				_U32 _prefix_NumTimes;
+
+				// <string> <name> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_name = (char*)alloca(sizeof(_prefix_name[0])*(__length+1));
+				if(!_prefix_name) return false;
+				if(!Buf.ReadBuffer(_prefix_name, (unsigned int)sizeof(_prefix_name[0])*__length)) return false;
+				_prefix_name[__length] = '\0';
+				// <_U32> <NumTimes> <> <>;
+				if(!Buf.Read(_prefix_NumTimes)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AutoCombatPVE(Caller, _prefix_name, _prefix_NumTimes);
+				return true;
+			}
+			if(fid==143)
+			{
+				_U32 __length;
+				_U32 _prefix_instance_id;
+				SG_MAP_URL* _prefix_map_url_array;
+				_U32 _prefix_count;
+				_U32 _prefix_NumTimes;
+
+				// <_U32> <instance_id> <> <>;
+				if(!Buf.Read(_prefix_instance_id)) return false;
+				// <SG_MAP_URL> <map_url_array> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_map_url_array = (SG_MAP_URL*)alloca(sizeof(_prefix_map_url_array[0])*__length);
+				if(!_prefix_map_url_array) return false;
+				if(!Buf.ReadPointer(_prefix_map_url_array, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+				// <_U32> <NumTimes> <> <>;
+				if(!Buf.Read(_prefix_NumTimes)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AutoCombatInstance(Caller, _prefix_instance_id, _prefix_map_url_array, _prefix_count, _prefix_NumTimes);
+				return true;
+			}
+			if(fid==144)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFightValue(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==145)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->CheckMail(Caller);
+				return true;
+			}
+			if(fid==146)
+			{
+				_U32 _prefix_mail_id;
+
+				// <_U32> <mail_id> <> <>;
+				if(!Buf.Read(_prefix_mail_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->ReceiveMail(Caller, _prefix_mail_id);
+				return true;
+			}
+			if(fid==147)
+			{
+				_U32 _prefix_bonus_id;
+
+				// <_U32> <bonus_id> <> <>;
+				if(!Buf.Read(_prefix_bonus_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RechargeBonus(Caller, _prefix_bonus_id);
 				return true;
 			}
 			return false;
@@ -4630,12 +5322,33 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
 
+		bool BindAccount(const char* device_id, const char* username, const char* password)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <device_id> <> <>
+			__length = DDL::StringLength(device_id);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(device_id, (unsigned int)sizeof(device_id[0])*__length)) return false;
+			// <string> <username> <> <>
+			__length = DDL::StringLength(username);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(username, (unsigned int)sizeof(username[0])*__length)) return false;
+			// <string> <password> <> <>
+			__length = DDL::StringLength(password);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(password, (unsigned int)sizeof(password[0])*__length)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
 		bool GetServerList()
 		{
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 
 		bool EnterServer(_U32 server_id)
@@ -4645,7 +5358,7 @@ namespace DDLProxy
 			if(!Buf.Write(server_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
 		}
 
 		bool QueryAvatar()
@@ -4653,7 +5366,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
 		}
 
 		bool CreateAvatar(const char* nick, _U32 general_id)
@@ -4668,7 +5381,7 @@ namespace DDLProxy
 			if(!Buf.Write(general_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
 		}
 
 		bool DeleteAvatar()
@@ -4676,7 +5389,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
 		}
 
 		bool EnterGame()
@@ -4684,7 +5397,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
 		}
 
 		bool LeaveGame()
@@ -4692,7 +5405,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
 		}
 
 		bool QueryServerTime()
@@ -4700,7 +5413,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 9, Buf);
 		}
 
 		bool QueryPlayer(_U8 nSync)
@@ -4710,7 +5423,7 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 9, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 10, Buf);
 		}
 
 		bool QueryGenerals(_U8 nSync)
@@ -4720,7 +5433,7 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 10, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 11, Buf);
 		}
 
 		bool QuerySoldiers(_U8 nSync)
@@ -4730,7 +5443,7 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 11, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 12, Buf);
 		}
 
 		bool QueryBag(_U8 nSync)
@@ -4740,7 +5453,17 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 12, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
+		}
+
+		bool QueryOtherPlayer(_U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
 		}
 
 		bool QueryOtherPlayers(const char* current_town_map, _U32 num)
@@ -4755,7 +5478,7 @@ namespace DDLProxy
 			if(!Buf.Write(num)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 15, Buf);
 		}
 
 		bool EquipItem(_U32 general_id, const SG_EQUIP_SLOTS& slots)
@@ -4767,7 +5490,7 @@ namespace DDLProxy
 			if(!Buf.Write(slots)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
 		}
 
 		bool EquipGenerals(const _U32* generals, _U32 count)
@@ -4782,7 +5505,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 15, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
 		}
 
 		bool EquipSoldiers(const _U32* soldiers, _U32 count)
@@ -4797,7 +5520,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 18, Buf);
 		}
 
 		bool UnLockSoldier(_U32 soldier_id)
@@ -4807,7 +5530,7 @@ namespace DDLProxy
 			if(!Buf.Write(soldier_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 19, Buf);
 		}
 
 		bool EnhanceSoldier(_U32 soldier_id)
@@ -4817,7 +5540,7 @@ namespace DDLProxy
 			if(!Buf.Write(soldier_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 18, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 20, Buf);
 		}
 
 		bool EnhanceEquipt(const A_UUID& uuid)
@@ -4827,7 +5550,7 @@ namespace DDLProxy
 			if(!Buf.Write(uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 19, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 21, Buf);
 		}
 
 		bool ExtendEquipt(const A_UUID& uuid, const A_UUID& puuid)
@@ -4839,7 +5562,7 @@ namespace DDLProxy
 			if(!Buf.Write(puuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 20, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 22, Buf);
 		}
 
 		bool EnhanceCoolDown()
@@ -4847,7 +5570,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 21, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 23, Buf);
 		}
 
 		bool EnhanceCoolDownClear()
@@ -4855,7 +5578,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 22, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 24, Buf);
 		}
 
 		bool IncreaseEquipCoolDown()
@@ -4863,7 +5586,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 23, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 25, Buf);
 		}
 
 		bool RefreshEquipNormal(const A_UUID& uuid)
@@ -4873,7 +5596,7 @@ namespace DDLProxy
 			if(!Buf.Write(uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 24, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 26, Buf);
 		}
 
 		bool RefreshEquipProperty(const A_UUID& uuid)
@@ -4883,7 +5606,7 @@ namespace DDLProxy
 			if(!Buf.Write(uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 25, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 27, Buf);
 		}
 
 		bool RefreshEquipAbility(const A_UUID& uuid)
@@ -4893,7 +5616,7 @@ namespace DDLProxy
 			if(!Buf.Write(uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 26, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 28, Buf);
 		}
 
 		bool RefreshEquipDecideAccept(const A_UUID& uuid)
@@ -4903,7 +5626,7 @@ namespace DDLProxy
 			if(!Buf.Write(uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 27, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 29, Buf);
 		}
 
 		bool BeginBattle(const char* name)
@@ -4916,7 +5639,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 28, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 30, Buf);
 		}
 
 		bool EndBattle(const char* name, _U32 result, _U8 auto_combat)
@@ -4933,7 +5656,7 @@ namespace DDLProxy
 			if(!Buf.Write(auto_combat)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 29, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 31, Buf);
 		}
 
 		bool EquipGem(const A_UUID& item_uuid, _U32 gem_id)
@@ -4945,7 +5668,7 @@ namespace DDLProxy
 			if(!Buf.Write(gem_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 30, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 32, Buf);
 		}
 
 		bool UnequipGem(const A_UUID& item_uuid, _U32 gem_id)
@@ -4957,7 +5680,7 @@ namespace DDLProxy
 			if(!Buf.Write(gem_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 31, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 33, Buf);
 		}
 
 		bool GemCombine(_U32 item_id)
@@ -4967,7 +5690,7 @@ namespace DDLProxy
 			if(!Buf.Write(item_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 32, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 34, Buf);
 		}
 
 		bool SetGeneralStatus(_U32 general_id, _U8 status)
@@ -4979,7 +5702,7 @@ namespace DDLProxy
 			if(!Buf.Write(status)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 33, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 35, Buf);
 		}
 
 		bool QueryPlayerQuest(_U8 nSync)
@@ -4989,21 +5712,22 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 34, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 36, Buf);
 		}
 
-		bool SaveQuestData(_U32 quest_id, _U32 counter, _U8 status)
+		bool SaveQuestData(const SG_QUEST_LIVE_INFO* quest_list, _U32 count)
 		{
 			BUFFER Buf;
-			// <_U32> <quest_id> <> <>
-			if(!Buf.Write(quest_id)) return false;
-			// <_U32> <counter> <> <>
-			if(!Buf.Write(counter)) return false;
-			// <_U8> <status> <> <>
-			if(!Buf.Write(status)) return false;
+			_U32 __length;
+			// <SG_QUEST_LIVE_INFO> <quest_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(quest_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 35, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 37, Buf);
 		}
 
 		bool FinishQuest(_U32 quest_id, _U32 rmb)
@@ -5015,7 +5739,7 @@ namespace DDLProxy
 			if(!Buf.Write(rmb)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 36, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 38, Buf);
 		}
 
 		bool HaloCoolDown()
@@ -5023,7 +5747,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 37, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 39, Buf);
 		}
 
 		bool HaloIncreaseEXP(_U8 halo_type)
@@ -5033,7 +5757,7 @@ namespace DDLProxy
 			if(!Buf.Write(halo_type)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 38, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 40, Buf);
 		}
 
 		bool HaloGetCoolDown()
@@ -5041,7 +5765,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 39, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 41, Buf);
 		}
 
 		bool GetPaid()
@@ -5049,7 +5773,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 40, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 42, Buf);
 		}
 
 		bool UpgradeTitle()
@@ -5057,7 +5781,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 41, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 43, Buf);
 		}
 
 		bool BuyGoods(_U32 item_id)
@@ -5067,7 +5791,7 @@ namespace DDLProxy
 			if(!Buf.Write(item_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 42, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 44, Buf);
 		}
 
 		bool SellItem(const A_UUID& uuid, _U32 item_id, _U32 count)
@@ -5081,7 +5805,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 43, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 45, Buf);
 		}
 
 		bool QueryPlayerPVPInfo(_U32 avatar_id)
@@ -5091,7 +5815,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 44, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 46, Buf);
 		}
 
 		bool QueryPlayerRankList()
@@ -5099,7 +5823,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 45, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 47, Buf);
 		}
 
 		bool PVPCoolDown()
@@ -5107,7 +5831,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 46, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 48, Buf);
 		}
 
 		bool PVPGetRestTime()
@@ -5115,7 +5839,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 47, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 49, Buf);
 		}
 
 		bool PVPRecord()
@@ -5123,7 +5847,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 48, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 50, Buf);
 		}
 
 		bool PVPHeroList()
@@ -5131,7 +5855,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 49, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 51, Buf);
 		}
 
 		bool PVPDailyReward()
@@ -5139,7 +5863,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 50, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 52, Buf);
 		}
 
 		bool PVPBattleBegin(_U32 defender)
@@ -5149,7 +5873,7 @@ namespace DDLProxy
 			if(!Buf.Write(defender)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 51, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 53, Buf);
 		}
 
 		bool PVPBattleEnd(_U32 defender, _U8 ret)
@@ -5161,7 +5885,7 @@ namespace DDLProxy
 			if(!Buf.Write(ret)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 52, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 54, Buf);
 		}
 
 		bool PVPCoolDownClear()
@@ -5169,7 +5893,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 53, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 55, Buf);
 		}
 
 		bool PVPIncreateBattleTimes()
@@ -5177,7 +5901,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 54, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 56, Buf);
 		}
 
 		bool QueryInstance()
@@ -5185,7 +5909,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 55, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 57, Buf);
 		}
 
 		bool EnterInstance(_U32 instance_id, _U8 difficulty)
@@ -5197,7 +5921,7 @@ namespace DDLProxy
 			if(!Buf.Write(difficulty)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 56, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 58, Buf);
 		}
 
 		bool BeginInstanceBattle(_U32 instance_id, const char* map_url)
@@ -5212,7 +5936,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(map_url, (unsigned int)sizeof(map_url[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 57, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 59, Buf);
 		}
 
 		bool EndInstanceBattle(_U32 instance_id, const char* map_url, _U32 result, _U8 auto_combat)
@@ -5231,7 +5955,7 @@ namespace DDLProxy
 			if(!Buf.Write(auto_combat)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 58, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 60, Buf);
 		}
 
 		bool ResetInstance(_U32 instance_id)
@@ -5241,7 +5965,7 @@ namespace DDLProxy
 			if(!Buf.Write(instance_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 59, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 61, Buf);
 		}
 
 		bool SaveLastTownMap(const char* last_town_map)
@@ -5254,7 +5978,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(last_town_map, (unsigned int)sizeof(last_town_map[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 60, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 62, Buf);
 		}
 
 		bool CreateLeague(const char* league_name)
@@ -5267,7 +5991,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(league_name, (unsigned int)sizeof(league_name[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 61, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 63, Buf);
 		}
 
 		bool ApplyJoinLeague(_U32 league_id)
@@ -5277,7 +6001,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 62, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
 		}
 
 		bool QueryLeagueApplyList(_U32 league_id)
@@ -5287,7 +6011,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 63, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
 		}
 
 		bool QueryLeague(_U32 league_id)
@@ -5297,15 +6021,17 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
 		}
 
-		bool QueryLeagueList()
+		bool QueryLeagueList(_U32 start_index)
 		{
 			BUFFER Buf;
+			// <_U32> <start_index> <> <>
+			if(!Buf.Write(start_index)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
 		}
 
 		bool QueryLeagueMemberList(_U32 league_id)
@@ -5315,7 +6041,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
 		}
 
 		bool QueryLeagueMemberInfo(_U32 member_id)
@@ -5325,7 +6051,7 @@ namespace DDLProxy
 			if(!Buf.Write(member_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 69, Buf);
 		}
 
 		bool ContributeLeague(_U32 rmb, _U32 energy)
@@ -5337,7 +6063,7 @@ namespace DDLProxy
 			if(!Buf.Write(energy)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 70, Buf);
 		}
 
 		bool HandleApply(_U32 applyer_id, _U8 allowed)
@@ -5349,7 +6075,7 @@ namespace DDLProxy
 			if(!Buf.Write(allowed)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 69, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 71, Buf);
 		}
 
 		bool QueryLeagueNotice()
@@ -5357,7 +6083,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 70, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 72, Buf);
 		}
 
 		bool SetLeagueNotice(_U32 league_id, const char* notice_content)
@@ -5372,7 +6098,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(notice_content, (unsigned int)sizeof(notice_content[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 71, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 73, Buf);
 		}
 
 		bool SetLeagueOwner(_U32 member_id)
@@ -5382,7 +6108,7 @@ namespace DDLProxy
 			if(!Buf.Write(member_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 72, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 74, Buf);
 		}
 
 		bool DissolveLeague()
@@ -5390,7 +6116,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 73, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 75, Buf);
 		}
 
 		bool SetMemberPosition(_U32 member_id, _U8 position)
@@ -5402,7 +6128,7 @@ namespace DDLProxy
 			if(!Buf.Write(position)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 74, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 76, Buf);
 		}
 
 		bool DismissMember(_U32 member_id)
@@ -5412,7 +6138,7 @@ namespace DDLProxy
 			if(!Buf.Write(member_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 75, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 77, Buf);
 		}
 
 		bool ExitLeague()
@@ -5420,7 +6146,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 76, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 78, Buf);
 		}
 
 		bool QueryLeagueLog()
@@ -5428,7 +6154,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 77, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 79, Buf);
 		}
 
 		bool LeagueToast(_U8 wine_id)
@@ -5438,7 +6164,7 @@ namespace DDLProxy
 			if(!Buf.Write(wine_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 78, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 80, Buf);
 		}
 
 		bool SalaryGet()
@@ -5446,7 +6172,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 79, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
 		}
 
 		bool SalaryGetBat()
@@ -5454,7 +6180,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 80, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
 		}
 
 		bool BuyEnergy()
@@ -5462,7 +6188,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
 		}
 
 		bool EnhanceTurbo()
@@ -5470,7 +6196,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
 		}
 
 		bool EquipTurboSkill(const SG_TURBO_SKILL_SLOT& skill_slot)
@@ -5480,7 +6206,7 @@ namespace DDLProxy
 			if(!Buf.Write(skill_slot)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
 		}
 
 		bool MakeEquipt(_U32 equipt_id)
@@ -5490,7 +6216,7 @@ namespace DDLProxy
 			if(!Buf.Write(equipt_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
 		}
 
 		bool QueryActionAvailable(const _U32* action_list, _U32 count)
@@ -5505,7 +6231,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
 		}
 
 		bool QueryFriendList()
@@ -5513,7 +6239,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
 		}
 
 		bool QueryFriendSearchList(const char* nick)
@@ -5526,7 +6252,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(nick, (unsigned int)sizeof(nick[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
 		}
 
 		bool QueryFriendInvitationList()
@@ -5534,7 +6260,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
 		}
 
 		bool InviteFriend(_U32 avatar_id)
@@ -5544,7 +6270,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
 		}
 
 		bool AcceptFriend(_U32 avatar_id)
@@ -5554,7 +6280,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
 		}
 
 		bool RefuseInvitation(_U32 avatar_id)
@@ -5564,7 +6290,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
 		}
 
 		bool DelFriend(_U32 avatar_id)
@@ -5574,7 +6300,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 94, Buf);
 		}
 
 		bool SendChat(const SG_CHAT_SEND_INFO& send_info)
@@ -5584,7 +6310,7 @@ namespace DDLProxy
 			if(!Buf.Write(send_info)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 95, Buf);
 		}
 
 		bool ReceiveChat(const _U32* channel_list, _U32 count)
@@ -5599,7 +6325,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 94, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 96, Buf);
 		}
 
 		bool QueryLeagueDianjiangList(_U32 league_id)
@@ -5609,7 +6335,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 95, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 97, Buf);
 		}
 
 		bool JoinLeagueDianjiang(_U32 league_id)
@@ -5619,7 +6345,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 96, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 98, Buf);
 		}
 
 		bool QueryLeagueDianjiangReward(_U32 league_id, _U32 avatar_id)
@@ -5631,7 +6357,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 97, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 99, Buf);
 		}
 
 		bool LeagueDianjiangSummonNPC(_U32 league_id)
@@ -5641,7 +6367,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 98, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 100, Buf);
 		}
 
 		bool QueryAstrologyBag()
@@ -5649,7 +6375,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 99, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 101, Buf);
 		}
 
 		bool SaveToBag(_U32 item_id)
@@ -5659,7 +6385,7 @@ namespace DDLProxy
 			if(!Buf.Write(item_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 100, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 102, Buf);
 		}
 
 		bool SetAstrologyBallStatus(_U32 general_id, _U32 ball_id, _U8 status)
@@ -5673,7 +6399,7 @@ namespace DDLProxy
 			if(!Buf.Write(status)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 101, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 103, Buf);
 		}
 
 		bool EnhanceAstrologyBall(_U32 ball_id, _U32 general_id, _U32 index)
@@ -5687,7 +6413,7 @@ namespace DDLProxy
 			if(!Buf.Write(index)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 102, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 104, Buf);
 		}
 
 		bool Strology(_U32 astrologer_id)
@@ -5697,7 +6423,7 @@ namespace DDLProxy
 			if(!Buf.Write(astrologer_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 103, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 105, Buf);
 		}
 
 		bool StrologyAuto(_U32 RestSlotCount)
@@ -5707,7 +6433,7 @@ namespace DDLProxy
 			if(!Buf.Write(RestSlotCount)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 104, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 106, Buf);
 		}
 
 		bool Devour(_U8 bag_type)
@@ -5717,7 +6443,7 @@ namespace DDLProxy
 			if(!Buf.Write(bag_type)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 105, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 107, Buf);
 		}
 
 		bool UseItem(const A_UUID& uuid, _U32 item_id, _U32 count, _U32 target_id)
@@ -5733,7 +6459,7 @@ namespace DDLProxy
 			if(!Buf.Write(target_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 106, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 108, Buf);
 		}
 
 		bool FeedHorse(_U8 feed_type)
@@ -5743,7 +6469,7 @@ namespace DDLProxy
 			if(!Buf.Write(feed_type)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 107, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 109, Buf);
 		}
 
 		bool QueryBossRushInfo()
@@ -5751,7 +6477,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 108, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 110, Buf);
 		}
 
 		bool QueryBossRushSupportInfo()
@@ -5759,7 +6485,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 109, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 111, Buf);
 		}
 
 		bool BeginBossRushBattle(_U32 level_id, const char* level_url, _U32 init_boss_hp)
@@ -5776,7 +6502,7 @@ namespace DDLProxy
 			if(!Buf.Write(init_boss_hp)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 110, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 112, Buf);
 		}
 
 		bool EndBossRushBattle(const char* level_url, _U32 result, _U32 total_damage)
@@ -5793,7 +6519,7 @@ namespace DDLProxy
 			if(!Buf.Write(total_damage)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 111, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 113, Buf);
 		}
 
 		bool BeginBossRushSupportBattle(_U32 friend_id, _U32 level_id, const char* level_url)
@@ -5810,7 +6536,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(level_url, (unsigned int)sizeof(level_url[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 112, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 114, Buf);
 		}
 
 		bool EndBossRushSupportBattle(_U32 friend_id, const char* level_url, _U32 result, _U32 total_damage)
@@ -5829,7 +6555,7 @@ namespace DDLProxy
 			if(!Buf.Write(total_damage)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 113, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 115, Buf);
 		}
 
 		bool RequestBossRushSupport()
@@ -5837,7 +6563,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 114, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 116, Buf);
 		}
 
 		bool CancelBossRush()
@@ -5845,7 +6571,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 115, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 117, Buf);
 		}
 
 		bool AddBossRushRemainingTimes()
@@ -5853,7 +6579,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 116, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 118, Buf);
 		}
 
 		bool AwardBossRush()
@@ -5861,7 +6587,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 117, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 119, Buf);
 		}
 
 		bool AwardBossRushSupport(_U32 friend_id, _U32 level_id, const char* level_url)
@@ -5878,7 +6604,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(level_url, (unsigned int)sizeof(level_url[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 118, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 120, Buf);
 		}
 
 		bool QueryDiceNum()
@@ -5886,7 +6612,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 119, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 121, Buf);
 		}
 
 		bool QueryNewcomerGuideInfo()
@@ -5894,7 +6620,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 120, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 122, Buf);
 		}
 
 		bool ActivateNewcomerGuide(_U32 function_id)
@@ -5904,7 +6630,7 @@ namespace DDLProxy
 			if(!Buf.Write(function_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 121, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 123, Buf);
 		}
 
 		bool FinishNewcomerGuide(_U32 function_id)
@@ -5914,7 +6640,7 @@ namespace DDLProxy
 			if(!Buf.Write(function_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 122, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 124, Buf);
 		}
 
 		bool QueryWorldBossRankInfo()
@@ -5922,7 +6648,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 123, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 125, Buf);
 		}
 
 		bool BeginWorldBossBattle(_U32 bInstantResurrection)
@@ -5932,7 +6658,7 @@ namespace DDLProxy
 			if(!Buf.Write(bInstantResurrection)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 124, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 126, Buf);
 		}
 
 		bool InspireWorldBossBattle()
@@ -5940,7 +6666,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 125, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 127, Buf);
 		}
 
 		bool UpdateWorldBossBattle(_U32 damage)
@@ -5950,7 +6676,7 @@ namespace DDLProxy
 			if(!Buf.Write(damage)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 126, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 128, Buf);
 		}
 
 		bool EndWorldBossBattle(_U32 damage)
@@ -5960,7 +6686,7 @@ namespace DDLProxy
 			if(!Buf.Write(damage)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 127, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 129, Buf);
 		}
 
 		bool AwardWorldBossRank()
@@ -5968,7 +6694,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 128, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 130, Buf);
 		}
 
 		bool AwardWorldBossAttendance()
@@ -5976,7 +6702,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 129, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 131, Buf);
 		}
 
 		bool Recharge(_U32 index)
@@ -5986,7 +6712,163 @@ namespace DDLProxy
 			if(!Buf.Write(index)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 130, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 132, Buf);
+		}
+
+		bool QueryLeagueBattle(_U32 league_id, _U32 loop_times)
+		{
+			BUFFER Buf;
+			// <_U32> <league_id> <> <>
+			if(!Buf.Write(league_id)) return false;
+			// <_U32> <loop_times> <> <>
+			if(!Buf.Write(loop_times)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 133, Buf);
+		}
+
+		bool AwardLeagueBattle(_U32 type)
+		{
+			BUFFER Buf;
+			// <_U32> <type> <> <>
+			if(!Buf.Write(type)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 134, Buf);
+		}
+
+		bool QueryLeagueBattleReward()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 135, Buf);
+		}
+
+		bool QueryLeagueBattleInfo()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 136, Buf);
+		}
+
+		bool QueryLeagueBattleRankInfo()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 137, Buf);
+		}
+
+		bool SignUp(_U32 action_id)
+		{
+			BUFFER Buf;
+			// <_U32> <action_id> <> <>
+			if(!Buf.Write(action_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 138, Buf);
+		}
+
+		bool QueryGoal()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 139, Buf);
+		}
+
+		bool AwardGoalChapter(_U32 chapter_id)
+		{
+			BUFFER Buf;
+			// <_U32> <chapter_id> <> <>
+			if(!Buf.Write(chapter_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 140, Buf);
+		}
+
+		bool AwardAction(_U32 action_id)
+		{
+			BUFFER Buf;
+			// <_U32> <action_id> <> <>
+			if(!Buf.Write(action_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 141, Buf);
+		}
+
+		bool AutoCombatPVE(const char* name, _U32 NumTimes)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <name> <> <>
+			__length = DDL::StringLength(name);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
+			// <_U32> <NumTimes> <> <>
+			if(!Buf.Write(NumTimes)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 142, Buf);
+		}
+
+		bool AutoCombatInstance(_U32 instance_id, const SG_MAP_URL* map_url_array, _U32 count, _U32 NumTimes)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <instance_id> <> <>
+			if(!Buf.Write(instance_id)) return false;
+			// <SG_MAP_URL> <map_url_array> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(map_url_array, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+			// <_U32> <NumTimes> <> <>
+			if(!Buf.Write(NumTimes)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 143, Buf);
+		}
+
+		bool QueryFightValue(_U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 144, Buf);
+		}
+
+		bool CheckMail()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 145, Buf);
+		}
+
+		bool ReceiveMail(_U32 mail_id)
+		{
+			BUFFER Buf;
+			// <_U32> <mail_id> <> <>
+			if(!Buf.Write(mail_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 146, Buf);
+		}
+
+		bool RechargeBonus(_U32 bonus_id)
+		{
+			BUFFER Buf;
+			// <_U32> <bonus_id> <> <>
+			if(!Buf.Write(bonus_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 147, Buf);
 		}
 	};
 
@@ -6021,6 +6903,17 @@ namespace DDLStub
 			}
 			if(fid==1)
 			{
+				_U8 _prefix_ret;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BindAccountResult(Caller, _prefix_ret);
+				return true;
+			}
+			if(fid==2)
+			{
 				_U32 _prefix_time;
 
 				// <_U32> <time> <> <>;
@@ -6030,7 +6923,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryServerTimeResult(Caller, _prefix_time);
 				return true;
 			}
-			if(fid==2)
+			if(fid==3)
 			{
 				_U32 __length;
 				SG_SERVER_INFO* _prefix_infos;
@@ -6051,7 +6944,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->GetServerListResult(Caller, _prefix_infos, _prefix_count, _prefix_last_server);
 				return true;
 			}
-			if(fid==3)
+			if(fid==4)
 			{
 				_U32 _prefix_code;
 
@@ -6062,7 +6955,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatarFailed(Caller, _prefix_code);
 				return true;
 			}
-			if(fid==4)
+			if(fid==5)
 			{
 				SG_PLAYER _prefix_player;
 
@@ -6073,7 +6966,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAvatarResult(Caller, _prefix_player);
 				return true;
 			}
-			if(fid==5)
+			if(fid==6)
 			{
 				_U8 _prefix_ret;
 
@@ -6084,7 +6977,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnterGameResult(Caller, _prefix_ret);
 				return true;
 			}
-			if(fid==6)
+			if(fid==7)
 			{
 				_U32 _prefix_code;
 
@@ -6095,7 +6988,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatarResult(Caller, _prefix_code);
 				return true;
 			}
-			if(fid==7)
+			if(fid==8)
 			{
 				SG_PLAYER _prefix_player;
 				_U8 _prefix_nSync;
@@ -6109,7 +7002,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayerResult(Caller, _prefix_player, _prefix_nSync);
 				return true;
 			}
-			if(fid==8)
+			if(fid==9)
 			{
 				_U32 __length;
 				SG_GENERAL* _prefix_generals;
@@ -6130,7 +7023,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryGeneralResult(Caller, _prefix_generals, _prefix_count, _prefix_nSync);
 				return true;
 			}
-			if(fid==9)
+			if(fid==10)
 			{
 				_U32 __length;
 				SG_SOLDIER* _prefix_soldiers;
@@ -6151,7 +7044,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QuerySoldierResult(Caller, _prefix_soldiers, _prefix_count, _prefix_nSync);
 				return true;
 			}
-			if(fid==10)
+			if(fid==11)
 			{
 
 
@@ -6159,7 +7052,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBagBegin(Caller);
 				return true;
 			}
-			if(fid==11)
+			if(fid==12)
 			{
 				_U32 __length;
 				SG_EQUIPT_ITEM* _prefix_items;
@@ -6177,7 +7070,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBagEquipt(Caller, _prefix_items, _prefix_count);
 				return true;
 			}
-			if(fid==12)
+			if(fid==13)
 			{
 				_U32 __length;
 				SG_USABLE_ITEM* _prefix_items;
@@ -6195,7 +7088,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBagUsable(Caller, _prefix_items, _prefix_count);
 				return true;
 			}
-			if(fid==13)
+			if(fid==14)
 			{
 				_U32 __length;
 				SG_GEM_ITEM* _prefix_items;
@@ -6213,7 +7106,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBagGen(Caller, _prefix_items, _prefix_count);
 				return true;
 			}
-			if(fid==14)
+			if(fid==15)
 			{
 				_U32 __length;
 				SG_MATERIAL_ITEM* _prefix_items;
@@ -6231,7 +7124,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBagMaterial(Caller, _prefix_items, _prefix_count);
 				return true;
 			}
-			if(fid==15)
+			if(fid==16)
 			{
 				_U8 _prefix_nSync;
 
@@ -6242,7 +7135,46 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBagEnd(Caller, _prefix_nSync);
 				return true;
 			}
-			if(fid==16)
+			if(fid==17)
+			{
+				_U32 __length;
+				SG_PLAYER _prefix_player_info;
+				SG_GENERAL* _prefix_generals;
+				_U32 _prefix_count1;
+				SG_SOLDIER* _prefix_soldiers;
+				_U32 _prefix_count2;
+				SG_EQUIPT_ITEM* _prefix_equipts;
+				_U32 _prefix_count3;
+
+				// <SG_PLAYER> <player_info> <> <>;
+				if(!Buf.Read(_prefix_player_info)) return false;
+				// <SG_GENERAL> <generals> <> <count1>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_generals = (SG_GENERAL*)alloca(sizeof(_prefix_generals[0])*__length);
+				if(!_prefix_generals) return false;
+				if(!Buf.ReadPointer(_prefix_generals, __length)) return false;
+				// <_U32> <count1> <> <>;
+				if(!Buf.Read(_prefix_count1)) return false;
+				// <SG_SOLDIER> <soldiers> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_soldiers = (SG_SOLDIER*)alloca(sizeof(_prefix_soldiers[0])*__length);
+				if(!_prefix_soldiers) return false;
+				if(!Buf.ReadPointer(_prefix_soldiers, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
+				// <SG_EQUIPT_ITEM> <equipts> <> <count3>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_equipts = (SG_EQUIPT_ITEM*)alloca(sizeof(_prefix_equipts[0])*__length);
+				if(!_prefix_equipts) return false;
+				if(!Buf.ReadPointer(_prefix_equipts, __length)) return false;
+				// <_U32> <count3> <> <>;
+				if(!Buf.Read(_prefix_count3)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryOtherPlayerResult(Caller, _prefix_player_info, _prefix_generals, _prefix_count1, _prefix_soldiers, _prefix_count2, _prefix_equipts, _prefix_count3);
+				return true;
+			}
+			if(fid==18)
 			{
 				_U32 __length;
 				SG_PLAYER_INFO* _prefix_players;
@@ -6260,7 +7192,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryOtherPlayersResult(Caller, _prefix_players, _prefix_count);
 				return true;
 			}
-			if(fid==17)
+			if(fid==19)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_gold;
@@ -6277,7 +7209,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceEquiptResult(Caller, _prefix_ret, _prefix_gold, _prefix_equip_item);
 				return true;
 			}
-			if(fid==18)
+			if(fid==20)
 			{
 				_U8 _prefix_ret;
 				SG_EQUIPT_ITEM _prefix_equip_item;
@@ -6294,7 +7226,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ExtendEquiptResult(Caller, _prefix_ret, _prefix_equip_item, _prefix_reduce_uuid);
 				return true;
 			}
-			if(fid==19)
+			if(fid==21)
 			{
 				_U32 _prefix_time;
 
@@ -6305,7 +7237,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceCoolDownResult(Caller, _prefix_time);
 				return true;
 			}
-			if(fid==20)
+			if(fid==22)
 			{
 				SG_EQUIPT_ITEM _prefix_euipt;
 
@@ -6316,7 +7248,18 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipDone(Caller, _prefix_euipt);
 				return true;
 			}
-			if(fid==21)
+			if(fid==23)
+			{
+				SG_EQUIPT_ITEM _prefix_equipt;
+
+				// <SG_EQUIPT_ITEM> <equipt> <> <>;
+				if(!Buf.Read(_prefix_equipt)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RefreshEquipDecideAcceptResult(Caller, _prefix_equipt);
+				return true;
+			}
+			if(fid==24)
 			{
 				SG_GEM_ITEM _prefix_gem;
 
@@ -6327,18 +7270,38 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->GemCombineResult(Caller, _prefix_gem);
 				return true;
 			}
-			if(fid==22)
+			if(fid==25)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_title;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <title> <> <>;
+				if(!Buf.Read(_prefix_title)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->UpgradeTitleResult(Caller, _prefix_ret, _prefix_title);
+				return true;
+			}
+			if(fid==26)
 			{
 				_U32 _prefix_time;
+				_U32 _prefix_halo_level;
+				_U32 _prefix_halo_exp;
 
 				// <_U32> <time> <> <>;
 				if(!Buf.Read(_prefix_time)) return false;
+				// <_U32> <halo_level> <> <>;
+				if(!Buf.Read(_prefix_halo_level)) return false;
+				// <_U32> <halo_exp> <> <>;
+				if(!Buf.Read(_prefix_halo_exp)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->HaloIncreaseEXPResult(Caller, _prefix_time);
+				DDLStub<CALLER, CLASS>::GetClass()->HaloIncreaseEXPResult(Caller, _prefix_time, _prefix_halo_level, _prefix_halo_exp);
 				return true;
 			}
-			if(fid==23)
+			if(fid==27)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_consume_rmb;
@@ -6352,7 +7315,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->HaloCoolDownResult(Caller, _prefix_ret, _prefix_consume_rmb);
 				return true;
 			}
-			if(fid==24)
+			if(fid==28)
 			{
 				_U32 _prefix_time;
 
@@ -6363,7 +7326,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->HaloGetCoolDownResult(Caller, _prefix_time);
 				return true;
 			}
-			if(fid==25)
+			if(fid==29)
 			{
 				SG_PLAYER_PVE _prefix_PlayerPVE;
 
@@ -6374,7 +7337,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBattleResult(Caller, _prefix_PlayerPVE);
 				return true;
 			}
-			if(fid==26)
+			if(fid==30)
 			{
 				_U32 __length;
 				_U32 _prefix_level;
@@ -6407,7 +7370,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndBattleResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_wake_pt, _prefix_drops, _prefix_drop_count);
 				return true;
 			}
-			if(fid==27)
+			if(fid==31)
 			{
 				_U32 __length;
 				SG_QUEST_LIVE_INFO* _prefix_quest_list;
@@ -6428,7 +7391,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayerQuestResult(Caller, _prefix_quest_list, _prefix_count, _prefix_nSync);
 				return true;
 			}
-			if(fid==28)
+			if(fid==32)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -6476,7 +7439,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->FinishQuestDone(Caller, _prefix_ret, _prefix_quest_id, _prefix_exp_addition, _prefix_exp, _prefix_level, _prefix_gold, _prefix_rmb, _prefix_reputation, _prefix_energy, _prefix_drops, _prefix_drop_count, _prefix_consume_rmb);
 				return true;
 			}
-			if(fid==29)
+			if(fid==33)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -6503,7 +7466,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BuyGoodsResult(Caller, _prefix_ret, _prefix_goods, _prefix_id_list, _prefix_count);
 				return true;
 			}
-			if(fid==30)
+			if(fid==34)
 			{
 				_U8 _prefix_ret;
 				A_UUID _prefix_uuid;
@@ -6523,7 +7486,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SellItemResult(Caller, _prefix_ret, _prefix_uuid, _prefix_item_id, _prefix_count);
 				return true;
 			}
-			if(fid==31)
+			if(fid==35)
 			{
 				SG_PLAYER_PVE _prefix_pve;
 
@@ -6534,7 +7497,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayerPVPInfoResult(Caller, _prefix_pve);
 				return true;
 			}
-			if(fid==32)
+			if(fid==36)
 			{
 				_U32 __length;
 				SG_PVP_RANK_PLAYER* _prefix_players;
@@ -6552,7 +7515,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryPlayerRankListResult(Caller, _prefix_players, _prefix_count);
 				return true;
 			}
-			if(fid==33)
+			if(fid==37)
 			{
 				_U32 _prefix_time;
 
@@ -6563,7 +7526,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPCoolDownResult(Caller, _prefix_time);
 				return true;
 			}
-			if(fid==34)
+			if(fid==38)
 			{
 				_U32 _prefix_rest_time;
 
@@ -6574,7 +7537,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPGetRestTimeResult(Caller, _prefix_rest_time);
 				return true;
 			}
-			if(fid==35)
+			if(fid==39)
 			{
 				_U32 __length;
 				SG_PVP_RECORD_ITEM* _prefix_record;
@@ -6592,7 +7555,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPRecordResult(Caller, _prefix_record, _prefix_count);
 				return true;
 			}
-			if(fid==36)
+			if(fid==40)
 			{
 				_U32 __length;
 				SG_PVP_HEROLIST_PLAYER* _prefix_players;
@@ -6610,7 +7573,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPHeroListRecord(Caller, _prefix_players, _prefix_count);
 				return true;
 			}
-			if(fid==37)
+			if(fid==41)
 			{
 				_U32 __length;
 				_U32 _prefix_gold;
@@ -6634,7 +7597,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPDailyReward(Caller, _prefix_gold, _prefix_reputation, _prefix_items, _prefix_count);
 				return true;
 			}
-			if(fid==38)
+			if(fid==42)
 			{
 				SG_PLAYER_PVE _prefix_SelfPVE;
 				SG_PLAYER_PVE _prefix_DefenderPVE;
@@ -6648,7 +7611,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPBattleBeginResult(Caller, _prefix_SelfPVE, _prefix_DefenderPVE);
 				return true;
 			}
-			if(fid==39)
+			if(fid==43)
 			{
 				_U32 _prefix_reputation;
 
@@ -6659,7 +7622,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPBattleEndResult(Caller, _prefix_reputation);
 				return true;
 			}
-			if(fid==40)
+			if(fid==44)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_cost;
@@ -6673,7 +7636,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPCoolDownClearResult(Caller, _prefix_ret, _prefix_cost);
 				return true;
 			}
-			if(fid==41)
+			if(fid==45)
 			{
 				_U32 _prefix_rest_times;
 
@@ -6684,7 +7647,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->PVPIncreateBattleTimesResult(Caller, _prefix_rest_times);
 				return true;
 			}
-			if(fid==42)
+			if(fid==46)
 			{
 				_U32 __length;
 				SG_INSTANCE_INFO* _prefix_instances;
@@ -6702,7 +7665,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryInstanceResult(Caller, _prefix_instances, _prefix_count);
 				return true;
 			}
-			if(fid==43)
+			if(fid==47)
 			{
 				SG_PLAYER_PVE _prefix_PlayerPVE;
 
@@ -6713,7 +7676,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BeginInstanceBattleResult(Caller, _prefix_PlayerPVE);
 				return true;
 			}
-			if(fid==44)
+			if(fid==48)
 			{
 				SG_INSTANCE_INFO _prefix_instance;
 
@@ -6724,7 +7687,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnterInstanceResult(Caller, _prefix_instance);
 				return true;
 			}
-			if(fid==45)
+			if(fid==49)
 			{
 				_U32 __length;
 				_U32 _prefix_level;
@@ -6760,7 +7723,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndInstanceBattleResult(Caller, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_wake_pt, _prefix_result, _prefix_drops, _prefix_drop_count);
 				return true;
 			}
-			if(fid==46)
+			if(fid==50)
 			{
 				_U8 _prefix_result;
 				_U32 _prefix_rmb;
@@ -6777,7 +7740,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ResetInstanceResult(Caller, _prefix_result, _prefix_rmb, _prefix_instance);
 				return true;
 			}
-			if(fid==47)
+			if(fid==51)
 			{
 				_U8 _prefix_ret;
 				SG_LEAGUE _prefix_league;
@@ -6791,7 +7754,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->CreateLeagueResult(Caller, _prefix_ret, _prefix_league);
 				return true;
 			}
-			if(fid==48)
+			if(fid==52)
 			{
 				_U32 __length;
 				SG_LEAGUE_APPLYER* _prefix_applyer;
@@ -6809,7 +7772,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueApplyListResult(Caller, _prefix_applyer, _prefix_count);
 				return true;
 			}
-			if(fid==49)
+			if(fid==53)
 			{
 				SG_LEAGUE _prefix_league;
 
@@ -6820,7 +7783,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueResult(Caller, _prefix_league);
 				return true;
 			}
-			if(fid==50)
+			if(fid==54)
 			{
 				_U32 __length;
 				SG_LEAGUE* _prefix_league_list;
@@ -6838,7 +7801,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueListResult(Caller, _prefix_league_list, _prefix_count);
 				return true;
 			}
-			if(fid==51)
+			if(fid==55)
 			{
 				_U32 __length;
 				SG_LEAGUE_MEMBER* _prefix_league_members;
@@ -6856,7 +7819,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueMemberListResult(Caller, _prefix_league_members, _prefix_count);
 				return true;
 			}
-			if(fid==52)
+			if(fid==56)
 			{
 				SG_LEAGUE_MEMBER _prefix_member_info;
 
@@ -6867,7 +7830,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueMemberInfoResult(Caller, _prefix_member_info);
 				return true;
 			}
-			if(fid==53)
+			if(fid==57)
 			{
 				SG_LEAGUE_MEMBER _prefix_self_info;
 				SG_LEAGUE _prefix_league_info;
@@ -6881,7 +7844,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ContributeLeagueResult(Caller, _prefix_self_info, _prefix_league_info);
 				return true;
 			}
-			if(fid==54)
+			if(fid==58)
 			{
 				_U8 _prefix_ret;
 				SG_LEAGUE_MEMBER _prefix_new_joiner;
@@ -6895,7 +7858,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->HandleApplyResult(Caller, _prefix_ret, _prefix_new_joiner);
 				return true;
 			}
-			if(fid==55)
+			if(fid==59)
 			{
 				_U32 __length;
 				char* _prefix_notice_content;
@@ -6911,7 +7874,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueNoticeResult(Caller, _prefix_notice_content);
 				return true;
 			}
-			if(fid==56)
+			if(fid==60)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -6930,7 +7893,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetLeagueNoticeResult(Caller, _prefix_ret, _prefix_notice_content);
 				return true;
 			}
-			if(fid==57)
+			if(fid==61)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_member_id;
@@ -6944,7 +7907,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetLeagueOwnerResult(Caller, _prefix_ret, _prefix_member_id);
 				return true;
 			}
-			if(fid==58)
+			if(fid==62)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_member_id;
@@ -6961,7 +7924,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetMemberPositionResult(Caller, _prefix_ret, _prefix_member_id, _prefix_position);
 				return true;
 			}
-			if(fid==59)
+			if(fid==63)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_member_id;
@@ -6975,7 +7938,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->DismissMemberResult(Caller, _prefix_ret, _prefix_member_id);
 				return true;
 			}
-			if(fid==60)
+			if(fid==64)
 			{
 				_U8 _prefix_ret;
 
@@ -6986,7 +7949,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ExitLeagueResult(Caller, _prefix_ret);
 				return true;
 			}
-			if(fid==61)
+			if(fid==65)
 			{
 				_U32 __length;
 				SG_LEAGUE_LOG* _prefix_league_log;
@@ -7004,7 +7967,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueLogResult(Caller, _prefix_league_log, _prefix_count);
 				return true;
 			}
-			if(fid==62)
+			if(fid==66)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_gold;
@@ -7027,7 +7990,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->LeagueToastResult(Caller, _prefix_ret, _prefix_gold, _prefix_rmb, _prefix_reward_reputation, _prefix_reward_league_xp);
 				return true;
 			}
-			if(fid==63)
+			if(fid==67)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_rmb;
@@ -7044,7 +8007,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SalaryGetResult(Caller, _prefix_ret, _prefix_rmb, _prefix_gold);
 				return true;
 			}
-			if(fid==64)
+			if(fid==68)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_rmb;
@@ -7064,7 +8027,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SalaryGetBatResult(Caller, _prefix_ret, _prefix_rmb, _prefix_gold, _prefix_times);
 				return true;
 			}
-			if(fid==65)
+			if(fid==69)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_rmb;
@@ -7084,7 +8047,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->BuyEnergyResult(Caller, _prefix_ret, _prefix_rmb, _prefix_energy, _prefix_times);
 				return true;
 			}
-			if(fid==66)
+			if(fid==70)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_turbo_level;
@@ -7101,7 +8064,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceTurboResult(Caller, _prefix_ret, _prefix_turbo_level, _prefix_wake_pt);
 				return true;
 			}
-			if(fid==67)
+			if(fid==71)
 			{
 				_U8 _prefix_ret;
 				SG_EQUIPT_ITEM _prefix_new_euqipt;
@@ -7121,7 +8084,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->MakeEquiptResult(Caller, _prefix_ret, _prefix_new_euqipt, _prefix_com_material, _prefix_key_material);
 				return true;
 			}
-			if(fid==68)
+			if(fid==72)
 			{
 				_U32 __length;
 				_U32* _prefix_action_list;
@@ -7145,7 +8108,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryActionAvailableResult(Caller, _prefix_action_list, _prefix_available_list, _prefix_count);
 				return true;
 			}
-			if(fid==69)
+			if(fid==73)
 			{
 				_U32 __length;
 				SG_FRIEND_INFO* _prefix_friend_list;
@@ -7163,7 +8126,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendListResult(Caller, _prefix_friend_list, _prefix_count);
 				return true;
 			}
-			if(fid==70)
+			if(fid==74)
 			{
 				_U32 __length;
 				SG_FRIEND_SEARCH_INFO* _prefix_search_list;
@@ -7181,7 +8144,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendListSearchResult(Caller, _prefix_search_list, _prefix_count);
 				return true;
 			}
-			if(fid==71)
+			if(fid==75)
 			{
 				_U32 __length;
 				SG_FRIEND_INVITATION* _prefix_invitation_list;
@@ -7199,7 +8162,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryFriendInvitationListResult(Caller, _prefix_invitation_list, _prefix_count);
 				return true;
 			}
-			if(fid==72)
+			if(fid==76)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_avatar_id;
@@ -7213,7 +8176,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AcceptFriendResult(Caller, _prefix_ret, _prefix_avatar_id);
 				return true;
 			}
-			if(fid==73)
+			if(fid==77)
 			{
 				_U8 _prefix_ret;
 
@@ -7224,7 +8187,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SendChatResult(Caller, _prefix_ret);
 				return true;
 			}
-			if(fid==74)
+			if(fid==78)
 			{
 				_U32 __length;
 				SG_CHAT_RECV_INFO* _prefix_chat_list;
@@ -7242,7 +8205,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->ReceiveChatResult(Caller, _prefix_chat_list, _prefix_count);
 				return true;
 			}
-			if(fid==75)
+			if(fid==79)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7263,21 +8226,31 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangListResult(Caller, _prefix_ret, _prefix_joiner_list, _prefix_count);
 				return true;
 			}
-			if(fid==76)
+			if(fid==80)
 			{
+				_U32 __length;
 				_U8 _prefix_ret;
 				SG_LEAGUE_DIANJIANG_JOINER _prefix_self;
+				SG_LEAGUE_DIANJIANG_JOINER* _prefix_joiner_list;
+				_U32 _prefix_count;
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
 				// <SG_LEAGUE_DIANJIANG_JOINER> <self> <> <>;
 				if(!Buf.Read(_prefix_self)) return false;
+				// <SG_LEAGUE_DIANJIANG_JOINER> <joiner_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_joiner_list = (SG_LEAGUE_DIANJIANG_JOINER*)alloca(sizeof(_prefix_joiner_list[0])*__length);
+				if(!_prefix_joiner_list) return false;
+				if(!Buf.ReadPointer(_prefix_joiner_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->JoinLeagueDianjiangResult(Caller, _prefix_ret, _prefix_self);
+				DDLStub<CALLER, CLASS>::GetClass()->JoinLeagueDianjiangResult(Caller, _prefix_ret, _prefix_self, _prefix_joiner_list, _prefix_count);
 				return true;
 			}
-			if(fid==77)
+			if(fid==81)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_reputation;
@@ -7291,12 +8264,15 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueDianjiangRewardResult(Caller, _prefix_ret, _prefix_reputation);
 				return true;
 			}
-			if(fid==78)
+			if(fid==82)
 			{
+				_U32 __length;
 				_U8 _prefix_ret;
 				_U32 _prefix_gold;
 				_U32 _prefix_rmb;
 				SG_LEAGUE_DIANJIANG_JOINER _prefix_npc_joiner;
+				SG_LEAGUE_DIANJIANG_JOINER* _prefix_joiner_list;
+				_U32 _prefix_count;
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
@@ -7306,12 +8282,19 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_rmb)) return false;
 				// <SG_LEAGUE_DIANJIANG_JOINER> <npc_joiner> <> <>;
 				if(!Buf.Read(_prefix_npc_joiner)) return false;
+				// <SG_LEAGUE_DIANJIANG_JOINER> <joiner_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_joiner_list = (SG_LEAGUE_DIANJIANG_JOINER*)alloca(sizeof(_prefix_joiner_list[0])*__length);
+				if(!_prefix_joiner_list) return false;
+				if(!Buf.ReadPointer(_prefix_joiner_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->LeagueDianjiangSummonNPCResult(Caller, _prefix_ret, _prefix_gold, _prefix_rmb, _prefix_npc_joiner);
+				DDLStub<CALLER, CLASS>::GetClass()->LeagueDianjiangSummonNPCResult(Caller, _prefix_ret, _prefix_gold, _prefix_rmb, _prefix_npc_joiner, _prefix_joiner_list, _prefix_count);
 				return true;
 			}
-			if(fid==79)
+			if(fid==83)
 			{
 				_U32 __length;
 				_U32* _prefix_bag_list;
@@ -7338,7 +8321,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryAstrologyBagResult(Caller, _prefix_bag_list, _prefix_count1, _prefix_tmp_bag_list, _prefix_count2);
 				return true;
 			}
-			if(fid==80)
+			if(fid==84)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_item_id;
@@ -7352,7 +8335,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SaveToBagResult(Caller, _prefix_ret, _prefix_item_id);
 				return true;
 			}
-			if(fid==81)
+			if(fid==85)
 			{
 				_U8 _prefix_ret;
 				SG_GENERAL _prefix_general;
@@ -7366,7 +8349,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->SetAstrologyBallStatusResult(Caller, _prefix_ret, _prefix_general);
 				return true;
 			}
-			if(fid==82)
+			if(fid==86)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_gold;
@@ -7386,7 +8369,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EnhanceAstrologyBallResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_id, _prefix_new_ball_id);
 				return true;
 			}
-			if(fid==83)
+			if(fid==87)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_gold;
@@ -7409,7 +8392,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->StrologyResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_id, _prefix_atrologer_id, _prefix_last_atrologer_id);
 				return true;
 			}
-			if(fid==84)
+			if(fid==88)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7436,7 +8419,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->StrologyAutoResult(Caller, _prefix_ret, _prefix_gold, _prefix_ball_list, _prefix_count, _prefix_atrologer_id);
 				return true;
 			}
-			if(fid==85)
+			if(fid==89)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7469,7 +8452,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->DevourResult(Caller, _prefix_ret, _prefix_bag_type, _prefix_ball_list, _prefix_count, _prefix_devoured_list, _prefix_count2);
 				return true;
 			}
-			if(fid==86)
+			if(fid==90)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7505,7 +8488,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->UseItemResult(Caller, _prefix_ret, _prefix_uuid, _prefix_count, _prefix_target_id, _prefix_player_info, _prefix_general, _prefix_drops, _prefix_drop_count);
 				return true;
 			}
-			if(fid==87)
+			if(fid==91)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_xp;
@@ -7537,18 +8520,28 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->FeedHorseResult(Caller, _prefix_ret, _prefix_xp, _prefix_xp_add, _prefix_level, _prefix_xp_add_type, _prefix_feed_type, _prefix_gold, _prefix_rmb);
 				return true;
 			}
-			if(fid==88)
+			if(fid==92)
 			{
+				_U32 __length;
 				SG_BOSSRUSH_INFO _prefix_bossrush_info;
+				SG_BOSSRUSH_FRIEND_DAMAGE* _prefix_friend_damages;
+				_U32 _prefix_count;
 
 				// <SG_BOSSRUSH_INFO> <bossrush_info> <> <>;
 				if(!Buf.Read(_prefix_bossrush_info)) return false;
+				// <SG_BOSSRUSH_FRIEND_DAMAGE> <friend_damages> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_friend_damages = (SG_BOSSRUSH_FRIEND_DAMAGE*)alloca(sizeof(_prefix_friend_damages[0])*__length);
+				if(!_prefix_friend_damages) return false;
+				if(!Buf.ReadPointer(_prefix_friend_damages, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushInfoResult(Caller, _prefix_bossrush_info);
+				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushInfoResult(Caller, _prefix_bossrush_info, _prefix_friend_damages, _prefix_count);
 				return true;
 			}
-			if(fid==89)
+			if(fid==93)
 			{
 				_U32 __length;
 				SG_BOSSRUSH_SUPPORT_INFO* _prefix_support_list;
@@ -7566,7 +8559,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryBossRushSupportInfoResult(Caller, _prefix_support_list, _prefix_count);
 				return true;
 			}
-			if(fid==90)
+			if(fid==94)
 			{
 				SG_PLAYER_PVE _prefix_PlayerPVE;
 
@@ -7575,109 +8568,6 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushBattleResult(Caller, _prefix_PlayerPVE);
-				return true;
-			}
-			if(fid==91)
-			{
-				_U32 __length;
-				_U8 _prefix_ret;
-				_U32 _prefix_level;
-				_U32 _prefix_exp_addition;
-				_U32 _prefix_exp;
-				_U32 _prefix_gold;
-				_U32 _prefix_reputation;
-				SG_DROP_ITEM_CONFIG* _prefix_drops;
-				_U32 _prefix_drop_count;
-
-				// <_U8> <ret> <> <>;
-				if(!Buf.Read(_prefix_ret)) return false;
-				// <_U32> <level> <> <>;
-				if(!Buf.Read(_prefix_level)) return false;
-				// <_U32> <exp_addition> <> <>;
-				if(!Buf.Read(_prefix_exp_addition)) return false;
-				// <_U32> <exp> <> <>;
-				if(!Buf.Read(_prefix_exp)) return false;
-				// <_U32> <gold> <> <>;
-				if(!Buf.Read(_prefix_gold)) return false;
-				// <_U32> <reputation> <> <>;
-				if(!Buf.Read(_prefix_reputation)) return false;
-				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
-				if(!Buf.Read(__length)) return false;
-				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
-				if(!_prefix_drops) return false;
-				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
-				// <_U32> <drop_count> <> <>;
-				if(!Buf.Read(_prefix_drop_count)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushBattleResult(Caller, _prefix_ret, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_reputation, _prefix_drops, _prefix_drop_count);
-				return true;
-			}
-			if(fid==92)
-			{
-				_U8 _prefix_ret;
-				SG_PLAYER_PVE _prefix_PlayerPVE;
-
-				// <_U8> <ret> <> <>;
-				if(!Buf.Read(_prefix_ret)) return false;
-				// <SG_PLAYER_PVE> <PlayerPVE> <> <>;
-				if(!Buf.Read(_prefix_PlayerPVE)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushSupportBattleResult(Caller, _prefix_ret, _prefix_PlayerPVE);
-				return true;
-			}
-			if(fid==93)
-			{
-				_U32 __length;
-				_U8 _prefix_ret;
-				_U32 _prefix_level;
-				_U32 _prefix_exp_addition;
-				_U32 _prefix_exp;
-				_U32 _prefix_gold;
-				_U32 _prefix_reputation;
-				SG_DROP_ITEM_CONFIG* _prefix_drops;
-				_U32 _prefix_drop_count;
-
-				// <_U8> <ret> <> <>;
-				if(!Buf.Read(_prefix_ret)) return false;
-				// <_U32> <level> <> <>;
-				if(!Buf.Read(_prefix_level)) return false;
-				// <_U32> <exp_addition> <> <>;
-				if(!Buf.Read(_prefix_exp_addition)) return false;
-				// <_U32> <exp> <> <>;
-				if(!Buf.Read(_prefix_exp)) return false;
-				// <_U32> <gold> <> <>;
-				if(!Buf.Read(_prefix_gold)) return false;
-				// <_U32> <reputation> <> <>;
-				if(!Buf.Read(_prefix_reputation)) return false;
-				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
-				if(!Buf.Read(__length)) return false;
-				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
-				if(!_prefix_drops) return false;
-				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
-				// <_U32> <drop_count> <> <>;
-				if(!Buf.Read(_prefix_drop_count)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushSupportBattleResult(Caller, _prefix_ret, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_reputation, _prefix_drops, _prefix_drop_count);
-				return true;
-			}
-			if(fid==94)
-			{
-				_U8 _prefix_ret;
-				_U32 _prefix_rmb;
-				_U8 _prefix_remain_times;
-
-				// <_U8> <ret> <> <>;
-				if(!Buf.Read(_prefix_ret)) return false;
-				// <_U32> <rmb> <> <>;
-				if(!Buf.Read(_prefix_rmb)) return false;
-				// <_U8> <remain_times> <> <>;
-				if(!Buf.Read(_prefix_remain_times)) return false;
-
-				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->AddBossRushRemainingTimesResult(Caller, _prefix_ret, _prefix_rmb, _prefix_remain_times);
 				return true;
 			}
 			if(fid==95)
@@ -7713,10 +8603,113 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_drop_count)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRushResult(Caller, _prefix_ret, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_reputation, _prefix_drops, _prefix_drop_count);
+				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushBattleResult(Caller, _prefix_ret, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_reputation, _prefix_drops, _prefix_drop_count);
 				return true;
 			}
 			if(fid==96)
+			{
+				_U8 _prefix_ret;
+				SG_PLAYER_PVE _prefix_PlayerPVE;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <SG_PLAYER_PVE> <PlayerPVE> <> <>;
+				if(!Buf.Read(_prefix_PlayerPVE)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->BeginBossRushSupportBattleResult(Caller, _prefix_ret, _prefix_PlayerPVE);
+				return true;
+			}
+			if(fid==97)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_level;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_exp;
+				_U32 _prefix_gold;
+				_U32 _prefix_reputation;
+				SG_DROP_ITEM_CONFIG* _prefix_drops;
+				_U32 _prefix_drop_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <level> <> <>;
+				if(!Buf.Read(_prefix_level)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <exp> <> <>;
+				if(!Buf.Read(_prefix_exp)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <reputation> <> <>;
+				if(!Buf.Read(_prefix_reputation)) return false;
+				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
+				if(!_prefix_drops) return false;
+				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
+				// <_U32> <drop_count> <> <>;
+				if(!Buf.Read(_prefix_drop_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EndBossRushSupportBattleResult(Caller, _prefix_ret, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_reputation, _prefix_drops, _prefix_drop_count);
+				return true;
+			}
+			if(fid==98)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_rmb;
+				_U8 _prefix_remain_times;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <_U8> <remain_times> <> <>;
+				if(!Buf.Read(_prefix_remain_times)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AddBossRushRemainingTimesResult(Caller, _prefix_ret, _prefix_rmb, _prefix_remain_times);
+				return true;
+			}
+			if(fid==99)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_level;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_exp;
+				_U32 _prefix_gold;
+				_U32 _prefix_reputation;
+				SG_DROP_ITEM_CONFIG* _prefix_drops;
+				_U32 _prefix_drop_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <level> <> <>;
+				if(!Buf.Read(_prefix_level)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <exp> <> <>;
+				if(!Buf.Read(_prefix_exp)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <reputation> <> <>;
+				if(!Buf.Read(_prefix_reputation)) return false;
+				// <SG_DROP_ITEM_CONFIG> <drops> <> <drop_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_drops = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_drops[0])*__length);
+				if(!_prefix_drops) return false;
+				if(!Buf.ReadPointer(_prefix_drops, __length)) return false;
+				// <_U32> <drop_count> <> <>;
+				if(!Buf.Read(_prefix_drop_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRushResult(Caller, _prefix_ret, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_reputation, _prefix_drops, _prefix_drop_count);
+				return true;
+			}
+			if(fid==100)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7752,7 +8745,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AwardBossRushSupportResult(Caller, _prefix_ret, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_reputation, _prefix_drops, _prefix_drop_count);
 				return true;
 			}
-			if(fid==97)
+			if(fid==101)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7791,7 +8784,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryDiceNumResult(Caller, _prefix_ret, _prefix_dice_num, _prefix_reward_time, _prefix_energy, _prefix_rmb, _prefix_drops, _prefix_drop_count, _prefix_circle_num, _prefix_step);
 				return true;
 			}
-			if(fid==98)
+			if(fid==102)
 			{
 				_U32 __length;
 				SG_NEWCOMER_GUIDE_INFO* _prefix_guide_list;
@@ -7809,7 +8802,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryNewcomerGuideInfoResult(Caller, _prefix_guide_list, _prefix_count);
 				return true;
 			}
-			if(fid==99)
+			if(fid==103)
 			{
 				SG_WORLDBOSS_RANK_INFO _prefix_rank_info;
 
@@ -7820,10 +8813,13 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->QueryWorldBossRankInfoResult(Caller, _prefix_rank_info);
 				return true;
 			}
-			if(fid==100)
+			if(fid==104)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
+				_U32 _prefix_NumResurrection;
+				_U32 _prefix_NumInspiration;
+				_U32 _prefix_BattleStartTime;
 				SG_PLAYER_PVE _prefix_selfPve;
 				SG_WORLDBOSS_INFO _prefix_bossInfo;
 				SG_WORLDBOSS_RANK_INFO _prefix_ranklist;
@@ -7836,6 +8832,12 @@ namespace DDLStub
 
 				// <_U8> <ret> <> <>;
 				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <NumResurrection> <> <>;
+				if(!Buf.Read(_prefix_NumResurrection)) return false;
+				// <_U32> <NumInspiration> <> <>;
+				if(!Buf.Read(_prefix_NumInspiration)) return false;
+				// <_U32> <BattleStartTime> <> <>;
+				if(!Buf.Read(_prefix_BattleStartTime)) return false;
 				// <SG_PLAYER_PVE> <selfPve> <> <>;
 				if(!Buf.Read(_prefix_selfPve)) return false;
 				// <SG_WORLDBOSS_INFO> <bossInfo> <> <>;
@@ -7862,10 +8864,10 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_rmb)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->BeginWorldBossBattleResult(Caller, _prefix_ret, _prefix_selfPve, _prefix_bossInfo, _prefix_ranklist, _prefix_otherPlayers, _prefix_count1, _prefix_gold, _prefix_drops, _prefix_count2, _prefix_rmb);
+				DDLStub<CALLER, CLASS>::GetClass()->BeginWorldBossBattleResult(Caller, _prefix_ret, _prefix_NumResurrection, _prefix_NumInspiration, _prefix_BattleStartTime, _prefix_selfPve, _prefix_bossInfo, _prefix_ranklist, _prefix_otherPlayers, _prefix_count1, _prefix_gold, _prefix_drops, _prefix_count2, _prefix_rmb);
 				return true;
 			}
-			if(fid==101)
+			if(fid==105)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_rmb;
@@ -7879,7 +8881,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->InspireWorldBossBattleResult(Caller, _prefix_ret, _prefix_rmb);
 				return true;
 			}
-			if(fid==102)
+			if(fid==106)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7906,7 +8908,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossRankResult(Caller, _prefix_ret, _prefix_Gold, _prefix_Reputation, _prefix_ItemList, _prefix_count);
 				return true;
 			}
-			if(fid==103)
+			if(fid==107)
 			{
 				SG_WORLDBOSS_INFO _prefix_bossInfo;
 				SG_WORLDBOSS_RANK_INFO _prefix_rankinfo;
@@ -7920,7 +8922,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->UpdateWorldBossBattleResult(Caller, _prefix_bossInfo, _prefix_rankinfo);
 				return true;
 			}
-			if(fid==104)
+			if(fid==108)
 			{
 
 
@@ -7928,7 +8930,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->EndWorldBossBattleResult(Caller);
 				return true;
 			}
-			if(fid==105)
+			if(fid==109)
 			{
 				_U32 __length;
 				_U8 _prefix_ret;
@@ -7955,7 +8957,7 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->AwardWorldBossAttendanceResult(Caller, _prefix_ret, _prefix_Gold, _prefix_Reputation, _prefix_ItemList, _prefix_count);
 				return true;
 			}
-			if(fid==106)
+			if(fid==110)
 			{
 				_U8 _prefix_ret;
 				_U32 _prefix_rmb;
@@ -7970,6 +8972,396 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->RechargeResult(Caller, _prefix_ret, _prefix_rmb, _prefix_selfplayer);
+				return true;
+			}
+			if(fid==111)
+			{
+				_U32 __length;
+				SG_LEAGUE_BATTLE_MEMBER* _prefix_info_list;
+				_U32 _prefix_count1;
+				SG_LEAGUE_BATTLE_MEMBER* _prefix_enemy_list;
+				_U32 _prefix_count2;
+				_U32 _prefix_rank;
+				_U32 _prefix_final_loop;
+
+				// <SG_LEAGUE_BATTLE_MEMBER> <info_list> <> <count1>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_info_list = (SG_LEAGUE_BATTLE_MEMBER*)alloca(sizeof(_prefix_info_list[0])*__length);
+				if(!_prefix_info_list) return false;
+				if(!Buf.ReadPointer(_prefix_info_list, __length)) return false;
+				// <_U32> <count1> <> <>;
+				if(!Buf.Read(_prefix_count1)) return false;
+				// <SG_LEAGUE_BATTLE_MEMBER> <enemy_list> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_enemy_list = (SG_LEAGUE_BATTLE_MEMBER*)alloca(sizeof(_prefix_enemy_list[0])*__length);
+				if(!_prefix_enemy_list) return false;
+				if(!Buf.ReadPointer(_prefix_enemy_list, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
+				// <_U32> <rank> <> <>;
+				if(!Buf.Read(_prefix_rank)) return false;
+				// <_U32> <final_loop> <> <>;
+				if(!Buf.Read(_prefix_final_loop)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattleResult(Caller, _prefix_info_list, _prefix_count1, _prefix_enemy_list, _prefix_count2, _prefix_rank, _prefix_final_loop);
+				return true;
+			}
+			if(fid==112)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_type;
+				_U32 _prefix_level;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_exp;
+				_U32 _prefix_gold;
+				_U32 _prefix_rmb;
+				_U32 _prefix_reputation;
+				_U32 _prefix_contribution;
+				SG_DROP_ITEM_CONFIG* _prefix_items;
+				_U32 _prefix_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <type> <> <>;
+				if(!Buf.Read(_prefix_type)) return false;
+				// <_U32> <level> <> <>;
+				if(!Buf.Read(_prefix_level)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <exp> <> <>;
+				if(!Buf.Read(_prefix_exp)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <_U32> <reputation> <> <>;
+				if(!Buf.Read(_prefix_reputation)) return false;
+				// <_U32> <contribution> <> <>;
+				if(!Buf.Read(_prefix_contribution)) return false;
+				// <SG_DROP_ITEM_CONFIG> <items> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_items = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_items[0])*__length);
+				if(!_prefix_items) return false;
+				if(!Buf.ReadPointer(_prefix_items, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardLeagueBattleResult(Caller, _prefix_ret, _prefix_type, _prefix_level, _prefix_exp_addition, _prefix_exp, _prefix_gold, _prefix_rmb, _prefix_reputation, _prefix_contribution, _prefix_items, _prefix_count);
+				return true;
+			}
+			if(fid==113)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_exp_addition;
+				_U32 _prefix_gold;
+				_U32 _prefix_rmb;
+				_U32 _prefix_reputation;
+				_U32 _prefix_contribution;
+				SG_DROP_ITEM_CONFIG* _prefix_items;
+				_U32 _prefix_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <exp_addition> <> <>;
+				if(!Buf.Read(_prefix_exp_addition)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <_U32> <reputation> <> <>;
+				if(!Buf.Read(_prefix_reputation)) return false;
+				// <_U32> <contribution> <> <>;
+				if(!Buf.Read(_prefix_contribution)) return false;
+				// <SG_DROP_ITEM_CONFIG> <items> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_items = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_items[0])*__length);
+				if(!_prefix_items) return false;
+				if(!Buf.ReadPointer(_prefix_items, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattleRewardResult(Caller, _prefix_ret, _prefix_exp_addition, _prefix_gold, _prefix_rmb, _prefix_reputation, _prefix_contribution, _prefix_items, _prefix_count);
+				return true;
+			}
+			if(fid==114)
+			{
+				_U32 __length;
+				SG_LEAGUE_BATTLE_LOG* _prefix_log_list;
+				_U32 _prefix_count1;
+				_U32 _prefix_rank;
+				_U8 _prefix_status;
+				SG_LEAGUE_BATTLE_MEMBER* _prefix_member_list;
+				_U32 _prefix_count2;
+
+				// <SG_LEAGUE_BATTLE_LOG> <log_list> <> <count1>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_log_list = (SG_LEAGUE_BATTLE_LOG*)alloca(sizeof(_prefix_log_list[0])*__length);
+				if(!_prefix_log_list) return false;
+				if(!Buf.ReadPointer(_prefix_log_list, __length)) return false;
+				// <_U32> <count1> <> <>;
+				if(!Buf.Read(_prefix_count1)) return false;
+				// <_U32> <rank> <> <>;
+				if(!Buf.Read(_prefix_rank)) return false;
+				// <_U8> <status> <> <>;
+				if(!Buf.Read(_prefix_status)) return false;
+				// <SG_LEAGUE_BATTLE_MEMBER> <member_list> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_member_list = (SG_LEAGUE_BATTLE_MEMBER*)alloca(sizeof(_prefix_member_list[0])*__length);
+				if(!_prefix_member_list) return false;
+				if(!Buf.ReadPointer(_prefix_member_list, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattleInfoResult(Caller, _prefix_log_list, _prefix_count1, _prefix_rank, _prefix_status, _prefix_member_list, _prefix_count2);
+				return true;
+			}
+			if(fid==115)
+			{
+				_U32 __length;
+				SG_LEAGUE_BATTLE_RANK* _prefix_league_rank_list;
+				_U32 _prefix_count1;
+				SG_LEAGUE_BATTLE_PLAYER_RANK* _prefix_player_rank;
+				_U32 _prefix_count2;
+
+				// <SG_LEAGUE_BATTLE_RANK> <league_rank_list> <> <count1>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_league_rank_list = (SG_LEAGUE_BATTLE_RANK*)alloca(sizeof(_prefix_league_rank_list[0])*__length);
+				if(!_prefix_league_rank_list) return false;
+				if(!Buf.ReadPointer(_prefix_league_rank_list, __length)) return false;
+				// <_U32> <count1> <> <>;
+				if(!Buf.Read(_prefix_count1)) return false;
+				// <SG_LEAGUE_BATTLE_PLAYER_RANK> <player_rank> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_player_rank = (SG_LEAGUE_BATTLE_PLAYER_RANK*)alloca(sizeof(_prefix_player_rank[0])*__length);
+				if(!_prefix_player_rank) return false;
+				if(!Buf.ReadPointer(_prefix_player_rank, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryLeagueBattleRankInfoResult(Caller, _prefix_league_rank_list, _prefix_count1, _prefix_player_rank, _prefix_count2);
+				return true;
+			}
+			if(fid==116)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_aciton_id;
+				_U32 _prefix_times;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <aciton_id> <> <>;
+				if(!Buf.Read(_prefix_aciton_id)) return false;
+				// <_U32> <times> <> <>;
+				if(!Buf.Read(_prefix_times)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SignUpResult(Caller, _prefix_ret, _prefix_aciton_id, _prefix_times);
+				return true;
+			}
+			if(fid==117)
+			{
+				_U32 __length;
+				SG_GOAL_CHAPTER_INFO* _prefix_chapter_list;
+				_U32 _prefix_count;
+
+				// <SG_GOAL_CHAPTER_INFO> <chapter_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_chapter_list = (SG_GOAL_CHAPTER_INFO*)alloca(sizeof(_prefix_chapter_list[0])*__length);
+				if(!_prefix_chapter_list) return false;
+				if(!Buf.ReadPointer(_prefix_chapter_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryGoalResult(Caller, _prefix_chapter_list, _prefix_count);
+				return true;
+			}
+			if(fid==118)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				SG_GOAL_CHAPTER_INFO _prefix_chapter;
+				_U32 _prefix_gold;
+				_U32 _prefix_rmb;
+				SG_DROP_ITEM_CONFIG* _prefix_items;
+				_U32 _prefix_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <SG_GOAL_CHAPTER_INFO> <chapter> <> <>;
+				if(!Buf.Read(_prefix_chapter)) return false;
+				// <_U32> <gold> <> <>;
+				if(!Buf.Read(_prefix_gold)) return false;
+				// <_U32> <rmb> <> <>;
+				if(!Buf.Read(_prefix_rmb)) return false;
+				// <SG_DROP_ITEM_CONFIG> <items> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_items = (SG_DROP_ITEM_CONFIG*)alloca(sizeof(_prefix_items[0])*__length);
+				if(!_prefix_items) return false;
+				if(!Buf.ReadPointer(_prefix_items, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardGoalChapterResult(Caller, _prefix_ret, _prefix_chapter, _prefix_gold, _prefix_rmb, _prefix_items, _prefix_count);
+				return true;
+			}
+			if(fid==119)
+			{
+				_U8 _prefix_ret;
+				_U32 _prefix_action_id;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <action_id> <> <>;
+				if(!Buf.Read(_prefix_action_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AwardActionResult(Caller, _prefix_ret, _prefix_action_id);
+				return true;
+			}
+			if(fid==120)
+			{
+				_U32 __length;
+				SG_BATTLE_RESULT_INFO* _prefix_battle_results;
+				_U32 _prefix_battle_count;
+
+				// <SG_BATTLE_RESULT_INFO> <battle_results> <> <battle_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_battle_results = (SG_BATTLE_RESULT_INFO*)alloca(sizeof(_prefix_battle_results[0])*__length);
+				if(!_prefix_battle_results) return false;
+				if(!Buf.ReadPointer(_prefix_battle_results, __length)) return false;
+				// <_U32> <battle_count> <> <>;
+				if(!Buf.Read(_prefix_battle_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AutoCombatPVEResult(Caller, _prefix_battle_results, _prefix_battle_count);
+				return true;
+			}
+			if(fid==121)
+			{
+				_U32 __length;
+				SG_BATTLE_RESULT_INFO* _prefix_battle_results;
+				_U32 _prefix_battle_count;
+
+				// <SG_BATTLE_RESULT_INFO> <battle_results> <> <battle_count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_battle_results = (SG_BATTLE_RESULT_INFO*)alloca(sizeof(_prefix_battle_results[0])*__length);
+				if(!_prefix_battle_results) return false;
+				if(!Buf.ReadPointer(_prefix_battle_results, __length)) return false;
+				// <_U32> <battle_count> <> <>;
+				if(!Buf.Read(_prefix_battle_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->AutoCombatInstanceResult(Caller, _prefix_battle_results, _prefix_battle_count);
+				return true;
+			}
+			if(fid==122)
+			{
+				_U32 _prefix_fight_value;
+
+				// <_U32> <fight_value> <> <>;
+				if(!Buf.Read(_prefix_fight_value)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->QueryFightValueResult(Caller, _prefix_fight_value);
+				return true;
+			}
+			if(fid==123)
+			{
+				_U32 __length;
+				SG_MAIL_INFO* _prefix_mail_list;
+				_U32 _prefix_count;
+
+				// <SG_MAIL_INFO> <mail_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_mail_list = (SG_MAIL_INFO*)alloca(sizeof(_prefix_mail_list[0])*__length);
+				if(!_prefix_mail_list) return false;
+				if(!Buf.ReadPointer(_prefix_mail_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->CheckMailResult(Caller, _prefix_mail_list, _prefix_count);
+				return true;
+			}
+			if(fid==124)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_mail_id;
+				_U32 _prefix_reward_gold;
+				_U32 _prefix_reward_rmb;
+				SG_ITEM* _prefix_reward_list;
+				_U32 _prefix_count;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <mail_id> <> <>;
+				if(!Buf.Read(_prefix_mail_id)) return false;
+				// <_U32> <reward_gold> <> <>;
+				if(!Buf.Read(_prefix_reward_gold)) return false;
+				// <_U32> <reward_rmb> <> <>;
+				if(!Buf.Read(_prefix_reward_rmb)) return false;
+				// <SG_ITEM> <reward_list> <> <count>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_reward_list = (SG_ITEM*)alloca(sizeof(_prefix_reward_list[0])*__length);
+				if(!_prefix_reward_list) return false;
+				if(!Buf.ReadPointer(_prefix_reward_list, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->ReceiveMailResult(Caller, _prefix_ret, _prefix_mail_id, _prefix_reward_gold, _prefix_reward_rmb, _prefix_reward_list, _prefix_count);
+				return true;
+			}
+			if(fid==125)
+			{
+				_U32 __length;
+				_U8 _prefix_ret;
+				_U32 _prefix_bonus_id;
+				SG_GENERAL* _prefix_general_list;
+				_U32 _prefix_count1;
+				SG_SOLDIER* _prefix_soldier_list;
+				_U32 _prefix_count2;
+				SG_ITEM* _prefix_item_list;
+				_U32 _prefix_count3;
+
+				// <_U8> <ret> <> <>;
+				if(!Buf.Read(_prefix_ret)) return false;
+				// <_U32> <bonus_id> <> <>;
+				if(!Buf.Read(_prefix_bonus_id)) return false;
+				// <SG_GENERAL> <general_list> <> <count1>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_general_list = (SG_GENERAL*)alloca(sizeof(_prefix_general_list[0])*__length);
+				if(!_prefix_general_list) return false;
+				if(!Buf.ReadPointer(_prefix_general_list, __length)) return false;
+				// <_U32> <count1> <> <>;
+				if(!Buf.Read(_prefix_count1)) return false;
+				// <SG_SOLDIER> <soldier_list> <> <count2>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_soldier_list = (SG_SOLDIER*)alloca(sizeof(_prefix_soldier_list[0])*__length);
+				if(!_prefix_soldier_list) return false;
+				if(!Buf.ReadPointer(_prefix_soldier_list, __length)) return false;
+				// <_U32> <count2> <> <>;
+				if(!Buf.Read(_prefix_count2)) return false;
+				// <SG_ITEM> <item_list> <> <count3>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_item_list = (SG_ITEM*)alloca(sizeof(_prefix_item_list[0])*__length);
+				if(!_prefix_item_list) return false;
+				if(!Buf.ReadPointer(_prefix_item_list, __length)) return false;
+				// <_U32> <count3> <> <>;
+				if(!Buf.Read(_prefix_count3)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->RechargeBonusResult(Caller, _prefix_ret, _prefix_bonus_id, _prefix_general_list, _prefix_count1, _prefix_soldier_list, _prefix_count2, _prefix_item_list, _prefix_count3);
 				return true;
 			}
 			return false;
@@ -8003,6 +9395,16 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
 
+		bool BindAccountResult(_U8 ret)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
 		bool QueryServerTimeResult(_U32 time)
 		{
 			BUFFER Buf;
@@ -8010,7 +9412,7 @@ namespace DDLProxy
 			if(!Buf.Write(time)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 
 		bool GetServerListResult(const SG_SERVER_INFO* infos, _U32 count, _U32 last_server)
@@ -8027,7 +9429,7 @@ namespace DDLProxy
 			if(!Buf.Write(last_server)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
 		}
 
 		bool QueryAvatarFailed(_U32 code)
@@ -8037,7 +9439,7 @@ namespace DDLProxy
 			if(!Buf.Write(code)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
 		}
 
 		bool QueryAvatarResult(const SG_PLAYER& player)
@@ -8047,7 +9449,7 @@ namespace DDLProxy
 			if(!Buf.Write(player)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
 		}
 
 		bool EnterGameResult(_U8 ret)
@@ -8057,7 +9459,7 @@ namespace DDLProxy
 			if(!Buf.Write(ret)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
 		}
 
 		bool CreateAvatarResult(_U32 code)
@@ -8067,7 +9469,7 @@ namespace DDLProxy
 			if(!Buf.Write(code)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
 		}
 
 		bool QueryPlayerResult(const SG_PLAYER& player, _U8 nSync)
@@ -8079,7 +9481,7 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
 		}
 
 		bool QueryGeneralResult(const SG_GENERAL* generals, _U32 count, _U8 nSync)
@@ -8096,7 +9498,7 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 9, Buf);
 		}
 
 		bool QuerySoldierResult(const SG_SOLDIER* soldiers, _U32 count, _U8 nSync)
@@ -8113,7 +9515,7 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 9, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 10, Buf);
 		}
 
 		bool QueryBagBegin()
@@ -8121,7 +9523,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 10, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 11, Buf);
 		}
 
 		bool QueryBagEquipt(const SG_EQUIPT_ITEM* items, _U32 count)
@@ -8136,7 +9538,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 11, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 12, Buf);
 		}
 
 		bool QueryBagUsable(const SG_USABLE_ITEM* items, _U32 count)
@@ -8151,7 +9553,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 12, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
 		}
 
 		bool QueryBagGen(const SG_GEM_ITEM* items, _U32 count)
@@ -8166,7 +9568,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 13, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
 		}
 
 		bool QueryBagMaterial(const SG_MATERIAL_ITEM* items, _U32 count)
@@ -8181,7 +9583,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 14, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 15, Buf);
 		}
 
 		bool QueryBagEnd(_U8 nSync)
@@ -8191,7 +9593,36 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 15, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
+		}
+
+		bool QueryOtherPlayerResult(const SG_PLAYER& player_info, const SG_GENERAL* generals, _U32 count1, const SG_SOLDIER* soldiers, _U32 count2, const SG_EQUIPT_ITEM* equipts, _U32 count3)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_PLAYER> <player_info> <> <>
+			if(!Buf.Write(player_info)) return false;
+			// <SG_GENERAL> <generals> <> <count1>
+			__length = (_U16)(count1);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(generals, __length)) return false;
+			// <_U32> <count1> <> <>
+			if(!Buf.Write(count1)) return false;
+			// <SG_SOLDIER> <soldiers> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(soldiers, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
+			// <SG_EQUIPT_ITEM> <equipts> <> <count3>
+			__length = (_U16)(count3);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(equipts, __length)) return false;
+			// <_U32> <count3> <> <>
+			if(!Buf.Write(count3)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
 		}
 
 		bool QueryOtherPlayersResult(const SG_PLAYER_INFO* players, _U32 count)
@@ -8206,7 +9637,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 16, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 18, Buf);
 		}
 
 		bool EnhanceEquiptResult(_U8 ret, _U32 gold, const SG_EQUIPT_ITEM& equip_item)
@@ -8220,7 +9651,7 @@ namespace DDLProxy
 			if(!Buf.Write(equip_item)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 17, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 19, Buf);
 		}
 
 		bool ExtendEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& equip_item, const A_UUID& reduce_uuid)
@@ -8234,7 +9665,7 @@ namespace DDLProxy
 			if(!Buf.Write(reduce_uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 18, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 20, Buf);
 		}
 
 		bool EnhanceCoolDownResult(_U32 time)
@@ -8244,7 +9675,7 @@ namespace DDLProxy
 			if(!Buf.Write(time)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 19, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 21, Buf);
 		}
 
 		bool RefreshEquipDone(const SG_EQUIPT_ITEM& euipt)
@@ -8254,7 +9685,17 @@ namespace DDLProxy
 			if(!Buf.Write(euipt)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 20, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 22, Buf);
+		}
+
+		bool RefreshEquipDecideAcceptResult(const SG_EQUIPT_ITEM& equipt)
+		{
+			BUFFER Buf;
+			// <SG_EQUIPT_ITEM> <equipt> <> <>
+			if(!Buf.Write(equipt)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 23, Buf);
 		}
 
 		bool GemCombineResult(const SG_GEM_ITEM& gem)
@@ -8264,17 +9705,33 @@ namespace DDLProxy
 			if(!Buf.Write(gem)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 21, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 24, Buf);
 		}
 
-		bool HaloIncreaseEXPResult(_U32 time)
+		bool UpgradeTitleResult(_U8 ret, _U32 title)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <title> <> <>
+			if(!Buf.Write(title)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 25, Buf);
+		}
+
+		bool HaloIncreaseEXPResult(_U32 time, _U32 halo_level, _U32 halo_exp)
 		{
 			BUFFER Buf;
 			// <_U32> <time> <> <>
 			if(!Buf.Write(time)) return false;
+			// <_U32> <halo_level> <> <>
+			if(!Buf.Write(halo_level)) return false;
+			// <_U32> <halo_exp> <> <>
+			if(!Buf.Write(halo_exp)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 22, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 26, Buf);
 		}
 
 		bool HaloCoolDownResult(_U8 ret, _U32 consume_rmb)
@@ -8286,7 +9743,7 @@ namespace DDLProxy
 			if(!Buf.Write(consume_rmb)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 23, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 27, Buf);
 		}
 
 		bool HaloGetCoolDownResult(_U32 time)
@@ -8296,7 +9753,7 @@ namespace DDLProxy
 			if(!Buf.Write(time)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 24, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 28, Buf);
 		}
 
 		bool BeginBattleResult(const SG_PLAYER_PVE& PlayerPVE)
@@ -8306,7 +9763,7 @@ namespace DDLProxy
 			if(!Buf.Write(PlayerPVE)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 25, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 29, Buf);
 		}
 
 		bool EndBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
@@ -8331,7 +9788,7 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 26, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 30, Buf);
 		}
 
 		bool QueryPlayerQuestResult(const SG_QUEST_LIVE_INFO* quest_list, _U32 count, _U8 nSync)
@@ -8348,7 +9805,7 @@ namespace DDLProxy
 			if(!Buf.Write(nSync)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 27, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 31, Buf);
 		}
 
 		bool FinishQuestDone(_U8 ret, _U32 quest_id, _U32 exp_addition, _U32 exp, _U32 level, _U32 gold, _U32 rmb, _U32 reputation, _U32 energy, const SG_DROP_ITEM_BASE* drops, _U32 drop_count, _U32 consume_rmb)
@@ -8383,7 +9840,7 @@ namespace DDLProxy
 			if(!Buf.Write(consume_rmb)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 28, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 32, Buf);
 		}
 
 		bool BuyGoodsResult(_U8 ret, const A_UUID* goods, const _U32* id_list, _U32 count)
@@ -8404,7 +9861,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 29, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 33, Buf);
 		}
 
 		bool SellItemResult(_U8 ret, const A_UUID& uuid, _U32 item_id, _U32 count)
@@ -8420,7 +9877,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 30, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 34, Buf);
 		}
 
 		bool QueryPlayerPVPInfoResult(const SG_PLAYER_PVE& pve)
@@ -8430,7 +9887,7 @@ namespace DDLProxy
 			if(!Buf.Write(pve)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 31, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 35, Buf);
 		}
 
 		bool QueryPlayerRankListResult(const SG_PVP_RANK_PLAYER* players, _U32 count)
@@ -8445,7 +9902,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 32, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 36, Buf);
 		}
 
 		bool PVPCoolDownResult(_U32 time)
@@ -8455,7 +9912,7 @@ namespace DDLProxy
 			if(!Buf.Write(time)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 33, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 37, Buf);
 		}
 
 		bool PVPGetRestTimeResult(_U32 rest_time)
@@ -8465,7 +9922,7 @@ namespace DDLProxy
 			if(!Buf.Write(rest_time)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 34, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 38, Buf);
 		}
 
 		bool PVPRecordResult(const SG_PVP_RECORD_ITEM* record, _U32 count)
@@ -8480,7 +9937,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 35, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 39, Buf);
 		}
 
 		bool PVPHeroListRecord(const SG_PVP_HEROLIST_PLAYER* players, _U32 count)
@@ -8495,7 +9952,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 36, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 40, Buf);
 		}
 
 		bool PVPDailyReward(_U32 gold, _U32 reputation, const SG_ITEM* items, _U32 count)
@@ -8514,7 +9971,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 37, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 41, Buf);
 		}
 
 		bool PVPBattleBeginResult(const SG_PLAYER_PVE& SelfPVE, const SG_PLAYER_PVE& DefenderPVE)
@@ -8526,7 +9983,7 @@ namespace DDLProxy
 			if(!Buf.Write(DefenderPVE)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 38, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 42, Buf);
 		}
 
 		bool PVPBattleEndResult(_U32 reputation)
@@ -8536,7 +9993,7 @@ namespace DDLProxy
 			if(!Buf.Write(reputation)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 39, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 43, Buf);
 		}
 
 		bool PVPCoolDownClearResult(_U8 ret, _U32 cost)
@@ -8548,7 +10005,7 @@ namespace DDLProxy
 			if(!Buf.Write(cost)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 40, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 44, Buf);
 		}
 
 		bool PVPIncreateBattleTimesResult(_U32 rest_times)
@@ -8558,7 +10015,7 @@ namespace DDLProxy
 			if(!Buf.Write(rest_times)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 41, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 45, Buf);
 		}
 
 		bool QueryInstanceResult(const SG_INSTANCE_INFO* instances, _U32 count)
@@ -8573,7 +10030,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 42, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 46, Buf);
 		}
 
 		bool BeginInstanceBattleResult(const SG_PLAYER_PVE& PlayerPVE)
@@ -8583,7 +10040,7 @@ namespace DDLProxy
 			if(!Buf.Write(PlayerPVE)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 43, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 47, Buf);
 		}
 
 		bool EnterInstanceResult(const SG_INSTANCE_INFO& instance)
@@ -8593,7 +10050,7 @@ namespace DDLProxy
 			if(!Buf.Write(instance)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 44, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 48, Buf);
 		}
 
 		bool EndInstanceBattleResult(_U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 wake_pt, _U8 result, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
@@ -8620,7 +10077,7 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 45, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 49, Buf);
 		}
 
 		bool ResetInstanceResult(_U8 result, _U32 rmb, const SG_INSTANCE_INFO& instance)
@@ -8634,7 +10091,7 @@ namespace DDLProxy
 			if(!Buf.Write(instance)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 46, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 50, Buf);
 		}
 
 		bool CreateLeagueResult(_U8 ret, const SG_LEAGUE& league)
@@ -8646,7 +10103,7 @@ namespace DDLProxy
 			if(!Buf.Write(league)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 47, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 51, Buf);
 		}
 
 		bool QueryLeagueApplyListResult(const SG_LEAGUE_APPLYER* applyer, _U32 count)
@@ -8661,7 +10118,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 48, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 52, Buf);
 		}
 
 		bool QueryLeagueResult(const SG_LEAGUE& league)
@@ -8671,7 +10128,7 @@ namespace DDLProxy
 			if(!Buf.Write(league)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 49, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 53, Buf);
 		}
 
 		bool QueryLeagueListResult(const SG_LEAGUE* league_list, _U32 count)
@@ -8686,7 +10143,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 50, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 54, Buf);
 		}
 
 		bool QueryLeagueMemberListResult(const SG_LEAGUE_MEMBER* league_members, _U32 count)
@@ -8701,7 +10158,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 51, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 55, Buf);
 		}
 
 		bool QueryLeagueMemberInfoResult(const SG_LEAGUE_MEMBER& member_info)
@@ -8711,7 +10168,7 @@ namespace DDLProxy
 			if(!Buf.Write(member_info)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 52, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 56, Buf);
 		}
 
 		bool ContributeLeagueResult(const SG_LEAGUE_MEMBER& self_info, const SG_LEAGUE& league_info)
@@ -8723,7 +10180,7 @@ namespace DDLProxy
 			if(!Buf.Write(league_info)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 53, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 57, Buf);
 		}
 
 		bool HandleApplyResult(_U8 ret, const SG_LEAGUE_MEMBER& new_joiner)
@@ -8735,7 +10192,7 @@ namespace DDLProxy
 			if(!Buf.Write(new_joiner)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 54, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 58, Buf);
 		}
 
 		bool QueryLeagueNoticeResult(const char* notice_content)
@@ -8748,7 +10205,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(notice_content, (unsigned int)sizeof(notice_content[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 55, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 59, Buf);
 		}
 
 		bool SetLeagueNoticeResult(_U8 ret, const char* notice_content)
@@ -8763,7 +10220,7 @@ namespace DDLProxy
 			if(!Buf.WriteData(notice_content, (unsigned int)sizeof(notice_content[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 56, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 60, Buf);
 		}
 
 		bool SetLeagueOwnerResult(_U8 ret, _U32 member_id)
@@ -8775,7 +10232,7 @@ namespace DDLProxy
 			if(!Buf.Write(member_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 57, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 61, Buf);
 		}
 
 		bool SetMemberPositionResult(_U8 ret, _U32 member_id, _U8 position)
@@ -8789,7 +10246,7 @@ namespace DDLProxy
 			if(!Buf.Write(position)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 58, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 62, Buf);
 		}
 
 		bool DismissMemberResult(_U8 ret, _U32 member_id)
@@ -8801,7 +10258,7 @@ namespace DDLProxy
 			if(!Buf.Write(member_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 59, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 63, Buf);
 		}
 
 		bool ExitLeagueResult(_U8 ret)
@@ -8811,7 +10268,7 @@ namespace DDLProxy
 			if(!Buf.Write(ret)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 60, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
 		}
 
 		bool QueryLeagueLogResult(const SG_LEAGUE_LOG* league_log, _U32 count)
@@ -8826,7 +10283,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 61, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
 		}
 
 		bool LeagueToastResult(_U8 ret, _U32 gold, _U32 rmb, _U32 reward_reputation, _U32 reward_league_xp)
@@ -8844,7 +10301,7 @@ namespace DDLProxy
 			if(!Buf.Write(reward_league_xp)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 62, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
 		}
 
 		bool SalaryGetResult(_U8 ret, _U32 rmb, _U32 gold)
@@ -8858,7 +10315,7 @@ namespace DDLProxy
 			if(!Buf.Write(gold)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 63, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
 		}
 
 		bool SalaryGetBatResult(_U8 ret, _U32 rmb, _U32 gold, _U32 times)
@@ -8874,7 +10331,7 @@ namespace DDLProxy
 			if(!Buf.Write(times)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 64, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
 		}
 
 		bool BuyEnergyResult(_U8 ret, _U32 rmb, _U32 energy, _U32 times)
@@ -8890,7 +10347,7 @@ namespace DDLProxy
 			if(!Buf.Write(times)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 65, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 69, Buf);
 		}
 
 		bool EnhanceTurboResult(_U8 ret, _U32 turbo_level, _U32 wake_pt)
@@ -8904,7 +10361,7 @@ namespace DDLProxy
 			if(!Buf.Write(wake_pt)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 66, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 70, Buf);
 		}
 
 		bool MakeEquiptResult(_U8 ret, const SG_EQUIPT_ITEM& new_euqipt, const SG_MATERIAL_ITEM& com_material, const SG_MATERIAL_ITEM& key_material)
@@ -8920,7 +10377,7 @@ namespace DDLProxy
 			if(!Buf.Write(key_material)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 67, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 71, Buf);
 		}
 
 		bool QueryActionAvailableResult(const _U32* action_list, const _U32* available_list, _U32 count)
@@ -8939,7 +10396,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 68, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 72, Buf);
 		}
 
 		bool QueryFriendListResult(const SG_FRIEND_INFO* friend_list, _U32 count)
@@ -8954,7 +10411,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 69, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 73, Buf);
 		}
 
 		bool QueryFriendListSearchResult(const SG_FRIEND_SEARCH_INFO* search_list, _U32 count)
@@ -8969,7 +10426,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 70, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 74, Buf);
 		}
 
 		bool QueryFriendInvitationListResult(const SG_FRIEND_INVITATION* invitation_list, _U32 count)
@@ -8984,7 +10441,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 71, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 75, Buf);
 		}
 
 		bool AcceptFriendResult(_U8 ret, _U32 avatar_id)
@@ -8996,7 +10453,7 @@ namespace DDLProxy
 			if(!Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 72, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 76, Buf);
 		}
 
 		bool SendChatResult(_U8 ret)
@@ -9006,7 +10463,7 @@ namespace DDLProxy
 			if(!Buf.Write(ret)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 73, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 77, Buf);
 		}
 
 		bool ReceiveChatResult(const SG_CHAT_RECV_INFO* chat_list, _U32 count)
@@ -9021,7 +10478,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 74, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 78, Buf);
 		}
 
 		bool QueryLeagueDianjiangListResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count)
@@ -9038,19 +10495,26 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 75, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 79, Buf);
 		}
 
-		bool JoinLeagueDianjiangResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self)
+		bool JoinLeagueDianjiangResult(_U8 ret, const SG_LEAGUE_DIANJIANG_JOINER& self, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count)
 		{
 			BUFFER Buf;
+			_U32 __length;
 			// <_U8> <ret> <> <>
 			if(!Buf.Write(ret)) return false;
 			// <SG_LEAGUE_DIANJIANG_JOINER> <self> <> <>
 			if(!Buf.Write(self)) return false;
+			// <SG_LEAGUE_DIANJIANG_JOINER> <joiner_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(joiner_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 76, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 80, Buf);
 		}
 
 		bool QueryLeagueDianjiangRewardResult(_U8 ret, _U32 reputation)
@@ -9062,12 +10526,13 @@ namespace DDLProxy
 			if(!Buf.Write(reputation)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 77, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
 		}
 
-		bool LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner)
+		bool LeagueDianjiangSummonNPCResult(_U8 ret, _U32 gold, _U32 rmb, const SG_LEAGUE_DIANJIANG_JOINER& npc_joiner, const SG_LEAGUE_DIANJIANG_JOINER* joiner_list, _U32 count)
 		{
 			BUFFER Buf;
+			_U32 __length;
 			// <_U8> <ret> <> <>
 			if(!Buf.Write(ret)) return false;
 			// <_U32> <gold> <> <>
@@ -9076,9 +10541,15 @@ namespace DDLProxy
 			if(!Buf.Write(rmb)) return false;
 			// <SG_LEAGUE_DIANJIANG_JOINER> <npc_joiner> <> <>
 			if(!Buf.Write(npc_joiner)) return false;
+			// <SG_LEAGUE_DIANJIANG_JOINER> <joiner_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(joiner_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 78, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
 		}
 
 		bool QueryAstrologyBagResult(const _U32* bag_list, _U32 count1, const _U32* tmp_bag_list, _U32 count2)
@@ -9099,7 +10570,7 @@ namespace DDLProxy
 			if(!Buf.Write(count2)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 79, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
 		}
 
 		bool SaveToBagResult(_U8 ret, _U32 item_id)
@@ -9111,7 +10582,7 @@ namespace DDLProxy
 			if(!Buf.Write(item_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 80, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
 		}
 
 		bool SetAstrologyBallStatusResult(_U8 ret, const SG_GENERAL& general)
@@ -9123,7 +10594,7 @@ namespace DDLProxy
 			if(!Buf.Write(general)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 81, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
 		}
 
 		bool EnhanceAstrologyBallResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 new_ball_id)
@@ -9139,7 +10610,7 @@ namespace DDLProxy
 			if(!Buf.Write(new_ball_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 82, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
 		}
 
 		bool StrologyResult(_U8 ret, _U32 gold, _U32 ball_id, _U32 atrologer_id, _U32 last_atrologer_id)
@@ -9157,7 +10628,7 @@ namespace DDLProxy
 			if(!Buf.Write(last_atrologer_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 83, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
 		}
 
 		bool StrologyAutoResult(_U8 ret, _U32 gold, const _U32* ball_list, _U32 count, _U32 atrologer_id)
@@ -9178,7 +10649,7 @@ namespace DDLProxy
 			if(!Buf.Write(atrologer_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 84, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
 		}
 
 		bool DevourResult(_U8 ret, _U8 bag_type, const _U32* ball_list, _U32 count, const _U32* devoured_list, _U32 count2)
@@ -9203,7 +10674,7 @@ namespace DDLProxy
 			if(!Buf.Write(count2)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 85, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
 		}
 
 		bool UseItemResult(_U8 ret, const A_UUID& uuid, _U32 count, _U32 target_id, const SG_PLAYER& player_info, const SG_GENERAL& general, const SG_ITEM* drops, _U32 drop_count)
@@ -9230,7 +10701,7 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 86, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
 		}
 
 		bool FeedHorseResult(_U8 ret, _U32 xp, _U32 xp_add, _U32 level, _U8 xp_add_type, _U8 feed_type, _U32 gold, _U32 rmb)
@@ -9254,17 +10725,24 @@ namespace DDLProxy
 			if(!Buf.Write(rmb)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 87, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
 		}
 
-		bool QueryBossRushInfoResult(const SG_BOSSRUSH_INFO& bossrush_info)
+		bool QueryBossRushInfoResult(const SG_BOSSRUSH_INFO& bossrush_info, const SG_BOSSRUSH_FRIEND_DAMAGE* friend_damages, _U32 count)
 		{
 			BUFFER Buf;
+			_U32 __length;
 			// <SG_BOSSRUSH_INFO> <bossrush_info> <> <>
 			if(!Buf.Write(bossrush_info)) return false;
+			// <SG_BOSSRUSH_FRIEND_DAMAGE> <friend_damages> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(friend_damages, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 88, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
 		}
 
 		bool QueryBossRushSupportInfoResult(const SG_BOSSRUSH_SUPPORT_INFO* support_list, _U32 count)
@@ -9279,7 +10757,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 89, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
 		}
 
 		bool BeginBossRushBattleResult(const SG_PLAYER_PVE& PlayerPVE)
@@ -9289,7 +10767,7 @@ namespace DDLProxy
 			if(!Buf.Write(PlayerPVE)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 90, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 94, Buf);
 		}
 
 		bool EndBossRushBattleResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
@@ -9316,7 +10794,7 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 91, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 95, Buf);
 		}
 
 		bool BeginBossRushSupportBattleResult(_U8 ret, const SG_PLAYER_PVE& PlayerPVE)
@@ -9328,7 +10806,7 @@ namespace DDLProxy
 			if(!Buf.Write(PlayerPVE)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 92, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 96, Buf);
 		}
 
 		bool EndBossRushSupportBattleResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
@@ -9355,7 +10833,7 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 93, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 97, Buf);
 		}
 
 		bool AddBossRushRemainingTimesResult(_U8 ret, _U32 rmb, _U8 remain_times)
@@ -9369,7 +10847,7 @@ namespace DDLProxy
 			if(!Buf.Write(remain_times)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 94, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 98, Buf);
 		}
 
 		bool AwardBossRushResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
@@ -9396,7 +10874,7 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 95, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 99, Buf);
 		}
 
 		bool AwardBossRushSupportResult(_U8 ret, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 reputation, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count)
@@ -9423,7 +10901,7 @@ namespace DDLProxy
 			if(!Buf.Write(drop_count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 96, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 100, Buf);
 		}
 
 		bool QueryDiceNumResult(_U8 ret, _U32 dice_num, _U32 reward_time, _U32 energy, _U32 rmb, const SG_DROP_ITEM_CONFIG* drops, _U32 drop_count, _U32 circle_num, _U32 step)
@@ -9452,7 +10930,7 @@ namespace DDLProxy
 			if(!Buf.Write(step)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 97, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 101, Buf);
 		}
 
 		bool QueryNewcomerGuideInfoResult(const SG_NEWCOMER_GUIDE_INFO* guide_list, _U32 count)
@@ -9467,7 +10945,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 98, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 102, Buf);
 		}
 
 		bool QueryWorldBossRankInfoResult(const SG_WORLDBOSS_RANK_INFO& rank_info)
@@ -9477,15 +10955,21 @@ namespace DDLProxy
 			if(!Buf.Write(rank_info)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 99, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 103, Buf);
 		}
 
-		bool BeginWorldBossBattleResult(_U8 ret, const SG_PLAYER_PVE& selfPve, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& ranklist, const SG_PLAYER_INFO* otherPlayers, _U32 count1, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 count2, _U32 rmb)
+		bool BeginWorldBossBattleResult(_U8 ret, _U32 NumResurrection, _U32 NumInspiration, _U32 BattleStartTime, const SG_PLAYER_PVE& selfPve, const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& ranklist, const SG_PLAYER_INFO* otherPlayers, _U32 count1, _U32 gold, const SG_DROP_ITEM_BASE* drops, _U32 count2, _U32 rmb)
 		{
 			BUFFER Buf;
 			_U32 __length;
 			// <_U8> <ret> <> <>
 			if(!Buf.Write(ret)) return false;
+			// <_U32> <NumResurrection> <> <>
+			if(!Buf.Write(NumResurrection)) return false;
+			// <_U32> <NumInspiration> <> <>
+			if(!Buf.Write(NumInspiration)) return false;
+			// <_U32> <BattleStartTime> <> <>
+			if(!Buf.Write(BattleStartTime)) return false;
 			// <SG_PLAYER_PVE> <selfPve> <> <>
 			if(!Buf.Write(selfPve)) return false;
 			// <SG_WORLDBOSS_INFO> <bossInfo> <> <>
@@ -9510,7 +10994,7 @@ namespace DDLProxy
 			if(!Buf.Write(rmb)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 100, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 104, Buf);
 		}
 
 		bool InspireWorldBossBattleResult(_U8 ret, _U32 rmb)
@@ -9522,7 +11006,7 @@ namespace DDLProxy
 			if(!Buf.Write(rmb)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 101, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 105, Buf);
 		}
 
 		bool AwardWorldBossRankResult(_U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* ItemList, _U32 count)
@@ -9543,7 +11027,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 102, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 106, Buf);
 		}
 
 		bool UpdateWorldBossBattleResult(const SG_WORLDBOSS_INFO& bossInfo, const SG_WORLDBOSS_RANK_INFO& rankinfo)
@@ -9555,7 +11039,7 @@ namespace DDLProxy
 			if(!Buf.Write(rankinfo)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 103, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 107, Buf);
 		}
 
 		bool EndWorldBossBattleResult()
@@ -9563,7 +11047,7 @@ namespace DDLProxy
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 104, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 108, Buf);
 		}
 
 		bool AwardWorldBossAttendanceResult(_U8 ret, _U32 Gold, _U32 Reputation, const SG_DROP_ITEM_BASE* ItemList, _U32 count)
@@ -9584,7 +11068,7 @@ namespace DDLProxy
 			if(!Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 105, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 109, Buf);
 		}
 
 		bool RechargeResult(_U8 ret, _U32 rmb, const SG_PLAYER& selfplayer)
@@ -9598,7 +11082,311 @@ namespace DDLProxy
 			if(!Buf.Write(selfplayer)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 106, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 110, Buf);
+		}
+
+		bool QueryLeagueBattleResult(const SG_LEAGUE_BATTLE_MEMBER* info_list, _U32 count1, const SG_LEAGUE_BATTLE_MEMBER* enemy_list, _U32 count2, _U32 rank, _U32 final_loop)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_LEAGUE_BATTLE_MEMBER> <info_list> <> <count1>
+			__length = (_U16)(count1);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(info_list, __length)) return false;
+			// <_U32> <count1> <> <>
+			if(!Buf.Write(count1)) return false;
+			// <SG_LEAGUE_BATTLE_MEMBER> <enemy_list> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(enemy_list, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
+			// <_U32> <rank> <> <>
+			if(!Buf.Write(rank)) return false;
+			// <_U32> <final_loop> <> <>
+			if(!Buf.Write(final_loop)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 111, Buf);
+		}
+
+		bool AwardLeagueBattleResult(_U8 ret, _U32 type, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 rmb, _U32 reputation, _U32 contribution, const SG_DROP_ITEM_CONFIG* items, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <type> <> <>
+			if(!Buf.Write(type)) return false;
+			// <_U32> <level> <> <>
+			if(!Buf.Write(level)) return false;
+			// <_U32> <exp_addition> <> <>
+			if(!Buf.Write(exp_addition)) return false;
+			// <_U32> <exp> <> <>
+			if(!Buf.Write(exp)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <_U32> <reputation> <> <>
+			if(!Buf.Write(reputation)) return false;
+			// <_U32> <contribution> <> <>
+			if(!Buf.Write(contribution)) return false;
+			// <SG_DROP_ITEM_CONFIG> <items> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(items, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 112, Buf);
+		}
+
+		bool QueryLeagueBattleRewardResult(_U8 ret, _U32 exp_addition, _U32 gold, _U32 rmb, _U32 reputation, _U32 contribution, const SG_DROP_ITEM_CONFIG* items, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <exp_addition> <> <>
+			if(!Buf.Write(exp_addition)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <_U32> <reputation> <> <>
+			if(!Buf.Write(reputation)) return false;
+			// <_U32> <contribution> <> <>
+			if(!Buf.Write(contribution)) return false;
+			// <SG_DROP_ITEM_CONFIG> <items> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(items, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 113, Buf);
+		}
+
+		bool QueryLeagueBattleInfoResult(const SG_LEAGUE_BATTLE_LOG* log_list, _U32 count1, _U32 rank, _U8 status, const SG_LEAGUE_BATTLE_MEMBER* member_list, _U32 count2)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_LEAGUE_BATTLE_LOG> <log_list> <> <count1>
+			__length = (_U16)(count1);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(log_list, __length)) return false;
+			// <_U32> <count1> <> <>
+			if(!Buf.Write(count1)) return false;
+			// <_U32> <rank> <> <>
+			if(!Buf.Write(rank)) return false;
+			// <_U8> <status> <> <>
+			if(!Buf.Write(status)) return false;
+			// <SG_LEAGUE_BATTLE_MEMBER> <member_list> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(member_list, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 114, Buf);
+		}
+
+		bool QueryLeagueBattleRankInfoResult(const SG_LEAGUE_BATTLE_RANK* league_rank_list, _U32 count1, const SG_LEAGUE_BATTLE_PLAYER_RANK* player_rank, _U32 count2)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_LEAGUE_BATTLE_RANK> <league_rank_list> <> <count1>
+			__length = (_U16)(count1);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(league_rank_list, __length)) return false;
+			// <_U32> <count1> <> <>
+			if(!Buf.Write(count1)) return false;
+			// <SG_LEAGUE_BATTLE_PLAYER_RANK> <player_rank> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(player_rank, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 115, Buf);
+		}
+
+		bool SignUpResult(_U8 ret, _U32 aciton_id, _U32 times)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <aciton_id> <> <>
+			if(!Buf.Write(aciton_id)) return false;
+			// <_U32> <times> <> <>
+			if(!Buf.Write(times)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 116, Buf);
+		}
+
+		bool QueryGoalResult(const SG_GOAL_CHAPTER_INFO* chapter_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_GOAL_CHAPTER_INFO> <chapter_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(chapter_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 117, Buf);
+		}
+
+		bool AwardGoalChapterResult(_U8 ret, const SG_GOAL_CHAPTER_INFO& chapter, _U32 gold, _U32 rmb, const SG_DROP_ITEM_CONFIG* items, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <SG_GOAL_CHAPTER_INFO> <chapter> <> <>
+			if(!Buf.Write(chapter)) return false;
+			// <_U32> <gold> <> <>
+			if(!Buf.Write(gold)) return false;
+			// <_U32> <rmb> <> <>
+			if(!Buf.Write(rmb)) return false;
+			// <SG_DROP_ITEM_CONFIG> <items> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(items, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 118, Buf);
+		}
+
+		bool AwardActionResult(_U8 ret, _U32 action_id)
+		{
+			BUFFER Buf;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <action_id> <> <>
+			if(!Buf.Write(action_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 119, Buf);
+		}
+
+		bool AutoCombatPVEResult(const SG_BATTLE_RESULT_INFO* battle_results, _U32 battle_count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_BATTLE_RESULT_INFO> <battle_results> <> <battle_count>
+			__length = (_U16)(battle_count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(battle_results, __length)) return false;
+			// <_U32> <battle_count> <> <>
+			if(!Buf.Write(battle_count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 120, Buf);
+		}
+
+		bool AutoCombatInstanceResult(const SG_BATTLE_RESULT_INFO* battle_results, _U32 battle_count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_BATTLE_RESULT_INFO> <battle_results> <> <battle_count>
+			__length = (_U16)(battle_count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(battle_results, __length)) return false;
+			// <_U32> <battle_count> <> <>
+			if(!Buf.Write(battle_count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 121, Buf);
+		}
+
+		bool QueryFightValueResult(_U32 fight_value)
+		{
+			BUFFER Buf;
+			// <_U32> <fight_value> <> <>
+			if(!Buf.Write(fight_value)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 122, Buf);
+		}
+
+		bool CheckMailResult(const SG_MAIL_INFO* mail_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <SG_MAIL_INFO> <mail_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(mail_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 123, Buf);
+		}
+
+		bool ReceiveMailResult(_U8 ret, _U32 mail_id, _U32 reward_gold, _U32 reward_rmb, const SG_ITEM* reward_list, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <mail_id> <> <>
+			if(!Buf.Write(mail_id)) return false;
+			// <_U32> <reward_gold> <> <>
+			if(!Buf.Write(reward_gold)) return false;
+			// <_U32> <reward_rmb> <> <>
+			if(!Buf.Write(reward_rmb)) return false;
+			// <SG_ITEM> <reward_list> <> <count>
+			__length = (_U16)(count);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(reward_list, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 124, Buf);
+		}
+
+		bool RechargeBonusResult(_U8 ret, _U32 bonus_id, const SG_GENERAL* general_list, _U32 count1, const SG_SOLDIER* soldier_list, _U32 count2, const SG_ITEM* item_list, _U32 count3)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U8> <ret> <> <>
+			if(!Buf.Write(ret)) return false;
+			// <_U32> <bonus_id> <> <>
+			if(!Buf.Write(bonus_id)) return false;
+			// <SG_GENERAL> <general_list> <> <count1>
+			__length = (_U16)(count1);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(general_list, __length)) return false;
+			// <_U32> <count1> <> <>
+			if(!Buf.Write(count1)) return false;
+			// <SG_SOLDIER> <soldier_list> <> <count2>
+			__length = (_U16)(count2);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(soldier_list, __length)) return false;
+			// <_U32> <count2> <> <>
+			if(!Buf.Write(count2)) return false;
+			// <SG_ITEM> <item_list> <> <count3>
+			__length = (_U16)(count3);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(item_list, __length)) return false;
+			// <_U32> <count3> <> <>
+			if(!Buf.Write(count3)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 125, Buf);
 		}
 	};
 

@@ -45,7 +45,7 @@ namespace Zion
 				{
 					m_retry_time = (_U32)time(NULL) + m_Config.retry_time;
 				}
-				if(m_retry_time<(_U32)time(NULL))
+				if(m_retry_time<=(_U32)time(NULL))
 				{
 					GetStressClient()->Login();
 					m_retry_time = 0;
@@ -59,7 +59,7 @@ namespace Zion
 					{
 						m_disconnect_time = (_U32)time(NULL) + m_Config.disconnect_time;
 					}
-					if(m_disconnect_time<(_U32)time(NULL))
+					if(m_disconnect_time<=(_U32)time(NULL))
 					{
 						GetClient()->Logout();
 						m_disconnect_time = 0;

@@ -5,15 +5,15 @@
 #include <StressCase.h>
 #include <StressClient.h>
 
+#include <SGClient.h>
 #include "SGStressCases.h"
-#include <SGGameDDL.h>
 
 namespace Zion
 {
 	namespace StressCases
 	{
 
-		CEcho::CEcho() : CStressCase("echo")
+		CEcho::CEcho() : TSGStressCase<STRESSCASE_ECHO_CONFIG, STRESSCASE_ECHO_STATUS>("Echo")
 		{
 		}
 		
@@ -25,14 +25,30 @@ namespace Zion
 		{
 			if(GetClient()->GetState()==CClient::STATE_LOGINED)
 			{
-				DDLProxy::SGGAME_C2S<CClient, DDL::TMemoryWriter<1024>> c2s(GetClient());
-				c2s.Ping();
+				GetClient()->c2s.Ping();
 			}
 		}
 		
 		CStressCase* CEcho::Create()
 		{
 			return ZION_NEW CEcho();
+		}
+
+		CEnterServer::CEnterServer() : TSGStressCase<STRESSCASE_ENTERSERVER_CONFIG, STRESSCASE_ENTERSERVER_STATUS>("EnterServer")
+		{
+		}
+
+		CEnterServer::~CEnterServer()
+		{
+		}
+
+		void CEnterServer::OnTick()
+		{
+		}
+
+		CStressCase* CEnterServer::Create()
+		{
+			return ZION_NEW CEnterServer();
 		}
 
 	}

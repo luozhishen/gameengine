@@ -7,6 +7,293 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_MAP_URL>(SG_MAP_URL& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!ReadString<SG_MAP_URL_MAX>(Value.map_url)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_MAP_URL>(const SG_MAP_URL& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!WriteString<SG_MAP_URL_MAX>(Value.map_url)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_MAP_URL_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_MAP_URL>(*((SG_MAP_URL*)data));
+	}
+
+	static bool _struct_SG_MAP_URL_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_MAP_URL>(*((const SG_MAP_URL*)data));
+	}
+
+	static FIELD_INFO _struct_SG_MAP_URL_fieldinfo[] =
+	{
+		{TYPE_STRING, "map_url", 0, (_U16)ZION_OFFSETOF(SG_MAP_URL, map_url), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_MAP_URL_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_MAP_URL", sizeof(SG_MAP_URL), 1, _struct_SG_MAP_URL_fieldinfo, _struct_SG_MAP_URL_readproc, _struct_SG_MAP_URL_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAP_URL>()
+	{
+		return &_rfl_struct_SG_MAP_URL_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_MAP_DOWNLOAD_CONFIG>(SG_MAP_DOWNLOAD_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<SG_MAP_URL_MAX>(Value.map1)) return false;
+		if(!ReadString<SG_MAP_URL_MAX>(Value.map2)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_MAP_DOWNLOAD_CONFIG>(const SG_MAP_DOWNLOAD_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<SG_MAP_URL_MAX>(Value.map1)) return false;
+		if(!WriteString<SG_MAP_URL_MAX>(Value.map2)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_MAP_DOWNLOAD_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_MAP_DOWNLOAD_CONFIG>(*((SG_MAP_DOWNLOAD_CONFIG*)data));
+	}
+
+	static bool _struct_SG_MAP_DOWNLOAD_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_MAP_DOWNLOAD_CONFIG>(*((const SG_MAP_DOWNLOAD_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_MAP_DOWNLOAD_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "map1", 0, (_U16)ZION_OFFSETOF(SG_MAP_DOWNLOAD_CONFIG, map1), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
+		{TYPE_STRING, "map2", 0, (_U16)ZION_OFFSETOF(SG_MAP_DOWNLOAD_CONFIG, map2), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_MAP_DOWNLOAD_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_MAP_DOWNLOAD_CONFIG", sizeof(SG_MAP_DOWNLOAD_CONFIG), 2, _struct_SG_MAP_DOWNLOAD_CONFIG_fieldinfo, _struct_SG_MAP_DOWNLOAD_CONFIG_readproc, _struct_SG_MAP_DOWNLOAD_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAP_DOWNLOAD_CONFIG>()
+	{
+		return &_rfl_struct_SG_MAP_DOWNLOAD_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SIGNUP_CONFIG>(SG_DAILY_SIGNUP_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.day_id)) return false;
+		if(!Read<_F32>(Value.gold_rate)) return false;
+		if(!Read<_U32>(Value.reward_rmb)) return false;
+		if(!Read<_U32>(Value.energy)) return false;
+		if(!Read<_U32>(Value.reward_item)) return false;
+		if(!Read<_U32>(Value.reward_count)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SIGNUP_CONFIG>(const SG_DAILY_SIGNUP_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.day_id)) return false;
+		if(!Write<_F32>(Value.gold_rate)) return false;
+		if(!Write<_U32>(Value.reward_rmb)) return false;
+		if(!Write<_U32>(Value.energy)) return false;
+		if(!Write<_U32>(Value.reward_item)) return false;
+		if(!Write<_U32>(Value.reward_count)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_DAILY_SIGNUP_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_DAILY_SIGNUP_CONFIG>(*((SG_DAILY_SIGNUP_CONFIG*)data));
+	}
+
+	static bool _struct_SG_DAILY_SIGNUP_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_DAILY_SIGNUP_CONFIG>(*((const SG_DAILY_SIGNUP_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_DAILY_SIGNUP_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "day_id", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_CONFIG, day_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_F32, "gold_rate", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_CONFIG, gold_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "energy", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_CONFIG, energy), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_CONFIG, reward_item), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_count", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_CONFIG, reward_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_DAILY_SIGNUP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_SIGNUP_CONFIG", sizeof(SG_DAILY_SIGNUP_CONFIG), 6, _struct_SG_DAILY_SIGNUP_CONFIG_fieldinfo, _struct_SG_DAILY_SIGNUP_CONFIG_readproc, _struct_SG_DAILY_SIGNUP_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SIGNUP_CONFIG>()
+	{
+		return &_rfl_struct_SG_DAILY_SIGNUP_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_DAILY_SIGNUP_TIMES_CONFIG>(SG_DAILY_SIGNUP_TIMES_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		if(!Read<_U32>(Value.gold)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_DAILY_SIGNUP_TIMES_CONFIG>(const SG_DAILY_SIGNUP_TIMES_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		if(!Write<_U32>(Value.gold)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_DAILY_SIGNUP_TIMES_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_DAILY_SIGNUP_TIMES_CONFIG>(*((SG_DAILY_SIGNUP_TIMES_CONFIG*)data));
+	}
+
+	static bool _struct_SG_DAILY_SIGNUP_TIMES_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_DAILY_SIGNUP_TIMES_CONFIG>(*((const SG_DAILY_SIGNUP_TIMES_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_DAILY_SIGNUP_TIMES_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_TIMES_CONFIG, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "gold", 0, (_U16)ZION_OFFSETOF(SG_DAILY_SIGNUP_TIMES_CONFIG, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_DAILY_SIGNUP_TIMES_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_SIGNUP_TIMES_CONFIG", sizeof(SG_DAILY_SIGNUP_TIMES_CONFIG), 2, _struct_SG_DAILY_SIGNUP_TIMES_CONFIG_fieldinfo, _struct_SG_DAILY_SIGNUP_TIMES_CONFIG_readproc, _struct_SG_DAILY_SIGNUP_TIMES_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_DAILY_SIGNUP_TIMES_CONFIG>()
+	{
+		return &_rfl_struct_SG_DAILY_SIGNUP_TIMES_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_RECHARGE_BONUS_CONFIG>(SG_RECHARGE_BONUS_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.bonus_id)) return false;
+		if(!Read<_U32>(Value.total_rmb)) return false;
+		if(!Read<_U8>(Value.unlock_type)) return false;
+		if(!Read<_U32>(Value.unlock_id)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
+		if(!ReadString<SG_RECHARGE_BONUS_DISPLAY_TEXT_MAX>(Value.display_text)) return false;
+		if(!Read<_U32>(Value.reward_item1)) return false;
+		if(!Read<_U32>(Value.reward_item1_count)) return false;
+		if(!Read<_U32>(Value.reward_item2)) return false;
+		if(!Read<_U32>(Value.reward_item2_count)) return false;
+		if(!Read<_U32>(Value.reward_item3)) return false;
+		if(!Read<_U32>(Value.reward_item3_count)) return false;
+		if(!Read<_U32>(Value.reward_item4)) return false;
+		if(!Read<_U32>(Value.reward_item4_count)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_RECHARGE_BONUS_CONFIG>(const SG_RECHARGE_BONUS_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.bonus_id)) return false;
+		if(!Write<_U32>(Value.total_rmb)) return false;
+		if(!Write<_U8>(Value.unlock_type)) return false;
+		if(!Write<_U32>(Value.unlock_id)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
+		if(!WriteString<SG_RECHARGE_BONUS_DISPLAY_TEXT_MAX>(Value.display_text)) return false;
+		if(!Write<_U32>(Value.reward_item1)) return false;
+		if(!Write<_U32>(Value.reward_item1_count)) return false;
+		if(!Write<_U32>(Value.reward_item2)) return false;
+		if(!Write<_U32>(Value.reward_item2_count)) return false;
+		if(!Write<_U32>(Value.reward_item3)) return false;
+		if(!Write<_U32>(Value.reward_item3_count)) return false;
+		if(!Write<_U32>(Value.reward_item4)) return false;
+		if(!Write<_U32>(Value.reward_item4_count)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_RECHARGE_BONUS_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_RECHARGE_BONUS_CONFIG>(*((SG_RECHARGE_BONUS_CONFIG*)data));
+	}
+
+	static bool _struct_SG_RECHARGE_BONUS_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_RECHARGE_BONUS_CONFIG>(*((const SG_RECHARGE_BONUS_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_RECHARGE_BONUS_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "bonus_id", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, bonus_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_rmb", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, total_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "unlock_type", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, unlock_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "unlock_id", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, unlock_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "display_text", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, display_text), NULL, (_U16)SG_RECHARGE_BONUS_DISPLAY_TEXT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_RECHARGE_BONUS_DISPLAY_TEXT_MAX>), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1_count", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item1_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2_count", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item2_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item3_count", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item3_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item4", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item4_count", 0, (_U16)ZION_OFFSETOF(SG_RECHARGE_BONUS_CONFIG, reward_item4_count), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_RECHARGE_BONUS_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_RECHARGE_BONUS_CONFIG", sizeof(SG_RECHARGE_BONUS_CONFIG), 18, _struct_SG_RECHARGE_BONUS_CONFIG_fieldinfo, _struct_SG_RECHARGE_BONUS_CONFIG_readproc, _struct_SG_RECHARGE_BONUS_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_RECHARGE_BONUS_CONFIG>()
+	{
+		return &_rfl_struct_SG_RECHARGE_BONUS_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_WORLD_BOSS_CONFIG>(SG_WORLD_BOSS_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -113,8 +400,6 @@ namespace DDL
 	bool BufferReader::Read<SG_WORLD_BOSS_INSPIRE_CONFIG>(SG_WORLD_BOSS_INSPIRE_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
-		if(!Read<A_UUID>(Value.cf.uuid)) return false;
-		if(!ReadArray<A_UUID, 10>(*((DDL::Array<A_UUID, 10>*)&Value.cfs))) return false;
 		if(!Read<_U32>(Value.times)) return false;
 		if(!Read<_U32>(Value.consume_rmb)) return false;
 		return true;
@@ -123,8 +408,6 @@ namespace DDL
 	bool BufferWriter::Write<SG_WORLD_BOSS_INSPIRE_CONFIG>(const SG_WORLD_BOSS_INSPIRE_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
-		if(!Write<A_UUID>(Value.cf.uuid)) return false;
-		if(!WriteArray<A_UUID, 10>(*((const DDL::Array<A_UUID, 10>*)&Value.cfs))) return false;
 		if(!Write<_U32>(Value.times)) return false;
 		if(!Write<_U32>(Value.consume_rmb)) return false;
 		return true;
@@ -146,12 +429,10 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo[] =
 	{
-		{TYPE_UUID_REF, "cf", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, cf), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), "SG_WORLD_BOSS_CONFIG"},
-		{TYPE_UUID_REF|TYPE_ARRAY, "cfs", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, cfs), NULL, (_U16)-1, (_U16)10, (_U16)((size_t)(&((DDL::Array<A_UUID, 10>*)NULL)->_Array)), (_U16)sizeof(A_UUID), "SG_WORLD_BOSS_CONFIG"},
 		{TYPE_U32, "times", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "consume_rmb", 0, (_U16)ZION_OFFSETOF(SG_WORLD_BOSS_INSPIRE_CONFIG, consume_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_WORLD_BOSS_INSPIRE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_WORLD_BOSS_INSPIRE_CONFIG", sizeof(SG_WORLD_BOSS_INSPIRE_CONFIG), 4, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_readproc, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_WORLD_BOSS_INSPIRE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_WORLD_BOSS_INSPIRE_CONFIG", sizeof(SG_WORLD_BOSS_INSPIRE_CONFIG), 2, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_fieldinfo, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_readproc, _struct_SG_WORLD_BOSS_INSPIRE_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_WORLD_BOSS_INSPIRE_CONFIG>()
 	{
@@ -265,6 +546,7 @@ namespace DDL
 		if(!Read<_U32>(Value.VL2)) return false;
 		if(!ReadString<SG_NEWCOMER_GUIDER_LABEL_MAX>(Value.guider_label)) return false;
 		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!Read<_U8>(Value.skip_guider_tip)) return false;
 		return true;
 	}
 	template<>
@@ -295,6 +577,7 @@ namespace DDL
 		if(!Write<_U32>(Value.VL2)) return false;
 		if(!WriteString<SG_NEWCOMER_GUIDER_LABEL_MAX>(Value.guider_label)) return false;
 		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!Write<_U8>(Value.skip_guider_tip)) return false;
 		return true;
 	}
 }
@@ -338,8 +621,9 @@ namespace DDLReflect
 		{TYPE_U32, "VL2", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "guider_label", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, guider_label), NULL, (_U16)SG_NEWCOMER_GUIDER_LABEL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDER_LABEL_MAX>), NULL},
 		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U8, "skip_guider_tip", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_CONFIG, skip_guider_tip), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_CONFIG", sizeof(SG_NEWCOMER_GUIDE_CONFIG), 24, _struct_SG_NEWCOMER_GUIDE_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_CONFIG", sizeof(SG_NEWCOMER_GUIDE_CONFIG), 25, _struct_SG_NEWCOMER_GUIDE_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_CONFIG>()
 	{
@@ -466,10 +750,10 @@ namespace DDL
 		if(!Read<_U32>(Value.offset_x)) return false;
 		if(!Read<_U32>(Value.offset_y)) return false;
 		if(!ReadString<SG_NEWCOMER_GUIDE_TIP_MAX>(Value.tip_desc)) return false;
-		if(!Read<_U32>(Value.up)) return false;
-		if(!Read<_U32>(Value.down)) return false;
-		if(!Read<_U32>(Value.left)) return false;
-		if(!Read<_U32>(Value.right)) return false;
+		if(!Read<_S32>(Value.up)) return false;
+		if(!Read<_S32>(Value.down)) return false;
+		if(!Read<_S32>(Value.left)) return false;
+		if(!Read<_S32>(Value.right)) return false;
 		if(!Read<_U32>(Value.transparency)) return false;
 		return true;
 	}
@@ -490,10 +774,10 @@ namespace DDL
 		if(!Write<_U32>(Value.offset_x)) return false;
 		if(!Write<_U32>(Value.offset_y)) return false;
 		if(!WriteString<SG_NEWCOMER_GUIDE_TIP_MAX>(Value.tip_desc)) return false;
-		if(!Write<_U32>(Value.up)) return false;
-		if(!Write<_U32>(Value.down)) return false;
-		if(!Write<_U32>(Value.left)) return false;
-		if(!Write<_U32>(Value.right)) return false;
+		if(!Write<_S32>(Value.up)) return false;
+		if(!Write<_S32>(Value.down)) return false;
+		if(!Write<_S32>(Value.left)) return false;
+		if(!Write<_S32>(Value.right)) return false;
 		if(!Write<_U32>(Value.transparency)) return false;
 		return true;
 	}
@@ -527,10 +811,10 @@ namespace DDLReflect
 		{TYPE_U32, "offset_x", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_x), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "offset_y", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, offset_y), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "tip_desc", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, tip_desc), NULL, (_U16)SG_NEWCOMER_GUIDE_TIP_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_GUIDE_TIP_MAX>), NULL},
-		{TYPE_U32, "up", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, up), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "down", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, down), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "left", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, left), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "right", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, right), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_S32, "up", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, up), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "down", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, down), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "left", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, left), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_S32, "right", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, right), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_U32, "transparency", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_STEP_CONFIG, transparency), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_STEP_CONFIG", sizeof(SG_NEWCOMER_GUIDE_STEP_CONFIG), 18, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_writeproc };
@@ -538,6 +822,55 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_STEP_CONFIG>()
 	{
 		return &_rfl_struct_SG_NEWCOMER_GUIDE_STEP_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>(SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<SG_NEWCOMER_UI_MAX>(Value.button_name)) return false;
+		if(!Read<_U8>(Value.condition)) return false;
+		if(!Read<_U32>(Value.condition1_param)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>(const SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<SG_NEWCOMER_UI_MAX>(Value.button_name)) return false;
+		if(!Write<_U8>(Value.condition)) return false;
+		if(!Write<_U32>(Value.condition1_param)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>(*((SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG*)data));
+	}
+
+	static bool _struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>(*((const SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "button_name", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG, button_name), NULL, (_U16)SG_NEWCOMER_UI_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_NEWCOMER_UI_MAX>), NULL},
+		{TYPE_U8, "condition", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG, condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U32, "condition1_param", 0, (_U16)ZION_OFFSETOF(SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG, condition1_param), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG", sizeof(SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG), 3, _struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_fieldinfo, _struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_readproc, _struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG>()
+	{
+		return &_rfl_struct_SG_NEWCOMER_GUIDE_FUNCTION_UNLOCK_CONFIG_info;
 	}
 }
 
@@ -673,6 +1006,7 @@ namespace DDL
 		if(!Read<_F32>(Value.reward_rate2)) return false;
 		if(!Read<_U32>(Value.reward_item3)) return false;
 		if(!Read<_F32>(Value.reward_rate3)) return false;
+		if(!Read<_U32>(Value.boss_hp)) return false;
 		return true;
 	}
 	template<>
@@ -695,6 +1029,7 @@ namespace DDL
 		if(!Write<_F32>(Value.reward_rate2)) return false;
 		if(!Write<_U32>(Value.reward_item3)) return false;
 		if(!Write<_F32>(Value.reward_rate3)) return false;
+		if(!Write<_U32>(Value.boss_hp)) return false;
 		return true;
 	}
 }
@@ -730,8 +1065,9 @@ namespace DDLReflect
 		{TYPE_F32, "reward_rate2", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 		{TYPE_U32, "reward_item3", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_item3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_F32, "reward_rate3", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, reward_rate3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
+		{TYPE_U32, "boss_hp", 0, (_U16)ZION_OFFSETOF(SG_ZHANJIANG_LEVEL_CONFIG, boss_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_ZHANJIANG_LEVEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ZHANJIANG_LEVEL_CONFIG", sizeof(SG_ZHANJIANG_LEVEL_CONFIG), 16, _struct_SG_ZHANJIANG_LEVEL_CONFIG_fieldinfo, _struct_SG_ZHANJIANG_LEVEL_CONFIG_readproc, _struct_SG_ZHANJIANG_LEVEL_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_ZHANJIANG_LEVEL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_ZHANJIANG_LEVEL_CONFIG", sizeof(SG_ZHANJIANG_LEVEL_CONFIG), 17, _struct_SG_ZHANJIANG_LEVEL_CONFIG_fieldinfo, _struct_SG_ZHANJIANG_LEVEL_CONFIG_readproc, _struct_SG_ZHANJIANG_LEVEL_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_ZHANJIANG_LEVEL_CONFIG>()
 	{
@@ -764,6 +1100,7 @@ namespace DDL
 		if(!Read<_U32>(Value.general_atk)) return false;
 		if(!Read<_U32>(Value.general_def)) return false;
 		if(!ReadString<SG_HORSE_MESH_MAX>(Value.mesh)) return false;
+		if(!ReadString<SG_HORSE_ANIM_MAX>(Value.anim)) return false;
 		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
 		if(!Read<_U32>(Value.U)) return false;
 		if(!Read<_U32>(Value.V)) return false;
@@ -794,6 +1131,7 @@ namespace DDL
 		if(!Write<_U32>(Value.general_atk)) return false;
 		if(!Write<_U32>(Value.general_def)) return false;
 		if(!WriteString<SG_HORSE_MESH_MAX>(Value.mesh)) return false;
+		if(!WriteString<SG_HORSE_ANIM_MAX>(Value.anim)) return false;
 		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
 		if(!Write<_U32>(Value.U)) return false;
 		if(!Write<_U32>(Value.V)) return false;
@@ -837,13 +1175,14 @@ namespace DDLReflect
 		{TYPE_U32, "general_atk", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, general_atk), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "general_def", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, general_def), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "mesh", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, mesh), NULL, (_U16)SG_HORSE_MESH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_MESH_MAX>), NULL},
+		{TYPE_STRING, "anim", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, anim), NULL, (_U16)SG_HORSE_ANIM_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_HORSE_ANIM_MAX>), NULL},
 		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
 		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_HORSE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_HORSE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_HORSE_CONFIG", sizeof(SG_HORSE_CONFIG), 24, _struct_SG_HORSE_CONFIG_fieldinfo, _struct_SG_HORSE_CONFIG_readproc, _struct_SG_HORSE_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_HORSE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_HORSE_CONFIG", sizeof(SG_HORSE_CONFIG), 25, _struct_SG_HORSE_CONFIG_fieldinfo, _struct_SG_HORSE_CONFIG_readproc, _struct_SG_HORSE_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_HORSE_CONFIG>()
 	{
@@ -1955,6 +2294,61 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_BOSSRUSH_FRIEND_DAMAGE>(SG_BOSSRUSH_FRIEND_DAMAGE& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.friend_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.friend_nick)) return false;
+		if(!Read<_U32>(Value.general_id)) return false;
+		if(!Read<_U32>(Value.turbo_level)) return false;
+		if(!Read<_U32>(Value.damage)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_BOSSRUSH_FRIEND_DAMAGE>(const SG_BOSSRUSH_FRIEND_DAMAGE& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.friend_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.friend_nick)) return false;
+		if(!Write<_U32>(Value.general_id)) return false;
+		if(!Write<_U32>(Value.turbo_level)) return false;
+		if(!Write<_U32>(Value.damage)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_BOSSRUSH_FRIEND_DAMAGE_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_BOSSRUSH_FRIEND_DAMAGE>(*((SG_BOSSRUSH_FRIEND_DAMAGE*)data));
+	}
+
+	static bool _struct_SG_BOSSRUSH_FRIEND_DAMAGE_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_BOSSRUSH_FRIEND_DAMAGE>(*((const SG_BOSSRUSH_FRIEND_DAMAGE*)data));
+	}
+
+	static FIELD_INFO _struct_SG_BOSSRUSH_FRIEND_DAMAGE_fieldinfo[] =
+	{
+		{TYPE_U32, "friend_id", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_FRIEND_DAMAGE, friend_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "friend_nick", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_FRIEND_DAMAGE, friend_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_FRIEND_DAMAGE, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "turbo_level", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_FRIEND_DAMAGE, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "damage", 0, (_U16)ZION_OFFSETOF(SG_BOSSRUSH_FRIEND_DAMAGE, damage), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_BOSSRUSH_FRIEND_DAMAGE_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_BOSSRUSH_FRIEND_DAMAGE", sizeof(SG_BOSSRUSH_FRIEND_DAMAGE), 5, _struct_SG_BOSSRUSH_FRIEND_DAMAGE_fieldinfo, _struct_SG_BOSSRUSH_FRIEND_DAMAGE_readproc, _struct_SG_BOSSRUSH_FRIEND_DAMAGE_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BOSSRUSH_FRIEND_DAMAGE>()
+	{
+		return &_rfl_struct_SG_BOSSRUSH_FRIEND_DAMAGE_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_LEAGUE_CONFIG>(SG_LEAGUE_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -2443,6 +2837,52 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_LEAGUE_RANDOM_NAME_CONFIG>(SG_LEAGUE_RANDOM_NAME_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.prefix_name)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.postfix_name)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_RANDOM_NAME_CONFIG>(const SG_LEAGUE_RANDOM_NAME_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.prefix_name)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.postfix_name)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LEAGUE_RANDOM_NAME_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LEAGUE_RANDOM_NAME_CONFIG>(*((SG_LEAGUE_RANDOM_NAME_CONFIG*)data));
+	}
+
+	static bool _struct_SG_LEAGUE_RANDOM_NAME_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LEAGUE_RANDOM_NAME_CONFIG>(*((const SG_LEAGUE_RANDOM_NAME_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LEAGUE_RANDOM_NAME_CONFIG_fieldinfo[] =
+	{
+		{TYPE_STRING, "prefix_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_RANDOM_NAME_CONFIG, prefix_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_STRING, "postfix_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_RANDOM_NAME_CONFIG, postfix_name), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_RANDOM_NAME_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEAGUE_RANDOM_NAME_CONFIG", sizeof(SG_LEAGUE_RANDOM_NAME_CONFIG), 2, _struct_SG_LEAGUE_RANDOM_NAME_CONFIG_fieldinfo, _struct_SG_LEAGUE_RANDOM_NAME_CONFIG_readproc, _struct_SG_LEAGUE_RANDOM_NAME_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_RANDOM_NAME_CONFIG>()
+	{
+		return &_rfl_struct_SG_LEAGUE_RANDOM_NAME_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_PVP_RECORD_ITEM>(SG_PVP_RECORD_ITEM& Value)
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
@@ -2748,6 +3188,9 @@ namespace DDL
 		if(!Read<_U32>(Value.shop_id)) return false;
 		if(!ReadString<SG_GOODS_GROUP_NAME_MAX>(Value.goods_group_name)) return false;
 		if(!Read<_U32>(Value.goods_group_id)) return false;
+		if(!Read<_U8>(Value.display_condition)) return false;
+		if(!Read<_U8>(Value.display_param1)) return false;
+		if(!Read<_U8>(Value.display_param2)) return false;
 		return true;
 	}
 	template<>
@@ -2757,6 +3200,9 @@ namespace DDL
 		if(!Write<_U32>(Value.shop_id)) return false;
 		if(!WriteString<SG_GOODS_GROUP_NAME_MAX>(Value.goods_group_name)) return false;
 		if(!Write<_U32>(Value.goods_group_id)) return false;
+		if(!Write<_U8>(Value.display_condition)) return false;
+		if(!Write<_U8>(Value.display_param1)) return false;
+		if(!Write<_U8>(Value.display_param2)) return false;
 		return true;
 	}
 }
@@ -2779,8 +3225,11 @@ namespace DDLReflect
 		{TYPE_U32, "shop_id", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, shop_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "goods_group_name", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, goods_group_name), NULL, (_U16)SG_GOODS_GROUP_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GOODS_GROUP_NAME_MAX>), NULL},
 		{TYPE_U32, "goods_group_id", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, goods_group_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "display_condition", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, display_condition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "display_param1", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, display_param1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "display_param2", 0, (_U16)ZION_OFFSETOF(SG_SHOP_CONFIG, display_param2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_SHOP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SHOP_CONFIG", sizeof(SG_SHOP_CONFIG), 3, _struct_SG_SHOP_CONFIG_fieldinfo, _struct_SG_SHOP_CONFIG_readproc, _struct_SG_SHOP_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_SHOP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SHOP_CONFIG", sizeof(SG_SHOP_CONFIG), 6, _struct_SG_SHOP_CONFIG_fieldinfo, _struct_SG_SHOP_CONFIG_readproc, _struct_SG_SHOP_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_SHOP_CONFIG>()
 	{
@@ -3102,6 +3551,228 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_MEMBER>(SG_LEAGUE_BATTLE_MEMBER& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.avatar_id)) return false;
+		if(!Read<_U32>(Value.general_id)) return false;
+		if(!Read<_U32>(Value.title)) return false;
+		if(!Read<_U32>(Value.horse_level)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		if(!Read<_U32>(Value.before_hp)) return false;
+		if(!Read<_U32>(Value.after_hp)) return false;
+		if(!Read<_U32>(Value.total_hp)) return false;
+		if(!Read<_U32>(Value.kill_times)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_MEMBER>(const SG_LEAGUE_BATTLE_MEMBER& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.avatar_id)) return false;
+		if(!Write<_U32>(Value.general_id)) return false;
+		if(!Write<_U32>(Value.title)) return false;
+		if(!Write<_U32>(Value.horse_level)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		if(!Write<_U32>(Value.before_hp)) return false;
+		if(!Write<_U32>(Value.after_hp)) return false;
+		if(!Write<_U32>(Value.total_hp)) return false;
+		if(!Write<_U32>(Value.kill_times)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LEAGUE_BATTLE_MEMBER_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LEAGUE_BATTLE_MEMBER>(*((SG_LEAGUE_BATTLE_MEMBER*)data));
+	}
+
+	static bool _struct_SG_LEAGUE_BATTLE_MEMBER_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LEAGUE_BATTLE_MEMBER>(*((const SG_LEAGUE_BATTLE_MEMBER*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LEAGUE_BATTLE_MEMBER_fieldinfo[] =
+	{
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "title", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "horse_level", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "before_hp", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, before_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "after_hp", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, after_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "total_hp", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, total_hp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "kill_times", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_MEMBER, kill_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_MEMBER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_BATTLE_MEMBER", sizeof(SG_LEAGUE_BATTLE_MEMBER), 10, _struct_SG_LEAGUE_BATTLE_MEMBER_fieldinfo, _struct_SG_LEAGUE_BATTLE_MEMBER_readproc, _struct_SG_LEAGUE_BATTLE_MEMBER_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_MEMBER>()
+	{
+		return &_rfl_struct_SG_LEAGUE_BATTLE_MEMBER_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_LOG>(SG_LEAGUE_BATTLE_LOG& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.avatar_id)) return false;
+		if(!Read<_U32>(Value.enemy_id)) return false;
+		if(!Read<_U32>(Value.loop)) return false;
+		if(!Read<_U8>(Value.result)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.enemy_nick)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_LOG>(const SG_LEAGUE_BATTLE_LOG& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.avatar_id)) return false;
+		if(!Write<_U32>(Value.enemy_id)) return false;
+		if(!Write<_U32>(Value.loop)) return false;
+		if(!Write<_U8>(Value.result)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.enemy_nick)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LEAGUE_BATTLE_LOG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LEAGUE_BATTLE_LOG>(*((SG_LEAGUE_BATTLE_LOG*)data));
+	}
+
+	static bool _struct_SG_LEAGUE_BATTLE_LOG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LEAGUE_BATTLE_LOG>(*((const SG_LEAGUE_BATTLE_LOG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LEAGUE_BATTLE_LOG_fieldinfo[] =
+	{
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_LOG, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "enemy_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_LOG, enemy_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "loop", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_LOG, loop), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "result", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_LOG, result), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "enemy_nick", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_LOG, enemy_nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_LOG_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_LEAGUE_BATTLE_LOG", sizeof(SG_LEAGUE_BATTLE_LOG), 5, _struct_SG_LEAGUE_BATTLE_LOG_fieldinfo, _struct_SG_LEAGUE_BATTLE_LOG_readproc, _struct_SG_LEAGUE_BATTLE_LOG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_LOG>()
+	{
+		return &_rfl_struct_SG_LEAGUE_BATTLE_LOG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_RANK>(SG_LEAGUE_BATTLE_RANK& Value)
+	{
+		if(!Read<_U32>(Value.league_id)) return false;
+		if(!ReadString<SG_LEAGUE_NAME_MAX>(Value.league_name)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_RANK>(const SG_LEAGUE_BATTLE_RANK& Value)
+	{
+		if(!Write<_U32>(Value.league_id)) return false;
+		if(!WriteString<SG_LEAGUE_NAME_MAX>(Value.league_name)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LEAGUE_BATTLE_RANK_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LEAGUE_BATTLE_RANK>(*((SG_LEAGUE_BATTLE_RANK*)data));
+	}
+
+	static bool _struct_SG_LEAGUE_BATTLE_RANK_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LEAGUE_BATTLE_RANK>(*((const SG_LEAGUE_BATTLE_RANK*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LEAGUE_BATTLE_RANK_fieldinfo[] =
+	{
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "league_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_RANK, league_name), NULL, (_U16)SG_LEAGUE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_NAME_MAX>), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_RANK_info = { NULL, "SG_LEAGUE_BATTLE_RANK", sizeof(SG_LEAGUE_BATTLE_RANK), 2, _struct_SG_LEAGUE_BATTLE_RANK_fieldinfo, _struct_SG_LEAGUE_BATTLE_RANK_readproc, _struct_SG_LEAGUE_BATTLE_RANK_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_RANK>()
+	{
+		return &_rfl_struct_SG_LEAGUE_BATTLE_RANK_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_LEAGUE_BATTLE_PLAYER_RANK>(SG_LEAGUE_BATTLE_PLAYER_RANK& Value)
+	{
+		if(!Read<_U32>(Value.avatar_id)) return false;
+		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Read<_U32>(Value.league_id)) return false;
+		if(!ReadString<SG_LEAGUE_NAME_MAX>(Value.league_name)) return false;
+		if(!Read<_U32>(Value.kill_times)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_LEAGUE_BATTLE_PLAYER_RANK>(const SG_LEAGUE_BATTLE_PLAYER_RANK& Value)
+	{
+		if(!Write<_U32>(Value.avatar_id)) return false;
+		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
+		if(!Write<_U32>(Value.league_id)) return false;
+		if(!WriteString<SG_LEAGUE_NAME_MAX>(Value.league_name)) return false;
+		if(!Write<_U32>(Value.kill_times)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_LEAGUE_BATTLE_PLAYER_RANK_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_LEAGUE_BATTLE_PLAYER_RANK>(*((SG_LEAGUE_BATTLE_PLAYER_RANK*)data));
+	}
+
+	static bool _struct_SG_LEAGUE_BATTLE_PLAYER_RANK_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_LEAGUE_BATTLE_PLAYER_RANK>(*((const SG_LEAGUE_BATTLE_PLAYER_RANK*)data));
+	}
+
+	static FIELD_INFO _struct_SG_LEAGUE_BATTLE_PLAYER_RANK_fieldinfo[] =
+	{
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_PLAYER_RANK, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_PLAYER_RANK, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
+		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_PLAYER_RANK, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "league_name", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_PLAYER_RANK, league_name), NULL, (_U16)SG_LEAGUE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_LEAGUE_NAME_MAX>), NULL},
+		{TYPE_U32, "kill_times", 0, (_U16)ZION_OFFSETOF(SG_LEAGUE_BATTLE_PLAYER_RANK, kill_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_LEAGUE_BATTLE_PLAYER_RANK_info = { NULL, "SG_LEAGUE_BATTLE_PLAYER_RANK", sizeof(SG_LEAGUE_BATTLE_PLAYER_RANK), 5, _struct_SG_LEAGUE_BATTLE_PLAYER_RANK_fieldinfo, _struct_SG_LEAGUE_BATTLE_PLAYER_RANK_readproc, _struct_SG_LEAGUE_BATTLE_PLAYER_RANK_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_LEAGUE_BATTLE_PLAYER_RANK>()
+	{
+		return &_rfl_struct_SG_LEAGUE_BATTLE_PLAYER_RANK_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_HALO_CONFIG>(SG_HALO_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -3236,6 +3907,12 @@ namespace DDL
 		if(!ReadString<SG_TITLE_ACRHTYPE_MAX>(Value.junshi_female)) return false;
 		if(!ReadString<SG_TITLE_ACRHTYPE_MAX>(Value.jianshen_male)) return false;
 		if(!ReadString<SG_TITLE_ACRHTYPE_MAX>(Value.jianshen_female)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!ReadString<SG_PLAYER_TITLE_NAME_MAX>(Value.tips_name)) return false;
 		return true;
 	}
 	template<>
@@ -3263,6 +3940,12 @@ namespace DDL
 		if(!WriteString<SG_TITLE_ACRHTYPE_MAX>(Value.junshi_female)) return false;
 		if(!WriteString<SG_TITLE_ACRHTYPE_MAX>(Value.jianshen_male)) return false;
 		if(!WriteString<SG_TITLE_ACRHTYPE_MAX>(Value.jianshen_female)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex)) return false;
+		if(!WriteString<SG_PLAYER_TITLE_NAME_MAX>(Value.tips_name)) return false;
 		return true;
 	}
 }
@@ -3303,8 +3986,14 @@ namespace DDLReflect
 		{TYPE_STRING, "junshi_female", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, junshi_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
 		{TYPE_STRING, "jianshen_male", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, jianshen_male), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
 		{TYPE_STRING, "jianshen_female", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, jianshen_female), NULL, (_U16)SG_TITLE_ACRHTYPE_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TITLE_ACRHTYPE_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, tex), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_STRING, "tips_name", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_TITLE_CONFIG, tips_name), NULL, (_U16)SG_PLAYER_TITLE_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_TITLE_NAME_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_TITLE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PLAYER_TITLE_CONFIG", sizeof(SG_PLAYER_TITLE_CONFIG), 21, _struct_SG_PLAYER_TITLE_CONFIG_fieldinfo, _struct_SG_PLAYER_TITLE_CONFIG_readproc, _struct_SG_PLAYER_TITLE_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_TITLE_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_PLAYER_TITLE_CONFIG", sizeof(SG_PLAYER_TITLE_CONFIG), 27, _struct_SG_PLAYER_TITLE_CONFIG_fieldinfo, _struct_SG_PLAYER_TITLE_CONFIG_readproc, _struct_SG_PLAYER_TITLE_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER_TITLE_CONFIG>()
 	{
@@ -3560,6 +4249,158 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_GOAL_CONFIG>(SG_GOAL_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.goal_id)) return false;
+		if(!Read<_U32>(Value.quest_id)) return false;
+		if(!ReadString<SG_GOAL_NAME_MAX>(Value.goal_name)) return false;
+		if(!ReadString<SG_ICON_MAX>(Value.icon)) return false;
+		if(!Read<_U32>(Value.U)) return false;
+		if(!Read<_U32>(Value.V)) return false;
+		if(!Read<_U32>(Value.UL)) return false;
+		if(!Read<_U32>(Value.VL)) return false;
+		if(!Read<_U32>(Value.chapter_id)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_GOAL_CONFIG>(const SG_GOAL_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.goal_id)) return false;
+		if(!Write<_U32>(Value.quest_id)) return false;
+		if(!WriteString<SG_GOAL_NAME_MAX>(Value.goal_name)) return false;
+		if(!WriteString<SG_ICON_MAX>(Value.icon)) return false;
+		if(!Write<_U32>(Value.U)) return false;
+		if(!Write<_U32>(Value.V)) return false;
+		if(!Write<_U32>(Value.UL)) return false;
+		if(!Write<_U32>(Value.VL)) return false;
+		if(!Write<_U32>(Value.chapter_id)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_GOAL_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_GOAL_CONFIG>(*((SG_GOAL_CONFIG*)data));
+	}
+
+	static bool _struct_SG_GOAL_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_GOAL_CONFIG>(*((const SG_GOAL_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_GOAL_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "goal_id", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, goal_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "quest_id", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, quest_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "goal_name", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, goal_name), NULL, (_U16)SG_GOAL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GOAL_NAME_MAX>), NULL},
+		{TYPE_STRING, "icon", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, icon), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
+		{TYPE_U32, "U", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, U), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "chapter_id", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CONFIG, chapter_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_GOAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GOAL_CONFIG", sizeof(SG_GOAL_CONFIG), 9, _struct_SG_GOAL_CONFIG_fieldinfo, _struct_SG_GOAL_CONFIG_readproc, _struct_SG_GOAL_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GOAL_CONFIG>()
+	{
+		return &_rfl_struct_SG_GOAL_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GOAL_CHAPTER_CONFIG>(SG_GOAL_CHAPTER_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.chapter_id)) return false;
+		if(!ReadString<SG_GOAL_CHAPTER_NAME_MAX>(Value.chapter_name)) return false;
+		if(!ReadString<SG_GOAL_CHAPTER_DESC_MAX>(Value.chapter_desc)) return false;
+		if(!Read<_U32>(Value.open_level)) return false;
+		if(!Read<_U32>(Value.goal1)) return false;
+		if(!Read<_U32>(Value.goal2)) return false;
+		if(!Read<_U32>(Value.goal3)) return false;
+		if(!Read<_U32>(Value.goal4)) return false;
+		if(!Read<_U32>(Value.goal5)) return false;
+		if(!Read<_U32>(Value.reward_gold)) return false;
+		if(!Read<_U32>(Value.reward_rmb)) return false;
+		if(!Read<_U32>(Value.reward_item1)) return false;
+		if(!Read<_U32>(Value.reward_count1)) return false;
+		if(!Read<_U32>(Value.reward_item2)) return false;
+		if(!Read<_U32>(Value.reward_count2)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_GOAL_CHAPTER_CONFIG>(const SG_GOAL_CHAPTER_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.chapter_id)) return false;
+		if(!WriteString<SG_GOAL_CHAPTER_NAME_MAX>(Value.chapter_name)) return false;
+		if(!WriteString<SG_GOAL_CHAPTER_DESC_MAX>(Value.chapter_desc)) return false;
+		if(!Write<_U32>(Value.open_level)) return false;
+		if(!Write<_U32>(Value.goal1)) return false;
+		if(!Write<_U32>(Value.goal2)) return false;
+		if(!Write<_U32>(Value.goal3)) return false;
+		if(!Write<_U32>(Value.goal4)) return false;
+		if(!Write<_U32>(Value.goal5)) return false;
+		if(!Write<_U32>(Value.reward_gold)) return false;
+		if(!Write<_U32>(Value.reward_rmb)) return false;
+		if(!Write<_U32>(Value.reward_item1)) return false;
+		if(!Write<_U32>(Value.reward_count1)) return false;
+		if(!Write<_U32>(Value.reward_item2)) return false;
+		if(!Write<_U32>(Value.reward_count2)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_GOAL_CHAPTER_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_GOAL_CHAPTER_CONFIG>(*((SG_GOAL_CHAPTER_CONFIG*)data));
+	}
+
+	static bool _struct_SG_GOAL_CHAPTER_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_GOAL_CHAPTER_CONFIG>(*((const SG_GOAL_CHAPTER_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_SG_GOAL_CHAPTER_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "chapter_id", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, chapter_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "chapter_name", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, chapter_name), NULL, (_U16)SG_GOAL_CHAPTER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GOAL_CHAPTER_NAME_MAX>), NULL},
+		{TYPE_STRING, "chapter_desc", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, chapter_desc), NULL, (_U16)SG_GOAL_CHAPTER_DESC_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_GOAL_CHAPTER_DESC_MAX>), NULL},
+		{TYPE_U32, "open_level", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, open_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "goal1", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, goal1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "goal2", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, goal2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "goal3", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, goal3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "goal4", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, goal4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "goal5", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, goal5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item1", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, reward_item1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_count1", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, reward_count1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_item2", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, reward_item2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_count2", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_CONFIG, reward_count2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_GOAL_CHAPTER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GOAL_CHAPTER_CONFIG", sizeof(SG_GOAL_CHAPTER_CONFIG), 15, _struct_SG_GOAL_CHAPTER_CONFIG_fieldinfo, _struct_SG_GOAL_CHAPTER_CONFIG_readproc, _struct_SG_GOAL_CHAPTER_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GOAL_CHAPTER_CONFIG>()
+	{
+		return &_rfl_struct_SG_GOAL_CHAPTER_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_LEVEL_INFO_CONFIG>(SG_LEVEL_INFO_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
@@ -3568,24 +4409,32 @@ namespace DDL
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
 		if(!Read<_U32>(Value.req_player_level)) return false;
 		if(!Read<_U32>(Value.wake_pt)) return false;
-		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name1)) return false;
-		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name2)) return false;
-		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name3)) return false;
-		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name4)) return false;
-		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name5)) return false;
-		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.soldier_name6)) return false;
-		if(!Read<_U8>(Value.atk_type1)) return false;
-		if(!Read<_U8>(Value.atk_type2)) return false;
-		if(!Read<_U8>(Value.atk_type3)) return false;
-		if(!Read<_U8>(Value.atk_type4)) return false;
-		if(!Read<_U8>(Value.atk_type5)) return false;
-		if(!Read<_U8>(Value.atk_type6)) return false;
-		if(!Read<_U8>(Value.wpt_type1)) return false;
-		if(!Read<_U8>(Value.wpt_type2)) return false;
-		if(!Read<_U8>(Value.wpt_type3)) return false;
-		if(!Read<_U8>(Value.wpt_type4)) return false;
-		if(!Read<_U8>(Value.wpt_type5)) return false;
-		if(!Read<_U8>(Value.wpt_type6)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.name1)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.name2)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.name3)) return false;
+		if(!ReadString<SG_SOLDIER_NAME_MAX>(Value.name4)) return false;
+		if(!Read<_U32>(Value.U1)) return false;
+		if(!Read<_U32>(Value.V1)) return false;
+		if(!Read<_U32>(Value.UL1)) return false;
+		if(!Read<_U32>(Value.VL1)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex1)) return false;
+		if(!Read<_U32>(Value.U2)) return false;
+		if(!Read<_U32>(Value.V2)) return false;
+		if(!Read<_U32>(Value.UL2)) return false;
+		if(!Read<_U32>(Value.VL2)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex2)) return false;
+		if(!Read<_U32>(Value.U3)) return false;
+		if(!Read<_U32>(Value.V3)) return false;
+		if(!Read<_U32>(Value.UL3)) return false;
+		if(!Read<_U32>(Value.VL3)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex3)) return false;
+		if(!Read<_U32>(Value.U4)) return false;
+		if(!Read<_U32>(Value.V4)) return false;
+		if(!Read<_U32>(Value.UL4)) return false;
+		if(!Read<_U32>(Value.VL4)) return false;
+		if(!ReadString<SG_TEX_MAX>(Value.tex4)) return false;
+		if(!Read<_U8>(Value.type1)) return false;
+		if(!Read<_U8>(Value.type2)) return false;
 		return true;
 	}
 	template<>
@@ -3597,24 +4446,32 @@ namespace DDL
 		if(!WriteString<SG_DESCRIPTION_MAX>(Value.description)) return false;
 		if(!Write<_U32>(Value.req_player_level)) return false;
 		if(!Write<_U32>(Value.wake_pt)) return false;
-		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name1)) return false;
-		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name2)) return false;
-		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name3)) return false;
-		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name4)) return false;
-		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name5)) return false;
-		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.soldier_name6)) return false;
-		if(!Write<_U8>(Value.atk_type1)) return false;
-		if(!Write<_U8>(Value.atk_type2)) return false;
-		if(!Write<_U8>(Value.atk_type3)) return false;
-		if(!Write<_U8>(Value.atk_type4)) return false;
-		if(!Write<_U8>(Value.atk_type5)) return false;
-		if(!Write<_U8>(Value.atk_type6)) return false;
-		if(!Write<_U8>(Value.wpt_type1)) return false;
-		if(!Write<_U8>(Value.wpt_type2)) return false;
-		if(!Write<_U8>(Value.wpt_type3)) return false;
-		if(!Write<_U8>(Value.wpt_type4)) return false;
-		if(!Write<_U8>(Value.wpt_type5)) return false;
-		if(!Write<_U8>(Value.wpt_type6)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.name1)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.name2)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.name3)) return false;
+		if(!WriteString<SG_SOLDIER_NAME_MAX>(Value.name4)) return false;
+		if(!Write<_U32>(Value.U1)) return false;
+		if(!Write<_U32>(Value.V1)) return false;
+		if(!Write<_U32>(Value.UL1)) return false;
+		if(!Write<_U32>(Value.VL1)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex1)) return false;
+		if(!Write<_U32>(Value.U2)) return false;
+		if(!Write<_U32>(Value.V2)) return false;
+		if(!Write<_U32>(Value.UL2)) return false;
+		if(!Write<_U32>(Value.VL2)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex2)) return false;
+		if(!Write<_U32>(Value.U3)) return false;
+		if(!Write<_U32>(Value.V3)) return false;
+		if(!Write<_U32>(Value.UL3)) return false;
+		if(!Write<_U32>(Value.VL3)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex3)) return false;
+		if(!Write<_U32>(Value.U4)) return false;
+		if(!Write<_U32>(Value.V4)) return false;
+		if(!Write<_U32>(Value.UL4)) return false;
+		if(!Write<_U32>(Value.VL4)) return false;
+		if(!WriteString<SG_TEX_MAX>(Value.tex4)) return false;
+		if(!Write<_U8>(Value.type1)) return false;
+		if(!Write<_U8>(Value.type2)) return false;
 		return true;
 	}
 }
@@ -3639,26 +4496,34 @@ namespace DDLReflect
 		{TYPE_STRING, "description", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
 		{TYPE_U32, "req_player_level", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, req_player_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "wake_pt", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_STRING, "soldier_name1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name1), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name2), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name3), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name4), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name5", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name5), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_STRING, "soldier_name6", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, soldier_name6), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
-		{TYPE_U8, "atk_type1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type5", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "atk_type6", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, atk_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type5", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type5), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
-		{TYPE_U8, "wpt_type6", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, wpt_type6), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRING, "name1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, name1), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "name2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, name2), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "name3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, name3), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_STRING, "name4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, name4), NULL, (_U16)SG_SOLDIER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SOLDIER_NAME_MAX>), NULL},
+		{TYPE_U32, "U1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, U1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, V1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, UL1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, VL1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, tex1), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, tex2), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, U3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, V3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, UL3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, VL3), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex3", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, tex3), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U32, "U4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, U4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, V4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, UL4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, VL4), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "tex4", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, tex4), NULL, (_U16)SG_TEX_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_TEX_MAX>), NULL},
+		{TYPE_U8, "type1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, type1), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "type2", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_INFO_CONFIG, type2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_LEVEL_INFO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_INFO_CONFIG", sizeof(SG_LEVEL_INFO_CONFIG), 23, _struct_SG_LEVEL_INFO_CONFIG_fieldinfo, _struct_SG_LEVEL_INFO_CONFIG_readproc, _struct_SG_LEVEL_INFO_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_LEVEL_INFO_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_INFO_CONFIG", sizeof(SG_LEVEL_INFO_CONFIG), 31, _struct_SG_LEVEL_INFO_CONFIG_fieldinfo, _struct_SG_LEVEL_INFO_CONFIG_readproc, _struct_SG_LEVEL_INFO_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_LEVEL_INFO_CONFIG>()
 	{
@@ -3764,7 +4629,7 @@ namespace DDL
 	bool BufferReader::Read<SG_LEVEL_DROP_CONFIG>(SG_LEVEL_DROP_CONFIG& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
-		if(!ReadString<100>(Value.level_name)) return false;
+		if(!ReadString<SG_MAP_URL_MAX>(Value.level_name)) return false;
 		if(!Read<_U32>(Value.exp)) return false;
 		if(!Read<_U32>(Value.gold)) return false;
 		if(!Read<_U32>(Value.reputation)) return false;
@@ -3779,13 +4644,14 @@ namespace DDL
 		if(!Read<_U32>(Value.group4_id)) return false;
 		if(!Read<_F32>(Value.group4_rate)) return false;
 		if(!Read<_U32>(Value.wake_pt)) return false;
+		if(!ReadString<SG_MAP_URL_MAX>(Value.map_url1)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<SG_LEVEL_DROP_CONFIG>(const SG_LEVEL_DROP_CONFIG& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
-		if(!WriteString<100>(Value.level_name)) return false;
+		if(!WriteString<SG_MAP_URL_MAX>(Value.level_name)) return false;
 		if(!Write<_U32>(Value.exp)) return false;
 		if(!Write<_U32>(Value.gold)) return false;
 		if(!Write<_U32>(Value.reputation)) return false;
@@ -3800,6 +4666,7 @@ namespace DDL
 		if(!Write<_U32>(Value.group4_id)) return false;
 		if(!Write<_F32>(Value.group4_rate)) return false;
 		if(!Write<_U32>(Value.wake_pt)) return false;
+		if(!WriteString<SG_MAP_URL_MAX>(Value.map_url1)) return false;
 		return true;
 	}
 }
@@ -3819,7 +4686,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_LEVEL_DROP_CONFIG_fieldinfo[] =
 	{
-		{TYPE_STRING, "level_name", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, level_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_STRING, "level_name", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, level_name), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
 		{TYPE_U32, "exp", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "gold", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "reputation", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, reputation), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
@@ -3834,8 +4701,9 @@ namespace DDLReflect
 		{TYPE_U32, "group4_id", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_F32, "group4_rate", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, group4_rate), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_F32), NULL},
 		{TYPE_U32, "wake_pt", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "map_url1", 0, (_U16)ZION_OFFSETOF(SG_LEVEL_DROP_CONFIG, map_url1), NULL, (_U16)SG_MAP_URL_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAP_URL_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_LEVEL_DROP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_DROP_CONFIG", sizeof(SG_LEVEL_DROP_CONFIG), 15, _struct_SG_LEVEL_DROP_CONFIG_fieldinfo, _struct_SG_LEVEL_DROP_CONFIG_readproc, _struct_SG_LEVEL_DROP_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_LEVEL_DROP_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_LEVEL_DROP_CONFIG", sizeof(SG_LEVEL_DROP_CONFIG), 16, _struct_SG_LEVEL_DROP_CONFIG_fieldinfo, _struct_SG_LEVEL_DROP_CONFIG_readproc, _struct_SG_LEVEL_DROP_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_LEVEL_DROP_CONFIG>()
 	{
@@ -4821,6 +5689,8 @@ namespace DDL
 		if(!Read<_U8>(Value.atk_type)) return false;
 		if(!Read<_U8>(Value.def_type)) return false;
 		if(!ReadString<SG_DESCRIPTION_MAX>(Value.description)) return false;
+		if(!ReadString<SG_SKILL_NAME_MAX>(Value.skill_name)) return false;
+		if(!ReadString<SG_DESCRIPTION_MAX>(Value.skill_description)) return false;
 		if(!Read<_S32>(Value.req_gold)) return false;
 		if(!Read<_S32>(Value.req_rmb)) return false;
 		if(!Read<_S32>(Value.unlock_level)) return false;
@@ -4839,6 +5709,8 @@ namespace DDL
 		if(!Write<_U8>(Value.atk_type)) return false;
 		if(!Write<_U8>(Value.def_type)) return false;
 		if(!WriteString<SG_DESCRIPTION_MAX>(Value.description)) return false;
+		if(!WriteString<SG_SKILL_NAME_MAX>(Value.skill_name)) return false;
+		if(!WriteString<SG_DESCRIPTION_MAX>(Value.skill_description)) return false;
 		if(!Write<_S32>(Value.req_gold)) return false;
 		if(!Write<_S32>(Value.req_rmb)) return false;
 		if(!Write<_S32>(Value.unlock_level)) return false;
@@ -4870,6 +5742,8 @@ namespace DDLReflect
 		{TYPE_U8, "atk_type", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "def_type", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_STRING, "description", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
+		{TYPE_STRING, "skill_name", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, skill_name), NULL, (_U16)SG_SKILL_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_SKILL_NAME_MAX>), NULL},
+		{TYPE_STRING, "skill_description", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, skill_description), NULL, (_U16)SG_DESCRIPTION_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_DESCRIPTION_MAX>), NULL},
 		{TYPE_S32, "req_gold", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, req_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "req_rmb", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, req_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_S32, "unlock_level", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, unlock_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
@@ -4877,7 +5751,7 @@ namespace DDLReflect
 		{TYPE_S32, "pre_level", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, pre_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_STRING, "archetype", 0, (_U16)ZION_OFFSETOF(SG_SOLDIER_CONFIG, archetype), NULL, (_U16)ARCHETYPE_URL_LENGTH_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<ARCHETYPE_URL_LENGTH_MAX>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_SOLDIER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SOLDIER_CONFIG", sizeof(SG_SOLDIER_CONFIG), 12, _struct_SG_SOLDIER_CONFIG_fieldinfo, _struct_SG_SOLDIER_CONFIG_readproc, _struct_SG_SOLDIER_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_SOLDIER_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_SOLDIER_CONFIG", sizeof(SG_SOLDIER_CONFIG), 14, _struct_SG_SOLDIER_CONFIG_fieldinfo, _struct_SG_SOLDIER_CONFIG_readproc, _struct_SG_SOLDIER_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_SOLDIER_CONFIG>()
 	{
@@ -4908,6 +5782,9 @@ namespace DDL
 		if(!Read<_S32>(Value.rank)) return false;
 		if(!Read<_U8>(Value.atk_type)) return false;
 		if(!Read<_U8>(Value.def_type)) return false;
+		if(!Read<_U8>(Value.hp_score)) return false;
+		if(!Read<_U8>(Value.atk_score)) return false;
+		if(!Read<_U8>(Value.def_score)) return false;
 		return true;
 	}
 	template<>
@@ -4931,6 +5808,9 @@ namespace DDL
 		if(!Write<_S32>(Value.rank)) return false;
 		if(!Write<_U8>(Value.atk_type)) return false;
 		if(!Write<_U8>(Value.def_type)) return false;
+		if(!Write<_U8>(Value.hp_score)) return false;
+		if(!Write<_U8>(Value.atk_score)) return false;
+		if(!Write<_U8>(Value.def_score)) return false;
 		return true;
 	}
 }
@@ -4967,8 +5847,11 @@ namespace DDLReflect
 		{TYPE_S32, "rank", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
 		{TYPE_U8, "atk_type", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, atk_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "def_type", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, def_type), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "hp_score", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, hp_score), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "atk_score", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, atk_score), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "def_score", 0, (_U16)ZION_OFFSETOF(SG_GENERAL_CONFIG, def_score), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 17, _struct_SG_GENERAL_CONFIG_fieldinfo, _struct_SG_GENERAL_CONFIG_readproc, _struct_SG_GENERAL_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_GENERAL_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_GENERAL_CONFIG", sizeof(SG_GENERAL_CONFIG), 20, _struct_SG_GENERAL_CONFIG_fieldinfo, _struct_SG_GENERAL_CONFIG_readproc, _struct_SG_GENERAL_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_GENERAL_CONFIG>()
 	{
@@ -5271,6 +6154,11 @@ namespace DDL
 		if(!Read<_U32>(Value.V)) return false;
 		if(!Read<_U32>(Value.UL)) return false;
 		if(!Read<_U32>(Value.VL)) return false;
+		if(!ReadString<SG_ICON_MAX>(Value.icon2)) return false;
+		if(!Read<_U32>(Value.U2)) return false;
+		if(!Read<_U32>(Value.V2)) return false;
+		if(!Read<_U32>(Value.UL2)) return false;
+		if(!Read<_U32>(Value.VL2)) return false;
 		if(!Read<_U32>(Value.sort_seq)) return false;
 		return true;
 	}
@@ -5301,6 +6189,11 @@ namespace DDL
 		if(!Write<_U32>(Value.V)) return false;
 		if(!Write<_U32>(Value.UL)) return false;
 		if(!Write<_U32>(Value.VL)) return false;
+		if(!WriteString<SG_ICON_MAX>(Value.icon2)) return false;
+		if(!Write<_U32>(Value.U2)) return false;
+		if(!Write<_U32>(Value.V2)) return false;
+		if(!Write<_U32>(Value.UL2)) return false;
+		if(!Write<_U32>(Value.VL2)) return false;
 		if(!Write<_U32>(Value.sort_seq)) return false;
 		return true;
 	}
@@ -5344,9 +6237,14 @@ namespace DDLReflect
 		{TYPE_U32, "V", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, V), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "UL", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, UL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "VL", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, VL), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "icon2", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, icon2), NULL, (_U16)SG_ICON_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_ICON_MAX>), NULL},
+		{TYPE_U32, "U2", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, U2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "V2", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, V2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "UL2", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, UL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "VL2", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, VL2), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "sort_seq", 0, (_U16)ZION_OFFSETOF(SG_DAILY_ACTION_CONFIG, sort_seq), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_DAILY_ACTION_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_ACTION_CONFIG", sizeof(SG_DAILY_ACTION_CONFIG), 24, _struct_SG_DAILY_ACTION_CONFIG_fieldinfo, _struct_SG_DAILY_ACTION_CONFIG_readproc, _struct_SG_DAILY_ACTION_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_SG_DAILY_ACTION_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "SG_DAILY_ACTION_CONFIG", sizeof(SG_DAILY_ACTION_CONFIG), 29, _struct_SG_DAILY_ACTION_CONFIG_fieldinfo, _struct_SG_DAILY_ACTION_CONFIG_readproc, _struct_SG_DAILY_ACTION_CONFIG_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_DAILY_ACTION_CONFIG>()
 	{
@@ -5611,6 +6509,7 @@ namespace DDL
 		if(!Read<_U32>(Value.vip_level)) return false;
 		if(!Read<_U32>(Value.league_id)) return false;
 		if(!Read<_U32>(Value.horse_level)) return false;
+		if(!Read<_U32>(Value.turbo_level)) return false;
 		return true;
 	}
 	template<>
@@ -5625,6 +6524,7 @@ namespace DDL
 		if(!Write<_U32>(Value.vip_level)) return false;
 		if(!Write<_U32>(Value.league_id)) return false;
 		if(!Write<_U32>(Value.horse_level)) return false;
+		if(!Write<_U32>(Value.turbo_level)) return false;
 		return true;
 	}
 }
@@ -5652,8 +6552,9 @@ namespace DDLReflect
 		{TYPE_U32, "vip_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, vip_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "league_id", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, league_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "horse_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, horse_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "turbo_level", 0, (_U16)ZION_OFFSETOF(SG_PLAYER_INFO, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PLAYER_INFO_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER_INFO", sizeof(SG_PLAYER_INFO), 8, _struct_SG_PLAYER_INFO_fieldinfo, _struct_SG_PLAYER_INFO_readproc, _struct_SG_PLAYER_INFO_writeproc };
+	STRUCT_INFO _rfl_struct_SG_PLAYER_INFO_info = { &_rfl_struct_SG_GENERAL_info, "SG_PLAYER_INFO", sizeof(SG_PLAYER_INFO), 9, _struct_SG_PLAYER_INFO_fieldinfo, _struct_SG_PLAYER_INFO_readproc, _struct_SG_PLAYER_INFO_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PLAYER_INFO>()
 	{
@@ -5916,6 +6817,125 @@ namespace DDLReflect
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<SG_BATTLE_RESULT_INFO>(SG_BATTLE_RESULT_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.level)) return false;
+		if(!Read<_U32>(Value.exp_addition)) return false;
+		if(!Read<_U32>(Value.exp)) return false;
+		if(!Read<_U32>(Value.gold)) return false;
+		if(!Read<_U32>(Value.wake_pt)) return false;
+		if(!Read<_U8>(Value.result)) return false;
+		if(!ReadArray<SG_DROP_ITEM_CONFIG, SG_AUTO_COMBAT_REWARD_MAX>(Value.drops)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_BATTLE_RESULT_INFO>(const SG_BATTLE_RESULT_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.level)) return false;
+		if(!Write<_U32>(Value.exp_addition)) return false;
+		if(!Write<_U32>(Value.exp)) return false;
+		if(!Write<_U32>(Value.gold)) return false;
+		if(!Write<_U32>(Value.wake_pt)) return false;
+		if(!Write<_U8>(Value.result)) return false;
+		if(!WriteArray<SG_DROP_ITEM_CONFIG, SG_AUTO_COMBAT_REWARD_MAX>(Value.drops)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_BATTLE_RESULT_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_BATTLE_RESULT_INFO>(*((SG_BATTLE_RESULT_INFO*)data));
+	}
+
+	static bool _struct_SG_BATTLE_RESULT_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_BATTLE_RESULT_INFO>(*((const SG_BATTLE_RESULT_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_BATTLE_RESULT_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_BATTLE_RESULT_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "exp_addition", 0, (_U16)ZION_OFFSETOF(SG_BATTLE_RESULT_INFO, exp_addition), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "exp", 0, (_U16)ZION_OFFSETOF(SG_BATTLE_RESULT_INFO, exp), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "gold", 0, (_U16)ZION_OFFSETOF(SG_BATTLE_RESULT_INFO, gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "wake_pt", 0, (_U16)ZION_OFFSETOF(SG_BATTLE_RESULT_INFO, wake_pt), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "result", 0, (_U16)ZION_OFFSETOF(SG_BATTLE_RESULT_INFO, result), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, (_U16)ZION_OFFSETOF(SG_BATTLE_RESULT_INFO, drops), &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1, (_U16)SG_AUTO_COMBAT_REWARD_MAX, (_U16)((size_t)(&((DDL::Array<SG_DROP_ITEM_CONFIG, SG_AUTO_COMBAT_REWARD_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_DROP_ITEM_CONFIG), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_BATTLE_RESULT_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_BATTLE_RESULT_INFO", sizeof(SG_BATTLE_RESULT_INFO), 7, _struct_SG_BATTLE_RESULT_INFO_fieldinfo, _struct_SG_BATTLE_RESULT_INFO_readproc, _struct_SG_BATTLE_RESULT_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_BATTLE_RESULT_INFO>()
+	{
+		return &_rfl_struct_SG_BATTLE_RESULT_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_MAIL_INFO>(SG_MAIL_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.mail_id)) return false;
+		if(!ReadString<SG_MAIL_CONTENT_MAX>(Value.mail_text)) return false;
+		if(!Read<_U32>(Value.time)) return false;
+		if(!Read<_U32>(Value.reward_gold)) return false;
+		if(!Read<_U32>(Value.reward_rmb)) return false;
+		if(!ReadArray<SG_ITEM, SG_MAIL_REAWRD_MAX>(Value.reward_list)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_MAIL_INFO>(const SG_MAIL_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.mail_id)) return false;
+		if(!WriteString<SG_MAIL_CONTENT_MAX>(Value.mail_text)) return false;
+		if(!Write<_U32>(Value.time)) return false;
+		if(!Write<_U32>(Value.reward_gold)) return false;
+		if(!Write<_U32>(Value.reward_rmb)) return false;
+		if(!WriteArray<SG_ITEM, SG_MAIL_REAWRD_MAX>(Value.reward_list)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_MAIL_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_MAIL_INFO>(*((SG_MAIL_INFO*)data));
+	}
+
+	static bool _struct_SG_MAIL_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_MAIL_INFO>(*((const SG_MAIL_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_MAIL_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "mail_id", 0, (_U16)ZION_OFFSETOF(SG_MAIL_INFO, mail_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "mail_text", 0, (_U16)ZION_OFFSETOF(SG_MAIL_INFO, mail_text), NULL, (_U16)SG_MAIL_CONTENT_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_MAIL_CONTENT_MAX>), NULL},
+		{TYPE_U32, "time", 0, (_U16)ZION_OFFSETOF(SG_MAIL_INFO, time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_gold", 0, (_U16)ZION_OFFSETOF(SG_MAIL_INFO, reward_gold), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "reward_rmb", 0, (_U16)ZION_OFFSETOF(SG_MAIL_INFO, reward_rmb), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "reward_list", 0, (_U16)ZION_OFFSETOF(SG_MAIL_INFO, reward_list), &_rfl_struct_SG_ITEM_info, (_U16)-1, (_U16)SG_MAIL_REAWRD_MAX, (_U16)((size_t)(&((DDL::Array<SG_ITEM, SG_MAIL_REAWRD_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_ITEM), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_MAIL_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_MAIL_INFO", sizeof(SG_MAIL_INFO), 6, _struct_SG_MAIL_INFO_fieldinfo, _struct_SG_MAIL_INFO_readproc, _struct_SG_MAIL_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_MAIL_INFO>()
+	{
+		return &_rfl_struct_SG_MAIL_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<SG_FRIEND_BASE_INFO>(SG_FRIEND_BASE_INFO& Value)
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
@@ -5924,6 +6944,8 @@ namespace DDL
 		if(!Read<_U32>(Value.title)) return false;
 		if(!Read<_U32>(Value.level)) return false;
 		if(!Read<_U32>(Value.battle_value)) return false;
+		if(!Read<_U32>(Value.turbo_level)) return false;
+		if(!Read<_U32>(Value.general_id)) return false;
 		return true;
 	}
 	template<>
@@ -5935,6 +6957,8 @@ namespace DDL
 		if(!Write<_U32>(Value.title)) return false;
 		if(!Write<_U32>(Value.level)) return false;
 		if(!Write<_U32>(Value.battle_value)) return false;
+		if(!Write<_U32>(Value.turbo_level)) return false;
+		if(!Write<_U32>(Value.general_id)) return false;
 		return true;
 	}
 }
@@ -5959,8 +6983,10 @@ namespace DDLReflect
 		{TYPE_U32, "title", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, title), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "battle_value", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, battle_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "turbo_level", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, turbo_level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "general_id", 0, (_U16)ZION_OFFSETOF(SG_FRIEND_BASE_INFO, general_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_FRIEND_BASE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_FRIEND_BASE_INFO", sizeof(SG_FRIEND_BASE_INFO), 5, _struct_SG_FRIEND_BASE_INFO_fieldinfo, _struct_SG_FRIEND_BASE_INFO_readproc, _struct_SG_FRIEND_BASE_INFO_writeproc };
+	STRUCT_INFO _rfl_struct_SG_FRIEND_BASE_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_FRIEND_BASE_INFO", sizeof(SG_FRIEND_BASE_INFO), 7, _struct_SG_FRIEND_BASE_INFO_fieldinfo, _struct_SG_FRIEND_BASE_INFO_readproc, _struct_SG_FRIEND_BASE_INFO_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_FRIEND_BASE_INFO>()
 	{
@@ -6328,6 +7354,7 @@ namespace DDL
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
 		if(!Read<_U32>(Value.level)) return false;
 		if(!Read<_U32>(Value.rank)) return false;
+		if(!Read<_U32>(Value.avatar_id)) return false;
 		return true;
 	}
 	template<>
@@ -6337,6 +7364,7 @@ namespace DDL
 		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
 		if(!Write<_U32>(Value.level)) return false;
 		if(!Write<_U32>(Value.rank)) return false;
+		if(!Write<_U32>(Value.avatar_id)) return false;
 		return true;
 	}
 }
@@ -6359,8 +7387,9 @@ namespace DDLReflect
 		{TYPE_STRING, "nick", 0, (_U16)ZION_OFFSETOF(SG_PVP_HEROLIST_PLAYER, nick), NULL, (_U16)SG_PLAYER_NAME_MAX, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<SG_PLAYER_NAME_MAX>), NULL},
 		{TYPE_U32, "level", 0, (_U16)ZION_OFFSETOF(SG_PVP_HEROLIST_PLAYER, level), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_PVP_HEROLIST_PLAYER, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(SG_PVP_HEROLIST_PLAYER, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_PVP_HEROLIST_PLAYER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_PVP_HEROLIST_PLAYER", sizeof(SG_PVP_HEROLIST_PLAYER), 3, _struct_SG_PVP_HEROLIST_PLAYER_fieldinfo, _struct_SG_PVP_HEROLIST_PLAYER_readproc, _struct_SG_PVP_HEROLIST_PLAYER_writeproc };
+	STRUCT_INFO _rfl_struct_SG_PVP_HEROLIST_PLAYER_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_PVP_HEROLIST_PLAYER", sizeof(SG_PVP_HEROLIST_PLAYER), 4, _struct_SG_PVP_HEROLIST_PLAYER_fieldinfo, _struct_SG_PVP_HEROLIST_PLAYER_readproc, _struct_SG_PVP_HEROLIST_PLAYER_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_PVP_HEROLIST_PLAYER>()
 	{
@@ -6474,6 +7503,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_WORLDBOSS_RANK_ITEM>(SG_WORLDBOSS_RANK_ITEM& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!ReadString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
 		if(!Read<_U32>(Value.rank)) return false;
 		if(!Read<_U32>(Value.total_damage)) return false;
@@ -6482,6 +7512,7 @@ namespace DDL
 	template<>
 	bool BufferWriter::Write<SG_WORLDBOSS_RANK_ITEM>(const SG_WORLDBOSS_RANK_ITEM& Value)
 	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!WriteString<SG_PLAYER_NAME_MAX>(Value.nick)) return false;
 		if(!Write<_U32>(Value.rank)) return false;
 		if(!Write<_U32>(Value.total_damage)) return false;
@@ -6508,7 +7539,7 @@ namespace DDLReflect
 		{TYPE_U32, "rank", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, rank), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U32, "total_damage", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_ITEM, total_damage), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_ITEM_info = { NULL, "SG_WORLDBOSS_RANK_ITEM", sizeof(SG_WORLDBOSS_RANK_ITEM), 3, _struct_SG_WORLDBOSS_RANK_ITEM_fieldinfo, _struct_SG_WORLDBOSS_RANK_ITEM_readproc, _struct_SG_WORLDBOSS_RANK_ITEM_writeproc };
+	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_ITEM_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_WORLDBOSS_RANK_ITEM", sizeof(SG_WORLDBOSS_RANK_ITEM), 3, _struct_SG_WORLDBOSS_RANK_ITEM_fieldinfo, _struct_SG_WORLDBOSS_RANK_ITEM_readproc, _struct_SG_WORLDBOSS_RANK_ITEM_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_RANK_ITEM>()
 	{
@@ -6521,19 +7552,23 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_WORLDBOSS_RANK_INFO>(SG_WORLDBOSS_RANK_INFO& Value)
 	{
-		if(!ReadArray<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>(Value.last_rank_list)) return false;
-		if(!Read<SG_WORLDBOSS_RANK_ITEM>(Value.my_last_rank)) return false;
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!ReadArray<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>(Value.rank_list)) return false;
+		if(!Read<SG_WORLDBOSS_RANK_ITEM>(Value.my_rank)) return false;
 		if(!Read<_U8>(Value.attendance_reward)) return false;
 		if(!Read<_U8>(Value.rank_reward)) return false;
+		if(!Read<_U8>(Value.boss_status)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<SG_WORLDBOSS_RANK_INFO>(const SG_WORLDBOSS_RANK_INFO& Value)
 	{
-		if(!WriteArray<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>(Value.last_rank_list)) return false;
-		if(!Write<SG_WORLDBOSS_RANK_ITEM>(Value.my_last_rank)) return false;
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!WriteArray<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>(Value.rank_list)) return false;
+		if(!Write<SG_WORLDBOSS_RANK_ITEM>(Value.my_rank)) return false;
 		if(!Write<_U8>(Value.attendance_reward)) return false;
 		if(!Write<_U8>(Value.rank_reward)) return false;
+		if(!Write<_U8>(Value.boss_status)) return false;
 		return true;
 	}
 }
@@ -6553,12 +7588,13 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_SG_WORLDBOSS_RANK_INFO_fieldinfo[] =
 	{
-		{TYPE_STRUCT|TYPE_ARRAY, "last_rank_list", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, last_rank_list), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)SG_WORLDBOSS_RANK_LIST_MAX, (_U16)((size_t)(&((DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
-		{TYPE_STRUCT, "my_last_rank", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, my_last_rank), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "rank_list", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, rank_list), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)SG_WORLDBOSS_RANK_LIST_MAX, (_U16)((size_t)(&((DDL::Array<SG_WORLDBOSS_RANK_ITEM, SG_WORLDBOSS_RANK_LIST_MAX>*)NULL)->_Array)), (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
+		{TYPE_STRUCT, "my_rank", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, my_rank), &_rfl_struct_SG_WORLDBOSS_RANK_ITEM_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(SG_WORLDBOSS_RANK_ITEM), NULL},
 		{TYPE_U8, "attendance_reward", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, attendance_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 		{TYPE_U8, "rank_reward", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, rank_reward), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+		{TYPE_U8, "boss_status", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_RANK_INFO, boss_status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_INFO_info = { NULL, "SG_WORLDBOSS_RANK_INFO", sizeof(SG_WORLDBOSS_RANK_INFO), 4, _struct_SG_WORLDBOSS_RANK_INFO_fieldinfo, _struct_SG_WORLDBOSS_RANK_INFO_readproc, _struct_SG_WORLDBOSS_RANK_INFO_writeproc };
+	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_RANK_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_WORLDBOSS_RANK_INFO", sizeof(SG_WORLDBOSS_RANK_INFO), 5, _struct_SG_WORLDBOSS_RANK_INFO_fieldinfo, _struct_SG_WORLDBOSS_RANK_INFO_readproc, _struct_SG_WORLDBOSS_RANK_INFO_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_RANK_INFO>()
 	{
@@ -6571,6 +7607,7 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<SG_WORLDBOSS_INFO>(SG_WORLDBOSS_INFO& Value)
 	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.boss_id)) return false;
 		if(!Read<_U32>(Value.HP)) return false;
 		if(!Read<_U8>(Value.status)) return false;
@@ -6579,6 +7616,7 @@ namespace DDL
 	template<>
 	bool BufferWriter::Write<SG_WORLDBOSS_INFO>(const SG_WORLDBOSS_INFO& Value)
 	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.boss_id)) return false;
 		if(!Write<_U32>(Value.HP)) return false;
 		if(!Write<_U8>(Value.status)) return false;
@@ -6605,11 +7643,57 @@ namespace DDLReflect
 		{TYPE_U32, "HP", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_INFO, HP), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_WORLDBOSS_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
 	};
-	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_INFO_info = { NULL, "SG_WORLDBOSS_INFO", sizeof(SG_WORLDBOSS_INFO), 3, _struct_SG_WORLDBOSS_INFO_fieldinfo, _struct_SG_WORLDBOSS_INFO_readproc, _struct_SG_WORLDBOSS_INFO_writeproc };
+	STRUCT_INFO _rfl_struct_SG_WORLDBOSS_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_WORLDBOSS_INFO", sizeof(SG_WORLDBOSS_INFO), 3, _struct_SG_WORLDBOSS_INFO_fieldinfo, _struct_SG_WORLDBOSS_INFO_readproc, _struct_SG_WORLDBOSS_INFO_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<SG_WORLDBOSS_INFO>()
 	{
 		return &_rfl_struct_SG_WORLDBOSS_INFO_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<SG_GOAL_CHAPTER_INFO>(SG_GOAL_CHAPTER_INFO& Value)
+	{
+		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.chapter_id)) return false;
+		if(!Read<_U8>(Value.status)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<SG_GOAL_CHAPTER_INFO>(const SG_GOAL_CHAPTER_INFO& Value)
+	{
+		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.chapter_id)) return false;
+		if(!Write<_U8>(Value.status)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_SG_GOAL_CHAPTER_INFO_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<SG_GOAL_CHAPTER_INFO>(*((SG_GOAL_CHAPTER_INFO*)data));
+	}
+
+	static bool _struct_SG_GOAL_CHAPTER_INFO_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<SG_GOAL_CHAPTER_INFO>(*((const SG_GOAL_CHAPTER_INFO*)data));
+	}
+
+	static FIELD_INFO _struct_SG_GOAL_CHAPTER_INFO_fieldinfo[] =
+	{
+		{TYPE_U32, "chapter_id", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_INFO, chapter_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U8, "status", 0, (_U16)ZION_OFFSETOF(SG_GOAL_CHAPTER_INFO, status), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U8), NULL},
+	};
+	STRUCT_INFO _rfl_struct_SG_GOAL_CHAPTER_INFO_info = { &_rfl_struct_A_LIVE_OBJECT_info, "SG_GOAL_CHAPTER_INFO", sizeof(SG_GOAL_CHAPTER_INFO), 2, _struct_SG_GOAL_CHAPTER_INFO_fieldinfo, _struct_SG_GOAL_CHAPTER_INFO_readproc, _struct_SG_GOAL_CHAPTER_INFO_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<SG_GOAL_CHAPTER_INFO>()
+	{
+		return &_rfl_struct_SG_GOAL_CHAPTER_INFO_info;
 	}
 }
 
@@ -6618,403 +7702,456 @@ namespace DDLReflect
 	static FIELD_INFO _class_SGGAME_C2S_fieldinfos[] = 
 	{
 		// 0 Ping
-		// 1 GetServerList
-		// 2 EnterServer
+		// 1 BindAccount
+		{TYPE_STRING, "device_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "username", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "password", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 GetServerList
+		// 3 EnterServer
 		{TYPE_U32, "server_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 3 QueryAvatar
-		// 4 CreateAvatar
+		// 4 QueryAvatar
+		// 5 CreateAvatar
 		{TYPE_STRING, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 DeleteAvatar
-		// 6 EnterGame
-		// 7 LeaveGame
-		// 8 QueryServerTime
-		// 9 QueryPlayer
+		// 6 DeleteAvatar
+		// 7 EnterGame
+		// 8 LeaveGame
+		// 9 QueryServerTime
+		// 10 QueryPlayer
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 10 QueryGenerals
+		// 11 QueryGenerals
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 11 QuerySoldiers
+		// 12 QuerySoldiers
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 12 QueryBag
+		// 13 QueryBag
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 13 QueryOtherPlayers
+		// 14 QueryOtherPlayer
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 15 QueryOtherPlayers
 		{TYPE_STRING, "current_town_map", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "num", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 14 EquipItem
+		// 16 EquipItem
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "slots", 0, 0, &_rfl_struct_SG_EQUIP_SLOTS_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 15 EquipGenerals
+		// 17 EquipGenerals
 		{TYPE_U32|TYPE_ARRAY, "generals", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 16 EquipSoldiers
+		// 18 EquipSoldiers
 		{TYPE_U32|TYPE_ARRAY, "soldiers", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 17 UnLockSoldier
+		// 19 UnLockSoldier
 		{TYPE_U32, "soldier_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 18 EnhanceSoldier
+		// 20 EnhanceSoldier
 		{TYPE_U32, "soldier_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 19 EnhanceEquipt
+		// 21 EnhanceEquipt
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 20 ExtendEquipt
+		// 22 ExtendEquipt
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_UUID, "puuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 21 EnhanceCoolDown
-		// 22 EnhanceCoolDownClear
-		// 23 IncreaseEquipCoolDown
-		// 24 RefreshEquipNormal
+		// 23 EnhanceCoolDown
+		// 24 EnhanceCoolDownClear
+		// 25 IncreaseEquipCoolDown
+		// 26 RefreshEquipNormal
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 25 RefreshEquipProperty
+		// 27 RefreshEquipProperty
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 26 RefreshEquipAbility
+		// 28 RefreshEquipAbility
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 27 RefreshEquipDecideAccept
+		// 29 RefreshEquipDecideAccept
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 28 BeginBattle
+		// 30 BeginBattle
 		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 29 EndBattle
+		// 31 EndBattle
 		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "auto_combat", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 30 EquipGem
+		// 32 EquipGem
 		{TYPE_UUID, "item_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gem_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 31 UnequipGem
+		// 33 UnequipGem
 		{TYPE_UUID, "item_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gem_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 32 GemCombine
+		// 34 GemCombine
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 33 SetGeneralStatus
+		// 35 SetGeneralStatus
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "status", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 34 QueryPlayerQuest
+		// 36 QueryPlayerQuest
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 35 SaveQuestData
-		{TYPE_U32, "quest_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U32, "counter", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U8, "status", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 36 FinishQuest
+		// 37 SaveQuestData
+		{TYPE_STRUCT|TYPE_ARRAY, "quest_list", 0, 0, &_rfl_struct_SG_QUEST_LIVE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 38 FinishQuest
 		{TYPE_U32, "quest_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 37 HaloCoolDown
-		// 38 HaloIncreaseEXP
+		// 39 HaloCoolDown
+		// 40 HaloIncreaseEXP
 		{TYPE_U8, "halo_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 39 HaloGetCoolDown
-		// 40 GetPaid
-		// 41 UpgradeTitle
-		// 42 BuyGoods
+		// 41 HaloGetCoolDown
+		// 42 GetPaid
+		// 43 UpgradeTitle
+		// 44 BuyGoods
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 43 SellItem
+		// 45 SellItem
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 44 QueryPlayerPVPInfo
+		// 46 QueryPlayerPVPInfo
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 45 QueryPlayerRankList
-		// 46 PVPCoolDown
-		// 47 PVPGetRestTime
-		// 48 PVPRecord
-		// 49 PVPHeroList
-		// 50 PVPDailyReward
-		// 51 PVPBattleBegin
+		// 47 QueryPlayerRankList
+		// 48 PVPCoolDown
+		// 49 PVPGetRestTime
+		// 50 PVPRecord
+		// 51 PVPHeroList
+		// 52 PVPDailyReward
+		// 53 PVPBattleBegin
 		{TYPE_U32, "defender", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 52 PVPBattleEnd
+		// 54 PVPBattleEnd
 		{TYPE_U32, "defender", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 53 PVPCoolDownClear
-		// 54 PVPIncreateBattleTimes
-		// 55 QueryInstance
-		// 56 EnterInstance
+		// 55 PVPCoolDownClear
+		// 56 PVPIncreateBattleTimes
+		// 57 QueryInstance
+		// 58 EnterInstance
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "difficulty", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 57 BeginInstanceBattle
+		// 59 BeginInstanceBattle
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "map_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 58 EndInstanceBattle
+		// 60 EndInstanceBattle
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "map_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "auto_combat", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 59 ResetInstance
+		// 61 ResetInstance
 		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 60 SaveLastTownMap
+		// 62 SaveLastTownMap
 		{TYPE_STRING, "last_town_map", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 61 CreateLeague
+		// 63 CreateLeague
 		{TYPE_STRING, "league_name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 62 ApplyJoinLeague
+		// 64 ApplyJoinLeague
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 63 QueryLeagueApplyList
+		// 65 QueryLeagueApplyList
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 64 QueryLeague
+		// 66 QueryLeague
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 65 QueryLeagueList
-		// 66 QueryLeagueMemberList
+		// 67 QueryLeagueList
+		{TYPE_U32, "start_index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 68 QueryLeagueMemberList
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 67 QueryLeagueMemberInfo
+		// 69 QueryLeagueMemberInfo
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 68 ContributeLeague
+		// 70 ContributeLeague
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "energy", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 69 HandleApply
+		// 71 HandleApply
 		{TYPE_U32, "applyer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "allowed", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 70 QueryLeagueNotice
-		// 71 SetLeagueNotice
+		// 72 QueryLeagueNotice
+		// 73 SetLeagueNotice
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "notice_content", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 72 SetLeagueOwner
+		// 74 SetLeagueOwner
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 73 DissolveLeague
-		// 74 SetMemberPosition
+		// 75 DissolveLeague
+		// 76 SetMemberPosition
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "position", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 75 DismissMember
+		// 77 DismissMember
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 76 ExitLeague
-		// 77 QueryLeagueLog
-		// 78 LeagueToast
+		// 78 ExitLeague
+		// 79 QueryLeagueLog
+		// 80 LeagueToast
 		{TYPE_U8, "wine_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 79 SalaryGet
-		// 80 SalaryGetBat
-		// 81 BuyEnergy
-		// 82 EnhanceTurbo
-		// 83 EquipTurboSkill
+		// 81 SalaryGet
+		// 82 SalaryGetBat
+		// 83 BuyEnergy
+		// 84 EnhanceTurbo
+		// 85 EquipTurboSkill
 		{TYPE_STRUCT, "skill_slot", 0, 0, &_rfl_struct_SG_TURBO_SKILL_SLOT_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 84 MakeEquipt
+		// 86 MakeEquipt
 		{TYPE_U32, "equipt_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 85 QueryActionAvailable
+		// 87 QueryActionAvailable
 		{TYPE_U32|TYPE_ARRAY, "action_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 86 QueryFriendList
-		// 87 QueryFriendSearchList
+		// 88 QueryFriendList
+		// 89 QueryFriendSearchList
 		{TYPE_STRING, "nick", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 88 QueryFriendInvitationList
-		// 89 InviteFriend
+		// 90 QueryFriendInvitationList
+		// 91 InviteFriend
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 90 AcceptFriend
+		// 92 AcceptFriend
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 91 RefuseInvitation
+		// 93 RefuseInvitation
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 92 DelFriend
+		// 94 DelFriend
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 93 SendChat
+		// 95 SendChat
 		{TYPE_STRUCT, "send_info", 0, 0, &_rfl_struct_SG_CHAT_SEND_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 94 ReceiveChat
+		// 96 ReceiveChat
 		{TYPE_U32|TYPE_ARRAY, "channel_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 95 QueryLeagueDianjiangList
+		// 97 QueryLeagueDianjiangList
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 96 JoinLeagueDianjiang
+		// 98 JoinLeagueDianjiang
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 97 QueryLeagueDianjiangReward
+		// 99 QueryLeagueDianjiangReward
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 98 LeagueDianjiangSummonNPC
+		// 100 LeagueDianjiangSummonNPC
 		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 99 QueryAstrologyBag
-		// 100 SaveToBag
+		// 101 QueryAstrologyBag
+		// 102 SaveToBag
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 101 SetAstrologyBallStatus
+		// 103 SetAstrologyBallStatus
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "status", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 102 EnhanceAstrologyBall
+		// 104 EnhanceAstrologyBall
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "general_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 103 Strology
+		// 105 Strology
 		{TYPE_U32, "astrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 104 StrologyAuto
+		// 106 StrologyAuto
 		{TYPE_U32, "RestSlotCount", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 105 Devour
+		// 107 Devour
 		{TYPE_U8, "bag_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 106 UseItem
+		// 108 UseItem
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "target_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 107 FeedHorse
+		// 109 FeedHorse
 		{TYPE_U8, "feed_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 108 QueryBossRushInfo
-		// 109 QueryBossRushSupportInfo
-		// 110 BeginBossRushBattle
+		// 110 QueryBossRushInfo
+		// 111 QueryBossRushSupportInfo
+		// 112 BeginBossRushBattle
 		{TYPE_U32, "level_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "init_boss_hp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 111 EndBossRushBattle
+		// 113 EndBossRushBattle
 		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "total_damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 112 BeginBossRushSupportBattle
+		// 114 BeginBossRushSupportBattle
 		{TYPE_U32, "friend_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "level_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 113 EndBossRushSupportBattle
+		// 115 EndBossRushSupportBattle
 		{TYPE_U32, "friend_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "total_damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 114 RequestBossRushSupport
-		// 115 CancelBossRush
-		// 116 AddBossRushRemainingTimes
-		// 117 AwardBossRush
-		// 118 AwardBossRushSupport
+		// 116 RequestBossRushSupport
+		// 117 CancelBossRush
+		// 118 AddBossRushRemainingTimes
+		// 119 AwardBossRush
+		// 120 AwardBossRushSupport
 		{TYPE_U32, "friend_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "level_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "level_url", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 119 QueryDiceNum
-		// 120 QueryNewcomerGuideInfo
-		// 121 ActivateNewcomerGuide
+		// 121 QueryDiceNum
+		// 122 QueryNewcomerGuideInfo
+		// 123 ActivateNewcomerGuide
 		{TYPE_U32, "function_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 122 FinishNewcomerGuide
+		// 124 FinishNewcomerGuide
 		{TYPE_U32, "function_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 123 QueryWorldBossRankInfo
-		// 124 BeginWorldBossBattle
+		// 125 QueryWorldBossRankInfo
+		// 126 BeginWorldBossBattle
 		{TYPE_U32, "bInstantResurrection", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 125 InspireWorldBossBattle
-		// 126 UpdateWorldBossBattle
+		// 127 InspireWorldBossBattle
+		// 128 UpdateWorldBossBattle
 		{TYPE_U32, "damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 127 EndWorldBossBattle
+		// 129 EndWorldBossBattle
 		{TYPE_U32, "damage", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 128 AwardWorldBossRank
-		// 129 AwardWorldBossAttendance
-		// 130 Recharge
+		// 130 AwardWorldBossRank
+		// 131 AwardWorldBossAttendance
+		// 132 Recharge
 		{TYPE_U32, "index", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 133 QueryLeagueBattle
+		{TYPE_U32, "league_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "loop_times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 134 AwardLeagueBattle
+		{TYPE_U32, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 135 QueryLeagueBattleReward
+		// 136 QueryLeagueBattleInfo
+		// 137 QueryLeagueBattleRankInfo
+		// 138 SignUp
+		{TYPE_U32, "action_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 139 QueryGoal
+		// 140 AwardGoalChapter
+		{TYPE_U32, "chapter_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 141 AwardAction
+		{TYPE_U32, "action_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 142 AutoCombatPVE
+		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "NumTimes", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 143 AutoCombatInstance
+		{TYPE_U32, "instance_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "map_url_array", 0, 0, &_rfl_struct_SG_MAP_URL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "NumTimes", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 144 QueryFightValue
+		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 145 CheckMail
+		// 146 ReceiveMail
+		{TYPE_U32, "mail_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 147 RechargeBonus
+		{TYPE_U32, "bonus_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_C2S_funcinfos[] = 
 	{
 		{"Ping", 0, _class_SGGAME_C2S_fieldinfos+0},
-		{"GetServerList", 0, _class_SGGAME_C2S_fieldinfos+0},
-		{"EnterServer", 1, _class_SGGAME_C2S_fieldinfos+0},
-		{"QueryAvatar", 0, _class_SGGAME_C2S_fieldinfos+1},
-		{"CreateAvatar", 2, _class_SGGAME_C2S_fieldinfos+1},
-		{"DeleteAvatar", 0, _class_SGGAME_C2S_fieldinfos+3},
-		{"EnterGame", 0, _class_SGGAME_C2S_fieldinfos+3},
-		{"LeaveGame", 0, _class_SGGAME_C2S_fieldinfos+3},
-		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+3},
-		{"QueryPlayer", 1, _class_SGGAME_C2S_fieldinfos+3},
-		{"QueryGenerals", 1, _class_SGGAME_C2S_fieldinfos+4},
-		{"QuerySoldiers", 1, _class_SGGAME_C2S_fieldinfos+5},
-		{"QueryBag", 1, _class_SGGAME_C2S_fieldinfos+6},
-		{"QueryOtherPlayers", 2, _class_SGGAME_C2S_fieldinfos+7},
-		{"EquipItem", 2, _class_SGGAME_C2S_fieldinfos+9},
-		{"EquipGenerals", 2, _class_SGGAME_C2S_fieldinfos+11},
-		{"EquipSoldiers", 2, _class_SGGAME_C2S_fieldinfos+13},
-		{"UnLockSoldier", 1, _class_SGGAME_C2S_fieldinfos+15},
-		{"EnhanceSoldier", 1, _class_SGGAME_C2S_fieldinfos+16},
-		{"EnhanceEquipt", 1, _class_SGGAME_C2S_fieldinfos+17},
-		{"ExtendEquipt", 2, _class_SGGAME_C2S_fieldinfos+18},
-		{"EnhanceCoolDown", 0, _class_SGGAME_C2S_fieldinfos+20},
-		{"EnhanceCoolDownClear", 0, _class_SGGAME_C2S_fieldinfos+20},
-		{"IncreaseEquipCoolDown", 0, _class_SGGAME_C2S_fieldinfos+20},
-		{"RefreshEquipNormal", 1, _class_SGGAME_C2S_fieldinfos+20},
-		{"RefreshEquipProperty", 1, _class_SGGAME_C2S_fieldinfos+21},
-		{"RefreshEquipAbility", 1, _class_SGGAME_C2S_fieldinfos+22},
-		{"RefreshEquipDecideAccept", 1, _class_SGGAME_C2S_fieldinfos+23},
-		{"BeginBattle", 1, _class_SGGAME_C2S_fieldinfos+24},
-		{"EndBattle", 3, _class_SGGAME_C2S_fieldinfos+25},
-		{"EquipGem", 2, _class_SGGAME_C2S_fieldinfos+28},
-		{"UnequipGem", 2, _class_SGGAME_C2S_fieldinfos+30},
-		{"GemCombine", 1, _class_SGGAME_C2S_fieldinfos+32},
-		{"SetGeneralStatus", 2, _class_SGGAME_C2S_fieldinfos+33},
-		{"QueryPlayerQuest", 1, _class_SGGAME_C2S_fieldinfos+35},
-		{"SaveQuestData", 3, _class_SGGAME_C2S_fieldinfos+36},
-		{"FinishQuest", 2, _class_SGGAME_C2S_fieldinfos+39},
-		{"HaloCoolDown", 0, _class_SGGAME_C2S_fieldinfos+41},
-		{"HaloIncreaseEXP", 1, _class_SGGAME_C2S_fieldinfos+41},
-		{"HaloGetCoolDown", 0, _class_SGGAME_C2S_fieldinfos+42},
-		{"GetPaid", 0, _class_SGGAME_C2S_fieldinfos+42},
-		{"UpgradeTitle", 0, _class_SGGAME_C2S_fieldinfos+42},
-		{"BuyGoods", 1, _class_SGGAME_C2S_fieldinfos+42},
-		{"SellItem", 3, _class_SGGAME_C2S_fieldinfos+43},
-		{"QueryPlayerPVPInfo", 1, _class_SGGAME_C2S_fieldinfos+46},
-		{"QueryPlayerRankList", 0, _class_SGGAME_C2S_fieldinfos+47},
-		{"PVPCoolDown", 0, _class_SGGAME_C2S_fieldinfos+47},
-		{"PVPGetRestTime", 0, _class_SGGAME_C2S_fieldinfos+47},
-		{"PVPRecord", 0, _class_SGGAME_C2S_fieldinfos+47},
-		{"PVPHeroList", 0, _class_SGGAME_C2S_fieldinfos+47},
-		{"PVPDailyReward", 0, _class_SGGAME_C2S_fieldinfos+47},
-		{"PVPBattleBegin", 1, _class_SGGAME_C2S_fieldinfos+47},
-		{"PVPBattleEnd", 2, _class_SGGAME_C2S_fieldinfos+48},
-		{"PVPCoolDownClear", 0, _class_SGGAME_C2S_fieldinfos+50},
-		{"PVPIncreateBattleTimes", 0, _class_SGGAME_C2S_fieldinfos+50},
-		{"QueryInstance", 0, _class_SGGAME_C2S_fieldinfos+50},
-		{"EnterInstance", 2, _class_SGGAME_C2S_fieldinfos+50},
-		{"BeginInstanceBattle", 2, _class_SGGAME_C2S_fieldinfos+52},
-		{"EndInstanceBattle", 4, _class_SGGAME_C2S_fieldinfos+54},
-		{"ResetInstance", 1, _class_SGGAME_C2S_fieldinfos+58},
-		{"SaveLastTownMap", 1, _class_SGGAME_C2S_fieldinfos+59},
-		{"CreateLeague", 1, _class_SGGAME_C2S_fieldinfos+60},
-		{"ApplyJoinLeague", 1, _class_SGGAME_C2S_fieldinfos+61},
-		{"QueryLeagueApplyList", 1, _class_SGGAME_C2S_fieldinfos+62},
-		{"QueryLeague", 1, _class_SGGAME_C2S_fieldinfos+63},
-		{"QueryLeagueList", 0, _class_SGGAME_C2S_fieldinfos+64},
-		{"QueryLeagueMemberList", 1, _class_SGGAME_C2S_fieldinfos+64},
-		{"QueryLeagueMemberInfo", 1, _class_SGGAME_C2S_fieldinfos+65},
-		{"ContributeLeague", 2, _class_SGGAME_C2S_fieldinfos+66},
-		{"HandleApply", 2, _class_SGGAME_C2S_fieldinfos+68},
-		{"QueryLeagueNotice", 0, _class_SGGAME_C2S_fieldinfos+70},
-		{"SetLeagueNotice", 2, _class_SGGAME_C2S_fieldinfos+70},
-		{"SetLeagueOwner", 1, _class_SGGAME_C2S_fieldinfos+72},
-		{"DissolveLeague", 0, _class_SGGAME_C2S_fieldinfos+73},
-		{"SetMemberPosition", 2, _class_SGGAME_C2S_fieldinfos+73},
-		{"DismissMember", 1, _class_SGGAME_C2S_fieldinfos+75},
-		{"ExitLeague", 0, _class_SGGAME_C2S_fieldinfos+76},
-		{"QueryLeagueLog", 0, _class_SGGAME_C2S_fieldinfos+76},
-		{"LeagueToast", 1, _class_SGGAME_C2S_fieldinfos+76},
-		{"SalaryGet", 0, _class_SGGAME_C2S_fieldinfos+77},
-		{"SalaryGetBat", 0, _class_SGGAME_C2S_fieldinfos+77},
-		{"BuyEnergy", 0, _class_SGGAME_C2S_fieldinfos+77},
-		{"EnhanceTurbo", 0, _class_SGGAME_C2S_fieldinfos+77},
-		{"EquipTurboSkill", 1, _class_SGGAME_C2S_fieldinfos+77},
-		{"MakeEquipt", 1, _class_SGGAME_C2S_fieldinfos+78},
-		{"QueryActionAvailable", 2, _class_SGGAME_C2S_fieldinfos+79},
-		{"QueryFriendList", 0, _class_SGGAME_C2S_fieldinfos+81},
-		{"QueryFriendSearchList", 1, _class_SGGAME_C2S_fieldinfos+81},
-		{"QueryFriendInvitationList", 0, _class_SGGAME_C2S_fieldinfos+82},
-		{"InviteFriend", 1, _class_SGGAME_C2S_fieldinfos+82},
-		{"AcceptFriend", 1, _class_SGGAME_C2S_fieldinfos+83},
-		{"RefuseInvitation", 1, _class_SGGAME_C2S_fieldinfos+84},
-		{"DelFriend", 1, _class_SGGAME_C2S_fieldinfos+85},
-		{"SendChat", 1, _class_SGGAME_C2S_fieldinfos+86},
-		{"ReceiveChat", 2, _class_SGGAME_C2S_fieldinfos+87},
-		{"QueryLeagueDianjiangList", 1, _class_SGGAME_C2S_fieldinfos+89},
-		{"JoinLeagueDianjiang", 1, _class_SGGAME_C2S_fieldinfos+90},
-		{"QueryLeagueDianjiangReward", 2, _class_SGGAME_C2S_fieldinfos+91},
-		{"LeagueDianjiangSummonNPC", 1, _class_SGGAME_C2S_fieldinfos+93},
-		{"QueryAstrologyBag", 0, _class_SGGAME_C2S_fieldinfos+94},
-		{"SaveToBag", 1, _class_SGGAME_C2S_fieldinfos+94},
-		{"SetAstrologyBallStatus", 3, _class_SGGAME_C2S_fieldinfos+95},
-		{"EnhanceAstrologyBall", 3, _class_SGGAME_C2S_fieldinfos+98},
-		{"Strology", 1, _class_SGGAME_C2S_fieldinfos+101},
-		{"StrologyAuto", 1, _class_SGGAME_C2S_fieldinfos+102},
-		{"Devour", 1, _class_SGGAME_C2S_fieldinfos+103},
-		{"UseItem", 4, _class_SGGAME_C2S_fieldinfos+104},
-		{"FeedHorse", 1, _class_SGGAME_C2S_fieldinfos+108},
-		{"QueryBossRushInfo", 0, _class_SGGAME_C2S_fieldinfos+109},
-		{"QueryBossRushSupportInfo", 0, _class_SGGAME_C2S_fieldinfos+109},
-		{"BeginBossRushBattle", 3, _class_SGGAME_C2S_fieldinfos+109},
-		{"EndBossRushBattle", 3, _class_SGGAME_C2S_fieldinfos+112},
-		{"BeginBossRushSupportBattle", 3, _class_SGGAME_C2S_fieldinfos+115},
-		{"EndBossRushSupportBattle", 4, _class_SGGAME_C2S_fieldinfos+118},
-		{"RequestBossRushSupport", 0, _class_SGGAME_C2S_fieldinfos+122},
-		{"CancelBossRush", 0, _class_SGGAME_C2S_fieldinfos+122},
-		{"AddBossRushRemainingTimes", 0, _class_SGGAME_C2S_fieldinfos+122},
-		{"AwardBossRush", 0, _class_SGGAME_C2S_fieldinfos+122},
-		{"AwardBossRushSupport", 3, _class_SGGAME_C2S_fieldinfos+122},
-		{"QueryDiceNum", 0, _class_SGGAME_C2S_fieldinfos+125},
-		{"QueryNewcomerGuideInfo", 0, _class_SGGAME_C2S_fieldinfos+125},
-		{"ActivateNewcomerGuide", 1, _class_SGGAME_C2S_fieldinfos+125},
-		{"FinishNewcomerGuide", 1, _class_SGGAME_C2S_fieldinfos+126},
-		{"QueryWorldBossRankInfo", 0, _class_SGGAME_C2S_fieldinfos+127},
-		{"BeginWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+127},
-		{"InspireWorldBossBattle", 0, _class_SGGAME_C2S_fieldinfos+128},
-		{"UpdateWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+128},
-		{"EndWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+129},
-		{"AwardWorldBossRank", 0, _class_SGGAME_C2S_fieldinfos+130},
-		{"AwardWorldBossAttendance", 0, _class_SGGAME_C2S_fieldinfos+130},
-		{"Recharge", 1, _class_SGGAME_C2S_fieldinfos+130},
+		{"BindAccount", 3, _class_SGGAME_C2S_fieldinfos+0},
+		{"GetServerList", 0, _class_SGGAME_C2S_fieldinfos+3},
+		{"EnterServer", 1, _class_SGGAME_C2S_fieldinfos+3},
+		{"QueryAvatar", 0, _class_SGGAME_C2S_fieldinfos+4},
+		{"CreateAvatar", 2, _class_SGGAME_C2S_fieldinfos+4},
+		{"DeleteAvatar", 0, _class_SGGAME_C2S_fieldinfos+6},
+		{"EnterGame", 0, _class_SGGAME_C2S_fieldinfos+6},
+		{"LeaveGame", 0, _class_SGGAME_C2S_fieldinfos+6},
+		{"QueryServerTime", 0, _class_SGGAME_C2S_fieldinfos+6},
+		{"QueryPlayer", 1, _class_SGGAME_C2S_fieldinfos+6},
+		{"QueryGenerals", 1, _class_SGGAME_C2S_fieldinfos+7},
+		{"QuerySoldiers", 1, _class_SGGAME_C2S_fieldinfos+8},
+		{"QueryBag", 1, _class_SGGAME_C2S_fieldinfos+9},
+		{"QueryOtherPlayer", 1, _class_SGGAME_C2S_fieldinfos+10},
+		{"QueryOtherPlayers", 2, _class_SGGAME_C2S_fieldinfos+11},
+		{"EquipItem", 2, _class_SGGAME_C2S_fieldinfos+13},
+		{"EquipGenerals", 2, _class_SGGAME_C2S_fieldinfos+15},
+		{"EquipSoldiers", 2, _class_SGGAME_C2S_fieldinfos+17},
+		{"UnLockSoldier", 1, _class_SGGAME_C2S_fieldinfos+19},
+		{"EnhanceSoldier", 1, _class_SGGAME_C2S_fieldinfos+20},
+		{"EnhanceEquipt", 1, _class_SGGAME_C2S_fieldinfos+21},
+		{"ExtendEquipt", 2, _class_SGGAME_C2S_fieldinfos+22},
+		{"EnhanceCoolDown", 0, _class_SGGAME_C2S_fieldinfos+24},
+		{"EnhanceCoolDownClear", 0, _class_SGGAME_C2S_fieldinfos+24},
+		{"IncreaseEquipCoolDown", 0, _class_SGGAME_C2S_fieldinfos+24},
+		{"RefreshEquipNormal", 1, _class_SGGAME_C2S_fieldinfos+24},
+		{"RefreshEquipProperty", 1, _class_SGGAME_C2S_fieldinfos+25},
+		{"RefreshEquipAbility", 1, _class_SGGAME_C2S_fieldinfos+26},
+		{"RefreshEquipDecideAccept", 1, _class_SGGAME_C2S_fieldinfos+27},
+		{"BeginBattle", 1, _class_SGGAME_C2S_fieldinfos+28},
+		{"EndBattle", 3, _class_SGGAME_C2S_fieldinfos+29},
+		{"EquipGem", 2, _class_SGGAME_C2S_fieldinfos+32},
+		{"UnequipGem", 2, _class_SGGAME_C2S_fieldinfos+34},
+		{"GemCombine", 1, _class_SGGAME_C2S_fieldinfos+36},
+		{"SetGeneralStatus", 2, _class_SGGAME_C2S_fieldinfos+37},
+		{"QueryPlayerQuest", 1, _class_SGGAME_C2S_fieldinfos+39},
+		{"SaveQuestData", 2, _class_SGGAME_C2S_fieldinfos+40},
+		{"FinishQuest", 2, _class_SGGAME_C2S_fieldinfos+42},
+		{"HaloCoolDown", 0, _class_SGGAME_C2S_fieldinfos+44},
+		{"HaloIncreaseEXP", 1, _class_SGGAME_C2S_fieldinfos+44},
+		{"HaloGetCoolDown", 0, _class_SGGAME_C2S_fieldinfos+45},
+		{"GetPaid", 0, _class_SGGAME_C2S_fieldinfos+45},
+		{"UpgradeTitle", 0, _class_SGGAME_C2S_fieldinfos+45},
+		{"BuyGoods", 1, _class_SGGAME_C2S_fieldinfos+45},
+		{"SellItem", 3, _class_SGGAME_C2S_fieldinfos+46},
+		{"QueryPlayerPVPInfo", 1, _class_SGGAME_C2S_fieldinfos+49},
+		{"QueryPlayerRankList", 0, _class_SGGAME_C2S_fieldinfos+50},
+		{"PVPCoolDown", 0, _class_SGGAME_C2S_fieldinfos+50},
+		{"PVPGetRestTime", 0, _class_SGGAME_C2S_fieldinfos+50},
+		{"PVPRecord", 0, _class_SGGAME_C2S_fieldinfos+50},
+		{"PVPHeroList", 0, _class_SGGAME_C2S_fieldinfos+50},
+		{"PVPDailyReward", 0, _class_SGGAME_C2S_fieldinfos+50},
+		{"PVPBattleBegin", 1, _class_SGGAME_C2S_fieldinfos+50},
+		{"PVPBattleEnd", 2, _class_SGGAME_C2S_fieldinfos+51},
+		{"PVPCoolDownClear", 0, _class_SGGAME_C2S_fieldinfos+53},
+		{"PVPIncreateBattleTimes", 0, _class_SGGAME_C2S_fieldinfos+53},
+		{"QueryInstance", 0, _class_SGGAME_C2S_fieldinfos+53},
+		{"EnterInstance", 2, _class_SGGAME_C2S_fieldinfos+53},
+		{"BeginInstanceBattle", 2, _class_SGGAME_C2S_fieldinfos+55},
+		{"EndInstanceBattle", 4, _class_SGGAME_C2S_fieldinfos+57},
+		{"ResetInstance", 1, _class_SGGAME_C2S_fieldinfos+61},
+		{"SaveLastTownMap", 1, _class_SGGAME_C2S_fieldinfos+62},
+		{"CreateLeague", 1, _class_SGGAME_C2S_fieldinfos+63},
+		{"ApplyJoinLeague", 1, _class_SGGAME_C2S_fieldinfos+64},
+		{"QueryLeagueApplyList", 1, _class_SGGAME_C2S_fieldinfos+65},
+		{"QueryLeague", 1, _class_SGGAME_C2S_fieldinfos+66},
+		{"QueryLeagueList", 1, _class_SGGAME_C2S_fieldinfos+67},
+		{"QueryLeagueMemberList", 1, _class_SGGAME_C2S_fieldinfos+68},
+		{"QueryLeagueMemberInfo", 1, _class_SGGAME_C2S_fieldinfos+69},
+		{"ContributeLeague", 2, _class_SGGAME_C2S_fieldinfos+70},
+		{"HandleApply", 2, _class_SGGAME_C2S_fieldinfos+72},
+		{"QueryLeagueNotice", 0, _class_SGGAME_C2S_fieldinfos+74},
+		{"SetLeagueNotice", 2, _class_SGGAME_C2S_fieldinfos+74},
+		{"SetLeagueOwner", 1, _class_SGGAME_C2S_fieldinfos+76},
+		{"DissolveLeague", 0, _class_SGGAME_C2S_fieldinfos+77},
+		{"SetMemberPosition", 2, _class_SGGAME_C2S_fieldinfos+77},
+		{"DismissMember", 1, _class_SGGAME_C2S_fieldinfos+79},
+		{"ExitLeague", 0, _class_SGGAME_C2S_fieldinfos+80},
+		{"QueryLeagueLog", 0, _class_SGGAME_C2S_fieldinfos+80},
+		{"LeagueToast", 1, _class_SGGAME_C2S_fieldinfos+80},
+		{"SalaryGet", 0, _class_SGGAME_C2S_fieldinfos+81},
+		{"SalaryGetBat", 0, _class_SGGAME_C2S_fieldinfos+81},
+		{"BuyEnergy", 0, _class_SGGAME_C2S_fieldinfos+81},
+		{"EnhanceTurbo", 0, _class_SGGAME_C2S_fieldinfos+81},
+		{"EquipTurboSkill", 1, _class_SGGAME_C2S_fieldinfos+81},
+		{"MakeEquipt", 1, _class_SGGAME_C2S_fieldinfos+82},
+		{"QueryActionAvailable", 2, _class_SGGAME_C2S_fieldinfos+83},
+		{"QueryFriendList", 0, _class_SGGAME_C2S_fieldinfos+85},
+		{"QueryFriendSearchList", 1, _class_SGGAME_C2S_fieldinfos+85},
+		{"QueryFriendInvitationList", 0, _class_SGGAME_C2S_fieldinfos+86},
+		{"InviteFriend", 1, _class_SGGAME_C2S_fieldinfos+86},
+		{"AcceptFriend", 1, _class_SGGAME_C2S_fieldinfos+87},
+		{"RefuseInvitation", 1, _class_SGGAME_C2S_fieldinfos+88},
+		{"DelFriend", 1, _class_SGGAME_C2S_fieldinfos+89},
+		{"SendChat", 1, _class_SGGAME_C2S_fieldinfos+90},
+		{"ReceiveChat", 2, _class_SGGAME_C2S_fieldinfos+91},
+		{"QueryLeagueDianjiangList", 1, _class_SGGAME_C2S_fieldinfos+93},
+		{"JoinLeagueDianjiang", 1, _class_SGGAME_C2S_fieldinfos+94},
+		{"QueryLeagueDianjiangReward", 2, _class_SGGAME_C2S_fieldinfos+95},
+		{"LeagueDianjiangSummonNPC", 1, _class_SGGAME_C2S_fieldinfos+97},
+		{"QueryAstrologyBag", 0, _class_SGGAME_C2S_fieldinfos+98},
+		{"SaveToBag", 1, _class_SGGAME_C2S_fieldinfos+98},
+		{"SetAstrologyBallStatus", 3, _class_SGGAME_C2S_fieldinfos+99},
+		{"EnhanceAstrologyBall", 3, _class_SGGAME_C2S_fieldinfos+102},
+		{"Strology", 1, _class_SGGAME_C2S_fieldinfos+105},
+		{"StrologyAuto", 1, _class_SGGAME_C2S_fieldinfos+106},
+		{"Devour", 1, _class_SGGAME_C2S_fieldinfos+107},
+		{"UseItem", 4, _class_SGGAME_C2S_fieldinfos+108},
+		{"FeedHorse", 1, _class_SGGAME_C2S_fieldinfos+112},
+		{"QueryBossRushInfo", 0, _class_SGGAME_C2S_fieldinfos+113},
+		{"QueryBossRushSupportInfo", 0, _class_SGGAME_C2S_fieldinfos+113},
+		{"BeginBossRushBattle", 3, _class_SGGAME_C2S_fieldinfos+113},
+		{"EndBossRushBattle", 3, _class_SGGAME_C2S_fieldinfos+116},
+		{"BeginBossRushSupportBattle", 3, _class_SGGAME_C2S_fieldinfos+119},
+		{"EndBossRushSupportBattle", 4, _class_SGGAME_C2S_fieldinfos+122},
+		{"RequestBossRushSupport", 0, _class_SGGAME_C2S_fieldinfos+126},
+		{"CancelBossRush", 0, _class_SGGAME_C2S_fieldinfos+126},
+		{"AddBossRushRemainingTimes", 0, _class_SGGAME_C2S_fieldinfos+126},
+		{"AwardBossRush", 0, _class_SGGAME_C2S_fieldinfos+126},
+		{"AwardBossRushSupport", 3, _class_SGGAME_C2S_fieldinfos+126},
+		{"QueryDiceNum", 0, _class_SGGAME_C2S_fieldinfos+129},
+		{"QueryNewcomerGuideInfo", 0, _class_SGGAME_C2S_fieldinfos+129},
+		{"ActivateNewcomerGuide", 1, _class_SGGAME_C2S_fieldinfos+129},
+		{"FinishNewcomerGuide", 1, _class_SGGAME_C2S_fieldinfos+130},
+		{"QueryWorldBossRankInfo", 0, _class_SGGAME_C2S_fieldinfos+131},
+		{"BeginWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+131},
+		{"InspireWorldBossBattle", 0, _class_SGGAME_C2S_fieldinfos+132},
+		{"UpdateWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+132},
+		{"EndWorldBossBattle", 1, _class_SGGAME_C2S_fieldinfos+133},
+		{"AwardWorldBossRank", 0, _class_SGGAME_C2S_fieldinfos+134},
+		{"AwardWorldBossAttendance", 0, _class_SGGAME_C2S_fieldinfos+134},
+		{"Recharge", 1, _class_SGGAME_C2S_fieldinfos+134},
+		{"QueryLeagueBattle", 2, _class_SGGAME_C2S_fieldinfos+135},
+		{"AwardLeagueBattle", 1, _class_SGGAME_C2S_fieldinfos+137},
+		{"QueryLeagueBattleReward", 0, _class_SGGAME_C2S_fieldinfos+138},
+		{"QueryLeagueBattleInfo", 0, _class_SGGAME_C2S_fieldinfos+138},
+		{"QueryLeagueBattleRankInfo", 0, _class_SGGAME_C2S_fieldinfos+138},
+		{"SignUp", 1, _class_SGGAME_C2S_fieldinfos+138},
+		{"QueryGoal", 0, _class_SGGAME_C2S_fieldinfos+139},
+		{"AwardGoalChapter", 1, _class_SGGAME_C2S_fieldinfos+139},
+		{"AwardAction", 1, _class_SGGAME_C2S_fieldinfos+140},
+		{"AutoCombatPVE", 2, _class_SGGAME_C2S_fieldinfos+141},
+		{"AutoCombatInstance", 4, _class_SGGAME_C2S_fieldinfos+143},
+		{"QueryFightValue", 1, _class_SGGAME_C2S_fieldinfos+147},
+		{"CheckMail", 0, _class_SGGAME_C2S_fieldinfos+148},
+		{"ReceiveMail", 1, _class_SGGAME_C2S_fieldinfos+148},
+		{"RechargeBonus", 1, _class_SGGAME_C2S_fieldinfos+149},
 	};
-	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 131, _class_SGGAME_C2S_funcinfos };
+	static CLASS_INFO _class_SGGAME_C2S_info = { 0, "SGGAME_C2S", 148, _class_SGGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_C2S>()
 	{
@@ -7027,73 +8164,90 @@ namespace DDLReflect
 	static FIELD_INFO _class_SGGAME_S2C_fieldinfos[] = 
 	{
 		// 0 Pong
-		// 1 QueryServerTimeResult
+		// 1 BindAccountResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 QueryServerTimeResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 GetServerListResult
+		// 3 GetServerListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "infos", 0, 0, &_rfl_struct_SG_SERVER_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "last_server", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 3 QueryAvatarFailed
+		// 4 QueryAvatarFailed
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 4 QueryAvatarResult
+		// 5 QueryAvatarResult
 		{TYPE_STRUCT, "player", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 EnterGameResult
+		// 6 EnterGameResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 6 CreateAvatarResult
+		// 7 CreateAvatarResult
 		{TYPE_U32, "code", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 7 QueryPlayerResult
+		// 8 QueryPlayerResult
 		{TYPE_STRUCT, "player", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 8 QueryGeneralResult
+		// 9 QueryGeneralResult
 		{TYPE_STRUCT|TYPE_ARRAY, "generals", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 9 QuerySoldierResult
+		// 10 QuerySoldierResult
 		{TYPE_STRUCT|TYPE_ARRAY, "soldiers", 0, 0, &_rfl_struct_SG_SOLDIER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 10 QueryBagBegin
-		// 11 QueryBagEquipt
+		// 11 QueryBagBegin
+		// 12 QueryBagEquipt
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 12 QueryBagUsable
+		// 13 QueryBagUsable
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_USABLE_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 13 QueryBagGen
+		// 14 QueryBagGen
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 14 QueryBagMaterial
+		// 15 QueryBagMaterial
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_MATERIAL_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 15 QueryBagEnd
+		// 16 QueryBagEnd
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 16 QueryOtherPlayersResult
+		// 17 QueryOtherPlayerResult
+		{TYPE_STRUCT, "player_info", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "generals", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "soldiers", 0, 0, &_rfl_struct_SG_SOLDIER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "equipts", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count3", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 18 QueryOtherPlayersResult
 		{TYPE_STRUCT|TYPE_ARRAY, "players", 0, 0, &_rfl_struct_SG_PLAYER_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 17 EnhanceEquiptResult
+		// 19 EnhanceEquiptResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "equip_item", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 18 ExtendEquiptResult
+		// 20 ExtendEquiptResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "equip_item", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_UUID, "reduce_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 19 EnhanceCoolDownResult
+		// 21 EnhanceCoolDownResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 20 RefreshEquipDone
+		// 22 RefreshEquipDone
 		{TYPE_STRUCT, "euipt", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 21 GemCombineResult
+		// 23 RefreshEquipDecideAcceptResult
+		{TYPE_STRUCT, "equipt", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 24 GemCombineResult
 		{TYPE_STRUCT, "gem", 0, 0, &_rfl_struct_SG_GEM_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 22 HaloIncreaseEXPResult
+		// 25 UpgradeTitleResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "title", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 26 HaloIncreaseEXPResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 23 HaloCoolDownResult
+		{TYPE_U32, "halo_level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "halo_exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 27 HaloCoolDownResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "consume_rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 24 HaloGetCoolDownResult
+		// 28 HaloGetCoolDownResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 25 BeginBattleResult
+		// 29 BeginBattleResult
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 26 EndBattleResult
+		// 30 EndBattleResult
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7101,11 +8255,11 @@ namespace DDLReflect
 		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 27 QueryPlayerQuestResult
+		// 31 QueryPlayerQuestResult
 		{TYPE_STRUCT|TYPE_ARRAY, "quest_list", 0, 0, &_rfl_struct_SG_QUEST_LIVE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "nSync", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 28 FinishQuestDone
+		// 32 FinishQuestDone
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "quest_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7118,54 +8272,54 @@ namespace DDLReflect
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "consume_rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 29 BuyGoodsResult
+		// 33 BuyGoodsResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_UUID|TYPE_ARRAY, "goods", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "id_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 30 SellItemResult
+		// 34 SellItemResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 31 QueryPlayerPVPInfoResult
+		// 35 QueryPlayerPVPInfoResult
 		{TYPE_STRUCT, "pve", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 32 QueryPlayerRankListResult
+		// 36 QueryPlayerRankListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "players", 0, 0, &_rfl_struct_SG_PVP_RANK_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 33 PVPCoolDownResult
+		// 37 PVPCoolDownResult
 		{TYPE_U32, "time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 34 PVPGetRestTimeResult
+		// 38 PVPGetRestTimeResult
 		{TYPE_U32, "rest_time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 35 PVPRecordResult
+		// 39 PVPRecordResult
 		{TYPE_STRUCT|TYPE_ARRAY, "record", 0, 0, &_rfl_struct_SG_PVP_RECORD_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 36 PVPHeroListRecord
+		// 40 PVPHeroListRecord
 		{TYPE_STRUCT|TYPE_ARRAY, "players", 0, 0, &_rfl_struct_SG_PVP_HEROLIST_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 37 PVPDailyReward
+		// 41 PVPDailyReward
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 38 PVPBattleBeginResult
+		// 42 PVPBattleBeginResult
 		{TYPE_STRUCT, "SelfPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "DefenderPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 39 PVPBattleEndResult
+		// 43 PVPBattleEndResult
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 40 PVPCoolDownClearResult
+		// 44 PVPCoolDownClearResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "cost", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 41 PVPIncreateBattleTimesResult
+		// 45 PVPIncreateBattleTimesResult
 		{TYPE_U32, "rest_times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 42 QueryInstanceResult
+		// 46 QueryInstanceResult
 		{TYPE_STRUCT|TYPE_ARRAY, "instances", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 43 BeginInstanceBattleResult
+		// 47 BeginInstanceBattleResult
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 44 EnterInstanceResult
+		// 48 EnterInstanceResult
 		{TYPE_STRUCT, "instance", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 45 EndInstanceBattleResult
+		// 49 EndInstanceBattleResult
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7174,153 +8328,157 @@ namespace DDLReflect
 		{TYPE_U8, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 46 ResetInstanceResult
+		// 50 ResetInstanceResult
 		{TYPE_U8, "result", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "instance", 0, 0, &_rfl_struct_SG_INSTANCE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 47 CreateLeagueResult
+		// 51 CreateLeagueResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "league", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 48 QueryLeagueApplyListResult
+		// 52 QueryLeagueApplyListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "applyer", 0, 0, &_rfl_struct_SG_LEAGUE_APPLYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 49 QueryLeagueResult
+		// 53 QueryLeagueResult
 		{TYPE_STRUCT, "league", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 50 QueryLeagueListResult
+		// 54 QueryLeagueListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "league_list", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 51 QueryLeagueMemberListResult
+		// 55 QueryLeagueMemberListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "league_members", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 52 QueryLeagueMemberInfoResult
+		// 56 QueryLeagueMemberInfoResult
 		{TYPE_STRUCT, "member_info", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 53 ContributeLeagueResult
+		// 57 ContributeLeagueResult
 		{TYPE_STRUCT, "self_info", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "league_info", 0, 0, &_rfl_struct_SG_LEAGUE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 54 HandleApplyResult
+		// 58 HandleApplyResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "new_joiner", 0, 0, &_rfl_struct_SG_LEAGUE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 55 QueryLeagueNoticeResult
+		// 59 QueryLeagueNoticeResult
 		{TYPE_STRING, "notice_content", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 56 SetLeagueNoticeResult
+		// 60 SetLeagueNoticeResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "notice_content", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 57 SetLeagueOwnerResult
+		// 61 SetLeagueOwnerResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 58 SetMemberPositionResult
+		// 62 SetMemberPositionResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "position", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 59 DismissMemberResult
+		// 63 DismissMemberResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "member_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 60 ExitLeagueResult
+		// 64 ExitLeagueResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 61 QueryLeagueLogResult
+		// 65 QueryLeagueLogResult
 		{TYPE_STRUCT|TYPE_ARRAY, "league_log", 0, 0, &_rfl_struct_SG_LEAGUE_LOG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 62 LeagueToastResult
+		// 66 LeagueToastResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "reward_reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "reward_league_xp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 63 SalaryGetResult
+		// 67 SalaryGetResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 64 SalaryGetBatResult
+		// 68 SalaryGetBatResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 65 BuyEnergyResult
+		// 69 BuyEnergyResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "energy", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 66 EnhanceTurboResult
+		// 70 EnhanceTurboResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "turbo_level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "wake_pt", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 67 MakeEquiptResult
+		// 71 MakeEquiptResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "new_euqipt", 0, 0, &_rfl_struct_SG_EQUIPT_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "com_material", 0, 0, &_rfl_struct_SG_MATERIAL_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "key_material", 0, 0, &_rfl_struct_SG_MATERIAL_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 68 QueryActionAvailableResult
+		// 72 QueryActionAvailableResult
 		{TYPE_U32|TYPE_ARRAY, "action_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "available_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 69 QueryFriendListResult
+		// 73 QueryFriendListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "friend_list", 0, 0, &_rfl_struct_SG_FRIEND_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 70 QueryFriendListSearchResult
+		// 74 QueryFriendListSearchResult
 		{TYPE_STRUCT|TYPE_ARRAY, "search_list", 0, 0, &_rfl_struct_SG_FRIEND_SEARCH_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 71 QueryFriendInvitationListResult
+		// 75 QueryFriendInvitationListResult
 		{TYPE_STRUCT|TYPE_ARRAY, "invitation_list", 0, 0, &_rfl_struct_SG_FRIEND_INVITATION_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 72 AcceptFriendResult
+		// 76 AcceptFriendResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 73 SendChatResult
+		// 77 SendChatResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 74 ReceiveChatResult
+		// 78 ReceiveChatResult
 		{TYPE_STRUCT|TYPE_ARRAY, "chat_list", 0, 0, &_rfl_struct_SG_CHAT_RECV_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 75 QueryLeagueDianjiangListResult
+		// 79 QueryLeagueDianjiangListResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "joiner_list", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 76 JoinLeagueDianjiangResult
+		// 80 JoinLeagueDianjiangResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "self", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 77 QueryLeagueDianjiangRewardResult
+		{TYPE_STRUCT|TYPE_ARRAY, "joiner_list", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 81 QueryLeagueDianjiangRewardResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 78 LeagueDianjiangSummonNPCResult
+		// 82 LeagueDianjiangSummonNPCResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "npc_joiner", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 79 QueryAstrologyBagResult
+		{TYPE_STRUCT|TYPE_ARRAY, "joiner_list", 0, 0, &_rfl_struct_SG_LEAGUE_DIANJIANG_JOINER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 83 QueryAstrologyBagResult
 		{TYPE_U32|TYPE_ARRAY, "bag_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "tmp_bag_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 80 SaveToBagResult
+		// 84 SaveToBagResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "item_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 81 SetAstrologyBallStatusResult
+		// 85 SetAstrologyBallStatusResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "general", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 82 EnhanceAstrologyBallResult
+		// 86 EnhanceAstrologyBallResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "new_ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 83 StrologyResult
+		// 87 StrologyResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "ball_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "atrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "last_atrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 84 StrologyAutoResult
+		// 88 StrologyAutoResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "ball_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "atrologer_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 85 DevourResult
+		// 89 DevourResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "bag_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "ball_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32|TYPE_ARRAY, "devoured_list", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 86 UseItemResult
+		// 90 UseItemResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_UUID, "uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7329,7 +8487,7 @@ namespace DDLReflect
 		{TYPE_STRUCT, "general", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 87 FeedHorseResult
+		// 91 FeedHorseResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "xp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "xp_add", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7338,14 +8496,16 @@ namespace DDLReflect
 		{TYPE_U8, "feed_type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 88 QueryBossRushInfoResult
+		// 92 QueryBossRushInfoResult
 		{TYPE_STRUCT, "bossrush_info", 0, 0, &_rfl_struct_SG_BOSSRUSH_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 89 QueryBossRushSupportInfoResult
+		{TYPE_STRUCT|TYPE_ARRAY, "friend_damages", 0, 0, &_rfl_struct_SG_BOSSRUSH_FRIEND_DAMAGE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 93 QueryBossRushSupportInfoResult
 		{TYPE_STRUCT|TYPE_ARRAY, "support_list", 0, 0, &_rfl_struct_SG_BOSSRUSH_SUPPORT_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 90 BeginBossRushBattleResult
+		// 94 BeginBossRushBattleResult
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 91 EndBossRushBattleResult
+		// 95 EndBossRushBattleResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7354,10 +8514,10 @@ namespace DDLReflect
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 92 BeginBossRushSupportBattleResult
+		// 96 BeginBossRushSupportBattleResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "PlayerPVE", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 93 EndBossRushSupportBattleResult
+		// 97 EndBossRushSupportBattleResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7366,11 +8526,11 @@ namespace DDLReflect
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 94 AddBossRushRemainingTimesResult
+		// 98 AddBossRushRemainingTimesResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8, "remain_times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 95 AwardBossRushResult
+		// 99 AwardBossRushResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7379,7 +8539,7 @@ namespace DDLReflect
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 96 AwardBossRushSupportResult
+		// 100 AwardBossRushSupportResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7388,7 +8548,7 @@ namespace DDLReflect
 		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 97 QueryDiceNumResult
+		// 101 QueryDiceNumResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "dice_num", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "reward_time", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7398,13 +8558,16 @@ namespace DDLReflect
 		{TYPE_U32, "drop_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "circle_num", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "step", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 98 QueryNewcomerGuideInfoResult
+		// 102 QueryNewcomerGuideInfoResult
 		{TYPE_STRUCT|TYPE_ARRAY, "guide_list", 0, 0, &_rfl_struct_SG_NEWCOMER_GUIDE_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 99 QueryWorldBossRankInfoResult
+		// 103 QueryWorldBossRankInfoResult
 		{TYPE_STRUCT, "rank_info", 0, 0, &_rfl_struct_SG_WORLDBOSS_RANK_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 100 BeginWorldBossBattleResult
+		// 104 BeginWorldBossBattleResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "NumResurrection", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "NumInspiration", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "BattleStartTime", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "selfPve", 0, 0, &_rfl_struct_SG_PLAYER_PVE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "bossInfo", 0, 0, &_rfl_struct_SG_WORLDBOSS_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "ranklist", 0, 0, &_rfl_struct_SG_WORLDBOSS_RANK_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -7414,141 +8577,244 @@ namespace DDLReflect
 		{TYPE_STRUCT|TYPE_ARRAY, "drops", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 101 InspireWorldBossBattleResult
+		// 105 InspireWorldBossBattleResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 102 AwardWorldBossRankResult
+		// 106 AwardWorldBossRankResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "Gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "Reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "ItemList", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 103 UpdateWorldBossBattleResult
+		// 107 UpdateWorldBossBattleResult
 		{TYPE_STRUCT, "bossInfo", 0, 0, &_rfl_struct_SG_WORLDBOSS_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "rankinfo", 0, 0, &_rfl_struct_SG_WORLDBOSS_RANK_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 104 EndWorldBossBattleResult
-		// 105 AwardWorldBossAttendanceResult
+		// 108 EndWorldBossBattleResult
+		// 109 AwardWorldBossAttendanceResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "Gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "Reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "ItemList", 0, 0, &_rfl_struct_SG_DROP_ITEM_BASE_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 106 RechargeResult
+		// 110 RechargeResult
 		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT, "selfplayer", 0, 0, &_rfl_struct_SG_PLAYER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 111 QueryLeagueBattleResult
+		{TYPE_STRUCT|TYPE_ARRAY, "info_list", 0, 0, &_rfl_struct_SG_LEAGUE_BATTLE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "enemy_list", 0, 0, &_rfl_struct_SG_LEAGUE_BATTLE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rank", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "final_loop", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 112 AwardLeagueBattleResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "level", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "contribution", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 113 QueryLeagueBattleRewardResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "exp_addition", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "reputation", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "contribution", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 114 QueryLeagueBattleInfoResult
+		{TYPE_STRUCT|TYPE_ARRAY, "log_list", 0, 0, &_rfl_struct_SG_LEAGUE_BATTLE_LOG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rank", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8, "status", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "member_list", 0, 0, &_rfl_struct_SG_LEAGUE_BATTLE_MEMBER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 115 QueryLeagueBattleRankInfoResult
+		{TYPE_STRUCT|TYPE_ARRAY, "league_rank_list", 0, 0, &_rfl_struct_SG_LEAGUE_BATTLE_RANK_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "player_rank", 0, 0, &_rfl_struct_SG_LEAGUE_BATTLE_PLAYER_RANK_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 116 SignUpResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "aciton_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "times", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 117 QueryGoalResult
+		{TYPE_STRUCT|TYPE_ARRAY, "chapter_list", 0, 0, &_rfl_struct_SG_GOAL_CHAPTER_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 118 AwardGoalChapterResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT, "chapter", 0, 0, &_rfl_struct_SG_GOAL_CHAPTER_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "items", 0, 0, &_rfl_struct_SG_DROP_ITEM_CONFIG_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 119 AwardActionResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "action_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 120 AutoCombatPVEResult
+		{TYPE_STRUCT|TYPE_ARRAY, "battle_results", 0, 0, &_rfl_struct_SG_BATTLE_RESULT_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "battle_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 121 AutoCombatInstanceResult
+		{TYPE_STRUCT|TYPE_ARRAY, "battle_results", 0, 0, &_rfl_struct_SG_BATTLE_RESULT_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "battle_count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 122 QueryFightValueResult
+		{TYPE_U32, "fight_value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 123 CheckMailResult
+		{TYPE_STRUCT|TYPE_ARRAY, "mail_list", 0, 0, &_rfl_struct_SG_MAIL_INFO_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 124 ReceiveMailResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "mail_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "reward_gold", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "reward_rmb", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "reward_list", 0, 0, &_rfl_struct_SG_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 125 RechargeBonusResult
+		{TYPE_U8, "ret", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "bonus_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "general_list", 0, 0, &_rfl_struct_SG_GENERAL_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count1", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "soldier_list", 0, 0, &_rfl_struct_SG_SOLDIER_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count2", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRUCT|TYPE_ARRAY, "item_list", 0, 0, &_rfl_struct_SG_ITEM_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "count3", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_SGGAME_S2C_funcinfos[] = 
 	{
 		{"Pong", 0, _class_SGGAME_S2C_fieldinfos+0},
-		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+0},
-		{"GetServerListResult", 3, _class_SGGAME_S2C_fieldinfos+1},
-		{"QueryAvatarFailed", 1, _class_SGGAME_S2C_fieldinfos+4},
-		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+5},
-		{"EnterGameResult", 1, _class_SGGAME_S2C_fieldinfos+6},
-		{"CreateAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+7},
-		{"QueryPlayerResult", 2, _class_SGGAME_S2C_fieldinfos+8},
-		{"QueryGeneralResult", 3, _class_SGGAME_S2C_fieldinfos+10},
-		{"QuerySoldierResult", 3, _class_SGGAME_S2C_fieldinfos+13},
-		{"QueryBagBegin", 0, _class_SGGAME_S2C_fieldinfos+16},
-		{"QueryBagEquipt", 2, _class_SGGAME_S2C_fieldinfos+16},
-		{"QueryBagUsable", 2, _class_SGGAME_S2C_fieldinfos+18},
-		{"QueryBagGen", 2, _class_SGGAME_S2C_fieldinfos+20},
-		{"QueryBagMaterial", 2, _class_SGGAME_S2C_fieldinfos+22},
-		{"QueryBagEnd", 1, _class_SGGAME_S2C_fieldinfos+24},
-		{"QueryOtherPlayersResult", 2, _class_SGGAME_S2C_fieldinfos+25},
-		{"EnhanceEquiptResult", 3, _class_SGGAME_S2C_fieldinfos+27},
-		{"ExtendEquiptResult", 3, _class_SGGAME_S2C_fieldinfos+30},
-		{"EnhanceCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+33},
-		{"RefreshEquipDone", 1, _class_SGGAME_S2C_fieldinfos+34},
-		{"GemCombineResult", 1, _class_SGGAME_S2C_fieldinfos+35},
-		{"HaloIncreaseEXPResult", 1, _class_SGGAME_S2C_fieldinfos+36},
-		{"HaloCoolDownResult", 2, _class_SGGAME_S2C_fieldinfos+37},
-		{"HaloGetCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+39},
-		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+40},
-		{"EndBattleResult", 7, _class_SGGAME_S2C_fieldinfos+41},
-		{"QueryPlayerQuestResult", 3, _class_SGGAME_S2C_fieldinfos+48},
-		{"FinishQuestDone", 12, _class_SGGAME_S2C_fieldinfos+51},
-		{"BuyGoodsResult", 4, _class_SGGAME_S2C_fieldinfos+63},
-		{"SellItemResult", 4, _class_SGGAME_S2C_fieldinfos+67},
-		{"QueryPlayerPVPInfoResult", 1, _class_SGGAME_S2C_fieldinfos+71},
-		{"QueryPlayerRankListResult", 2, _class_SGGAME_S2C_fieldinfos+72},
-		{"PVPCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+74},
-		{"PVPGetRestTimeResult", 1, _class_SGGAME_S2C_fieldinfos+75},
-		{"PVPRecordResult", 2, _class_SGGAME_S2C_fieldinfos+76},
-		{"PVPHeroListRecord", 2, _class_SGGAME_S2C_fieldinfos+78},
-		{"PVPDailyReward", 4, _class_SGGAME_S2C_fieldinfos+80},
-		{"PVPBattleBeginResult", 2, _class_SGGAME_S2C_fieldinfos+84},
-		{"PVPBattleEndResult", 1, _class_SGGAME_S2C_fieldinfos+86},
-		{"PVPCoolDownClearResult", 2, _class_SGGAME_S2C_fieldinfos+87},
-		{"PVPIncreateBattleTimesResult", 1, _class_SGGAME_S2C_fieldinfos+89},
-		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+90},
-		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+92},
-		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+93},
-		{"EndInstanceBattleResult", 8, _class_SGGAME_S2C_fieldinfos+94},
-		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+102},
-		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+105},
-		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+107},
-		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+109},
-		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+110},
-		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+112},
-		{"QueryLeagueMemberInfoResult", 1, _class_SGGAME_S2C_fieldinfos+114},
-		{"ContributeLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+115},
-		{"HandleApplyResult", 2, _class_SGGAME_S2C_fieldinfos+117},
-		{"QueryLeagueNoticeResult", 1, _class_SGGAME_S2C_fieldinfos+119},
-		{"SetLeagueNoticeResult", 2, _class_SGGAME_S2C_fieldinfos+120},
-		{"SetLeagueOwnerResult", 2, _class_SGGAME_S2C_fieldinfos+122},
-		{"SetMemberPositionResult", 3, _class_SGGAME_S2C_fieldinfos+124},
-		{"DismissMemberResult", 2, _class_SGGAME_S2C_fieldinfos+127},
-		{"ExitLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+129},
-		{"QueryLeagueLogResult", 2, _class_SGGAME_S2C_fieldinfos+130},
-		{"LeagueToastResult", 5, _class_SGGAME_S2C_fieldinfos+132},
-		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+137},
-		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+140},
-		{"BuyEnergyResult", 4, _class_SGGAME_S2C_fieldinfos+144},
-		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+148},
-		{"MakeEquiptResult", 4, _class_SGGAME_S2C_fieldinfos+151},
-		{"QueryActionAvailableResult", 3, _class_SGGAME_S2C_fieldinfos+155},
-		{"QueryFriendListResult", 2, _class_SGGAME_S2C_fieldinfos+158},
-		{"QueryFriendListSearchResult", 2, _class_SGGAME_S2C_fieldinfos+160},
-		{"QueryFriendInvitationListResult", 2, _class_SGGAME_S2C_fieldinfos+162},
-		{"AcceptFriendResult", 2, _class_SGGAME_S2C_fieldinfos+164},
-		{"SendChatResult", 1, _class_SGGAME_S2C_fieldinfos+166},
-		{"ReceiveChatResult", 2, _class_SGGAME_S2C_fieldinfos+167},
-		{"QueryLeagueDianjiangListResult", 3, _class_SGGAME_S2C_fieldinfos+169},
-		{"JoinLeagueDianjiangResult", 2, _class_SGGAME_S2C_fieldinfos+172},
-		{"QueryLeagueDianjiangRewardResult", 2, _class_SGGAME_S2C_fieldinfos+174},
-		{"LeagueDianjiangSummonNPCResult", 4, _class_SGGAME_S2C_fieldinfos+176},
-		{"QueryAstrologyBagResult", 4, _class_SGGAME_S2C_fieldinfos+180},
-		{"SaveToBagResult", 2, _class_SGGAME_S2C_fieldinfos+184},
-		{"SetAstrologyBallStatusResult", 2, _class_SGGAME_S2C_fieldinfos+186},
-		{"EnhanceAstrologyBallResult", 4, _class_SGGAME_S2C_fieldinfos+188},
-		{"StrologyResult", 5, _class_SGGAME_S2C_fieldinfos+192},
-		{"StrologyAutoResult", 5, _class_SGGAME_S2C_fieldinfos+197},
-		{"DevourResult", 6, _class_SGGAME_S2C_fieldinfos+202},
-		{"UseItemResult", 8, _class_SGGAME_S2C_fieldinfos+208},
-		{"FeedHorseResult", 8, _class_SGGAME_S2C_fieldinfos+216},
-		{"QueryBossRushInfoResult", 1, _class_SGGAME_S2C_fieldinfos+224},
-		{"QueryBossRushSupportInfoResult", 2, _class_SGGAME_S2C_fieldinfos+225},
-		{"BeginBossRushBattleResult", 1, _class_SGGAME_S2C_fieldinfos+227},
-		{"EndBossRushBattleResult", 8, _class_SGGAME_S2C_fieldinfos+228},
-		{"BeginBossRushSupportBattleResult", 2, _class_SGGAME_S2C_fieldinfos+236},
-		{"EndBossRushSupportBattleResult", 8, _class_SGGAME_S2C_fieldinfos+238},
-		{"AddBossRushRemainingTimesResult", 3, _class_SGGAME_S2C_fieldinfos+246},
-		{"AwardBossRushResult", 8, _class_SGGAME_S2C_fieldinfos+249},
-		{"AwardBossRushSupportResult", 8, _class_SGGAME_S2C_fieldinfos+257},
-		{"QueryDiceNumResult", 9, _class_SGGAME_S2C_fieldinfos+265},
-		{"QueryNewcomerGuideInfoResult", 2, _class_SGGAME_S2C_fieldinfos+274},
-		{"QueryWorldBossRankInfoResult", 1, _class_SGGAME_S2C_fieldinfos+276},
-		{"BeginWorldBossBattleResult", 10, _class_SGGAME_S2C_fieldinfos+277},
-		{"InspireWorldBossBattleResult", 2, _class_SGGAME_S2C_fieldinfos+287},
-		{"AwardWorldBossRankResult", 5, _class_SGGAME_S2C_fieldinfos+289},
-		{"UpdateWorldBossBattleResult", 2, _class_SGGAME_S2C_fieldinfos+294},
-		{"EndWorldBossBattleResult", 0, _class_SGGAME_S2C_fieldinfos+296},
-		{"AwardWorldBossAttendanceResult", 5, _class_SGGAME_S2C_fieldinfos+296},
-		{"RechargeResult", 3, _class_SGGAME_S2C_fieldinfos+301},
+		{"BindAccountResult", 1, _class_SGGAME_S2C_fieldinfos+0},
+		{"QueryServerTimeResult", 1, _class_SGGAME_S2C_fieldinfos+1},
+		{"GetServerListResult", 3, _class_SGGAME_S2C_fieldinfos+2},
+		{"QueryAvatarFailed", 1, _class_SGGAME_S2C_fieldinfos+5},
+		{"QueryAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+6},
+		{"EnterGameResult", 1, _class_SGGAME_S2C_fieldinfos+7},
+		{"CreateAvatarResult", 1, _class_SGGAME_S2C_fieldinfos+8},
+		{"QueryPlayerResult", 2, _class_SGGAME_S2C_fieldinfos+9},
+		{"QueryGeneralResult", 3, _class_SGGAME_S2C_fieldinfos+11},
+		{"QuerySoldierResult", 3, _class_SGGAME_S2C_fieldinfos+14},
+		{"QueryBagBegin", 0, _class_SGGAME_S2C_fieldinfos+17},
+		{"QueryBagEquipt", 2, _class_SGGAME_S2C_fieldinfos+17},
+		{"QueryBagUsable", 2, _class_SGGAME_S2C_fieldinfos+19},
+		{"QueryBagGen", 2, _class_SGGAME_S2C_fieldinfos+21},
+		{"QueryBagMaterial", 2, _class_SGGAME_S2C_fieldinfos+23},
+		{"QueryBagEnd", 1, _class_SGGAME_S2C_fieldinfos+25},
+		{"QueryOtherPlayerResult", 7, _class_SGGAME_S2C_fieldinfos+26},
+		{"QueryOtherPlayersResult", 2, _class_SGGAME_S2C_fieldinfos+33},
+		{"EnhanceEquiptResult", 3, _class_SGGAME_S2C_fieldinfos+35},
+		{"ExtendEquiptResult", 3, _class_SGGAME_S2C_fieldinfos+38},
+		{"EnhanceCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+41},
+		{"RefreshEquipDone", 1, _class_SGGAME_S2C_fieldinfos+42},
+		{"RefreshEquipDecideAcceptResult", 1, _class_SGGAME_S2C_fieldinfos+43},
+		{"GemCombineResult", 1, _class_SGGAME_S2C_fieldinfos+44},
+		{"UpgradeTitleResult", 2, _class_SGGAME_S2C_fieldinfos+45},
+		{"HaloIncreaseEXPResult", 3, _class_SGGAME_S2C_fieldinfos+47},
+		{"HaloCoolDownResult", 2, _class_SGGAME_S2C_fieldinfos+50},
+		{"HaloGetCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+52},
+		{"BeginBattleResult", 1, _class_SGGAME_S2C_fieldinfos+53},
+		{"EndBattleResult", 7, _class_SGGAME_S2C_fieldinfos+54},
+		{"QueryPlayerQuestResult", 3, _class_SGGAME_S2C_fieldinfos+61},
+		{"FinishQuestDone", 12, _class_SGGAME_S2C_fieldinfos+64},
+		{"BuyGoodsResult", 4, _class_SGGAME_S2C_fieldinfos+76},
+		{"SellItemResult", 4, _class_SGGAME_S2C_fieldinfos+80},
+		{"QueryPlayerPVPInfoResult", 1, _class_SGGAME_S2C_fieldinfos+84},
+		{"QueryPlayerRankListResult", 2, _class_SGGAME_S2C_fieldinfos+85},
+		{"PVPCoolDownResult", 1, _class_SGGAME_S2C_fieldinfos+87},
+		{"PVPGetRestTimeResult", 1, _class_SGGAME_S2C_fieldinfos+88},
+		{"PVPRecordResult", 2, _class_SGGAME_S2C_fieldinfos+89},
+		{"PVPHeroListRecord", 2, _class_SGGAME_S2C_fieldinfos+91},
+		{"PVPDailyReward", 4, _class_SGGAME_S2C_fieldinfos+93},
+		{"PVPBattleBeginResult", 2, _class_SGGAME_S2C_fieldinfos+97},
+		{"PVPBattleEndResult", 1, _class_SGGAME_S2C_fieldinfos+99},
+		{"PVPCoolDownClearResult", 2, _class_SGGAME_S2C_fieldinfos+100},
+		{"PVPIncreateBattleTimesResult", 1, _class_SGGAME_S2C_fieldinfos+102},
+		{"QueryInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+103},
+		{"BeginInstanceBattleResult", 1, _class_SGGAME_S2C_fieldinfos+105},
+		{"EnterInstanceResult", 1, _class_SGGAME_S2C_fieldinfos+106},
+		{"EndInstanceBattleResult", 8, _class_SGGAME_S2C_fieldinfos+107},
+		{"ResetInstanceResult", 3, _class_SGGAME_S2C_fieldinfos+115},
+		{"CreateLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+118},
+		{"QueryLeagueApplyListResult", 2, _class_SGGAME_S2C_fieldinfos+120},
+		{"QueryLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+122},
+		{"QueryLeagueListResult", 2, _class_SGGAME_S2C_fieldinfos+123},
+		{"QueryLeagueMemberListResult", 2, _class_SGGAME_S2C_fieldinfos+125},
+		{"QueryLeagueMemberInfoResult", 1, _class_SGGAME_S2C_fieldinfos+127},
+		{"ContributeLeagueResult", 2, _class_SGGAME_S2C_fieldinfos+128},
+		{"HandleApplyResult", 2, _class_SGGAME_S2C_fieldinfos+130},
+		{"QueryLeagueNoticeResult", 1, _class_SGGAME_S2C_fieldinfos+132},
+		{"SetLeagueNoticeResult", 2, _class_SGGAME_S2C_fieldinfos+133},
+		{"SetLeagueOwnerResult", 2, _class_SGGAME_S2C_fieldinfos+135},
+		{"SetMemberPositionResult", 3, _class_SGGAME_S2C_fieldinfos+137},
+		{"DismissMemberResult", 2, _class_SGGAME_S2C_fieldinfos+140},
+		{"ExitLeagueResult", 1, _class_SGGAME_S2C_fieldinfos+142},
+		{"QueryLeagueLogResult", 2, _class_SGGAME_S2C_fieldinfos+143},
+		{"LeagueToastResult", 5, _class_SGGAME_S2C_fieldinfos+145},
+		{"SalaryGetResult", 3, _class_SGGAME_S2C_fieldinfos+150},
+		{"SalaryGetBatResult", 4, _class_SGGAME_S2C_fieldinfos+153},
+		{"BuyEnergyResult", 4, _class_SGGAME_S2C_fieldinfos+157},
+		{"EnhanceTurboResult", 3, _class_SGGAME_S2C_fieldinfos+161},
+		{"MakeEquiptResult", 4, _class_SGGAME_S2C_fieldinfos+164},
+		{"QueryActionAvailableResult", 3, _class_SGGAME_S2C_fieldinfos+168},
+		{"QueryFriendListResult", 2, _class_SGGAME_S2C_fieldinfos+171},
+		{"QueryFriendListSearchResult", 2, _class_SGGAME_S2C_fieldinfos+173},
+		{"QueryFriendInvitationListResult", 2, _class_SGGAME_S2C_fieldinfos+175},
+		{"AcceptFriendResult", 2, _class_SGGAME_S2C_fieldinfos+177},
+		{"SendChatResult", 1, _class_SGGAME_S2C_fieldinfos+179},
+		{"ReceiveChatResult", 2, _class_SGGAME_S2C_fieldinfos+180},
+		{"QueryLeagueDianjiangListResult", 3, _class_SGGAME_S2C_fieldinfos+182},
+		{"JoinLeagueDianjiangResult", 4, _class_SGGAME_S2C_fieldinfos+185},
+		{"QueryLeagueDianjiangRewardResult", 2, _class_SGGAME_S2C_fieldinfos+189},
+		{"LeagueDianjiangSummonNPCResult", 6, _class_SGGAME_S2C_fieldinfos+191},
+		{"QueryAstrologyBagResult", 4, _class_SGGAME_S2C_fieldinfos+197},
+		{"SaveToBagResult", 2, _class_SGGAME_S2C_fieldinfos+201},
+		{"SetAstrologyBallStatusResult", 2, _class_SGGAME_S2C_fieldinfos+203},
+		{"EnhanceAstrologyBallResult", 4, _class_SGGAME_S2C_fieldinfos+205},
+		{"StrologyResult", 5, _class_SGGAME_S2C_fieldinfos+209},
+		{"StrologyAutoResult", 5, _class_SGGAME_S2C_fieldinfos+214},
+		{"DevourResult", 6, _class_SGGAME_S2C_fieldinfos+219},
+		{"UseItemResult", 8, _class_SGGAME_S2C_fieldinfos+225},
+		{"FeedHorseResult", 8, _class_SGGAME_S2C_fieldinfos+233},
+		{"QueryBossRushInfoResult", 3, _class_SGGAME_S2C_fieldinfos+241},
+		{"QueryBossRushSupportInfoResult", 2, _class_SGGAME_S2C_fieldinfos+244},
+		{"BeginBossRushBattleResult", 1, _class_SGGAME_S2C_fieldinfos+246},
+		{"EndBossRushBattleResult", 8, _class_SGGAME_S2C_fieldinfos+247},
+		{"BeginBossRushSupportBattleResult", 2, _class_SGGAME_S2C_fieldinfos+255},
+		{"EndBossRushSupportBattleResult", 8, _class_SGGAME_S2C_fieldinfos+257},
+		{"AddBossRushRemainingTimesResult", 3, _class_SGGAME_S2C_fieldinfos+265},
+		{"AwardBossRushResult", 8, _class_SGGAME_S2C_fieldinfos+268},
+		{"AwardBossRushSupportResult", 8, _class_SGGAME_S2C_fieldinfos+276},
+		{"QueryDiceNumResult", 9, _class_SGGAME_S2C_fieldinfos+284},
+		{"QueryNewcomerGuideInfoResult", 2, _class_SGGAME_S2C_fieldinfos+293},
+		{"QueryWorldBossRankInfoResult", 1, _class_SGGAME_S2C_fieldinfos+295},
+		{"BeginWorldBossBattleResult", 13, _class_SGGAME_S2C_fieldinfos+296},
+		{"InspireWorldBossBattleResult", 2, _class_SGGAME_S2C_fieldinfos+309},
+		{"AwardWorldBossRankResult", 5, _class_SGGAME_S2C_fieldinfos+311},
+		{"UpdateWorldBossBattleResult", 2, _class_SGGAME_S2C_fieldinfos+316},
+		{"EndWorldBossBattleResult", 0, _class_SGGAME_S2C_fieldinfos+318},
+		{"AwardWorldBossAttendanceResult", 5, _class_SGGAME_S2C_fieldinfos+318},
+		{"RechargeResult", 3, _class_SGGAME_S2C_fieldinfos+323},
+		{"QueryLeagueBattleResult", 6, _class_SGGAME_S2C_fieldinfos+326},
+		{"AwardLeagueBattleResult", 11, _class_SGGAME_S2C_fieldinfos+332},
+		{"QueryLeagueBattleRewardResult", 8, _class_SGGAME_S2C_fieldinfos+343},
+		{"QueryLeagueBattleInfoResult", 6, _class_SGGAME_S2C_fieldinfos+351},
+		{"QueryLeagueBattleRankInfoResult", 4, _class_SGGAME_S2C_fieldinfos+357},
+		{"SignUpResult", 3, _class_SGGAME_S2C_fieldinfos+361},
+		{"QueryGoalResult", 2, _class_SGGAME_S2C_fieldinfos+364},
+		{"AwardGoalChapterResult", 6, _class_SGGAME_S2C_fieldinfos+366},
+		{"AwardActionResult", 2, _class_SGGAME_S2C_fieldinfos+372},
+		{"AutoCombatPVEResult", 2, _class_SGGAME_S2C_fieldinfos+374},
+		{"AutoCombatInstanceResult", 2, _class_SGGAME_S2C_fieldinfos+376},
+		{"QueryFightValueResult", 1, _class_SGGAME_S2C_fieldinfos+378},
+		{"CheckMailResult", 2, _class_SGGAME_S2C_fieldinfos+379},
+		{"ReceiveMailResult", 6, _class_SGGAME_S2C_fieldinfos+381},
+		{"RechargeBonusResult", 8, _class_SGGAME_S2C_fieldinfos+387},
 	};
-	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 107, _class_SGGAME_S2C_funcinfos };
+	static CLASS_INFO _class_SGGAME_S2C_info = { 0, "SGGAME_S2C", 126, _class_SGGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<SGGAME_S2C>()
 	{

@@ -14,7 +14,7 @@
 namespace Zion
 {
 
-	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize)
+	CSGClient::CSGClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), c2s(this)
 	{
 	}	
 

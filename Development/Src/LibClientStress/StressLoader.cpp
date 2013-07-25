@@ -58,7 +58,7 @@ namespace Zion
 		{
 			_U32 id = CStressManager::Get().NewClient();
 			CStressClient* client = CStressManager::Get().GetClient(id);
-			pView->NotifyClientAdd(id);
+			if(pView) pView->NotifyClientAdd(id);
 
 			Zion::Map<Zion::String, void*>::iterator i;
 			for(i=m_Cases.begin(); i!=m_Cases.end(); i++)

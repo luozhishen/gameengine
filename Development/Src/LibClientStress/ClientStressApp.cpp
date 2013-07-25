@@ -13,11 +13,38 @@
 
 #include <StressClient.h>
 #include <StressLoader.h>
+#include <StressManager.h>
 
 #include "ClientStressApp.h"
 #include "ClientStressFrame.h"
 #include "ClientLogView.h"
 #include "ClientCaseView.h"
+
+#include <process.h>
+
+static void tick_thread_proc(void* data)
+{
+	Zion::Array<_U32> clients;
+
+	for(;;)
+	{
+		Zion::CClientApp::GetDefault()->Tick();
+
+		Zion::CStressManager::Get().GetClients(clients);
+		for(size_t i=0; i<clients.size(); i++)
+		{
+			Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
+			if(pClient)
+			{
+				pClient->GetClient()->Tick();
+			}
+		}
+
+		Zion::CStressManager::Get().UpdateAll();
+
+		Sleep(0);
+	}
+}
 
 CClientStressApp* g_ClientStressApp = NULL;
 
@@ -31,17 +58,56 @@ CClientStressApp::~CClientStressApp()
 {
 }
 
+#include "StressViewDlg.h"
+
 bool CClientStressApp::OnInit()
 {
-	Zion::CClientApp::GetDefault()->InitApp();
-
 	wxImage::AddHandler(ZION_NEW wxPNGHandler);
 
 	SetVendorName(wxT("Zion"));
 	SetAppName(wxT("ClientStress"));
 
-	wxConfigBase *pConfig = wxConfigBase::Get();
+	if(__argc>1)
+	{
+		InitCase();
 
+		Zion::String file = Zion::StringFormat("%sConfig/StressTemplate.json", Zion::ZionGameDir());
+		Zion::CStressLoader loader;
+		if(!loader.LoadTemplate(file.c_str()))
+		{
+			return false;
+		}
+
+		Zion::CClientApp::GetDefault()->InitApp();
+		for(int i=1; i<__argc; i++)
+		{
+			Zion::Array<Zion::String> rs;
+			Zion::StringSplit(Zion::String(__argv[i]), ':', rs);
+			if(rs.size()!=2)
+			{
+				wxMessageBox(wxT("invalid parameter"));
+				return false;
+			}
+			for(int i=atoi(rs[1].c_str()); i>0; i--)
+			{
+				if(loader.CreateClient(rs[0].c_str())==(_U32)-1)
+				{
+					wxMessageBox(wxT("invalid case name"));
+					return false;
+				}
+			}
+		}
+
+		_beginthread(tick_thread_proc, 0, NULL);
+
+		CStressViewDlg dlg(NULL);
+		dlg.ShowModal();
+		Zion::CClientApp::GetDefault()->FiniApp();
+		return false;
+	}
+
+	Zion::CClientApp::GetDefault()->InitApp();
+	wxConfigBase *pConfig = wxConfigBase::Get();
 	CClientStressFrame* pMainFrame;
 	pMainFrame = ZION_NEW CClientStressFrame;
 	pMainFrame->Show(true);

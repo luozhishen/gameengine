@@ -27,7 +27,6 @@
 #include "ServerParamDlg.h"
 
 #include "CmdHistory.h"
-#include <string>
 
 enum
 {
@@ -48,7 +47,7 @@ enum
 	ID_CASE_LIST,
 	ID_CASE_ADD,
 	ID_STRESS_VIEW,
-	ID_RUN_SCRIPT,
+	ID_RELOAD_TEMPLATE,
 	ID_SVR_PARAM_DLG,
 };
 
@@ -68,7 +67,7 @@ BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_MENU(ID_SELECT_ALL,		CClientStressFrame::OnSelectAll)
 	EVT_LISTBOX(ID_CLIENT_LIST,	CClientStressFrame::OnClientSelected)
 	EVT_MENU(ID_STRESS_VIEW,	CClientStressFrame::OnStressView)
-	EVT_MENU(ID_RUN_SCRIPT,		CClientStressFrame::OnRunScript)
+	EVT_MENU(ID_RELOAD_TEMPLATE,CClientStressFrame::OnReloadTemplate)
 	EVT_MENU(ID_SVR_PARAM_DLG,	CClientStressFrame::OnOpenSvrParamDlg)
 	EVT_TIMER(ID_TIMER,			CClientStressFrame::OnTimer)
 	EVT_SIZE(CClientStressFrame::OnSize)
@@ -77,7 +76,7 @@ END_EVENT_TABLE()
 
 extern CClientStressApp* g_ClientStressApp;
 
-CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client Stress - "))
+CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client Stress - ")), m_StressLoader(this)
 {
 	wxString title = GetTitle();
 	title = title + wxString::FromUTF8(Zion::ZionGameName());
@@ -102,6 +101,8 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 	CreateStatusBar();
 
 	InitToolBar();
+
+	LoadStressTemplate();
 
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
@@ -177,6 +178,8 @@ void CClientStressFrame::InitToolBar()
 
 	wxToolBar* pToolBar;
 	pToolBar = wxFrame::CreateToolBar();//wxTB_FLAT|wxTB_TOP, wxID_ANY);
+	m_pCase = ZION_NEW wxComboBox(pToolBar, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
+	pToolBar->AddControl(m_pCase);
 	pToolBar->AddTool(ID_ADDONE,		wxT("Add 1"),		bmpAddOne,		wxT("Add 1 Client"));
 	pToolBar->AddTool(ID_ADDFIVE,		wxT("Add 5"),		bmpAddFive,		wxT("Add 5 Client"));
 	pToolBar->AddTool(ID_ADDTEN,		wxT("Add 10"),		bmpAddTen,		wxT("Add 10 Client"));
@@ -189,7 +192,7 @@ void CClientStressFrame::InitToolBar()
 	pToolBar->AddSeparator();
 	pToolBar->AddTool(ID_CASE_ADD,		wxT("Add Case"),	bmpAddCase,		wxT("Add Case to client"));
 	pToolBar->AddTool(ID_STRESS_VIEW,	wxT("Stress View"),	bmpStressView,	wxT("Open stress view dailog"));
-	pToolBar->AddTool(ID_RUN_SCRIPT,	wxT("Run Script"),	bmpScriptRun,	wxT("Run script file"));
+	pToolBar->AddTool(ID_RELOAD_TEMPLATE,wxT("Reload Stress Template"),	bmpScriptRun,	wxT("Reload stress template from json"));
 	
 	pToolBar->Realize();
 }
@@ -306,9 +309,20 @@ void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 	case ID_ADDFIFTY:	count = 50;	break;
 	}
 
+	Zion::String name = (const char*)m_pCase->GetValue().ToUTF8();
+
 	for(int i=0; i<count; i++)
 	{
-		_U32 index = Zion::CStressManager::Get().NewClient();
+
+		_U32 index;
+		if(name.empty())
+		{
+			index = Zion::CStressManager::Get().NewClient();
+		}
+		else
+		{
+			index = m_StressLoader.CreateClient(name.c_str());
+		}
 		NotifyClientAdd(index);
 	}
 	
@@ -386,22 +400,11 @@ void CClientStressFrame::OnStressView(wxCommandEvent& event)
 	dlg.ShowModal();
 }
 
-void CClientStressFrame::OnRunScript(wxCommandEvent& event)
+void CClientStressFrame::OnReloadTemplate(wxCommandEvent& event)
 {
-	Zion::CStressLoader loader;
-	loader._OnNewClient.connect(this, &CClientStressFrame::NotifyClientAdd);
-	loader._OnNewCase.connect(this, &CClientStressFrame::NotifyClientAddCase);
-
-	wxFileDialog dlg(this, wxT("script file"), wxT(""), wxT(""), wxT("xml files (*.xml) | *.xml"), wxFD_OPEN|wxFD_FILE_MUST_EXIST);
-	if(dlg.ShowModal() == wxID_CANCEL)
+	if(!LoadStressTemplate())
 	{
-		return;
-	}
-
-	wxString strPath = dlg.GetPath();
-	if(!loader.RunScript((const char*)strPath.c_str()))
-	{
-		wxMessageBox(wxT("Invalid script, please check it"));
+		wxMessageBox(wxT("load failed"));
 	}
 }
 
@@ -539,6 +542,27 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 		if(!pClient) continue;
 		if(pClient->GetClient()->GetState()!=Zion::CClient::STATE_LOGINED) continue;
 		pClient->GetClient()->SendData(classinfo->iid, fid, len, data);
+	}
+
+	return true;
+}
+
+bool CClientStressFrame::LoadStressTemplate()
+{
+	Zion::String file = Zion::StringFormat("%sConfig/StressTemplate.json", Zion::ZionGameDir());
+
+	m_pCase->Clear();
+	m_pCase->Insert(wxString::FromUTF8(""), 0);
+
+	if(!m_StressLoader.LoadTemplate(file.c_str()))
+	{
+		return false;
+	}
+
+	Zion::Array<Zion::String> names = m_StressLoader.GetNames();
+	for(size_t i=0; i<names.size(); i++)
+	{
+		m_pCase->Insert(wxString::FromUTF8(names[i].c_str()), (unsigned int)i+1);
 	}
 
 	return true;

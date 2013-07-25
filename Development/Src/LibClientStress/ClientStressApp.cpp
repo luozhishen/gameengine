@@ -11,6 +11,9 @@
 #include <ZionClient.h>
 #include <ZionClientApp.h>
 
+#include <StressClient.h>
+#include <StressLoader.h>
+
 #include "ClientStressApp.h"
 #include "ClientStressFrame.h"
 #include "ClientLogView.h"

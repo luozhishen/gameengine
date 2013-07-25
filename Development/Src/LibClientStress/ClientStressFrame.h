@@ -67,7 +67,7 @@ public:
 	
 	void OnClientSelected(wxCommandEvent& event);
 	void OnStressView(wxCommandEvent& event);
-	void OnRunScript(wxCommandEvent& event);
+	void OnReloadTemplate(wxCommandEvent& event);
 	void OnOpenSvrParamDlg(wxCommandEvent& event);
 
 	void OnSize(wxSizeEvent& event);
@@ -85,8 +85,10 @@ public:
 
 protected:
 	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Zion::String& json);
+	bool LoadStressTemplate();
 
 private:
+	wxComboBox*				m_pCase;
 	wxNotebook*				m_pTabView;
 	wxSplitterWindow*		m_pSplitter;
 	wxListBox*				m_pClientList;
@@ -105,6 +107,7 @@ private:
 	_U32					m_nCurrentIndex;
 
 	Zion::CmdHistory*		m_pCmdHistory;
+	Zion::CStressLoader		m_StressLoader;
 };
 
 #endif

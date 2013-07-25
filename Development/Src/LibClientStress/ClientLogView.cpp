@@ -11,10 +11,11 @@
 #include <ZionCommon.h>
 #include <ZionClient.h>
 
+#include <StressClient.h>
+#include <StressLoader.h>
+
 #include "ClientStressFrame.h"
 #include "ClientLogView.h"
-
-#include <StressClient.h>
 
 enum
 {

@@ -16,14 +16,15 @@
 #include <wx/wxchar.h>
 #include <wx/window.h>
 
-#include "ClientStressApp.h"
-#include "ClientStressFrame.h"
-#include "ClientCaseView.h"
-
 #include <StressClient.h>
 #include <StressCase.h>
 #include <StressManager.h>
 #include <StructEditView.h>
+#include <StressLoader.h>
+
+#include "ClientStressApp.h"
+#include "ClientStressFrame.h"
+#include "ClientCaseView.h"
 
 enum
 {

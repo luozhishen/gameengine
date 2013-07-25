@@ -21,12 +21,12 @@
 #include "ClientCaseView.h"
 
 #include <process.h>
-
+static volatile int tick_thread_state = 0;
 static void tick_thread_proc(void* data)
 {
 	Zion::Array<_U32> clients;
 
-	for(;;)
+	while(tick_thread_state==0)
 	{
 		Zion::CClientApp::GetDefault()->Tick();
 
@@ -44,6 +44,8 @@ static void tick_thread_proc(void* data)
 
 		Sleep(0);
 	}
+
+	tick_thread_state = 2;
 }
 
 CClientStressApp* g_ClientStressApp = NULL;
@@ -102,6 +104,10 @@ bool CClientStressApp::OnInit()
 
 		CStressViewDlg dlg(NULL);
 		dlg.ShowModal();
+
+		tick_thread_state = 1;
+		while(tick_thread_state!=2) Sleep(0);
+
 		Zion::CClientApp::GetDefault()->FiniApp();
 		return false;
 	}

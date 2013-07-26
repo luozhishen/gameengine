@@ -115,7 +115,7 @@ namespace Zion
 			Json::Value::Members::iterator j;
 			for(j=ns.begin(); j!=ns.end(); j++)
 			{
-				Json::Value cs = root.get(*j, Json::Value());
+				Json::Value cs = tpl.get(*j, Json::Value());
 				if(!cs.isObject()) return false;
 
 				const DDLReflect::STRUCT_INFO* info;

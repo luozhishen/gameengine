@@ -22,7 +22,7 @@ namespace Zion
 
 		virtual const DDLReflect::STRUCT_INFO* GetConfigType() { return NULL; }
 		virtual const void* GetConfig() { return NULL; }
-		bool SetConfig(const void* pConfig, _U32 size) { return false; }
+		virtual bool SetConfig(const void* pConfig, _U32 size) { return false; }
 
 		virtual const DDLReflect::STRUCT_INFO* GetStatusType() { return NULL; }
 		virtual const _U8* GetStatusData() { return NULL; }

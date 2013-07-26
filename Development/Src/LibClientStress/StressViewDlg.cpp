@@ -40,12 +40,15 @@ BEGIN_EVENT_TABLE(CStressViewDlg, wxDialog)
 END_EVENT_TABLE()
 
 #include <ZionCommon.h>
+#include <ZionClientApp.h>
 
 CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Stress View")), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
 	m_Timer.SetOwner(this, ID_SVD_TIMER);
 
-	SetTitle(GetTitle() + wxT(" for ") + wxString::FromUTF8(Zion::ZionGameName()));
+	wxString txt;
+	txt.Printf(wxT("%s for %s [UID=%s]"), GetTitle(), wxString::FromUTF8(Zion::ZionGameName()), wxString::FromUTF8(Zion::CClientApp::GetDefault()->GetParam("UidBase", "0")));
+	SetTitle(txt);
 
 	wxNotebook* pViewTab = ZION_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
 	wxPanel* pClientPanel = ZION_NEW wxPanel(pViewTab);
@@ -69,18 +72,6 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	pSizerRoot->Add(pViewTab, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
 	SetSizer(pSizerRoot);
 
-	InitClients();
-
-	m_Timer.Start(100);
-}
-
-CStressViewDlg::~CStressViewDlg()
-{
-	m_pClientTree->DeleteAllItems();
-}
-
-void CStressViewDlg::InitClients()
-{
 	Zion::CStressManager& stressMgr = Zion::CStressManager::Get();
 	Zion::Array<_U32> clients;
 	stressMgr.GetClients(clients);
@@ -108,6 +99,13 @@ void CStressViewDlg::InitClients()
 			m_pClientTree->SetItemData(caseItem, (wxTreeItemData*)castData);
 		}
 	}
+
+	m_Timer.Start(100);
+}
+
+CStressViewDlg::~CStressViewDlg()
+{
+	m_pClientTree->DeleteAllItems();
 }
 
 void CStressViewDlg::OnTimer(wxTimerEvent& event)
@@ -125,6 +123,8 @@ void CStressViewDlg::OnTimer(wxTimerEvent& event)
 
 	wxTreeItemId root = m_pClientTree->GetRootItem();
 	if(!root.IsOk()) return;
+
+	m_pClientTree->SetDoubleBuffered(true);
 
 	wxTreeItemIdValue cookie;
 	wxTreeItemId id = m_pClientTree->GetFirstChild(root, cookie);

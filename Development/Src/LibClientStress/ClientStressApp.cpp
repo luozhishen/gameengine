@@ -83,20 +83,35 @@ bool CClientStressApp::OnInit()
 		Zion::CClientApp::GetDefault()->InitApp();
 		for(int i=1; i<__argc; i++)
 		{
+			if(*__argv[i]!='-' || *(__argv[i]+1)=='\0')
+			{
+				wxMessageBox(wxT("invalid parameter"));
+				return false;
+			}
+
 			Zion::Array<Zion::String> rs;
-			Zion::StringSplit(Zion::String(__argv[i]), ':', rs);
+			Zion::StringSplit(Zion::String(__argv[i]+2), ':', rs);
 			if(rs.size()!=2)
 			{
 				wxMessageBox(wxT("invalid parameter"));
 				return false;
 			}
-			for(int i=atoi(rs[1].c_str()); i>0; i--)
+
+			if(*(__argv[i]+1)=='C')
 			{
-				if(loader.CreateClient(rs[0].c_str())==(_U32)-1)
+				for(int i=atoi(rs[1].c_str()); i>0; i--)
 				{
-					wxMessageBox(wxT("invalid case name"));
-					return false;
+					if(loader.CreateClient(rs[0].c_str())==(_U32)-1)
+					{
+						wxMessageBox(wxT("invalid case name"));
+						return false;
+					}
 				}
+			}
+
+			if(*(__argv[i]+1)=='D')
+			{
+				Zion::CClientApp::GetDefault()->SetParam(rs[0].c_str(), rs[1].c_str());
 			}
 		}
 
@@ -107,6 +122,8 @@ bool CClientStressApp::OnInit()
 
 		tick_thread_state = 1;
 		while(tick_thread_state!=2) Sleep(0);
+
+		Zion::CStressManager::Get().DisconnectAll();
 
 		Zion::CClientApp::GetDefault()->FiniApp();
 		return false;

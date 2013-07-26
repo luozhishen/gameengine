@@ -25,6 +25,31 @@
   <ItemGroup>
     <ClInclude Include="SGClient.h" />
     <ClInclude Include="SGClientApp.h" />
+    <ClInclude Include="SGClient_AutoGen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="GenCode.js">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cd $(ProjectDir)
+D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cd $(ProjectDir)
+D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cd $(ProjectDir)
+D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cd $(ProjectDir)
+D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">SGClient_AutoGen.h</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gen SGClient_AutoGen.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gen SGClient_AutoGen.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">SGClient_AutoGen.h</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\LibSGCommon\SGGameDDL.h</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gen SGClient_AutoGen.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SGClient_AutoGen.h</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\LibSGCommon\SGGameDDL.h</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\LibSGCommon\SGGameDDL.h</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gen SGClient_AutoGen.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">SGClient_AutoGen.h</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\LibSGCommon\SGGameDDL.h</AdditionalInputs>
+    </CustomBuild>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{36DA92B8-AEC5-43E2-9E84-0DF47CF36732}</ProjectGuid>

@@ -39,9 +39,13 @@ BEGIN_EVENT_TABLE(CStressViewDlg, wxDialog)
 	EVT_TIMER(ID_SVD_TIMER, CStressViewDlg::OnTimer)
 END_EVENT_TABLE()
 
+#include <ZionCommon.h>
+
 CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Stress View")), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
 	m_Timer.SetOwner(this, ID_SVD_TIMER);
+
+	SetTitle(GetTitle() + wxT(" for ") + wxString::FromUTF8(Zion::ZionGameName()));
 
 	wxNotebook* pViewTab = ZION_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
 	wxPanel* pClientPanel = ZION_NEW wxPanel(pViewTab);
@@ -131,7 +135,7 @@ void CStressViewDlg::OnTimer(wxTimerEvent& event)
 		{
 			Zion::CStressClient* client = Zion::CStressManager::Get().GetClient(data->m_uid);
 			if(!client) return;
-			m_pClientTree->SetItemText(id, wxString::FromUTF8(client->GetInfo().c_str()));
+			m_pClientTree->SetItemText(id, wxString::FromUTF8(client->GetTitle().c_str()));
 		}
 		id = m_pClientTree->GetNextChild(root, cookie);
 	}

@@ -38,6 +38,10 @@ namespace Zion
 
 			virtual void OnTick();
 
+			void AwardLeagueBattleResult(_U8 ret, _U32 type, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 rmb, _U32 reputation, _U32 contribution, const SG_DROP_ITEM_CONFIG* items, _U32 count)
+			{
+			}
+
 		protected:
 			virtual CStressCase* Create();
 		};

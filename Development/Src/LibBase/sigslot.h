@@ -3475,7 +3475,7 @@ namespace sigslot {
 		{
 			_connection11<desttype, arg1_type, arg2_type, arg3_type, arg4_type,
 				arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, arg11_type, mt_policy>* conn = 
-				new _connection10<desttype, arg1_type, arg2_type, arg3_type,
+				new _connection11<desttype, arg1_type, arg2_type, arg3_type,
 				arg4_type, arg5_type, arg6_type, arg7_type, 
 				arg8_type, arg9_type, arg10_type, arg11_type, mt_policy>(pclass, pmemfun);
 			this->m_connected_slots.push_back(conn);

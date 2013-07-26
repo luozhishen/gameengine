@@ -5,17 +5,16 @@
 #include <StressCase.h>
 #include <StressClient.h>
 
-#include <SGClient.h>
-#include "SGStressCases.h"
+#include <CardClient.h>
+#include "CardStressCases.h"
 
 namespace Zion
 {
 	namespace StressCases
 	{
 
-		CEcho::CEcho() : TSGStressCase<STRESSCASE_ECHO_CONFIG, STRESSCASE_ECHO_STATUS>("Echo")
+		CEcho::CEcho() : TCardStressCase<STRESSCASE_ECHO_CONFIG, STRESSCASE_ECHO_STATUS>("Echo")
 		{
-			GetClient()->_OnAwardLeagueBattleResult.connect(this, &CEcho::AwardLeagueBattleResult);
 		}
 		
 		CEcho::~CEcho()
@@ -35,7 +34,7 @@ namespace Zion
 			return ZION_NEW CEcho();
 		}
 
-		CEnterServer::CEnterServer() : TSGStressCase<STRESSCASE_ENTERSERVER_CONFIG, STRESSCASE_ENTERSERVER_STATUS>("EnterServer")
+		CEnterServer::CEnterServer() : TCardStressCase<STRESSCASE_ENTERSERVER_CONFIG, STRESSCASE_ENTERSERVER_STATUS>("EnterServer")
 		{
 		}
 

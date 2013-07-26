@@ -42,7 +42,7 @@ END_EVENT_TABLE()
 #include <ZionCommon.h>
 #include <ZionClientApp.h>
 
-CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Stress View")), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
+CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Stress View")), wxDefaultPosition, wxSize(700, 500), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
 	m_Timer.SetOwner(this, ID_SVD_TIMER);
 
@@ -160,28 +160,39 @@ void CStressViewDlg::OnSelect(wxTreeEvent& event)
 	{
 		m_Index = data->m_uid;
 		m_CaseName = data->m_name;
+
+		Zion::CStressClient* client = Zion::CStressManager::Get().GetClient(m_Index);
+		if(client)
+		{
+			Zion::CStressCase* scase = client->GetStressCase(m_CaseName.c_str());
+			if(scase)
+			{
+				if(scase->GetConfigType())
+				{
+					m_pConfig->Set(scase->GetConfigType(), (void*)scase->GetConfig());
+				}
+				else
+				{
+					m_pConfig->Clear();
+				}
+				if(scase->GetStatusType())
+				{
+					m_pStatus->Set(scase->GetStatusType(), (void*)scase->GetStatusData());
+				}
+				else
+				{
+					m_pStatus->Clear();
+				}
+				return;
+			}
+		}
 	}
 	else
 	{
-		m_pConfig->Clear();
-		m_pStatus->Clear();
 		m_Index = (_U32)-1;
 		m_CaseName = "";
-		return;
 	}
 
-	Zion::CStressClient* client = Zion::CStressManager::Get().GetClient(m_Index);
-	if(!client) return;
-
-	Zion::CStressCase* scase = client->GetStressCase(m_CaseName.c_str());
-	if(!scase) return;
-
-	if(scase->GetConfigType())
-	{
-		m_pConfig->Set(scase->GetConfigType(), (void*)scase->GetConfig());
-	}
-	if(scase->GetStatusType())
-	{
-		m_pStatus->Set(scase->GetStatusType(), (void*)scase->GetStatusData());
-	}
+	m_pConfig->Clear();
+	m_pStatus->Clear();
 }

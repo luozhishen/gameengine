@@ -65,8 +65,20 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	pClientRoot->Add(m_pClientTree, 0, wxGROW|wxALIGN_CENTER|wxALL, 5);
 	pClientRoot->Add(pSizer1, 1, wxGROW|wxALIGN_CENTER);
 	pClientPanel->SetSizer(pClientRoot);
+
+	wxPropertyGrid* pGrid = ZION_NEW wxPropertyGrid(pViewTab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_AUTO_SORT|wxPG_SPLITTER_AUTO_CENTER|wxPG_DEFAULT_STYLE);
 	
+	Zion::Map<Zion::String, Zion::String> params = Zion::CClientApp::GetDefault()->GetParams();
+	Zion::Map<Zion::String, Zion::String>::iterator it = params.begin();
+
+	for(int i = 0; it != params.end(); ++it, ++i)
+	{
+		wxPGProperty* propGrid = ZION_NEW wxStringProperty(wxString::FromUTF8(it->first.c_str()), wxPG_LABEL, wxString::FromUTF8(it->second.c_str()));
+		pGrid->SetPropertyReadOnly(pGrid->Append(propGrid));
+	}	
+
 	pViewTab->AddPage(pClientPanel, wxT("Clients"));
+	pViewTab->AddPage(pGrid, wxT("Config"));
 
 	wxBoxSizer* pSizerRoot = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizerRoot->Add(pViewTab, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);

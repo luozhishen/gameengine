@@ -118,6 +118,7 @@ bool CClientStressApp::OnInit()
 		_beginthread(tick_thread_proc, 0, NULL);
 
 		CStressViewDlg dlg(NULL);
+		dlg.SetSize(800, 600);
 		dlg.ShowModal();
 
 		tick_thread_state = 1;

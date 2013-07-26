@@ -23,17 +23,7 @@ BEGIN_EVENT_TABLE(ServerParamDlg, wxDialog)
 END_EVENT_TABLE()
 
 
-ServerParamDlg::ServerParamDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Server param Config")), wxDefaultPosition, wxSize(400, 300), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
-{
-	InitCtrls();
-}
-
-ServerParamDlg::~ServerParamDlg()
-{
-
-}
-
-void ServerParamDlg::InitCtrls()
+ServerParamDlg::ServerParamDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, wxString(wxT("Server param Config")), wxDefaultPosition, wxSize(800, 600), wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxRESIZE_BORDER)
 {
 	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizer2->AddStretchSpacer();
@@ -59,6 +49,11 @@ void ServerParamDlg::InitCtrls()
 	pSizer1->Add(m_pPropGrid, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_BOTTOM);
 	SetSizer(pSizer1);
+}
+
+ServerParamDlg::~ServerParamDlg()
+{
+
 }
 
 void ServerParamDlg::OnConfirm(wxCommandEvent& event)

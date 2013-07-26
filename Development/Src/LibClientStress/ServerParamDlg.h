@@ -18,8 +18,6 @@ public:
 	void OnDeleteLine(wxCommandEvent& event);
 
 protected:
-	void InitCtrls();
-
 	void LoadScript();
 	void SaveScript();
 

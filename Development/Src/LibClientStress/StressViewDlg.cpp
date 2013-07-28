@@ -31,11 +31,12 @@ public:
 enum
 {
 	ID_LEFT_TREE = wxID_HIGHEST + 1,
+	ID_CASE_TREE,
 	ID_SVD_TIMER,
 };
 
 BEGIN_EVENT_TABLE(CStressViewDlg, wxDialog)
-	EVT_TREE_SEL_CHANGED(ID_LEFT_TREE, CStressViewDlg::OnSelect)
+	EVT_TREE_SEL_CHANGED(ID_LEFT_TREE, CStressViewDlg::OnClientSelected)
 	EVT_TIMER(ID_SVD_TIMER, CStressViewDlg::OnTimer)
 END_EVENT_TABLE()
 
@@ -75,10 +76,19 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	{
 		wxPGProperty* propGrid = ZION_NEW wxStringProperty(wxString::FromUTF8(it->first.c_str()), wxPG_LABEL, wxString::FromUTF8(it->second.c_str()));
 		pGrid->SetPropertyReadOnly(pGrid->Append(propGrid));
-	}	
+	}
 
-	pViewTab->AddPage(pClientPanel, wxT("Clients"));
-	pViewTab->AddPage(pGrid, wxT("Config"));
+	wxPanel* pCasePanel = ZION_NEW wxPanel(pViewTab);
+	m_pCaseTree = ZION_NEW wxListCtrl(pCasePanel, ID_CASE_TREE, wxDefaultPosition, wxDefaultSize, wxLC_LIST);
+	m_pCaseConfig = ZION_NEW CStructEditView(pCasePanel);
+	wxSizer* pCaseSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pCaseSizer->Add(m_pCaseTree, 0, wxGROW|wxALIGN_CENTER|wxALL);
+	pCaseSizer->Add(m_pCaseConfig, 1, wxGROW|wxALIGN_CENTER|wxALL);
+	pCasePanel->SetSizer(pCaseSizer);
+
+	pViewTab->AddPage(pClientPanel,		wxT("Clients"));
+	pViewTab->AddPage(pGrid,				wxT("Config"));
+	pViewTab->AddPage(pCasePanel,		wxT("Cases"));
 
 	wxBoxSizer* pSizerRoot = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizerRoot->Add(pViewTab, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
@@ -90,6 +100,7 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	if(clients.empty()) return;
 
 	wxTreeItemId rootItem = m_pClientTree->AddRoot(wxT("Clients"));
+	Zion::Set<Zion::String> caseset;
 
 	for(_U32 i=0; i<clients.size(); ++i)
 	{
@@ -106,6 +117,12 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 		Zion::Set<Zion::CStressCase*>::iterator it;
 		for(it=cases.begin(); it!=cases.end(); ++it)
 		{
+			if(caseset.find((*it)->GetName())==caseset.end())
+			{
+				caseset.insert((*it)->GetName());
+				m_pCaseTree->InsertItem((long)caseset.size(), wxString::FromUTF8((*it)->GetName().c_str()));
+			}
+
 			wxTreeItemId caseItem = m_pClientTree->AppendItem(clientItem, wxString::FromUTF8((*it)->GetName().c_str()), -1, -1);
 			StreesViewItemData* castData = ZION_NEW StreesViewItemData(pClient->GetIndex(), (*it)->GetName());
 			m_pClientTree->SetItemData(caseItem, (wxTreeItemData*)castData);
@@ -153,7 +170,7 @@ void CStressViewDlg::OnTimer(wxTimerEvent& event)
 	}
 }
 
-void CStressViewDlg::OnSelect(wxTreeEvent& event)
+void CStressViewDlg::OnClientSelected(wxTreeEvent& event)
 {
 	StreesViewItemData* data = (StreesViewItemData*)m_pClientTree->GetItemData(event.GetItem());
 	if(data)

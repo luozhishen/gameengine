@@ -21,7 +21,7 @@ public:
 
 protected:
 	void OnTimer(wxTimerEvent& event);
-	void OnCaseSelected(wxListEvent& event);
+	void OnClientSelected(wxListEvent& event);
 
 private:
 	wxListCtrl* m_pListCtrl;

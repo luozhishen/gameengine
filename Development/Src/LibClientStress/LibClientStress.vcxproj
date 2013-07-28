@@ -34,7 +34,6 @@
     <ClCompile Include="StressLoader.cpp" />
     <ClCompile Include="StressManager.cpp" />
     <ClCompile Include="StressViewDlg.cpp" />
-    <ClCompile Include="TinyXml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CaseConfigDlg.h" />

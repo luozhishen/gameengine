@@ -36,7 +36,7 @@ enum
 
 BEGIN_EVENT_TABLE(CClientCaseView, CStressFrameView)
 	EVT_TIMER(ID_CASETIMER,	CClientCaseView::OnTimer)
-	EVT_LIST_ITEM_FOCUSED(ID_CASEVIEW, CClientCaseView::OnCaseSelected)
+	EVT_LIST_ITEM_FOCUSED(ID_CASEVIEW, CClientCaseView::OnClientSelected)
 END_EVENT_TABLE()
 
 CClientCaseView::CClientCaseView( CClientStressFrame* pFrame, wxWindow* pParent ) : CStressFrameView(pFrame, pParent, wxT("Case Status")), m_pCurrentClient(NULL)
@@ -149,7 +149,11 @@ void CClientCaseView::OnTimer(wxTimerEvent& event)
 	Flush(false);
 }
 
-void CClientCaseView::OnCaseSelected(wxListEvent& event)
+void CClientCaseView::OnClientSelected(wxListEvent& event)
 {
 	SelectCase((const char*)event.GetItem().GetText().ToUTF8());
+}
+
+void OnCaseSelected(wxListEvent& event)
+{
 }

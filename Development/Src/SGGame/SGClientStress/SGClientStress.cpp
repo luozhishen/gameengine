@@ -15,10 +15,12 @@
 #include <StressCase.h>
 #include <StressCases.h>
 
+#include <SGCommon.h>
+#include <SGClient.h>
+#include <SGClientApp.h>
+
 #include "SGStressCases.h"
 
-#include "SGCommon.h"
-#include "SGClientApp.h"
 
 class CSGClientStressApp : public CClientStressApp
 {

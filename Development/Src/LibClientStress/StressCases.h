@@ -16,8 +16,8 @@ namespace Zion
 
 			virtual void OnTick();
 
-			void OnAttach();
-			void OnDetach();
+			virtual void OnAttach();
+			virtual void OnDetach();
 
 			void OnLoginFailed();
 			void OnLoginDone();

@@ -18,6 +18,26 @@
 
 #include "../../LibCommon/CommonDDL.h"
 
+struct CARD_CONFIG : A_CONTENT_OBJECT
+{
+	_U32 iii;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<CARD_CONFIG>(CARD_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<CARD_CONFIG>(const CARD_CONFIG& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<CARD_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_CARD_CONFIG_info;
+}
+
 struct CARD_INVITATION : A_CONTENT_OBJECT
 {
 	_U32 iii;

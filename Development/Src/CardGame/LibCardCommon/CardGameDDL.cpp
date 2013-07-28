@@ -7,6 +7,49 @@
 namespace DDL
 {
 	template<>
+	bool BufferReader::Read<CARD_CONFIG>(CARD_CONFIG& Value)
+	{
+		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<_U32>(Value.iii)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<CARD_CONFIG>(const CARD_CONFIG& Value)
+	{
+		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<_U32>(Value.iii)) return false;
+		return true;
+	}
+}
+
+namespace DDLReflect
+{
+
+	static bool _struct_CARD_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	{
+		return buf.Read<CARD_CONFIG>(*((CARD_CONFIG*)data));
+	}
+
+	static bool _struct_CARD_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	{
+		return buf.Write<CARD_CONFIG>(*((const CARD_CONFIG*)data));
+	}
+
+	static FIELD_INFO _struct_CARD_CONFIG_fieldinfo[] =
+	{
+		{TYPE_U32, "iii", 0, (_U16)ZION_OFFSETOF(CARD_CONFIG, iii), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_CARD_CONFIG_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "CARD_CONFIG", sizeof(CARD_CONFIG), 1, _struct_CARD_CONFIG_fieldinfo, _struct_CARD_CONFIG_readproc, _struct_CARD_CONFIG_writeproc };
+	template<>
+	const STRUCT_INFO* GetStruct<CARD_CONFIG>()
+	{
+		return &_rfl_struct_CARD_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
 	bool BufferReader::Read<CARD_INVITATION>(CARD_INVITATION& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;

@@ -15,7 +15,6 @@ namespace Zion
 
 		CEcho::CEcho() : TSGStressCase<STRESSCASE_ECHO_CONFIG, STRESSCASE_ECHO_STATUS>("Echo")
 		{
-			GetClient()->_OnAwardLeagueBattleResult.connect(this, &CEcho::AwardLeagueBattleResult);
 		}
 		
 		CEcho::~CEcho()
@@ -43,8 +42,49 @@ namespace Zion
 		{
 		}
 
+		void CEnterServer::OnAttach()
+		{
+			GetClient()->_OnLoginDone.connect(this, &CEnterServer::OnLoginDone);
+			GetClient()->_OnGetServerListResult.connect(this, &CEnterServer::OnGetServerListResult);
+		}
+
+		void CEnterServer::OnDetach()
+		{
+			GetClient()->_OnLoginDone.disconnect(this);
+			GetClient()->_OnGetServerListResult.disconnect(this);
+		}
+
 		void CEnterServer::OnTick()
 		{
+		}
+
+		void CEnterServer::OnLoginDone()
+		{
+			GetClient()->c2s.GetServerList();
+		}
+
+		void CEnterServer::OnGetServerListResult(const SG_SERVER_INFO* infos, _U32 count, _U32 last_server)
+		{
+			if(count==0)
+			{
+				CLIENT_LOG(GetClient(), "server list return empty");
+				GetClient()->Logout();
+				return;
+			}
+
+			GetClient()->c2s.EnterServer(infos[0].server_id);
+			GetClient()->c2s.QueryAvatar();
+		}
+
+		void CEnterServer::OnQueryAvatarFailed(_U32 errcode)
+		{
+			GetClient()->c2s.CreateAvatar("aaa", 10);
+			GetClient()->c2s.QueryAvatar();
+		}
+
+		void CEnterServer::OnQueryAvatarResult(const SG_PLAYER& player)
+		{
+			GetClient()->c2s.EnterGame();
 		}
 
 		CStressCase* CEnterServer::Create()

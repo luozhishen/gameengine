@@ -45,7 +45,7 @@ namespace DDLReflect
 
 struct STRESSCASE_ENTERSERVER_CONFIG
 {
-	_U32 reset_time;
+	_U32 i;
 };
 
 namespace DDLReflect
@@ -57,7 +57,8 @@ namespace DDLReflect
 
 struct STRESSCASE_ENTERSERVER_STATUS
 {
-	_U32 failed_times;
+	_U32 total_times;
+	_U32 success_times;
 };
 
 namespace DDLReflect

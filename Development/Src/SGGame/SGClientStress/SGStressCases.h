@@ -38,10 +38,6 @@ namespace Zion
 
 			virtual void OnTick();
 
-			void AwardLeagueBattleResult(_U8 ret, _U32 type, _U32 level, _U32 exp_addition, _U32 exp, _U32 gold, _U32 rmb, _U32 reputation, _U32 contribution, const SG_DROP_ITEM_CONFIG* items, _U32 count)
-			{
-			}
-
 		protected:
 			virtual CStressCase* Create();
 		};
@@ -52,10 +48,22 @@ namespace Zion
 			CEnterServer();
 			virtual ~CEnterServer();
 
+			virtual void OnAttach();
+			virtual void OnDetach();
 			virtual void OnTick();
+
+			void OnLoginDone();
+			void OnGetServerListResult(const SG_SERVER_INFO* infos, _U32 count, _U32 last_server);
+			void OnQueryAvatarFailed(_U32 errcode);
+			void OnQueryAvatarResult(const SG_PLAYER& player);
 
 		protected:
 			virtual CStressCase* Create();
+
+		private:
+			_U32 m_retry_time;
+			_U32 m_reset_time;
+			_U32 m_disconnect_time;
 		};
 
 	}

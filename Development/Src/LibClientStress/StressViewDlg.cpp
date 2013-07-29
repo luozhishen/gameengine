@@ -82,7 +82,7 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	m_pGlobal = ZION_NEW wxListCtrl(pViewTab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
 	m_pGlobal->InsertColumn(0, wxT("Name"));
 	m_pGlobal->InsertColumn(1, wxT("Value"));
-	m_pGlobal->InsertColumn(2, wxT("Per 5 seconds"));
+	m_pGlobal->InsertColumn(2, wxT("Per second"));
 
 	pViewTab->AddPage(pClientPanel,	wxT("Clients Info"));
 	pViewTab->AddPage(pGrid,			wxT("Global Config"));

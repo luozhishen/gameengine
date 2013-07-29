@@ -18,6 +18,7 @@
 #include <StressCase.h>
 #include <StressManager.h>
 #include <StressLoader.h>
+#include <StructEditView.h>
 
 #include "ClientStressFrame.h"
 #include "ClientStressApp.h"
@@ -318,12 +319,12 @@ void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 		if(name.empty())
 		{
 			index = Zion::CStressManager::Get().NewClient();
+			NotifyClientAdd(index);
 		}
 		else
 		{
 			index = m_StressLoader.CreateClient(name.c_str());
 		}
-		NotifyClientAdd(index);
 	}
 	
 }

@@ -30,13 +30,13 @@
   <ItemGroup>
     <CustomBuild Include="GenCode.js">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cd $(ProjectDir)
-D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cd $(ProjectDir)
-D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cd $(ProjectDir)
-D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cd $(ProjectDir)
-D:\Files\Tools\nodejs\node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
+node.exe GenCode.js &gt; SGClient_AutoGen.h</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">SGClient_AutoGen.h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gen SGClient_AutoGen.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gen SGClient_AutoGen.h</Message>

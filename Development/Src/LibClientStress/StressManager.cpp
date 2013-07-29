@@ -156,6 +156,14 @@ namespace Zion
 		return i->second->GetConfigType();
 	}
 
+	const DDLReflect::STRUCT_INFO* CStressManager::GetCaseStatusType(const char* name)
+	{
+		Zion::Map<Zion::String, CStressCase*>::iterator i;
+		i = m_mapCases.find(name);
+		if(i==m_mapCases.end()) return NULL;
+		return i->second->GetStatusType();
+	}
+
 	bool CStressManager::GetCaseConfigDefault(const char* name, void* data, _U32 size)
 	{
 		Zion::Map<Zion::String, CStressCase*>::iterator i;

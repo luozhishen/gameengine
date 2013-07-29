@@ -79,7 +79,7 @@ namespace Zion
 			{
 				m_disconnect_time = (_U32)time(NULL) + m_Config.disconnect_time;
 			}
-			m_Status.sucess_time++;
+			m_Status.sucess_times++;
 		}
 
 		void CLogin::OnDisconnected()

@@ -33,7 +33,7 @@ namespace DDLReflect
 struct STRESSCASE_LOGIN_STATUS
 {
 	_U32 failed_times;
-	_U32 sucess_time;
+	_U32 sucess_times;
 };
 
 namespace DDLReflect

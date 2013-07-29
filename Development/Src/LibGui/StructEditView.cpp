@@ -19,7 +19,6 @@ enum
 
 BEGIN_EVENT_TABLE(CStructEditView, wxPanel)
 	EVT_PG_CHANGED(ID_OBJECT_GRID, CStructEditView::OnPropertyGridChange)
-	EVT_PG_CHANGING(ID_OBJECT_GRID, CStructEditView::OnPropertyGridChanging)
 END_EVENT_TABLE()
 
 CStructEditView::CStructEditView(wxWindow* pParent) : wxPanel(pParent)
@@ -155,28 +154,6 @@ void CStructEditView::OnPropertyGridChange(wxPropertyGridEvent &event)
 	}
 }
 
-void CStructEditView::OnPropertyGridChanging(wxPropertyGridEvent &event)
-{
-/*
-	m_bModify = true;
-	wxPGProperty* property = event.GetProperty();
-	
-	wxVariant pendingValue = event.GetValue();
-	bool bValidate = ValidataPropIsNull(property, pendingValue);
-
-	if (pendingValue.IsNull() || bValidate)
-	{
-		event.Veto();
-		event.SetValidationFailureBehavior(wxPG_VFB_STAY_IN_PROPERTY | wxPG_VFB_BEEP | wxPG_VFB_SHOW_MESSAGE);
-		wxMessageBox(wxT("This feild must have not null value!!!"));
-
-		m_pPropGrid->SetFocus();
-		m_pPropGrid->UpdateWindowUI();
-		m_pPropGrid->Update();
-	}
-*/
-}
-
 void CStructEditView::InitPropGrid(const DDLReflect::STRUCT_INFO* info, const void* data)
 {
 	if(info->parent) InitPropGrid(info->parent, data);
@@ -259,15 +236,15 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 		prop = ZION_NEW CPropertyEx<_U8, wxUIntProperty>(strLabel, name, finfo, data, *((const _U8*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
-	case DDLReflect::TYPE_U16:	
+	case DDLReflect::TYPE_U16:
 		prop = ZION_NEW CPropertyEx<_U16, wxUIntProperty>(strLabel, name, finfo, data, *((const _U16*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
-	case DDLReflect::TYPE_U32:	
+	case DDLReflect::TYPE_U32:
 		prop = ZION_NEW CPropertyEx<_U32, wxUIntProperty>(strLabel, name, finfo, data, *((const _U32*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
-	case DDLReflect::TYPE_U64:	
+	case DDLReflect::TYPE_U64:
 		prop = ZION_NEW CPropertyEx<_U64, wxUIntProperty>(strLabel, name, finfo, data, *((const _U64*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
@@ -279,7 +256,7 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 		prop = ZION_NEW CPropertyEx<_S16, wxIntProperty>(strLabel, name, finfo, data, *((const _S16*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
-	case DDLReflect::TYPE_S32:	
+	case DDLReflect::TYPE_S32:
 		prop = ZION_NEW CPropertyEx<_S32, wxIntProperty>(strLabel, name, finfo, data, *((const _S32*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
@@ -287,7 +264,7 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 		prop = ZION_NEW CPropertyEx<_S64, wxIntProperty>(strLabel, name, finfo, data, *((const _S64*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;
-	case DDLReflect::TYPE_F32:	
+	case DDLReflect::TYPE_F32:
 		prop = ZION_NEW CPropertyEx<_F32, wxFloatProperty>(strLabel, name, finfo, data, *((const _F32*)data));
 		prog_id = m_pPropGrid->AppendIn(id, prop);
 		break;

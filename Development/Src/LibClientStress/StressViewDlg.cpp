@@ -11,9 +11,10 @@
 #include <StressManager.h>
 #include <StressCase.h>
 #include <StressClient.h>
+#include <StructEditView.h>
 
 #include "StressViewDlg.h"
-#include <StructEditView.h>
+#include <fstream>
 
 class StreesViewItemData : public wxTreeItemData
 {
@@ -78,56 +79,51 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 		pGrid->SetPropertyReadOnly(pGrid->Append(propGrid));
 	}
 
-	wxPanel* pCasePanel = ZION_NEW wxPanel(pViewTab);
-	m_pCaseTree = ZION_NEW wxListCtrl(pCasePanel, ID_CASE_TREE, wxDefaultPosition, wxDefaultSize, wxLC_LIST);
-	m_pCaseConfig = ZION_NEW CStructEditView(pCasePanel);
-	wxSizer* pCaseSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
-	pCaseSizer->Add(m_pCaseTree, 0, wxGROW|wxALIGN_CENTER|wxALL);
-	pCaseSizer->Add(m_pCaseConfig, 1, wxGROW|wxALIGN_CENTER|wxALL);
-	pCasePanel->SetSizer(pCaseSizer);
+	m_pGlobal = ZION_NEW wxPropertyGrid(pViewTab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_AUTO_SORT|wxPG_SPLITTER_AUTO_CENTER|wxPG_DEFAULT_STYLE);
 
-	pViewTab->AddPage(pClientPanel,		wxT("Clients"));
-	pViewTab->AddPage(pGrid,				wxT("Config"));
-	pViewTab->AddPage(pCasePanel,		wxT("Cases"));
+	pViewTab->AddPage(pClientPanel,	wxT("Clients Info"));
+	pViewTab->AddPage(pGrid,			wxT("Global Config"));
+	pViewTab->AddPage(m_pGlobal,		wxT("Cases Info"));
 
 	wxBoxSizer* pSizerRoot = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pSizerRoot->Add(pViewTab, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
 	SetSizer(pSizerRoot);
 
+	// init client view
 	Zion::CStressManager& stressMgr = Zion::CStressManager::Get();
 	Zion::Array<_U32> clients;
 	stressMgr.GetClients(clients);
-	if(clients.empty()) return;
-
-	wxTreeItemId rootItem = m_pClientTree->AddRoot(wxT("Clients"));
-	Zion::Set<Zion::String> caseset;
-
-	for(_U32 i=0; i<clients.size(); ++i)
+	if(!clients.empty())
 	{
-		Zion::CStressClient* pClient = stressMgr.GetClient(clients[i]);
-		if(pClient==NULL) continue;
-
-		wxTreeItemId clientItem = m_pClientTree->AppendItem(rootItem, wxString::FromUTF8(pClient->GetTitle().c_str()), -1, -1);
-		m_pClientTree->SetItemData(clientItem, ZION_NEW StreesViewItemData(pClient->GetIndex()));
-
-		Zion::Set<Zion::CStressCase*> cases;
-		pClient->GetStressCases(cases);
-		if(cases.empty()) continue;
-
-		Zion::Set<Zion::CStressCase*>::iterator it;
-		for(it=cases.begin(); it!=cases.end(); ++it)
+		wxTreeItemId rootItem = m_pClientTree->AddRoot(wxT("Clients"));
+		for(_U32 i=0; i<clients.size(); ++i)
 		{
-			if(caseset.find((*it)->GetName())==caseset.end())
-			{
-				caseset.insert((*it)->GetName());
-				m_pCaseTree->InsertItem((long)caseset.size(), wxString::FromUTF8((*it)->GetName().c_str()));
-			}
+			Zion::CStressClient* pClient = stressMgr.GetClient(clients[i]);
+			if(pClient==NULL) continue;
 
-			wxTreeItemId caseItem = m_pClientTree->AppendItem(clientItem, wxString::FromUTF8((*it)->GetName().c_str()), -1, -1);
-			StreesViewItemData* castData = ZION_NEW StreesViewItemData(pClient->GetIndex(), (*it)->GetName());
-			m_pClientTree->SetItemData(caseItem, (wxTreeItemData*)castData);
+			wxTreeItemId clientItem = m_pClientTree->AppendItem(rootItem, wxString::FromUTF8(pClient->GetTitle().c_str()), -1, -1);
+			m_pClientTree->SetItemData(clientItem, ZION_NEW StreesViewItemData(pClient->GetIndex()));
+
+			Zion::Set<Zion::CStressCase*> cases;
+			pClient->GetStressCases(cases);
+			if(cases.empty()) continue;
+
+			Zion::Set<Zion::CStressCase*>::iterator it;
+			for(it=cases.begin(); it!=cases.end(); ++it)
+			{
+				wxTreeItemId caseItem = m_pClientTree->AppendItem(clientItem, wxString::FromUTF8((*it)->GetName().c_str()), -1, -1);
+				StreesViewItemData* castData = ZION_NEW StreesViewItemData(pClient->GetIndex(), (*it)->GetName());
+				m_pClientTree->SetItemData(caseItem, (wxTreeItemData*)castData);
+			}
 		}
 	}
+
+	// init case
+	if(!LoadCounterConfig())
+	{
+		wxMessageBox(wxT("load stress counter config"));
+	}
+	UpdateCounter();
 
 	m_Timer.Start(100);
 }
@@ -137,8 +133,117 @@ CStressViewDlg::~CStressViewDlg()
 	m_pClientTree->DeleteAllItems();
 }
 
+bool CStressViewDlg::LoadCounterConfig()
+{
+	Zion::String file = Zion::StringFormat("%sConfig/StressCounter.json", Zion::ZionGameDir());
+
+	Json::Value root;
+	std::ifstream f(file.c_str(), std::ifstream::binary);
+	if(!f.is_open()) return false;
+	Json::Reader reader;
+	if(!reader.parse(f, root, false)) return false;
+
+	Json::Value::Members ms = root.getMemberNames();
+	Json::Value::Members::iterator i;
+	for(i=ms.begin(); i!=ms.end(); i++)
+	{
+		Json::Value tpl = root.get(*i, Json::Value());
+		if(!tpl.isObject()) return false;
+
+		Json::Value _case = tpl.get("case", Json::Value());
+		Json::Value _mode = tpl.get("mode", Json::Value());
+		Json::Value _varb = tpl.get("variable", Json::Value());
+		if(!_case.isString() || !_mode.isString() || !_varb.isString())
+		{
+			return false;
+		}
+
+		COUNTER_INFO cinfo;
+		cinfo.name = *i;
+		cinfo.casename = _case.asString().c_str();
+		const DDLReflect::STRUCT_INFO* info = Zion::CStressManager::Get().GetCaseStatusType(cinfo.casename.c_str());
+		if(!info) return false;
+		DDLReflect::FIELD_INFO finfo;
+		cinfo.offset = DDLReflect::GetStructFieldOffset(info, _varb.asString().c_str(), &finfo);
+		if(cinfo.offset==(_U32)-1) return false;
+		if(_mode.asString()=="sum")
+		{
+			if(finfo.type!=DDLReflect::TYPE_U32) return false;
+			cinfo.mode = 0;
+			cinfo.prop_u32 = ZION_NEW wxUIntProperty(wxString::FromUTF8(cinfo.name.c_str()));
+			cinfo.prop_f32 = NULL;
+			m_pGlobal->Append(cinfo.prop_u32);
+		}
+		else if(_mode.asString()=="average")
+		{
+			if(finfo.type!=DDLReflect::TYPE_F32) return false;
+			cinfo.mode = 1;
+			cinfo.prop_u32 = NULL;
+			cinfo.prop_f32 = ZION_NEW wxFloatProperty(wxString::FromUTF8(cinfo.name.c_str()));
+			m_pGlobal->Append(cinfo.prop_f32);
+		}
+		else
+		{
+			return false;
+		}
+		m_Counters[cinfo.name] = cinfo;
+	}
+
+	return true;
+}
+
+void CStressViewDlg::UpdateCounter()
+{
+	Zion::Map<Zion::String, COUNTER_INFO>::iterator i;
+	for(i=m_Counters.begin(); i!=m_Counters.end(); i++)
+	{
+		i->second.total_u32 = 0;
+		i->second.total_f32 = 0.0f;
+		i->second.count = 0;
+	}
+
+	Zion::CStressManager& stressMgr = Zion::CStressManager::Get();
+	Zion::Array<_U32> clients;
+	stressMgr.GetClients(clients);
+	if(clients.empty()) return;
+	for(_U32 cid=0; cid<clients.size(); ++cid)
+	{
+		Zion::CStressClient* pClient = stressMgr.GetClient(clients[cid]);
+		if(pClient==NULL) continue;
+
+		for(i=m_Counters.begin(); i!=m_Counters.end(); i++)
+		{
+			Zion::CStressCase* pCase = pClient->GetStressCase(i->second.casename.c_str());
+			if(pCase==NULL) continue;
+			if(i->second.mode==0)
+			{
+				i->second.total_u32 = *((const _U32*)(pCase->GetStatusData()+i->second.offset));
+			}
+			else
+			{
+				i->second.total_f32 = *((const _F32*)(pCase->GetStatusData()+i->second.offset));
+				i->second.count += 1;
+			}
+		}
+	}
+
+	for(i=m_Counters.begin(); i!=m_Counters.end(); i++)
+	{
+		if(i->second.mode==0)
+		{
+			i->second.prop_u32->SetValue(wxVariant((long)i->second.total_u32));
+		}
+		else
+		{
+			i->second.prop_u32->SetValue(wxVariant((double)i->second.total_f32/i->second.count));
+		}
+	}
+}
+
 void CStressViewDlg::OnTimer(wxTimerEvent& event)
 {
+	UpdateCounter();
+
 	Zion::CStressClient* client = Zion::CStressManager::Get().GetClient(m_Index);
 	if(!client) return;
 

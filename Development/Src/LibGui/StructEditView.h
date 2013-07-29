@@ -19,8 +19,7 @@ public:
 	bool Set(const DDLReflect::STRUCT_INFO* info, void* data);
 	bool Get(const DDLReflect::STRUCT_INFO* info, void* data);
 
-	void OnPropertyGridChange(wxPropertyGridEvent& event); 
-	void OnPropertyGridChanging(wxPropertyGridEvent& event); 
+	void OnPropertyGridChange(wxPropertyGridEvent& event);
 
 private:
 	void InitPropGrid(const DDLReflect::STRUCT_INFO* info, const void* data);

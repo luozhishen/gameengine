@@ -36,6 +36,7 @@ namespace Zion
 		CStressCase* CreateCase(const char* name);
 		bool HasCase(const char* name);
 		const DDLReflect::STRUCT_INFO* GetCaseConfigType(const char* name);
+		const DDLReflect::STRUCT_INFO* GetCaseStatusType(const char* name);
 		bool GetCaseConfigDefault(const char* name, void* data, _U32 size);
 
 	protected:

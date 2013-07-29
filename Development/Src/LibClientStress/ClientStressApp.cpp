@@ -14,6 +14,7 @@
 #include <StressClient.h>
 #include <StressLoader.h>
 #include <StressManager.h>
+#include <StructEditView.h>
 
 #include "ClientStressApp.h"
 #include "ClientStressFrame.h"

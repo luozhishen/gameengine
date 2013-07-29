@@ -1,0 +1,15 @@
+
+{
+	"Login.failed_times" :
+	{
+		"case" : "Login",
+		"mode" : "sum",
+		"variable" : "failed_times"
+	},
+	"Login.sucess_times" :
+	{
+		"case" : "Login",
+		"mode" : "sum",
+		"variable" : "sucess_times"
+	}
+}

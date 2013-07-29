@@ -3,7 +3,7 @@
 	{
 		"Login" :
 		{
-			"disconnect_time" : "1"
+			"reset_time" : "0"
 		},
 		"Echo" :
 		{

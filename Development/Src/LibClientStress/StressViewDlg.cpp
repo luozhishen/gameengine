@@ -79,7 +79,10 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 		pGrid->SetPropertyReadOnly(pGrid->Append(propGrid));
 	}
 
-	m_pGlobal = ZION_NEW wxPropertyGrid(pViewTab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_AUTO_SORT|wxPG_SPLITTER_AUTO_CENTER|wxPG_DEFAULT_STYLE);
+	m_pGlobal = ZION_NEW wxListCtrl(pViewTab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+	m_pGlobal->InsertColumn(0, wxT("Name"));
+	m_pGlobal->InsertColumn(1, wxT("Value"));
+	m_pGlobal->InsertColumn(2, wxT("Per 5 seconds"));
 
 	pViewTab->AddPage(pClientPanel,	wxT("Clients Info"));
 	pViewTab->AddPage(pGrid,			wxT("Global Config"));
@@ -170,17 +173,15 @@ bool CStressViewDlg::LoadCounterConfig()
 		{
 			if(finfo.type!=DDLReflect::TYPE_U32) return false;
 			cinfo.mode = 0;
-			cinfo.prop_u32 = ZION_NEW wxUIntProperty(wxString::FromUTF8(cinfo.name.c_str()));
-			cinfo.prop_f32 = NULL;
-			m_pGlobal->Append(cinfo.prop_u32);
+			cinfo.prop = m_pGlobal->InsertItem(m_pGlobal->GetItemCount(), wxString::FromUTF8(cinfo.name.c_str()));
+			cinfo.last_u32 = 0;
+			cinfo.last_time = GetTickCount();
 		}
 		else if(_mode.asString()=="average")
 		{
 			if(finfo.type!=DDLReflect::TYPE_F32) return false;
 			cinfo.mode = 1;
-			cinfo.prop_u32 = NULL;
-			cinfo.prop_f32 = ZION_NEW wxFloatProperty(wxString::FromUTF8(cinfo.name.c_str()));
-			m_pGlobal->Append(cinfo.prop_f32);
+			cinfo.prop = m_pGlobal->InsertItem(m_pGlobal->GetItemCount(), wxString::FromUTF8(cinfo.name.c_str()));
 		}
 		else
 		{
@@ -217,11 +218,11 @@ void CStressViewDlg::UpdateCounter()
 			if(pCase==NULL) continue;
 			if(i->second.mode==0)
 			{
-				i->second.total_u32 = *((const _U32*)(pCase->GetStatusData()+i->second.offset));
+				i->second.total_u32 += *((const _U32*)(pCase->GetStatusData()+i->second.offset));
 			}
 			else
 			{
-				i->second.total_f32 = *((const _F32*)(pCase->GetStatusData()+i->second.offset));
+				i->second.total_f32 += *((const _F32*)(pCase->GetStatusData()+i->second.offset));
 				i->second.count += 1;
 			}
 		}
@@ -231,13 +232,35 @@ void CStressViewDlg::UpdateCounter()
 	{
 		if(i->second.mode==0)
 		{
-			i->second.prop_u32->SetValue(wxVariant((long)i->second.total_u32));
+			m_pGlobal->SetItem(i->second.prop, 1, wxString::Format(wxT("%u"), i->second.total_u32));
+
+			_U32 curtime = GetTickCount(), deltatime;;
+			if(curtime<i->second.last_time)
+			{
+				deltatime = curtime + (((_U32)-1) - i->second.last_time);
+			}
+			else
+			{
+				deltatime = curtime - i->second.last_time;
+			}
+			if(deltatime>5000)
+			{
+				_F32 v = ((_F32)(i->second.total_u32) - (_F32)(i->second.last_u32)) / deltatime * 1000 / 5;
+				m_pGlobal->SetItem(i->second.prop, 2, wxString::Format(wxT("%f"), v));
+				i->second.last_time = curtime;
+				i->second.last_u32 = i->second.total_u32;
+			}
 		}
 		else
 		{
-			i->second.prop_u32->SetValue(wxVariant((double)i->second.total_f32/i->second.count));
+			m_pGlobal->SetItem(i->second.prop, 1, wxString::Format(wxT("%f"), i->second.total_f32/i->second.count));
 		}
 	}
+}
+
+void CStressViewDlg::ClearCounter()
+{
+	m_Counters.clear();
 }
 
 void CStressViewDlg::OnTimer(wxTimerEvent& event)

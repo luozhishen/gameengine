@@ -10,10 +10,15 @@ struct COUNTER_INFO
 	int mode; // 0=sum; 1=average
 	Zion::String variable;
 	_U32 offset;
-	_U32 total_u32, count;
+
+	_U32 total_u32;
+	_U32 last_u32;
+	_U32 last_time;
+
 	_F32 total_f32;
-	wxUIntProperty*		prop_u32;
-	wxFloatProperty*	prop_f32;
+	_U32 count;
+
+	long prop;
 };
 
 class CStressViewDlg : public wxDialog
@@ -26,6 +31,7 @@ public:
 
 	bool LoadCounterConfig();
 	void UpdateCounter();
+	void ClearCounter();
 
 	void OnTimer(wxTimerEvent& event);
 	void OnClientSelected(wxTreeEvent& event);
@@ -38,7 +44,8 @@ private:
 	_U32 m_Index;
 	Zion::String m_CaseName;
 
-	wxPropertyGrid* m_pGlobal;
+	wxListCtrl* m_pGlobal;
+//	wxPropertyGrid* m_pGlobal;
 	Zion::Map<Zion::String, COUNTER_INFO> m_Counters;
 };
 

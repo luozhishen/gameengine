@@ -53,11 +53,11 @@ namespace Zion
 			}
 			if(GetClient()->GetState()==CClient::STATE_LOGINED)
 			{
-				if(m_Config.disconnect_time!=0)
+				if(m_Config.reset_time>=0)
 				{
 					if(m_disconnect_time==0)
 					{
-						m_disconnect_time = (_U32)time(NULL) + m_Config.disconnect_time;
+						m_disconnect_time = (_U32)time(NULL) + (_U32)m_Config.reset_time;
 					}
 					if(m_disconnect_time<=(_U32)time(NULL))
 					{
@@ -75,10 +75,6 @@ namespace Zion
 
 		void CLogin::OnLoginDone()
 		{
-			if(m_Config.disconnect_time)
-			{
-				m_disconnect_time = (_U32)time(NULL) + m_Config.disconnect_time;
-			}
 			m_Status.sucess_times++;
 		}
 

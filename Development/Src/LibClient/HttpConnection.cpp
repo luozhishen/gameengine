@@ -2,7 +2,7 @@
 #include "ZionCommon.h"
 #include "ZionClient.h"
 #include "ZionClientApp.h"
-#include "HttpClientConnection.h"
+#include "HttpConnection.h"
 
 namespace Zion
 {

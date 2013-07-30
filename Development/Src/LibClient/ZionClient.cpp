@@ -7,7 +7,7 @@
 #include "ClientConnection.h"
 #include "AsyncIOConnection.h"
 #include "NonblockConnection.h"
-#include "HttpClientConnection.h"
+#include "HttpConnection.h"
 
 namespace Zion
 {

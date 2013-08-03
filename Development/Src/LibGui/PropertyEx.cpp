@@ -38,7 +38,7 @@ void wxObjectRefProperty::UpdateValue()
 		char name[100];
 		AUuidToString(*((A_UUID*)m_data), name);
 		wxString value;
-		value.Printf(wxT("name %s uuid %s"), wxString::FromUTF8(obj->name._Value), wxString::FromUTF8(name));
+		value.Printf(wxT("name %s uuid %s"), wxString::FromUTF8(obj->_name._Value), wxString::FromUTF8(name));
 		SetValueFromString(value);
 	}
 	else

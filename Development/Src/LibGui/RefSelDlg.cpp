@@ -82,19 +82,19 @@ void CRefSelDlg::AppendItem(wxString& wxRefType, wxString strInput)
 	const A_CONTENT_OBJECT* object = Zion::ContentObject::FindFirst(info, true);
 	while(object)
 	{
-		wxString strNameValue(object->name._Value, wxMBConvUTF8());
+		wxString strNameValue(object->_name._Value, wxMBConvUTF8());
 		if(!strInput.empty() && strNameValue.find(strInput) == wxNOT_FOUND)
 		{
 			continue;
 		}
 
-		long item_id = m_pUUIDList->InsertItem(m_pUUIDList->GetItemCount(), wxString::FromUTF8(object->name._Value));
+		long item_id = m_pUUIDList->InsertItem(m_pUUIDList->GetItemCount(), wxString::FromUTF8(object->_name._Value));
 
 		char szUUID[128];
-		AUuidToString(object->uuid, szUUID);
+		AUuidToString(object->_uuid, szUUID);
 		m_pUUIDList->SetItem(item_id, 1, wxString::FromUTF8(szUUID));
 
-		wxUIntPtr itemData = (wxUIntPtr)(&(object->uuid));
+		wxUIntPtr itemData = (wxUIntPtr)&object->_uuid;
 		m_pUUIDList->SetItemPtrData(item_id, itemData);
 
 		object = Zion::ContentObject::FindNext(info, true, object);

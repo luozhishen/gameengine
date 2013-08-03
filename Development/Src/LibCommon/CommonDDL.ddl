@@ -1,15 +1,15 @@
 
 struct A_CONTENT_OBJECT
 {
-	[readonly] A_UUID uuid;
-	[notnull] string<100> name;
+	[readonly] A_UUID _uuid;
+	[notnull] string<100> _name;
 };
 task[GEN_STRUCT_SERIALIZE(A_CONTENT_OBJECT)];
 task[GEN_STRUCT_REFLECT(A_CONTENT_OBJECT)];
 
 struct A_LIVE_OBJECT
 {
-	A_UUID uuid;
+	A_UUID _uuid;
 };
 task[GEN_STRUCT_SERIALIZE(A_LIVE_OBJECT)];
 task[GEN_STRUCT_REFLECT(A_LIVE_OBJECT)];

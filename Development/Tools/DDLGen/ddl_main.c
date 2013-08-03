@@ -6,8 +6,10 @@
 #include "ddl_parser.h"
 #include "ddl_codegen.h"
 #include "ddl_codegen_php.h"
+#include "ddl_codegen_javascript.h"
 
 static int phpmode = 0;
+static int jsmode = 0;
 
 int main(int argc, char* argv[])
 {
@@ -16,10 +18,29 @@ int main(int argc, char* argv[])
 
 	if(argc<2) return 0;
 	if(argc>=3) {
-		phpmode = 1;
-		if(!ddlgen_codephp_open(argv[2])) {
-			printf("can't open %s", argv[2]);
-			return -1;
+		int i;
+		for(i=2; i<argc; i++) {
+			const char* r = strrchr(argv[i], '.');
+			if(!r) {
+				printf("invalid parameter\n");
+				return -1;
+			}
+			if(strcmp(r, ".js")==0) {
+				if(!ddlgen_codejs_open(argv[i])) {
+					printf("can't open %s", argv[2]);
+					return -1;
+				}
+				jsmode = 1;
+			} else if(strcmp(r, ".php")==0) {
+				if(!ddlgen_codephp_open(argv[i])) {
+					printf("can't open %s", argv[2]);
+					return -1;
+				}
+				phpmode = 1;
+			} else {
+				printf("invalid parameter\n");
+				return -1;
+			}
 		}
 	}
 
@@ -46,6 +67,9 @@ int main(int argc, char* argv[])
 
 	if(phpmode) {
 		ddlgen_codephp_close();
+	}
+	if(jsmode) {
+		ddlgen_codejs_close();
 	}
 
 	return 0;
@@ -97,6 +121,9 @@ void ddlgen_notify_struct_end(const DDL_STR* str)
 		ddlgen_error_set("error in ddlgen_code_struct");
 	}
 
+	if(jsmode) {
+		ddlgen_codejs_task_struct(str, NULL);
+	}
 	if(phpmode) {
 		ddlgen_codephp_task_struct(str, NULL);
 	}
@@ -155,6 +182,36 @@ static int code_task(const DDL_TASK* task)
 		}
 		if(!ddlgen_code_task_class_client(cls, task)) {
 			return 0;
+		}
+		return 1;
+	}
+
+	if(strcmp(task->type, "GEN_JS_STUB")==0) {
+		if(jsmode) {
+			const DDL_CLS* cls;
+			cls = ddlgen_class(task->name);
+			if(!cls) {
+				printf("not found");
+				return 0;
+			}
+			if(!ddlgen_codejs_task_class_stub(cls, task)) {
+				return 0;
+			}
+		}
+		return 1;
+	}
+
+	if(strcmp(task->type, "GEN_JS_PROXY")==0) {
+		if(jsmode) {
+			const DDL_CLS* cls;
+			cls = ddlgen_class(task->name);
+			if(!cls) {
+				printf("not found");
+				return 0;
+			}
+			if(!ddlgen_codejs_task_class_proxy(cls, task)) {
+				return 0;
+			}
 		}
 		return 1;
 	}
@@ -224,6 +281,21 @@ static int code_task(const DDL_TASK* task)
 		}
 		if(!ddlgen_code_task_struct_reflect(str, task)) {
 			return 0;
+		}
+		return 1;
+	}
+
+	if(strcmp(task->type, "GEN_JS")==0) {
+		if(phpmode) {
+			const DDL_STR* str;
+			str = ddlgen_struct(task->name);
+			if(!str) {
+				printf("not found");
+				return 0;
+			}
+			if(!ddlgen_codejs_task_struct(str, task)) {
+				return 0;
+			}
 		}
 		return 1;
 	}

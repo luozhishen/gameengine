@@ -9,15 +9,15 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<A_CONTENT_OBJECT>(A_CONTENT_OBJECT& Value)
 	{
-		if(!Read<A_UUID>(Value.uuid)) return false;
-		if(!ReadString<100>(Value.name)) return false;
+		if(!Read<A_UUID>(Value._uuid)) return false;
+		if(!ReadString<100>(Value._name)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<A_CONTENT_OBJECT>(const A_CONTENT_OBJECT& Value)
 	{
-		if(!Write<A_UUID>(Value.uuid)) return false;
-		if(!WriteString<100>(Value.name)) return false;
+		if(!Write<A_UUID>(Value._uuid)) return false;
+		if(!WriteString<100>(Value._name)) return false;
 		return true;
 	}
 }
@@ -37,8 +37,8 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_A_CONTENT_OBJECT_fieldinfo[] =
 	{
-		{TYPE_UUID, "uuid", 0|FLAG_READONLY, (_U16)ZION_OFFSETOF(A_CONTENT_OBJECT, uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
-		{TYPE_STRING, "name", 0|FLAG_NOTNULL, (_U16)ZION_OFFSETOF(A_CONTENT_OBJECT, name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
+		{TYPE_UUID, "_uuid", 0|FLAG_READONLY, (_U16)ZION_OFFSETOF(A_CONTENT_OBJECT, _uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_STRING, "_name", 0|FLAG_NOTNULL, (_U16)ZION_OFFSETOF(A_CONTENT_OBJECT, _name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
 	};
 	STRUCT_INFO _rfl_struct_A_CONTENT_OBJECT_info = { NULL, "A_CONTENT_OBJECT", sizeof(A_CONTENT_OBJECT), 2, _struct_A_CONTENT_OBJECT_fieldinfo, _struct_A_CONTENT_OBJECT_readproc, _struct_A_CONTENT_OBJECT_writeproc };
 	template<>
@@ -53,13 +53,13 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<A_LIVE_OBJECT>(A_LIVE_OBJECT& Value)
 	{
-		if(!Read<A_UUID>(Value.uuid)) return false;
+		if(!Read<A_UUID>(Value._uuid)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<A_LIVE_OBJECT>(const A_LIVE_OBJECT& Value)
 	{
-		if(!Write<A_UUID>(Value.uuid)) return false;
+		if(!Write<A_UUID>(Value._uuid)) return false;
 		return true;
 	}
 }
@@ -79,7 +79,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_A_LIVE_OBJECT_fieldinfo[] =
 	{
-		{TYPE_UUID, "uuid", 0, (_U16)ZION_OFFSETOF(A_LIVE_OBJECT, uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "_uuid", 0, (_U16)ZION_OFFSETOF(A_LIVE_OBJECT, _uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
 	};
 	STRUCT_INFO _rfl_struct_A_LIVE_OBJECT_info = { NULL, "A_LIVE_OBJECT", sizeof(A_LIVE_OBJECT), 1, _struct_A_LIVE_OBJECT_fieldinfo, _struct_A_LIVE_OBJECT_readproc, _struct_A_LIVE_OBJECT_writeproc };
 	template<>

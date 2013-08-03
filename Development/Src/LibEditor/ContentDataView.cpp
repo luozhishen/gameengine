@@ -189,7 +189,7 @@ void CContentDataView::OnObjectAdd(wxCommandEvent& event)
 	A_CONTENT_OBJECT* pObject = Zion::ContentObject::CreateObject(info, uuid);
 	if(!pObject) return;
 
-	pObject->name = (const char*)m_dlgGenerateObject.GetName().ToUTF8();
+	pObject->_name = (const char*)m_dlgGenerateObject.GetName().ToUTF8();
 	SetCurrentObject(-1, info, pObject);
 }
 
@@ -197,7 +197,7 @@ void CContentDataView::OnObjectSave(wxCommandEvent& event)
 {
 	if(!m_pCurInfo || !m_pCurData) return;
 
-	A_CONTENT_OBJECT* data = Zion::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
+	A_CONTENT_OBJECT* data = Zion::ContentObject::Modify(m_pCurData->_uuid, m_pCurInfo);
 	if(!m_pInfo->Get(m_pCurInfo, data))
 	{
 		wxMessageBox(wxT("invalid data or no select item"));
@@ -215,7 +215,7 @@ void CContentDataView::OnObjectRemove(wxCommandEvent& event)
 {
 	if(!m_pCurData) return;
 
-	RemoveObject(m_pCurData->uuid);
+	RemoveObject(m_pCurData->_uuid);
 	SetCurrentObjectNULL();
 }
 
@@ -251,7 +251,7 @@ void CContentDataView::OnMenuNew(wxCommandEvent& event)
 void CContentDataView::OnMenuCopy(wxCommandEvent& event)
 {
 	if(!m_pCurData) return;
-	m_copyUUID = m_pCurData->uuid;
+	m_copyUUID = m_pCurData->_uuid;
 }
 
 void CContentDataView::OnMenuPaste(wxCommandEvent& event)
@@ -275,7 +275,7 @@ void CContentDataView::OnMenuPaste(wxCommandEvent& event)
 	}
 
 	memcpy(pDest, pSrc, pInfo->size);
-	pDest->uuid = uuid;
+	pDest->_uuid = uuid;
 }
 
 void CContentDataView::OnMenuDel(wxCommandEvent& event)
@@ -355,7 +355,7 @@ bool CContentDataView::CheckModify(bool bClear)
 			return false;
 		}
 
-		A_CONTENT_OBJECT* data = Zion::ContentObject::Modify(m_pCurData->uuid, m_pCurInfo);
+		A_CONTENT_OBJECT* data = Zion::ContentObject::Modify(m_pCurData->_uuid, m_pCurInfo);
 		if(!m_pInfo->Get(m_pCurInfo, data))
 		{
 			wxMessageBox(wxT("error in ContentObject::Modify"));
@@ -375,11 +375,11 @@ bool CContentDataView::CheckModify(bool bClear)
 void CContentDataView::AppendObject(const DDLReflect::STRUCT_INFO* info, const A_CONTENT_OBJECT* data)
 {
 	char szUUID[100];
-	AUuidToString(data->uuid, szUUID);
-	int n = m_pList->InsertItem(m_pList->GetItemCount(), wxString::FromUTF8(data->name._Value));
+	AUuidToString(data->_uuid, szUUID);
+	int n = m_pList->InsertItem(m_pList->GetItemCount(), wxString::FromUTF8(data->_name._Value));
 	m_pList->SetItem(n, 1, wxString::FromUTF8(info->name));
 	m_pList->SetItem(n, 2, wxString::FromUTF8(szUUID));
-	m_pList->SetItemPtrData(n, (wxUIntPtr)&data->uuid);
+	m_pList->SetItemPtrData(n, (wxUIntPtr)&data->_uuid);
 }
 
 void CContentDataView::RemoveObject(const A_UUID& uuid)
@@ -423,8 +423,8 @@ void CContentDataView::SetCurrentObject(long nSelectObject, const DDLReflect::ST
 {
 	char uuid[100];
 	wxString name;
-	name.Printf(wxT("%s %s UUID:"), wxString::FromUTF8(info->name), wxString::FromUTF8(data->name._Value));
-	AUuidToString(data->uuid, uuid);
+	name.Printf(wxT("%s %s UUID:"), wxString::FromUTF8(info->name), wxString::FromUTF8(data->_name._Value));
+	AUuidToString(data->_uuid, uuid);
 	name += wxString::FromUTF8(uuid);
 	m_pObjectName->SetLabel(name);
 
@@ -612,7 +612,7 @@ void CContentDataView::FlashList()
 		}
 		if(!skip)
 		{
-			AppendObject(Zion::ContentObject::GetObjectType(object->uuid), object);
+			AppendObject(Zion::ContentObject::GetObjectType(object->_uuid), object);
 			count++;
 		}
 

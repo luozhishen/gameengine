@@ -272,7 +272,7 @@ namespace Zion
 			if(!object) return NULL;
 			g_objct_manager.m_object_map[uuid] = std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>(info, object);
 			group->_dirty = true;
-			object->uuid = uuid;
+			object->_uuid = uuid;
 			return object;
 		}
 
@@ -318,7 +318,7 @@ namespace Zion
 			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
-				if((info!=NULL || i->second.first==info) && strcmp(name, i->second.second->name._Value)==0)
+				if((info!=NULL || i->second.first==info) && strcmp(name, i->second.second->_name._Value)==0)
 				{
 					return i->second.second;					
 				}
@@ -455,7 +455,7 @@ namespace Zion
 				if(internal_info.key_map.find(keys_value)!=internal_info.key_map.end())
 				{
 					char o1[60], o2[60];
-					AUuidToString(internal_info.key_map[keys_value]->uuid, o1);
+					AUuidToString(internal_info.key_map[keys_value]->_uuid, o1);
 					AUuidToString(i->first, o2);
 					g_buildindex_errmsg = StringFormat("reduplicate %s vs %s", o1, o2);
 					return false;
@@ -502,7 +502,7 @@ namespace Zion
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object)
 		{
 			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
-			i = g_objct_manager.m_object_map.find(object->uuid);
+			i = g_objct_manager.m_object_map.find(object->_uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			i++;
 			while(i!=g_objct_manager.m_object_map.end())

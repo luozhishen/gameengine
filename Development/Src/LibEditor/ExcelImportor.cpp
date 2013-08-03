@@ -298,7 +298,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		const A_CONTENT_OBJECT* it = Zion::ContentObject::FindFirst(tmpl.info, true);
 		while(it)
 		{
-			oldobjs.insert(it->uuid);
+			oldobjs.insert(it->_uuid);
 			it = Zion::ContentObject::FindNext(tmpl.info, true, it);
 		}
 	}
@@ -438,27 +438,27 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		A_CONTENT_OBJECT* old_obj = (A_CONTENT_OBJECT*)Zion::ContentObject::QueryByUniqueId(tmpl.info, pkey.c_str());
 		if(old_obj)
 		{
-			const DDLReflect::STRUCT_INFO* info = Zion::ContentObject::GetObjectType(old_obj->uuid);
+			const DDLReflect::STRUCT_INFO* info = Zion::ContentObject::GetObjectType(old_obj->_uuid);
 			if(info!=tmpl.info)
 			{
 				m_errmsg = Zion::StringFormat("content object type [%s - %s] not match uniqueid:{%s}", tmpl.info->name, info?info->name:"unknown", pkey.c_str()), 
 				DDLReflect::DestoryObject(obj);
 				return false;
 			}
-			old_obj = Zion::ContentObject::Modify(old_obj->uuid, tmpl.info);
+			old_obj = Zion::ContentObject::Modify(old_obj->_uuid, tmpl.info);
 			ZION_ASSERT(old_obj);
-			obj->uuid = old_obj->uuid;
-			if(oldobjs.find(obj->uuid)!=oldobjs.end()) oldobjs.erase(obj->uuid);
+			obj->_uuid = old_obj->_uuid;
+			if(oldobjs.find(obj->_uuid)!=oldobjs.end()) oldobjs.erase(obj->_uuid);
 		}
 		else
 		{
-			old_obj = Zion::ContentObject::CreateObject(tmpl.info, obj->uuid);
+			old_obj = Zion::ContentObject::CreateObject(tmpl.info, obj->_uuid);
 			ZION_ASSERT(old_obj);
 			if(!sUUID.empty())
 			{
 				Zion::String range = Zion::StringFormat("%s%d", sUUID.c_str(), row);
 				char suuid[60];
-				AUuidToString(old_obj->uuid, suuid);
+				AUuidToString(old_obj->_uuid, suuid);
 				if(!excel->SetCellValue(range, Zion::String(suuid)))
 				{
 					m_errmsg = "error in SetCellValue";

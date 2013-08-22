@@ -6,7 +6,7 @@
 namespace Zion
 {
 
-	class CHttpClientConnection : public CClientConnectionBase
+	class CHttpConnection : public CClientConnectionBase
 	{
 	public:
 		enum STATE
@@ -18,8 +18,8 @@ namespace Zion
 
 		typedef std::tr1::function<void (STATE)> STATE_CALLBACK;
 
-		CHttpClientConnection(CClient* pClient);
-		virtual ~CHttpClientConnection();
+		CHttpConnection(CClient* pClient);
+		virtual ~CHttpConnection();
 
 		virtual void Tick();
 

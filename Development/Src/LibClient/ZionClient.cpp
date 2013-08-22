@@ -24,7 +24,7 @@ namespace Zion
 		}
 		else if(m_ClientConnectionType=="http")
 		{
-			m_pClientConnection = ZION_NEW CHttpClientConnection(this);
+			m_pClientConnection = ZION_NEW CHttpConnection(this);
 		}
 		else if(m_ClientConnectionType=="async")
 		{

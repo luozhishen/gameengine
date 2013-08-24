@@ -26,12 +26,16 @@ namespace Zion
 		ContentObject::IContentGroup* pContentGroup;
 		
 		pContentGroup = ContentObject::CreateContentGroup("Card", "card.json", true);
-		pContentGroup->Register(DDLReflect::GetStruct<CARD_INVITATION>(), true, "uuid");
+		pContentGroup->Register(DDLReflect::GetStruct<CARD_AVATAR_OPERATOR>(), true, "uuid");
 	}
 
 	void InitLiveObjects()
 	{
 		Zion::Engine::InitLiveObjects();
+
+		Zion::LiveObject::Register(DDLReflect::GetStruct<CARD_AVATAR_DESC>());
+		Zion::LiveObject::Register(DDLReflect::GetStruct<CARD_AVATAR>());
+		Zion::LiveObject::Register(DDLReflect::GetStruct<CARD_AVATAR_OWNOBJ>());
 	}
 
 };

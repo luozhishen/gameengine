@@ -18,44 +18,86 @@
 
 #include "../../LibCommon/CommonDDL.h"
 
-struct CARD_CONFIG : A_CONTENT_OBJECT
+struct CARD_AVATAR_OPERATOR : A_CONTENT_OBJECT
 {
-	_U32 iii;
 };
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<CARD_CONFIG>(CARD_CONFIG& Value);
+	bool BufferReader::Read<CARD_AVATAR_OPERATOR>(CARD_AVATAR_OPERATOR& Value);
 	template<>
-	bool BufferWriter::Write<CARD_CONFIG>(const CARD_CONFIG& Value);
+	bool BufferWriter::Write<CARD_AVATAR_OPERATOR>(const CARD_AVATAR_OPERATOR& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<CARD_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_CARD_CONFIG_info;
+	const STRUCT_INFO* GetStruct<CARD_AVATAR_OPERATOR>();
+	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OPERATOR_info;
 }
 
-struct CARD_INVITATION : A_CONTENT_OBJECT
+struct CARD_AVATAR_DESC : A_LIVE_OBJECT
 {
-	_U32 iii;
+	_U32 avatar_id;
+	DDL::String<100> avatar_name;
 };
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<CARD_INVITATION>(CARD_INVITATION& Value);
+	bool BufferReader::Read<CARD_AVATAR_DESC>(CARD_AVATAR_DESC& Value);
 	template<>
-	bool BufferWriter::Write<CARD_INVITATION>(const CARD_INVITATION& Value);
+	bool BufferWriter::Write<CARD_AVATAR_DESC>(const CARD_AVATAR_DESC& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<CARD_INVITATION>();
-	extern STRUCT_INFO _rfl_struct_CARD_INVITATION_info;
+	const STRUCT_INFO* GetStruct<CARD_AVATAR_DESC>();
+	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_DESC_info;
+}
+
+struct CARD_AVATAR : A_LIVE_OBJECT
+{
+	_U32 avatar_id;
+	DDL::String<100> avatar_name;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<CARD_AVATAR>(CARD_AVATAR& Value);
+	template<>
+	bool BufferWriter::Write<CARD_AVATAR>(const CARD_AVATAR& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<CARD_AVATAR>();
+	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_info;
+}
+
+struct CARD_AVATAR_OWNOBJ : A_LIVE_OBJECT
+{
+	DDL::String<100> obj_name;
+	_S32 obj_value;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<CARD_AVATAR_OWNOBJ>(CARD_AVATAR_OWNOBJ& Value);
+	template<>
+	bool BufferWriter::Write<CARD_AVATAR_OWNOBJ>(const CARD_AVATAR_OWNOBJ& Value);
+}
+
+namespace DDLReflect
+{
+	template<>
+	const STRUCT_INFO* GetStruct<CARD_AVATAR_OWNOBJ>();
+	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OWNOBJ_info;
 }
 
 class CARDGAME_C2S;
@@ -81,6 +123,77 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CALLER, CLASS>::GetClass()->Ping(Caller);
+				return true;
+			}
+			if(fid==1)
+			{
+				_U32 _prefix_server_id;
+
+				// <_U32> <server_id> <> <>;
+				if(!Buf.Read(_prefix_server_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SelectServer(Caller, _prefix_server_id);
+				return true;
+			}
+			if(fid==2)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->GetAvatarList(Caller);
+				return true;
+			}
+			if(fid==3)
+			{
+				_U32 __length;
+				char* _prefix_avatar_name;
+				_U32 _prefix_type;
+
+				// <string> <avatar_name> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_avatar_name = (char*)alloca(sizeof(_prefix_avatar_name[0])*(__length+1));
+				if(!_prefix_avatar_name) return false;
+				if(!Buf.ReadBuffer(_prefix_avatar_name, (unsigned int)sizeof(_prefix_avatar_name[0])*__length)) return false;
+				_prefix_avatar_name[__length] = '\0';
+				// <_U32> <type> <> <>;
+				if(!Buf.Read(_prefix_type)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatar(Caller, _prefix_avatar_name, _prefix_type);
+				return true;
+			}
+			if(fid==4)
+			{
+				_U32 _prefix_avatar_id;
+
+				// <_U32> <avatar_id> <> <>;
+				if(!Buf.Read(_prefix_avatar_id)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnterGame(Caller, _prefix_avatar_id);
+				return true;
+			}
+			if(fid==5)
+			{
+				A_UUID _prefix_obj_uuid;
+				_S32 _prefix_value;
+
+				// <A_UUID> <obj_uuid> <> <>;
+				if(!Buf.Read(_prefix_obj_uuid)) return false;
+				// <_S32> <value> <> <>;
+				if(!Buf.Read(_prefix_value)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->Change(Caller, _prefix_obj_uuid, _prefix_value);
+				return true;
+			}
+			if(fid==6)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->LeaveGame(Caller);
 				return true;
 			}
 			return false;
@@ -113,6 +226,69 @@ namespace DDLProxy
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
+
+		bool SelectServer(_U32 server_id)
+		{
+			BUFFER Buf;
+			// <_U32> <server_id> <> <>
+			if(!Buf.Write(server_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool GetAvatarList()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+		}
+
+		bool CreateAvatar(const char* avatar_name, _U32 type)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <avatar_name> <> <>
+			__length = DDL::StringLength(avatar_name);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(avatar_name, (unsigned int)sizeof(avatar_name[0])*__length)) return false;
+			// <_U32> <type> <> <>
+			if(!Buf.Write(type)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+		}
+
+		bool EnterGame(_U32 avatar_id)
+		{
+			BUFFER Buf;
+			// <_U32> <avatar_id> <> <>
+			if(!Buf.Write(avatar_id)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+		}
+
+		bool Change(const A_UUID& obj_uuid, _S32 value)
+		{
+			BUFFER Buf;
+			// <A_UUID> <obj_uuid> <> <>
+			if(!Buf.Write(obj_uuid)) return false;
+			// <_S32> <value> <> <>
+			if(!Buf.Write(value)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+		}
+
+		bool LeaveGame()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+		}
 	};
 
 }
@@ -144,6 +320,90 @@ namespace DDLStub
 				DDLStub<CALLER, CLASS>::GetClass()->Pong(Caller);
 				return true;
 			}
+			if(fid==1)
+			{
+				_U32 __length;
+				_U32 _prefix_errcode;
+				CARD_AVATAR_DESC* _prefix_arr;
+				_U32 _prefix_count;
+
+				// <_U32> <errcode> <> <>;
+				if(!Buf.Read(_prefix_errcode)) return false;
+				// <CARD_AVATAR_DESC> <arr> <> <100>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_arr = (CARD_AVATAR_DESC*)alloca(sizeof(_prefix_arr[0])*__length);
+				if(!_prefix_arr) return false;
+				if(!Buf.ReadPointer(_prefix_arr, __length)) return false;
+				// <_U32> <count> <> <>;
+				if(!Buf.Read(_prefix_count)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->GetAvatarListCallback(Caller, _prefix_errcode, _prefix_arr, _prefix_count);
+				return true;
+			}
+			if(fid==2)
+			{
+				_U32 _prefix_errcode;
+
+				// <_U32> <errcode> <> <>;
+				if(!Buf.Read(_prefix_errcode)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatarCallback(Caller, _prefix_errcode);
+				return true;
+			}
+			if(fid==3)
+			{
+				_U32 _prefix_errcode;
+
+				// <_U32> <errcode> <> <>;
+				if(!Buf.Read(_prefix_errcode)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->EnterGameCallback(Caller, _prefix_errcode);
+				return true;
+			}
+			if(fid==4)
+			{
+				CARD_AVATAR _prefix_avatar;
+
+				// <CARD_AVATAR> <avatar> <> <>;
+				if(!Buf.Read(_prefix_avatar)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SyncAvatar(Caller, _prefix_avatar);
+				return true;
+			}
+			if(fid==5)
+			{
+				CARD_AVATAR_OWNOBJ _prefix_ownobj;
+
+				// <CARD_AVATAR_OWNOBJ> <ownobj> <> <>;
+				if(!Buf.Read(_prefix_ownobj)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SyncAvatarOwnObj(Caller, _prefix_ownobj);
+				return true;
+			}
+			if(fid==6)
+			{
+
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->SyncCompleted(Caller);
+				return true;
+			}
+			if(fid==7)
+			{
+				_U32 _prefix_errcode;
+
+				// <_U32> <errcode> <> <>;
+				if(!Buf.Read(_prefix_errcode)) return false;
+
+				// call implement
+				DDLStub<CALLER, CLASS>::GetClass()->LeaveGameCallback(Caller, _prefix_errcode);
+				return true;
+			}
 			return false;
 		}
 	};
@@ -173,6 +433,81 @@ namespace DDLProxy
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+
+		bool GetAvatarListCallback(_U32 errcode, const CARD_AVATAR_DESC* arr, _U32 count)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <_U32> <errcode> <> <>
+			if(!Buf.Write(errcode)) return false;
+			// <CARD_AVATAR_DESC> <arr> <> <100>
+			__length = (_U16)(100);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(arr, __length)) return false;
+			// <_U32> <count> <> <>
+			if(!Buf.Write(count)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool CreateAvatarCallback(_U32 errcode)
+		{
+			BUFFER Buf;
+			// <_U32> <errcode> <> <>
+			if(!Buf.Write(errcode)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+		}
+
+		bool EnterGameCallback(_U32 errcode)
+		{
+			BUFFER Buf;
+			// <_U32> <errcode> <> <>
+			if(!Buf.Write(errcode)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+		}
+
+		bool SyncAvatar(const CARD_AVATAR& avatar)
+		{
+			BUFFER Buf;
+			// <CARD_AVATAR> <avatar> <> <>
+			if(!Buf.Write(avatar)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+		}
+
+		bool SyncAvatarOwnObj(const CARD_AVATAR_OWNOBJ& ownobj)
+		{
+			BUFFER Buf;
+			// <CARD_AVATAR_OWNOBJ> <ownobj> <> <>
+			if(!Buf.Write(ownobj)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+		}
+
+		bool SyncCompleted()
+		{
+			BUFFER Buf;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+		}
+
+		bool LeaveGameCallback(_U32 errcode)
+		{
+			BUFFER Buf;
+			// <_U32> <errcode> <> <>
+			if(!Buf.Write(errcode)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
 		}
 	};
 

@@ -266,7 +266,7 @@ namespace Zion
 
 			if(ProcessRequest(m_pCurrentRequest)==MOERROR_NOERROR)
 			{
-				m_SendQueue.pop_front();
+				m_LastRequestString = "";
 				m_nRequestSeq++;
 				if(m_nHttpState==STATE_RETRY)
 				{
@@ -330,15 +330,17 @@ namespace Zion
 			return MOERROR_NOERROR;
 		}
 
+		Zion::String jsonstr = Zion::StringFormat("{'array':[%s]}", result);
+
 		Json::Value root;
 		Json::Reader reader;
-		if(!reader.parse(result, result+strlen(result), root) || !root.isMember("response") || !root["response"].isArray())
+		if(!reader.parse(jsonstr.c_str(), jsonstr.c_str()+jsonstr.size(), root) || !root.isMember("array") || !root["array"].isArray())
 		{
 			CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
 			return MOERROR_UNKNOWN;
 		}
 
-		Json::Value& _array = root["response"];
+		Json::Value& _array = root["array"];
 		Json::Value _default;
 		Json::Value::UInt i;
 		for(i=0; i<_array.size(); i++)
@@ -384,22 +386,17 @@ namespace Zion
 	{
 		if(m_LastRequestString.empty()) {
 			if(m_SendQueue.empty()) return;
-			m_LastRequestString = "{requests=[";
-			bool first = true;
+			m_LastRequestString = "";
 			while(!m_SendQueue.empty()) {
-
+				if(!m_LastRequestString.empty()) m_LastRequestString += ",";
 			}
-			m_LastRequestString += "]}";
 		}
-
-		if(!m_LastRequestString.empty()) {
-			Zion::Map<Zion::String, Zion::String> params;
-			params["session_key"] = m_SessionKey;
-			params["request"] = m_SendQueue.front();
-			params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
-			String url = StringFormat(m_BaseUrl.c_str(), "request");
-			m_pCurrentRequest = MORequestString(url.c_str(), params);
-		}
+		Zion::Map<Zion::String, Zion::String> params;
+		params["session_key"] = m_SessionKey;
+		params["request"] = m_LastRequestString;
+		params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
+		String url = StringFormat(m_BaseUrl.c_str(), "request");
+		m_pCurrentRequest = MORequestString(url.c_str(), params);
 	}
 
 }

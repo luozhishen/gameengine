@@ -319,7 +319,8 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 		OutP(0, ")\n");
 		OutP(1, "{\n");
 		if(fun->args_count==0) {
-			OutP(1, "	return '{\"method\":\"%s.%s\",\"message\":{}}';\n", cls->name, fun->name);
+			OutP(1, "	ZionSession::Get()->Send('{\"method\":\"%s.%s\",\"message\":{}}');\n", cls->name, fun->name);
+			OutP(1, "	return true;\n");
 			OutP(1, "}\n");
 			continue;
 		}
@@ -328,7 +329,7 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 		{
 			DDL_ARG* arg = &fun->args[a];
 			if(arg->count[0]!='\0') {
-				OutP(2, "if(!is_array($%s)) return '';\n", arg->name);
+				OutP(2, "if(!is_array($%s)) return false;\n", arg->name);
 				OutP(2, "$__result = %s'%s\"%s\":[';\n", a>0?"$__result.":"", a>0?",":"", arg->name);
 				OutP(2, "for($__i=0; $__i<count($%s); $__i++)\n", arg->name);
 				OutP(2, "{\n");
@@ -354,13 +355,13 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 				OutP(2, "$__result = $__result.']';\n");
 			} else {
 				if(is_struct(arg)) {
-					OutP(2, "if(!is_object($%s) || get_class($%s)!='%s') return '';\n", arg->name, arg->name, arg->type);
+					OutP(2, "if(!is_object($%s) || get_class($%s)!='%s') return false;\n", arg->name, arg->name, arg->type);
 					OutP(2, "$__result = %s'%s\"%s\":'.$%s->ToString();\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
 				} else {
 					if(strcmp(get_phptype(arg), "float")==0) {
-						OutP(2, "if(!is_numeric($%s)) return '';\n", arg->name);
+						OutP(2, "if(!is_numeric($%s)) return false;\n", arg->name);
 					} else {
-						OutP(2, "if(!is_%s($%s)) return '';\n", get_phptype(arg), arg->name);
+						OutP(2, "if(!is_%s($%s)) return false;\n", get_phptype(arg), arg->name);
 						if(need_range(arg)) {
 							OutP(2, "if($%s<%s || $%s>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
 						}
@@ -373,7 +374,8 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 				}
 			}
 		}
-		OutP(1, "	return '{\"method\":\"%s.%s\",\"message\":{'.$__result.'}}';\n", cls->name, fun->name);
+		OutP(1, "	ZionSession::Get()->Send('{\"method\":\"%s.%s\",\"message\":{'.$__result.'}}');\n", cls->name, fun->name);
+		OutP(1, "	return true;\n");
 		OutP(1, "}\n");
 	}
 	OutP(0, "}\n");

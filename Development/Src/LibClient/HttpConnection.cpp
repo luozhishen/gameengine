@@ -3,6 +3,7 @@
 #include "ZionClient.h"
 #include "ZionClientApp.h"
 #include "HttpConnection.h"
+#include "ZionClientLogin.h"
 
 namespace Zion
 {
@@ -48,7 +49,7 @@ namespace Zion
 		}
 	}
 
-	bool CHttpConnection::Login(const char* pUrl, const char* pToken)
+	bool CHttpConnection::Login(const char* pUrl, const CClientLoginMethod* pMethod)
 	{
 		ZION_ASSERT(m_nState==CClient::STATE_NA || m_nState==CClient::STATE_FAILED);
 		ZION_ASSERT(!m_pLoginRequest);
@@ -60,7 +61,19 @@ namespace Zion
 		if(m_pCurrentRequest) return false;
 
 		Zion::Map<Zion::String, Zion::String> params;
-		params["token"] = pToken;
+		switch(pMethod->GetType())
+		{
+		case CClientLoginMethodByDevice::METHOD_TYPE:
+			params["device_id"] = ((const CClientLoginMethodByDevice*)pMethod)->GetDeviceID();
+			break;
+		case CClientLoginMethodByToken::METHOD_TYPE:
+			params["token"] = ((const CClientLoginMethodByToken*)pMethod)->GetToken().c_str();
+			break;
+		default:
+			return false;
+		}
+		params["type"] = StringFormat("%d", pMethod->GetType());
+
 		String url = StringFormat(pUrl, "login");
 		m_pLoginRequest = MORequestString(url.c_str(), params);
 		if(!m_pLoginRequest)

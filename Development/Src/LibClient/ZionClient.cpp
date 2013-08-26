@@ -8,6 +8,7 @@
 #include "AsyncIOConnection.h"
 #include "NonblockConnection.h"
 #include "HttpConnection.h"
+#include "ZionClientLogin.h"
 
 namespace Zion
 {
@@ -79,12 +80,18 @@ namespace Zion
 		return m_LogCallback;
 	}
 
-	bool CClient::Login(const char* pUrl, const char* pToken)
+	bool CClient::Login(const char* pUrl, const CClientLoginMethod* pMethod)
 	{
 		if(m_pClientConnection->GetState()!=STATE_NA && m_pClientConnection->GetState()!=STATE_FAILED) return false;
 		if(!pUrl) pUrl = m_pClientApp->GetParam("ServerUrl");
 		if(!pUrl) return false;
-		return m_pClientConnection->Login(pUrl, pToken);
+		return m_pClientConnection->Login(pUrl, pMethod);
+	}
+
+	bool CClient::LoginByDevice(const char* pUrl)
+	{
+		CClientLoginMethodByDevice Method;
+		return Login(pUrl, &Method);
 	}
 
 	bool CClient::LoginForStress(_U32 id)
@@ -92,9 +99,20 @@ namespace Zion
 		const char* pServerUrl = m_pClientApp->GetParam("ServerUrl");
 		if(!pServerUrl) return false;
 		const char* uid_base = m_pClientApp->GetParam("UidBase", "0");
+
 		char token[1000];
-		sprintf(token, "%d", id+atoi(uid_base));
-		return Login(pServerUrl, token);
+#ifdef _WIN32
+		char comname[100];
+		DWORD len = sizeof(comname);
+		GetComputerName(comname, &len);
+		sprintf(token, "@%d@%s", id+atoi(uid_base), comname);
+#else
+		sprintf(token, "@%d@XXXX", id+atoi(uid_base));
+#endif
+
+		CClientLoginMethodByDevice Method;
+		Method.SetDeviceID(token);
+		return Login(pServerUrl, &Method);
 	}
 
 	void CClient::Logout()

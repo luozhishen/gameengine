@@ -19,6 +19,7 @@ namespace Zion
 	class CClientApp;
 	class CStressClient;
 	class CStressCase;
+	class CClientLoginMethod;
 
 	class CClient : public CNoCopy
 	{
@@ -54,7 +55,8 @@ namespace Zion
 		void SetLogCallback(LOG_CALLBACK logproc);
 		LOG_CALLBACK GetLogCallback();
 
-		bool Login(const char* pUrl, const char* pToken);
+		bool Login(const char* pUrl, const CClientLoginMethod* pMethod);
+		bool LoginByDevice(const char* pUrl);
 		bool LoginForStress(_U32 id);
 		void Logout();
 
@@ -114,7 +116,7 @@ namespace Zion
 		CClient::CLIENT_STATE GetState();
 		_U32 GetErrorCode();
 
-		virtual bool Login(const char* pUrl, const char* pToken) = 0;
+		virtual bool Login(const char* pUrl, const CClientLoginMethod* pMethod) = 0;
 		virtual void Logout() = 0;
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data) = 0;
 

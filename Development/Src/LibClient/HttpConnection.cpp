@@ -7,7 +7,7 @@
 namespace Zion
 {
 
-	CHttpClientConnection::CHttpClientConnection(CClient* pClient) : CClientConnectionBase(pClient)
+	CHttpConnection::CHttpConnection(CClient* pClient) : CClientConnectionBase(pClient)
 	{
 		m_bPullRequest = false;
 		m_pLoginRequest = NULL;
@@ -20,14 +20,14 @@ namespace Zion
 		m_bInLogout = false;
 	}
 
-	CHttpClientConnection::~CHttpClientConnection()
+	CHttpConnection::~CHttpConnection()
 	{
 		ZION_ASSERT(!m_pLoginRequest);
 		ZION_ASSERT(!m_pPullRequest);
 		ZION_ASSERT(!m_pCurrentRequest);
 	}
 
-	void CHttpClientConnection::Tick()
+	void CHttpConnection::Tick()
 	{
 		if(m_pLoginRequest)
 		{
@@ -48,7 +48,7 @@ namespace Zion
 		}
 	}
 
-	bool CHttpClientConnection::Login(const char* pUrl, const char* pToken)
+	bool CHttpConnection::Login(const char* pUrl, const char* pToken)
 	{
 		ZION_ASSERT(m_nState==CClient::STATE_NA || m_nState==CClient::STATE_FAILED);
 		ZION_ASSERT(!m_pLoginRequest);
@@ -80,7 +80,7 @@ namespace Zion
 		return true;
 	}
 
-	void CHttpClientConnection::Logout()
+	void CHttpConnection::Logout()
 	{
 		if(m_nState==CClient::STATE_LOGINED && !m_bInLogout)
 		{
@@ -93,7 +93,7 @@ namespace Zion
 		}
 	}
 
-	void CHttpClientConnection::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	void CHttpConnection::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
 		const DDLReflect::CLASS_INFO* classinfo;
 		bool bRet = GetServerFunctionStub(iid, fid, classinfo);
@@ -112,24 +112,24 @@ namespace Zion
 		m_SendQueue.push_back(json);
 	}
 
-	void CHttpClientConnection::Retry()
+	void CHttpConnection::Retry()
 	{
 		if(m_nHttpState==STATE_PAUSE) m_nHttpState = STATE_RETRY;
 	}
 
-	void CHttpClientConnection::Cancel()
+	void CHttpConnection::Cancel()
 	{
 		if(m_nHttpState!=STATE_PAUSE) return;
 		m_nHttpState = STATE_RETRY;
 		m_SendQueue.pop_front();
 	}
 
-	void CHttpClientConnection::SetStateCallback(STATE_CALLBACK callback)
+	void CHttpConnection::SetStateCallback(STATE_CALLBACK callback)
 	{
 		m_StateCallback = callback;
 	}
 
-	void CHttpClientConnection::ProcessLoginRequest()
+	void CHttpConnection::ProcessLoginRequest()
 	{
 		ZION_ASSERT(m_pLoginRequest);
 
@@ -194,7 +194,7 @@ namespace Zion
 		}
 	}
 
-	void CHttpClientConnection::ProcessLogoutRequest()
+	void CHttpConnection::ProcessLogoutRequest()
 	{
 		if(!m_bInLogout) return;
 
@@ -239,7 +239,7 @@ namespace Zion
 		}
 	}
 
-	void CHttpClientConnection::ProcessQueueRequest()
+	void CHttpConnection::ProcessQueueRequest()
 	{
 		if(m_pCurrentRequest && MORequestStatus(m_pCurrentRequest)!=MOREQUESTSTATE_PENDING)
 		{
@@ -279,7 +279,7 @@ namespace Zion
 		}
 	}
 
-	void CHttpClientConnection::ProcessPullRequest()
+	void CHttpConnection::ProcessPullRequest()
 	{
 		if(!m_pPullRequest)
 		{
@@ -315,7 +315,7 @@ namespace Zion
 		}
 	}
 
-	int CHttpClientConnection::ProcessRequest(MOREQUEST* request)
+	int CHttpConnection::ProcessRequest(MOREQUEST* request)
 	{
 		int ret = MOClientGetResultCode(request);
 		if(ret!=MOERROR_NOERROR)
@@ -380,7 +380,7 @@ namespace Zion
 		return (i==_array.size())?MOERROR_NOERROR:MOERROR_UNKNOWN;
 	}
 
-	void CHttpClientConnection::SendRequest()
+	void CHttpConnection::SendRequest()
 	{
 		if(m_LastRequestString.empty()) {
 			if(m_SendQueue.empty()) return;

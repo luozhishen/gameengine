@@ -18,8 +18,8 @@
 
 struct A_CONTENT_OBJECT
 {
-	A_UUID uuid;
-	DDL::String<100> name;
+	A_UUID _uuid;
+	DDL::String<100> _name;
 };
 
 namespace DDL
@@ -39,7 +39,7 @@ namespace DDLReflect
 
 struct A_LIVE_OBJECT
 {
-	A_UUID uuid;
+	A_UUID _uuid;
 };
 
 namespace DDL

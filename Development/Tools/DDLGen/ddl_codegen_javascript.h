@@ -1,5 +1,5 @@
-#ifndef __DDL_CODEGEN_PHP__
-#define __DDL_CODEGEN_PHP__
+#ifndef __DDL_CODEGEN_JAVASCRIPT__
+#define __DDL_CODEGEN_JAVASCRIPT__
 
 int ddlgen_codejs_open(const char* filename);
 void ddlgen_codejs_close();

@@ -5,6 +5,7 @@
 #include "ZionClientApp.h"
 #include "ZionClient.h"
 #include "ClientConnection.h"
+#include "ZionClientLogin.h"
 
 namespace Zion
 {
@@ -25,7 +26,7 @@ namespace Zion
 		ZION_FREE(m_pRecvBuff);
 	}
 
-	bool CClientConnection::Login(const char* pUrl, const char* pToken)
+	bool CClientConnection::Login(const char* pUrl, const CClientLoginMethod* pMethod)
 	{
 		SOCK_ADDR sa;
 		if(!sock_str2addr(pUrl, &sa))
@@ -33,11 +34,18 @@ namespace Zion
 			m_nErrCode = CClient::ERRCODE_UNKOWN;
 			return false;
 		}
+		if(pMethod->GetType()!=CClientLoginMethodByToken::METHOD_TYPE)
+		{
+			m_nErrCode = CClient::ERRCODE_UNKOWN;
+			return false;
+		}
+
+		const Zion::String& token = ((const CClientLoginMethodByToken*)pMethod)->GetToken();
 
 		m_nErrCode = CClient::ERRCODE_SUCCESSED;
-		_U16 len = (_U16)strlen(pToken)+1;
+		_U16 len = (_U16)token.size()+1;
 		*((_U16*)(m_LoginData)) = len;
-		memcpy(m_LoginData+sizeof(_U16), pToken, len);
+		memcpy(m_LoginData+sizeof(_U16), token.c_str(), len);
 		m_nLoginDataSize = sizeof(_U16) + len;
 
 		m_nState = CClient::STATE_LOGINING;

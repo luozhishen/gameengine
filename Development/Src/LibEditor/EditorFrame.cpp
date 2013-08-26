@@ -250,7 +250,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 void CEditorFrame::OnHelpMenu(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Zion Editor for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::ZionGameName()));
+	txt.Printf(wxT("Zion Editor for %s\n(C) 2011-2012 gamemake@gmail.com"), wxString::FromUTF8(Zion::ZionGameName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 

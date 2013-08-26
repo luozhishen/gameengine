@@ -239,7 +239,7 @@ void CClientStressFrame::OnQuit(wxCommandEvent&)
 void CClientStressFrame::OnAbout(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Zion Client Stress for %s\n(C) 2011-2012 Epic Game China"), wxString::FromUTF8(Zion::ZionGameName()));
+	txt.Printf(wxT("Zion Client Stress for %s\n(C) 2011-2012 gamemake@gmail.com"), wxString::FromUTF8(Zion::ZionGameName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 

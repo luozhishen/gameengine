@@ -23,7 +23,7 @@ namespace Zion
 
 		virtual void Tick();
 
-		virtual bool Login(const char* pUrl, const char* pToken);
+		virtual bool Login(const char* pUrl, const CClientLoginMethod* pMethod);
 		virtual void Logout();
 		virtual void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 
@@ -50,6 +50,7 @@ namespace Zion
 		Zion::List<Zion::String> m_SendQueue;
 		STATE m_nHttpState;
 		STATE_CALLBACK m_StateCallback;
+		Zion::String m_LastRequestString;
 		_U32 m_nRequestSeq, m_nPullSeq, m_nLogoutRetry;
 		bool m_bInLogout;
 	};

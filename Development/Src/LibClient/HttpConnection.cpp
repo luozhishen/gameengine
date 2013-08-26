@@ -1,8 +1,9 @@
 #include <ZionBase.h>
-#include "ZionCommon.h"
+#include <ZionCommon.h>
 #include "ZionClient.h"
 #include "ZionClientApp.h"
 #include "HttpConnection.h"
+#include "ZionClientLogin.h"
 
 namespace Zion
 {
@@ -41,14 +42,14 @@ namespace Zion
 			ProcessPullRequest();
 			ProcessLogoutRequest();
 
-			if(!m_bInLogout && !m_pCurrentRequest && !m_SendQueue.empty() && m_nHttpState!=STATE_PAUSE)
+			if(!m_bInLogout && !m_pCurrentRequest && m_nHttpState!=STATE_PAUSE)
 			{
 				SendRequest();
 			}
 		}
 	}
 
-	bool CHttpConnection::Login(const char* pUrl, const char* pToken)
+	bool CHttpConnection::Login(const char* pUrl, const CClientLoginMethod* pMethod)
 	{
 		ZION_ASSERT(m_nState==CClient::STATE_NA || m_nState==CClient::STATE_FAILED);
 		ZION_ASSERT(!m_pLoginRequest);
@@ -60,7 +61,19 @@ namespace Zion
 		if(m_pCurrentRequest) return false;
 
 		Zion::Map<Zion::String, Zion::String> params;
-		params["token"] = pToken;
+		switch(pMethod->GetType())
+		{
+		case CClientLoginMethodByDevice::METHOD_TYPE:
+			params["device_id"] = ((const CClientLoginMethodByDevice*)pMethod)->GetDeviceID();
+			break;
+		case CClientLoginMethodByToken::METHOD_TYPE:
+			params["token"] = ((const CClientLoginMethodByToken*)pMethod)->GetToken().c_str();
+			break;
+		default:
+			return false;
+		}
+		params["type"] = StringFormat("%d", pMethod->GetType());
+
 		String url = StringFormat(pUrl, "login");
 		m_pLoginRequest = MORequestString(url.c_str(), params);
 		if(!m_pLoginRequest)
@@ -76,6 +89,7 @@ namespace Zion
 		m_nErrCode = CClient::ERRCODE_SUCCESSED;
 		m_nHttpState = STATE_RUNNING;
 		m_SendQueue.clear();
+		m_LastRequestString = "";
 		return true;
 	}
 
@@ -265,7 +279,7 @@ namespace Zion
 
 			if(ProcessRequest(m_pCurrentRequest)==MOERROR_NOERROR)
 			{
-				m_SendQueue.pop_front();
+				m_LastRequestString = "";
 				m_nRequestSeq++;
 				if(m_nHttpState==STATE_RETRY)
 				{
@@ -329,15 +343,17 @@ namespace Zion
 			return MOERROR_NOERROR;
 		}
 
+		Zion::String jsonstr = Zion::StringFormat("{'array':[%s]}", result);
+
 		Json::Value root;
 		Json::Reader reader;
-		if(!reader.parse(result, result+strlen(result), root) || !root.isMember("response") || !root["response"].isArray())
+		if(!reader.parse(jsonstr.c_str(), jsonstr.c_str()+jsonstr.size(), root) || !root.isMember("array") || !root["array"].isArray())
 		{
 			CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
 			return MOERROR_UNKNOWN;
 		}
 
-		Json::Value& _array = root["response"];
+		Json::Value& _array = root["array"];
 		Json::Value _default;
 		Json::Value::UInt i;
 		for(i=0; i<_array.size(); i++)
@@ -381,9 +397,16 @@ namespace Zion
 
 	void CHttpConnection::SendRequest()
 	{
+		if(m_LastRequestString.empty()) {
+			if(m_SendQueue.empty()) return;
+			m_LastRequestString = "";
+			while(!m_SendQueue.empty()) {
+				if(!m_LastRequestString.empty()) m_LastRequestString += ",";
+			}
+		}
 		Zion::Map<Zion::String, Zion::String> params;
 		params["session_key"] = m_SessionKey;
-		params["request"] = m_SendQueue.front();
+		params["request"] = m_LastRequestString;
 		params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
 		String url = StringFormat(m_BaseUrl.c_str(), "request");
 		m_pCurrentRequest = MORequestString(url.c_str(), params);

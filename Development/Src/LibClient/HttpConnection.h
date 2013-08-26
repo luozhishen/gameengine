@@ -50,6 +50,7 @@ namespace Zion
 		Zion::List<Zion::String> m_SendQueue;
 		STATE m_nHttpState;
 		STATE_CALLBACK m_StateCallback;
+		Zion::String m_LastRequestString;
 		_U32 m_nRequestSeq, m_nPullSeq, m_nLogoutRetry;
 		bool m_bInLogout;
 	};

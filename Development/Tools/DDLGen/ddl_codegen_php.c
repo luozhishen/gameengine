@@ -46,6 +46,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 			}
 		}
 	}
+	if(str->args_count>0) {
+		OutP(0, "\n");
+	}
 
 	OutP(1, "public function __construct()\n");
 	OutP(1, "{\n");

@@ -1,5 +1,5 @@
 #include <ZionBase.h>
-#include "ZionCommon.h"
+#include <ZionCommon.h>
 #include "ZionClient.h"
 #include "ZionClientApp.h"
 #include "HttpConnection.h"
@@ -41,7 +41,7 @@ namespace Zion
 			ProcessPullRequest();
 			ProcessLogoutRequest();
 
-			if(!m_bInLogout && !m_pCurrentRequest && !m_SendQueue.empty() && m_nHttpState!=STATE_PAUSE)
+			if(!m_bInLogout && !m_pCurrentRequest && m_nHttpState!=STATE_PAUSE)
 			{
 				SendRequest();
 			}
@@ -76,6 +76,7 @@ namespace Zion
 		m_nErrCode = CClient::ERRCODE_SUCCESSED;
 		m_nHttpState = STATE_RUNNING;
 		m_SendQueue.clear();
+		m_LastRequestString = "";
 		return true;
 	}
 
@@ -381,12 +382,24 @@ namespace Zion
 
 	void CHttpClientConnection::SendRequest()
 	{
-		Zion::Map<Zion::String, Zion::String> params;
-		params["session_key"] = m_SessionKey;
-		params["request"] = m_SendQueue.front();
-		params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
-		String url = StringFormat(m_BaseUrl.c_str(), "request");
-		m_pCurrentRequest = MORequestString(url.c_str(), params);
+		if(m_LastRequestString.empty()) {
+			if(m_SendQueue.empty()) return;
+			m_LastRequestString = "{requests=[";
+			bool first = true;
+			while(!m_SendQueue.empty()) {
+
+			}
+			m_LastRequestString += "]}";
+		}
+
+		if(!m_LastRequestString.empty()) {
+			Zion::Map<Zion::String, Zion::String> params;
+			params["session_key"] = m_SessionKey;
+			params["request"] = m_SendQueue.front();
+			params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
+			String url = StringFormat(m_BaseUrl.c_str(), "request");
+			m_pCurrentRequest = MORequestString(url.c_str(), params);
+		}
 	}
 
 }

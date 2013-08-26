@@ -28,13 +28,13 @@
       <AdditionalInputs Condition="'$(Configuration)'=='Debug'">$(SolutionDir)..\..\Binaries\DDLGen_D.exe</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)'=='Release'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compile %(Filename).ddl ...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) DataType.class.php</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) %(Filename).php %(Filename).js</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) DataType.class.php</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) %(Filename).php %(Filename).js</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) DataType.class.php</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) %(Filename).php %(Filename).js</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) DataType.class.php</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath) %(Filename).php %(Filename).js</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compile %(Filename).ddl ...</Message>
     </CustomBuild>

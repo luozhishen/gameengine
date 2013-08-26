@@ -24,6 +24,7 @@ int ddlgen_codephp_open(const char* filename)
 
 void ddlgen_codephp_close()
 {
+	OutP(0, "\n?>");
 	fclose(_P);
 	_P = NULL;
 }

@@ -314,9 +314,8 @@ void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 
 	for(int i=0; i<count; i++)
 	{
-
 		_U32 index;
-		if(name.empty())
+		if(name=="<EMPTY>")
 		{
 			index = Zion::CStressManager::Get().NewClient();
 			NotifyClientAdd(index);
@@ -553,7 +552,8 @@ bool CClientStressFrame::LoadStressTemplate()
 	Zion::String file = Zion::StringFormat("%sConfig/StressTemplate.json", Zion::ZionGameDir());
 
 	m_pCase->Clear();
-	m_pCase->Insert(wxString::FromUTF8(""), 0);
+	m_pCase->Insert(wxString::FromUTF8("<EMPTY>"), 0);
+	m_pCase->SetSelection(0);
 
 	if(!m_StressLoader.LoadTemplate(file.c_str()))
 	{

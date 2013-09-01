@@ -154,7 +154,14 @@ namespace Zion
 			{
 				SetErrorCode(ret==MOERROR_AUTH_FAILED?CClient::ERRCODE_AUTH_FAILED:CClient::ERRCODE_UNKOWN);
 				m_nState = CClient::STATE_FAILED;
-				CLIENT_LOG(GetClient(), "http_connection : login failed, return code = %d", ret);
+				if(ret!=CClient::ERRCODE_UNKOWN)
+				{
+					CLIENT_LOG(GetClient(), "http_connection : login failed, return code = %d", ret);
+				}
+				else
+				{
+					CLIENT_LOG(GetClient(), "http_connection : %s", MORequestGetResult(m_pLoginRequest));
+				}
 			}
 			else
 			{

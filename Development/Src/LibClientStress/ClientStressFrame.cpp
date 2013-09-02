@@ -19,6 +19,7 @@
 #include <StressManager.h>
 #include <StressLoader.h>
 #include <StructEditView.h>
+#include <HttpConnection.h>
 
 #include "ClientStressFrame.h"
 #include "ClientStressApp.h"
@@ -300,6 +301,15 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	}
 }
 
+static void OnHttpCallback(Zion::CHttpConnection* pHttp, Zion::CHttpConnection::STATE state)
+{
+	if(state==Zion::CHttpConnection::STATE_PAUSE)
+	{
+		wxMessageBox(wxT("Http return failed"));
+		pHttp->Retry();
+	}
+}
+
 void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 {
 	int count = 1;
@@ -324,8 +334,13 @@ void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 		{
 			index = m_StressLoader.CreateClient(name.c_str());
 		}
+		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(index);
+		if(pClient->GetClient()->GetClientConnectionType()=="http")
+		{
+			Zion::CHttpConnection* pHttp = (Zion::CHttpConnection*)(pClient->GetClient()->GetClientConnection());
+			pHttp->SetStateCallback(&OnHttpCallback);
+		}
 	}
-	
 }
 
 void CClientStressFrame::OnSelectAll(wxCommandEvent& event)

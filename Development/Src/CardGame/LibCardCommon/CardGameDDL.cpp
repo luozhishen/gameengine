@@ -93,7 +93,6 @@ namespace DDL
 	bool BufferReader::Read<CARD_AVATAR>(CARD_AVATAR& Value)
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
-		if(!Read<_U32>(Value.avatar_id)) return false;
 		if(!ReadString<100>(Value.avatar_name)) return false;
 		return true;
 	}
@@ -101,7 +100,6 @@ namespace DDL
 	bool BufferWriter::Write<CARD_AVATAR>(const CARD_AVATAR& Value)
 	{
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
-		if(!Write<_U32>(Value.avatar_id)) return false;
 		if(!WriteString<100>(Value.avatar_name)) return false;
 		return true;
 	}
@@ -122,10 +120,9 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_CARD_AVATAR_fieldinfo[] =
 	{
-		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "avatar_name", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR, avatar_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_CARD_AVATAR_info = { &_rfl_struct_A_LIVE_OBJECT_info, "CARD_AVATAR", sizeof(CARD_AVATAR), 2, _struct_CARD_AVATAR_fieldinfo, _struct_CARD_AVATAR_readproc, _struct_CARD_AVATAR_writeproc };
+	STRUCT_INFO _rfl_struct_CARD_AVATAR_info = { &_rfl_struct_A_LIVE_OBJECT_info, "CARD_AVATAR", sizeof(CARD_AVATAR), 1, _struct_CARD_AVATAR_fieldinfo, _struct_CARD_AVATAR_readproc, _struct_CARD_AVATAR_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<CARD_AVATAR>()
 	{

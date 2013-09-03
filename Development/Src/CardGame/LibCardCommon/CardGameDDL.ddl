@@ -17,7 +17,6 @@ task[GEN_STRUCT_REFLECT(CARD_AVATAR_DESC)];
 
 struct CARD_AVATAR : A_LIVE_OBJECT
 {
-	_U32		avatar_id;
 	string<100>	avatar_name;
 };
 task[GEN_STRUCT_SERIALIZE(CARD_AVATAR)];

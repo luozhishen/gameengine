@@ -60,7 +60,6 @@ namespace DDLReflect
 
 struct CARD_AVATAR : A_LIVE_OBJECT
 {
-	_U32 avatar_id;
 	DDL::String<100> avatar_name;
 };
 

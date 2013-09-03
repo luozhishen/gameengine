@@ -34,6 +34,7 @@ enum
 {
 	ID_QUIT = wxID_HIGHEST + 1,
 	ID_ABOUT,
+	ID_DEBUG_ENABLE,
 	ID_PROTOCAL,
 	ID_DOCMD,
 	ID_CMDTEXT,
@@ -54,24 +55,25 @@ enum
 };
 
 BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
-	EVT_MENU(ID_PROTOCAL,		CClientStressFrame::OnProtocal)
-	EVT_MENU(ID_QUIT,			CClientStressFrame::OnQuit)
-	EVT_MENU(ID_ABOUT,			CClientStressFrame::OnAbout)
-	EVT_BUTTON(ID_DOCMD,		CClientStressFrame::OnDoCmd)
-	EVT_TEXT_ENTER(ID_CMDTEXT,	CClientStressFrame::OnCmdEnter)
-	EVT_MENU(ID_ADDONE,			CClientStressFrame::OnAddClient)
-	EVT_MENU(ID_ADDFIVE,		CClientStressFrame::OnAddClient)
-	EVT_MENU(ID_ADDTEN,			CClientStressFrame::OnAddClient)
-	EVT_MENU(ID_ADDFIFTY,		CClientStressFrame::OnAddClient)
-	EVT_MENU(ID_LOGIN,			CClientStressFrame::OnLogin)
-	EVT_MENU(ID_LOGOUT,			CClientStressFrame::OnLogout)
-	EVT_MENU(ID_CASE_ADD,		CClientStressFrame::OnAddCase)
-	EVT_MENU(ID_SELECT_ALL,		CClientStressFrame::OnSelectAll)
-	EVT_LISTBOX(ID_CLIENT_LIST,	CClientStressFrame::OnClientSelected)
-	EVT_MENU(ID_STRESS_VIEW,	CClientStressFrame::OnStressView)
-	EVT_MENU(ID_RELOAD_TEMPLATE,CClientStressFrame::OnReloadTemplate)
-	EVT_MENU(ID_SVR_PARAM_DLG,	CClientStressFrame::OnOpenSvrParamDlg)
-	EVT_TIMER(ID_TIMER,			CClientStressFrame::OnTimer)
+	EVT_CHECKBOX(ID_DEBUG_ENABLE,	CClientStressFrame::OnDebugEnable)
+	EVT_MENU(ID_PROTOCAL,			CClientStressFrame::OnProtocal)
+	EVT_MENU(ID_QUIT,				CClientStressFrame::OnQuit)
+	EVT_MENU(ID_ABOUT,				CClientStressFrame::OnAbout)
+	EVT_BUTTON(ID_DOCMD,			CClientStressFrame::OnDoCmd)
+	EVT_TEXT_ENTER(ID_CMDTEXT,		CClientStressFrame::OnCmdEnter)
+	EVT_MENU(ID_ADDONE,				CClientStressFrame::OnAddClient)
+	EVT_MENU(ID_ADDFIVE,			CClientStressFrame::OnAddClient)
+	EVT_MENU(ID_ADDTEN,				CClientStressFrame::OnAddClient)
+	EVT_MENU(ID_ADDFIFTY,			CClientStressFrame::OnAddClient)
+	EVT_MENU(ID_LOGIN,				CClientStressFrame::OnLogin)
+	EVT_MENU(ID_LOGOUT,				CClientStressFrame::OnLogout)
+	EVT_MENU(ID_CASE_ADD,			CClientStressFrame::OnAddCase)
+	EVT_MENU(ID_SELECT_ALL,			CClientStressFrame::OnSelectAll)
+	EVT_LISTBOX(ID_CLIENT_LIST,		CClientStressFrame::OnClientSelected)
+	EVT_MENU(ID_STRESS_VIEW,		CClientStressFrame::OnStressView)
+	EVT_MENU(ID_RELOAD_TEMPLATE,	CClientStressFrame::OnReloadTemplate)
+	EVT_MENU(ID_SVR_PARAM_DLG,		CClientStressFrame::OnOpenSvrParamDlg)
+	EVT_TIMER(ID_TIMER,				CClientStressFrame::OnTimer)
 	EVT_SIZE(CClientStressFrame::OnSize)
 	EVT_SHOW(CClientStressFrame::OnShow)
 END_EVENT_TABLE()
@@ -119,8 +121,7 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 		m_FrameData.m = pConfig->Read(wxT("m"), (long)0);
 	}
 
-	m_bEnableXDebug = true;
-
+	MOEnableDebug(false);
 	m_Timer.Start(100);
 }
 
@@ -197,7 +198,7 @@ void CClientStressFrame::InitToolBar()
 	pToolBar->AddTool(ID_CASE_ADD,		wxT("Add Case"),	bmpAddCase,		wxT("Add Case to client"));
 	pToolBar->AddTool(ID_STRESS_VIEW,	wxT("Stress View"),	bmpStressView,	wxT("Open stress view dailog"));
 	pToolBar->AddTool(ID_RELOAD_TEMPLATE,wxT("Reload Stress Template"),	bmpScriptRun,	wxT("Reload stress template from json"));
-	m_pEnableXDebug = ZION_NEW wxCheckBox(pToolBar, wxID_ANY, wxT("Enable XDebug"));
+	m_pEnableXDebug = ZION_NEW wxCheckBox(pToolBar, ID_DEBUG_ENABLE, wxT("Enable XDebug"));
 	pToolBar->AddControl(m_pEnableXDebug);
 
 	pToolBar->Realize();
@@ -228,6 +229,24 @@ void CClientStressFrame::InitClient()
 	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	pPanel->SetSizer(pSizer1);
 	m_pSplitter->SplitVertically(pClientTab, pPanel, 100);
+}
+
+void CClientStressFrame::OnDebugEnable(wxCommandEvent& event)
+{
+	if(m_pEnableXDebug->IsChecked())
+	{
+		Zion::String url = Zion::StringFormat(Zion::CClientApp::GetDefault()->GetParam("ServerUrl", "http://localhost/%s.php"), "config");
+		url += "?XDEBUG_SESSION_START=CLIENTSTRESS&KEY=1980114";
+		Zion::Map<Zion::String, Zion::String> params;
+		MOREQUEST* request = MORequestString(url.c_str(), params);
+		while(MORequestStatus(request)==MOREQUESTSTATE_PENDING) SwitchToThread();
+		MORequestDestory(request);
+		MOEnableDebug(true);
+	}
+	else
+	{
+		MOEnableDebug(false);
+	}
 }
 
 void CClientStressFrame::OnProtocal(wxCommandEvent& event)
@@ -462,30 +481,6 @@ void CClientStressFrame::OnShow(wxShowEvent& event)
 
 void CClientStressFrame::OnTimer(wxTimerEvent& event)
 {
-	if(m_pEnableXDebug->IsChecked())
-	{
-		if(!m_bEnableXDebug)
-		{
-			Zion::String url = Zion::StringFormat(Zion::CClientApp::GetDefault()->GetParam("ServerUrl", "http://localhost/%s.php"), "config");
-			url += "?XDEBUG_SESSION_START=CLIENTSTRESS&KEY=1980114";
-			Zion::Map<Zion::String, Zion::String> params;
-			MOREQUEST* request = MORequestString(url.c_str(), params);
-			while(MORequestStatus(request)==MOREQUESTSTATE_PENDING) SwitchToThread();
-			MORequestDestory(request);
-
-			m_bEnableXDebug = true;
-			MOEnableDebug(m_bEnableXDebug);
-		}
-	}
-	else
-	{
-		if(m_bEnableXDebug)
-		{
-			m_bEnableXDebug = false;
-			MOEnableDebug(m_bEnableXDebug);
-		}
-	}
-
 	if(Zion::CClientApp::GetDefault()->Tick())
 	{
 		UpdateClientList();	

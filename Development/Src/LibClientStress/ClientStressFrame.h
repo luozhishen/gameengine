@@ -54,6 +54,7 @@ public:
 	void InitToolBar();
 	void InitClient();
 
+	void OnDebugEnable(wxCommandEvent& event);
 	void OnProtocal(wxCommandEvent& event);
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
@@ -95,7 +96,6 @@ private:
 	wxComboBox*				m_pCmdText;
 	wxButton*				m_pCmdButton;
 	wxCheckBox*				m_pEnableXDebug;
-	bool					m_bEnableXDebug;
 	wxTimer					m_Timer;
 	
 	struct

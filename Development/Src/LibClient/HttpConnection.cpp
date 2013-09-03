@@ -19,7 +19,6 @@ namespace Zion
 		m_nRequestSeq = 0;
 		m_nPullSeq = 0;
 		m_bInLogout = false;
-		m_bEnableXDebug = false;
 	}
 
 	CHttpConnection::~CHttpConnection()
@@ -76,10 +75,6 @@ namespace Zion
 		params["type"] = StringFormat("%d", pMethod->GetType());
 
 		String url = StringFormat(pUrl, "login");
-		if(m_bEnableXDebug)
-		{
-			url += StringFormat("?XDEBUG_SESSION_START=CLIENT_STRESS_%p&key=%u", this, (unsigned int)this);
-		}
 		m_pLoginRequest = MORequestString(url.c_str(), params);
 		if(!m_pLoginRequest)
 		{
@@ -107,10 +102,6 @@ namespace Zion
 			String url = StringFormat(m_BaseUrl.c_str(), "logout");
 			Zion::Map<Zion::String, Zion::String> params;
 			params["session_key"] = m_SessionKey;
-			if(m_bEnableXDebug)
-			{
-				url += StringFormat("?XDEBUG_SESSION_START=CLIENT_STRESS_%p&key=%u", this, (unsigned int)this);
-			}
 			m_pLogoutRequest = MORequestString(url.c_str(), params);
 		}
 	}
@@ -151,16 +142,6 @@ namespace Zion
 		m_StateCallback = callback;
 	}
 	
-	void CHttpConnection::EnableXDebug(bool bEnable)
-	{
-		m_bEnableXDebug = bEnable;
-	}
-	
-	bool CHttpConnection::IsEnableXDebug()
-	{
-		return m_bEnableXDebug;
-	}
-
 	void CHttpConnection::ProcessLoginRequest()
 	{
 		ZION_ASSERT(m_pLoginRequest);
@@ -255,10 +236,6 @@ namespace Zion
 					String url = StringFormat(m_BaseUrl.c_str(), "logout");
 					Zion::Map<Zion::String, Zion::String> params;
 					params["session_key"] = m_SessionKey;
-					if(m_bEnableXDebug)
-					{
-						url += StringFormat("?XDEBUG_SESSION_START=CLIENT_STRESS_%p&key=%u", this, (unsigned int)this);
-					}
 					m_pLogoutRequest = MORequestString(url.c_str(), params);
 					m_nLogoutRetry++;
 					return;
@@ -332,10 +309,6 @@ namespace Zion
 			params["session_key"] = m_SessionKey;
 			params["seq"] = Zion::StringFormat("%d", m_nPullSeq);
 			String url = StringFormat(m_BaseUrl.c_str(), "pull");
-			if(m_bEnableXDebug)
-			{
-				url += StringFormat("?XDEBUG_SESSION_START=CLIENT_STRESS_%p&key=%u", this, (unsigned int)this);
-			}
 			m_pPullRequest = MORequestString(url.c_str(), params);
 			if(!m_pPullRequest) return;
 		}
@@ -445,10 +418,6 @@ namespace Zion
 		params["request"] = m_LastRequestString;
 		params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
 		String url = StringFormat(m_BaseUrl.c_str(), "request");
-		if(m_bEnableXDebug)
-		{
-			url += StringFormat("?XDEBUG_SESSION_START=CLIENT_STRESS_%p&key=%u", this, (unsigned int)this);
-		}
 		m_pCurrentRequest = MORequestString(url.c_str(), params);
 	}
 }

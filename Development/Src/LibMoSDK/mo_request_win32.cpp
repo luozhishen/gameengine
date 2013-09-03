@@ -14,7 +14,6 @@
 
 static bool http_request(MOREQUEST* request, const char* url, const char* header, const char* postdata);
 static char g_TypeSpec[] = "Content-Type: application/x-www-form-urlencoded\r\n";
-//static char g_AcceptType[] = "*/*";
 
 struct MOREQUEST
 {
@@ -91,6 +90,12 @@ public:
 	HINTERNET _session;
 };
 static MO_REQUEST_WIN32_INIT g_MO_REQUEST_WIN32_INIT;
+static bool g_MO_EnableDebug = false;
+
+void MOEnableDebug(bool enable)
+{
+	g_MO_EnableDebug = enable;
+}
 
 MOREQUEST* MORequestString(const char* url, const Zion::Map<Zion::String, Zion::String>& params)
 {
@@ -153,10 +158,8 @@ MOREQUEST* MODownloadFile(const char* url, const char* postdata, const char* pat
 void MORequestDestory(MOREQUEST* request)
 {
 	while(request->_state==MOREQUESTSTATE_PENDING) SwitchToThread();
-//	InternetSetStatusCallback(request->_session, NULL);
 	InternetCloseHandle(request->_request);
 	InternetCloseHandle(request->_connect);
-//	InternetCloseHandle(request->_session);
 	delete request;
 }
 
@@ -198,10 +201,31 @@ bool http_request(MOREQUEST* request, const char* url, const char* header, const
 	request->_connect = InternetConnectA(g_MO_REQUEST_WIN32_INIT._session, urlcomps.lpszHostName, urlcomps.nPort, urlcomps.lpszUserName, urlcomps.lpszPassword, INTERNET_SERVICE_HTTP, INTERNET_FLAG_EXISTING_CONNECT, (DWORD_PTR)request);
 	if(request->_connect)
 	{
+		if(g_MO_EnableDebug)
+		{
+			DWORD dwTimeout = 10*60*1000, dwLength = sizeof(dwTimeout);
+			InternetQueryOption(request->_connect, INTERNET_OPTION_CONNECT_TIMEOUT, &dwTimeout, &dwLength);
+			InternetQueryOption(request->_connect, INTERNET_OPTION_SEND_TIMEOUT, &dwTimeout, &dwLength);
+			InternetQueryOption(request->_connect, INTERNET_OPTION_RECEIVE_TIMEOUT, &dwTimeout, &dwLength);
+			InternetQueryOption(request->_connect, INTERNET_OPTION_DATA_SEND_TIMEOUT, &dwTimeout, &dwLength);
+			InternetQueryOption(request->_connect, INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, &dwTimeout, &dwLength);
+			dwTimeout = 10*60*1000;
+			InternetSetOption(request->_connect, INTERNET_OPTION_CONNECT_TIMEOUT, &dwTimeout, sizeof(dwTimeout));
+			InternetSetOption(request->_connect, INTERNET_OPTION_SEND_TIMEOUT, &dwTimeout, sizeof(dwTimeout));
+			InternetSetOption(request->_connect, INTERNET_OPTION_RECEIVE_TIMEOUT, &dwTimeout, sizeof(dwTimeout));
+			InternetSetOption(request->_connect, INTERNET_OPTION_DATA_SEND_TIMEOUT, &dwTimeout, sizeof(dwTimeout));
+			InternetSetOption(request->_connect, INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, &dwTimeout, sizeof(dwTimeout));
+		}
+
 		request->_state = MOREQUESTSTATE_PENDING;
 		request->_result = "";
 		request->_postdata = postdata;
 		DWORD flag = INTERNET_FLAG_NO_UI|INTERNET_FLAG_NO_CACHE_WRITE|INTERNET_FLAG_PRAGMA_NOCACHE|INTERNET_FLAG_RELOAD;
+		if(!g_MO_EnableDebug)
+		{
+			flag |= INTERNET_FLAG_NO_COOKIES;
+		}
+
 		if(urlcomps.nScheme==INTERNET_SCHEME_HTTPS) flag |= INTERNET_FLAG_SECURE;
 		Zion::String urlpath;
 		urlpath = urlcomps.lpszUrlPath;

@@ -95,6 +95,7 @@ private:
 	wxComboBox*				m_pCmdText;
 	wxButton*				m_pCmdButton;
 	wxCheckBox*				m_pEnableXDebug;
+	bool					m_bEnableXDebug;
 	wxTimer					m_Timer;
 	
 	struct

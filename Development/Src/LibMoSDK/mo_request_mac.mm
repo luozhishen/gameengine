@@ -112,6 +112,10 @@ struct MOREQUEST
 
 @end
 
+void MOEnableDebug(bool enable)
+{
+}
+
 MOREQUEST* MORequestString(const char* url, const Zion::Map<Zion::String, Zion::String>& params)
 {
 	Zion::String val;

@@ -9,6 +9,8 @@ const char* MOGetAppName();
 const char* MOGetOSName();
 const char* MoGetResourcePath();
 
+void MOEnableDebug(bool enable);
+
 struct MOREQUEST;
 typedef struct MOREQUEST MOREQUEST;
 

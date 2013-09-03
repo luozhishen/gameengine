@@ -119,6 +119,8 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 		m_FrameData.m = pConfig->Read(wxT("m"), (long)0);
 	}
 
+	m_bEnableXDebug = true;
+
 	m_Timer.Start(100);
 }
 
@@ -460,6 +462,30 @@ void CClientStressFrame::OnShow(wxShowEvent& event)
 
 void CClientStressFrame::OnTimer(wxTimerEvent& event)
 {
+	if(m_pEnableXDebug->IsChecked())
+	{
+		if(!m_bEnableXDebug)
+		{
+			Zion::String url = Zion::StringFormat(Zion::CClientApp::GetDefault()->GetParam("ServerUrl", "http://localhost/%s.php"), "config");
+			url += "?XDEBUG_SESSION_START=CLIENTSTRESS&KEY=1980114";
+			Zion::Map<Zion::String, Zion::String> params;
+			MOREQUEST* request = MORequestString(url.c_str(), params);
+			while(MORequestStatus(request)==MOREQUESTSTATE_PENDING) SwitchToThread();
+			MORequestDestory(request);
+
+			m_bEnableXDebug = true;
+			MOEnableDebug(m_bEnableXDebug);
+		}
+	}
+	else
+	{
+		if(m_bEnableXDebug)
+		{
+			m_bEnableXDebug = false;
+			MOEnableDebug(m_bEnableXDebug);
+		}
+	}
+
 	if(Zion::CClientApp::GetDefault()->Tick())
 	{
 		UpdateClientList();	
@@ -474,10 +500,6 @@ void CClientStressFrame::OnTimer(wxTimerEvent& event)
 		if(pClient)
 		{
 			pClient->GetClient()->Tick();
-			if(pClient->GetClient()->GetClientConnectionType()=="http")
-			{
-				((Zion::CHttpConnection*)(pClient->GetClient()->GetClientConnection()))->EnableXDebug(EnableXDebug);
-			}
 		}
 	}
 

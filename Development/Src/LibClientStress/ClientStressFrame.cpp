@@ -19,6 +19,7 @@
 #include <StressManager.h>
 #include <StressLoader.h>
 #include <StructEditView.h>
+#include <HttpConnection.h>
 
 #include "ClientStressFrame.h"
 #include "ClientStressApp.h"
@@ -194,7 +195,9 @@ void CClientStressFrame::InitToolBar()
 	pToolBar->AddTool(ID_CASE_ADD,		wxT("Add Case"),	bmpAddCase,		wxT("Add Case to client"));
 	pToolBar->AddTool(ID_STRESS_VIEW,	wxT("Stress View"),	bmpStressView,	wxT("Open stress view dailog"));
 	pToolBar->AddTool(ID_RELOAD_TEMPLATE,wxT("Reload Stress Template"),	bmpScriptRun,	wxT("Reload stress template from json"));
-	
+	m_pEnableXDebug = ZION_NEW wxCheckBox(pToolBar, wxID_ANY, wxT("Enable XDebug"));
+	pToolBar->AddControl(m_pEnableXDebug);
+
 	pToolBar->Realize();
 }
 
@@ -450,12 +453,17 @@ void CClientStressFrame::OnTimer(wxTimerEvent& event)
 
 	Zion::Array<_U32> clients;
 	Zion::CStressManager::Get().GetClients(clients);
+	bool EnableXDebug = m_pEnableXDebug->IsChecked();
 	for(size_t i=0; i<clients.size(); i++)
 	{
 		Zion::CStressClient* pClient = Zion::CStressManager::Get().GetClient(clients[i]);
 		if(pClient)
 		{
 			pClient->GetClient()->Tick();
+			if(pClient->GetClient()->GetClientConnectionType()=="http")
+			{
+				((Zion::CHttpConnection*)(pClient->GetClient()->GetClientConnection()))->EnableXDebug(EnableXDebug);
+			}
 		}
 	}
 

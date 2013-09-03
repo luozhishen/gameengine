@@ -30,6 +30,8 @@ namespace Zion
 		void Retry();
 		void Cancel();
 		void SetStateCallback(STATE_CALLBACK callback);
+		void EnableXDebug(bool bEnable);
+		bool IsEnableXDebug();
 
 	protected:
 		void ProcessLoginRequest();
@@ -53,6 +55,7 @@ namespace Zion
 		Zion::String m_LastRequestString;
 		_U32 m_nRequestSeq, m_nPullSeq, m_nLogoutRetry;
 		bool m_bInLogout;
+		bool m_bEnableXDebug;
 	};
 
 }

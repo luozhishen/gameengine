@@ -94,6 +94,7 @@ private:
 	wxListBox*				m_pClientList;
 	wxComboBox*				m_pCmdText;
 	wxButton*				m_pCmdButton;
+	wxCheckBox*				m_pEnableXDebug;
 	wxTimer					m_Timer;
 	
 	struct

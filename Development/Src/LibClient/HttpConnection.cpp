@@ -300,7 +300,7 @@ namespace Zion
 				if(m_StateCallback)
 				{
 					m_nHttpState = STATE_PAUSE;
-					m_StateCallback(m_nHttpState);
+					m_StateCallback(this, m_nHttpState);
 				}
 				return;
 			}
@@ -314,7 +314,7 @@ namespace Zion
 				if(m_nHttpState==STATE_RETRY)
 				{
 					m_nHttpState = STATE_RUNNING;
-					m_StateCallback(m_nHttpState);
+					m_StateCallback(this, m_nHttpState);
 				}
 			}
 			MORequestDestory(m_pCurrentRequest);

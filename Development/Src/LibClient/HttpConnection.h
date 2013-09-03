@@ -16,7 +16,7 @@ namespace Zion
 			STATE_RETRY,
 		};
 
-		typedef std::tr1::function<void (STATE)> STATE_CALLBACK;
+		typedef std::tr1::function<void (CHttpConnection*, STATE)> STATE_CALLBACK;
 
 		CHttpConnection(CClient* pClient);
 		virtual ~CHttpConnection();

@@ -235,13 +235,13 @@ void CClientStressFrame::OnDebugEnable(wxCommandEvent& event)
 {
 	if(m_pEnableXDebug->IsChecked())
 	{
+		MOEnableDebug(true);
 		Zion::String url = Zion::StringFormat(Zion::CClientApp::GetDefault()->GetParam("ServerUrl", "http://localhost/%s.php"), "config");
 		url += "?XDEBUG_SESSION_START=CLIENTSTRESS&KEY=1980114";
 		Zion::Map<Zion::String, Zion::String> params;
 		MOREQUEST* request = MORequestString(url.c_str(), params);
 		while(MORequestStatus(request)==MOREQUESTSTATE_PENDING) SwitchToThread();
 		MORequestDestory(request);
-		MOEnableDebug(true);
 	}
 	else
 	{

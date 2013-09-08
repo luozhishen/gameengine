@@ -10,8 +10,7 @@
 #include <process.h>
 #pragma comment(lib, "ws2_32")
 
-#include "ZionDefines.h"
-#include "ZionSocket.h"
+#include "ZionBase.h"
 #include "AsyncSockIO.h"
 
 #include <pshpack8.h>

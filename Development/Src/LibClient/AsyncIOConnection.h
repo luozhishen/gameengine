@@ -3,15 +3,14 @@
 #ifndef __ASYNCIO_CONNECTION__
 #define __ASYNCIO_CONNECTION__
 
+#include <AsyncSockIO.h>
+
 namespace Zion
 {
 
 	class CAsyncIOConnection : public CClientConnection
 	{
 	public:
-		static void Init(_U32 tcount=1);
-		static void Fini();
-
 		CAsyncIOConnection(CClient* pClient, _U32 recvsize);
 		virtual ~CAsyncIOConnection();
 

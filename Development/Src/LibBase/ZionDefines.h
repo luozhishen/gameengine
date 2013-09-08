@@ -13,7 +13,7 @@ typedef float					_F32;
 typedef double					_F64;
 typedef char*					_STR;
 
-#define ALIGN_SIZE(x)			((sizeof(x)+7) / 8 * 8)
+//#define ALIGN_SIZE(x)			((sizeof(x)+7) / 8 * 8)
 
 #include <assert.h>
 #define ZION_ASSERT(x)			assert(x)
@@ -23,6 +23,8 @@ typedef char*					_STR;
 #else
 #define	ZION_VERIFY(expr)		(void)(expr)
 #endif
+
+#define ZION_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 
 #ifdef _WIN32
 	#define _CRTDBG_MAP_ALLOC
@@ -101,7 +103,5 @@ typedef char*					_STR;
 #pragma warning(disable:4355)
 #pragma warning(disable:4996)
 #pragma warning(disable:4127)
-
-#define ZION_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 
 #endif

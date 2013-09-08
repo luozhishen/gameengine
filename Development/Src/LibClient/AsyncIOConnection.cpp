@@ -4,6 +4,7 @@
 #include "ZionClient.h"
 #include "ZionClientApp.h"
 #include "ClientConnection.h"
+#include "AsyncSockIO.h"
 #include "AsyncIOConnection.h"
 
 namespace Zion
@@ -14,24 +15,35 @@ namespace Zion
 	static void CLT_ON_DATA(HCONNECT, _U32, const _U8*);
 	static void CLT_ON_CONNECTFAILED(void* key);
 	static ASOCKIO_HANDLER g_client_handler = { CLT_ON_CONNECT, CLT_ON_DISCONNECT, CLT_ON_DATA, CLT_ON_CONNECTFAILED };
-	static HWORKERS g_client_workers = NULL;
-	static HIOPOOL g_client_iopool = NULL;
 
-	void CAsyncIOConnection::Init(_U32 tcount)
+	class CAsyncIOInit
 	{
-		ASockIOInit();
-		ZION_ASSERT(!g_client_workers);
-		ZION_ASSERT(!g_client_iopool);
-		g_client_workers = CreateWorkers(tcount);
-		g_client_iopool = AllocIoBufferPool(1024, 1024, 0, 0);
-	}
+	public:
+		static CAsyncIOInit& Get()
+		{
+			static CAsyncIOInit _init;
+			return _init;
+		}
 
-	void CAsyncIOConnection::Fini()
-	{
-		KillWorkers(g_client_workers);
-		FreeIoBufferPool(g_client_iopool);
-		ASockIOFini();
-	}
+		CAsyncIOInit()
+		{
+			ASockIOInit();
+			ZION_ASSERT(!m_workers);
+			ZION_ASSERT(!m_iopool);
+			m_workers = CreateWorkers(1);
+			m_iopool = AllocIoBufferPool(1024, 1024, 0, 0);
+		}
+
+		~CAsyncIOInit()
+		{
+			KillWorkers(m_workers);
+			FreeIoBufferPool(m_iopool);
+			ASockIOFini();
+		}
+
+		HWORKERS m_workers;
+		HIOPOOL m_iopool;
+	};
 	
 	CAsyncIOConnection::CAsyncIOConnection(CClient* pClient, _U32 recvsize) : CClientConnection(pClient, recvsize)
 	{
@@ -64,7 +76,7 @@ namespace Zion
 		{
 			m_pSendBuf = NULL;
 			m_bConnecting = true;
-			bRet = Zion::Connect(sa, g_client_handler, g_client_iopool, g_client_workers, this);
+			bRet = Zion::Connect(sa, g_client_handler, CAsyncIOInit::Get().m_iopool, CAsyncIOInit::Get().m_workers, this);
 			if(!bRet) m_bConnecting = false;
 		}
 

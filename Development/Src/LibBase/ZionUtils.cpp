@@ -8,7 +8,7 @@
 
 #include "ZionBase.h"
 
-#include <sstream>
+#include <stdarg.h>
 
 namespace Zion
 {

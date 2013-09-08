@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////
 
 #include <ZionBase.h>
+#include <AsyncRPC.h>
 #include <AsyncRPCImpl.h>
 #include "ServerRpc.s.h"
 

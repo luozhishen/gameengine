@@ -1,4 +1,5 @@
 #include <ZionBase.h>
+#include <AsyncSockIO.h>
 #include <ZionCommon.h>
 #include <ZionClient.h>
 #include <ZionClientApp.h>

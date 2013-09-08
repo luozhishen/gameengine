@@ -24,6 +24,9 @@
     <ClCompile Include="SGStressCases.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\LibAsyncIO\LibAsyncIO.vcxproj">
+      <Project>{db069be1-91e0-41ce-bdc3-5ba4008840a5}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\LibBase\LibBase.vcxproj">
       <Project>{73a3a0da-85db-4571-9381-686cd246e80b}</Project>
     </ProjectReference>

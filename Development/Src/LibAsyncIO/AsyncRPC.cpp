@@ -1,6 +1,8 @@
 #ifndef WITHOUT_ZION_ASYNCIO
 
 #include "ZionBase.h"
+#include "AsyncSockIO.h"
+#include "AsyncRPC.h"
 #include "AsyncRPCImpl.h"
 
 namespace Zion

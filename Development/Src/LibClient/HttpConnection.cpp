@@ -8,6 +8,26 @@
 namespace Zion
 {
 
+	class MOSDK_Init
+	{
+	public:
+		static MOSDK_Init& Get()
+		{
+			static MOSDK_Init init;
+			return init;
+		}
+
+		MOSDK_Init()
+		{
+			MOInit("ZIONAPP");
+		}
+
+		~MOSDK_Init()
+		{
+			MOFini();
+		}
+	};
+
 	CHttpConnection::CHttpConnection(CClient* pClient) : CClientConnectionBase(pClient)
 	{
 		m_bPullRequest = false;

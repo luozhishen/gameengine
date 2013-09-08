@@ -2,9 +2,7 @@
 #include "ZionCommon.h"
 #include "ZionClientApp.h"
 #include "ZionClient.h"
-#include "mosdk.h"
-#include "ClientConnection.h"
-#include "AsyncIOConnection.h"
+
 #include <fstream>
 
 namespace Zion
@@ -22,16 +20,12 @@ namespace Zion
 		m_nRecvSize = 20*1024;
 		m_nSendSize = 1*1024;
 
-		MOInit(appname);
-
 		LoadParams();
 	}
 
 	CClientApp::~CClientApp()
 	{
 		A_MUTEX_DESTROY(&m_mtxQueue);
-
-		MOFini();
 
 		SaveParams();
 	}
@@ -146,17 +140,10 @@ namespace Zion
 		{
 			ZION_ASSERT(0);
 		}
-
-#ifndef WITHOUT_ZION_ASYNCIO
-		CAsyncIOConnection::Init(1);
-#endif
 	}
 
 	void CClientApp::FiniApp()
 	{
-#ifndef WITHOUT_ZION_ASYNCIO
-		CAsyncIOConnection::Fini();
-#endif
 	}
 
 	CClient* CClientApp::NewClient()

@@ -44,20 +44,42 @@ namespace Zion
 		String m_PacketData;
 	};
 
+	class CJsonRPCServerConnection
+	{
+	public:
+		CJsonRPCServerConnection(CJsonRPCServer* pServer);
+
+		virtual void OnDisconnect();
+		virtual void OnData(_U32 seq, const char* data);
+
+	private:
+		CJsonRPCServer* m_pServer;
+	};
+
 	class CJsonRPCServer
 	{
 	public:
 		CJsonRPCServer();
+		~CJsonRPCServer();
 
 		bool Start(const char* ep);
 		void Stop();
 
+		void Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data);
+		void Detach(CJsonRPCServerConnection* pConn);
+
+		static void OnConnect(uv_stream_t*, int status);
+		static void ThreadProc(void*);
+
 	private:
+		Map<String, JSON_RESPONSE_PROC> m_Methods;
+
 		uv_mutex_t m_Mutex;
-		Set<CJsonRPCClient*> m_Clients;
+		Set<CJsonRPCServerConnection*> m_Clients;
 		uv_loop_t* m_uv_loop;
 		bool m_is_stop;
 		uv_thread_t m_uv_thread;
+		uv_tcp_t m_server;
 	};
 
 	struct JSON_RPCCALL
@@ -72,8 +94,8 @@ namespace Zion
 	public:
 		CJsonRPCClient(struct sockaddr* sa);
 
-		void Send(const char* method, const char* data);
-		void Send(const char* method, const char* data, JSON_CALLBACK_PROC proc);
+		bool Send(const char* method, const char* data);
+		bool Send(const char* method, const char* data, JSON_CALLBACK_PROC proc);
 
 		virtual void OnDisconnect();
 		virtual void OnData(_U32 seq, const char* data);
@@ -143,14 +165,14 @@ namespace Zion
 	{
 	}
 
-	void JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args)
+	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args)
 	{
-		pClient->Send(method, args);
+		return pClient->Send(method, args);
 	}
 
-	void JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc)
+	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc)
 	{
-		pClient->Send(method, args, proc);
+		return pClient->Send(method, args, proc);
 	}
 
 	CJsonRPCConnection::CJsonRPCConnection()
@@ -215,7 +237,6 @@ namespace Zion
 
 	void CJsonRPCConnection::OnConnect(uv_stream_t* stream, int status)
 	{
-
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)stream->data;
 
 		pConn->m_stream = stream;
@@ -224,7 +245,10 @@ namespace Zion
 		pConn->m_PacketSeq = 0;
 		pConn->m_PacketData = "";
 
-		int result = uv_read_start(stream, &CJsonRPCConnection::OnBeforRead, &CJsonRPCConnection::OnAfterRead);
+		if(!uv_read_start(stream, &CJsonRPCConnection::OnBeforRead, &CJsonRPCConnection::OnAfterRead))
+		{
+			ZION_ASSERT(0);
+		}
 	}
 
 	void CJsonRPCConnection::OnBeforRead(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
@@ -318,34 +342,123 @@ namespace Zion
 
 		if(bEnd) pConn->OnDisconnect();
 	}
+	
+	CJsonRPCServerConnection::CJsonRPCServerConnection(CJsonRPCServer* pServer)
+	{
+		m_pServer = pServer;
+	}
+
+	void CJsonRPCServerConnection::OnDisconnect()
+	{
+		m_pServer->Detach(this);
+	}
+
+	void CJsonRPCServerConnection::OnData(_U32 seq, const char* data)
+	{
+		const char* pos = strchr(data, ':');
+		if(!pos)
+		{
+			return;
+		}
+
+		String method;
+		method.append(data, pos-data);
+		// method.c_str(), pos+1
+	}
 
 	CJsonRPCServer::CJsonRPCServer()
 	{
+		uv_mutex_init(&m_Mutex);
+		m_uv_loop = uv_loop_new();
+		uv_thread_create(&m_uv_thread, &CJsonRPCServer::ThreadProc, NULL);
+	}
+
+	CJsonRPCServer::~CJsonRPCServer()
+	{
+		uv_stop(m_uv_loop);
+		uv_thread_join(&m_uv_thread);
+		uv_loop_delete(m_uv_loop);
+		uv_mutex_destroy(&m_Mutex);
 	}
 
 	bool CJsonRPCServer::Start(const char* ep)
 	{
-		/*
-int main() {
-    loop = uv_default_loop();
+		const char* pos = strchr(ep, ':');
+		if(!pos) return NULL;
 
-    uv_tcp_t server;
-    uv_tcp_init(loop, &server);
+		union
+		{
+			struct sockaddr sa;
+			struct sockaddr_in ip4;
+			struct sockaddr_in6 ip6;
+		};
+		char host[100];
+		memcpy(host, ep, pos-ep);
+		host[pos-ep] = '\0';
+		uv_ip4_addr(host, atoi(pos+1), &ip4);
+		if(ip4.sin_addr.S_un.S_addr==0)
+		{
+			uv_ip6_addr(host, atoi(pos+1), &ip6);
+		}
 
-    struct sockaddr_in bind_addr = uv_ip4_addr("0.0.0.0", 7000);
-    uv_tcp_bind(&server, bind_addr);
-    int r = uv_listen((uv_stream_t*) &server, 128, on_new_connection);
-    if (r) {
-        fprintf(stderr, "Listen error %s\n", uv_err_name(uv_last_error(loop)));
-        return 1;
-    }
-    return uv_run(loop, UV_RUN_DEFAULT);
-	*/
+		uv_tcp_init(m_uv_loop, &m_server);
+    
+		if(uv_listen((uv_stream_t*)&m_server, 128, &CJsonRPCServer::OnConnect))
+		{
+			// error
+			return false;
+		}
+
 		return true;
 	}
 
 	void CJsonRPCServer::Stop()
 	{
+	}
+
+	void CJsonRPCServer::Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data)
+	{
+		Map<String, JSON_RESPONSE_PROC>::iterator i;
+		i = m_Methods.find(method);
+		if(i==m_Methods.end())
+		{
+			// no error
+			return;
+		}
+
+		i->second(NULL, data);
+	}
+
+	void CJsonRPCServer::Detach(CJsonRPCServerConnection* pConn)
+	{
+		uv_mutex_lock(&m_Mutex);
+		m_Clients.erase(pConn);
+		uv_mutex_unlock(&m_Mutex);
+		ZION_DELETE pConn;
+	}
+
+	void CJsonRPCServer::OnConnect(uv_stream_t* stream, int status)
+	{
+		CJsonRPCServerConnection* pConn = ZION_NEW CJsonRPCServerConnection(NULL);
+		if(!pConn)
+		{
+			// on error
+			return;
+		}
+/*
+		uv_mutex_lock(&m_Mutex);
+		m_Clients.insert(pConn);
+		uv_mutex_unlock(&m_Mutex);
+*/
+		((CJsonRPCConnection*)pConn)->OnConnect(stream, status);
+	}
+
+	void CJsonRPCServer::ThreadProc(void* data)
+	{
+		CJsonRPCServer* pServer = (CJsonRPCServer*)data;
+		while(1) {
+			uv_run(pServer->m_uv_loop, UV_RUN_DEFAULT);
+		}
 	}
 
 	CJsonRPCClient::CJsonRPCClient(struct sockaddr* sa)
@@ -363,9 +476,11 @@ int main() {
 		uv_tcp_connect(&m_connect, &m_socket, &m_sa, &CJsonRPCClient::OnConnect);
 	}
 
-	void CJsonRPCClient::Send(const char* method, const char* data)
+	bool CJsonRPCClient::Send(const char* method, const char* data)
 	{
-		uv_mutex_lock(&this->m_Mutex);
+		bool ret;
+
+		uv_mutex_lock(&m_Mutex);
 		if(!m_stream) {
 			struct JSON_RPCCALL call;
 			call.method = method;
@@ -377,19 +492,22 @@ int main() {
 			}
 
 			m_Requests[m_seq] = call;
+			ret = true;
 		}
 		else
 		{
-			CJsonRPCConnection::Send(0, method, data);
+			ret = CJsonRPCConnection::Send(0, method, data);
 		}
-		uv_mutex_unlock(&this->m_Mutex);
+		uv_mutex_unlock(&m_Mutex);
+
+		return ret;
 	}
 
-	void CJsonRPCClient::Send(const char* method, const char* data, JSON_CALLBACK_PROC proc)
+	bool CJsonRPCClient::Send(const char* method, const char* data, JSON_CALLBACK_PROC proc)
 	{
-		bool failed = false;
+		bool ret;
 
-		uv_mutex_lock(&this->m_Mutex);
+		uv_mutex_lock(&m_Mutex);
 		while(m_Requests.find(m_seq)!=m_Requests.end())
 		{
 			m_seq++;
@@ -401,24 +519,26 @@ int main() {
 			call.data = data;
 			call.proc = proc;
 			m_Requests[m_seq] = call;
+			ret = true;
 		}
 		else
 		{
-			if(CJsonRPCConnection::Send(m_seq, method, data) && !m_stream) {
+			if(CJsonRPCConnection::Send(m_seq, method, data) && !m_stream)
+			{
 				struct JSON_RPCCALL call;
 				call.method = method;
 				call.data = data;
 				m_Requests[m_seq] = call;
-			} else {
-				failed = true;
+				ret = true;
+			}
+			else
+			{
+				ret = false;
 			}
 		}
-		uv_mutex_unlock(&this->m_Mutex);
+		uv_mutex_unlock(&m_Mutex);
 
-		if(failed)
-		{
-			proc(false, NULL);
-		}
+		return ret;
 	}
 
 	void CJsonRPCClient::OnDisconnect()
@@ -427,12 +547,11 @@ int main() {
 		Map<_U32, JSON_RPCCALL>::iterator it;
 
 		uv_mutex_lock(&m_Mutex);
-		it = m_Requests.find(seq);
-		if(it!=m_Requests.end())
+		for(it=m_Requests.begin(); it!=m_Requests.end(); it++)
 		{
-			proc = it->second.proc;
-			m_Requests.erase(it);
+			error_proc.push_back(it->second.proc);
 		}
+		m_seq = 1;
 		uv_mutex_unlock(&m_Mutex);
 
 		for(_U32 i=0; i<error_proc.size(); i++)
@@ -448,12 +567,12 @@ int main() {
 		Map<_U32, JSON_RPCCALL>::iterator it;
 
 		uv_mutex_lock(&m_Mutex);
-		for(it=m_Requests.begin(); it!=m_Requests.end(); it++)
+		it = m_Requests.find(seq);
+		if(it!=m_Requests.end())
 		{
 			proc = it->second.proc;
 			m_Requests.erase(it);
 		}
-		m_Requests.erase();
 		uv_mutex_unlock(&m_Mutex);
 
 		if(proc)
@@ -469,18 +588,19 @@ int main() {
 
 		CJsonRPCClient* pClient = (CJsonRPCClient*)req->data;
 
-		Map<_U32, JSON_RPCCALL>::iterator it;
+		Map<_U32, JSON_RPCCALL>::iterator it, it2;
 		Array<JSON_CALLBACK_PROC> error_proc;
 
 		uv_mutex_lock(&pClient->m_Mutex);
-		for(it=pClient->m_Requests.begin(); it!=pClient->m_Requests.end(); it++)
+		for(it=pClient->m_Requests.begin(); it!=pClient->m_Requests.end();)
 		{
 			if(it->second.proc)
 			{
 				if(((CJsonRPCConnection*)pClient)->Send(it->first, it->second.method.c_str(), it->second.data.c_str()))
 				{
-					error_proc.push_back(it->second.proc);
-					pClient->m_Requests.erase(it);
+					it2 = it++;
+					error_proc.push_back(it2->second.proc);
+					pClient->m_Requests.erase(it2);
 				}
 			}
 			else
@@ -536,7 +656,7 @@ int main() {
 		else
 		{
 			pClient = ZION_NEW CJsonRPCClient(&sa);
-			Get().m_Clients[ep] = pClient;
+			CJsonRPCClientManager::Get().m_Clients[ep] = pClient;
 		}
 		uv_mutex_unlock(&_Manager.m_Mutex);
 		return pClient;

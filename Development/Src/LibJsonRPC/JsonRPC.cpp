@@ -28,10 +28,12 @@ namespace Zion
 		static void OnAfterWrite(uv_write_t* req, int status);
 		static void OnShutdown(uv_shutdown_t* req, int status);
 
-	private:
+	protected:
 		uv_mutex_t m_Mutex;
+		uv_stream_t* m_stream;
+
+	private:
 		_U32 m_wrt_count;
-		uv_stream_t* m_steam;
 		uv_shutdown_t m_shutdown;
 
 		char m_RecvBuf[1024];
@@ -155,7 +157,7 @@ namespace Zion
 	{
 		uv_mutex_init(&m_Mutex);
 		m_wrt_count = 0;
-		m_steam = NULL;
+		m_stream = NULL;
 	}
 
 	CJsonRPCConnection::~CJsonRPCConnection()
@@ -201,7 +203,7 @@ namespace Zion
 
 
 		uv_mutex_lock(&m_Mutex);
-		if(m_steam && !uv_write(&req->req, m_steam, &req->buf, 1, &CJsonRPCConnection::OnAfterWrite))
+		if(m_stream && !uv_write(&req->req, m_stream, &req->buf, 1, &CJsonRPCConnection::OnAfterWrite))
 		{
 			req = NULL;
 		}
@@ -216,7 +218,7 @@ namespace Zion
 
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)stream->data;
 
-		pConn->m_steam = stream;
+		pConn->m_stream = stream;
 		pConn->m_RecvLen = 0;
 		pConn->m_PacketLen = (_U32)-1;
 		pConn->m_PacketSeq = 0;
@@ -239,7 +241,7 @@ namespace Zion
 		if(nread<0)
 		{
 			pConn->m_shutdown.data = (void*)pConn;
-			uv_shutdown(&pConn->m_shutdown, pConn->m_steam, &CJsonRPCConnection::OnShutdown);
+			uv_shutdown(&pConn->m_shutdown, pConn->m_stream, &CJsonRPCConnection::OnShutdown);
 			return;
 		}
 
@@ -298,7 +300,7 @@ namespace Zion
 		bool bEnd = false;
 		uv_mutex_lock(&pConn->m_Mutex);
 		pConn->m_wrt_count -= 1;
-		if(pConn->m_steam==NULL && pConn->m_wrt_count==0) bEnd = true;
+		if(pConn->m_stream==NULL && pConn->m_wrt_count==0) bEnd = true;
 		uv_mutex_unlock(&pConn->m_Mutex);
 
 		if(bEnd) pConn->OnDisconnect();
@@ -310,8 +312,8 @@ namespace Zion
 
 		bool bEnd = false;
 		uv_mutex_lock(&pConn->m_Mutex);
-		pConn->m_steam = NULL;
-		if(pConn->m_steam==NULL && pConn->m_wrt_count==0) bEnd = true;
+		pConn->m_stream = NULL;
+		if(pConn->m_stream==NULL && pConn->m_wrt_count==0) bEnd = true;
 		uv_mutex_unlock(&pConn->m_Mutex);
 
 		if(bEnd) pConn->OnDisconnect();
@@ -363,29 +365,136 @@ int main() {
 
 	void CJsonRPCClient::Send(const char* method, const char* data)
 	{
-		CJsonRPCConnection::Send(0, method, data);
+		uv_mutex_lock(&this->m_Mutex);
+		if(!m_stream) {
+			struct JSON_RPCCALL call;
+			call.method = method;
+			call.data = data;
+			
+			while(m_Requests.find(m_seq)!=m_Requests.end())
+			{
+				m_seq++;
+			}
+
+			m_Requests[m_seq] = call;
+		}
+		else
+		{
+			CJsonRPCConnection::Send(0, method, data);
+		}
+		uv_mutex_unlock(&this->m_Mutex);
 	}
 
 	void CJsonRPCClient::Send(const char* method, const char* data, JSON_CALLBACK_PROC proc)
 	{
-		//Map<_U32, JSON_RPCCALL>::iterator i; m_Requests;
-		for(;;)
+		bool failed = false;
+
+		uv_mutex_lock(&this->m_Mutex);
+		while(m_Requests.find(m_seq)!=m_Requests.end())
 		{
+			m_seq++;
+		}
+		if(!m_stream)
+		{
+			struct JSON_RPCCALL call;
+			call.method = method;
+			call.data = data;
+			call.proc = proc;
+			m_Requests[m_seq] = call;
+		}
+		else
+		{
+			if(CJsonRPCConnection::Send(m_seq, method, data) && !m_stream) {
+				struct JSON_RPCCALL call;
+				call.method = method;
+				call.data = data;
+				m_Requests[m_seq] = call;
+			} else {
+				failed = true;
+			}
+		}
+		uv_mutex_unlock(&this->m_Mutex);
+
+		if(failed)
+		{
+			proc(false, NULL);
 		}
 	}
 
 	void CJsonRPCClient::OnDisconnect()
 	{
+		Array<JSON_CALLBACK_PROC> error_proc;
+		Map<_U32, JSON_RPCCALL>::iterator it;
+
+		uv_mutex_lock(&m_Mutex);
+		it = m_Requests.find(seq);
+		if(it!=m_Requests.end())
+		{
+			proc = it->second.proc;
+			m_Requests.erase(it);
+		}
+		uv_mutex_unlock(&m_Mutex);
+
+		for(_U32 i=0; i<error_proc.size(); i++)
+		{
+			error_proc[i](false, NULL);
+		}
 	}
 
 	void CJsonRPCClient::OnData(_U32 seq, const char* data)
 	{
+		JSON_CALLBACK_PROC proc;
+
+		Map<_U32, JSON_RPCCALL>::iterator it;
+
+		uv_mutex_lock(&m_Mutex);
+		for(it=m_Requests.begin(); it!=m_Requests.end(); it++)
+		{
+			proc = it->second.proc;
+			m_Requests.erase(it);
+		}
+		m_Requests.erase();
+		uv_mutex_unlock(&m_Mutex);
+
+		if(proc)
+		{
+			proc(true, data);
+		}
 	}
 
 	void CJsonRPCClient::OnConnect(uv_connect_t* req, int status)
 	{
 		req->handle->data = req->data;
 		CJsonRPCConnection::OnConnect(req->handle, status);
+
+		CJsonRPCClient* pClient = (CJsonRPCClient*)req->data;
+
+		Map<_U32, JSON_RPCCALL>::iterator it;
+		Array<JSON_CALLBACK_PROC> error_proc;
+
+		uv_mutex_lock(&pClient->m_Mutex);
+		for(it=pClient->m_Requests.begin(); it!=pClient->m_Requests.end(); it++)
+		{
+			if(it->second.proc)
+			{
+				if(((CJsonRPCConnection*)pClient)->Send(it->first, it->second.method.c_str(), it->second.data.c_str()))
+				{
+					error_proc.push_back(it->second.proc);
+					pClient->m_Requests.erase(it);
+				}
+			}
+			else
+			{
+				if(((CJsonRPCConnection*)pClient)->Send(0, it->second.method.c_str(), it->second.data.c_str()))
+				pClient->m_Requests.erase(it);
+			}
+		}
+		uv_mutex_unlock(&pClient->m_Mutex);
+
+		for(_U32 i=0; i<error_proc.size(); i++)
+		{
+			error_proc[i](false, NULL);
+		}
 	}
 
 	CJsonRPCClientManager& CJsonRPCClientManager::Get()

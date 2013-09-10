@@ -24,6 +24,7 @@
     <ClCompile Include="ZionLog.cpp" />
     <ClCompile Include="ZionSocket.cpp" />
     <ClCompile Include="ZionSTL.cpp" />
+    <ClCompile Include="ZionUnix.cpp" />
     <ClCompile Include="ZionUUID.cpp" />
     <ClCompile Include="ZionUtils.cpp" />
     <ClCompile Include="DDLReflect.cpp" />

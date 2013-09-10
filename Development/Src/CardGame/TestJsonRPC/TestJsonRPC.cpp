@@ -1,12 +1,9 @@
 #include <ZionBase.h>
 #include <JsonRPC.h>
 
-void welcome_proc(Zion::CJsonRPCServerConnection* pConn, _U32 seq, const char* args)
+void welcome_proc(const Zion::JSONRPC_RESPONSE& res, const char* args)
 {
-	if(seq!=0)
-	{
-		Zion::JsonRPC_Send(pConn, seq, args);
-	}
+	Zion::JsonRPC_Send(res, args);
 }
 
 int main(int argc, char* argv[])

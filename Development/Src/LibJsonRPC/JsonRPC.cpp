@@ -54,15 +54,15 @@ namespace Zion
 	{
 		friend class CJsonRPCServer;
 	public:
-		CJsonRPCServerConnection(CJsonRPCServer* pServer);
+		CJsonRPCServerConnection(_U32 id, CJsonRPCServer* pServer);
 
 		virtual void OnDisconnect();
 		virtual void OnData(_U32 seq, const char* data);
 
-	protected:
-		uv_tcp_t m_socket;
 
 	private:
+		uv_tcp_t m_socket;
+		_U32 m_id;
 		CJsonRPCServer* m_pServer;
 	};
 
@@ -76,9 +76,10 @@ namespace Zion
 
 		bool Start(const char* ep);
 		void Stop();
+		bool Send(_U32 conn, _U32 seq, const char* data);
 
 		void Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data);
-		void Detach(CJsonRPCServerConnection* pConn);
+		void Detach(_U32 id, CJsonRPCServerConnection* pConn);
 
 		static void OnConnect(uv_stream_t* server, int status);
 		static void OnClose(uv_handle_t* server);
@@ -86,7 +87,8 @@ namespace Zion
 
 	private:
 		Map<String, JSON_RESPONSE_PROC> m_Methods;
-		Set<CJsonRPCServerConnection*> m_Clients;
+		_U32 m_ClientSeq;
+		Map<_U32, CJsonRPCServerConnection*> m_Clients;
 		uv_loop_t* m_uv_loop;
 		uv_thread_t m_uv_thread;
 		uv_tcp_t m_server;
@@ -173,9 +175,9 @@ namespace Zion
 		pServer->Stop();
 	}
 
-	bool JsonRPC_Send(CJsonRPCServerConnection* pConn, _U32 seq, const char* args)
+	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, const char* args)
 	{
-		return pConn->Send(seq, NULL, args);
+		return ((CJsonRPCServer*)res.server)->Send(res.conn, res.seq, args);
 	}
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep)
@@ -379,14 +381,15 @@ namespace Zion
 		pConn->OnDisconnect();
 	}
 	
-	CJsonRPCServerConnection::CJsonRPCServerConnection(CJsonRPCServer* pServer)
+	CJsonRPCServerConnection::CJsonRPCServerConnection(_U32 id, CJsonRPCServer* pServer)
 	{
+		m_id = id;
 		m_pServer = pServer;
 	}
 
 	void CJsonRPCServerConnection::OnDisconnect()
 	{
-		m_pServer->Detach(this);
+		m_pServer->Detach(m_id, this);
 	}
 
 	void CJsonRPCServerConnection::OnData(_U32 seq, const char* data)
@@ -405,6 +408,7 @@ namespace Zion
 
 	CJsonRPCServer::CJsonRPCServer()
 	{
+		m_ClientSeq = 0;
 	}
 
 	CJsonRPCServer::~CJsonRPCServer()
@@ -476,6 +480,14 @@ namespace Zion
 		uv_loop_delete(m_uv_loop);
 	}
 
+	bool CJsonRPCServer::Send(_U32 conn, _U32 seq, const char* data)
+	{
+		Map<_U32, CJsonRPCServerConnection*>::iterator i;
+		i = m_Clients.find(conn);
+		if(i==m_Clients.end()) return false;
+		return i->second->Send(seq, NULL, data);
+	}
+
 	void CJsonRPCServer::Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data)
 	{
 		Map<String, JSON_RESPONSE_PROC>::iterator i;
@@ -486,24 +498,22 @@ namespace Zion
 			return;
 		}
 
-		i->second(pConn, seq, data);
+		JSONRPC_RESPONSE res = { 0, seq };
+
+		i->second(res, data);
 	}
 
-	void CJsonRPCServer::Detach(CJsonRPCServerConnection* pConn)
+	void CJsonRPCServer::Detach(_U32 id, CJsonRPCServerConnection* pConn)
 	{
-		m_Clients.erase(pConn);
+		m_Clients.erase(id);
 		ZION_DELETE pConn;
 	}
 
 	void CJsonRPCServer::OnConnect(uv_stream_t* server, int status)
 	{
 		CJsonRPCServer* pServer = (CJsonRPCServer*)server->data;
-		CJsonRPCServerConnection* pConn = ZION_NEW CJsonRPCServerConnection(pServer);
-		if(!pConn)
-		{
-			// error;
-			return;
-		}
+		_U32 seq = pServer->m_ClientSeq++;
+		CJsonRPCServerConnection* pConn = ZION_NEW CJsonRPCServerConnection(seq, pServer);
 
 		if(uv_tcp_init(pServer->m_uv_loop, &pConn->m_socket))
 		{
@@ -518,7 +528,7 @@ namespace Zion
 			return;
 		}
 
-		pServer->m_Clients.insert(pConn);
+		pServer->m_Clients[seq] = pConn;
 		pConn->m_socket.data = pConn;
 		CJsonRPCConnection::OnConnect((uv_stream_t*)&pConn->m_socket, 0);
 	}
@@ -527,10 +537,10 @@ namespace Zion
 	{
 		CJsonRPCServer* pServer = (CJsonRPCServer*)server->data;
 
-		Set<CJsonRPCServerConnection*>::iterator i;
+		Map<_U32, CJsonRPCServerConnection*>::iterator i;
 		for(i=pServer->m_Clients.begin(); i!=pServer->m_Clients.end(); i++)
 		{
-			(*i)->Shutdown();
+			i->second->Shutdown();
 		}
 	}
 
@@ -657,7 +667,7 @@ namespace Zion
 			struct JSON_RPCCALL& call = m_Requests.begin()->second;
 			if(call.proc)
 			{
-				call.proc(false, NULL);
+				call.proc(NULL);
 			}
 			m_Requests.erase(m_Requests.begin());
 		}
@@ -676,7 +686,7 @@ namespace Zion
 
 		if(it->second.proc)
 		{
-			it->second.proc(true, data);
+			it->second.proc(data);
 		}
 		m_Requests.erase(it);
 	}
@@ -710,7 +720,7 @@ namespace Zion
 					++it;
 					continue;
 				}
-				it->second.proc(false, NULL);
+				it->second.proc(NULL);
 			}
 			else
 			{

@@ -13,8 +13,6 @@ typedef float					_F32;
 typedef double					_F64;
 typedef char*					_STR;
 
-//#define ALIGN_SIZE(x)			((sizeof(x)+7) / 8 * 8)
-
 #include <assert.h>
 #define ZION_ASSERT(x)			assert(x)
 

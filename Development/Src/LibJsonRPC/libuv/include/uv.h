@@ -36,6 +36,7 @@
 #pragma warning(disable:4701)
 #pragma warning(disable:4054)
 #pragma warning(disable:4819)
+#pragma warning(disable:4189)
 #endif
 
 #ifndef UV_H

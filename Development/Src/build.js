@@ -1,6 +1,8 @@
 "use strict";
 
 var fs = require('fs');
+var path = require('path');
+
 var mkdirp = require("mkdirp")
 
 if (!String.prototype.format) {
@@ -15,14 +17,53 @@ if (!String.prototype.format) {
 	};
 }
 
-function autoMakeDir(strPath) {
-	if(strPath.indexOf('/')>=0) {
-		strPath = strPath.substring(0, strPath.lastIndexOf('/'));
+function mkdirp_sync (p, mode, made) {
+    if (mode === undefined) {
+        mode = 0777 & (~process.umask());
+    }
+    if (!made) made = null;
+
+    if (typeof mode === 'string') mode = parseInt(mode, 8);
+    p = path.resolve(p);
+
+    try {
+        fs.mkdirSync(p, mode);
+        made = made || p;
+    }
+    catch (err0) {
+        switch (err0.code) {
+            case 'ENOENT' :
+                made = mkdirp_sync(path.dirname(p), mode, made);
+                mkdirp_sync(p, mode, made);
+                break;
+
+            // In the case of any other error, just see if there's a dir
+            // there already.  If so, then hooray!  If not, then something
+            // is borked.
+            default:
+                var stat;
+                try {
+                    stat = fs.statSync(p);
+                }
+                catch (err1) {
+                    throw err0;
+                }
+                if (!stat.isDirectory()) throw err0;
+                break;
+        }
+    }
+
+    return made;
+};
+
+function autoMakeDir(p) {
+	if(p.indexOf('/')>=0) {
+		p = p.substring(0, p.lastIndexOf('/'));
 	}
-	if(strPath=='./') return true;
+	if(p=='./') return true;
 
 	console.log('create path ' + strPath);
-	mkdirp.sync(strPath);
+	mkdirp_sync(strPath);
 
 	return true;
 }

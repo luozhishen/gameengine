@@ -11,6 +11,10 @@
 static int phpmode = 0;
 static int jsmode = 0;
 
+#ifndef _WIN32
+#define stricmp strcasecmp
+#endif
+
 int main(int argc, char* argv[])
 {
 	char filename[300];

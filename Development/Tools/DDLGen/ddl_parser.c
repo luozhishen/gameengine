@@ -1,9 +1,17 @@
 #include <string.h>
+#ifdef _WIN32
 #include <direct.h>
-#include <malloc.h>
+#else
+#include <unistd.h>
+#endif
+#include <stdlib.h>
 #include <stdio.h>
 #include "ddl_parser.h"
 #include "ddl_codegen.h"
+
+#ifndef _WIN32
+#define stricmp strcasecmp
+#endif
 
 static const char* get_token_char(const char* buf, char c);
 static const char* get_token_string(const char* buf, char* value, int size);

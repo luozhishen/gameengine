@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 static FILE* _P = NULL;
 static void OutJS(int tab, const char* fmt, ...);

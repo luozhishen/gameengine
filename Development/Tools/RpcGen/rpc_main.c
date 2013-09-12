@@ -32,7 +32,7 @@ static int check_input(const char* name)
 	if(strlen(xname)<4) return 0;
 	if(memcmp(xname+strlen(xname)-4, ".rpc", 4)!=0) return 0;
 	xname[strlen(xname)-4] = '\0';
-	if(strrchr(xname, '//')) memmove(xname, strrchr(xname, '//')+1, strlen(strrchr(xname, '//'))+1);
+	if(strrchr(xname, '/')) memmove(xname, strrchr(xname, '/')+1, strlen(strrchr(xname, '/'))+1);
 	if(strrchr(xname, '\\')) memmove(xname, strrchr(xname, '\\')+1, strlen(strrchr(xname, '\\'))+1);
 	if(strchr(xname, '.')) return 0;
 	return 1;
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 
 	strcpy(xname, argv[1]);
 	xname[strlen(xname)-4] = '\0';
-	if(strrchr(xname, '//')) memmove(xname, strrchr(xname, '//')+1, strlen(strrchr(xname, '//'))+1);
+	if(strrchr(xname, '/')) memmove(xname, strrchr(xname, '/')+1, strlen(strrchr(xname, '/'))+1);
 	if(strrchr(xname, '\\')) memmove(xname, strrchr(xname, '\\')+1, strlen(strrchr(xname, '\\'))+1);
 
 	strcpy(fname, argv[1]);

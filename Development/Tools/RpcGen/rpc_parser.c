@@ -213,7 +213,7 @@ const char* parse_inc(const char* buf)
 	if(buf==NULL) return NULL;
 	buf = get_token_string(buf, file, sizeof(file));
 	if(buf==NULL) return NULL;
-	_incs[_incs_c++] = _strdup(file);
+	_incs[_incs_c++] = strdup(file);
 	return buf;
 }
 

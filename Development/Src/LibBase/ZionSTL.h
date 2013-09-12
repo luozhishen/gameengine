@@ -81,26 +81,26 @@ namespace Zion
 		friend class ZionSTLAlocator;
 	};
 
-	typedef std::basic_string<char, std::char_traits<char>, ZionSTLAlocator<char>> String;
-	typedef std::basic_stringstream<char, std::char_traits<char>, ZionSTLAlocator<char>> StringStream;
+	typedef std::basic_string<char, std::char_traits<char>, ZionSTLAlocator<char> > String;
+	typedef std::basic_stringstream<char, std::char_traits<char>, ZionSTLAlocator<char> > StringStream;
 	typedef std::basic_ostringstream<char, std::char_traits<char>, ZionSTLAlocator<char> > OutputStringStream;
 
 	template<class _Ty>
-	class Array : public std::vector<_Ty, ZionSTLAlocator<_Ty>>
+	class Array : public std::vector<_Ty, ZionSTLAlocator<_Ty> >
 	{
 	};
-	template<class _Kty, class _Ty, class _Pr = std::less<_Kty>>
-	class Map : public std::map<_Kty, _Ty, _Pr, ZionSTLAlocator<std::pair<const _Kty, _Ty>>>
+	template<class _Kty, class _Ty, class _Pr = std::less<_Kty> >
+	class Map : public std::map<_Kty, _Ty, _Pr, ZionSTLAlocator<std::pair<const _Kty, _Ty> > >
 	{
 	};
 
 	template<class _Ty>
-	class List : public std::list<_Ty, ZionSTLAlocator<_Ty>>
+	class List : public std::list<_Ty, ZionSTLAlocator<_Ty> >
 	{
 	};
 
-	template<class _Kty, class _Pr = std::less<_Kty>>
-	class Set : public std::set<_Kty, _Pr, ZionSTLAlocator<_Kty>>
+	template<class _Kty, class _Pr = std::less<_Kty> >
+	class Set : public std::set<_Kty, _Pr, ZionSTLAlocator<_Kty> >
 	{
 	};
 

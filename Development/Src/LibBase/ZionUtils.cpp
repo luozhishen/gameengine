@@ -4,11 +4,12 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <stdarg.h>
+#include <errno.h>
+const char* __argv[] = {NULL, NULL, NULL};
 #endif
 
 #include "ZionBase.h"
-
-#include <stdarg.h>
 
 namespace Zion
 {
@@ -88,7 +89,7 @@ namespace Zion
 			{
 #ifndef WIN32
 				int	res = readlink("/proc/self/exe", path, sizeof(path));  
-				if(res>=0 && res<size)
+				if(res>=0 && res<sizeof(path))
 				{
 					path[res] = '\0';
 					*(strrchr(path, '\\')+1) = '\0';

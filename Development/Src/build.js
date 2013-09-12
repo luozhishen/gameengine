@@ -108,7 +108,9 @@ ProjectFile.prototype.load = function (filename) {
 	this.name = filename.substring(filename.lastIndexOf('\\')+1);
 	this.name = this.name.substring(0, this.name.lastIndexOf('.'));
 
-	var lines = fs.readFileSync(filename, 'utf-8').split('\n');
+	filename = filename.replace(/\\/g, "/");
+
+	var lines = fs.readFileSync(path.normalize(filename), 'utf-8').split('\n');
 
 	for(var i=0; i<lines.length; i++) {
 		var pos;
@@ -220,17 +222,20 @@ SolutionFile.prototype.getProject = function (name) {
 
 function AppBuilder (solution) {
 	this.solution = solution;
-	this.cc_exe = 'gcc';
-	this.ln_exe = 'ln';
+	this.cc_exe = 'gcc {1} {0} -c -o {2}.obj';
+	this.ln_exe = 'gcc {0} -o {1}';
+	this.sl_exe = 'ar crv {0}.a {1}';
 }
 
 AppBuilder.prototype.setDebug = function (project_name) {
-	this.output_dir = "../Intermediate/Debug/"
+	this.output_dir = "../../Binaries/"
+	this.object_dir = "../Intermediate/Debug/"
 	this.cc_flag = "";
 }
 
 AppBuilder.prototype.setRelease = function (project_name) {
-	this.output_dir = "../Intermediate/Release/"
+	this.output_dir = "../../Binaries/"
+	this.object_dir = "../Intermediate/Release/"
 	this.cc_flag = "";
 }
 
@@ -256,23 +261,50 @@ AppBuilder.prototype.build = function (project_name) {
 	var inc_cmd = '';
 	for(var i=0; i<proj.inc_dir.length; i++) {
 		if(i>0) inc_cmd += ' ';
-		inc_cmd += '-I'+proj.inc_dir[i];
+		var inc_path = process.cwd() + '\\' + proj.inc_dir[i];
+		inc_path = inc_path.replace(/\\/g, "/");
+		inc_path = path.normalize(inc_path);
+		inc_cmd += '-I' + inc_path;
 	}
+
+	var objs = [];
 
 	for(var i=0; i<proj.src_files.length; i++) {
 		var src_path = proj.path + proj.src_files[i];
-		var dst_path = proj.src_files[i];
 		src_path = src_path.replace(/\\/g, "/");
+		var dst_path = proj.src_files[i];
 		dst_path = dst_path.replace(/\\/g, "/");
 		dst_path = dst_path.replace(/\//g, "_");
 		dst_path = dst_path.replace(/\./g, "_");
-		dst_path = this.output_dir + proj.name + '/' + dst_path;
+		dst_path = this.object_dir + proj.name + '/' + dst_path;
+		src_path = path.normalize(src_path);
+		dst_path = path.normalize(dst_path);
 
 		autoMakeDir(dst_path);
 
-		var cmdline = this.cc_exe + " {1} {0} -o {2}.obj ".format(src_path, inc_cmd, dst_path);
+		var cmdline = this.cc_exe.format(src_path, inc_cmd, dst_path);
+		console.log('echo compile '+proj.src_files[i]);
 		console.log(cmdline);
+		objs.push(dst_path);
 	}
+
+	var objs_str = objs.join('.obj ') + '.obj';
+
+	var cmdline;
+
+	if(proj.type=='StaticLibrary') {
+		var lib_path = this.object_dir + proj.name;
+		lib_path = lib_path.replace(/\\/g, "/");
+		autoMakeDir(lib_path);
+		cmdline = this.sl_exe.format(lib_path, objs_str);
+	} else {
+		var exe_path = this.output_dir + proj.name;
+		exe_path = exe_path.replace(/\\/g, "/");
+		autoMakeDir(exe_path);
+		cmdline = this.ln_exe.format(objs_str, exe_path);
+	}
+
+	console.log(cmdline);
 }
 
 if(process.argv.length<3) {
@@ -287,3 +319,4 @@ var builder = new AppBuilder(solution);
 builder.setDebug();
 builder.build('DDLGen');
 builder.build('RpcGen');
+builder.build('LibBase');

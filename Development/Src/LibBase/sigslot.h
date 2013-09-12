@@ -3404,7 +3404,7 @@ namespace sigslot {
 			arg7_type, arg8_type, arg9_type, arg10_type))
 		{
 			_connection10<desttype, arg1_type, arg2_type, arg3_type, arg4_type,
-				arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, mt_policy>* conn = 
+				arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, mt_policy>* conn = 
 				new _connection10<desttype, arg1_type, arg2_type, arg3_type,
 				arg4_type, arg5_type, arg6_type, arg7_type, 
 				arg8_type, arg9_type, arg10_type, mt_policy>(pclass, pmemfun);
@@ -3413,7 +3413,7 @@ namespace sigslot {
 		}
 
 		void emit(arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4,
-			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type, arg9_type a9, arg10_type a10)
+			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type a8, arg9_type a9, arg10_type a10)
 		{
 			typename _signal_base10<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, mt_policy>::connections_list::const_iterator itNext;
 			typename _signal_base10<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, mt_policy>::connections_list::const_iterator it = this->m_connected_slots.begin();
@@ -3431,7 +3431,7 @@ namespace sigslot {
 		}
 
 		void operator()(arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4,
-			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type, arg9_type a9, arg10_type a10)
+			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type a8, arg9_type a9, arg10_type a10)
 		{
 			typename _signal_base10<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, mt_policy>::connections_list::const_iterator itNext;
 			typename _signal_base10<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, mt_policy>::connections_list::const_iterator it = this->m_connected_slots.begin();
@@ -3483,7 +3483,7 @@ namespace sigslot {
 		}
 
 		void emit(arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4,
-			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type, arg9_type a9, arg10_type a10, arg11_type a11)
+			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type a8, arg9_type a9, arg10_type a10, arg11_type a11)
 		{
 			typename _signal_base11<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, arg11_type, mt_policy>::connections_list::const_iterator itNext;
 			typename _signal_base11<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, arg11_type, mt_policy>::connections_list::const_iterator it = this->m_connected_slots.begin();
@@ -3615,7 +3615,7 @@ namespace sigslot {
 		{
 			_connection13<desttype, arg1_type, arg2_type, arg3_type, arg4_type,
 				arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, arg11_type, arg12_type, arg13_type, mt_policy>* conn = 
-				new _connection10<desttype, arg1_type, arg2_type, arg3_type,
+				new _connection13<desttype, arg1_type, arg2_type, arg3_type,
 				arg4_type, arg5_type, arg6_type, arg7_type, 
 				arg8_type, arg9_type, arg10_type, arg11_type, arg12_type, arg13_type, mt_policy>(pclass, pmemfun);
 			this->m_connected_slots.push_back(conn);
@@ -3623,7 +3623,7 @@ namespace sigslot {
 		}
 
 		void emit(arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4,
-			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type, arg9_type a9, arg10_type a10, arg11_type a11, arg12_type a12, arg13_type a13)
+			arg5_type a5, arg6_type a6, arg7_type a7, arg8_type a8, arg9_type a9, arg10_type a10, arg11_type a11, arg12_type a12, arg13_type a13)
 		{
 			typename _signal_base13<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, arg11_type, arg12_type, arg13_type, mt_policy>::connections_list::const_iterator itNext;
 			typename _signal_base13<arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, arg9_type, arg10_type, arg11_type, arg12_type, arg13_type, mt_policy>::connections_list::const_iterator it = this->m_connected_slots.begin();

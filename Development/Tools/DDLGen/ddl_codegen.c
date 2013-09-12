@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
+
+#ifndef _WIN32
+#define stricmp strcasecmp
+#endif
 
 static FILE* _H;
 static FILE* _C;

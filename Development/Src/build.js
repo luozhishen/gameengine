@@ -222,8 +222,8 @@ SolutionFile.prototype.getProject = function (name) {
 
 function AppBuilder (solution) {
 	this.solution = solution;
-	this.cc_exe = 'gcc {1} {0} -c -o {2}.obj';
-	this.ln_exe = 'gcc {0} -o {1}';
+	this.cc_exe = 'clang {1} {0} -c -o {2}.obj';
+	this.ln_exe = 'clang {0} -o {1}';
 	this.sl_exe = 'ar crv {0}.a {1}';
 }
 
@@ -320,3 +320,5 @@ builder.setDebug();
 builder.build('DDLGen');
 builder.build('RpcGen');
 builder.build('LibBase');
+builder.build('LibClient');
+builder.build('LibCommon');

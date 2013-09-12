@@ -87,14 +87,14 @@ namespace Zion
 			}
 			void Clear()
 			{
-				Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+				Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 				for(i=m_object_map.begin(); i!=m_object_map.end(); i++)
 				{
 					DDLReflect::DestoryObject(i->second.second);
 				}
 				m_object_map.clear();
 			}
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>> m_object_map;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> > m_object_map;
 		};
 		static CContentObjectManager g_objct_manager;
 		static bool LoadContentFromJsonFile(const char* filename, bool ignore);
@@ -278,7 +278,7 @@ namespace Zion
 
 		void DeleteObject(const A_UUID& uuid)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return;
 			DDLReflect::DestoryObject(i->second.second);
@@ -288,7 +288,7 @@ namespace Zion
 
 		const DDLReflect::STRUCT_INFO* GetObjectType(const A_UUID& uuid)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			return i->second.first;
@@ -296,7 +296,7 @@ namespace Zion
 
 		A_CONTENT_OBJECT* Modify(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			if(info!=NULL && i->second.first!=info) return NULL;
@@ -306,7 +306,7 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* QueryByUUID(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			if(info!=NULL && i->second.first!=info) return NULL;
@@ -315,7 +315,7 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* QueryByName(const char* name, const DDLReflect::STRUCT_INFO* info)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				if((info!=NULL || i->second.first==info) && strcmp(name, i->second.second->_name._Value)==0)
@@ -440,7 +440,7 @@ namespace Zion
 			internal_info.key_map.clear();
 			if(internal_info.keys.size()==0) return true;
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				if(info!=i->second.first && (internal_info.bExactMatch || !IsParent(i->second.first, info))) continue;
@@ -475,7 +475,7 @@ namespace Zion
 		{
 			list.clear();
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				if(i->second.first==info || (!bExactMatch && IsParent(i->second.first, info)))
@@ -489,7 +489,7 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			i = g_objct_manager.m_object_map.begin();
 			while(i!=g_objct_manager.m_object_map.end())
 			{
@@ -501,7 +501,7 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			i = g_objct_manager.m_object_map.find(object->_uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			i++;
@@ -701,7 +701,7 @@ namespace Zion
 			}
 			if(vmap.size()==0) return true;
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator oi;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator oi;
 			for(oi=g_objct_manager.m_object_map.begin(); oi!=g_objct_manager.m_object_map.end(); oi++)
 			{
 				const char* file = QueryContentGroupName(oi->second.first);
@@ -762,7 +762,7 @@ namespace Zion
 			_U32 object_count = (_U32)g_objct_manager.m_object_map.size();
 			fwrite(&object_count, 1, sizeof(object_count), fp);
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>>::iterator i;
+			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
 				CContentGroup* group = QueryContentGroup(i->second.first);

@@ -21,7 +21,7 @@ namespace Zion
 	private:
 		bool m_bNeedDisconnect, m_bConnecting;
 		SOCK_HANDLE m_hSocket;
-		List<std::pair<_U8*, _U32>> m_SendQueue;
+		List<std::pair<_U8*, _U32> > m_SendQueue;
 		_U32 m_nSendLen;
 	};
 

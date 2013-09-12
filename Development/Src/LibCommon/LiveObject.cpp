@@ -10,7 +10,7 @@ namespace Zion
 {
 	namespace LiveObject
 	{
-		static Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*>> g_type_map;
+		static Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*> > g_type_map;
 		static Zion::Map<_U16, const DDLReflect::STRUCT_INFO*> g_typeid_map;
 		static _U16 g_typeid_max = 0x2000;
 
@@ -41,7 +41,7 @@ namespace Zion
 
 		_U16 GetTypeId(const char* name)
 		{
-			Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*>>::const_iterator i;
+			Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*> >::const_iterator i;
 			i = g_type_map.find(name);
 			if(i==g_type_map.end()) return (_U16)-1;
 			return (_U16)i->second.first;
@@ -49,7 +49,7 @@ namespace Zion
 
 		const DDLReflect::STRUCT_INFO* GetType(const char* name)
 		{
-			Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*>>::const_iterator i;
+			Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*> >::const_iterator i;
 			i = g_type_map.find(name);
 			if(i==g_type_map.end()) return NULL;
 			return i->second.second;

@@ -1,0 +1,6 @@
+
+{
+    "sources" : "../LibCardCommon/CardGameDDL.h",
+    "condition" : "\tclass CARDGAME_S2C : public DDLProxy<CLIENT, BUFFER>",
+    "prefix" : "CCardClient* pClient"
+}

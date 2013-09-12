@@ -222,42 +222,75 @@ SolutionFile.prototype.getProject = function (name) {
 
 function AppBuilder (solution) {
 	this.solution = solution;
-	this.cc_exe = 'clang {1} {0} -c -o {2}.obj';
+	this.cc_exe = 'clang {1} {0} -c -o {2}';
 	this.ln_exe = 'clang {0} -o {1}';
 	this.sl_exe = 'ar crv {0}.a {1}';
+	this.dl_exe = '';
 }
 
-AppBuilder.prototype.setDebug = function (project_name) {
-	this.output_dir = "../../Binaries/"
-	this.object_dir = "../Intermediate/Debug/"
-	this.cc_flag = "";
-}
-
-AppBuilder.prototype.setRelease = function (project_name) {
-	this.output_dir = "../../Binaries/"
-	this.object_dir = "../Intermediate/Release/"
-	this.cc_flag = "";
-}
-
-AppBuilder.prototype.build = function (project_name) {
-	var proj = this.solution.getProject(project_name);
-	if(!proj) {
-		console.log('project '+project_name+' not found!');
-		process.exit();
+AppBuilder.prototype.setPlatform = function (platform) {
+	if(platform=='Win32' || platform=='Win64') {
+		this.obj_ext = '.obj';
+		this.exe_ext = '.exe';
+		this.dll_ext = '.dll';
+		this.lib_ext = '.lib';
+	} else {
+		this.obj_ext = '.o';
+		this.exe_ext = '';
+		this.dll_ext = '.so';
+		this.lib_ext = '.a';
 	}
+}
 
+AppBuilder.prototype.setConfiguration = function (config) {
+	if(config=='Debug') {
+		this.output_dir = "../../Binaries/Debug/"
+		this.object_dir = "../Intermediate/Debug/"
+		this.cc_flag = '';
+		this.ln_flag = '';
+		this.sl_flag = '';
+		this.dl_flag = '';
+		return;
+	}
+	if(config=='Release') {
+		this.output_dir = "../../Binaries/Release/"
+		this.object_dir = "../Intermediate/Release/"
+		this.cc_flag = '';
+		this.ln_flag = '';
+		this.sl_flag = '';
+		this.dl_flag = '';
+		return;
+	}
+}
+
+AppBuilder.prototype.buildRPC = function (proj) {
 	for(var i=0; i<proj.rpc_files.length; i++) {
-		console.log('process '+proj.rpc_files[i]);
+		var cmdline = this.output_dir + 'RpcGen' + this.exe_ext + ' ' + proj.path + proj.ddl_files[i];
+		console.log(cmdline);
 	}
+}
+
+AppBuilder.prototype.buildDDL = function (proj) {
 	for(var i=0; i<proj.ddl_files.length; i++) {
-		console.log('process '+proj.ddl_files[i]);
+		var cmdline = this.output_dir + 'DDLGen' + this.exe_ext + ' ' + proj.path + proj.ddl_files[i];
+		console.log(cmdline);
 	}
+}
+
+AppBuilder.prototype.buildINC = function (proj) {
 	for(var i=0; i<proj.inc_files.length; i++) {
 		if(proj.inc_files[i].indexOf('AutoGen.h')>0) {
-			console.log('process '+proj.inc_files[i]);
+			var cwd = process.cwd();
+			var proj_path = cwd + '\\' + proj.path;
+			proj_path = path.normalize(proj_path.replace(/\\/g, "/"));
+			console.log('cd ' + proj_path);
+			console.log('node CodeGen.js');
+			console.log('cd ' + cwd);
 		}
 	}
+}
 
+AppBuilder.prototype.buildBIN = function (proj) {
 	var inc_cmd = '';
 	for(var i=0; i<proj.inc_dir.length; i++) {
 		if(i>0) inc_cmd += ' ';
@@ -268,7 +301,6 @@ AppBuilder.prototype.build = function (project_name) {
 	}
 
 	var objs = [];
-
 	for(var i=0; i<proj.src_files.length; i++) {
 		var src_path = proj.path + proj.src_files[i];
 		src_path = src_path.replace(/\\/g, "/");
@@ -282,13 +314,13 @@ AppBuilder.prototype.build = function (project_name) {
 
 		autoMakeDir(dst_path);
 
-		var cmdline = this.cc_exe.format(src_path, inc_cmd, dst_path);
+		var cmdline = this.cc_exe.format(src_path, inc_cmd, dst_path+this.obj_ext);
 		console.log('echo compile '+proj.src_files[i]);
 		console.log(cmdline);
 		objs.push(dst_path);
 	}
 
-	var objs_str = objs.join('.obj ') + '.obj';
+	var objs_str = objs.join(this.obj_ext + ' ') + this.obj_ext;
 
 	var cmdline;
 
@@ -296,15 +328,28 @@ AppBuilder.prototype.build = function (project_name) {
 		var lib_path = this.object_dir + proj.name;
 		lib_path = lib_path.replace(/\\/g, "/");
 		autoMakeDir(lib_path);
-		cmdline = this.sl_exe.format(lib_path, objs_str);
+		cmdline = this.sl_exe.format(lib_path+this.lib_ext, objs_str);
 	} else {
 		var exe_path = this.output_dir + proj.name;
 		exe_path = exe_path.replace(/\\/g, "/");
 		autoMakeDir(exe_path);
-		cmdline = this.ln_exe.format(objs_str, exe_path);
+		cmdline = this.ln_exe.format(objs_str, exe_path+this.exe_ext);
 	}
 
 	console.log(cmdline);
+}
+
+AppBuilder.prototype.build = function (project_name) {
+	var proj = this.solution.getProject(project_name);
+	if(!proj) {
+		console.log('project '+project_name+' not found!');
+		process.exit();
+	}
+
+	this.buildRPC(proj);
+	this.buildDDL(proj);
+	this.buildINC(proj);
+	this.buildBIN(proj);
 }
 
 if(process.argv.length<3) {
@@ -316,9 +361,15 @@ var solution = new SolutionFile();
 solution.load(process.argv[2]);
 
 var builder = new AppBuilder(solution);
-builder.setDebug();
+builder.setConfiguration('Debug');
+builder.setPlatform('unix');
+/*
 builder.build('DDLGen');
 builder.build('RpcGen');
 builder.build('LibBase');
 builder.build('LibClient');
 builder.build('LibCommon');
+*/
+builder.build('LibCardCommon');
+
+

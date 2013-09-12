@@ -1,5 +1,4 @@
 var SOURCE_FILE = '../LibCardCommon/CardGameDDL.h';
-var OUTPUT_FILE = 'value.txt';
 var condition = '\tclass CARDGAME_S2C : public DDLProxy<CLIENT, BUFFER>';
 var method_prefix = 'CCardClient* pClient';
 
@@ -64,9 +63,6 @@ for(; cline<lines.length; cline++) {
 
         sigslots.push(sigslot);
         methods.push(method);
-
-//        console.log(sigslot);
-//        console.log(method);
     }
 }
 

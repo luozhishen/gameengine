@@ -1,9 +1,5 @@
-"use strict";
-
 var fs = require('fs');
 var path = require('path');
-
-var mkdirp = require("mkdirp")
 
 if (!String.prototype.format) {
 	String.prototype.format = function() {
@@ -18,42 +14,42 @@ if (!String.prototype.format) {
 }
 
 function mkdirp_sync (p, mode, made) {
-    if (mode === undefined) {
-        mode = 0777 & (~process.umask());
-    }
-    if (!made) made = null;
+	if (mode === undefined) {
+		mode = 0777 & (~process.umask());
+	}
+	if (!made) made = null;
 
-    if (typeof mode === 'string') mode = parseInt(mode, 8);
-    p = path.resolve(p);
+	if (typeof mode === 'string') mode = parseInt(mode, 8);
+	p = path.resolve(p);
 
-    try {
-        fs.mkdirSync(p, mode);
-        made = made || p;
-    }
-    catch (err0) {
-        switch (err0.code) {
-            case 'ENOENT' :
-                made = mkdirp_sync(path.dirname(p), mode, made);
-                mkdirp_sync(p, mode, made);
-                break;
+	try {
+		fs.mkdirSync(p, mode);
+		made = made || p;
+	}
+	catch (err0) {
+		switch (err0.code) {
+		case 'ENOENT' :
+			made = mkdirp_sync(path.dirname(p), mode, made);
+			mkdirp_sync(p, mode, made);
+			break;
 
-            // In the case of any other error, just see if there's a dir
-            // there already.  If so, then hooray!  If not, then something
-            // is borked.
-            default:
-                var stat;
-                try {
-                    stat = fs.statSync(p);
-                }
-                catch (err1) {
-                    throw err0;
-                }
-                if (!stat.isDirectory()) throw err0;
-                break;
-        }
-    }
+		// In the case of any other error, just see if there's a dir
+		// there already.  If so, then hooray!  If not, then something
+		// is borked.
+		default:
+			var stat;
+			try {
+				stat = fs.statSync(p);
+			}
+			catch (err1) {
+				throw err0;
+			}
+			if (!stat.isDirectory()) throw err0;
+			break;
+		}
+	}
 
-    return made;
+	return made;
 };
 
 function autoMakeDir(p) {
@@ -62,15 +58,12 @@ function autoMakeDir(p) {
 	}
 	if(p=='./') return true;
 
-	console.log('create path ' + strPath);
-	mkdirp_sync(strPath);
-
+	mkdirp_sync(p);
 	return true;
 }
 
 function ProcessPropertyFile (proj, filename) {
 	var path = proj.path + filename;
-	console.log(path);
 	path = path.replace(/\\/g, "/");
 	var lines = fs.readFileSync(path, 'utf-8').split('\n');
 
@@ -232,12 +225,12 @@ function AppBuilder (solution) {
 }
 
 AppBuilder.prototype.setDebug = function (project_name) {
-	this.output_dir = "./output/"
+	this.output_dir = "../Intermediate/Debug/"
 	this.cc_flag = "";
 }
 
 AppBuilder.prototype.setRelease = function (project_name) {
-	this.output_dir = "....."
+	this.output_dir = "../Intermediate/Release/"
 	this.cc_flag = "";
 }
 
@@ -267,10 +260,8 @@ AppBuilder.prototype.build = function (project_name) {
 	}
 
 	for(var i=0; i<proj.src_files.length; i++) {
-		console.log('process '+proj.src_files[i]);
-
 		var src_path = proj.path + proj.src_files[i];
-		var dst_path = proj.path + proj.src_files[i];
+		var dst_path = proj.src_files[i];
 		src_path = src_path.replace(/\\/g, "/");
 		dst_path = dst_path.replace(/\\/g, "/");
 		dst_path = dst_path.replace(/\//g, "_");
@@ -279,7 +270,7 @@ AppBuilder.prototype.build = function (project_name) {
 
 		autoMakeDir(dst_path);
 
-		var cmdline = this.cc_exe + " {1} {0} -o {2} ".format(src_path, inc_cmd, dst_path);
+		var cmdline = this.cc_exe + " {1} {0} -o {2}.obj ".format(src_path, inc_cmd, dst_path);
 		console.log(cmdline);
 	}
 }

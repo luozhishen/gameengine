@@ -352,6 +352,9 @@ AppBuilder.prototype.build = function (project_name) {
 	this.buildBIN(proj);
 }
 
+AppBuilder.prototype.buildDepance = function (project_name) {
+}
+
 if(process.argv.length<3) {
 	console.log('invalid parameter');
 	process.exit();

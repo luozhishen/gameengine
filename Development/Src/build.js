@@ -224,7 +224,7 @@ function AppBuilder (solution) {
 	this.solution = solution;
 	this.cc_exe = 'clang {1} {0} -c -o {2}';
 	this.ln_exe = 'clang {0} -o {1}';
-	this.sl_exe = 'ar crv {0}.a {1}';
+	this.sl_exe = 'ar crv {0} {1}';
 	this.dl_exe = '';
 }
 
@@ -246,7 +246,7 @@ AppBuilder.prototype.setConfiguration = function (config) {
 	if(config=='Debug') {
 		this.output_dir = "../../Binaries/Debug/"
 		this.object_dir = "../Intermediate/Debug/"
-		this.cc_flag = '';
+		this.cc_flag = '-M -g';
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
@@ -255,7 +255,7 @@ AppBuilder.prototype.setConfiguration = function (config) {
 	if(config=='Release') {
 		this.output_dir = "../../Binaries/Release/"
 		this.object_dir = "../Intermediate/Release/"
-		this.cc_flag = '';
+		this.cc_flag = '-M -O2';
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
@@ -314,8 +314,10 @@ AppBuilder.prototype.buildBIN = function (proj) {
 
 		autoMakeDir(dst_path);
 
-		var cmdline = this.cc_exe.format(src_path, inc_cmd, dst_path+this.obj_ext);
 		console.log('echo compile '+proj.src_files[i]);
+		cmdline = this.cc_exe.format(src_path, inc_cmd + ' -M ' + this.cc_flag, dst_path+'.d');
+		console.log(cmdline);
+		var cmdline = this.cc_exe.format(src_path, inc_cmd + ' ' + this.cc_flag, dst_path+this.obj_ext);
 		console.log(cmdline);
 		objs.push(dst_path);
 	}
@@ -363,13 +365,12 @@ solution.load(process.argv[2]);
 var builder = new AppBuilder(solution);
 builder.setConfiguration('Debug');
 builder.setPlatform('unix');
-/*
+
 builder.build('DDLGen');
+/*
 builder.build('RpcGen');
 builder.build('LibBase');
 builder.build('LibClient');
 builder.build('LibCommon');
-*/
 builder.build('LibCardCommon');
-
-
+*/

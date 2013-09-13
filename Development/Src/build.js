@@ -323,7 +323,9 @@ AppBuilder.prototype.buildRPC = function (proj) {
 AppBuilder.prototype.buildDDL = function (proj) {
 	var ddl_exe = path.normalize(this.output_dir + 'DDLGen' + this.exe_ext);
 	for(var i=0; i<proj.ddl_files.length; i++) {
-		var ddl_path = path.normalize(proj.path + proj.ddl_files[i]);
+		var ddl_path = proj.path + proj.ddl_files[i];
+		ddl_path = ddl_path.replace(/\\/g, "/");
+		ddl_path = path.normalize(ddl_path);
 		var ddl_gen = ddl_path.substring(0, ddl_path.lastIndexOf('.'));
 		if(!this.needUpdate([ddl_exe, ddl_path], [ddl_gen+'.cpp', ddl_gen+'.h'])) {
 			continue;
@@ -350,10 +352,15 @@ AppBuilder.prototype.buildINC = function (proj) {
 }
 
 AppBuilder.prototype.loadCPPDepend = function (filename) {
-	var ret;
+	var ret = [];
 	try {
-		ret = fs.readFileSync(obj_files, 'utf-8').split('\n');
-		ret = ret.join('').replace(/\//g, '').trim().split(' ');
+		arr = fs.readFileSync(filename, 'utf-8').split('\n');
+		arr = arr.join('').replace(/\\/g, '').trim().split(' ');
+		for(var i=1; i<arr.length; i++) {
+			if(arr[i].trim()=='') continue;
+			if(arr[i].trim()=='-') continue;
+			ret.push(arr[i]);
+		}
 	} catch(e) {
 		return undefined;
 	}
@@ -361,25 +368,29 @@ AppBuilder.prototype.loadCPPDepend = function (filename) {
 }
 
 AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
-	if(typeof(src_files)=='String') {
+	if(typeof(src_files)=='string') {
 		src_files = [src_files];
 	}
 
 	var src_ts = 0;
 	for(var i=0; i<src_files.length; i++) {
 		if(!fs.existsSync(src_files[i])) {
+			throw new Exception();
 			return true;
 		}
 		var ts = Date.parse(fs.statSync(src_files[i]).mtime) / 1000;
-		if(ts>src_ts) src_ts = ts;
+		if(ts>src_ts) {
+			src_ts = ts;
+		}
 	}
 
-	if(typeof(gen_files)=='String') {
+	if(typeof(gen_files)=='string') {
 		gen_files = [gen_files];
 	}
 
 	for(var i=0; i<gen_files.length; i++) {
 		if(!fs.existsSync(gen_files[i])) {
+			throw new Exception();
 			return true;
 		}
 		var ts = Date.parse(fs.statSync(gen_files[i]).mtime) / 1000;
@@ -413,23 +424,23 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		src_path = path.normalize(src_path);
 		dst_path = path.normalize(dst_path);
 
-		objs.push(dst_path);
+		objs.push(dst_path+this.obj_ext);
 
 		var src_files = this.loadCPPDepend(dst_path+'.d');
-		if(src_files && !this.needUpdate(src_files, this.cc_flag, dst_path+this.obj_ext)) {
+		if(src_files && !this.needUpdate(src_files, dst_path+this.obj_ext)) {
 			continue;
 		}
 
 		autoMakeDir(dst_path);
 
 		console.log('echo compile '+proj.src_files[i]);
-		cmdline = this.cc_exe.format(src_path, inc_cmd + ' -M ' + this.cc_flag, dst_path+'.d');
+		var cmdline = this.cc_exe.format(src_path, inc_cmd + ' -M ' + this.cc_flag, dst_path+'.d');
 		console.log(cmdline);
-		var cmdline = this.cc_exe.format(src_path, inc_cmd + ' ' + this.cc_flag, dst_path+this.obj_ext);
+		cmdline = this.cc_exe.format(src_path, inc_cmd + ' ' + this.cc_flag, dst_path+this.obj_ext);
 		console.log(cmdline);
 	}
 
-	var objs_str = objs.join(this.obj_ext + ' ') + this.obj_ext;
+	var objs_str = objs.join(' ');
 	var cmdline;
 	if(proj.type=='StaticLibrary') {
 		var lib_path = this.object_dir + proj.name;
@@ -480,8 +491,10 @@ solution.load(process.argv[2]);
 
 var builder = new AppBuilder(solution);
 builder.setConfiguration('Debug');
-builder.setPlatform('Win32');
+builder.setPlatform('unix');
 
+builder.build('DDLGen');
+builder.build('RpcGen');
 builder.build('LibCommon');
 
 /*

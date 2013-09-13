@@ -1,7 +1,34 @@
+
 var fs = require('fs');
 var path = require('path');
+var util = require('util');
 
-if (!String.prototype.format) {
+if(!String.prototype.trim) {
+	String.prototype.trim = function () {
+		return this.replace(/^\s+|\s+$/g, '');
+	};
+}
+
+if(!String.prototype.ltrim) {
+	String.prototype.ltrim = function () {
+		return this.replace(/^\s+/,'');
+	};
+}
+
+if(!String.prototype.rtrim) {
+	String.prototype.rtrim = function () {
+		return this.replace(/\s+$/,'');
+	};
+}
+
+if(!String.prototype.fulltrim) {
+	String.prototype.fulltrim = function ()
+	{
+		return this.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ');
+	};
+}
+
+if(!String.prototype.format) {
 	String.prototype.format = function() {
 		var args = arguments;
 		return this.replace(/{(\d+)}/g, function(match, number) { 
@@ -14,12 +41,12 @@ if (!String.prototype.format) {
 }
 
 function mkdirp_sync (p, mode, made) {
-	if (mode === undefined) {
+	if(mode === undefined) {
 		mode = 0777 & (~process.umask());
 	}
-	if (!made) made = null;
+	if(!made) made = null;
 
-	if (typeof mode === 'string') mode = parseInt(mode, 8);
+	if(typeof mode === 'string') mode = parseInt(mode, 8);
 	p = path.resolve(p);
 
 	try {
@@ -44,7 +71,7 @@ function mkdirp_sync (p, mode, made) {
 			catch (err1) {
 				throw err0;
 			}
-			if (!stat.isDirectory()) throw err0;
+			if(!stat.isDirectory()) throw err0;
 			break;
 		}
 	}
@@ -221,11 +248,27 @@ SolutionFile.prototype.getProject = function (name) {
 }
 
 function AppBuilder (solution) {
+	this.files_data = {};
 	this.solution = solution;
 	this.cc_exe = 'clang {1} {0} -c -o {2}';
 	this.ln_exe = 'clang {0} -o {1}';
 	this.sl_exe = 'ar crv {0} {1}';
 	this.dl_exe = '';
+}
+
+AppBuilder.prototype.getFileTime = function (filename) {
+	if(filename in this.files_data) {
+		return this.files_data[filename];
+	} else {
+		var ts;
+		try {
+			ts = Date.parse(fs.statSync(filename)) / 1000;
+		} catch(e) {
+			ts = Date.now() / 1000;
+		}
+		this.files_data[filename] = ts;
+		return ts;
+	}
 }
 
 AppBuilder.prototype.setPlatform = function (platform) {
@@ -244,18 +287,18 @@ AppBuilder.prototype.setPlatform = function (platform) {
 
 AppBuilder.prototype.setConfiguration = function (config) {
 	if(config=='Debug') {
-		this.output_dir = "../../Binaries/Debug/"
-		this.object_dir = "../Intermediate/Debug/"
-		this.cc_flag = '-M -g';
+		this.output_dir = "../../Binaries/Debug/";
+		this.object_dir = "../Intermediate/Debug/";
+		this.cc_flag = '-g';
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
 		return;
 	}
 	if(config=='Release') {
-		this.output_dir = "../../Binaries/Release/"
-		this.object_dir = "../Intermediate/Release/"
-		this.cc_flag = '-M -O2';
+		this.output_dir = "../../Binaries/Release/";
+		this.object_dir = "../Intermediate/Release/";
+		this.cc_flag = '-O2';
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
@@ -264,20 +307,35 @@ AppBuilder.prototype.setConfiguration = function (config) {
 }
 
 AppBuilder.prototype.buildRPC = function (proj) {
+	var rpc_exe = path.normalize(this.output_dir + 'RpcGen' + this.exe_ext);
 	for(var i=0; i<proj.rpc_files.length; i++) {
-		var cmdline = this.output_dir + 'RpcGen' + this.exe_ext + ' ' + proj.path + proj.ddl_files[i];
+		var rpc_path = path.normalize(proj.path + proj.rpc_files[i]);
+		var rpc_gen = rpc_path.substring(0, rpc_path.lastIndexOf('.'));
+		if(!this.needUpdate([rpc_exe, rpc_path], [rpc_gen+'.c.cpp', rpc_gen+'.c.h', rpc_gen+'.s.cpp', rpc_gen+'.s.h'])) {
+			continue;
+		}
+
+		var cmdline = '{0} {1}'.format(rpc_exe, rpc_path);
 		console.log(cmdline);
 	}
 }
 
 AppBuilder.prototype.buildDDL = function (proj) {
+	var ddl_exe = path.normalize(this.output_dir + 'DDLGen' + this.exe_ext);
 	for(var i=0; i<proj.ddl_files.length; i++) {
-		var cmdline = this.output_dir + 'DDLGen' + this.exe_ext + ' ' + proj.path + proj.ddl_files[i];
+		var ddl_path = path.normalize(proj.path + proj.ddl_files[i]);
+		var ddl_gen = ddl_path.substring(0, ddl_path.lastIndexOf('.'));
+		if(!this.needUpdate([ddl_exe, ddl_path], [ddl_gen+'.cpp', ddl_gen+'.h'])) {
+			continue;
+		}
+
+		var cmdline = '{0} {1}'.format(ddl_exe, ddl_path);
 		console.log(cmdline);
 	}
 }
 
 AppBuilder.prototype.buildINC = function (proj) {
+	/*
 	for(var i=0; i<proj.inc_files.length; i++) {
 		if(proj.inc_files[i].indexOf('AutoGen.h')>0) {
 			var cwd = process.cwd();
@@ -288,6 +346,48 @@ AppBuilder.prototype.buildINC = function (proj) {
 			console.log('cd ' + cwd);
 		}
 	}
+	*/
+}
+
+AppBuilder.prototype.loadCPPDepend = function (filename) {
+	var ret;
+	try {
+		ret = fs.readFileSync(obj_files, 'utf-8').split('\n');
+		ret = ret.join('').replace(/\//g, '').trim().split(' ');
+	} catch(e) {
+		return undefined;
+	}
+	return ret;
+}
+
+AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
+	if(typeof(src_files)=='String') {
+		src_files = [src_files];
+	}
+
+	var src_ts = 0;
+	for(var i=0; i<src_files.length; i++) {
+		if(!fs.existsSync(src_files[i])) {
+			return true;
+		}
+		var ts = Date.parse(fs.statSync(src_files[i]).mtime) / 1000;
+		if(ts>src_ts) src_ts = ts;
+	}
+
+	if(typeof(gen_files)=='String') {
+		gen_files = [gen_files];
+	}
+
+	for(var i=0; i<gen_files.length; i++) {
+		if(!fs.existsSync(gen_files[i])) {
+			return true;
+		}
+		if(Date.parse(fs.statSync(gen_files[i]).mtime) / 1000 > src_ts) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 AppBuilder.prototype.buildBIN = function (proj) {
@@ -312,6 +412,13 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		src_path = path.normalize(src_path);
 		dst_path = path.normalize(dst_path);
 
+		objs.push(dst_path);
+
+		var src_files = this.loadCPPDepend(dst_path+'.d');
+		if(src_files && !this.needUpdate(src_files, this.cc_flag, dst_path+this.obj_ext)) {
+			continue;
+		}
+
 		autoMakeDir(dst_path);
 
 		console.log('echo compile '+proj.src_files[i]);
@@ -319,22 +426,27 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		console.log(cmdline);
 		var cmdline = this.cc_exe.format(src_path, inc_cmd + ' ' + this.cc_flag, dst_path+this.obj_ext);
 		console.log(cmdline);
-		objs.push(dst_path);
 	}
 
 	var objs_str = objs.join(this.obj_ext + ' ') + this.obj_ext;
-
 	var cmdline;
-
 	if(proj.type=='StaticLibrary') {
 		var lib_path = this.object_dir + proj.name;
 		lib_path = lib_path.replace(/\\/g, "/");
 		autoMakeDir(lib_path);
+
+		if(!this.needUpdate(objs, lib_path+this.lib_ext)) {
+			return;
+		}
 		cmdline = this.sl_exe.format(lib_path+this.lib_ext, objs_str);
 	} else {
 		var exe_path = this.output_dir + proj.name;
 		exe_path = exe_path.replace(/\\/g, "/");
 		autoMakeDir(exe_path);
+
+		if(!this.needUpdate(objs, exe_path+this.exe_ext)) {
+			return;
+		}
 		cmdline = this.ln_exe.format(objs_str, exe_path+this.exe_ext);
 	}
 
@@ -354,7 +466,7 @@ AppBuilder.prototype.build = function (project_name) {
 	this.buildBIN(proj);
 }
 
-AppBuilder.prototype.buildDepance = function (project_name) {
+AppBuilder.prototype.clean = function (project_name) {
 }
 
 if(process.argv.length<3) {
@@ -370,10 +482,8 @@ builder.setConfiguration('Debug');
 builder.setPlatform('unix');
 
 builder.build('DDLGen');
-/*
 builder.build('RpcGen');
 builder.build('LibBase');
 builder.build('LibClient');
 builder.build('LibCommon');
 builder.build('LibCardCommon');
-*/

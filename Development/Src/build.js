@@ -382,7 +382,8 @@ AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
 		if(!fs.existsSync(gen_files[i])) {
 			return true;
 		}
-		if(Date.parse(fs.statSync(gen_files[i]).mtime) / 1000 > src_ts) {
+		var ts = Date.parse(fs.statSync(gen_files[i]).mtime) / 1000;
+		if(ts <= src_ts) {
 			return true;
 		}
 	}
@@ -479,11 +480,15 @@ solution.load(process.argv[2]);
 
 var builder = new AppBuilder(solution);
 builder.setConfiguration('Debug');
-builder.setPlatform('unix');
+builder.setPlatform('Win32');
 
+builder.build('LibCommon');
+
+/*
 builder.build('DDLGen');
 builder.build('RpcGen');
 builder.build('LibBase');
 builder.build('LibClient');
 builder.build('LibCommon');
 builder.build('LibCardCommon');
+*/

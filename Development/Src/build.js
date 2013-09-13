@@ -375,7 +375,6 @@ AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
 	var src_ts = 0;
 	for(var i=0; i<src_files.length; i++) {
 		if(!fs.existsSync(src_files[i])) {
-			throw new Exception();
 			return true;
 		}
 		var ts = Date.parse(fs.statSync(src_files[i]).mtime) / 1000;
@@ -390,7 +389,6 @@ AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
 
 	for(var i=0; i<gen_files.length; i++) {
 		if(!fs.existsSync(gen_files[i])) {
-			throw new Exception();
 			return true;
 		}
 		var ts = Date.parse(fs.statSync(gen_files[i]).mtime) / 1000;

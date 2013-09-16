@@ -488,10 +488,19 @@ AppBuilder.prototype.clean = function (project_name) {
 		rpc_path = rpc_path.replace(/\\/g, "/");
 		rpc_path = path.normalize(rpc_path);
 		var rpc_gen = rpc_path.substring(0, rpc_path.lastIndexOf('.'));
-		fs.unlinkSync(rpc_gen+'.c.cpp');
-		fs.unlinkSync(rpc_gen+'.c.h');
-		fs.unlinkSync(rpc_gen+'.s.cpp');
-		fs.unlinkSync(rpc_gen+'.s.h');
+
+		if(fs.existsSync(rpc_gen+'.c.cpp')) {
+			fs.unlinkSync(rpc_gen+'.c.cpp');
+		}
+		if(fs.existsSync(rpc_gen+'.s.cpp')) {
+			fs.unlinkSync(rpc_gen+'.s.cpp');
+		}
+		if(fs.existsSync(rpc_gen+'.c.h')) {
+			fs.unlinkSync(rpc_gen+'.c.h');
+		}
+		if(fs.existsSync(rpc_gen+'.s.h')) {
+			fs.unlinkSync(rpc_gen+'.s.h');
+		}
 	}
 
 	for(var i=0; i<proj.ddl_files.length; i++) {
@@ -499,8 +508,12 @@ AppBuilder.prototype.clean = function (project_name) {
 		ddl_path = ddl_path.replace(/\\/g, "/");
 		ddl_path = path.normalize(ddl_path);
 		var ddl_gen = ddl_path.substring(0, ddl_path.lastIndexOf('.'));
-		fs.unlinkSync(rpc_gen+'.cpp');
-		fs.unlinkSync(rpc_gen+'.h');
+		if(fs.existsSync(ddl_gen+'.h')) {
+			fs.unlinkSync(ddl_gen+'.h');
+		}
+		if(fs.existsSync(ddl_gen+'.cpp')) {
+			fs.unlinkSync(ddl_gen+'.cpp');
+		}
 	}
 
 	for(var i=0; i<proj.src_files.length; i++) {
@@ -510,17 +523,23 @@ AppBuilder.prototype.clean = function (project_name) {
 		dst_path = dst_path.replace(/\./g, "_");
 		dst_path = this.object_dir + proj.name + '/' + dst_path;
 		dst_path = path.normalize(dst_path);
-		fs.unlinkSync(dst_path+this.obj_ext);
+		if(fs.existsSync(dst_path+this.obj_ext)) {
+			fs.unlinkSync(dst_path+this.obj_ext);
+		}
 	}
 
 	if(proj.type=='StaticLibrary') {
 		var lib_path = this.object_dir + proj.name;
 		lib_path = lib_path.replace(/\\/g, "/");
-		fs.unlinkSync(lib_path+this.lib_ext);
+		if(fs.existsSync(lib_path+this.lib_ext)) {
+			fs.unlinkSync(lib_path+this.lib_ext);
+		}
 	} else {
 		var exe_path = this.output_dir + proj.name;
 		exe_path = exe_path.replace(/\\/g, "/");
-		fs.unlinkSync(exe_path+this.exe_ext);
+		if(fs.existsSync(exe_path+this.exe_ext)) {
+			fs.unlinkSync(exe_path+this.exe_ext);
+		}
 	}
 }
 
@@ -563,6 +582,8 @@ default:
 for(var i=4; i<process.argv.length; i++) {
 	var pos = process.argv[i].indexOf('=');
 	if(pos<0) {
+		do_task(process.argv[i]);
+	} else {
 		switch(process.argv[i].substring(0, pos)) {
 		case 'Config':
 			builder.setConfiguration(process.argv[i].substring(pos+1));
@@ -571,14 +592,8 @@ for(var i=4; i<process.argv.length; i++) {
 			builder.setPlatform(process.argv[i].substring(pos+1));
 			break;
 		}
-	} else {
-		do_task(process.argv[i]);
 	}
 }
-
-builder.build('DDLGen');
-builder.build('RpcGen');
-builder.build('LibCommon');
 
 /*
 builder.build('DDLGen');
@@ -588,3 +603,5 @@ builder.build('LibClient');
 builder.build('LibCommon');
 builder.build('LibCardCommon');
 */
+
+

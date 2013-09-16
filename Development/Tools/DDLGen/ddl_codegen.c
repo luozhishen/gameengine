@@ -73,7 +73,7 @@ const char* get_ctype(const DDL_ARG* arg, int is_class)
 				sprintf(ret, "DDL::String<%s>*", arg->size);
 				return ret;
 			} else {								// string<>; string
-				sprintf(ret, "char*", arg->size, arg->count);
+				sprintf(ret, "char*");
 				return ret;
 			}
 		} else {
@@ -82,7 +82,7 @@ const char* get_ctype(const DDL_ARG* arg, int is_class)
 				return ret;
 			}
 			if(arg->size[0] && !arg->count[0]) {	// string<>
-				sprintf(ret, "DDL::String<%s>", arg->size, arg->count);
+				sprintf(ret, "DDL::String<%s>", arg->size);
 				return ret;
 			}
 			return NULL;

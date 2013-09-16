@@ -180,7 +180,7 @@ int code_gen_clt_src(const char* name, FILE* fp)
 						fprintf(fp, "	if(!buf.Serialize(%s)) return false;\n", cmd->args[a].name);
 					} else {
 						fprintf(fp, "	if(!buf.Serialize(%s__length)) return false;\n", cmd->args[a].name);
-						fprintf(fp, "	if(!buf.Serialize(*%s__length, %s)) return false;\n", cmd->args[a].name, cmd->args[a].name, cmd->args[a].name);
+						fprintf(fp, "	if(!buf.Serialize(*%s__length, %s)) return false;\n", cmd->args[a].name, cmd->args[a].name);
 					}
 				}
 				fprintf(fp, "	%s(hServer", cmd->name);
@@ -308,7 +308,7 @@ int code_gen_svr_src(const char* name, FILE* fp)
 						fprintf(fp, "	if(!buf.Serialize(%s)) return false;\n", cmd->args[a].name);
 					} else {
 						fprintf(fp, "	if(!buf.Serialize(%s__length)) return false;\n", cmd->args[a].name);
-						fprintf(fp, "	if(!buf.Serialize(*%s__length, %s)) return false;\n", cmd->args[a].name, cmd->args[a].name, cmd->args[a].name);
+						fprintf(fp, "	if(!buf.Serialize(*%s__length, %s)) return false;\n", cmd->args[a].name, cmd->args[a].name);
 					}
 				}
 				fprintf(fp, "	%s(hClient", cmd->name);

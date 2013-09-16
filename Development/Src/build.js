@@ -477,9 +477,54 @@ AppBuilder.prototype.build = function (project_name) {
 }
 
 AppBuilder.prototype.clean = function (project_name) {
+	var proj = this.solution.getProject(project_name);
+	if(!proj) {
+		console.log('project '+project_name+' not found!');
+		process.exit();
+	}
+
+	for(var i=0; i<proj.rpc_files.length; i++) {
+		var rpc_path = proj.path + proj.rpc_files[i];
+		rpc_path = rpc_path.replace(/\\/g, "/");
+		rpc_path = path.normalize(rpc_path);
+		var rpc_gen = rpc_path.substring(0, rpc_path.lastIndexOf('.'));
+		fs.unlinkSync(rpc_gen+'.c.cpp');
+		fs.unlinkSync(rpc_gen+'.c.h');
+		fs.unlinkSync(rpc_gen+'.s.cpp');
+		fs.unlinkSync(rpc_gen+'.s.h');
+	}
+
+	for(var i=0; i<proj.ddl_files.length; i++) {
+		var ddl_path = proj.path + proj.ddl_files[i];
+		ddl_path = ddl_path.replace(/\\/g, "/");
+		ddl_path = path.normalize(ddl_path);
+		var ddl_gen = ddl_path.substring(0, ddl_path.lastIndexOf('.'));
+		fs.unlinkSync(rpc_gen+'.cpp');
+		fs.unlinkSync(rpc_gen+'.h');
+	}
+
+	for(var i=0; i<proj.src_files.length; i++) {
+		var dst_path = proj.src_files[i];
+		dst_path = dst_path.replace(/\\/g, "/");
+		dst_path = dst_path.replace(/\//g, "_");
+		dst_path = dst_path.replace(/\./g, "_");
+		dst_path = this.object_dir + proj.name + '/' + dst_path;
+		dst_path = path.normalize(dst_path);
+		fs.unlinkSync(dst_path+this.obj_ext);
+	}
+
+	if(proj.type=='StaticLibrary') {
+		var lib_path = this.object_dir + proj.name;
+		lib_path = lib_path.replace(/\\/g, "/");
+		fs.unlinkSync(lib_path+this.lib_ext);
+	} else {
+		var exe_path = this.output_dir + proj.name;
+		exe_path = exe_path.replace(/\\/g, "/");
+		fs.unlinkSync(exe_path+this.exe_ext);
+	}
 }
 
-if(process.argv.length<3) {
+if(process.argv.length<4) {
 	console.log('invalid parameter');
 	process.exit();
 }
@@ -490,6 +535,46 @@ solution.load(process.argv[2]);
 var builder = new AppBuilder(solution);
 builder.setConfiguration('Debug');
 builder.setPlatform('unix');
+
+var do_task;
+
+switch(process.argv[3]) {
+case 'build':
+	do_task = function(project_name) {
+		builder.build(project_name);
+	};
+	break;
+case 'clean':
+	do_task = function(project_name) {
+		builder.clean(project_name);
+	};
+	break;
+case 'rebuild':
+	do_task = function(project_name) {
+		builder.build(project_name);
+		builder.clean(project_name);
+	};
+	break;
+default:
+	console.log('invalid parameter');
+	process.exit();
+}
+
+for(var i=4; i<process.argv.length; i++) {
+	var pos = process.argv[i].indexOf('=');
+	if(pos<0) {
+		switch(process.argv[i].substring(0, pos)) {
+		case 'Config':
+			builder.setConfiguration(process.argv[i].substring(pos+1));
+			break;
+		case 'Platform':
+			builder.setPlatform(process.argv[i].substring(pos+1));
+			break;
+		}
+	} else {
+		do_task(process.argv[i]);
+	}
+}
 
 builder.build('DDLGen');
 builder.build('RpcGen');

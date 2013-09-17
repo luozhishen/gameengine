@@ -11,20 +11,20 @@ if(!String.prototype.trim) {
 
 if(!String.prototype.ltrim) {
 	String.prototype.ltrim = function () {
-		return this.replace(/^\s+/,'');
+		return this.replace(/^\s+/, '');
 	};
 }
 
 if(!String.prototype.rtrim) {
 	String.prototype.rtrim = function () {
-		return this.replace(/\s+$/,'');
+		return this.replace(/\s+$/, '');
 	};
 }
 
 if(!String.prototype.fulltrim) {
 	String.prototype.fulltrim = function ()
 	{
-		return this.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ');
+		return this.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g, ' ');
 	};
 }
 
@@ -594,14 +594,3 @@ for(var i=4; i<process.argv.length; i++) {
 		}
 	}
 }
-
-/*
-builder.build('DDLGen');
-builder.build('RpcGen');
-builder.build('LibBase');
-builder.build('LibClient');
-builder.build('LibCommon');
-builder.build('LibCardCommon');
-*/
-
-

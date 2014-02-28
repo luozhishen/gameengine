@@ -1,36 +1,32 @@
 #ifndef __DDL_STUB_INCLUDE__
 #define __DDL_STUB_INCLUDE__
 
-#include "DDL.h"
+#include <DDLReflect.h>
 
 namespace DDLStub
 {
 
-	template<typename CALLER>
-	class DDLStubBase;
-	template<typename CALLER, class CLASS>
-	class DDLStub;
-
-	template<typename CALLER>
-	class DDLStubBase
+	class IStub
 	{
 	public:
-		DDLStubBase()
+		IStub()
 		{
 		}
 
-		~DDLStubBase()
+		virtual ~IStub()
 		{
 		}
 
-		virtual bool Dispatcher(CALLER* Caller, _U16 fid, DDL::BufferReader& Buf) = 0;
+		
+		virtual const ::DDLReflect::CLASS_INFO* GetClassInfo() = 0;
+		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf) = 0;
 	};
 
-	template<typename CALLER, class CLASS>
-	class DDLStub : public DDLStubBase<CALLER>
+	template<class CLASS>
+	class DDLStub : public IStub
 	{
 	public:
-		DDLStub(CLASS* Class) : DDLStubBase<CALLER>()
+		DDLStub(CLASS* Class)
 		{
 			_Class = Class;
 		}

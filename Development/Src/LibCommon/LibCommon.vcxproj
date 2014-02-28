@@ -23,7 +23,6 @@
     <ClCompile Include="CommonDDL.cpp" />
     <ClCompile Include="ContentObject.cpp" />
     <ClCompile Include="des64.cpp" />
-    <ClCompile Include="LiveDBApi.cpp" />
     <ClCompile Include="LiveObject.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,7 +30,6 @@
     <ClInclude Include="CommonDDL.h" />
     <ClInclude Include="ContentObject.h" />
     <ClInclude Include="des64.h" />
-    <ClInclude Include="LiveDBApi.h" />
     <ClInclude Include="LiveObject.h" />
   </ItemGroup>
   <ItemGroup>

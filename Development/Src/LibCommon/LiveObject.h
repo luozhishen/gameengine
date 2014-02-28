@@ -5,6 +5,13 @@ namespace Zion
 {
 	namespace LiveObject
 	{
+		enum SYNCMODE
+		{
+			SYNCMODE_DISABLE,
+			SYNCMODE_CLIENT,
+			SYNCMODE_SERVER,
+		};
+
 		bool Register(const DDLReflect::STRUCT_INFO* info);
 		void GetTypeList(Zion::Array<const DDLReflect::STRUCT_INFO*>& list);
 		_U16 GetTypeId(const char* name);

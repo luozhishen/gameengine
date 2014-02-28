@@ -13,7 +13,7 @@ namespace Zion
 	void ZionSetGameDir(const char* path);
 
 	_U16 RegisterClientStub(const DDLReflect::CLASS_INFO* pClassInfo);
-	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo, _U32 nodeid);
+	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo, _U32 nodeid=-1);
 
 	_U16 GetClientStubID(const DDLReflect::CLASS_INFO* pClassInfo);
 	_U16 GetServerStubID(const DDLReflect::CLASS_INFO* pClassInfo);

@@ -1,7 +1,6 @@
 #ifndef	__ZION_BASE__
 #define	__ZION_BASE__
 
-#include <string>
 #ifndef _WIN32
 #include <tr1/functional>
 #else
@@ -14,6 +13,8 @@
 #include "ZionUUID.h"
 #include "DDL.h"
 #include "DDLReflect.h"
+#include "DDLProxy.h"
+#include "DDLStub.h"
 #include "ZionUtils.h"
 #include "ZionHash.h"
 #include "sigslot.h"

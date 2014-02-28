@@ -9,6 +9,7 @@
 #include "NonblockConnection.h"
 #include "HttpConnection.h"
 #include "ZionClientLogin.h"
+#include "DataSyncClient.h"
 
 namespace Zion
 {
@@ -36,16 +37,29 @@ namespace Zion
 			ZION_ASSERT(0);
 		}
 
+		m_pDataSync = new CDataSyncClient(this);
+
 		AddComponent(m_pClientConnection);
+		AddComponent(m_pDataSync);
 	}
 
 	CClient::~CClient()
 	{
+		Zion::Map<_U16, DDLStub::IStub*>::iterator i;
+		for(i=m_DDLStubs.begin(); i!=m_DDLStubs.end(); i++)
+		{
+			delete i->second;
+		}
+		m_DDLStubs.clear();
+
+		m_pClientConnection = NULL;
+		m_pDataSync = NULL;
 		while(!m_Components.empty())
 		{
 			ZION_DELETE *m_Components.begin();
 			m_Components.erase(m_Components.begin());
 		}
+
 		A_MUTEX_DESTROY(&m_mtxClient);
 		m_pClientApp->UnregisterClient(this);
 	}
@@ -68,6 +82,11 @@ namespace Zion
 	CClientConnectionBase* CClient::GetClientConnection()
 	{
 		return m_pClientConnection;
+	}
+	
+	CDataSyncClient* CClient::GetDataSync()
+	{
+		return m_pDataSync;
 	}
 
 	void CClient::SetLogCallback(CClient::LOG_CALLBACK logproc)
@@ -138,6 +157,14 @@ namespace Zion
 		}
 	}
 
+	void CClient::RegisterStub(DDLStub::IStub* pStub)
+	{
+		_U16 iid = GetClientStubID(pStub->GetClassInfo());
+		ZION_ASSERT(iid!=(_U16)-1);
+		ZION_ASSERT(m_DDLStubs.find(iid)==m_DDLStubs.end());
+		m_DDLStubs[iid] = pStub;
+	}
+
 	void CClient::OnLoginDone()
 	{
 		_OnLoginDone();
@@ -156,6 +183,21 @@ namespace Zion
 	void CClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
 		_OnData(iid, fid, len, data);
+
+		Zion::Map<_U16, DDLStub::IStub*>::iterator i;
+		i = m_DDLStubs.find(iid);
+		if(i==m_DDLStubs.end())
+		{
+			// invalid iid
+			return;
+		}
+
+		DDL::MemoryReader buf(data, len);
+		if(!i->second->Dispatcher(fid, buf))
+		{
+			// invalid data
+			return;
+		}
 	}
 
 	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)

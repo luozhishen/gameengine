@@ -1,6 +1,5 @@
 var SOURCE_FILE = '../LibCardCommon/CardGameDDL.h';
 var condition = '\tclass CARDGAME_S2C : public DDLProxy<CLIENT, BUFFER>';
-var method_prefix = 'CCardClient* pClient';
 
 var fs = require('fs');
 var text = fs.readFileSync(SOURCE_FILE,'utf-8');
@@ -46,9 +45,9 @@ for(; cline<lines.length; cline++) {
         }
         sigslot += '> ' + '_On' + name + ';\n';
 
-        method = 'void '+name+'('+method_prefix;
+        method = 'void '+name+'(';
         for(i=0; i<args.length; i++) {
-            method += ', ';
+            if(i>0) method += ', ';
             method += args[i][0];
             method += ' ';
             method += args[i][1];

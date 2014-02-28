@@ -5,14 +5,6 @@
 #ifndef __CARDSTRESSCASECONFIG_DDL_CODEGEN__
 #define __CARDSTRESSCASECONFIG_DDL_CODEGEN__
 
-#include <ZionDefines.h>
-#include <ZionSTL.h>
-#include <ZionUUID.h>
-#include <DDL.h>
-#include <DDLProxy.h>
-#include <DDLStub.h>
-#include <DDLReflect.h>
-
 #pragma pack(push)
 #pragma pack(4)
 

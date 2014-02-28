@@ -20,8 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsyncIOConnection.cpp" />
+    <ClCompile Include="DataSyncClient.cpp" />
     <ClCompile Include="HttpConnection.cpp" />
-    <ClCompile Include="SpdyConnection.cpp" />
     <ClCompile Include="ZionClient.cpp" />
     <ClCompile Include="ZionClientApp.cpp" />
     <ClCompile Include="ClientConnection.cpp" />
@@ -30,8 +30,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncIOConnection.h" />
+    <ClInclude Include="DataSyncClient.h" />
     <ClInclude Include="HttpConnection.h" />
-    <ClInclude Include="SpdyConnection.h" />
     <ClInclude Include="ZionClient.h" />
     <ClInclude Include="ZionClientApp.h" />
     <ClInclude Include="ClientConnection.h" />

@@ -20,6 +20,7 @@ namespace Zion
 	class CStressClient;
 	class CStressCase;
 	class CClientLoginMethod;
+	class CDataSyncClient;
 
 	class CClient : public CNoCopy
 	{
@@ -52,6 +53,9 @@ namespace Zion
 
 		const Zion::String& GetClientConnectionType();
 		CClientConnectionBase* GetClientConnection();
+
+		CDataSyncClient* GetDataSync();
+
 		void SetLogCallback(LOG_CALLBACK logproc);
 		LOG_CALLBACK GetLogCallback();
 
@@ -64,10 +68,12 @@ namespace Zion
 		virtual void InitializeComponents();
 		virtual void Tick();
 
-		virtual void OnLoginDone();
-		virtual void OnLoginFailed();
-		virtual void OnDisconnected();
-		virtual void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+		void RegisterStub(DDLStub::IStub* pStub);
+
+		/*virtual*/ void OnLoginDone();
+		/*virtual*/ void OnLoginFailed();
+		/*virtual*/ void OnDisconnected();
+		/*virtual*/ void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 		void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
 		{
@@ -75,6 +81,7 @@ namespace Zion
 			SendData(iid, fid, Buf.GetSize(), Buf.GetBuf());
 			return true;
 		}
+
 
 		sigslot::signal0<>								_OnLoginDone;
 		sigslot::signal0<>								_OnLoginFailed;
@@ -88,7 +95,9 @@ namespace Zion
 		CClientApp* m_pClientApp;
 		Zion::String m_ClientConnectionType;
 		CClientConnectionBase* m_pClientConnection;
+		CDataSyncClient* m_pDataSync;
 		Zion::List<CClientComponent*> m_Components;
+		Zion::Map<_U16, DDLStub::IStub*> m_DDLStubs;
 		LOG_CALLBACK m_LogCallback;
 	};
 

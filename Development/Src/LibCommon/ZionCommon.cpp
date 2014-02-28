@@ -217,6 +217,8 @@ namespace Zion
 
 		void InitDDLStub()
 		{
+			RegisterClientStub<DATASYNC_S2C>();
+			RegisterServerStub<DATASYNC_C2S>(0);
 		}
 
 		void InitContentObjects()

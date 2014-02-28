@@ -1,8 +1,6 @@
 #ifndef __DDL_PROXY_INCLUDE__
 #define __DDL_PROXY_INCLUDE__
 
-#include "DDL.h"
-
 namespace DDLProxy
 {
 

@@ -452,8 +452,9 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		}
 		else
 		{
-			old_obj = Zion::ContentObject::CreateObject(tmpl.info, obj->_uuid);
+			old_obj = Zion::ContentObject::CreateObject(tmpl.info);
 			ZION_ASSERT(old_obj);
+			obj->_uuid = old_obj->_uuid;
 			if(!sUUID.empty())
 			{
 				Zion::String range = Zion::StringFormat("%s%d", sUUID.c_str(), row);

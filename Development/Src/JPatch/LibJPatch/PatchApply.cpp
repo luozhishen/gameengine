@@ -329,7 +329,7 @@ namespace JPatch
 							free(mem);
 							goto error;
 						}
-						if(fwrite(newp, 1, newsize, tmp_file)!=newsize)
+						if(fwrite(newp, 1, newsize, tmp_file)!=(size_t)newsize)
 						{
 							printf("failed to write tmp_file @P\n");
 							free(newp);

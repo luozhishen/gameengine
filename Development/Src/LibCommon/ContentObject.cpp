@@ -10,18 +10,6 @@
 #include <fstream>
 #include "des64.h"
 
-namespace DDL
-{
-
-	typedef const void* (*DDL_POINTER_GET_DATA_PROC)(const A_UUID& uuid);
-	extern DDL_POINTER_GET_DATA_PROC ddl_pointer_get_data;
-
-	const void* common_pointer_get_data(const A_UUID& uuid)
-	{
-		return Zion::ContentObject::QueryByUUID(uuid);
-	}
-}
-
 namespace Zion
 {
 
@@ -29,6 +17,28 @@ namespace Zion
 
 	namespace ContentObject
 	{
+
+		class CContentObject
+		{
+		public:
+			CContentObject(const DDLReflect::STRUCT_INFO* info, const A_CONTENT_OBJECT* data)
+			{
+				m_pData = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(info);
+				if(data)
+				{
+					memcpy(m_pData, data, info->size);
+				}
+			}
+		
+			~CContentObject()
+			{
+				DDLReflect::DestoryObject(m_pData);
+				m_pData = NULL;
+			}
+
+			const DDLReflect::STRUCT_INFO* m_pInfo;
+			A_CONTENT_OBJECT* m_pData;
+		};
 
 		// content group
 		class CContentGroup : public IContentGroup
@@ -60,20 +70,20 @@ namespace Zion
 			bool _cook;
 			bool _dirty;
 		};
-		static Zion::Map<Zion::String, CContentGroup> g_content_group_map;
+		static Map<String, CContentGroup> g_content_group_map;
 		// content object type
 		struct STRUCT_INTERNAL_INFO
 		{
 			_U16							type_id;
 			const DDLReflect::STRUCT_INFO*	info;
 			bool							bExactMatch;
-			Zion::Array<Zion::String>	keys;
-			Zion::Map<Zion::String, A_CONTENT_OBJECT*> key_map;
+			Array<String>					keys;
+			Map<String, A_CONTENT_OBJECT*>	key_map;
 			CContentGroup*					group;
 		};
 		const _U16 g_typeid_base = 0x1000;
-		Zion::Map<Zion::String, _U16>		g_typemap;
-		Zion::Array<STRUCT_INTERNAL_INFO>	g_typearray;
+		Map<String, _U16>		g_typemap;
+		Array<STRUCT_INTERNAL_INFO>	g_typearray;
 		// content object
 		class CContentObjectManager
 		{
@@ -87,21 +97,21 @@ namespace Zion
 			}
 			void Clear()
 			{
-				Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+				Map<A_UUID, CContentObject*>::iterator i;
 				for(i=m_object_map.begin(); i!=m_object_map.end(); i++)
 				{
-					DDLReflect::DestoryObject(i->second.second);
+					ZION_DELETE i->second;
 				}
 				m_object_map.clear();
 			}
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> > m_object_map;
+			Map<A_UUID, CContentObject*> m_object_map;
 		};
 		static CContentObjectManager g_objct_manager;
 		static bool LoadContentFromJsonFile(const char* filename, bool ignore);
 
 		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook)
 		{
-			Zion::Map<Zion::String, CContentGroup>::iterator i;
+			Map<String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				ZION_ASSERT(strcmp(i->second._name, name)!=0);
@@ -115,7 +125,7 @@ namespace Zion
 
 		IContentGroup* GetContentGroup(const char* name)
 		{
-			Zion::Map<Zion::String, CContentGroup>::iterator i;
+			Map<String, CContentGroup>::iterator i;
 			i = g_content_group_map.find(name);
 			if(i==g_content_group_map.end()) return NULL;
 			return &i->second;
@@ -123,7 +133,7 @@ namespace Zion
 
 		static CContentGroup* QueryContentGroup(const DDLReflect::STRUCT_INFO* info)
 		{
-			Zion::Map<Zion::String, _U16>::iterator i;
+			Map<String, _U16>::iterator i;
 			while(info)
 			{
 				i = g_typemap.find(info->name);
@@ -158,7 +168,7 @@ namespace Zion
 				return NULL;
 			}
 
-			Zion::Array<Zion::String> vkeys;
+			Array<String> vkeys;
 			if(keys)
 			{
 				StringSplit(keys, ',', vkeys);
@@ -207,7 +217,7 @@ namespace Zion
 			return this;
 		}
 
-		void GetTypeList(Zion::Array<const DDLReflect::STRUCT_INFO*>& list)
+		void GetTypeList(Array<const DDLReflect::STRUCT_INFO*>& list)
 		{
 			list.resize(g_typearray.size());
 			for(size_t i=0; i<g_typearray.size(); i++)
@@ -218,7 +228,7 @@ namespace Zion
 
 		_U16 GetTypeId(const char* name)
 		{
-			Zion::Map<Zion::String, _U16>::const_iterator i;
+			Map<String, _U16>::const_iterator i;
 			i = g_typemap.find(name);
 			if(i==g_typemap.end()) return (_U16)-1;
 			return i->second;
@@ -226,7 +236,7 @@ namespace Zion
 
 		const DDLReflect::STRUCT_INFO* GetType(const char* name)
 		{
-			Zion::Map<Zion::String, _U16>::const_iterator i;
+			Map<String, _U16>::const_iterator i;
 			i = g_typemap.find(name);
 			if(i==g_typemap.end()) return NULL;
 			return g_typearray[i->second-g_typeid_base].info;
@@ -239,12 +249,12 @@ namespace Zion
 			return g_typearray[id-g_typeid_base].info;
 		}
 
-		bool GetTypePrimaryKey(const char* name, Zion::Set<Zion::String>& keys)
+		bool GetTypePrimaryKey(const char* name, Set<String>& keys)
 		{
 			keys.clear();
 			_U16 id = GetTypeId(name);
 			if(id==(_U16)-1) return false;
-			Zion::Array<Zion::String>& karray = g_typearray[id-g_typeid_base].keys;
+			Array<String>& karray = g_typearray[id-g_typeid_base].keys;
 			if(karray.empty())
 			{
 				keys.insert("uuid");
@@ -259,18 +269,19 @@ namespace Zion
 			return true;
 		}
 
-		A_CONTENT_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* info, A_UUID& uuid)
+		A_CONTENT_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* info)
 		{
+			A_UUID uuid;
 			AUuidGenerate(uuid);
-			return AllocObject(info, uuid);
+			return CreateObject(info, uuid);
 		}
 
-		A_CONTENT_OBJECT* AllocObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
+		A_CONTENT_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
 		{
 			CContentGroup* group = QueryContentGroup(info);
 			A_CONTENT_OBJECT* object = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(info);
 			if(!object) return NULL;
-			g_objct_manager.m_object_map[uuid] = std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*>(info, object);
+			g_objct_manager.m_object_map[uuid] = new CContentObject(info, object);
 			group->_dirty = true;
 			object->_uuid = uuid;
 			return object;
@@ -278,49 +289,49 @@ namespace Zion
 
 		void DeleteObject(const A_UUID& uuid)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return;
-			DDLReflect::DestoryObject(i->second.second);
-			QueryContentGroup(i->second.first)->_dirty = true;
+			QueryContentGroup(i->second->m_pInfo)->_dirty = true;
+			ZION_DELETE i->second;
 			g_objct_manager.m_object_map.erase(i);
 		}
 
 		const DDLReflect::STRUCT_INFO* GetObjectType(const A_UUID& uuid)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
-			return i->second.first;
+			return i->second->m_pInfo;
 		}
 
 		A_CONTENT_OBJECT* Modify(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
-			if(info!=NULL && i->second.first!=info) return NULL;
-			QueryContentGroup(i->second.first)->_dirty = true;
-			return i->second.second;
+			if(info!=NULL && i->second->m_pInfo!=info) return NULL;
+			QueryContentGroup(i->second->m_pInfo)->_dirty = true;
+			return i->second->m_pData;
 		}
 
 		const A_CONTENT_OBJECT* QueryByUUID(const A_UUID& uuid, const DDLReflect::STRUCT_INFO* info)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			i = g_objct_manager.m_object_map.find(uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
-			if(info!=NULL && i->second.first!=info) return NULL;
-			return i->second.second;
+			if(info!=NULL && i->second->m_pInfo!=info) return NULL;
+			return i->second->m_pData;
 		}
 
 		const A_CONTENT_OBJECT* QueryByName(const char* name, const DDLReflect::STRUCT_INFO* info)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
-				if((info!=NULL || i->second.first==info) && strcmp(name, i->second.second->_name._Value)==0)
+				if((info!=NULL || i->second->m_pInfo==info) && strcmp(name, i->second->m_pData->_name._Value)==0)
 				{
-					return i->second.second;					
+					return i->second->m_pData;					
 				}
 			}
 			return NULL;
@@ -346,7 +357,7 @@ namespace Zion
 				return QueryByUUID(uuid, info);
 			}
 
-			Zion::String keys_value;
+			String keys_value;
 			size_t keys_count = 1;
 			keys_value = v1;
 			if(v2)
@@ -371,7 +382,7 @@ namespace Zion
 			ZION_ASSERT(internal_info.keys.size()==keys_count);
 			if(internal_info.keys.size()!=keys_count) return NULL;
 
-			Zion::Map<Zion::String, A_CONTENT_OBJECT*>::iterator i;
+			Map<String, A_CONTENT_OBJECT*>::iterator i;
 			i = internal_info.key_map.find(keys_value);
 			if(i==internal_info.key_map.end()) return NULL;
 			return i->second;
@@ -386,13 +397,13 @@ namespace Zion
 			if(type_id==(_U16)-1) return NULL;
 
 			STRUCT_INTERNAL_INFO& internal_info = g_typearray[type_id-g_typeid_base];
-			Zion::Map<Zion::String, A_CONTENT_OBJECT*>::iterator i;
+			Map<String, A_CONTENT_OBJECT*>::iterator i;
 			i = internal_info.key_map.find(value1);
 			if(i==internal_info.key_map.end()) return NULL;
 			return i->second;
 		}
 
-		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, Zion::String& uid)
+		bool GenContentObjectUniqueId(_U16 id, const A_CONTENT_OBJECT* obj, String& uid)
 		{
 			if(id<g_typeid_base) return false;
 			if(id>=g_typeid_base+(_U16)g_typearray.size()) return false;
@@ -401,7 +412,7 @@ namespace Zion
 			uid.clear();
 			for(size_t f=0; f<info.keys.size(); f++)
 			{
-				Zion::String value;
+				String value;
 				if(!DDLReflect::StructParamToString(info.info, info.keys[f].c_str(), obj, value))
 				{
 					return false;
@@ -413,12 +424,10 @@ namespace Zion
 			return true;
 		}
 
-		static Zion::String g_buildindex_errmsg;
+		static String g_buildindex_errmsg;
 
 		bool BuildIndex(const DDLReflect::STRUCT_INFO* info)
 		{
-			DDL::ddl_pointer_get_data = &DDL::common_pointer_get_data;
-
 			if(info==NULL)
 			{
 				for(size_t i=0; i<g_typearray.size(); i++)
@@ -440,13 +449,13 @@ namespace Zion
 			internal_info.key_map.clear();
 			if(internal_info.keys.size()==0) return true;
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
-				if(info!=i->second.first && (internal_info.bExactMatch || !IsParent(i->second.first, info))) continue;
+				if(info!=i->second->m_pInfo && (internal_info.bExactMatch || !IsParent(i->second->m_pInfo, info))) continue;
 
-				Zion::String keys_value;
-				if(!GenContentObjectUniqueId(type_id, i->second.second, keys_value))
+				String keys_value;
+				if(!GenContentObjectUniqueId(type_id, i->second->m_pData, keys_value))
 				{
 					g_buildindex_errmsg = StringFormat("error in GenContentObjectUniqueId");
 					return false;
@@ -460,25 +469,25 @@ namespace Zion
 					g_buildindex_errmsg = StringFormat("reduplicate %s vs %s", o1, o2);
 					return false;
 				}
-				internal_info.key_map[keys_value] = i->second.second;
+				internal_info.key_map[keys_value] = i->second->m_pData;
 			}
 
 			return true;
 		}
 
-		const Zion::String& BuildIndexGetErrorMsg()
+		const String& BuildIndexGetErrorMsg()
 		{
 			return g_buildindex_errmsg;
 		}
 
-		bool GetList(const DDLReflect::STRUCT_INFO* info, Zion::Array<A_UUID>& list, bool bExactMatch)
+		bool GetList(const DDLReflect::STRUCT_INFO* info, Array<A_UUID>& list, bool bExactMatch)
 		{
 			list.clear();
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
-				if(i->second.first==info || (!bExactMatch && IsParent(i->second.first, info)))
+				if(i->second->m_pInfo==info || (!bExactMatch && IsParent(i->second->m_pInfo, info)))
 				{
 					list.push_back(i->first);
 				}
@@ -489,11 +498,11 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			i = g_objct_manager.m_object_map.begin();
 			while(i!=g_objct_manager.m_object_map.end())
 			{
-				if(i->second.first==info || (!bExactMatch && IsParent(i->second.first, info))) return i->second.second;
+				if(i->second->m_pInfo==info || (!bExactMatch && IsParent(i->second->m_pInfo, info))) return i->second->m_pData;
 				i++;
 			}
 			return NULL;
@@ -501,13 +510,13 @@ namespace Zion
 
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object)
 		{
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			i = g_objct_manager.m_object_map.find(object->_uuid);
 			if(i==g_objct_manager.m_object_map.end()) return NULL;
 			i++;
 			while(i!=g_objct_manager.m_object_map.end())
 			{
-				if(i->second.first==info || (!bExactMatch && IsParent(i->second.first, info))) return i->second.second;
+				if(i->second->m_pInfo==info || (!bExactMatch && IsParent(i->second->m_pInfo, info))) return i->second->m_pData;
 				i++;
 			}
 			return NULL;
@@ -515,10 +524,10 @@ namespace Zion
 
 		bool LoadContent(const char* path, bool ignore)
 		{
-			Zion::Map<Zion::String, CContentGroup>::iterator i;
+			Map<String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
-				String file = Zion::StringFormat("%s%s%s", path?path:Zion::ZionGameDir(), path?"":"Content/Json/", i->second._file);
+				String file = StringFormat("%s%s%s", path?path:ZionGameDir(), path?"":"Content/Json/", i->second._file);
 				if(LoadContentFromJsonFile(file.c_str(), ignore))
 				{
 					i->second._dirty = false;
@@ -559,7 +568,7 @@ namespace Zion
 			{
 				return false;
 			}
-			A_CONTENT_OBJECT* object = AllocObject(info, uuid);
+			A_CONTENT_OBJECT* object = CreateObject(info, uuid);
 			if(!object)
 			{
 				return false;
@@ -597,7 +606,7 @@ namespace Zion
 			DES_SetKey(key, keys);
 
 			FILE* fp = fopen(filename, "rb");
-			Zion::String line;
+			String line;
 			_U8 rawdata[300*1024];
 
 			if(fread(rawdata, 1, 4, fp)!=4 || memcmp(rawdata, "DBNN", 4)!=0)
@@ -650,7 +659,7 @@ namespace Zion
 				}
 				if(i!=count) break;
 
-				A_CONTENT_OBJECT* obj = AllocObject(info, *((A_UUID*)rawdata));
+				A_CONTENT_OBJECT* obj = CreateObject(info, *((A_UUID*)rawdata));
 				if(!obj) break;
 
 				DDL::MemoryReader reader(rawdata, size);
@@ -663,7 +672,7 @@ namespace Zion
 
 		bool SaveContent(const char* path, bool force)
 		{
-			Zion::String realpath;
+			String realpath;
 			if(path)
 			{
 				realpath = path;
@@ -673,10 +682,10 @@ namespace Zion
 				realpath = StringFormat("%sContent/Json/", ZionGameDir());
 			}
 
-			Zion::Map<Zion::String, std::ofstream*> vmap;
-			Zion::Map<Zion::String, bool> vmap_a;
+			Map<String, std::ofstream*> vmap;
+			Map<String, bool> vmap_a;
 
-			Zion::Map<Zion::String, CContentGroup>::iterator gi;
+			Map<String, CContentGroup>::iterator gi;
 			for(gi=g_content_group_map.begin(); gi!=g_content_group_map.end(); gi++)
 			{
 				if(!gi->second._dirty && !force) continue;
@@ -689,7 +698,7 @@ namespace Zion
 				f.open(filepath, std::ifstream::binary);
 				if(!f.is_open())
 				{
-					Zion::Map<Zion::String, std::ofstream*>::iterator fi;
+					Map<String, std::ofstream*>::iterator fi;
 					for(fi=vmap.begin(); fi!=vmap.end(); fi++) delete fi->second;
 					vmap.clear();
 					return false;
@@ -701,10 +710,10 @@ namespace Zion
 			}
 			if(vmap.size()==0) return true;
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator oi;
+			Map<A_UUID, CContentObject*>::iterator oi;
 			for(oi=g_objct_manager.m_object_map.begin(); oi!=g_objct_manager.m_object_map.end(); oi++)
 			{
-				const char* file = QueryContentGroupName(oi->second.first);
+				const char* file = QueryContentGroupName(oi->second->m_pInfo);
 				if(vmap.find(file)==vmap.end()) continue;
 
 				std::ofstream& f = *(vmap[file]);
@@ -718,18 +727,18 @@ namespace Zion
 					f << "\t\t}," << std::endl;
 				}
 	
-				Zion::String va;
-				if(!DDLReflect::Struct2Json(oi->second.first, (const _U8*)(oi->second.second), va))
+				String va;
+				if(!DDLReflect::Struct2Json(oi->second->m_pInfo, (const _U8*)(oi->second->m_pData), va))
 				{
 					ZION_ASSERT(0);
 				}
 
 				f << "\t\t{" << std::endl;
-				f << "\t\t\t" << "\"type\":\"" << oi->second.first->name << "\"," << std::endl;
+				f << "\t\t\t" << "\"type\":\"" << oi->second->m_pInfo->name << "\"," << std::endl;
 				f << "\t\t\t" << "\"data\":" << va;
 			}
 
-			Zion::Map<Zion::String, std::ofstream*>::iterator fi;
+			Map<String, std::ofstream*>::iterator fi;
 			for(fi=vmap.begin(); fi!=vmap.end(); fi++)
 			{
 				std::ofstream& f = *(fi->second);
@@ -762,15 +771,15 @@ namespace Zion
 			_U32 object_count = (_U32)g_objct_manager.m_object_map.size();
 			fwrite(&object_count, 1, sizeof(object_count), fp);
 
-			Zion::Map<A_UUID, std::pair<const DDLReflect::STRUCT_INFO*, A_CONTENT_OBJECT*> >::iterator i;
+			Map<A_UUID, CContentObject*>::iterator i;
 			for(i=g_objct_manager.m_object_map.begin(); i!=g_objct_manager.m_object_map.end(); i++)
 			{
-				CContentGroup* group = QueryContentGroup(i->second.first);
+				CContentGroup* group = QueryContentGroup(i->second->m_pInfo);
 				if(!group->_cook) continue;
 
 				_U8 rawdata[300*1024];
 				DDL::MemoryWriter writer(rawdata, sizeof(rawdata));
-				if(!i->second.first->write_proc(writer, i->second.second))
+				if(!i->second->m_pInfo->write_proc(writer, i->second->m_pData))
 				{
 					fclose(fp);
 					return false;
@@ -779,7 +788,7 @@ namespace Zion
 				_U8* src = rawdata;
 				char buf[8], sbuf[8];
 				_U32 size = writer.GetSize();
-				_U16 tid = Zion::ContentObject::GetTypeId(i->second.first->name);
+				_U16 tid = ContentObject::GetTypeId(i->second->m_pInfo->name);
 				fwrite(&tid, 1, sizeof(tid), fp);
 				fwrite(&size, 1, sizeof(size), fp);
 				while(size>7)
@@ -824,7 +833,7 @@ namespace Zion
 		{
 			g_objct_manager.Clear();
 			BuildIndex();
-			Zion::Map<Zion::String, CContentGroup>::iterator i;
+			Map<String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				i->second._dirty = true;
@@ -833,7 +842,7 @@ namespace Zion
 
 		bool IsContentDirty()
 		{
-			Zion::Map<Zion::String, CContentGroup>::iterator i;
+			Map<String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
 				if(i->second._dirty) return true;

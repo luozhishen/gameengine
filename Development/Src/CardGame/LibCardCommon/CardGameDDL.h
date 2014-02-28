@@ -5,14 +5,6 @@
 #ifndef __CARDGAMEDDL_DDL_CODEGEN__
 #define __CARDGAMEDDL_DDL_CODEGEN__
 
-#include <ZionDefines.h>
-#include <ZionSTL.h>
-#include <ZionUUID.h>
-#include <DDL.h>
-#include <DDLProxy.h>
-#include <DDLStub.h>
-#include <DDLReflect.h>
-
 #pragma pack(push)
 #pragma pack(4)
 
@@ -106,22 +98,27 @@ class CARDGAME_S2C;
 namespace DDLStub
 {
 
-	template<typename CALLER, typename CLASS>
-	class CARDGAME_C2S : public DDLStub<CALLER, CLASS>
+	template<typename CLASS>
+	class CARDGAME_C2S : public DDLStub<CLASS>
 	{
 	public:
-		CARDGAME_C2S(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
+		CARDGAME_C2S(CLASS* Class) : DDLStub<CLASS>(Class)
 		{
 		}
 
-		virtual bool Dispatcher(CALLER* Caller, _U16 fid, DDL::BufferReader& Buf)
+		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
+		{
+			return DDLReflect::GetClass<CARDGAME_C2S>();
+		}
+		
+		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
 		{
 			if(fid==0)
 			{
 
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->Ping(Caller);
+				DDLStub<CLASS>::GetClass()->Ping();
 				return true;
 			}
 			if(fid==1)
@@ -132,7 +129,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_server_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->SelectServer(Caller, _prefix_server_id);
+				DDLStub<CLASS>::GetClass()->SelectServer(_prefix_server_id);
 				return true;
 			}
 			if(fid==2)
@@ -140,7 +137,7 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->GetAvatarList(Caller);
+				DDLStub<CLASS>::GetClass()->GetAvatarList();
 				return true;
 			}
 			if(fid==3)
@@ -159,7 +156,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_type)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatar(Caller, _prefix_avatar_name, _prefix_type);
+				DDLStub<CLASS>::GetClass()->CreateAvatar(_prefix_avatar_name, _prefix_type);
 				return true;
 			}
 			if(fid==4)
@@ -170,7 +167,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_avatar_id)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EnterGame(Caller, _prefix_avatar_id);
+				DDLStub<CLASS>::GetClass()->EnterGame(_prefix_avatar_id);
 				return true;
 			}
 			if(fid==5)
@@ -184,7 +181,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_value)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->Change(Caller, _prefix_obj_uuid, _prefix_value);
+				DDLStub<CLASS>::GetClass()->Change(_prefix_obj_uuid, _prefix_value);
 				return true;
 			}
 			if(fid==6)
@@ -192,7 +189,7 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->LeaveGame(Caller);
+				DDLStub<CLASS>::GetClass()->LeaveGame();
 				return true;
 			}
 			return false;
@@ -301,22 +298,27 @@ namespace DDLReflect
 namespace DDLStub
 {
 
-	template<typename CALLER, typename CLASS>
-	class CARDGAME_S2C : public DDLStub<CALLER, CLASS>
+	template<typename CLASS>
+	class CARDGAME_S2C : public DDLStub<CLASS>
 	{
 	public:
-		CARDGAME_S2C(CLASS* Class) : DDLStub<CALLER, CLASS>(Class)
+		CARDGAME_S2C(CLASS* Class) : DDLStub<CLASS>(Class)
 		{
 		}
 
-		virtual bool Dispatcher(CALLER* Caller, _U16 fid, DDL::BufferReader& Buf)
+		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
+		{
+			return DDLReflect::GetClass<CARDGAME_S2C>();
+		}
+		
+		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
 		{
 			if(fid==0)
 			{
 
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->Pong(Caller);
+				DDLStub<CLASS>::GetClass()->Pong();
 				return true;
 			}
 			if(fid==1)
@@ -337,7 +339,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->GetAvatarListCallback(Caller, _prefix_errcode, _prefix_arr, _prefix_count);
+				DDLStub<CLASS>::GetClass()->GetAvatarListCallback(_prefix_errcode, _prefix_arr, _prefix_count);
 				return true;
 			}
 			if(fid==2)
@@ -348,7 +350,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_errcode)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->CreateAvatarCallback(Caller, _prefix_errcode);
+				DDLStub<CLASS>::GetClass()->CreateAvatarCallback(_prefix_errcode);
 				return true;
 			}
 			if(fid==3)
@@ -359,7 +361,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_errcode)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->EnterGameCallback(Caller, _prefix_errcode);
+				DDLStub<CLASS>::GetClass()->EnterGameCallback(_prefix_errcode);
 				return true;
 			}
 			if(fid==4)
@@ -370,7 +372,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_avatar)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->SyncAvatar(Caller, _prefix_avatar);
+				DDLStub<CLASS>::GetClass()->SyncAvatar(_prefix_avatar);
 				return true;
 			}
 			if(fid==5)
@@ -381,7 +383,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_ownobj)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->SyncAvatarOwnObj(Caller, _prefix_ownobj);
+				DDLStub<CLASS>::GetClass()->SyncAvatarOwnObj(_prefix_ownobj);
 				return true;
 			}
 			if(fid==6)
@@ -389,7 +391,7 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->SyncCompleted(Caller);
+				DDLStub<CLASS>::GetClass()->SyncCompleted();
 				return true;
 			}
 			if(fid==7)
@@ -400,7 +402,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_errcode)) return false;
 
 				// call implement
-				DDLStub<CALLER, CLASS>::GetClass()->LeaveGameCallback(Caller, _prefix_errcode);
+				DDLStub<CLASS>::GetClass()->LeaveGameCallback(_prefix_errcode);
 				return true;
 			}
 			return false;

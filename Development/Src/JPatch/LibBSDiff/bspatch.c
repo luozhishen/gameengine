@@ -113,7 +113,7 @@ int bspatch(u_char* old, off_t oldsize, FILE* f, u_char** new_out, off_t* newsiz
 		printf("BZ2_bzReadOpen, bz2err = %d", cbz2err);
 		goto error;
 	}
-	if (fseek(f, offset + 32 + bzctrllen, SEEK_SET)) {
+	if (fseek(f, (long)(offset + 32 + bzctrllen), SEEK_SET)) {
 		printf("fseeko(%s, %lld)", "patch_file", (long long)(offset + 32 + bzctrllen));
 		goto error;
 	}
@@ -121,7 +121,7 @@ int bspatch(u_char* old, off_t oldsize, FILE* f, u_char** new_out, off_t* newsiz
 		printf("BZ2_bzReadOpen, bz2err = %d", dbz2err);
 		goto error;
 	}
-	if (fseek(f, offset + 32 + bzctrllen + bzdatalen, SEEK_SET)) {
+	if (fseek(f, (long)(offset + 32 + bzctrllen + bzdatalen), SEEK_SET)) {
 		printf("fseeko(%s, %lld)", "patch_file", (long long)(32 + bzctrllen + bzdatalen));
 		goto error;
 	}

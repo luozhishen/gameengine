@@ -22,6 +22,13 @@
 #ifndef _BZLIB_PRIVATE_H
 #define _BZLIB_PRIVATE_H
 
+#pragma warning(disable:4702)
+#pragma warning(disable:4267)
+#pragma warning(disable:4996)
+#pragma warning(disable:4100)
+#pragma warning(disable:4244)
+#pragma warning(disable:4127)
+
 #include <stdlib.h>
 
 #ifndef BZ_NO_STDIO

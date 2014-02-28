@@ -1183,7 +1183,7 @@ int BZ_API(BZ2_bzRead)
       { BZ_SETERR(BZ_OK); return 0; };
 
    bzf->strm.avail_out = len;
-   bzf->strm.next_out = buf;
+   bzf->strm.next_out = (char*)buf;
 
    fseek(bzf->handle, bzf->offset, SEEK_SET);
    for (;;) {

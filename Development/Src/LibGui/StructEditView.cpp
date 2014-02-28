@@ -39,7 +39,7 @@ CStructEditView::~CStructEditView()
 {
 	if(m_pData && m_bDataFree)
 	{
-		DDLReflect::DestoryObject(m_pData);
+		DDLReflect::DestoryObject(m_pInfo, m_pData);
 		m_pData = NULL;
 	}
 }
@@ -47,7 +47,7 @@ CStructEditView::~CStructEditView()
 void CStructEditView::Clear()
 {
 	m_pPropGrid->Clear();
-	if(m_pData && m_bDataFree) DDLReflect::DestoryObject(m_pData);
+	if(m_pData && m_bDataFree) DDLReflect::DestoryObject(m_pInfo, m_pData);
 	m_pInfo = NULL;
 	m_pData = NULL;
 }

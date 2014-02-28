@@ -21,18 +21,15 @@ namespace Zion
 		class CContentObject
 		{
 		public:
-			CContentObject(const DDLReflect::STRUCT_INFO* info, const A_CONTENT_OBJECT* data)
+			CContentObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
 			{
 				m_pData = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(info);
-				if(data)
-				{
-					memcpy(m_pData, data, info->size);
-				}
+				m_pData->_uuid = uuid;
 			}
 		
 			~CContentObject()
 			{
-				DDLReflect::DestoryObject(m_pData);
+				DDLReflect::DestoryObject(m_pInfo, m_pData);
 				m_pData = NULL;
 			}
 
@@ -279,12 +276,11 @@ namespace Zion
 		A_CONTENT_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
 		{
 			CContentGroup* group = QueryContentGroup(info);
-			A_CONTENT_OBJECT* object = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(info);
-			if(!object) return NULL;
-			g_objct_manager.m_object_map[uuid] = new CContentObject(info, object);
+			if(!group) return NULL;
+			CContentObject* object = new CContentObject(info, uuid);
+			g_objct_manager.m_object_map[uuid] = object;
 			group->_dirty = true;
-			object->_uuid = uuid;
-			return object;
+			return object->m_pData;
 		}
 
 		void DeleteObject(const A_UUID& uuid)

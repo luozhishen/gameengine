@@ -31,7 +31,12 @@ namespace Zion
 		{
 			while(!m_Cases.empty())
 			{
-				if(m_Cases.begin()->second) DDLReflect::DestoryObject(m_Cases.begin()->second);
+				if(m_Cases.begin()->second)
+				{
+					const DDLReflect::STRUCT_INFO* info = CStressManager::Get().GetCaseConfigType(m_Cases.begin()->first.c_str());
+					ZION_ASSERT(info);
+					DDLReflect::DestoryObject(info, m_Cases.begin()->second);
+				}
 				m_Cases.erase(m_Cases.begin());
 			}
 		}

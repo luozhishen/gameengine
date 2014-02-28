@@ -338,17 +338,17 @@ bool CContentDataView::CheckModify(bool bClear)
 	A_CONTENT_OBJECT* obj = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(m_pCurInfo);
 	if(!m_pInfo->Get(m_pCurInfo, obj))
 	{
-		DDLReflect::DestoryObject(obj);
+		DDLReflect::DestoryObject(m_pCurInfo, obj);
 		return false;
 	}
 
 	if(memcmp(m_pCurData, obj, (size_t)m_pCurInfo->size)==0)
 	{
-		DDLReflect::DestoryObject(obj);
+		DDLReflect::DestoryObject(m_pCurInfo, obj);
 	}
 	else
 	{
-		DDLReflect::DestoryObject(obj);
+		DDLReflect::DestoryObject(m_pCurInfo, obj);
 
 		if(wxMessageBox(wxT("save data?"), wxT("!!!"), wxYES_NO)!=wxYES)
 		{

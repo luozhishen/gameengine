@@ -918,9 +918,14 @@ namespace DDLReflect
 		return data;
 	}
 
-	void DestoryObject(void* data)
+	void DestoryObject(const STRUCT_INFO* info, void* data)
 	{
 		free(data);
+	}
+
+	void CopyObject(const STRUCT_INFO* info, void* dst, const void* src)
+	{
+		memcpy(dst, src, info->size);
 	}
 
 }

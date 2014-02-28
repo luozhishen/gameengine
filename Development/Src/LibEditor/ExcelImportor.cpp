@@ -421,7 +421,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				if(!DDLReflect::StructParamFromString(tmpl.info, i1->first.c_str(), obj, i1->second.c_str()))
 				{
 					m_errmsg = Zion::StringFormat("error in StructParamFromString(%s, %s, %s)", tmpl.info->name, i1->first.c_str(), i1->second.c_str());
-					DDLReflect::DestoryObject(obj);
+					DDLReflect::DestoryObject(tmpl.info, obj);
 					return false;
 				}
 			}
@@ -431,7 +431,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		if(!Zion::ContentObject::GenContentObjectUniqueId(type_id, obj, pkey))
 		{
 			m_errmsg = "error in GenContentObjectUniqueId";
-			DDLReflect::DestoryObject(obj);
+			DDLReflect::DestoryObject(tmpl.info, obj);
 			return false;
 		}
 
@@ -442,7 +442,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			if(info!=tmpl.info)
 			{
 				m_errmsg = Zion::StringFormat("content object type [%s - %s] not match uniqueid:{%s}", tmpl.info->name, info?info->name:"unknown", pkey.c_str()), 
-				DDLReflect::DestoryObject(obj);
+				DDLReflect::DestoryObject(tmpl.info, obj);
 				return false;
 			}
 			old_obj = Zion::ContentObject::Modify(old_obj->_uuid, tmpl.info);
@@ -463,14 +463,14 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				if(!excel->SetCellValue(range, Zion::String(suuid)))
 				{
 					m_errmsg = "error in SetCellValue";
-					DDLReflect::DestoryObject(obj);
+					DDLReflect::DestoryObject(tmpl.info, obj);
 					return false;
 				}
 			}
 		}
 
 		memcpy(old_obj, obj, tmpl.info->size);
-		DDLReflect::DestoryObject(obj);
+		DDLReflect::DestoryObject(tmpl.info, obj);
 	}
 
 	Zion::Set<A_UUID>::iterator it;

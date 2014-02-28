@@ -1,8 +1,6 @@
 #ifndef __DDL_STUB_INCLUDE__
 #define __DDL_STUB_INCLUDE__
 
-#include <DDLReflect.h>
-
 namespace DDLStub
 {
 

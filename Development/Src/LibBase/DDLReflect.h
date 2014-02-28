@@ -133,7 +133,8 @@ namespace DDLReflect
 	bool StructParamFromString(const STRUCT_INFO* info, const char* name, void* data, const char* str);
 
 	void* CreateObject(const STRUCT_INFO* info);
-	void DestoryObject(void* data);
+	void DestoryObject(const STRUCT_INFO* info, void* data);
+	void CopyObject(const STRUCT_INFO* info, void* dst, const void* src);
 
 }
 

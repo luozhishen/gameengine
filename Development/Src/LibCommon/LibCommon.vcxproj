@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataSyncDDL.cpp" />
     <ClCompile Include="ZionCommon.cpp" />
     <ClCompile Include="CommonDDL.cpp" />
     <ClCompile Include="ContentObject.cpp" />
@@ -26,6 +27,7 @@
     <ClCompile Include="LiveObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataSyncDDL.h" />
     <ClInclude Include="ZionCommon.h" />
     <ClInclude Include="CommonDDL.h" />
     <ClInclude Include="ContentObject.h" />
@@ -35,6 +37,20 @@
   <ItemGroup>
     <CustomBuild Include="CommonDDL.ddl">
       <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)'=='Debug'">$(SolutionDir)..\..\Binaries\DDLGen_D.exe %(FullPath)</Command>
+      <Command Condition="'$(Configuration)'=='Release'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <Message>Compile %(Filename).ddl ...</Message>
+      <Outputs>%(Filename).h;%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)'=='Debug'">$(SolutionDir)..\..\Binaries\DDLGen_D.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)'=='Release'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\Binaries\DDLGen.exe</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="DataSyncDDL.ddl">
       <Command Condition="'$(Configuration)'=='Debug'">$(SolutionDir)..\..\Binaries\DDLGen_D.exe %(FullPath)</Command>
       <Command Condition="'$(Configuration)'=='Release'">$(SolutionDir)..\..\Binaries\DDLGen.exe %(FullPath)</Command>
       <Message>Compile %(Filename).ddl ...</Message>

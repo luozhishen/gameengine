@@ -1,6 +1,8 @@
 #ifndef __ZION_CLIENT_DATASYNC__
 #define __ZION_CLIENT_DATASYNC__
 
+#include <DataSyncDDL.h>
+
 namespace Zion
 {
 
@@ -10,12 +12,8 @@ namespace Zion
 
 		CDataSyncClient(CClient* pClient);
 
-		//
-		bool InSync();
-		void SyncStart();
-
 		// api
-		void SyncStart(_U16 mode);
+		void SyncStart();
 		void SyncReady();
 		void SyncDisable();
 		void CreateObjectDone(const A_UUID& _uuid);

@@ -1,7 +1,7 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 
-#include "CommonDDL.h"
+#include "DataSyncDDL.h"
 
 namespace Zion
 {

@@ -1,15 +1,99 @@
 #include <ZionBase.h>
-
-#include "LiveObject.h"
 #include "CommonDDL.h"
-
-#include <string>
-#include <map>
+#include "LiveObject.h"
 
 namespace Zion
 {
 	namespace LiveObject
 	{
+
+		CLiveMonitor::CLiveMonitor(const DDLReflect::STRUCT_INFO* info)
+		{
+			m_pInfo = info;
+			m_bDirty = false;
+		}
+
+		bool CLiveMonitor::IsDirty()
+		{
+			return m_bDirty;
+		}
+
+		void CLiveMonitor::SetDirty()
+		{
+			m_bDirty = true;
+		}
+
+		void CLiveMonitor::SetDirty(const char* name, _U32 offset, _U32 size)
+		{
+			m_bDirty = true;
+		}
+
+		void CLiveMonitor::Clean()
+		{
+			m_bDirty = false;
+		}
+
+		CLiveObject::CLiveObject(CLiveManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DDLDataObject::CObject(pInfo, pData, &m_Monitor, "", 0)
+		{
+		}
+
+		bool CLiveObject::IsDirty()
+		{
+			return m_Monitor.IsDirty();
+		}
+
+		void CLiveObject::Clean()
+		{
+			return m_Monitor.Clean();
+		}
+
+		CLiveManager::CLiveManager()
+		{
+		}
+
+		CLiveObject* CLiveManager::Get(const A_UUID& _uuid)
+		{
+			return NULL;
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		static Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*> > g_type_map;
 		static Zion::Map<_U16, const DDLReflect::STRUCT_INFO*> g_typeid_map;
 		static _U16 g_typeid_max = 0x2000;

@@ -28,8 +28,8 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<CARD_AVATAR_OPERATOR>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OPERATOR_info;
 
-	template<CARD_AVATAR_OPERATOR&>
-	bool GetField(FIELD_INFO& info)
+	template<CARD_AVATAR_OPERATOR*>
+	bool GetPtrType(FIELD_INFO& info)
 	{
 		memset(&info, 0, sizeof(info));
 		info.type = TYPE_STRUCT;
@@ -59,8 +59,8 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<CARD_AVATAR_DESC>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_DESC_info;
 
-	template<CARD_AVATAR_DESC&>
-	bool GetField(FIELD_INFO& info)
+	template<CARD_AVATAR_DESC*>
+	bool GetPtrType(FIELD_INFO& info)
 	{
 		memset(&info, 0, sizeof(info));
 		info.type = TYPE_STRUCT;
@@ -89,8 +89,8 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<CARD_AVATAR>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_info;
 
-	template<CARD_AVATAR&>
-	bool GetField(FIELD_INFO& info)
+	template<CARD_AVATAR*>
+	bool GetPtrType(FIELD_INFO& info)
 	{
 		memset(&info, 0, sizeof(info));
 		info.type = TYPE_STRUCT;
@@ -120,8 +120,8 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<CARD_AVATAR_OWNOBJ>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OWNOBJ_info;
 
-	template<CARD_AVATAR_OWNOBJ&>
-	bool GetField(FIELD_INFO& info)
+	template<CARD_AVATAR_OWNOBJ*>
+	bool GetPtrType(FIELD_INFO& info)
 	{
 		memset(&info, 0, sizeof(info));
 		info.type = TYPE_STRUCT;
@@ -148,7 +148,7 @@ namespace DDLStub
 
 		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
 		{
-			return DDLReflect::GetClass<CARDGAME_C2S>();
+			return DDLReflect::GetClass<::CARDGAME_C2S>();
 		}
 		
 		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
@@ -348,7 +348,7 @@ namespace DDLStub
 
 		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
 		{
-			return DDLReflect::GetClass<CARDGAME_S2C>();
+			return DDLReflect::GetClass<::CARDGAME_S2C>();
 		}
 		
 		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)

@@ -20,7 +20,6 @@ namespace Zion
 	typedef void(JSON_RESPONSE_PROC)(CJsonRPCResponse* res, const char* args);
 	typedef void(JSON_CALLBACK_PROC)(bool error, const char* args);
 	*/
-
 	typedef std::function<void(const JSONRPC_RESPONSE& res, const char*)>	JSON_RESPONSE_PROC;
 	typedef std::function<void(const char*)>								JSON_CALLBACK_PROC;
 

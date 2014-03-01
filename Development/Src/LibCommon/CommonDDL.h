@@ -27,6 +27,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<A_CONTENT_OBJECT>();
 	extern STRUCT_INFO _rfl_struct_A_CONTENT_OBJECT_info;
+
+	template<A_CONTENT_OBJECT&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_A_CONTENT_OBJECT_info;
+		info.ref_type = "A_CONTENT_OBJECT";
+		return true;
+	}
 }
 
 struct A_LIVE_OBJECT
@@ -47,6 +57,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<A_LIVE_OBJECT>();
 	extern STRUCT_INFO _rfl_struct_A_LIVE_OBJECT_info;
+
+	template<A_LIVE_OBJECT&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_A_LIVE_OBJECT_info;
+		info.ref_type = "A_LIVE_OBJECT";
+		return true;
+	}
 }
 
 

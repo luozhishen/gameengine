@@ -1,4 +1,4 @@
-var SOURCE_FILE = '../LibCardCommon/CardGameDDL.h';
+var SOURCE_FILE = '../LibCommon/CardGameDDL.h';
 var condition = '\tclass CARDGAME_S2C : public DDLProxy<CLIENT, BUFFER>';
 
 var fs = require('fs');

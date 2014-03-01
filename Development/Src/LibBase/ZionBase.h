@@ -13,6 +13,7 @@
 #include "ZionUUID.h"
 #include "DDL.h"
 #include "DDLReflect.h"
+#include "DDLDataObject.h"
 #include "DDLProxy.h"
 #include "DDLStub.h"
 #include "ZionUtils.h"

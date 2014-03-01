@@ -78,6 +78,25 @@ namespace DDLReflect
 	};
 
 	template<typename T>
+	bool GetField(FIELD_INFO& info)
+	{
+		return false;
+	}
+	template<_U8> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_U8; info.ref_type = "_U8"; return true; }
+	template<_U16> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_U16; info.ref_type = "_U16"; return true; }
+	template<_U32> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_U32; info.ref_type = "_U32"; return true; }
+	template<_U64> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_U64; info.ref_type = "_U64"; return true; }
+	template<_S8> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_S8; info.ref_type = "_S8"; return true; }
+	template<_S16> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_S16; info.ref_type = "_S16"; return true; }
+	template<_S32> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_S32; info.ref_type = "_S32"; return true; }
+	template<_S64> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_S64; info.ref_type = "_S64"; return true; }
+	template<_F32&> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_F32; info.ref_type = "_F32"; return true; }
+	template<_F64&> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_F64; info.ref_type = "_F64"; return true; }
+	template<_STR> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_STRING; info.ref_type = "string"; return true; }
+	template<Zion::String&> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_STRING; info.ref_type = "string"; return true; }
+	template<A_UUID&> bool GetField(FIELD_INFO& info) { memset(&info, 0, sizeof(info)); info.type = TYPE_UUID; info.ref_type = "A_UUID"; return true; }
+
+	template<typename T>
 	inline const STRUCT_INFO* GetStruct()
 	{
 		return NULL;

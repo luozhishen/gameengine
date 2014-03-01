@@ -607,6 +607,16 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 	OutH(0, "	template<>\n");
 	OutH(0, "	const STRUCT_INFO* GetStruct<%s>();\n", str->name);
 	OutH(0, "	extern STRUCT_INFO _rfl_struct_%s_info;\n", str->name, str->name);
+	OutH(0, "\n");
+	OutH(0, "	template<%s&>\n", str->name);
+	OutH(0, "	bool GetField(FIELD_INFO& info)\n");
+	OutH(0, "	{\n");
+	OutH(0, "		memset(&info, 0, sizeof(info));\n");
+	OutH(0, "		info.type = TYPE_STRUCT;\n");
+	OutH(0, "		info.sinfo = &_rfl_struct_%s_info;\n", str->name);
+	OutH(0, "		info.ref_type = \"%s\";\n", str->name);
+	OutH(0, "		return true;\n");
+	OutH(0, "	}\n");
 	OutH(0, "}\n");
 	OutH(0, "\n");
 

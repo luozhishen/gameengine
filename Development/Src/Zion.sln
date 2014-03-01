@@ -48,13 +48,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenPatch", "JPatch\GenPatch
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CardGame", "CardGame", "{C06526F4-CF16-44EF-B19E-8C5E451E1B81}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibCardClient", "CardGame\LibCardClient\LibCardClient.vcxproj", "{66CC6364-9D9B-474C-9DE3-629B3C823712}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibCardClient", "CardGame\LibClient\LibCardClient.vcxproj", "{66CC6364-9D9B-474C-9DE3-629B3C823712}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibCardCommon", "CardGame\LibCardCommon\LibCardCommon.vcxproj", "{EB833180-A16A-47EE-82E3-11A372013C12}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibCardCommon", "CardGame\LibCommon\LibCardCommon.vcxproj", "{EB833180-A16A-47EE-82E3-11A372013C12}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CardClientStress", "CardGame\CardClientStress\CardClientStress.vcxproj", "{B1C48E29-9438-43C2-BF79-4BC18C5FBB18}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CardClientStress", "CardGame\ClientStress\CardClientStress.vcxproj", "{B1C48E29-9438-43C2-BF79-4BC18C5FBB18}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CardEditor", "CardGame\CardEditor\CardEditor.vcxproj", "{48C38364-0DA3-48CF-97AA-44A28AD9DF7F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CardEditor", "CardGame\Editor\CardEditor.vcxproj", "{48C38364-0DA3-48CF-97AA-44A28AD9DF7F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibAsyncIO", "LibAsyncIO\LibAsyncIO.vcxproj", "{DB069BE1-91E0-41CE-BDC3-5BA4008840A5}"
 EndProject

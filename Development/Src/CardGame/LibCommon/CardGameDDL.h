@@ -27,6 +27,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<CARD_AVATAR_OPERATOR>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OPERATOR_info;
+
+	template<CARD_AVATAR_OPERATOR&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_CARD_AVATAR_OPERATOR_info;
+		info.ref_type = "CARD_AVATAR_OPERATOR";
+		return true;
+	}
 }
 
 struct CARD_AVATAR_DESC : A_LIVE_OBJECT
@@ -48,6 +58,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<CARD_AVATAR_DESC>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_DESC_info;
+
+	template<CARD_AVATAR_DESC&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_CARD_AVATAR_DESC_info;
+		info.ref_type = "CARD_AVATAR_DESC";
+		return true;
+	}
 }
 
 struct CARD_AVATAR : A_LIVE_OBJECT
@@ -68,6 +88,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<CARD_AVATAR>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_info;
+
+	template<CARD_AVATAR&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_CARD_AVATAR_info;
+		info.ref_type = "CARD_AVATAR";
+		return true;
+	}
 }
 
 struct CARD_AVATAR_OWNOBJ : A_LIVE_OBJECT
@@ -89,6 +119,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<CARD_AVATAR_OWNOBJ>();
 	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OWNOBJ_info;
+
+	template<CARD_AVATAR_OWNOBJ&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_CARD_AVATAR_OWNOBJ_info;
+		info.ref_type = "CARD_AVATAR_OWNOBJ";
+		return true;
+	}
 }
 
 class CARDGAME_C2S;

@@ -20,6 +20,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<STRESSCASE_ECHO_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_STRESSCASE_ECHO_CONFIG_info;
+
+	template<STRESSCASE_ECHO_CONFIG&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_STRESSCASE_ECHO_CONFIG_info;
+		info.ref_type = "STRESSCASE_ECHO_CONFIG";
+		return true;
+	}
 }
 
 struct STRESSCASE_ECHO_STATUS
@@ -33,6 +43,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<STRESSCASE_ECHO_STATUS>();
 	extern STRUCT_INFO _rfl_struct_STRESSCASE_ECHO_STATUS_info;
+
+	template<STRESSCASE_ECHO_STATUS&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_STRESSCASE_ECHO_STATUS_info;
+		info.ref_type = "STRESSCASE_ECHO_STATUS";
+		return true;
+	}
 }
 
 struct STRESSCASE_ENTERSERVER_CONFIG
@@ -45,6 +65,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERSERVER_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_STRESSCASE_ENTERSERVER_CONFIG_info;
+
+	template<STRESSCASE_ENTERSERVER_CONFIG&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_STRESSCASE_ENTERSERVER_CONFIG_info;
+		info.ref_type = "STRESSCASE_ENTERSERVER_CONFIG";
+		return true;
+	}
 }
 
 struct STRESSCASE_ENTERSERVER_STATUS
@@ -57,6 +87,16 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERSERVER_STATUS>();
 	extern STRUCT_INFO _rfl_struct_STRESSCASE_ENTERSERVER_STATUS_info;
+
+	template<STRESSCASE_ENTERSERVER_STATUS&>
+	bool GetField(FIELD_INFO& info)
+	{
+		memset(&info, 0, sizeof(info));
+		info.type = TYPE_STRUCT;
+		info.sinfo = &_rfl_struct_STRESSCASE_ENTERSERVER_STATUS_info;
+		info.ref_type = "STRESSCASE_ENTERSERVER_STATUS";
+		return true;
+	}
 }
 
 

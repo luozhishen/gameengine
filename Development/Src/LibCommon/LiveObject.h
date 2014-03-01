@@ -43,9 +43,10 @@ namespace Zion
 			CManager();
 
 			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo);
+			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* data);
 			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* data, _U32 len);
 			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const char* data);
-			void Remove(const A_UUID& _uuid);
+			bool Remove(const A_UUID& _uuid);
 
 			CObject* Get(const A_UUID& _uuid);
 			CObject* FindFirst();
@@ -53,8 +54,6 @@ namespace Zion
 
 		protected:
 			Map<A_UUID, CObject*> m_ObjMap;
-			Set<A_UUID> m_DelList;
-			Set<A_UUID> m_NewList;
 		};
 
 		bool Register(const DDLReflect::STRUCT_INFO* info);

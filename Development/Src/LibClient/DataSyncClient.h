@@ -10,9 +10,10 @@ namespace Zion
 	{
 	public:
 		CDataSyncClient(CClient* pClient);
+		~CDataSyncClient();
 
 		A_LIVE_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* pInfo);
-		void RemoveObject(const A_UUID& _uuid);
+		bool RemoveObject(const A_UUID& _uuid);
 		LiveObject::CObject* GetObject(const A_UUID& _uuid);
 
 		template<typename T>
@@ -21,19 +22,39 @@ namespace Zion
 			return (T*)CreateObject(DDLReflect::GetStruct<T>());
 		}
 
+		void Sync();
+		bool InProcess();
+
 		// DATASYNC_S2C
 		void DS_SyncOpen(_U32 flag);
 		void DS_SyncReady();
 		void DS_SyncClose();
 		void DS_CreateObjectDone(const A_UUID& _uuid);
-		void DS_CreateObject(const A_UUID& _uuid, const char* type, const char* data);
-		void DS_CreateObject(const A_UUID& _uuid, const char* type, const _U8* data, _U32 len);
-		void DS_RemoveObject(const A_UUID& _uuid);
+		void DS_CreateObject(const char* type, const char* data);
+		void DS_CreateObject(_U16 type, const _U8* data, _U32 len);
 		void DS_UpdateObject(const A_UUID& _uuid, const char* data);
 		void DS_UpdateObject(const A_UUID& _uuid, const _U8* data, _U32 len);
+		void DS_RemoveObjects(const A_UUID* _uuids, _U32 count);
 
 	private:
-		DDLProxy::DATASYNC_C2S<CClient, DDL::TMemoryWriter<1024>> c2s;
+		void ClearQueue();
+
+		LiveObject::CManager m_Manager;
+		_U32 m_Flag;
+		bool m_bReady;
+		struct
+		{
+			List<A_LIVE_OBJECT*>					objs;
+			List<const DDLReflect::STRUCT_INFO*>	infos;
+		} m_NewQ;
+		struct
+		{
+			List<A_LIVE_OBJECT*>					objs;
+			List<const DDLReflect::STRUCT_INFO*>	infos;
+		} m_WatQ;
+		Set<A_UUID> m_DelList;
+		DDLProxy::DATASYNC_BINARY_C2S<CClient, DDL::TMemoryWriter<1024>> m_Binary;
+		DDLProxy::DATASYNC_JSON_C2S<CClient, DDL::TMemoryWriter<1024>> m_Json;
 	};
 
 }

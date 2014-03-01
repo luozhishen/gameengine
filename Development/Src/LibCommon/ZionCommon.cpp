@@ -217,8 +217,10 @@ namespace Zion
 
 		void InitDDLStub()
 		{
-			RegisterClientStub<DATASYNC_S2C>();
-			RegisterServerStub<DATASYNC_C2S>(0);
+			RegisterClientStub<DATASYNC_BINARY_S2C>();
+			RegisterClientStub<DATASYNC_JSON_S2C>();
+			RegisterServerStub<DATASYNC_BINARY_C2S>(0);
+			RegisterServerStub<DATASYNC_JSON_C2S>(0);
 		}
 
 		void InitContentObjects()

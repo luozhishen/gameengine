@@ -65,7 +65,20 @@ namespace Zion
 			data->_uuid = _uuid;
 			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			m_ObjMap[data->_uuid] = obj;
-			m_NewList.insert(data->_uuid);
+			return NULL;
+		}
+
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* data)
+		{
+			if(m_ObjMap.find(data->_uuid)==m_ObjMap.end())
+			{
+				ZION_ASSERT(!"live object alread existed");
+				return NULL;
+			}
+
+			CObject* obj = ZION_NEW CObject(this, pInfo, data);
+			obj->Clean();
+			m_ObjMap[data->_uuid] = obj;
 			return NULL;
 		}
 
@@ -90,7 +103,6 @@ namespace Zion
 			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			obj->Clean();
 			m_ObjMap[data->_uuid] = obj;
-			m_NewList.insert(data->_uuid);
 			return NULL;
 		}
 
@@ -115,32 +127,21 @@ namespace Zion
 			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			obj->Clean();
 			m_ObjMap[data->_uuid] = obj;
-			m_NewList.insert(data->_uuid);
 			return NULL;
 		}
 
-		void CManager::Remove(const A_UUID& _uuid)
+		bool CManager::Remove(const A_UUID& _uuid)
 		{
 			Map<A_UUID, CObject*>::iterator o = m_ObjMap.find(_uuid);
 			if(o==m_ObjMap.end())
 			{
 				ZION_ASSERT(!"object not found");
-				return;
-			}
-			m_ObjMap.erase(o);
-
-			Set<A_UUID>::iterator n = m_NewList.find(_uuid);
-			if(n!=m_NewList.end())
-			{
-				m_NewList.erase(n);
+				return false;
 			}
 			else
 			{
-				n = m_DelList.find(_uuid);
-				if(n!=m_DelList.end())
-				{
-					m_NewList.erase(n);
-				}
+				m_ObjMap.erase(o);
+				return true;
 			}
 		}
 

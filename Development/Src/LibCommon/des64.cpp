@@ -155,7 +155,8 @@ void DES_SetKey(const DES_KEY key, DES_KEY_S keys)
     static bool K[64], *KL = &K[0], *KR = &K[28];
     ByteToBit(K, key, 64);
     Transform(K, K, PC1_Table, 56);
-    for(int i=0; i<16; i++) {
+    for(int i=0; i<16; i++)
+	{
         RotateL(KL, 28, LOOP_Table[i]);
         RotateL(KR, 28, LOOP_Table[i]);
         Transform(keys[i], K, PC2_Table, 48);
@@ -167,7 +168,8 @@ void DES_Encrypt(DES_KEY_S keys, char Out[8], const char In[8])
     static bool M[64], Tmp[32], *Li = &M[0], *Ri = &M[32];
     ByteToBit(M, In, 64);
     Transform(M, M, IP_Table, 64);
-    for(int i=0; i<16; i++) {
+    for(int i=0; i<16; i++)
+	{
         memcpy(Tmp, Ri, 32);
         F_func(Ri, keys[i]);
         Xor(Ri, Li, 32);
@@ -182,7 +184,8 @@ void DES_Decrypt(DES_KEY_S keys, char Out[8], const char In[8])
     static bool M[64], Tmp[32], *Li = &M[0], *Ri = &M[32];
     ByteToBit(M, In, 64);
     Transform(M, M, IP_Table, 64);
-    for(int i=15; i>=0; i--) {
+    for(int i=15; i>=0; i--)
+	{
         memcpy(Tmp, Li, 32);
         F_func(Li, keys[i]);
         Xor(Li, Ri, 32);
@@ -203,7 +206,8 @@ void F_func(bool In[32], const bool Ki[48])
 
 void S_func(bool Out[32], const bool In[48])
 {
-    for(char i=0,j,k; i<8; i++,In+=6,Out+=4) {
+    for(char i=0,j,k; i<8; i++,In+=6,Out+=4)
+	{
         j = (In[0]<<1) + In[5];
         k = (In[1]<<3) + (In[2]<<2) + (In[3]<<1) + In[4];
 		ByteToBit(Out, &S_Box[i][j][k], 4);

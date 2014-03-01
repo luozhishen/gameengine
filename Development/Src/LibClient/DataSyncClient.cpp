@@ -12,7 +12,7 @@ namespace Zion
 	}
 
 
-	void CDataSyncClient::SyncStart(_U16 mode)
+	void CDataSyncClient::SyncStart()
 	{
 	}
 

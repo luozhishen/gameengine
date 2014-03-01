@@ -10,6 +10,14 @@
 
 #include "CommonDDL.h"
 
+const _U32 SYNCFLAG_MODEMASK = 1;
+
+const _U32 SYNCFLAG_BINARY = 0;
+
+const _U32 SYNCFLAG_JSON = 1;
+
+const _U32 SYNCFLAG_CLIENT_ACTIVE = 2;
+
 class DATASYNC_C2S;
 
 class DATASYNC_S2C;
@@ -179,10 +187,13 @@ namespace DDLStub
 		{
 			if(fid==0)
 			{
+				_U32 _prefix_flag;
 
+				// <_U32> <flag> <> <>;
+				if(!Buf.Read(_prefix_flag)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->DS_SyncStart();
+				DDLStub<CLASS>::GetClass()->DS_SyncOpen(_prefix_flag);
 				return true;
 			}
 			if(fid==1)
@@ -198,7 +209,7 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->DS_SyncDisable();
+				DDLStub<CLASS>::GetClass()->DS_SyncClose();
 				return true;
 			}
 			if(fid==3)
@@ -240,6 +251,34 @@ namespace DDLStub
 			}
 			if(fid==5)
 			{
+				_U32 __length;
+				A_UUID _prefix__uuid;
+				char* _prefix_type;
+				_U8* _prefix_data;
+				_U32 _prefix_len;
+
+				// <A_UUID> <_uuid> <> <>;
+				if(!Buf.Read(_prefix__uuid)) return false;
+				// <string> <type> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_type = (char*)alloca(sizeof(_prefix_type[0])*(__length+1));
+				if(!_prefix_type) return false;
+				if(!Buf.ReadBuffer(_prefix_type, (unsigned int)sizeof(_prefix_type[0])*__length)) return false;
+				_prefix_type[__length] = '\0';
+				// <_U8> <data> <> <len>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_data = (_U8*)alloca(sizeof(_prefix_data[0])*__length);
+				if(!_prefix_data) return false;
+				if(!Buf.ReadPointer(_prefix_data, __length)) return false;
+				// <_U32> <len> <> <>;
+				if(!Buf.Read(_prefix_len)) return false;
+
+				// call implement
+				DDLStub<CLASS>::GetClass()->DS_CreateObject(_prefix__uuid, _prefix_type, _prefix_data, _prefix_len);
+				return true;
+			}
+			if(fid==6)
+			{
 				A_UUID _prefix__uuid;
 
 				// <A_UUID> <_uuid> <> <>;
@@ -249,7 +288,7 @@ namespace DDLStub
 				DDLStub<CLASS>::GetClass()->DS_RemoveObject(_prefix__uuid);
 				return true;
 			}
-			if(fid==6)
+			if(fid==7)
 			{
 				_U32 __length;
 				A_UUID _prefix__uuid;
@@ -266,6 +305,27 @@ namespace DDLStub
 
 				// call implement
 				DDLStub<CLASS>::GetClass()->DS_UpdateObject(_prefix__uuid, _prefix_data);
+				return true;
+			}
+			if(fid==8)
+			{
+				_U32 __length;
+				A_UUID _prefix__uuid;
+				_U8* _prefix_data;
+				_U32 _prefix_len;
+
+				// <A_UUID> <_uuid> <> <>;
+				if(!Buf.Read(_prefix__uuid)) return false;
+				// <_U8> <data> <> <len>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_data = (_U8*)alloca(sizeof(_prefix_data[0])*__length);
+				if(!_prefix_data) return false;
+				if(!Buf.ReadPointer(_prefix_data, __length)) return false;
+				// <_U32> <len> <> <>;
+				if(!Buf.Read(_prefix_len)) return false;
+
+				// call implement
+				DDLStub<CLASS>::GetClass()->DS_UpdateObject(_prefix__uuid, _prefix_data, _prefix_len);
 				return true;
 			}
 			return false;
@@ -291,9 +351,11 @@ namespace DDLProxy
 			return Proxy;
 		}
 
-		bool DS_SyncStart()
+		bool DS_SyncOpen(_U32 flag)
 		{
 			BUFFER Buf;
+			// <_U32> <flag> <> <>
+			if(!Buf.Write(flag)) return false;
 
 			// send
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
@@ -307,7 +369,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
 		}
 
-		bool DS_SyncDisable()
+		bool DS_SyncClose()
 		{
 			BUFFER Buf;
 
@@ -344,6 +406,27 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
 		}
 
+		bool DS_CreateObject(const A_UUID& _uuid, const char* type, const _U8* data, _U32 len)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <A_UUID> <_uuid> <> <>
+			if(!Buf.Write(_uuid)) return false;
+			// <string> <type> <> <>
+			__length = DDL::StringLength(type);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(type, (unsigned int)sizeof(type[0])*__length)) return false;
+			// <_U8> <data> <> <len>
+			__length = (_U16)(len);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(data, __length)) return false;
+			// <_U32> <len> <> <>
+			if(!Buf.Write(len)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+		}
+
 		bool DS_RemoveObject(const A_UUID& _uuid)
 		{
 			BUFFER Buf;
@@ -351,7 +434,7 @@ namespace DDLProxy
 			if(!Buf.Write(_uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
 		}
 
 		bool DS_UpdateObject(const A_UUID& _uuid, const char* data)
@@ -366,7 +449,24 @@ namespace DDLProxy
 			if(!Buf.WriteData(data, (unsigned int)sizeof(data[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
+		}
+
+		bool DS_UpdateObject(const A_UUID& _uuid, const _U8* data, _U32 len)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <A_UUID> <_uuid> <> <>
+			if(!Buf.Write(_uuid)) return false;
+			// <_U8> <data> <> <len>
+			__length = (_U16)(len);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WritePointer(data, __length)) return false;
+			// <_U32> <len> <> <>
+			if(!Buf.Write(len)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 8, Buf);
 		}
 	};
 

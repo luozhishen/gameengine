@@ -26,7 +26,7 @@ namespace Zion
 		return NULL;
 	}
 
-	void CDataSyncClient::DS_SyncStart()
+	void CDataSyncClient::DS_SyncOpen(_U32 flag)
 	{
 	}
 
@@ -34,7 +34,7 @@ namespace Zion
 	{
 	}
 
-	void CDataSyncClient::DS_SyncDisable()
+	void CDataSyncClient::DS_SyncClose()
 	{
 	}
 
@@ -46,11 +46,19 @@ namespace Zion
 	{
 	}
 
+	void CDataSyncClient::DS_CreateObject(const A_UUID& _uuid, const char* type, const _U8* data, _U32 len)
+	{
+	}
+
 	void CDataSyncClient::DS_RemoveObject(const A_UUID& _uuid)
 	{
 	}
 
 	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const char* data)
+	{
+	}
+
+	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const _U8* data, _U32 len)
 	{
 	}
 

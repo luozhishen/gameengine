@@ -7,51 +7,51 @@ namespace Zion
 	namespace LiveObject
 	{
 
-		CLiveMonitor::CLiveMonitor(const DDLReflect::STRUCT_INFO* info)
+		CMonitor::CMonitor(const DDLReflect::STRUCT_INFO* info)
 		{
 			m_pInfo = info;
 			m_bDirty = false;
 		}
 
-		bool CLiveMonitor::IsDirty()
+		bool CMonitor::IsDirty()
 		{
 			return m_bDirty;
 		}
 
-		void CLiveMonitor::SetDirty()
+		void CMonitor::SetDirty()
 		{
 			m_bDirty = true;
 		}
 
-		void CLiveMonitor::SetDirty(const char* name, _U32 offset, _U32 size)
+		void CMonitor::SetDirty(const char* name, _U32 offset, _U32 size)
 		{
 			m_bDirty = true;
 		}
 
-		void CLiveMonitor::Clean()
+		void CMonitor::Clean()
 		{
 			m_bDirty = false;
 		}
 
-		CLiveObject::CLiveObject(CLiveManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DDLDataObject::CObject(pInfo, pData, &m_Monitor, "", 0)
+		CObject::CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DDLDataObject::CObject(pInfo, pData, &m_Monitor, "", 0)
 		{
 		}
 
-		bool CLiveObject::IsDirty()
+		bool CObject::IsDirty()
 		{
 			return m_Monitor.IsDirty();
 		}
 
-		void CLiveObject::Clean()
+		void CObject::Clean()
 		{
 			return m_Monitor.Clean();
 		}
 
-		CLiveManager::CLiveManager()
+		CManager::CManager()
 		{
 		}
 
-		CLiveObject* CLiveManager::Append(const DDLReflect::STRUCT_INFO* pInfo)
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo)
 		{
 			A_UUID _uuid;
 			AUuidGenerate(_uuid);
@@ -63,13 +63,13 @@ namespace Zion
 
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			data->_uuid = _uuid;
-			CLiveObject* obj = ZION_NEW CLiveObject(this, pInfo, data);
+			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			m_ObjMap[data->_uuid] = obj;
 			m_NewList.insert(data->_uuid);
 			return NULL;
 		}
 
-		CLiveObject* CLiveManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			DDL::MemoryReader reader(buf, len);
@@ -87,14 +87,14 @@ namespace Zion
 				return NULL;
 			}
 
-			CLiveObject* obj = ZION_NEW CLiveObject(this, pInfo, data);
+			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			obj->Clean();
 			m_ObjMap[data->_uuid] = obj;
 			m_NewList.insert(data->_uuid);
 			return NULL;
 		}
 
-		CLiveObject* CLiveManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			String val(str);
@@ -112,16 +112,16 @@ namespace Zion
 				return NULL;
 			}
 
-			CLiveObject* obj = ZION_NEW CLiveObject(this, pInfo, data);
+			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			obj->Clean();
 			m_ObjMap[data->_uuid] = obj;
 			m_NewList.insert(data->_uuid);
 			return NULL;
 		}
 
-		void CLiveManager::Remove(const A_UUID& _uuid)
+		void CManager::Remove(const A_UUID& _uuid)
 		{
-			Map<A_UUID, CLiveObject*>::iterator o = m_ObjMap.find(_uuid);
+			Map<A_UUID, CObject*>::iterator o = m_ObjMap.find(_uuid);
 			if(o==m_ObjMap.end())
 			{
 				ZION_ASSERT(!"object not found");
@@ -144,19 +144,19 @@ namespace Zion
 			}
 		}
 
-		CLiveObject* CLiveManager::Get(const A_UUID& _uuid)
+		CObject* CManager::Get(const A_UUID& _uuid)
 		{
-			Map<A_UUID, CLiveObject*>::iterator o = m_ObjMap.find(_uuid);
+			Map<A_UUID, CObject*>::iterator o = m_ObjMap.find(_uuid);
 			if(o==m_ObjMap.end()) return NULL;
 			return o->second;
 		}
 
-		CLiveObject* CLiveManager::FindFirst()
+		CObject* CManager::FindFirst()
 		{
 			return NULL;
 		}
 
-		CLiveObject* CLiveManager::FindNext()
+		CObject* CManager::FindNext()
 		{
 			return NULL;
 		}

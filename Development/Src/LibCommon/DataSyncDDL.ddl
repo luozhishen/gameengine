@@ -3,21 +3,21 @@ include "CommonDDL.ddl"
 
 class DATASYNC_C2S
 {
-	CreateObject(string type, string data);
-	RemoveObject(A_UUID _uuid);
-	UpdateObject(A_UUID _uuid, string data);
+	DS_CreateObject(string type, string data);
+	DS_RemoveObject(A_UUID _uuid);
+	DS_UpdateObject(A_UUID _uuid, string data);
 };
 
 class DATASYNC_S2C
 {
-	SyncStart();
-	SyncReady();
-	SyncDisable();
+	DS_SyncStart();
+	DS_SyncReady();
+	DS_SyncDisable();
 
-	CreateObjectDone(A_UUID _uuid);
-	CreateObject(A_UUID _uuid, string type, string data);
-	RemoveObject(A_UUID _uuid);
-	UpdateObject(A_UUID _uuid, string data);
+	DS_CreateObjectDone(A_UUID _uuid);
+	DS_CreateObject(A_UUID _uuid, string type, string data);
+	DS_RemoveObject(A_UUID _uuid);
+	DS_UpdateObject(A_UUID _uuid, string data);
 };
 
 task[GEN_CLASS_STUB(DATASYNC_C2S)];

@@ -6,13 +6,13 @@ namespace Zion
 	namespace LiveObject
 	{
 
-		class CLiveObject;
-		class CLiveManager;
+		class CObject;
+		class CManager;
 
-		class CLiveMonitor : public DDLDataObject::IMonitor
+		class CMonitor : public DDLDataObject::IMonitor
 		{
 		public:
-			CLiveMonitor(const DDLReflect::STRUCT_INFO* info);
+			CMonitor(const DDLReflect::STRUCT_INFO* info);
 
 			bool IsDirty();
 			void SetDirty();
@@ -24,35 +24,35 @@ namespace Zion
 			bool m_bDirty;
 		};
 
-		class CLiveObject : public DDLDataObject::CObject
+		class CObject : public DDLDataObject::CObject
 		{
 		public:
-			CLiveObject(CLiveManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData);
+			CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData);
 
 			bool IsDirty();
 			void Clean();
 
 		private:
-			CLiveManager* m_pManager;
-			CLiveMonitor m_Monitor;
+			CManager* m_pManager;
+			CMonitor m_Monitor;
 		};
 
-		class CLiveManager
+		class CManager
 		{
 		public:
-			CLiveManager();
+			CManager();
 
-			CLiveObject* Append(const DDLReflect::STRUCT_INFO* pInfo);
-			CLiveObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* data, _U32 len);
-			CLiveObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const char* data);
+			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo);
+			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* data, _U32 len);
+			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const char* data);
 			void Remove(const A_UUID& _uuid);
 
-			CLiveObject* Get(const A_UUID& _uuid);
-			CLiveObject* FindFirst();
-			CLiveObject* FindNext();
+			CObject* Get(const A_UUID& _uuid);
+			CObject* FindFirst();
+			CObject* FindNext();
 
 		protected:
-			Map<A_UUID, CLiveObject*> m_ObjMap;
+			Map<A_UUID, CObject*> m_ObjMap;
 			Set<A_UUID> m_DelList;
 			Set<A_UUID> m_NewList;
 		};

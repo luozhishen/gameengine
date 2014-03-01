@@ -52,7 +52,7 @@ namespace DDLStub
 				_prefix_data[__length] = '\0';
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->CreateObject(_prefix_type, _prefix_data);
+				DDLStub<CLASS>::GetClass()->DS_CreateObject(_prefix_type, _prefix_data);
 				return true;
 			}
 			if(fid==1)
@@ -63,7 +63,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix__uuid)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->RemoveObject(_prefix__uuid);
+				DDLStub<CLASS>::GetClass()->DS_RemoveObject(_prefix__uuid);
 				return true;
 			}
 			if(fid==2)
@@ -82,7 +82,7 @@ namespace DDLStub
 				_prefix_data[__length] = '\0';
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->UpdateObject(_prefix__uuid, _prefix_data);
+				DDLStub<CLASS>::GetClass()->DS_UpdateObject(_prefix__uuid, _prefix_data);
 				return true;
 			}
 			return false;
@@ -108,7 +108,7 @@ namespace DDLProxy
 			return Proxy;
 		}
 
-		bool CreateObject(const char* type, const char* data)
+		bool DS_CreateObject(const char* type, const char* data)
 		{
 			BUFFER Buf;
 			_U32 __length;
@@ -125,7 +125,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
 
-		bool RemoveObject(const A_UUID& _uuid)
+		bool DS_RemoveObject(const A_UUID& _uuid)
 		{
 			BUFFER Buf;
 			// <A_UUID> <_uuid> <> <>
@@ -135,7 +135,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
 		}
 
-		bool UpdateObject(const A_UUID& _uuid, const char* data)
+		bool DS_UpdateObject(const A_UUID& _uuid, const char* data)
 		{
 			BUFFER Buf;
 			_U32 __length;
@@ -182,7 +182,7 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->SyncStart();
+				DDLStub<CLASS>::GetClass()->DS_SyncStart();
 				return true;
 			}
 			if(fid==1)
@@ -190,7 +190,7 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->SyncReady();
+				DDLStub<CLASS>::GetClass()->DS_SyncReady();
 				return true;
 			}
 			if(fid==2)
@@ -198,7 +198,7 @@ namespace DDLStub
 
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->SyncDisable();
+				DDLStub<CLASS>::GetClass()->DS_SyncDisable();
 				return true;
 			}
 			if(fid==3)
@@ -209,7 +209,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix__uuid)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->CreateObjectDone(_prefix__uuid);
+				DDLStub<CLASS>::GetClass()->DS_CreateObjectDone(_prefix__uuid);
 				return true;
 			}
 			if(fid==4)
@@ -235,7 +235,7 @@ namespace DDLStub
 				_prefix_data[__length] = '\0';
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->CreateObject(_prefix__uuid, _prefix_type, _prefix_data);
+				DDLStub<CLASS>::GetClass()->DS_CreateObject(_prefix__uuid, _prefix_type, _prefix_data);
 				return true;
 			}
 			if(fid==5)
@@ -246,7 +246,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix__uuid)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->RemoveObject(_prefix__uuid);
+				DDLStub<CLASS>::GetClass()->DS_RemoveObject(_prefix__uuid);
 				return true;
 			}
 			if(fid==6)
@@ -265,7 +265,7 @@ namespace DDLStub
 				_prefix_data[__length] = '\0';
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->UpdateObject(_prefix__uuid, _prefix_data);
+				DDLStub<CLASS>::GetClass()->DS_UpdateObject(_prefix__uuid, _prefix_data);
 				return true;
 			}
 			return false;
@@ -291,7 +291,7 @@ namespace DDLProxy
 			return Proxy;
 		}
 
-		bool SyncStart()
+		bool DS_SyncStart()
 		{
 			BUFFER Buf;
 
@@ -299,7 +299,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
 		}
 
-		bool SyncReady()
+		bool DS_SyncReady()
 		{
 			BUFFER Buf;
 
@@ -307,7 +307,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
 		}
 
-		bool SyncDisable()
+		bool DS_SyncDisable()
 		{
 			BUFFER Buf;
 
@@ -315,7 +315,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
 		}
 
-		bool CreateObjectDone(const A_UUID& _uuid)
+		bool DS_CreateObjectDone(const A_UUID& _uuid)
 		{
 			BUFFER Buf;
 			// <A_UUID> <_uuid> <> <>
@@ -325,7 +325,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
 		}
 
-		bool CreateObject(const A_UUID& _uuid, const char* type, const char* data)
+		bool DS_CreateObject(const A_UUID& _uuid, const char* type, const char* data)
 		{
 			BUFFER Buf;
 			_U32 __length;
@@ -344,7 +344,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
 		}
 
-		bool RemoveObject(const A_UUID& _uuid)
+		bool DS_RemoveObject(const A_UUID& _uuid)
 		{
 			BUFFER Buf;
 			// <A_UUID> <_uuid> <> <>
@@ -354,7 +354,7 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
 		}
 
-		bool UpdateObject(const A_UUID& _uuid, const char* data)
+		bool DS_UpdateObject(const A_UUID& _uuid, const char* data)
 		{
 			BUFFER Buf;
 			_U32 __length;

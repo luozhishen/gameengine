@@ -9,20 +9,20 @@ namespace DDLReflect
 {
 	static FIELD_INFO _class_DATASYNC_C2S_fieldinfos[] = 
 	{
-		// 0 CreateObject
+		// 0 DS_CreateObject
 		{TYPE_STRING, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 1 RemoveObject
+		// 1 DS_RemoveObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 UpdateObject
+		// 2 DS_UpdateObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_DATASYNC_C2S_funcinfos[] = 
 	{
-		{"CreateObject", 2, _class_DATASYNC_C2S_fieldinfos+0},
-		{"RemoveObject", 1, _class_DATASYNC_C2S_fieldinfos+2},
-		{"UpdateObject", 2, _class_DATASYNC_C2S_fieldinfos+3},
+		{"DS_CreateObject", 2, _class_DATASYNC_C2S_fieldinfos+0},
+		{"DS_RemoveObject", 1, _class_DATASYNC_C2S_fieldinfos+2},
+		{"DS_UpdateObject", 2, _class_DATASYNC_C2S_fieldinfos+3},
 	};
 	static CLASS_INFO _class_DATASYNC_C2S_info = { 0, "DATASYNC_C2S", 3, _class_DATASYNC_C2S_funcinfos };
 	template<>
@@ -36,30 +36,30 @@ namespace DDLReflect
 {
 	static FIELD_INFO _class_DATASYNC_S2C_fieldinfos[] = 
 	{
-		// 0 SyncStart
-		// 1 SyncReady
-		// 2 SyncDisable
-		// 3 CreateObjectDone
+		// 0 DS_SyncStart
+		// 1 DS_SyncReady
+		// 2 DS_SyncDisable
+		// 3 DS_CreateObjectDone
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 4 CreateObject
+		// 4 DS_CreateObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 RemoveObject
+		// 5 DS_RemoveObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 6 UpdateObject
+		// 6 DS_UpdateObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_DATASYNC_S2C_funcinfos[] = 
 	{
-		{"SyncStart", 0, _class_DATASYNC_S2C_fieldinfos+0},
-		{"SyncReady", 0, _class_DATASYNC_S2C_fieldinfos+0},
-		{"SyncDisable", 0, _class_DATASYNC_S2C_fieldinfos+0},
-		{"CreateObjectDone", 1, _class_DATASYNC_S2C_fieldinfos+0},
-		{"CreateObject", 3, _class_DATASYNC_S2C_fieldinfos+1},
-		{"RemoveObject", 1, _class_DATASYNC_S2C_fieldinfos+4},
-		{"UpdateObject", 2, _class_DATASYNC_S2C_fieldinfos+5},
+		{"DS_SyncStart", 0, _class_DATASYNC_S2C_fieldinfos+0},
+		{"DS_SyncReady", 0, _class_DATASYNC_S2C_fieldinfos+0},
+		{"DS_SyncDisable", 0, _class_DATASYNC_S2C_fieldinfos+0},
+		{"DS_CreateObjectDone", 1, _class_DATASYNC_S2C_fieldinfos+0},
+		{"DS_CreateObject", 3, _class_DATASYNC_S2C_fieldinfos+1},
+		{"DS_RemoveObject", 1, _class_DATASYNC_S2C_fieldinfos+4},
+		{"DS_UpdateObject", 2, _class_DATASYNC_S2C_fieldinfos+5},
 	};
 	static CLASS_INFO _class_DATASYNC_S2C_info = { 0, "DATASYNC_S2C", 7, _class_DATASYNC_S2C_funcinfos };
 	template<>

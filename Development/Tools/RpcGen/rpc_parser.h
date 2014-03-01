@@ -27,4 +27,3 @@ extern const char* rpcgen_inc_get(unsigned int index);
 extern unsigned int rpcgen_getcount();
 extern const RPC_CLS* rpcgen_get(unsigned int index);
 
-extern unsigned int ZHOUDAN_MODE;

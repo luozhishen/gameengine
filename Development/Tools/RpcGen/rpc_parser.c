@@ -1,3 +1,5 @@
+#define _CRT_NONSTDC_NO_WARNINGS
+
 #include <string.h>
 #include <stdio.h>
 #include "rpc_parser.h"
@@ -13,8 +15,6 @@ static const char* parse_int(const char* buf);
 static const char* parse_inc(const char* buf);
 static const char* parse_arg(const char* buf);
 static const char* parse_cmd(const char* buf);
-
-unsigned int ZHOUDAN_MODE = 1;
 
 const char* get_token_char(const char* buf, char c)
 {

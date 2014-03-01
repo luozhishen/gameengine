@@ -68,7 +68,8 @@
 	#endif
 
 	#ifdef _FREEBSD
-		#include "unix/freebsd.c #include "unix/kqueue.c"
+		#include "unix/freebsd.c"
+		#include "unix/kqueue.c"
 	#endif
 
 	#ifdef _LINUX
@@ -80,11 +81,13 @@
 	#endif
 
 	#ifdef _NETBSD
-		#include "unix/kqueue.c #include "unix/netbsd.c"
+		#include "unix/kqueue.c"
+		#include "unix/netbsd.c"
 	#endif
 
 	#ifdef _OPENBSD
-		#include "unix/kqueue.c #include "unix/openbsd.c"
+		#include "unix/kqueue.c"
+		#include "unix/openbsd.c"
 	#endif
 
 	#ifdef _SUNOS

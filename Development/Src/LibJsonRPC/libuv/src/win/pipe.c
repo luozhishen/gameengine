@@ -33,10 +33,10 @@
 
 
 /* A zero-size buffer for use by uv_pipe_read */
-static char uv_zero_[] = "";
+extern char uv_zero_[1];
 
 /* Null uv_buf_t */
-static const uv_buf_t uv_null_buf_ = { 0, NULL };
+extern const uv_buf_t uv_null_buf_;
 
 /* The timeout that the pipe will wait for the remote end to write data */
 /* when the local ends wants to shut it down. */

@@ -43,7 +43,7 @@ const unsigned int uv_active_tcp_streams_threshold = 0;
 const unsigned int uv_simultaneous_server_accepts = 32;
 
 /* A zero-size buffer for use by uv_tcp_read */
-static char uv_zero_[] = "";
+extern char uv_zero_[1];
 
 static int uv__tcp_nodelay(uv_tcp_t* handle, SOCKET socket, int enable) {
   if (setsockopt(socket,

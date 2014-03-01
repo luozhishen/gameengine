@@ -13,82 +13,10 @@
     <ClCompile Include="libuv\src\fs-poll.c">
       <Filter>libuv\sources</Filter>
     </ClCompile>
-    <ClCompile Include="libuv\src\win\loop-watcher.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\pipe.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\poll.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\process.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\process-stdio.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\req.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\signal.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\stream.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\tcp.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\thread.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\threadpool.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\timer.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\tty.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\udp.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\util.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\winapi.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\winsock.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\async.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\core.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\dl.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\error.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\fs.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\fs-event.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\getaddrinfo.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
-    <ClCompile Include="libuv\src\win\handle.c">
-      <Filter>libuv\windows</Filter>
-    </ClCompile>
     <ClCompile Include="JsonRPC.cpp" />
+    <ClCompile Include="libuv\src\os.c">
+      <Filter>libuv\sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libuv\include\uv-bsd.h">
@@ -130,27 +58,6 @@
     <ClInclude Include="libuv\src\uv-common.h">
       <Filter>libuv\sources</Filter>
     </ClInclude>
-    <ClInclude Include="libuv\src\win\internal.h">
-      <Filter>libuv\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="libuv\src\win\req-inl.h">
-      <Filter>libuv\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="libuv\src\win\stream-inl.h">
-      <Filter>libuv\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="libuv\src\win\winapi.h">
-      <Filter>libuv\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="libuv\src\win\winsock.h">
-      <Filter>libuv\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="libuv\src\win\atomicops-inl.h">
-      <Filter>libuv\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="libuv\src\win\handle-inl.h">
-      <Filter>libuv\windows</Filter>
-    </ClInclude>
     <ClInclude Include="JsonRPC.h" />
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +69,6 @@
     </Filter>
     <Filter Include="libuv\sources">
       <UniqueIdentifier>{dc9c6491-780c-49a2-8863-38c87a4e503b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="libuv\windows">
-      <UniqueIdentifier>{5ad4ef18-7735-4ef5-bc8c-cacb05ae86e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

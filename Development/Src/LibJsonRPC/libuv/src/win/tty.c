@@ -52,8 +52,7 @@ static void uv_tty_update_virtual_window(CONSOLE_SCREEN_BUFFER_INFO* info);
 
 
 /* Null uv_buf_t */
-static const uv_buf_t uv_null_buf_ = { 0, NULL };
-
+extern const uv_buf_t uv_null_buf_;
 
 /*
  * The console virtual window.

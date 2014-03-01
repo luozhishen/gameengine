@@ -355,7 +355,7 @@ int bsdiff(u_char* old, off_t oldsize, u_char* newp, off_t newsize, FILE* pf)
 		printf("ftello");
 		goto error;
 	}
-	offtout(len-32-offset, header + 8);
+	offtout((off_t)(len-32-offset), header + 8);
 	printf("--ctrl data %d %d %d\n", len-32-offset, nbytes_in, nbytes_out);
 
 	/* Write compressed diff data */
@@ -407,7 +407,7 @@ int bsdiff(u_char* old, off_t oldsize, u_char* newp, off_t newsize, FILE* pf)
 	printf("--total %d\n", len - offset);
 
 	/* Seek to the beginning, write the header, and close the file */
-	if (fseek(pf, 0+offset, SEEK_SET)) {
+	if (fseek(pf, (long)(0+offset), SEEK_SET)) {
 		printf("fseeko");
 		goto error;
 	}

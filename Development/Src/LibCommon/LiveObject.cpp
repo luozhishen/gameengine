@@ -51,48 +51,115 @@ namespace Zion
 		{
 		}
 
+		CLiveObject* CLiveManager::Append(const DDLReflect::STRUCT_INFO* pInfo)
+		{
+			A_UUID _uuid;
+			AUuidGenerate(_uuid);
+			if(m_ObjMap.find(_uuid)==m_ObjMap.end())
+			{
+				ZION_ASSERT(!"live object generate duplicate uuid");
+				return NULL;
+			}
+
+			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
+			data->_uuid = _uuid;
+			CLiveObject* obj = ZION_NEW CLiveObject(this, pInfo, data);
+			m_ObjMap[data->_uuid] = obj;
+			m_NewList.insert(data->_uuid);
+			return NULL;
+		}
+
+		CLiveObject* CLiveManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
+		{
+			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
+			DDL::MemoryReader reader(buf, len);
+			if(!pInfo->read_proc(reader, data))
+			{
+				ZION_ASSERT(!"live object serialize binary error");
+				DDLReflect::DestoryObject(pInfo, data);
+				return NULL;
+			}
+
+			if(m_ObjMap.find(data->_uuid)==m_ObjMap.end())
+			{
+				ZION_ASSERT(!"live object alread existed");
+				DDLReflect::DestoryObject(pInfo, data);
+				return NULL;
+			}
+
+			CLiveObject* obj = ZION_NEW CLiveObject(this, pInfo, data);
+			obj->Clean();
+			m_ObjMap[data->_uuid] = obj;
+			m_NewList.insert(data->_uuid);
+			return NULL;
+		}
+
+		CLiveObject* CLiveManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
+		{
+			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
+			String val(str);
+			if(!DDLReflect::Struct2Json(pInfo, (_U8*)data, val))
+			{
+				ZION_ASSERT(!"live object serialize json error");
+				DDLReflect::DestoryObject(pInfo, data);
+				return NULL;
+			}
+
+			if(m_ObjMap.find(data->_uuid)==m_ObjMap.end())
+			{
+				ZION_ASSERT(!"live object alread existed");
+				DDLReflect::DestoryObject(pInfo, data);
+				return NULL;
+			}
+
+			CLiveObject* obj = ZION_NEW CLiveObject(this, pInfo, data);
+			obj->Clean();
+			m_ObjMap[data->_uuid] = obj;
+			m_NewList.insert(data->_uuid);
+			return NULL;
+		}
+
+		void CLiveManager::Remove(const A_UUID& _uuid)
+		{
+			Map<A_UUID, CLiveObject*>::iterator o = m_ObjMap.find(_uuid);
+			if(o==m_ObjMap.end())
+			{
+				ZION_ASSERT(!"object not found");
+				return;
+			}
+			m_ObjMap.erase(o);
+
+			Set<A_UUID>::iterator n = m_NewList.find(_uuid);
+			if(n!=m_NewList.end())
+			{
+				m_NewList.erase(n);
+			}
+			else
+			{
+				n = m_DelList.find(_uuid);
+				if(n!=m_DelList.end())
+				{
+					m_NewList.erase(n);
+				}
+			}
+		}
+
 		CLiveObject* CLiveManager::Get(const A_UUID& _uuid)
+		{
+			Map<A_UUID, CLiveObject*>::iterator o = m_ObjMap.find(_uuid);
+			if(o==m_ObjMap.end()) return NULL;
+			return o->second;
+		}
+
+		CLiveObject* CLiveManager::FindFirst()
 		{
 			return NULL;
 		}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		CLiveObject* CLiveManager::FindNext()
+		{
+			return NULL;
+		}
 
 		static Zion::Map<Zion::String, std::pair<int, const DDLReflect::STRUCT_INFO*> > g_type_map;
 		static Zion::Map<_U16, const DDLReflect::STRUCT_INFO*> g_typeid_map;

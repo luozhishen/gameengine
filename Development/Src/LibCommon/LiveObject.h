@@ -42,11 +42,19 @@ namespace Zion
 		public:
 			CLiveManager();
 
+			CLiveObject* Append(const DDLReflect::STRUCT_INFO* pInfo);
+			CLiveObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* data, _U32 len);
+			CLiveObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const char* data);
+			void Remove(const A_UUID& _uuid);
+
 			CLiveObject* Get(const A_UUID& _uuid);
+			CLiveObject* FindFirst();
+			CLiveObject* FindNext();
 
 		protected:
 			Map<A_UUID, CLiveObject*> m_ObjMap;
-			List<A_UUID> m_DelList;
+			Set<A_UUID> m_DelList;
+			Set<A_UUID> m_NewList;
 		};
 
 		bool Register(const DDLReflect::STRUCT_INFO* info);

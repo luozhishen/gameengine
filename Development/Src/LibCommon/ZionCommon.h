@@ -1,9 +1,9 @@
 #ifndef __ZION_COMMON__
 #define __ZION_COMMON__
 
+#include "CommonDDL.h"
 #include "ContentObject.h"
 #include "LiveObject.h"
-#include "CommonDDL.h"
 
 namespace Zion
 {

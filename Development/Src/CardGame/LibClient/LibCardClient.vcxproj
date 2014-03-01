@@ -41,14 +41,14 @@ node.exe GenCode.js &gt; CardClient_AutoGen.h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gen CardClient_AutoGen.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gen CardClient_AutoGen.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CardClient_AutoGen.h</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\LibCardCommon\CardGameDDL.h</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\LibCommon\CardGameDDL.h</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gen CardClient_AutoGen.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CardClient_AutoGen.h</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\LibCardCommon\CardGameDDL.h</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\LibCardCommon\CardGameDDL.h</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\LibCommon\CardGameDDL.h</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\LibCommon\CardGameDDL.h</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gen CardClient_AutoGen.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CardClient_AutoGen.h</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\LibCardCommon\CardGameDDL.h</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\LibCommon\CardGameDDL.h</AdditionalInputs>
     </CustomBuild>
   </ItemGroup>
   <PropertyGroup Label="Globals">

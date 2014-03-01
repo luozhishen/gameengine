@@ -1,7 +1,6 @@
 #include <ZionBase.h>
-
-#include "ContentObject.h"
 #include "CommonDDL.h"
+#include "ContentObject.h"
 
 #include <map>
 #include <string>

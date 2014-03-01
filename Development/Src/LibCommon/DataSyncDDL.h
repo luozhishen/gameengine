@@ -27,7 +27,7 @@ namespace DDLStub
 
 		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
 		{
-			return DDLReflect::GetClass<DATASYNC_C2S>();
+			return DDLReflect::GetClass<::DATASYNC_C2S>();
 		}
 		
 		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
@@ -172,7 +172,7 @@ namespace DDLStub
 
 		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
 		{
-			return DDLReflect::GetClass<DATASYNC_S2C>();
+			return DDLReflect::GetClass<::DATASYNC_S2C>();
 		}
 		
 		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)

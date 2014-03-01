@@ -1,8 +1,6 @@
 #ifndef __ZION_CONTENT_DB_API__
 #define __ZION_CONTENT_DB_API__
 
-struct A_CONTENT_OBJECT;
-
 namespace Zion
 {
 	namespace ContentObject

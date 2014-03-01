@@ -863,7 +863,7 @@ namespace DDLReflect
 				}
 				break;
 			case TYPE_STRUCT:
-				if(!Struct2Json(finfo->sinfo, str)) return false;
+				if(!Struct2Json(finfo->sinfo, (const _U8*)data, str)) return false;
 				break;
 			}
 		}

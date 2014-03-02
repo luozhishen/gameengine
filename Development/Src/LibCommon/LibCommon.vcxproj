@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConfusedNumber.cpp" />
     <ClCompile Include="DataSyncDDL.cpp" />
     <ClCompile Include="ZionCommon.cpp" />
     <ClCompile Include="CommonDDL.cpp" />
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataSyncDDL.h" />
+    <ClInclude Include="ConfusedNumber.h" />
     <ClInclude Include="ZionCommon.h" />
     <ClInclude Include="CommonDDL.h" />
     <ClInclude Include="ContentObject.h" />

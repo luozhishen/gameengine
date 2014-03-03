@@ -11,7 +11,7 @@ namespace Zion
 
 	CCardClient::CCardClient(CClientApp* pClientApp, _U32 recvsize) : CClient(pClientApp, recvsize), c2s(this)
 	{
-		RegisterStub(new DDLStub::CARDGAME_S2C<CCardClient>(this));
+		RegisterStub(&s2c);
 	}	
 
 	CCardClient::~CCardClient()

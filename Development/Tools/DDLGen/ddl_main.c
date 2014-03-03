@@ -171,7 +171,20 @@ static int code_task(const DDL_TASK* task)
 			printf("not found");
 			return 0;
 		}
-		if(!ddlgen_code_task_class_server(cls, task)) {
+		if(!ddlgen_code_task_class_stub(cls, task)) {
+			return 0;
+		}
+		return 1;
+	}
+
+	if(strcmp(task->type, "GEN_CLASS_SIGSLOT")==0) {
+		const DDL_CLS* cls;
+		cls = ddlgen_class(task->name);
+		if(!cls) {
+			printf("not found");
+			return 0;
+		}
+		if(!ddlgen_code_task_class_stub_sigslot(cls, task)) {
 			return 0;
 		}
 		return 1;
@@ -184,7 +197,7 @@ static int code_task(const DDL_TASK* task)
 			printf("not found");
 			return 0;
 		}
-		if(!ddlgen_code_task_class_client(cls, task)) {
+		if(!ddlgen_code_task_class_prox(cls, task)) {
 			return 0;
 		}
 		return 1;

@@ -235,16 +235,12 @@ namespace DDLStub
 			}
 			if(fid==2)
 			{
-
-
 				// call implement
 				DDLStub<CLASS>::GetClass()->DS_SyncReady();
 				return true;
 			}
 			if(fid==3)
 			{
-
-
 				// call implement
 				DDLStub<CLASS>::GetClass()->DS_SyncClose();
 				return true;
@@ -646,16 +642,12 @@ namespace DDLStub
 			}
 			if(fid==2)
 			{
-
-
 				// call implement
 				DDLStub<CLASS>::GetClass()->DS_SyncReady();
 				return true;
 			}
 			if(fid==3)
 			{
-
-
 				// call implement
 				DDLStub<CLASS>::GetClass()->DS_SyncClose();
 				return true;

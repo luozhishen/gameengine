@@ -25,7 +25,6 @@
   <ItemGroup>
     <ClInclude Include="CardClient.h" />
     <ClInclude Include="CardClientApp.h" />
-    <ClInclude Include="CardClient_AutoGen.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="GenCode.js">

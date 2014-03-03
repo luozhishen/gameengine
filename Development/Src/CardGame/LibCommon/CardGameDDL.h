@@ -135,93 +135,16 @@ class CARDGAME_C2S;
 
 class CARDGAME_S2C;
 
-namespace DDLStub
+namespace DDLReflect
 {
+	template<>
+	const CLASS_INFO* GetClass<CARDGAME_C2S>();
+}
 
-	template<typename CLASS>
-	class CARDGAME_C2S : public DDLStub<CLASS>
-	{
-	public:
-		CARDGAME_C2S(CLASS* Class) : DDLStub<CLASS>(Class)
-		{
-		}
-
-		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
-		{
-			return DDLReflect::GetClass<::CARDGAME_C2S>();
-		}
-		
-		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
-		{
-			if(fid==0)
-			{
-
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->Ping();
-				return true;
-			}
-			if(fid==1)
-			{
-				_U32 _prefix_server_id;
-
-				// <_U32> <server_id> <> <>;
-				if(!Buf.Read(_prefix_server_id)) return false;
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->SelectServer(_prefix_server_id);
-				return true;
-			}
-			if(fid==2)
-			{
-
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->GetAvatarList();
-				return true;
-			}
-			if(fid==3)
-			{
-				_U32 __length;
-				char* _prefix_avatar_name;
-				_U32 _prefix_type;
-
-				// <string> <avatar_name> <> <>;
-				if(!Buf.Read(__length)) return false;
-				_prefix_avatar_name = (char*)alloca(sizeof(_prefix_avatar_name[0])*(__length+1));
-				if(!_prefix_avatar_name) return false;
-				if(!Buf.ReadBuffer(_prefix_avatar_name, (unsigned int)sizeof(_prefix_avatar_name[0])*__length)) return false;
-				_prefix_avatar_name[__length] = '\0';
-				// <_U32> <type> <> <>;
-				if(!Buf.Read(_prefix_type)) return false;
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->CreateAvatar(_prefix_avatar_name, _prefix_type);
-				return true;
-			}
-			if(fid==4)
-			{
-				_U32 _prefix_avatar_id;
-
-				// <_U32> <avatar_id> <> <>;
-				if(!Buf.Read(_prefix_avatar_id)) return false;
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->EnterGame(_prefix_avatar_id);
-				return true;
-			}
-			if(fid==5)
-			{
-
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->LeaveGame();
-				return true;
-			}
-			return false;
-		}
-	};
-
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<CARDGAME_S2C>();
 }
 
 namespace DDLProxy
@@ -303,23 +226,12 @@ namespace DDLProxy
 
 }
 
-namespace DDLReflect
-{
-	template<>
-	const CLASS_INFO* GetClass<CARDGAME_C2S>();
-}
-
-namespace DDLStub
+namespace DDLSigSlot
 {
 
-	template<typename CLASS>
-	class CARDGAME_S2C : public DDLStub<CLASS>
+	class CARDGAME_S2C : public DDLStub::IStub
 	{
 	public:
-		CARDGAME_S2C(CLASS* Class) : DDLStub<CLASS>(Class)
-		{
-		}
-
 		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
 		{
 			return DDLReflect::GetClass<::CARDGAME_S2C>();
@@ -329,10 +241,8 @@ namespace DDLStub
 		{
 			if(fid==0)
 			{
-
-
 				// call implement
-				DDLStub<CLASS>::GetClass()->Pong();
+				_Pong();
 				return true;
 			}
 			if(fid==1)
@@ -353,7 +263,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->GetAvatarListCallback(_prefix_errcode, _prefix_arr, _prefix_count);
+				_GetAvatarListCallback(_prefix_errcode, _prefix_arr, _prefix_count);
 				return true;
 			}
 			if(fid==2)
@@ -364,7 +274,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_errcode)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->CreateAvatarCallback(_prefix_errcode);
+				_CreateAvatarCallback(_prefix_errcode);
 				return true;
 			}
 			if(fid==3)
@@ -375,7 +285,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_errcode)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->EnterGameCallback(_prefix_errcode);
+				_EnterGameCallback(_prefix_errcode);
 				return true;
 			}
 			if(fid==4)
@@ -386,94 +296,19 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_errcode)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->LeaveGameCallback(_prefix_errcode);
+				_LeaveGameCallback(_prefix_errcode);
 				return true;
 			}
 			return false;
 		}
+
+		sigslot::signal0<> _Pong;
+		sigslot::signal3<_U32, CARD_AVATAR_DESC*, _U32> _GetAvatarListCallback;
+		sigslot::signal1<_U32> _CreateAvatarCallback;
+		sigslot::signal1<_U32> _EnterGameCallback;
+		sigslot::signal1<_U32> _LeaveGameCallback;
 	};
 
-}
-
-namespace DDLProxy
-{
-
-	template<typename CLIENT, typename BUFFER>
-	class CARDGAME_S2C : public DDLProxy<CLIENT, BUFFER>
-	{
-	public:
-		CARDGAME_S2C(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::CARDGAME_S2C>())
-		{
-		}
-
-		static CARDGAME_S2C<CLIENT, BUFFER> Get(CLIENT* Client)
-		{
-			CARDGAME_S2C<CLIENT, BUFFER> Proxy(Client);
-			return Proxy;
-		}
-
-		bool Pong()
-		{
-			BUFFER Buf;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
-		}
-
-		bool GetAvatarListCallback(_U32 errcode, const CARD_AVATAR_DESC* arr, _U32 count)
-		{
-			BUFFER Buf;
-			_U32 __length;
-			// <_U32> <errcode> <> <>
-			if(!Buf.Write(errcode)) return false;
-			// <CARD_AVATAR_DESC> <arr> <> <100>
-			__length = (_U16)(100);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(arr, __length)) return false;
-			// <_U32> <count> <> <>
-			if(!Buf.Write(count)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
-		}
-
-		bool CreateAvatarCallback(_U32 errcode)
-		{
-			BUFFER Buf;
-			// <_U32> <errcode> <> <>
-			if(!Buf.Write(errcode)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
-		}
-
-		bool EnterGameCallback(_U32 errcode)
-		{
-			BUFFER Buf;
-			// <_U32> <errcode> <> <>
-			if(!Buf.Write(errcode)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
-		}
-
-		bool LeaveGameCallback(_U32 errcode)
-		{
-			BUFFER Buf;
-			// <_U32> <errcode> <> <>
-			if(!Buf.Write(errcode)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
-		}
-	};
-
-}
-
-namespace DDLReflect
-{
-	template<>
-	const CLASS_INFO* GetClass<CARDGAME_S2C>();
 }
 
 class CARDGAME_OP;

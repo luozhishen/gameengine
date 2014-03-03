@@ -280,7 +280,7 @@ int ddlgen_code_class(const DDL_CLS* cls)
 	return 1;
 }
 
-int ddlgen_code_task_class_server(const DDL_CLS* cls, const DDL_TASK* task)
+int ddlgen_code_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 {
 	unsigned int f, a;
 
@@ -314,7 +314,7 @@ int ddlgen_code_task_class_server(const DDL_CLS* cls, const DDL_TASK* task)
 		for(a=0; a<cls->funs[f].args_count; a++) {
 			OutH(2, "		%s _prefix_%s;\n", get_ctype(&cls->funs[f].args[a], 1), cls->funs[f].args[a].name);
 		}
-		OutH(0, "\n");
+		if(cls->funs[f].args_count>0) OutH(0, "\n");
 		for(a=0; a<cls->funs[f].args_count; a++) {
 			OutH(2, "		// <%s> <%s> <%s> <%s>;\n", cls->funs[f].args[a].type, cls->funs[f].args[a].name, cls->funs[f].args[a].size, cls->funs[f].args[a].count);
 			if(strcmp(cls->funs[f].args[a].type, "string")==0) {
@@ -351,7 +351,7 @@ int ddlgen_code_task_class_server(const DDL_CLS* cls, const DDL_TASK* task)
 			}
 			OutH(2, "		bu ke neng!!!!!!\n");
 		}
-		OutH(0, "\n");
+		if(cls->funs[f].args_count>0) OutH(0, "\n");
 		OutH(1, "			// call implement\n");
 		OutH(1, "			DDLStub<CLASS>::GetClass()->%s(", cls->funs[f].name);
 		for(a=0; a<cls->funs[f].args_count; a++) {
@@ -371,7 +371,102 @@ int ddlgen_code_task_class_server(const DDL_CLS* cls, const DDL_TASK* task)
 	return 1;
 }
 
-int ddlgen_code_task_class_client(const DDL_CLS* cls, const DDL_TASK* task)
+int ddlgen_code_task_class_stub_sigslot(const DDL_CLS* cls, const DDL_TASK* task)
+{
+	unsigned int f, a;
+
+	OutH(0, "namespace DDLSigSlot\n");
+	OutH(0, "{\n");
+	OutH(0, "\n");
+	OutH(0, "	class %s : public DDLStub::IStub\n", cls->name);
+	OutH(0, "	{\n");
+	OutH(0, "	public:\n");
+	OutH(0, "		virtual const DDLReflect::CLASS_INFO* GetClassInfo()\n");
+	OutH(0, "		{\n");
+	OutH(0, "			return DDLReflect::GetClass<::%s>();\n", cls->name);
+	OutH(0, "		}\n");
+	OutH(0, "		\n");
+	OutH(0, "		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)\n");
+	OutH(0, "		{\n");
+	for(f=0; f<cls->funs_count; f++) {
+		OutH(1, "		if(fid==%d)\n", f);
+		OutH(1, "		{\n");
+		for(a=0; a<cls->funs[f].args_count; a++) {
+			if(is_pointer(&cls->funs[f].args[a])) {
+				OutH(3, "	_U32 __length;\n");
+				break;
+			}
+		}
+		for(a=0; a<cls->funs[f].args_count; a++) {
+			OutH(2, "		%s _prefix_%s;\n", get_ctype(&cls->funs[f].args[a], 1), cls->funs[f].args[a].name);
+		}
+		if(cls->funs[f].args_count>0) OutH(0, "\n");
+		for(a=0; a<cls->funs[f].args_count; a++) {
+			OutH(2, "		// <%s> <%s> <%s> <%s>;\n", cls->funs[f].args[a].type, cls->funs[f].args[a].name, cls->funs[f].args[a].size, cls->funs[f].args[a].count);
+			if(strcmp(cls->funs[f].args[a].type, "string")==0) {
+				if(!cls->funs[f].args[a].size[0] && !cls->funs[f].args[a].count[0]) {
+					OutH(3, "	if(!Buf.Read(__length)) return false;\n");
+					OutH(3, "	_prefix_%s = (%s)alloca(sizeof(_prefix_%s[0])*(__length+1));\n", cls->funs[f].args[a].name, get_ctype(&cls->funs[f].args[a], 1), cls->funs[f].args[a].name);
+					OutH(3, "	if(!_prefix_%s) return false;\n", cls->funs[f].args[a].name);
+					OutH(3, "	if(!Buf.ReadBuffer(_prefix_%s, (unsigned int)sizeof(_prefix_%s[0])*__length)) return false;\n", cls->funs[f].args[a].name, cls->funs[f].args[a].name);
+					OutH(3, "	_prefix_%s[__length] = '\\0';\n", cls->funs[f].args[a].name);
+					continue;
+				}
+				if(cls->funs[f].args[a].size[0] && !cls->funs[f].args[a].count[0]) {
+					OutH(3, "	if(!Buf.ReadString(_prefix_%s)) return false;\n", cls->funs[f].args[a].name);
+					continue;
+				}
+				if(cls->funs[f].args[a].size[0] && cls->funs[f].args[a].count[0]) {
+					OutH(3, "	if(!Buf.Read(__length)) return false;\n");
+					OutH(3, "	_prefix_%s = (%s)alloca(sizeof(_prefix_%s[0])*__length);\n", cls->funs[f].args[a].name, get_ctype(&cls->funs[f].args[a], 1), cls->funs[f].args[a].name);
+					OutH(3, "	if(!_prefix_%s) return false;\n", cls->funs[f].args[a].name);
+					OutH(3, "	if(!Buf.ReadStringPointer(_prefix_%s, __length)) return false;\n", cls->funs[f].args[a].name);
+					continue;
+				}
+			} else {
+				if(cls->funs[f].args[a].count[0]=='\0') {
+					OutH(4, "if(!Buf.Read(_prefix_%s)) return false;\n", cls->funs[f].args[a].name);
+					continue;
+				} else {
+					OutH(4, "if(!Buf.Read(__length)) return false;\n");
+					OutH(4, "_prefix_%s = (%s)alloca(sizeof(_prefix_%s[0])*__length);\n", cls->funs[f].args[a].name, get_ctype(&cls->funs[f].args[a], 1), cls->funs[f].args[a].name);
+					OutH(4, "if(!_prefix_%s) return false;\n", cls->funs[f].args[a].name);
+					OutH(4, "if(!Buf.ReadPointer(_prefix_%s, __length)) return false;\n", cls->funs[f].args[a].name);
+					continue;
+				}
+			}
+			OutH(2, "		bu ke neng!!!!!!\n");
+		}
+		if(cls->funs[f].args_count>0) OutH(0, "\n");
+		OutH(1, "			// call implement\n");
+		OutH(1, "			_%s(", cls->funs[f].name);
+		for(a=0; a<cls->funs[f].args_count; a++) {
+			if(a>0) OutH(0,  ", ");
+			OutH(0,  "_prefix_%s", cls->funs[f].args[a].name);
+		}
+		OutH(0, ");\n");
+		OutH(1, "			return true;\n");
+		OutH(1, "		}\n");
+	}
+	OutH(0, "			return false;\n");
+	OutH(0, "		}\n");
+	OutH(0, "\n");
+	for(f=0; f<cls->funs_count; f++) {
+		OutH(2, "sigslot::signal%d<", cls->funs[f].args_count);
+		for(a=0; a<cls->funs[f].args_count; a++) {
+			if(a>0) OutH(0, ", ");
+			OutH(0, "%s", get_ctype(&cls->funs[f].args[a], 1));
+		}
+		OutH(0, "> _%s;\n", cls->funs[f].name);
+	}
+	OutH(0, "	};\n");
+	OutH(0, "\n");
+	OutH(0, "}\n");
+	OutH(0, "\n");
+	return 1;
+}
+
+int ddlgen_code_task_class_prox(const DDL_CLS* cls, const DDL_TASK* task)
 {
 	unsigned int f, a;
 

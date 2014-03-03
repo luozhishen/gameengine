@@ -37,22 +37,20 @@ namespace Zion
 		void DS_RemoveObjects(const A_UUID* _uuids, _U32 count);
 
 	private:
+		struct OBJECT_ADDITEM
+		{
+			A_LIVE_OBJECT*					obj;
+			const DDLReflect::STRUCT_INFO*	info;
+		};
+
 		void ClearQueue();
 
 		LiveObject::CManager m_Manager;
 		_U32 m_Flag;
 		bool m_bReady;
-		struct
-		{
-			List<A_LIVE_OBJECT*>					objs;
-			List<const DDLReflect::STRUCT_INFO*>	infos;
-		} m_NewQ;
-		struct
-		{
-			List<A_LIVE_OBJECT*>					objs;
-			List<const DDLReflect::STRUCT_INFO*>	infos;
-		} m_WatQ;
-		Set<A_UUID> m_DelList;
+		List<OBJECT_ADDITEM> m_NewQ;
+		List<OBJECT_ADDITEM> m_WatQ;
+		Array<A_UUID> m_DelList;
 		DDLProxy::DATASYNC_BINARY_C2S<CClient, DDL::TMemoryWriter<1024>> m_Binary;
 		DDLProxy::DATASYNC_JSON_C2S<CClient, DDL::TMemoryWriter<1024>> m_Json;
 	};

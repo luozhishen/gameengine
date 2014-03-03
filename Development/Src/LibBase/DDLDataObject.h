@@ -19,7 +19,7 @@ namespace DDLDataObject
 	{
 	public:
 		CConstObject();
-		CConstObject(const DDLReflect::STRUCT_INFO* info, void* data);
+		CConstObject(const DDLReflect::STRUCT_INFO* info, void* data, _U32 offset);
 		CConstObject(const CConstObject* pObject);
 		CConstObject(const CObject* pObject);
 		CConstObject Ref(const char* name) const;
@@ -35,7 +35,7 @@ namespace DDLDataObject
 			ZION_ASSERT(offset!=(_U32)-1);
 			ZION_ASSERT(cinfo.type==finfo.type || (cinfo.type==DDLReflect::TYPE_UUID && finfo.type==DDLReflect::TYPE_UUID_REF));
 			ZION_ASSERT(cinfo.sinfo==finfo.sinfo);
-			return *((T*)((char*)m_pData + offset));
+			return *((T*)((char*)m_pData + m_Offset + offset));
 		}
 
 		
@@ -46,7 +46,7 @@ namespace DDLDataObject
 			offset = DDLReflect::GetStructFieldOffset(m_pInfo, name, &finfo);
 			ZION_ASSERT(offset!=(_U32)-1);
 			ZION_ASSERT(finfo.type==DDLReflect::TYPE_STRING);
-			return (char*)m_pData + offset;
+			return (char*)m_pData + m_Offset + offset;
 		}
 		
 		template<typename T>
@@ -55,6 +55,9 @@ namespace DDLDataObject
 			ZionString n = Zion::StringFormat("%s[%d]", name, index);
 			return Get(n.c_str(), name);
 		}
+
+		const void* GetData();
+		const DDLReflect::STRUCT_INFO* GetStructInfo();
 
 	protected:
 		_U32 m_Offset;
@@ -66,9 +69,9 @@ namespace DDLDataObject
 	{
 	public:
 		CObject();
-		CObject(const DDLReflect::STRUCT_INFO* info, void* data, IMonitor* pMonitor, const char* name, _U32 offset);
-		CObject(const DDLReflect::STRUCT_INFO* info, void* data, IMonitor* pMonitor, const Zion::String& name, _U32 offset);
-		CObject(const DDLReflect::STRUCT_INFO* info, void* data);
+		CObject(IMonitor* pMonitor, const DDLReflect::STRUCT_INFO* info, void* data, const char* name, _U32 offset);
+		CObject(IMonitor* pMonitor, const DDLReflect::STRUCT_INFO* info, void* data, const Zion::String& name, _U32 offset);
+		CObject(const DDLReflect::STRUCT_INFO* info, void* data, _U32 offset);
 		CObject(const CObject* pObject);
 		const CObject Ref(const char* name);
 
@@ -155,10 +158,11 @@ namespace DDLDataObject
 			Set(n.c_str(), name);
 		}
 
+		void* GetData();
+
 	private:
 		IMonitor* m_pMonitor;
 		Zion::String m_Name;
-		_U32 m_Offset;
 	};
 
 }

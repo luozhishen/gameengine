@@ -25,6 +25,42 @@ A_LIVE_OBJECT.serialize = function(v) {
 }
 module.exports.A_LIVE_OBJECT = A_LIVE_OBJECT;
 
+function A_CONFUSED_NUMBER() {
+	this.value = 0;
+	this.mask = 0;
+	this.__proto__ = A_CONFUSED_NUMBER;
+}
+A_CONFUSED_NUMBER.serialize = function(v) {
+	this.value = parseInt(v['value']);
+	if(this.value<0) return false;
+	this.mask = parseInt(v['mask']);
+	if(this.mask<0) return false;
+	return true;
+}
+module.exports.A_CONFUSED_NUMBER = A_CONFUSED_NUMBER;
+
+function A_CONFUSED_INT() {
+	A_CONFUSED_NUMBER.call(this);
+	this.__proto__ = A_CONFUSED_INT;
+}
+A_CONFUSED_INT.serialize = function(v) {
+	if(!A_CONFUSED_NUMBER.serialize.call(this)) return false;
+	return true;
+}
+A_CONFUSED_INT.prototype = A_CONFUSED_NUMBER;
+module.exports.A_CONFUSED_INT = A_CONFUSED_INT;
+
+function A_CONFUSED_FLOAT() {
+	A_CONFUSED_NUMBER.call(this);
+	this.__proto__ = A_CONFUSED_FLOAT;
+}
+A_CONFUSED_FLOAT.serialize = function(v) {
+	if(!A_CONFUSED_NUMBER.serialize.call(this)) return false;
+	return true;
+}
+A_CONFUSED_FLOAT.prototype = A_CONFUSED_NUMBER;
+module.exports.A_CONFUSED_FLOAT = A_CONFUSED_FLOAT;
+
 function CARD_AVATAR_OPERATOR() {
 	A_CONTENT_OBJECT.call(this);
 	this.__proto__ = CARD_AVATAR_OPERATOR;

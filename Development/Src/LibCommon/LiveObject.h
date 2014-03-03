@@ -47,10 +47,11 @@ namespace Zion
 			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* data, _U32 len);
 			CObject* Append(const DDLReflect::STRUCT_INFO* pInfo, const char* data);
 			bool Remove(const A_UUID& _uuid);
+			void Clear();
 
 			CObject* Get(const A_UUID& _uuid);
 			CObject* FindFirst();
-			CObject* FindNext();
+			CObject* FindNext(CObject* obj);
 
 		protected:
 			Map<A_UUID, CObject*> m_ObjMap;

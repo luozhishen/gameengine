@@ -25,24 +25,21 @@ namespace Zion
 
 		A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 		if(!data) return NULL;
-		m_NewQ.objs.push_back(data);
-		m_NewQ.infos.push_back(pInfo);
-		return NULL;
+		OBJECT_ADDITEM item = {data, pInfo};
+		m_NewQ.push_back(item);
+		return data;
 	}
 
 	bool CDataSyncClient::RemoveObject(const A_UUID& _uuid)
 	{
 		if((m_Flag&SYNCFLAG_CLIENT_ACTIVE)==0) return false;
 
-		if(m_Manager.Remove(_uuid))
-		{
-			m_DelList.insert(_uuid);
-			return true;
-		}
-		else
+		if(!m_Manager.Remove(_uuid))
 		{
 			return false;
 		}
+		m_DelList.push_back(_uuid);
+		return true;
 	}
 
 	LiveObject::CObject* CDataSyncClient::GetObject(const A_UUID& _uuid)
@@ -52,36 +49,96 @@ namespace Zion
 
 	void CDataSyncClient::Sync()
 	{
-/*
-		while(!m_NewQ.objs.empty())
+		while(!m_NewQ.empty())
 		{
-			DDLReflect::DestoryObject(m_NewQ.infos.front(), m_NewQ.objs.front());
-			m_NewQ.objs.pop_front();
-			m_NewQ.infos.pop_front();
-		}
-		while(!m_WatQ.objs.empty())
-		{
-			DDLReflect::DestoryObject(m_WatQ.infos.front(), m_WatQ.objs.front());
-			m_WatQ.objs.pop_front();
-			m_WatQ.infos.pop_front();
+			OBJECT_ADDITEM& item = m_NewQ.front();
+			switch((m_Flag&SYNCFLAG_MODEMASK))
+			{
+			case SYNCFLAG_BINARY:
+				{
+					DDL::TMemoryWriter<1024> buf;
+					if(!item.info->write_proc(buf, item.obj))
+					{
+						ZION_ASSERT(0);
+						return;
+					}
+					m_Binary.DS_CreateObject(LiveObject::GetTypeId(item.info->name), buf.GetBuf(), buf.GetSize());
+				}
+				break;
+			case SYNCFLAG_JSON:
+				{
+					String json;
+					if(!DDLReflect::Struct2Json(m_NewQ.front().info, (const _U8*)item.obj, json))
+					{
+						ZION_ASSERT(0);
+						return;
+					}
+					m_Json.DS_CreateObject(item.info->name, json.c_str());
+				}
+				break;
+			};
+			m_WatQ.push_back(item);
+			m_NewQ.pop_front();
 		}
 
-		if((m_Flag&SYNCFLAG_MODEMASK)==SYNCFLAG_BINARY)
+		if(!m_DelList.empty())
 		{
-			DDL::TMemoryWriter<1024> buf;
-			m_Binary.DS_CreateObject(LiveObject::GetTypeId(pInfo->name), buf.GetBuf(), buf.GetSize();
+			switch((m_Flag&SYNCFLAG_MODEMASK))
+			{
+			case SYNCFLAG_BINARY:
+				m_Binary.DS_RemoveObjects(&m_DelList[0], (_U32)m_DelList.size());
+				break;
+			case SYNCFLAG_JSON:
+				m_Json.DS_RemoveObjects(&m_DelList[0], (_U32)m_DelList.size());
+				break;
+			}
+			m_DelList.clear();
 		}
-		else
+
+		LiveObject::CObject* obj = m_Manager.FindFirst();
+		while(obj)
 		{
-			String json;
-			m_Json.DS_CreateObject(pInfo->name, json.c_str());
+			if(!obj->IsDirty())
+			{
+				obj = m_Manager.FindNext(obj);
+				continue;
+			}
+
+			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)obj->GetData();
+
+			switch((m_Flag&SYNCFLAG_MODEMASK))
+			{
+			case SYNCFLAG_BINARY:
+				{
+					DDL::TMemoryWriter<1024> buf;
+					if(!obj->GetStructInfo()->write_proc(buf, data))
+					{
+						ZION_ASSERT(0);
+						return;
+					}
+					m_Binary.DS_UpdateObject(data->_uuid, buf.GetBuf(), buf.GetSize());
+				}
+				break;
+			case SYNCFLAG_JSON:
+				{
+					String json;
+					if(!DDLReflect::Struct2Json(obj->GetStructInfo(), (const _U8*)obj->GetData(), json))
+					{
+						ZION_ASSERT(0);
+						return;
+					}
+					m_Json.DS_UpdateObject(data->_uuid, json.c_str());
+				}
+				break;
+			}
+
+			obj = m_Manager.FindNext(obj);
 		}
-*/
 	}
 
 	bool CDataSyncClient::InProcess()
 	{
-		return m_Flag==0 || !m_bReady || !m_NewQ.objs.empty() || !m_WatQ.objs.empty();
+		return m_Flag==0 || !m_bReady || !m_WatQ.empty();
 	}
 
 	void CDataSyncClient::DS_SyncOpen(_U32 flag)
@@ -108,17 +165,16 @@ namespace Zion
 
 	void CDataSyncClient::DS_CreateObjectDone(const A_UUID& _uuid)
 	{
-		if(m_WatQ.objs.empty() || m_WatQ.infos.empty())
+		if(m_WatQ.empty())
 		{
 			ZION_ASSERT("invalid function call");
 			return;
 		}
 
-		const DDLReflect::STRUCT_INFO* _info = m_WatQ.infos.front();
-		A_LIVE_OBJECT* _obj = m_WatQ.objs.front();
+		const DDLReflect::STRUCT_INFO* _info = m_WatQ.front().info;
+		A_LIVE_OBJECT* _obj = m_WatQ.front().obj;
 		_obj->_uuid = _uuid;
-		m_WatQ.infos.pop_front();
-		m_WatQ.objs.pop_front();
+		m_WatQ.pop_front();
 		if(!m_Manager.Append(_info, _obj))
 		{
 			DDLReflect::DestoryObject(_info, _obj);
@@ -168,19 +224,20 @@ namespace Zion
 
 	void CDataSyncClient::ClearQueue()
 	{
-		while(!m_NewQ.objs.empty())
+		while(!m_NewQ.empty())
 		{
-			DDLReflect::DestoryObject(m_NewQ.infos.front(), m_NewQ.objs.front());
-			m_NewQ.objs.pop_front();
-			m_NewQ.infos.pop_front();
+			DDLReflect::DestoryObject(m_NewQ.front().info, m_NewQ.front().obj);
+			m_NewQ.pop_front();
 		}
 
-		while(!m_WatQ.objs.empty())
+		while(!m_WatQ.empty())
 		{
-			DDLReflect::DestoryObject(m_WatQ.infos.front(), m_WatQ.objs.front());
-			m_WatQ.objs.pop_front();
-			m_WatQ.infos.pop_front();
+			DDLReflect::DestoryObject(m_WatQ.front().info, m_WatQ.front().obj);
+			m_WatQ.pop_front();
 		}
+
+		m_DelList.clear();
+		m_Manager.Clear();
 	}
 
 }

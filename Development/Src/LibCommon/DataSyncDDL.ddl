@@ -17,7 +17,7 @@ class DATASYNC_JSON_C2S
 class DATASYNC_BINARY_C2S
 {
 	DS_CreateObject(_U16 type, _U8 buf[len], _U32 len);
-	DS_UpdateObject(A_UUID _uuid, string data);
+	DS_UpdateObject(A_UUID _uuid, _U8 buf[len], _U32 len);
 	DS_RemoveObjects(A_UUID _uuid[count], _U32 count);
 };
 

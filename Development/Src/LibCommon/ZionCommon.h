@@ -5,7 +5,7 @@
 #include "ContentObject.h"
 #include "LiveObject.h"
 #include "LiveData.h"
-#include "DDLDispatcher.h"
+#include "StubDispatcher.h"
 
 namespace Zion
 {

@@ -2,6 +2,7 @@
 #define __ZION_CLIENT_DATASYNC__
 
 #include <DataSyncDDL.h>
+#include <LiveAccesser.h>
 
 namespace Zion
 {
@@ -25,7 +26,11 @@ namespace Zion
 		void Sync();
 		bool InProcess();
 
+		//
+		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf);
+
 		// DATASYNC_S2C
+		void DS_SetMode(_U32 mode);
 		void DS_SyncOpen(_U32 flag);
 		void DS_SyncReady();
 		void DS_SyncClose();
@@ -46,6 +51,7 @@ namespace Zion
 		void Clear();
 
 		LiveData::CManager m_Manager;
+		_U32 m_Mode;
 		_U32 m_Flag;
 		bool m_bReady;
 		List<OBJECT_ADDITEM> m_NewQ;
@@ -53,6 +59,7 @@ namespace Zion
 		Array<A_UUID> m_DelList;
 		DDLProxy::DATASYNC_BINARY_C2S<CClient, DDL::TMemoryWriter<1024>> m_Binary;
 		DDLProxy::DATASYNC_JSON_C2S<CClient, DDL::TMemoryWriter<1024>> m_Json;
+		LiveData::CAccesser* m_pAccesser;
 	};
 
 }

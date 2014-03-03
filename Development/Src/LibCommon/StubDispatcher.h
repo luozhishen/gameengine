@@ -1,13 +1,13 @@
-#ifndef __ZION_DDL_DISPATCHER__
-#define __ZION_DDL_DISPATCHER__
+#ifndef __ZION_STUB_DISPATCHER__
+#define __ZION_STUB_DISPATCHER__
 
 namespace Zion
 {
 
-	class CDDLDispatcher
+	class CStubDispatcher
 	{
 	public:
-		CDDLDispatcher();
+		CStubDispatcher();
 
 		bool HasStub(_U16 iid);
 		void RegisterStub(_U16 iid, DDLStub::IStub* pStub);

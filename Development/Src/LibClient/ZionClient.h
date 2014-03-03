@@ -22,7 +22,7 @@ namespace Zion
 	class CClientLoginMethod;
 	class CDataSyncClient;
 
-	class CClient : public CNoCopy, private CDDLDispatcher
+	class CClient : public CNoCopy, private CStubDispatcher
 	{
 		friend class CClientApp;
 		friend class CStressClient;
@@ -75,10 +75,10 @@ namespace Zion
 		/*virtual*/ void OnDisconnected();
 		/*virtual*/ void OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 		void SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
-		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf)
+		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& buf)
 		{
 			ZION_ASSERT(iid<256 && fid<256);
-			SendData(iid, fid, Buf.GetSize(), Buf.GetBuf());
+			SendData(iid, fid, buf.GetSize(), buf.GetBuf());
 			return true;
 		}
 

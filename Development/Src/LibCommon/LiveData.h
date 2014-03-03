@@ -6,20 +6,9 @@ namespace Zion
 	namespace LiveData
 	{
 
+		class CMonitor;
 		class CObject;
 		class CManager;
-
-		class CDataAccesser
-		{
-		public:
-			CDataAccesser();
-
-			void InitRandom(_U32 seed);
-			_F32 Rand(); // return 0~1.0
-
-		private:
-			_U32 m_LastNum;
-		};
 
 		class CMonitor : public DDLDataObject::IMonitor
 		{

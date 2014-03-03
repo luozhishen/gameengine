@@ -10,6 +10,7 @@ namespace Zion
 	{
 		pClient->RegisterStub(new DDLStub::DATASYNC_BINARY_S2C<CDataSyncClient>(this));
 		pClient->RegisterStub(new DDLStub::DATASYNC_JSON_S2C<CDataSyncClient>(this));
+		m_Mode = SYNCMODE_NONE;
 		m_Flag = (_U32)-1;
 	}
 
@@ -140,6 +141,46 @@ namespace Zion
 	bool CDataSyncClient::InProcess()
 	{
 		return m_Flag==0 || !m_bReady || !m_WatQ.empty();
+	}
+
+	bool CDataSyncClient::Send(_U16 iid, _U16 fid, DDL::MemoryWriter& buf)
+	{
+		switch(m_Mode)
+		{
+		case SYNCMODE_CLIENT_ACTIVE:
+			if(!m_pAccesser->Dispatch(iid, fid, buf.GetSize(), buf.GetBuf()))
+			{
+				ZION_ASSERT(0);
+				return false;
+			}
+			break;
+		case SYNCMODE_SERVER_ACTIVE:
+			if(!GetClient()->Send(iid, fid, buf))
+			{
+				ZION_ASSERT(0);
+				return false;
+			}
+			break;
+		case SYNCMODE_VERIFY:
+			if(!m_pAccesser->Dispatch(iid, fid, buf.GetSize(), buf.GetBuf()))
+			{
+				ZION_ASSERT(0);
+				return false;
+			}
+			if(!GetClient()->Send(iid, fid, buf))
+			{
+				ZION_ASSERT(0);
+				return false;
+			}
+			break;
+		}
+
+		return true;
+	}
+
+	void CDataSyncClient::DS_SetMode(_U32 mode)
+	{
+		m_Mode = mode;
 	}
 
 	void CDataSyncClient::DS_SyncOpen(_U32 flag)

@@ -1,7 +1,7 @@
 #ifndef WITHOUT_ZION_ASYNCIO
 
 #include <ZionBase.h>
-#include <DDLDispatcher.h>
+#include <StubDispatcher.h>
 #include <AsyncSockIO.h>
 #include "ZionClient.h"
 #include "ZionClientApp.h"

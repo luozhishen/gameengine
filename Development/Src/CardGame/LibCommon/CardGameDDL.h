@@ -10,6 +10,8 @@
 
 #include "../../LibCommon/CommonDDL.h"
 
+#include "../../LibCommon/DataSyncDDL.h"
+
 struct CARD_AVATAR_OPERATOR : A_CONTENT_OBJECT
 {
 };

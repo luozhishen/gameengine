@@ -190,10 +190,7 @@ namespace DDLReflect
 		{TYPE_U32, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 4 EnterGame
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 Change
-		{TYPE_UUID, "obj_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_S32, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 6 LeaveGame
+		// 5 LeaveGame
 	};
 	static FUNCTION_INFO _class_CARDGAME_C2S_funcinfos[] = 
 	{
@@ -202,10 +199,9 @@ namespace DDLReflect
 		{"GetAvatarList", 0, _class_CARDGAME_C2S_fieldinfos+1},
 		{"CreateAvatar", 2, _class_CARDGAME_C2S_fieldinfos+1},
 		{"EnterGame", 1, _class_CARDGAME_C2S_fieldinfos+3},
-		{"Change", 2, _class_CARDGAME_C2S_fieldinfos+4},
-		{"LeaveGame", 0, _class_CARDGAME_C2S_fieldinfos+6},
+		{"LeaveGame", 0, _class_CARDGAME_C2S_fieldinfos+4},
 	};
-	static CLASS_INFO _class_CARDGAME_C2S_info = { 0, "CARDGAME_C2S", 7, _class_CARDGAME_C2S_funcinfos };
+	static CLASS_INFO _class_CARDGAME_C2S_info = { 0, "CARDGAME_C2S", 6, _class_CARDGAME_C2S_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<CARDGAME_C2S>()
 	{
@@ -226,12 +222,7 @@ namespace DDLReflect
 		{TYPE_U32, "errcode", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 3 EnterGameCallback
 		{TYPE_U32, "errcode", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 4 SyncAvatar
-		{TYPE_STRUCT, "avatar", 0, 0, &_rfl_struct_CARD_AVATAR_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 5 SyncAvatarOwnObj
-		{TYPE_STRUCT, "ownobj", 0, 0, &_rfl_struct_CARD_AVATAR_OWNOBJ_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 6 SyncCompleted
-		// 7 LeaveGameCallback
+		// 4 LeaveGameCallback
 		{TYPE_U32, "errcode", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_CARDGAME_S2C_funcinfos[] = 
@@ -240,16 +231,40 @@ namespace DDLReflect
 		{"GetAvatarListCallback", 3, _class_CARDGAME_S2C_fieldinfos+0},
 		{"CreateAvatarCallback", 1, _class_CARDGAME_S2C_fieldinfos+3},
 		{"EnterGameCallback", 1, _class_CARDGAME_S2C_fieldinfos+4},
-		{"SyncAvatar", 1, _class_CARDGAME_S2C_fieldinfos+5},
-		{"SyncAvatarOwnObj", 1, _class_CARDGAME_S2C_fieldinfos+6},
-		{"SyncCompleted", 0, _class_CARDGAME_S2C_fieldinfos+7},
-		{"LeaveGameCallback", 1, _class_CARDGAME_S2C_fieldinfos+7},
+		{"LeaveGameCallback", 1, _class_CARDGAME_S2C_fieldinfos+5},
 	};
-	static CLASS_INFO _class_CARDGAME_S2C_info = { 0, "CARDGAME_S2C", 8, _class_CARDGAME_S2C_funcinfos };
+	static CLASS_INFO _class_CARDGAME_S2C_info = { 0, "CARDGAME_S2C", 5, _class_CARDGAME_S2C_funcinfos };
 	template<>
 	const CLASS_INFO* GetClass<CARDGAME_S2C>()
 	{
 		return &_class_CARDGAME_S2C_info;
+	}
+}
+
+namespace DDLReflect
+{
+	static FIELD_INFO _class_CARDGAME_OP_fieldinfos[] = 
+	{
+		// 0 AddOwnObj
+		{TYPE_STRING, "name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_S32, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 1 DelOwnObj
+		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		// 2 AddOwnObjValue
+		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_S32, "value", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+	};
+	static FUNCTION_INFO _class_CARDGAME_OP_funcinfos[] = 
+	{
+		{"AddOwnObj", 2, _class_CARDGAME_OP_fieldinfos+0},
+		{"DelOwnObj", 1, _class_CARDGAME_OP_fieldinfos+2},
+		{"AddOwnObjValue", 2, _class_CARDGAME_OP_fieldinfos+3},
+	};
+	static CLASS_INFO _class_CARDGAME_OP_info = { 0, "CARDGAME_OP", 3, _class_CARDGAME_OP_funcinfos };
+	template<>
+	const CLASS_INFO* GetClass<CARDGAME_OP>()
+	{
+		return &_class_CARDGAME_OP_info;
 	}
 }
 

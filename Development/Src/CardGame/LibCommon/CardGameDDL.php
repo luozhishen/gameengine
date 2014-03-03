@@ -396,15 +396,6 @@ function CARDGAME_C2S_Dispatcher($fname, $_array, $_this)
 		$_this->EnterGame($__avatar_id);
 		return true;
 	}
-	if($fname=='Change')
-	{
-		if(!is_string($_array['obj_uuid'])) return false;
-		$__obj_uuid = $_array['obj_uuid'];
-		if(!is_int($_array['value'])) return false;
-		$__value = $_array['value'];
-		$_this->Change($__obj_uuid, $__value);
-		return true;
-	}
 	if($fname=='LeaveGame')
 	{
 		$_this->LeaveGame();
@@ -455,31 +446,71 @@ class CARDGAME_S2C
 		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.EnterGameCallback","message":{'.$__result.'}}');
 		return true;
 	}
-	public function SyncAvatar($avatar)
-	{
-		if(!is_object($avatar) || get_class($avatar)!='CARD_AVATAR') return false;
-		$__result = '"avatar":'.$avatar->ToString();
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.SyncAvatar","message":{'.$__result.'}}');
-		return true;
-	}
-	public function SyncAvatarOwnObj($ownobj)
-	{
-		if(!is_object($ownobj) || get_class($ownobj)!='CARD_AVATAR_OWNOBJ') return false;
-		$__result = '"ownobj":'.$ownobj->ToString();
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.SyncAvatarOwnObj","message":{'.$__result.'}}');
-		return true;
-	}
-	public function SyncCompleted()
-	{
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.SyncCompleted","message":{}}');
-		return true;
-	}
 	public function LeaveGameCallback($errcode)
 	{
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
 		$__result = '"errcode":'.$errcode;
 		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.LeaveGameCallback","message":{'.$__result.'}}');
+		return true;
+	}
+}
+
+function CARDGAME_OP_Dispatcher($fname, $_array, $_this)
+{
+	if($fname=='AddOwnObj')
+	{
+		if(!is_string($_array['name'])) return false;
+		$__name = $_array['name'];
+		if(!is_int($_array['value'])) return false;
+		$__value = $_array['value'];
+		$_this->AddOwnObj($__name, $__value);
+		return true;
+	}
+	if($fname=='DelOwnObj')
+	{
+		if(!is_string($_array['_uuid'])) return false;
+		$___uuid = $_array['_uuid'];
+		$_this->DelOwnObj($___uuid);
+		return true;
+	}
+	if($fname=='AddOwnObjValue')
+	{
+		if(!is_string($_array['_uuid'])) return false;
+		$___uuid = $_array['_uuid'];
+		if(!is_int($_array['value'])) return false;
+		$__value = $_array['value'];
+		$_this->AddOwnObjValue($___uuid, $__value);
+		return true;
+	}
+	return false;
+}
+
+class CARDGAME_OP
+{
+	public function AddOwnObj($name, $value)
+	{
+		if(!is_string($name)) return false;
+		$__result = '"name":"'.$name.'"';
+		if(!is_int($value)) return false;
+		$__result = $__result.',"value":'.$value;
+		ZionSession::Get()->Send('{"method":"CARDGAME_OP.AddOwnObj","message":{'.$__result.'}}');
+		return true;
+	}
+	public function DelOwnObj($_uuid)
+	{
+		if(!is_string($_uuid)) return false;
+		$__result = '"_uuid":"'.$_uuid.'"';
+		ZionSession::Get()->Send('{"method":"CARDGAME_OP.DelOwnObj","message":{'.$__result.'}}');
+		return true;
+	}
+	public function AddOwnObjValue($_uuid, $value)
+	{
+		if(!is_string($_uuid)) return false;
+		$__result = '"_uuid":"'.$_uuid.'"';
+		if(!is_int($value)) return false;
+		$__result = $__result.',"value":'.$value;
+		ZionSession::Get()->Send('{"method":"CARDGAME_OP.AddOwnObjValue","message":{'.$__result.'}}');
 		return true;
 	}
 }

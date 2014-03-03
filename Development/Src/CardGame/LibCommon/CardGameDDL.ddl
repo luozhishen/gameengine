@@ -38,7 +38,6 @@ class CARDGAME_C2S
 	GetAvatarList();
 	CreateAvatar(string avatar_name, _U32 type);
 	EnterGame(_U32 avatar_id);
-	Change(A_UUID obj_uuid, _S32 value);
 	LeaveGame();
 };
 
@@ -49,11 +48,7 @@ class CARDGAME_S2C
 	GetAvatarListCallback(_U32 errcode, CARD_AVATAR_DESC arr[100], _U32 count);
 	CreateAvatarCallback(_U32 errcode);
 	EnterGameCallback(_U32 errcode);
-	SyncAvatar(CARD_AVATAR avatar);
-	SyncAvatarOwnObj(CARD_AVATAR_OWNOBJ ownobj);
-	SyncCompleted();
 	LeaveGameCallback(_U32 errcode);
-
 };
 
 task[GEN_CLASS_STUB(CARDGAME_C2S)];
@@ -62,6 +57,18 @@ task[GEN_CLASS_REFLECT(CARDGAME_C2S)];
 task[GEN_CLASS_STUB(CARDGAME_S2C)];
 task[GEN_CLASS_PROXY(CARDGAME_S2C)];
 task[GEN_CLASS_REFLECT(CARDGAME_S2C)];
-
 task[GEN_PHP_STUB(CARDGAME_C2S)];
 task[GEN_PHP_PROXY(CARDGAME_S2C)];
+
+class CARDGAME_OP
+{
+	AddOwnObj(string name, _S32 value);
+	DelOwnObj(A_UUID _uuid);
+	AddOwnObjValue(A_UUID _uuid, _S32 value);
+};
+
+task[GEN_CLASS_STUB(CARDGAME_OP)];
+task[GEN_CLASS_PROXY(CARDGAME_OP)];
+task[GEN_CLASS_REFLECT(CARDGAME_OP)];
+task[GEN_PHP_STUB(CARDGAME_OP)];
+task[GEN_PHP_PROXY(CARDGAME_OP)];

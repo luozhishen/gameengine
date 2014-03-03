@@ -212,20 +212,6 @@ namespace DDLStub
 			}
 			if(fid==5)
 			{
-				A_UUID _prefix_obj_uuid;
-				_S32 _prefix_value;
-
-				// <A_UUID> <obj_uuid> <> <>;
-				if(!Buf.Read(_prefix_obj_uuid)) return false;
-				// <_S32> <value> <> <>;
-				if(!Buf.Read(_prefix_value)) return false;
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->Change(_prefix_obj_uuid, _prefix_value);
-				return true;
-			}
-			if(fid==6)
-			{
 
 
 				// call implement
@@ -306,24 +292,12 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
 		}
 
-		bool Change(const A_UUID& obj_uuid, _S32 value)
-		{
-			BUFFER Buf;
-			// <A_UUID> <obj_uuid> <> <>
-			if(!Buf.Write(obj_uuid)) return false;
-			// <_S32> <value> <> <>
-			if(!Buf.Write(value)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
-		}
-
 		bool LeaveGame()
 		{
 			BUFFER Buf;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
 		}
 	};
 
@@ -406,36 +380,6 @@ namespace DDLStub
 			}
 			if(fid==4)
 			{
-				CARD_AVATAR _prefix_avatar;
-
-				// <CARD_AVATAR> <avatar> <> <>;
-				if(!Buf.Read(_prefix_avatar)) return false;
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->SyncAvatar(_prefix_avatar);
-				return true;
-			}
-			if(fid==5)
-			{
-				CARD_AVATAR_OWNOBJ _prefix_ownobj;
-
-				// <CARD_AVATAR_OWNOBJ> <ownobj> <> <>;
-				if(!Buf.Read(_prefix_ownobj)) return false;
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->SyncAvatarOwnObj(_prefix_ownobj);
-				return true;
-			}
-			if(fid==6)
-			{
-
-
-				// call implement
-				DDLStub<CLASS>::GetClass()->SyncCompleted();
-				return true;
-			}
-			if(fid==7)
-			{
 				_U32 _prefix_errcode;
 
 				// <_U32> <errcode> <> <>;
@@ -513,34 +457,6 @@ namespace DDLProxy
 			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
 		}
 
-		bool SyncAvatar(const CARD_AVATAR& avatar)
-		{
-			BUFFER Buf;
-			// <CARD_AVATAR> <avatar> <> <>
-			if(!Buf.Write(avatar)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
-		}
-
-		bool SyncAvatarOwnObj(const CARD_AVATAR_OWNOBJ& ownobj)
-		{
-			BUFFER Buf;
-			// <CARD_AVATAR_OWNOBJ> <ownobj> <> <>
-			if(!Buf.Write(ownobj)) return false;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
-		}
-
-		bool SyncCompleted()
-		{
-			BUFFER Buf;
-
-			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
-		}
-
 		bool LeaveGameCallback(_U32 errcode)
 		{
 			BUFFER Buf;
@@ -548,7 +464,7 @@ namespace DDLProxy
 			if(!Buf.Write(errcode)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
+			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
 		}
 	};
 
@@ -558,6 +474,139 @@ namespace DDLReflect
 {
 	template<>
 	const CLASS_INFO* GetClass<CARDGAME_S2C>();
+}
+
+class CARDGAME_OP;
+
+namespace DDLStub
+{
+
+	template<typename CLASS>
+	class CARDGAME_OP : public DDLStub<CLASS>
+	{
+	public:
+		CARDGAME_OP(CLASS* Class) : DDLStub<CLASS>(Class)
+		{
+		}
+
+		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
+		{
+			return DDLReflect::GetClass<::CARDGAME_OP>();
+		}
+		
+		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
+		{
+			if(fid==0)
+			{
+				_U32 __length;
+				char* _prefix_name;
+				_S32 _prefix_value;
+
+				// <string> <name> <> <>;
+				if(!Buf.Read(__length)) return false;
+				_prefix_name = (char*)alloca(sizeof(_prefix_name[0])*(__length+1));
+				if(!_prefix_name) return false;
+				if(!Buf.ReadBuffer(_prefix_name, (unsigned int)sizeof(_prefix_name[0])*__length)) return false;
+				_prefix_name[__length] = '\0';
+				// <_S32> <value> <> <>;
+				if(!Buf.Read(_prefix_value)) return false;
+
+				// call implement
+				DDLStub<CLASS>::GetClass()->AddOwnObj(_prefix_name, _prefix_value);
+				return true;
+			}
+			if(fid==1)
+			{
+				A_UUID _prefix__uuid;
+
+				// <A_UUID> <_uuid> <> <>;
+				if(!Buf.Read(_prefix__uuid)) return false;
+
+				// call implement
+				DDLStub<CLASS>::GetClass()->DelOwnObj(_prefix__uuid);
+				return true;
+			}
+			if(fid==2)
+			{
+				A_UUID _prefix__uuid;
+				_S32 _prefix_value;
+
+				// <A_UUID> <_uuid> <> <>;
+				if(!Buf.Read(_prefix__uuid)) return false;
+				// <_S32> <value> <> <>;
+				if(!Buf.Read(_prefix_value)) return false;
+
+				// call implement
+				DDLStub<CLASS>::GetClass()->AddOwnObjValue(_prefix__uuid, _prefix_value);
+				return true;
+			}
+			return false;
+		}
+	};
+
+}
+
+namespace DDLProxy
+{
+
+	template<typename CLIENT, typename BUFFER>
+	class CARDGAME_OP : public DDLProxy<CLIENT, BUFFER>
+	{
+	public:
+		CARDGAME_OP(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::CARDGAME_OP>())
+		{
+		}
+
+		static CARDGAME_OP<CLIENT, BUFFER> Get(CLIENT* Client)
+		{
+			CARDGAME_OP<CLIENT, BUFFER> Proxy(Client);
+			return Proxy;
+		}
+
+		bool AddOwnObj(const char* name, _S32 value)
+		{
+			BUFFER Buf;
+			_U32 __length;
+			// <string> <name> <> <>
+			__length = DDL::StringLength(name);
+			if(!Buf.Write(__length)) return false;
+			if(!Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
+			// <_S32> <value> <> <>
+			if(!Buf.Write(value)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+		}
+
+		bool DelOwnObj(const A_UUID& _uuid)
+		{
+			BUFFER Buf;
+			// <A_UUID> <_uuid> <> <>
+			if(!Buf.Write(_uuid)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+		}
+
+		bool AddOwnObjValue(const A_UUID& _uuid, _S32 value)
+		{
+			BUFFER Buf;
+			// <A_UUID> <_uuid> <> <>
+			if(!Buf.Write(_uuid)) return false;
+			// <_S32> <value> <> <>
+			if(!Buf.Write(value)) return false;
+
+			// send
+			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+		}
+	};
+
+}
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<CARDGAME_OP>();
 }
 
 

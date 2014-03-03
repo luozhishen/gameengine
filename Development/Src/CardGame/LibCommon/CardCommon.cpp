@@ -17,6 +17,7 @@ namespace Zion
 
 		RegisterClientStub<CARDGAME_S2C>();
 		RegisterServerStub<CARDGAME_C2S>(0);
+		RegisterServerStub<CARDGAME_OP>(0);
 	}
 
 	void InitContentObjects()

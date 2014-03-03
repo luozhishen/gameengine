@@ -29,6 +29,8 @@ namespace Zion
 
 	void ToHexString(const void* data, _U32 size, String& out);
 
+	_U32 CalcCRC32(const void* data, _U32 len);
+
 	class CNoCopy
 	{
 	private:

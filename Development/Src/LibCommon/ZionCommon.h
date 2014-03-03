@@ -4,6 +4,8 @@
 #include "CommonDDL.h"
 #include "ContentObject.h"
 #include "LiveObject.h"
+#include "LiveData.h"
+#include "DDLDispatcher.h"
 
 namespace Zion
 {

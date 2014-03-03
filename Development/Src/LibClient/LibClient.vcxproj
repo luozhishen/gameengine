@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\LibCommon\DDLDispatcher.cpp" />
     <ClCompile Include="AsyncIOConnection.cpp" />
     <ClCompile Include="DataSyncClient.cpp" />
     <ClCompile Include="HttpConnection.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="ZionClientLogin.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\LibCommon\DDLDispatcher.h" />
     <ClInclude Include="AsyncIOConnection.h" />
     <ClInclude Include="DataSyncClient.h" />
     <ClInclude Include="HttpConnection.h" />

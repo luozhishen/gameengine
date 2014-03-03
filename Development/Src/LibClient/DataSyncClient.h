@@ -14,7 +14,7 @@ namespace Zion
 
 		A_LIVE_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* pInfo);
 		bool RemoveObject(const A_UUID& _uuid);
-		LiveObject::CObject* GetObject(const A_UUID& _uuid);
+		LiveData::CObject* GetObject(const A_UUID& _uuid);
 
 		template<typename T>
 		T* CreateObject()
@@ -43,9 +43,9 @@ namespace Zion
 			const DDLReflect::STRUCT_INFO*	info;
 		};
 
-		void ClearQueue();
+		void Clear();
 
-		LiveObject::CManager m_Manager;
+		LiveData::CManager m_Manager;
 		_U32 m_Flag;
 		bool m_bReady;
 		List<OBJECT_ADDITEM> m_NewQ;

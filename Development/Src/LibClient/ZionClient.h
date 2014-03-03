@@ -22,7 +22,7 @@ namespace Zion
 	class CClientLoginMethod;
 	class CDataSyncClient;
 
-	class CClient : public CNoCopy
+	class CClient : public CNoCopy, private CDDLDispatcher
 	{
 		friend class CClientApp;
 		friend class CStressClient;

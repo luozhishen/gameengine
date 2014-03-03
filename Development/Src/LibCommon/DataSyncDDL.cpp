@@ -45,10 +45,10 @@ namespace DDLReflect
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 4 DS_CreateObject
 		{TYPE_STRING, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_STRING, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "json", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 5 DS_UpdateObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_STRING, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_STRING, "json", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 6 DS_RemoveObjects
 		{TYPE_UUID|TYPE_ARRAY, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
@@ -113,11 +113,11 @@ namespace DDLReflect
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 4 DS_CreateObject
 		{TYPE_U16, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U8|TYPE_ARRAY, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8|TYPE_ARRAY, "buf", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "len", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 5 DS_UpdateObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U8|TYPE_ARRAY, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U8|TYPE_ARRAY, "buf", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "len", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 6 DS_RemoveObjects
 		{TYPE_UUID|TYPE_ARRAY, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},

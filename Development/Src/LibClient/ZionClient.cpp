@@ -161,8 +161,7 @@ namespace Zion
 	{
 		_U16 iid = GetClientStubID(pStub->GetClassInfo());
 		ZION_ASSERT(iid!=(_U16)-1);
-		ZION_ASSERT(m_DDLStubs.find(iid)==m_DDLStubs.end());
-		m_DDLStubs[iid] = pStub;
+		CDDLDispatcher::RegisterStub(iid, pStub);
 	}
 
 	void CClient::OnLoginDone()
@@ -183,21 +182,7 @@ namespace Zion
 	void CClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
 		_OnData(iid, fid, len, data);
-
-		Zion::Map<_U16, DDLStub::IStub*>::iterator i;
-		i = m_DDLStubs.find(iid);
-		if(i==m_DDLStubs.end())
-		{
-			// invalid iid
-			return;
-		}
-
-		DDL::MemoryReader buf(data, len);
-		if(!i->second->Dispatcher(fid, buf))
-		{
-			// invalid data
-			return;
-		}
+		CDDLDispatcher::Dispatch(iid, fid, len, data);
 	}
 
 	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)

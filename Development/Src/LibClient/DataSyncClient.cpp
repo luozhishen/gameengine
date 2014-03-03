@@ -15,7 +15,7 @@ namespace Zion
 
 	CDataSyncClient::~CDataSyncClient()
 	{
-		ClearQueue();
+		Clear();
 	}
 
 	A_LIVE_OBJECT* CDataSyncClient::CreateObject(const DDLReflect::STRUCT_INFO* pInfo)
@@ -42,7 +42,7 @@ namespace Zion
 		return true;
 	}
 
-	LiveObject::CObject* CDataSyncClient::GetObject(const A_UUID& _uuid)
+	LiveData::CObject* CDataSyncClient::GetObject(const A_UUID& _uuid)
 	{
 		return m_Manager.Get(_uuid);
 	}
@@ -95,7 +95,7 @@ namespace Zion
 			m_DelList.clear();
 		}
 
-		LiveObject::CObject* obj = m_Manager.FindFirst();
+		LiveData::CObject* obj = m_Manager.FindFirst();
 		while(obj)
 		{
 			if(!obj->IsDirty())
@@ -132,6 +132,7 @@ namespace Zion
 				break;
 			}
 
+			obj->Clean();
 			obj = m_Manager.FindNext(obj);
 		}
 	}
@@ -160,7 +161,7 @@ namespace Zion
 		ZION_ASSERT(m_Flag!=(_U32)-1);
 		ZION_ASSERT(m_bReady);
 		m_Flag = (_U32)-1;
-		ClearQueue();
+		Clear();
 	}
 
 	void CDataSyncClient::DS_CreateObjectDone(const A_UUID& _uuid)
@@ -206,12 +207,52 @@ namespace Zion
 		m_Manager.Append(_info, data, len);
 	}
 
-	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const char* data)
+	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const char* json)
 	{
+		LiveData::CObject* obj = m_Manager.Get(_uuid);
+		if(!obj)
+		{
+			ZION_ASSERT(0);
+			return;
+		}
+		const DDLReflect::STRUCT_INFO* info = obj->GetStructInfo();
+		A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(info);
+		if(!data)
+		{
+			ZION_ASSERT(0);
+			return;
+		}
+		String xjson = json;
+		if(!DDLReflect::Json2Struct(info, xjson, (_U8*)data))
+		{
+			ZION_ASSERT(0);
+			return;
+		}
+		memcpy(obj->GetData(), data, info->size);
 	}
 
-	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const _U8* data, _U32 len)
+	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const _U8* buf, _U32 len)
 	{
+		LiveData::CObject* obj = m_Manager.Get(_uuid);
+		if(!obj)
+		{
+			ZION_ASSERT(0);
+			return;
+		}
+		const DDLReflect::STRUCT_INFO* info = obj->GetStructInfo();
+		A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(info);
+		if(!data)
+		{
+			ZION_ASSERT(0);
+			return;
+		}
+		DDL::MemoryReader reader(buf, len);
+		if(!info->read_proc(reader, data))
+		{
+			ZION_ASSERT(0);
+			return;
+		}
+		memcpy(obj->GetData(), data, info->size);
 	}
 
 	void CDataSyncClient::DS_RemoveObjects(const A_UUID* _uuids, _U32 count)
@@ -222,7 +263,7 @@ namespace Zion
 		}
 	}
 
-	void CDataSyncClient::ClearQueue()
+	void CDataSyncClient::Clear()
 	{
 		while(!m_NewQ.empty())
 		{

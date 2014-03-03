@@ -1,6 +1,6 @@
 #include <ZionBase.h>
-#include <ZionClient.h>
 #include <ZionCommon.h>
+#include <ZionClient.h>
 
 #include <time.h>
 #include "CardCommon.h"

@@ -8,6 +8,11 @@ namespace Zion
 	{
 	}
 
+	bool CDDLDispatcher::HasStub(_U16 iid)
+	{
+		return m_DDLStubs.find(iid)!=m_DDLStubs.end();
+	}
+
 	void CDDLDispatcher::RegisterStub(_U16 iid, DDLStub::IStub* pStub)
 	{
 		ZION_ASSERT(m_DDLStubs.find(iid)==m_DDLStubs.end());

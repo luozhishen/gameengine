@@ -9,6 +9,7 @@ namespace Zion
 	public:
 		CDDLDispatcher();
 
+		bool HasStub(_U16 iid);
 		void RegisterStub(_U16 iid, DDLStub::IStub* pStub);
 		bool Dispatch(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 

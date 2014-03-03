@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="ConfusedNumber.cpp" />
     <ClCompile Include="DataSyncDDL.cpp" />
+    <ClCompile Include="DDLDispatcher.cpp" />
     <ClCompile Include="LiveData.cpp" />
     <ClCompile Include="ZionCommon.cpp" />
     <ClCompile Include="CommonDDL.cpp" />
@@ -31,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="DataSyncDDL.h" />
     <ClInclude Include="ConfusedNumber.h" />
+    <ClInclude Include="DDLDispatcher.h" />
     <ClInclude Include="LiveData.h" />
     <ClInclude Include="ZionCommon.h" />
     <ClInclude Include="CommonDDL.h" />

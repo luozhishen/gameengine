@@ -549,7 +549,7 @@ namespace Zion
 			{
 				return false;
 			}
-			Json::Value vuuid = data.get("uuid", Json::Value());
+			Json::Value vuuid = data.get("_uuid", Json::Value());
 			if(!vuuid.isString())
 			{
 				return false;

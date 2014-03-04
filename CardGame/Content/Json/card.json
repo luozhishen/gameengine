@@ -1,0 +1,10 @@
+{
+	"head":"json",
+	"body":
+	[
+		{
+			"type":"CARD_AVATAR_OPERATOR",
+			"data":{"_name":"aaaa","_uuid":"38e9c2e8-cb19-4179-a1f4-63bcfc306aaf","v1":1987,"v2":-1980,"v3":-0.1982000023126602}
+		}
+	]
+}

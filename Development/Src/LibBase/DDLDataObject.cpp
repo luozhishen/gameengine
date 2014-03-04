@@ -9,25 +9,25 @@ namespace DDLDataObject
 		m_pData = NULL;
 	}
 
+	CConstObject::CConstObject(const CConstObject& obj)
+	{
+		m_pInfo = obj.m_pInfo;
+		m_pData = obj.m_pData;
+		m_Offset = obj.m_Offset;
+	}
+
+	CConstObject::CConstObject(const CObject& obj)
+	{
+		m_pInfo = obj.m_pInfo;
+		m_pData = obj.m_pData;
+		m_Offset = obj.m_Offset;
+	}
+
 	CConstObject::CConstObject(const DDLReflect::STRUCT_INFO* info, void* data, _U32 offset)
 	{
 		m_pInfo = info;
 		m_pData = data;
 		m_Offset = offset;
-	}
-
-	CConstObject::CConstObject(const CConstObject* pObject)
-	{
-		m_pInfo = pObject->m_pInfo;
-		m_pData = pObject->m_pData;
-		m_Offset = pObject->m_Offset;
-	}
-
-	CConstObject::CConstObject(const CObject* pObject)
-	{
-		m_pInfo = pObject->m_pInfo;
-		m_pData = pObject->m_pData;
-		m_Offset = pObject->m_Offset;
 	}
 
 	CConstObject CConstObject::Ref(const char* name) const

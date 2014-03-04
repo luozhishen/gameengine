@@ -8,12 +8,12 @@ namespace Zion
 
 	static inline _U32 MD5_F(_U32 x, _U32 y, _U32 z)
 	{
-		return x&y | ~x&z;
+		return (x&y) | (~x&z);
 	}
 
 	static inline _U32 MD5_G(_U32 x, _U32 y, _U32 z)
 	{
-		return x&z | y&~z;
+		return (x&z) | (y&~z);
 	}
 
 	static inline _U32 MD5_H(_U32 x, _U32 y, _U32 z)

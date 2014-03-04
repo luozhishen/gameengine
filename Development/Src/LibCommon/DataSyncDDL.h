@@ -30,11 +30,35 @@ const _U32 SYNCMODE_VERIFY = 3;
 
 class DATASYNC_JSON_C2S;
 
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<DATASYNC_JSON_C2S>();
+}
+
 class DATASYNC_BINARY_C2S;
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<DATASYNC_BINARY_C2S>();
+}
 
 class DATASYNC_JSON_S2C;
 
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<DATASYNC_JSON_S2C>();
+}
+
 class DATASYNC_BINARY_S2C;
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<DATASYNC_BINARY_S2C>();
+}
 
 namespace DDLStub
 {
@@ -185,12 +209,6 @@ namespace DDLProxy
 		}
 	};
 
-}
-
-namespace DDLReflect
-{
-	template<>
-	const CLASS_INFO* GetClass<DATASYNC_JSON_C2S>();
 }
 
 namespace DDLStub
@@ -435,12 +453,6 @@ namespace DDLProxy
 
 }
 
-namespace DDLReflect
-{
-	template<>
-	const CLASS_INFO* GetClass<DATASYNC_JSON_S2C>();
-}
-
 namespace DDLStub
 {
 
@@ -592,12 +604,6 @@ namespace DDLProxy
 		}
 	};
 
-}
-
-namespace DDLReflect
-{
-	template<>
-	const CLASS_INFO* GetClass<DATASYNC_BINARY_C2S>();
 }
 
 namespace DDLStub
@@ -842,12 +848,6 @@ namespace DDLProxy
 		}
 	};
 
-}
-
-namespace DDLReflect
-{
-	template<>
-	const CLASS_INFO* GetClass<DATASYNC_BINARY_S2C>();
 }
 
 

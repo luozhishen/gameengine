@@ -27,16 +27,6 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<A_CONTENT_OBJECT>();
 	extern STRUCT_INFO _rfl_struct_A_CONTENT_OBJECT_info;
-
-	template<A_CONTENT_OBJECT*>
-	bool GetPtrType(FIELD_INFO& info)
-	{
-		memset(&info, 0, sizeof(info));
-		info.type = TYPE_STRUCT;
-		info.sinfo = &_rfl_struct_A_CONTENT_OBJECT_info;
-		info.ref_type = "A_CONTENT_OBJECT";
-		return true;
-	}
 }
 
 struct A_LIVE_OBJECT
@@ -57,105 +47,6 @@ namespace DDLReflect
 	template<>
 	const STRUCT_INFO* GetStruct<A_LIVE_OBJECT>();
 	extern STRUCT_INFO _rfl_struct_A_LIVE_OBJECT_info;
-
-	template<A_LIVE_OBJECT*>
-	bool GetPtrType(FIELD_INFO& info)
-	{
-		memset(&info, 0, sizeof(info));
-		info.type = TYPE_STRUCT;
-		info.sinfo = &_rfl_struct_A_LIVE_OBJECT_info;
-		info.ref_type = "A_LIVE_OBJECT";
-		return true;
-	}
-}
-
-struct A_CONFUSED_NUMBER
-{
-	_U32 value;
-	_U32 mask;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<A_CONFUSED_NUMBER>(A_CONFUSED_NUMBER& Value);
-	template<>
-	bool BufferWriter::Write<A_CONFUSED_NUMBER>(const A_CONFUSED_NUMBER& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<A_CONFUSED_NUMBER>();
-	extern STRUCT_INFO _rfl_struct_A_CONFUSED_NUMBER_info;
-
-	template<A_CONFUSED_NUMBER*>
-	bool GetPtrType(FIELD_INFO& info)
-	{
-		memset(&info, 0, sizeof(info));
-		info.type = TYPE_STRUCT;
-		info.sinfo = &_rfl_struct_A_CONFUSED_NUMBER_info;
-		info.ref_type = "A_CONFUSED_NUMBER";
-		return true;
-	}
-}
-
-struct A_CONFUSED_INT : A_CONFUSED_NUMBER
-{
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<A_CONFUSED_INT>(A_CONFUSED_INT& Value);
-	template<>
-	bool BufferWriter::Write<A_CONFUSED_INT>(const A_CONFUSED_INT& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<A_CONFUSED_INT>();
-	extern STRUCT_INFO _rfl_struct_A_CONFUSED_INT_info;
-
-	template<A_CONFUSED_INT*>
-	bool GetPtrType(FIELD_INFO& info)
-	{
-		memset(&info, 0, sizeof(info));
-		info.type = TYPE_STRUCT;
-		info.sinfo = &_rfl_struct_A_CONFUSED_INT_info;
-		info.ref_type = "A_CONFUSED_INT";
-		return true;
-	}
-}
-
-struct A_CONFUSED_FLOAT : A_CONFUSED_NUMBER
-{
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<A_CONFUSED_FLOAT>(A_CONFUSED_FLOAT& Value);
-	template<>
-	bool BufferWriter::Write<A_CONFUSED_FLOAT>(const A_CONFUSED_FLOAT& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<A_CONFUSED_FLOAT>();
-	extern STRUCT_INFO _rfl_struct_A_CONFUSED_FLOAT_info;
-
-	template<A_CONFUSED_FLOAT*>
-	bool GetPtrType(FIELD_INFO& info)
-	{
-		memset(&info, 0, sizeof(info));
-		info.type = TYPE_STRUCT;
-		info.sinfo = &_rfl_struct_A_CONFUSED_FLOAT_info;
-		info.ref_type = "A_CONFUSED_FLOAT";
-		return true;
-	}
 }
 
 

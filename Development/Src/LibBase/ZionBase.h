@@ -12,12 +12,12 @@
 #include "ZionSocket.h"
 #include "ZionUUID.h"
 #include "ZionUtils.h"
+#include "ZionHash.h"
 #include "DDL.h"
 #include "DDLReflect.h"
-#include "DDLDataObject.h"
 #include "DDLProxy.h"
 #include "DDLStub.h"
-#include "ZionHash.h"
+#include "DataObject.h"
 #include "sigslot.h"
 
 namespace Zion

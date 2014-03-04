@@ -5,6 +5,24 @@
 #include <ZionBase.h>
 #include "StressCaseConfig.h"
 
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_LOGIN_CONFIG>(STRESSCASE_LOGIN_CONFIG& Value)
+	{
+		if(!Read<_S32>(Value.reset_time)) return false;
+		if(!Read<_U32>(Value.retry_time)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<STRESSCASE_LOGIN_CONFIG>(const STRESSCASE_LOGIN_CONFIG& Value)
+	{
+		if(!Write<_S32>(Value.reset_time)) return false;
+		if(!Write<_U32>(Value.retry_time)) return false;
+		return true;
+	}
+}
+
 namespace DDLReflect
 {
 
@@ -28,6 +46,24 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<STRESSCASE_LOGIN_CONFIG>()
 	{
 		return &_rfl_struct_STRESSCASE_LOGIN_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_LOGIN_STATUS>(STRESSCASE_LOGIN_STATUS& Value)
+	{
+		if(!Read<_U32>(Value.failed_times)) return false;
+		if(!Read<_U32>(Value.sucess_times)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<STRESSCASE_LOGIN_STATUS>(const STRESSCASE_LOGIN_STATUS& Value)
+	{
+		if(!Write<_U32>(Value.failed_times)) return false;
+		if(!Write<_U32>(Value.sucess_times)) return false;
+		return true;
 	}
 }
 

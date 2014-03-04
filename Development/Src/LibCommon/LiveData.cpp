@@ -33,7 +33,7 @@ namespace Zion
 			m_bDirty = false;
 		}
 
-		CObject::CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DDLDataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
+		CObject::CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
 		{
 		}
 

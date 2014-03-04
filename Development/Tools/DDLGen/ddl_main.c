@@ -263,6 +263,7 @@ static int code_task(const DDL_TASK* task)
 		return 1;
 	}
 
+	/*
 	if(strcmp(task->type, "GEN_CLASS_REFLECT")==0) {
 		const DDL_CLS* cls;
 		cls = ddlgen_class(task->name);
@@ -301,6 +302,7 @@ static int code_task(const DDL_TASK* task)
 		}
 		return 1;
 	}
+	*/
 
 	if(strcmp(task->type, "GEN_JS")==0) {
 		if(phpmode) {

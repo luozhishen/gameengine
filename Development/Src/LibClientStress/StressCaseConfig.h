@@ -14,21 +14,19 @@ struct STRESSCASE_LOGIN_CONFIG
 	_U32 retry_time;
 };
 
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_LOGIN_CONFIG>(STRESSCASE_LOGIN_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<STRESSCASE_LOGIN_CONFIG>(const STRESSCASE_LOGIN_CONFIG& Value);
+}
+
 namespace DDLReflect
 {
 	template<>
 	const STRUCT_INFO* GetStruct<STRESSCASE_LOGIN_CONFIG>();
 	extern STRUCT_INFO _rfl_struct_STRESSCASE_LOGIN_CONFIG_info;
-
-	template<STRESSCASE_LOGIN_CONFIG*>
-	bool GetPtrType(FIELD_INFO& info)
-	{
-		memset(&info, 0, sizeof(info));
-		info.type = TYPE_STRUCT;
-		info.sinfo = &_rfl_struct_STRESSCASE_LOGIN_CONFIG_info;
-		info.ref_type = "STRESSCASE_LOGIN_CONFIG";
-		return true;
-	}
 }
 
 struct STRESSCASE_LOGIN_STATUS
@@ -37,21 +35,19 @@ struct STRESSCASE_LOGIN_STATUS
 	_U32 sucess_times;
 };
 
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_LOGIN_STATUS>(STRESSCASE_LOGIN_STATUS& Value);
+	template<>
+	bool BufferWriter::Write<STRESSCASE_LOGIN_STATUS>(const STRESSCASE_LOGIN_STATUS& Value);
+}
+
 namespace DDLReflect
 {
 	template<>
 	const STRUCT_INFO* GetStruct<STRESSCASE_LOGIN_STATUS>();
 	extern STRUCT_INFO _rfl_struct_STRESSCASE_LOGIN_STATUS_info;
-
-	template<STRESSCASE_LOGIN_STATUS*>
-	bool GetPtrType(FIELD_INFO& info)
-	{
-		memset(&info, 0, sizeof(info));
-		info.type = TYPE_STRUCT;
-		info.sinfo = &_rfl_struct_STRESSCASE_LOGIN_STATUS_info;
-		info.ref_type = "STRESSCASE_LOGIN_STATUS";
-		return true;
-	}
 }
 
 

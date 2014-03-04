@@ -1,4 +1,5 @@
 #include "ZionBase.h"
+#include "ConfusedNumber.h"
 
 namespace DDL
 {
@@ -354,6 +355,7 @@ namespace DDLReflect
 	bool call_jsonwrite(DDL::MemoryWriter& buf, const FIELD_INFO* def, _U16 count, const Json::Value& root)
 	{
 		if(!root.isObject()) return false;
+
 		for(_U16 i=0; i<count; i++)
 		{
 			if(!root.isMember(def[i].name)) return false;

@@ -10,7 +10,7 @@ namespace Zion
 		class CObject;
 		class CManager;
 
-		class CMonitor : public DDLDataObject::IMonitor
+		class CMonitor : public DataObject::IMonitor
 		{
 		public:
 			CMonitor(const DDLReflect::STRUCT_INFO* info);
@@ -25,7 +25,7 @@ namespace Zion
 			bool m_bDirty;
 		};
 
-		class CObject : public DDLDataObject::CObject
+		class CObject : public DataObject::CObject
 		{
 		public:
 			CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData);

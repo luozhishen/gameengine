@@ -5,6 +5,26 @@
 #include <ZionBase.h>
 #include "CardStressCaseConfig.h"
 
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_ECHO_CONFIG>(STRESSCASE_ECHO_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.reset_time)) return false;
+		if(!Read<_U32>(Value.retry_time)) return false;
+		if(!Read<_U32>(Value.disconnect_time)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<STRESSCASE_ECHO_CONFIG>(const STRESSCASE_ECHO_CONFIG& Value)
+	{
+		if(!Write<_U32>(Value.reset_time)) return false;
+		if(!Write<_U32>(Value.retry_time)) return false;
+		if(!Write<_U32>(Value.disconnect_time)) return false;
+		return true;
+	}
+}
+
 namespace DDLReflect
 {
 
@@ -29,6 +49,24 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<STRESSCASE_ECHO_CONFIG>()
 	{
 		return &_rfl_struct_STRESSCASE_ECHO_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_ECHO_STATUS>(STRESSCASE_ECHO_STATUS& Value)
+	{
+		if(!Read<_U32>(Value.failed_times)) return false;
+		if(!Read<_U32>(Value.sucess_time)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<STRESSCASE_ECHO_STATUS>(const STRESSCASE_ECHO_STATUS& Value)
+	{
+		if(!Write<_U32>(Value.failed_times)) return false;
+		if(!Write<_U32>(Value.sucess_time)) return false;
+		return true;
 	}
 }
 
@@ -58,6 +96,22 @@ namespace DDLReflect
 	}
 }
 
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_ENTERSERVER_CONFIG>(STRESSCASE_ENTERSERVER_CONFIG& Value)
+	{
+		if(!Read<_U32>(Value.reset_time)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<STRESSCASE_ENTERSERVER_CONFIG>(const STRESSCASE_ENTERSERVER_CONFIG& Value)
+	{
+		if(!Write<_U32>(Value.reset_time)) return false;
+		return true;
+	}
+}
+
 namespace DDLReflect
 {
 
@@ -80,6 +134,22 @@ namespace DDLReflect
 	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERSERVER_CONFIG>()
 	{
 		return &_rfl_struct_STRESSCASE_ENTERSERVER_CONFIG_info;
+	}
+}
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<STRESSCASE_ENTERSERVER_STATUS>(STRESSCASE_ENTERSERVER_STATUS& Value)
+	{
+		if(!Read<_U32>(Value.failed_times)) return false;
+		return true;
+	}
+	template<>
+	bool BufferWriter::Write<STRESSCASE_ENTERSERVER_STATUS>(const STRESSCASE_ENTERSERVER_STATUS& Value)
+	{
+		if(!Write<_U32>(Value.failed_times)) return false;
+		return true;
 	}
 }
 

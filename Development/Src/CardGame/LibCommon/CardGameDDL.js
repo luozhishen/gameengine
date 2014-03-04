@@ -27,10 +27,17 @@ module.exports.A_LIVE_OBJECT = A_LIVE_OBJECT;
 
 function CARD_AVATAR_OPERATOR() {
 	A_CONTENT_OBJECT.call(this);
+	this.v1 = 0;
+	this.v2 = 0;
+	this.v3 = 0.0;
 	this.__proto__ = CARD_AVATAR_OPERATOR;
 }
 CARD_AVATAR_OPERATOR.serialize = function(v) {
 	if(!A_CONTENT_OBJECT.serialize.call(this)) return false;
+	this.v1 = parseInt(v['v1']);
+	if(this.v1<0) return false;
+	this.v2 = parseInt(v['v2']);
+	this.v3 = parseFloat(v['v3']);
 	return true;
 }
 CARD_AVATAR_OPERATOR.prototype = A_CONTENT_OBJECT;

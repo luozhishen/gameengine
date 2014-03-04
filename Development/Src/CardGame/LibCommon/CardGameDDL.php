@@ -84,13 +84,31 @@ class A_LIVE_OBJECT
 
 class CARD_AVATAR_OPERATOR extends A_CONTENT_OBJECT
 {
+	public $v1; // int
+	public $v2; // int
+	public $v3; // float
+
 	public function __construct()
 	{
 		parent::__construct();
+		$this->v1 = 0;
+		$this->v2 = 0;
+		$this->v3 = 0.0;
 	}
 	public function ToStringInternal()
 	{
 		$__result = parent::ToStringInternal();
+		if($__result!='') $__result = $__result.',';
+		// v1
+		if(!is_int($this->v1)) return '';
+		if($this->v1<0 || $this->v1>4294967295) return false;
+		$__result = $__result.'"v1":'.$this->v1;
+		// v2
+		if(!is_int($this->v2)) return '';
+		$__result = $__result.',"v2":'.$this->v2;
+		// v3
+		if(!is_numeric($this->v3)) return '';
+		$__result = $__result.',"v3":'.$this->v3;
 		return $__result;
 	}
 	public function ToString()
@@ -100,12 +118,28 @@ class CARD_AVATAR_OPERATOR extends A_CONTENT_OBJECT
 	public function ToArray($_array=array())
 	{
 		$_array = parent::ToArray($_array);
+		// v1
+		$_array['v1'] = $this->v1;
+		// v2
+		$_array['v2'] = $this->v2;
+		// v3
+		$_array['v3'] = $this->v3;
 		return $_array;
 	}
 	public function FromArray($_array)
 	{
 		if(!is_array($_array)) return false;
 		if(!parent::FromArray($_array)) return false;
+		// v1
+		if(!is_int($_array['v1'])) return false;
+		if($_array['v1']<0 || $_array['v1']>4294967295) return false;
+		$this->v1 = $_array['v1'];
+		// v2
+		if(!is_int($_array['v2'])) return false;
+		$this->v2 = $_array['v2'];
+		// v3
+		if(!is_numeric($_array['v3'])) return false;
+		$this->v3 = $_array['v3'];
 		return true;
 	}
 };

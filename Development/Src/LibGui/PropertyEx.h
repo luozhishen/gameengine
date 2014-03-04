@@ -77,6 +77,22 @@ public:
 				}
 			}
 			break;
+		case DDLReflect::TYPE_STRUCT:
+			if(strcmp(m_finfo->sinfo->name, "A_CONFUSED_U32")==0)
+			{
+				Zion::CNUM_SET(*((A_CONFUSED_U32*)m_data), (_U32)value.GetInteger());
+				break;
+			}
+			if(strcmp(m_finfo->sinfo->name, "A_CONFUSED_S32")==0)
+			{
+				Zion::CNUM_SET(*((A_CONFUSED_S32*)m_data), (_S32)value.GetInteger());
+				break;
+			}
+			if(strcmp(m_finfo->sinfo->name, "A_CONFUSED_F32")==0)
+			{
+				Zion::CNUM_SET(*((A_CONFUSED_F32*)m_data), (_F32)value.GetDouble());
+				break;
+			}
 		default:
 			ZION_ASSERT(0);
 			return false;

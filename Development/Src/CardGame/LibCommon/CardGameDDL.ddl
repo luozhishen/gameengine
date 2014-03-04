@@ -5,6 +5,9 @@ include "../../LibCommon/DataSyncDDL.ddl"
 
 struct CARD_AVATAR_OPERATOR : A_CONTENT_OBJECT
 {
+	A_CONFUSED_U32 v1;
+	A_CONFUSED_S32 v2;
+	A_CONFUSED_F32 v3;
 };
 
 struct CARD_AVATAR_DESC : A_LIVE_OBJECT

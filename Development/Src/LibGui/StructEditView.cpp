@@ -147,6 +147,22 @@ void CStructEditView::OnPropertyGridChange(wxPropertyGridEvent &event)
 		case DDLReflect::TYPE_UUID:
 			((CPropertyEx<wxString, wxStringProperty>*)prop)->ModifyValue(value);
 			break;
+		case DDLReflect::TYPE_STRUCT:
+			if(strcmp(finfo->sinfo->name, "A_CONFUSED_U32")==0)
+			{
+				((CPropertyEx<_U32, wxUIntProperty>*)prop)->ModifyValue(value);
+				break;
+			}
+			if(strcmp(finfo->sinfo->name, "A_CONFUSED_S32")==0)
+			{
+				((CPropertyEx<_F32, wxIntProperty>*)prop)->ModifyValue(value);
+				break;
+			}
+			if(strcmp(finfo->sinfo->name, "A_CONFUSED_F32")==0)
+			{
+				((CPropertyEx<_F32, wxFloatProperty>*)prop)->ModifyValue(value);
+				break;
+			}
 		default:
 			ZION_ASSERT(0);
 			return;
@@ -230,6 +246,7 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 	}
 
 	wxPGId prog_id = 0;
+	bool has_subitem = false;
 	switch(finfo->type&DDLReflect::TYPE_MASK)
 	{
 	case DDLReflect::TYPE_U8:
@@ -285,6 +302,24 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 		}
 		break;
 	case DDLReflect::TYPE_STRUCT:
+		if(strcmp(finfo->sinfo->name, "A_CONFUSED_U32")==0)
+		{
+			prop = ZION_NEW CPropertyEx<_U32, wxUIntProperty>(strLabel, name, finfo, data, Zion::CNUM_GET(*((const A_CONFUSED_U32*)data)));
+			prog_id = m_pPropGrid->AppendIn(id, prop);
+			break;
+		}
+		if(strcmp(finfo->sinfo->name, "A_CONFUSED_S32")==0)
+		{
+			prop = ZION_NEW CPropertyEx<_S32, wxIntProperty>(strLabel, name, finfo, data, Zion::CNUM_GET(*((const A_CONFUSED_S32*)data)));
+			prog_id = m_pPropGrid->AppendIn(id, prop);
+			break;
+		}
+		if(strcmp(finfo->sinfo->name, "A_CONFUSED_F32")==0)
+		{
+			prop = ZION_NEW CPropertyEx<_F32, wxFloatProperty>(strLabel, name, finfo, data, Zion::CNUM_GET(*((const A_CONFUSED_F32*)data)));
+			prog_id = m_pPropGrid->AppendIn(id, prop);
+			break;
+		}
 		{
 			wxString value(wxT("struct "));
 			value += wxString(finfo->sinfo->name, wxMBConvUTF8());
@@ -292,6 +327,7 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 			prop->ChangeFlag(wxPG_PROP_READONLY, true);
 			prop->ChangeFlag(wxPG_PROP_COLLAPSED, true);
 			prog_id = m_pPropGrid->AppendIn(id, prop);
+			has_subitem = true;
 		}
 		break;
 	case DDLReflect::TYPE_UUID_REF:
@@ -308,7 +344,7 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 		prop->ChangeFlag(wxPG_PROP_READONLY, true);
 	}
 	
-	if((finfo->type&DDLReflect::TYPE_MASK)==DDLReflect::TYPE_STRUCT)
+	if(has_subitem)
 	{
 		CreateStruct(prog_id, name, finfo->sinfo, data);
 	}

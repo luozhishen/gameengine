@@ -11,12 +11,18 @@ namespace DDL
 	bool BufferReader::Read<CARD_AVATAR_OPERATOR>(CARD_AVATAR_OPERATOR& Value)
 	{
 		if(!BufferReader::Read<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Read<A_CONFUSED_U32>(Value.v1)) return false;
+		if(!Read<A_CONFUSED_S32>(Value.v2)) return false;
+		if(!Read<A_CONFUSED_F32>(Value.v3)) return false;
 		return true;
 	}
 	template<>
 	bool BufferWriter::Write<CARD_AVATAR_OPERATOR>(const CARD_AVATAR_OPERATOR& Value)
 	{
 		if(!BufferWriter::Write<A_CONTENT_OBJECT>(Value)) return false;
+		if(!Write<A_CONFUSED_U32>(Value.v1)) return false;
+		if(!Write<A_CONFUSED_S32>(Value.v2)) return false;
+		if(!Write<A_CONFUSED_F32>(Value.v3)) return false;
 		return true;
 	}
 }
@@ -34,7 +40,13 @@ namespace DDLReflect
 		return buf.Write<CARD_AVATAR_OPERATOR>(*((const CARD_AVATAR_OPERATOR*)data));
 	}
 
-	STRUCT_INFO _rfl_struct_CARD_AVATAR_OPERATOR_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "CARD_AVATAR_OPERATOR", sizeof(CARD_AVATAR_OPERATOR), 0, NULL, _struct_CARD_AVATAR_OPERATOR_readproc, _struct_CARD_AVATAR_OPERATOR_writeproc };
+	static FIELD_INFO _struct_CARD_AVATAR_OPERATOR_fieldinfo[] =
+	{
+		{TYPE_STRUCT, "v1", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR_OPERATOR, v1), &_rfl_struct_A_CONFUSED_U32_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_CONFUSED_U32), NULL},
+		{TYPE_STRUCT, "v2", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR_OPERATOR, v2), &_rfl_struct_A_CONFUSED_S32_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_CONFUSED_S32), NULL},
+		{TYPE_STRUCT, "v3", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR_OPERATOR, v3), &_rfl_struct_A_CONFUSED_F32_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_CONFUSED_F32), NULL},
+	};
+	STRUCT_INFO _rfl_struct_CARD_AVATAR_OPERATOR_info = { &_rfl_struct_A_CONTENT_OBJECT_info, "CARD_AVATAR_OPERATOR", sizeof(CARD_AVATAR_OPERATOR), 3, _struct_CARD_AVATAR_OPERATOR_fieldinfo, _struct_CARD_AVATAR_OPERATOR_readproc, _struct_CARD_AVATAR_OPERATOR_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<CARD_AVATAR_OPERATOR>()
 	{

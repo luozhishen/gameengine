@@ -22,6 +22,7 @@ namespace Zion
 		public:
 			CContentObject(const DDLReflect::STRUCT_INFO* info, const A_UUID& uuid)
 			{
+				m_pInfo = info;
 				m_pData = (A_CONTENT_OBJECT*)DDLReflect::CreateObject(info);
 				m_pData->_uuid = uuid;
 			}

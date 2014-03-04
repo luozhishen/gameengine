@@ -185,8 +185,7 @@ void CContentDataView::OnObjectAdd(wxCommandEvent& event)
 
 	if(m_dlgGenerateObject.ShowModal()!=wxID_OK) return;
 	const DDLReflect::STRUCT_INFO* info = Zion::ContentObject::GetType(m_dlgGenerateObject.GetType().ToUTF8());
-	A_UUID uuid;
-	A_CONTENT_OBJECT* pObject = Zion::ContentObject::CreateObject(info, uuid);
+	A_CONTENT_OBJECT* pObject = Zion::ContentObject::CreateObject(info);
 	if(!pObject) return;
 
 	pObject->_name = (const char*)m_dlgGenerateObject.GetName().ToUTF8();

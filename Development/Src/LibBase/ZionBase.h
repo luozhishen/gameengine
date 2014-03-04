@@ -19,6 +19,7 @@
 #include "DDLStub.h"
 #include "DataObject.h"
 #include "sigslot.h"
+#include "ConfusedNumber.h"
 
 namespace Zion
 {

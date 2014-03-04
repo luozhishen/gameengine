@@ -221,10 +221,10 @@ SolutionFile.prototype.load = function (filename) {
 		var pos = lines[i].indexOf('Project("');
 		if(pos<0) continue;
 		pos = lines[i].indexOf(',');
-		if(pos<0) throw "wwwwww";
+		if(pos<0) throw "invalid solution file";
 		var name = lines[i].substring(pos+3);
 		pos = name.indexOf('"');
-		if(pos<0) throw "wwwwww";
+		if(pos<0) throw "invalid solution file";
 		name = name.substring(0, pos);
 		pos = name.indexOf('.vcxproj');
 		if(pos<0) continue;
@@ -336,21 +336,6 @@ AppBuilder.prototype.buildDDL = function (proj) {
 	}
 }
 
-AppBuilder.prototype.buildINC = function (proj) {
-	/*
-	for(var i=0; i<proj.inc_files.length; i++) {
-		if(proj.inc_files[i].indexOf('AutoGen.h')>0) {
-			var cwd = process.cwd();
-			var proj_path = cwd + '\\' + proj.path;
-			proj_path = path.normalize(proj_path.replace(/\\/g, "/"));
-			console.log('cd ' + proj_path);
-			console.log('node CodeGen.js');
-			console.log('cd ' + cwd);
-		}
-	}
-	*/
-}
-
 AppBuilder.prototype.loadCPPDepend = function (filename) {
 	var ret = [];
 	try {
@@ -439,7 +424,6 @@ AppBuilder.prototype.buildBIN = function (proj) {
 	}
 
 	var objs_str = objs.join(' ');
-	var cmdline;
 	if(proj.type=='StaticLibrary') {
 		var lib_path = this.object_dir + proj.name;
 		lib_path = lib_path.replace(/\\/g, "/");
@@ -448,7 +432,8 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		if(!this.needUpdate(objs, lib_path+this.lib_ext)) {
 			return;
 		}
-		cmdline = this.sl_exe.format(lib_path+this.lib_ext, objs_str);
+		console.log('echo link library ' + proj.name);
+		console.log(this.sl_exe.format(lib_path+this.lib_ext, objs_str));
 	} else {
 		var exe_path = this.output_dir + proj.name;
 		exe_path = exe_path.replace(/\\/g, "/");
@@ -457,10 +442,9 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		if(!this.needUpdate(objs, exe_path+this.exe_ext)) {
 			return;
 		}
-		cmdline = this.ln_exe.format(objs_str, exe_path+this.exe_ext);
+		console.log('echo link execute ' + proj.name);
+		console.log(this.ln_exe.format(objs_str, exe_path+this.exe_ext));
 	}
-
-	console.log(cmdline);
 }
 
 AppBuilder.prototype.build = function (project_name) {
@@ -472,7 +456,6 @@ AppBuilder.prototype.build = function (project_name) {
 
 	this.buildRPC(proj);
 	this.buildDDL(proj);
-	this.buildINC(proj);
 	this.buildBIN(proj);
 }
 

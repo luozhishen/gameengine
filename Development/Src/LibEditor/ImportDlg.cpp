@@ -256,7 +256,7 @@ bool CImportDlg::ProcessImport()
 	}
 	if(i!=sheets.size())
 	{
-		Zion::ContentObject::LoadContent();
+		Zion::ContentObject::LoadContent(NULL, true);
 	}
 
 	return true;

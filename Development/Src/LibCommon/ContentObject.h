@@ -44,7 +44,7 @@ namespace Zion
 		const A_CONTENT_OBJECT* FindFirst(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
 		const A_CONTENT_OBJECT* FindNext(const DDLReflect::STRUCT_INFO* info, bool bExactMatch, const A_CONTENT_OBJECT* object);
 
-		bool LoadContent(const char* path=NULL, bool ignore=true);
+		bool LoadContent(const char* path=NULL, bool ignore=false);
 		bool LoadContentFromBinaryFile(const char* filename, const char* deskey);
 		bool SaveContent(const char* path=NULL, bool force=false);
 		bool SaveContentToBinaryFile(const char* file, const char* deskey);

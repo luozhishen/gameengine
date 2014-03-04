@@ -160,7 +160,7 @@ void CEditorFrame::OnFileMenu(wxCommandEvent& event)
 	case ID_RELOAD:
 		if(m_pContentDataView->CheckModify(true))
 		{
-			if(!Zion::ContentObject::LoadContent(NULL, false))
+			if(!Zion::ContentObject::LoadContent(NULL, true))
 			{
 				wxMessageBox(wxT("Failed to load content"), wxT("Error"));
 			}

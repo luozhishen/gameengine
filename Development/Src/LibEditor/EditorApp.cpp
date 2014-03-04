@@ -28,7 +28,7 @@ bool CEditorApp::OnInit()
 	Zion::InitDDLStub();
 	Zion::InitContentObjects();
 	Zion::InitLiveObjects();
-	Zion::ContentObject::LoadContent();
+	Zion::ContentObject::LoadContent(NULL, true);
 
 	wxImage::AddHandler(ZION_NEW wxPNGHandler);
 

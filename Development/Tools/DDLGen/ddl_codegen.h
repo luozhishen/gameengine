@@ -23,4 +23,6 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task);
 void ddlgen_param_clear();
 void ddlgen_param_add(const char* name, const char* value);
 
+void ddlgen_fixarg(const DDL_ARG* in, DDL_ARG* out);
+
 #endif

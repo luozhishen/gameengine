@@ -205,13 +205,13 @@ class CARD_AVATAR extends A_LIVE_OBJECT
 class CARD_AVATAR_OWNOBJ extends A_LIVE_OBJECT
 {
 	public $obj_name; // string
-	public $obj_value; // int
+	public $obj_value; // float
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->obj_name = '';
-		$this->obj_value = 0;
+		$this->obj_value = 0.0;
 	}
 	public function ToStringInternal()
 	{
@@ -221,7 +221,7 @@ class CARD_AVATAR_OWNOBJ extends A_LIVE_OBJECT
 		if(!is_string($this->obj_name)) return '';
 		$__result = $__result.'"obj_name":"'.$this->obj_name.'"';
 		// obj_value
-		if(!is_int($this->obj_value)) return '';
+		if(!is_numeric($this->obj_value)) return '';
 		$__result = $__result.',"obj_value":'.$this->obj_value;
 		return $__result;
 	}
@@ -246,7 +246,7 @@ class CARD_AVATAR_OWNOBJ extends A_LIVE_OBJECT
 		if(!is_string($_array['obj_name'])) return false;
 		$this->obj_name = $_array['obj_name'];
 		// obj_value
-		if(!is_int($_array['obj_value'])) return false;
+		if(!is_numeric($_array['obj_value'])) return false;
 		$this->obj_value = $_array['obj_value'];
 		return true;
 	}

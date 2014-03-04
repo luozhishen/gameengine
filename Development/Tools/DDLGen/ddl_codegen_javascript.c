@@ -34,6 +34,11 @@ void ddlgen_codejs_close()
 int ddlgen_codejs_task_struct(const DDL_STR* str, const DDL_TASK* task)
 {
 	unsigned int a;
+
+	if(strcmp(str->name, "A_CONFUSED_U32")==0) return 1;
+	if(strcmp(str->name, "A_CONFUSED_S32")==0) return 1;
+	if(strcmp(str->name, "A_CONFUSED_F32")==0) return 1;
+
 	OutJS(0, "\n");
 
 	OutJS(0, "function %s() {\n", str->name);
@@ -41,7 +46,9 @@ int ddlgen_codejs_task_struct(const DDL_STR* str, const DDL_TASK* task)
 		OutJS(1, "%s.call(this);\n", str->parent);
 	}
 	for(a=0; a<str->args_count; a++) {
-		DDL_ARG* arg = &str->args[a];
+		DDL_ARG _arg;
+		DDL_ARG* arg = &_arg;
+		ddlgen_fixarg(&str->args[a], &_arg);
 		if(arg->count[0]!='\0') {
 			OutJS(1, "this.%s = [];\n", arg->name);
 		} else {
@@ -74,7 +81,9 @@ int ddlgen_codejs_task_struct(const DDL_STR* str, const DDL_TASK* task)
 	}
 
 	for(a=0; a<str->args_count; a++) {
-		DDL_ARG* arg = &str->args[a];
+		DDL_ARG _arg;
+		DDL_ARG* arg = &_arg;
+		ddlgen_fixarg(&str->args[a], &_arg);
 		if(arg->count[0]!='\0') {
 			OutJS(1, "if(!isArray(v['%s'])) return false;\n", arg->name);
 			OutJS(1, "this.%s = [];\n", arg->name);

@@ -13,6 +13,7 @@ static int is_struct(const DDL_ARG* arg);
 static int need_range(const DDL_ARG* arg);
 static const char* range_min(const DDL_ARG* arg);
 static const char* range_max(const DDL_ARG* arg);
+static int ddlgen_codephp_task_struct_impl(const DDL_STR* str, const DDL_TASK* task);
 
 int ddlgen_codephp_open(const char* filename)
 {
@@ -31,16 +32,19 @@ void ddlgen_codephp_close()
 
 int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 {
+	unsigned int a;
+
 	if(strcmp(str->name, "A_CONFUSED_U32")==0) return 1;
 	if(strcmp(str->name, "A_CONFUSED_S32")==0) return 1;
 	if(strcmp(str->name, "A_CONFUSED_F32")==0) return 1;
 
-	unsigned int a;
 	OutP(0, "\n");
 	OutP(0, "class %s%s%s\n", str->name, str->parent[0]?" extends ":"", str->parent);
 	OutP(0, "{\n");
 	for(a=0; a<str->args_count; a++) {
-		DDL_ARG* arg = &str->args[a];
+		DDL_ARG _arg;
+		DDL_ARG* arg = &_arg;
+		ddlgen_fixarg(&str->args[a], &_arg);
 		if(arg->count[0]!='\0') {
 			OutP(1, "public $%s = array(); // array %s\n", arg->name, arg->type);
 		} else {
@@ -61,7 +65,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 		OutP(2, "parent::__construct();\n");
 	}
 	for(a=0; a<str->args_count; a++) {
-		DDL_ARG* arg = &str->args[a];
+		DDL_ARG _arg;
+		DDL_ARG* arg = &_arg;
+		ddlgen_fixarg(&str->args[a], &_arg);
 		if(arg->count[0]!='\0') {
 			OutP(2, "$this->%s = array();\n", arg->name);
 		} else {
@@ -93,7 +99,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 		OutP(2, "$__result = '';\n");
 	}
 	for(a=0; a<str->args_count; a++) {
-		DDL_ARG* arg = &str->args[a];
+		DDL_ARG _arg;
+		DDL_ARG* arg = &_arg;
+		ddlgen_fixarg(&str->args[a], &_arg);
 		OutP(2, "// %s\n", arg->name);
 		if(arg->count[0]!='\0') {
 			OutP(2, "if(!is_array($this->%s)) return '';\n", arg->name);
@@ -156,7 +164,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 		OutP(2, "$_array = parent::ToArray($_array);\n");
 	}
 	for(a=0; a<str->args_count; a++) {
-		DDL_ARG* arg = &str->args[a];
+		DDL_ARG _arg;
+		DDL_ARG* arg = &_arg;
+		ddlgen_fixarg(&str->args[a], &_arg);
 		OutP(2, "// %s\n", arg->name);
 		if(arg->count[0]!='\0') {
 			OutP(2, "$_earray = array();\n", arg->name);
@@ -188,7 +198,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 		OutP(2, "if(!parent::FromArray($_array)) return false;\n");
 	}
 	for(a=0; a<str->args_count; a++) {
-		DDL_ARG* arg = &str->args[a];
+		DDL_ARG _arg;
+		DDL_ARG* arg = &_arg;
+		ddlgen_fixarg(&str->args[a], &_arg);
 		OutP(2, "// %s\n", arg->name);
 		if(arg->count[0]!='\0') {
 			OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
@@ -247,7 +259,9 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 		OutP(1, "{\n");
 		for(a=0; a<(int)fun->args_count; a++)
 		{
-			DDL_ARG* arg = &fun->args[a];
+			DDL_ARG _arg;
+			DDL_ARG* arg = &_arg;
+			ddlgen_fixarg(&fun->args[a], &_arg);
 
 			if(arg->count[0]!='\0') {
 				OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
@@ -316,7 +330,9 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 		OutP(1, "public function %s(", fun->name);
 		for(a=0; a<(int)fun->args_count; a++)
 		{
-			DDL_ARG* arg = &fun->args[a];
+			DDL_ARG _arg;
+			DDL_ARG* arg = &_arg;
+			ddlgen_fixarg(&fun->args[a], &_arg);
 			if(a>0) OutP(0, ", ");
 			OutP(0, "$%s", arg->name);
 		}
@@ -331,7 +347,9 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 
 		for(a=0; a<(int)fun->args_count; a++)
 		{
-			DDL_ARG* arg = &fun->args[a];
+			DDL_ARG _arg;
+			DDL_ARG* arg = &_arg;
+			ddlgen_fixarg(&fun->args[a], &_arg);
 			if(arg->count[0]!='\0') {
 				OutP(2, "if(!is_array($%s)) return false;\n", arg->name);
 				OutP(2, "$__result = %s'%s\"%s\":[';\n", a>0?"$__result.":"", a>0?",":"", arg->name);

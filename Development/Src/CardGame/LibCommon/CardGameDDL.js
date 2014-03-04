@@ -68,13 +68,13 @@ module.exports.CARD_AVATAR = CARD_AVATAR;
 function CARD_AVATAR_OWNOBJ() {
 	A_LIVE_OBJECT.call(this);
 	this.obj_name = '';
-	this.obj_value = 0;
+	this.obj_value = 0.0;
 	this.__proto__ = CARD_AVATAR_OWNOBJ;
 }
 CARD_AVATAR_OWNOBJ.serialize = function(v) {
 	if(!A_LIVE_OBJECT.serialize.call(this)) return false;
 	this.obj_name = v['obj_name'].toString();
-	this.obj_value = parseInt(v['obj_value']);
+	this.obj_value = parseFloat(v['obj_value']);
 	return true;
 }
 CARD_AVATAR_OWNOBJ.prototype = A_LIVE_OBJECT;

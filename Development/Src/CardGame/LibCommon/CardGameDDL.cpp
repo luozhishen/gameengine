@@ -138,7 +138,7 @@ namespace DDL
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!ReadString<100>(Value.obj_name)) return false;
-		if(!Read<_S32>(Value.obj_value)) return false;
+		if(!Read<A_CONFUSED_F32>(Value.obj_value)) return false;
 		return true;
 	}
 	template<>
@@ -146,7 +146,7 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!WriteString<100>(Value.obj_name)) return false;
-		if(!Write<_S32>(Value.obj_value)) return false;
+		if(!Write<A_CONFUSED_F32>(Value.obj_value)) return false;
 		return true;
 	}
 }
@@ -167,7 +167,7 @@ namespace DDLReflect
 	static FIELD_INFO _struct_CARD_AVATAR_OWNOBJ_fieldinfo[] =
 	{
 		{TYPE_STRING, "obj_name", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR_OWNOBJ, obj_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_S32, "obj_value", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR_OWNOBJ, obj_value), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_S32), NULL},
+		{TYPE_STRUCT, "obj_value", 0, (_U16)ZION_OFFSETOF(CARD_AVATAR_OWNOBJ, obj_value), &_rfl_struct_A_CONFUSED_F32_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_CONFUSED_F32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_CARD_AVATAR_OWNOBJ_info = { &_rfl_struct_A_LIVE_OBJECT_info, "CARD_AVATAR_OWNOBJ", sizeof(CARD_AVATAR_OWNOBJ), 2, _struct_CARD_AVATAR_OWNOBJ_fieldinfo, _struct_CARD_AVATAR_OWNOBJ_readproc, _struct_CARD_AVATAR_OWNOBJ_writeproc };
 	template<>

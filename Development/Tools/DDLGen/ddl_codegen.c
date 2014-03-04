@@ -790,3 +790,11 @@ int ddlgen_code_task_struct_reflect(const DDL_STR* str, const DDL_TASK* task)
 
 	return 1;
 }
+
+void ddlgen_fixarg(const DDL_ARG* in, DDL_ARG* out)
+{
+	memcpy(out, in, sizeof(DDL_ARG));
+	if(strcmp(out->type, "A_CONFUSED_U32")==0) strcpy(out->type, "_U32");
+	if(strcmp(out->type, "A_CONFUSED_S32")==0) strcpy(out->type, "_S32");
+	if(strcmp(out->type, "A_CONFUSED_F32")==0) strcpy(out->type, "_F32");
+}

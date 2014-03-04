@@ -8,6 +8,8 @@
 #pragma pack(push)
 #pragma pack(4)
 
+#include "../../LibBase/ConfusedNumberDDL.h"
+
 #include "../../LibCommon/CommonDDL.h"
 
 #include "../../LibCommon/DataSyncDDL.h"
@@ -75,7 +77,7 @@ namespace DDLReflect
 struct CARD_AVATAR_OWNOBJ : A_LIVE_OBJECT
 {
 	DDL::String<100> obj_name;
-	_S32 obj_value;
+	A_CONFUSED_F32 obj_value;
 };
 
 namespace DDL

@@ -1,4 +1,5 @@
 
+include "../../LibBase/ConfusedNumberDDL.ddl"
 include "../../LibCommon/CommonDDL.ddl"
 include "../../LibCommon/DataSyncDDL.ddl"
 
@@ -19,8 +20,8 @@ struct CARD_AVATAR : A_LIVE_OBJECT
 
 struct CARD_AVATAR_OWNOBJ : A_LIVE_OBJECT
 {
-	string<100>	obj_name;
-	_S32		obj_value;
+	string<100>		obj_name;
+	A_CONFUSED_F32	obj_value;
 };
 
 class CARDGAME_C2S

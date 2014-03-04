@@ -250,10 +250,6 @@ SolutionFile.prototype.getProject = function (name) {
 function AppBuilder (solution) {
 	this.files_data = {};
 	this.solution = solution;
-	this.cc_exe = 'clang {1} {0} -c -o {2}';
-	this.ln_exe = 'clang {0} -o {1}';
-	this.sl_exe = 'ar crv {0} {1}';
-	this.dl_exe = '';
 }
 
 AppBuilder.prototype.getFileTime = function (filename) {
@@ -277,11 +273,21 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.exe_ext = '.exe';
 		this.dll_ext = '.dll';
 		this.lib_ext = '.lib';
+		this.cd_exe = 'echo cl {1} {0} /c /Fo{2}';
+		this.cc_exe = 'cl {1} {0} /c /Fo{2}';
+		this.ln_exe = 'cl {0} /Fe{1}';
+		this.sl_exe = 'echo {0} {1}';
+		this.dl_exe = '';
 	} else {
 		this.obj_ext = '.o';
 		this.exe_ext = '';
 		this.dll_ext = '.so';
 		this.lib_ext = '.a';
+		this.cd_exe = 'clang -M {1} {0} -c -o {2}';
+		this.cc_exe = 'clang {1} {0} -c -o {2}';
+		this.ln_exe = 'clang {0} -o {1}';
+		this.sl_exe = 'ar crv {0} {1}';
+		this.dl_exe = '';
 	}
 }
 
@@ -417,10 +423,8 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		autoMakeDir(dst_path);
 
 		console.log('echo compile '+proj.src_files[i]);
-		var cmdline = this.cc_exe.format(src_path, inc_cmd + ' -M ' + this.cc_flag, dst_path+'.d');
-		console.log(cmdline);
-		cmdline = this.cc_exe.format(src_path, inc_cmd + ' ' + this.cc_flag, dst_path+this.obj_ext);
-		console.log(cmdline);
+		console.log(this.cc_exe.format(src_path, inc_cmd + ' ' + this.cc_flag, dst_path+this.obj_ext));
+		console.log(this.cd_exe.format(src_path, inc_cmd + ' -M ' + this.cc_flag, dst_path+'.d'));
 	}
 
 	var objs_str = objs.join(' ');
@@ -536,9 +540,10 @@ solution.load(process.argv[2]);
 
 var builder = new AppBuilder(solution);
 builder.setConfiguration('Debug');
-builder.setPlatform('unix');
+builder.setPlatform('Win32');
 
 var do_task;
+var tasks = [];
 
 switch(process.argv[3]) {
 case 'build':
@@ -565,7 +570,7 @@ default:
 for(var i=4; i<process.argv.length; i++) {
 	var pos = process.argv[i].indexOf('=');
 	if(pos<0) {
-		do_task(process.argv[i]);
+		tasks.push(process.argv[i]);
 	} else {
 		switch(process.argv[i].substring(0, pos)) {
 		case 'Config':
@@ -576,4 +581,8 @@ for(var i=4; i<process.argv.length; i++) {
 			break;
 		}
 	}
+}
+
+for(var i=0; i<tasks.length; i++) {
+	do_task(tasks[0]);
 }

@@ -197,6 +197,28 @@ namespace DDLReflect
 				break;
 			case TYPE_STRUCT:
 				{
+					if(def==GetStruct<A_CONFUSED_U32>())
+					{
+						A_CONFUSED_U32 num;
+						if(!buf.Read<A_CONFUSED_U32>(num)) return false;
+						value = Json::Value((Json::Value::UInt)Zion::CNUM_GET(num));
+						break;
+					}
+					if(def==GetStruct<A_CONFUSED_S32>())
+					{
+						A_CONFUSED_S32 num;
+						if(!buf.Read<A_CONFUSED_S32>(num)) return false;
+						value = Json::Value((Json::Value::Int)Zion::CNUM_GET(num));
+						break;
+					}
+					if(def==GetStruct<A_CONFUSED_F32>())
+					{
+						A_CONFUSED_F32 num;
+						if(!buf.Read<A_CONFUSED_F32>(num)) return false;
+						value = Json::Value((double)Zion::CNUM_GET(num));
+						break;
+					}
+
 					if(def->parent)
 					{
 						if(!call_jsonread(buf, type, def->parent, value)) return false;
@@ -335,6 +357,31 @@ namespace DDLReflect
 				break;
 			case TYPE_STRUCT:
 				{
+					if(def==GetStruct<A_CONFUSED_U32>())
+					{
+						if(!value.isNumeric()) return false;
+						A_CONFUSED_U32 num;
+						Zion::CNUM_SET(num, (_U32)value.asUInt());
+						if(!buf.Write<A_CONFUSED_U32>(num)) return false;
+						break;
+					}
+					if(def==GetStruct<A_CONFUSED_S32>())
+					{
+						if(!value.isNumeric()) return false;
+						A_CONFUSED_S32 num;
+						Zion::CNUM_SET(num, (_S32)value.asInt());
+						if(!buf.Write<A_CONFUSED_S32>(num)) return false;
+						break;
+					}
+					if(def==GetStruct<A_CONFUSED_F32>())
+					{
+						if(!value.isNumeric()) return false;
+						A_CONFUSED_F32 num;
+						Zion::CNUM_SET(num, (_F32)value.asDouble());
+						if(!buf.Write<A_CONFUSED_F32>(num)) return false;
+						break;
+					}
+
 					if(!value.isObject()) return false;
 
 					if(def->parent)
@@ -366,6 +413,24 @@ namespace DDLReflect
 
 	bool struct_jsonread(const _U8* buf, const STRUCT_INFO* def, Json::Value& root)
 	{
+		if(def==GetStruct<A_CONFUSED_U32>())
+		{
+			root = Json::Value((Json::Value::UInt)Zion::CNUM_GET(*((const A_CONFUSED_U32*)buf)));
+			return true;
+		}
+
+		if(def==GetStruct<A_CONFUSED_S32>())
+		{
+			root = Json::Value((Json::Value::Int)Zion::CNUM_GET(*((const A_CONFUSED_S32*)buf)));
+			return true;
+		}
+
+		if(def==GetStruct<A_CONFUSED_F32>())
+		{
+			root = Json::Value((double)Zion::CNUM_GET(*((const A_CONFUSED_F32*)buf)));
+			return true;
+		}
+
 		if(def->parent)
 		{
 			if(!struct_jsonread(buf, def->parent, root)) return false;
@@ -508,7 +573,29 @@ namespace DDLReflect
 
 	bool struct_jsonwrite(const Json::Value& value, const STRUCT_INFO* def, _U8* data, bool ignore)
 	{
+		if(def==GetStruct<A_CONFUSED_U32>())
+		{
+			if(!value.isNumeric()) return false;
+			Zion::CNUM_SET(*((A_CONFUSED_U32*)data), (_U32)value.asUInt());
+			return true;
+		}
+
+		if(def==GetStruct<A_CONFUSED_S32>())
+		{
+			if(!value.isNumeric()) return false;
+			Zion::CNUM_SET(*((A_CONFUSED_S32*)data), (_S32)value.asInt());
+			return true;
+		}
+
+		if(def==GetStruct<A_CONFUSED_F32>())
+		{
+			if(!value.isNumeric()) return false;
+			Zion::CNUM_SET(*((A_CONFUSED_F32*)data), (_F32)value.asDouble());
+			return true;
+		}
+
 		if(!value.isObject()) return false;
+
 		if(def->parent)
 		{
 			if(!struct_jsonwrite(value, def->parent, data, ignore)) return false;

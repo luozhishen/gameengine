@@ -31,6 +31,10 @@ void ddlgen_codephp_close()
 
 int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 {
+	if(strcmp(str->name, "A_CONFUSED_U32")==0) return 1;
+	if(strcmp(str->name, "A_CONFUSED_S32")==0) return 1;
+	if(strcmp(str->name, "A_CONFUSED_F32")==0) return 1;
+
 	unsigned int a;
 	OutP(0, "\n");
 	OutP(0, "class %s%s%s\n", str->name, str->parent[0]?" extends ":"", str->parent);

@@ -184,10 +184,11 @@ namespace Zion
 		CStubDispatcher::Dispatch(iid, fid, len, data);
 	}
 
-	void CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	bool CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
-		if(GetState()!=STATE_LOGINED) return;
+		if(GetState()!=STATE_LOGINED) return false;
 		m_pClientConnection->SendData(iid, fid, len, data);
+		return true;
 	}
 
 	CClientComponent::CClientComponent(CClient* pClient) : m_pClient(pClient)

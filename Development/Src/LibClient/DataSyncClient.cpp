@@ -143,31 +143,31 @@ namespace Zion
 		return m_Flag==0 || !m_bReady || !m_WatQ.empty();
 	}
 
-	bool CDataSyncClient::Send(_U16 iid, _U16 fid, DDL::MemoryWriter& buf)
+	bool CDataSyncClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* buf)
 	{
 		switch(m_Mode)
 		{
 		case SYNCMODE_CLIENT_ACTIVE:
-			if(!m_pAccesser->Dispatch(iid, fid, buf.GetSize(), buf.GetBuf()))
+			if(!m_pAccesser->Dispatch(iid, fid, len, buf))
 			{
 				ZION_ASSERT(0);
 				return false;
 			}
 			break;
 		case SYNCMODE_SERVER_ACTIVE:
-			if(!GetClient()->Send(iid, fid, buf))
+			if(!GetClient()->SendData(iid, fid, len, buf))
 			{
 				ZION_ASSERT(0);
 				return false;
 			}
 			break;
 		case SYNCMODE_VERIFY:
-			if(!m_pAccesser->Dispatch(iid, fid, buf.GetSize(), buf.GetBuf()))
+			if(!m_pAccesser->Dispatch(iid, fid, len, buf))
 			{
 				ZION_ASSERT(0);
 				return false;
 			}
-			if(!GetClient()->Send(iid, fid, buf))
+			if(!GetClient()->SendData(iid, fid, len, buf))
 			{
 				ZION_ASSERT(0);
 				return false;

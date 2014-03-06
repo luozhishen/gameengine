@@ -117,77 +117,74 @@ namespace DDLReflect
 namespace DDLProxy
 {
 
-	template<typename CLIENT, typename BUFFER>
-	class CARDGAME_C2S : public DDLProxy<CLIENT, BUFFER>
+	template<_U32 BUF_SIZE>
+	class CARDGAME_C2S : public DDLProxy<BUF_SIZE>
 	{
 	public:
-		CARDGAME_C2S(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::CARDGAME_C2S>())
+		CARDGAME_C2S(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::CARDGAME_C2S>())
 		{
-		}
-
-		static CARDGAME_C2S<CLIENT, BUFFER> Get(CLIENT* Client)
-		{
-			CARDGAME_C2S<CLIENT, BUFFER> Proxy(Client);
-			return Proxy;
 		}
 
 		bool Ping()
 		{
-			BUFFER Buf;
+			_Buf.Reset();
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool SelectServer(_U32 server_id)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <_U32> <server_id> <> <>
-			if(!Buf.Write(server_id)) return false;
+			if(!_Buf.Write(server_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool GetAvatarList()
 		{
-			BUFFER Buf;
+			_Buf.Reset();
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool CreateAvatar(const char* avatar_name, _U32 type)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <string> <avatar_name> <> <>
 			__length = DDL::StringLength(avatar_name);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(avatar_name, (unsigned int)sizeof(avatar_name[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(avatar_name, (unsigned int)sizeof(avatar_name[0])*__length)) return false;
 			// <_U32> <type> <> <>
-			if(!Buf.Write(type)) return false;
+			if(!_Buf.Write(type)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+			return GetClient()->SendData(this->GetClassID(), 3, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool EnterGame(_U32 avatar_id)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <_U32> <avatar_id> <> <>
-			if(!Buf.Write(avatar_id)) return false;
+			if(!_Buf.Write(avatar_id)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+			return GetClient()->SendData(this->GetClassID(), 4, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool LeaveGame()
 		{
-			BUFFER Buf;
+			_Buf.Reset();
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+			return GetClient()->SendData(this->GetClassID(), 5, _Buf.GetSize(), _Buf.GetBuf());
 		}
 	};
 
@@ -357,55 +354,52 @@ namespace DDLStub
 namespace DDLProxy
 {
 
-	template<typename CLIENT, typename BUFFER>
-	class CARDGAME_OP : public DDLProxy<CLIENT, BUFFER>
+	template<_U32 BUF_SIZE>
+	class CARDGAME_OP : public DDLProxy<BUF_SIZE>
 	{
 	public:
-		CARDGAME_OP(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::CARDGAME_OP>())
+		CARDGAME_OP(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::CARDGAME_OP>())
 		{
-		}
-
-		static CARDGAME_OP<CLIENT, BUFFER> Get(CLIENT* Client)
-		{
-			CARDGAME_OP<CLIENT, BUFFER> Proxy(Client);
-			return Proxy;
 		}
 
 		bool AddOwnObj(const char* name, _S32 value)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <string> <name> <> <>
 			__length = DDL::StringLength(name);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
 			// <_S32> <value> <> <>
-			if(!Buf.Write(value)) return false;
+			if(!_Buf.Write(value)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DelOwnObj(const A_UUID& _uuid)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool AddOwnObjValue(const A_UUID& _uuid, _S32 value)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 			// <_S32> <value> <> <>
-			if(!Buf.Write(value)) return false;
+			if(!_Buf.Write(value)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 	};
 

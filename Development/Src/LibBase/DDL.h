@@ -261,6 +261,11 @@ namespace DDL
 			return true;
 		}
 
+		void Reset()
+		{
+			m_Size = 0;
+		}
+
 		const _U8* GetBuf() { return m_Buf; }
 		_U32 GetSize() { return m_Size; }
 

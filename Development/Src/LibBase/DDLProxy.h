@@ -4,17 +4,24 @@
 namespace DDLProxy
 {
 
-	template<typename CLIENT, typename BUFFER>
+	class IClient
+	{
+	public:
+		virtual ~IClient() { }
+		virtual bool SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data) = 0;
+	};
+
+	template<_U32 BUF_SIZE>
 	class DDLProxy
 	{
 	public:
-		DDLProxy(CLIENT* Client, _U16 cid)
+		DDLProxy(IClient* Client, _U16 cid)
 		{
 			_Client = Client;
 			_cid = cid;
 		}
 
-		CLIENT* GetClient()
+		IClient* GetClient()
 		{
 			return _Client;
 		}
@@ -24,8 +31,10 @@ namespace DDLProxy
 			return _cid;
 		}
 
+		DDL::TMemoryWriter<BUF_SIZE> _Buf;
+
 	private:
-		CLIENT* _Client;
+		IClient* _Client;
 		_U16 _cid;
 	};
 

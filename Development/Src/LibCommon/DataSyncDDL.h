@@ -147,65 +147,62 @@ namespace DDLStub
 namespace DDLProxy
 {
 
-	template<typename CLIENT, typename BUFFER>
-	class DATASYNC_JSON_C2S : public DDLProxy<CLIENT, BUFFER>
+	template<_U32 BUF_SIZE>
+	class DATASYNC_JSON_C2S : public DDLProxy<BUF_SIZE>
 	{
 	public:
-		DATASYNC_JSON_C2S(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::DATASYNC_JSON_C2S>())
+		DATASYNC_JSON_C2S(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::DATASYNC_JSON_C2S>())
 		{
-		}
-
-		static DATASYNC_JSON_C2S<CLIENT, BUFFER> Get(CLIENT* Client)
-		{
-			DATASYNC_JSON_C2S<CLIENT, BUFFER> Proxy(Client);
-			return Proxy;
 		}
 
 		bool DS_CreateObject(const char* type, const char* data)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <string> <type> <> <>
 			__length = DDL::StringLength(type);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(type, (unsigned int)sizeof(type[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(type, (unsigned int)sizeof(type[0])*__length)) return false;
 			// <string> <data> <> <>
 			__length = DDL::StringLength(data);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(data, (unsigned int)sizeof(data[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(data, (unsigned int)sizeof(data[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_UpdateObject(const A_UUID& _uuid, const char* data)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 			// <string> <data> <> <>
 			__length = DDL::StringLength(data);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(data, (unsigned int)sizeof(data[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(data, (unsigned int)sizeof(data[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <count>
 			__length = (_U16)(count);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(_uuid, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(_uuid, __length)) return false;
 			// <_U32> <count> <> <>
-			if(!Buf.Write(count)) return false;
+			if(!_Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 	};
 
@@ -343,111 +340,111 @@ namespace DDLStub
 namespace DDLProxy
 {
 
-	template<typename CLIENT, typename BUFFER>
-	class DATASYNC_JSON_S2C : public DDLProxy<CLIENT, BUFFER>
+	template<_U32 BUF_SIZE>
+	class DATASYNC_JSON_S2C : public DDLProxy<BUF_SIZE>
 	{
 	public:
-		DATASYNC_JSON_S2C(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::DATASYNC_JSON_S2C>())
+		DATASYNC_JSON_S2C(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::DATASYNC_JSON_S2C>())
 		{
-		}
-
-		static DATASYNC_JSON_S2C<CLIENT, BUFFER> Get(CLIENT* Client)
-		{
-			DATASYNC_JSON_S2C<CLIENT, BUFFER> Proxy(Client);
-			return Proxy;
 		}
 
 		bool DS_SetMode(_U32 mode)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <_U32> <mode> <> <>
-			if(!Buf.Write(mode)) return false;
+			if(!_Buf.Write(mode)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_SyncOpen(_U32 flag)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <_U32> <flag> <> <>
-			if(!Buf.Write(flag)) return false;
+			if(!_Buf.Write(flag)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_SyncReady()
 		{
-			BUFFER Buf;
+			_Buf.Reset();
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_SyncClose()
 		{
-			BUFFER Buf;
+			_Buf.Reset();
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+			return GetClient()->SendData(this->GetClassID(), 3, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_CreateObjectDone(const A_UUID& _uuid)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+			return GetClient()->SendData(this->GetClassID(), 4, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_CreateObject(const char* type, const char* json)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <string> <type> <> <>
 			__length = DDL::StringLength(type);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(type, (unsigned int)sizeof(type[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(type, (unsigned int)sizeof(type[0])*__length)) return false;
 			// <string> <json> <> <>
 			__length = DDL::StringLength(json);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(json, (unsigned int)sizeof(json[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(json, (unsigned int)sizeof(json[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+			return GetClient()->SendData(this->GetClassID(), 5, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_UpdateObject(const A_UUID& _uuid, const char* json)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 			// <string> <json> <> <>
 			__length = DDL::StringLength(json);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WriteData(json, (unsigned int)sizeof(json[0])*__length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(json, (unsigned int)sizeof(json[0])*__length)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+			return GetClient()->SendData(this->GetClassID(), 6, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <count>
 			__length = (_U16)(count);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(_uuid, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(_uuid, __length)) return false;
 			// <_U32> <count> <> <>
-			if(!Buf.Write(count)) return false;
+			if(!_Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
+			return GetClient()->SendData(this->GetClassID(), 7, _Buf.GetSize(), _Buf.GetBuf());
 		}
 	};
 
@@ -540,67 +537,64 @@ namespace DDLStub
 namespace DDLProxy
 {
 
-	template<typename CLIENT, typename BUFFER>
-	class DATASYNC_BINARY_C2S : public DDLProxy<CLIENT, BUFFER>
+	template<_U32 BUF_SIZE>
+	class DATASYNC_BINARY_C2S : public DDLProxy<BUF_SIZE>
 	{
 	public:
-		DATASYNC_BINARY_C2S(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::DATASYNC_BINARY_C2S>())
+		DATASYNC_BINARY_C2S(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::DATASYNC_BINARY_C2S>())
 		{
-		}
-
-		static DATASYNC_BINARY_C2S<CLIENT, BUFFER> Get(CLIENT* Client)
-		{
-			DATASYNC_BINARY_C2S<CLIENT, BUFFER> Proxy(Client);
-			return Proxy;
 		}
 
 		bool DS_CreateObject(_U16 type, const _U8* buf, _U32 len)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <_U16> <type> <> <>
-			if(!Buf.Write(type)) return false;
+			if(!_Buf.Write(type)) return false;
 			// <_U8> <buf> <> <len>
 			__length = (_U16)(len);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(buf, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(buf, __length)) return false;
 			// <_U32> <len> <> <>
-			if(!Buf.Write(len)) return false;
+			if(!_Buf.Write(len)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_UpdateObject(const A_UUID& _uuid, const _U8* buf, _U32 len)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 			// <_U8> <buf> <> <len>
 			__length = (_U16)(len);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(buf, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(buf, __length)) return false;
 			// <_U32> <len> <> <>
-			if(!Buf.Write(len)) return false;
+			if(!_Buf.Write(len)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <count>
 			__length = (_U16)(count);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(_uuid, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(_uuid, __length)) return false;
 			// <_U32> <count> <> <>
-			if(!Buf.Write(count)) return false;
+			if(!_Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 	};
 
@@ -738,113 +732,113 @@ namespace DDLStub
 namespace DDLProxy
 {
 
-	template<typename CLIENT, typename BUFFER>
-	class DATASYNC_BINARY_S2C : public DDLProxy<CLIENT, BUFFER>
+	template<_U32 BUF_SIZE>
+	class DATASYNC_BINARY_S2C : public DDLProxy<BUF_SIZE>
 	{
 	public:
-		DATASYNC_BINARY_S2C(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::DATASYNC_BINARY_S2C>())
+		DATASYNC_BINARY_S2C(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::DATASYNC_BINARY_S2C>())
 		{
-		}
-
-		static DATASYNC_BINARY_S2C<CLIENT, BUFFER> Get(CLIENT* Client)
-		{
-			DATASYNC_BINARY_S2C<CLIENT, BUFFER> Proxy(Client);
-			return Proxy;
 		}
 
 		bool DS_SetMode(_U32 mode)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <_U32> <mode> <> <>
-			if(!Buf.Write(mode)) return false;
+			if(!_Buf.Write(mode)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 0, Buf);
+			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_SyncOpen(_U32 flag)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <_U32> <flag> <> <>
-			if(!Buf.Write(flag)) return false;
+			if(!_Buf.Write(flag)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 1, Buf);
+			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_SyncReady()
 		{
-			BUFFER Buf;
+			_Buf.Reset();
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 2, Buf);
+			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_SyncClose()
 		{
-			BUFFER Buf;
+			_Buf.Reset();
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 3, Buf);
+			return GetClient()->SendData(this->GetClassID(), 3, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_CreateObjectDone(const A_UUID& _uuid)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 4, Buf);
+			return GetClient()->SendData(this->GetClassID(), 4, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_CreateObject(_U16 type, const _U8* buf, _U32 len)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <_U16> <type> <> <>
-			if(!Buf.Write(type)) return false;
+			if(!_Buf.Write(type)) return false;
 			// <_U8> <buf> <> <len>
 			__length = (_U16)(len);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(buf, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(buf, __length)) return false;
 			// <_U32> <len> <> <>
-			if(!Buf.Write(len)) return false;
+			if(!_Buf.Write(len)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 5, Buf);
+			return GetClient()->SendData(this->GetClassID(), 5, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_UpdateObject(const A_UUID& _uuid, const _U8* buf, _U32 len)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <>
-			if(!Buf.Write(_uuid)) return false;
+			if(!_Buf.Write(_uuid)) return false;
 			// <_U8> <buf> <> <len>
 			__length = (_U16)(len);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(buf, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(buf, __length)) return false;
 			// <_U32> <len> <> <>
-			if(!Buf.Write(len)) return false;
+			if(!_Buf.Write(len)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 6, Buf);
+			return GetClient()->SendData(this->GetClassID(), 6, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
 		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
 		{
-			BUFFER Buf;
+			_Buf.Reset();
+
 			_U32 __length;
 			// <A_UUID> <_uuid> <> <count>
 			__length = (_U16)(count);
-			if(!Buf.Write(__length)) return false;
-			if(!Buf.WritePointer(_uuid, __length)) return false;
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WritePointer(_uuid, __length)) return false;
 			// <_U32> <count> <> <>
-			if(!Buf.Write(count)) return false;
+			if(!_Buf.Write(count)) return false;
 
 			// send
-			return this->GetClient()->Send(this->GetClassID(), 7, Buf);
+			return GetClient()->SendData(this->GetClassID(), 7, _Buf.GetSize(), _Buf.GetBuf());
 		}
 	};
 

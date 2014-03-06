@@ -477,18 +477,12 @@ int ddlgen_code_task_class_prox(const DDL_CLS* cls, const DDL_TASK* task)
 	OutH(0, "namespace DDLProxy\n");
 	OutH(0, "{\n");
 	OutH(0, "\n");
-	OutH(0, "	template<typename CLIENT, typename BUFFER>\n");
-	OutH(0, "	class %s : public DDLProxy<CLIENT, BUFFER>\n", cls->name);
+	OutH(0, "	template<_U32 BUF_SIZE>\n");
+	OutH(0, "	class %s : public DDLProxy<BUF_SIZE>\n", cls->name);
 	OutH(0, "	{\n");
 	OutH(0, "	public:\n");
-	OutH(0, "		%s(CLIENT* Client) : DDLProxy<CLIENT, BUFFER>(Client, DDLReflect::GetClassID<typename ::%s>())\n", cls->name, cls->name);
+	OutH(0, "		%s(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::%s>())\n", cls->name, cls->name);
 	OutH(0, "		{\n");
-	OutH(0, "		}\n");
-	OutH(0, "\n");
-	OutH(0, "		static %s<CLIENT, BUFFER> Get(CLIENT* Client)\n", cls->name);
-	OutH(0, "		{\n");
-	OutH(0, "			%s<CLIENT, BUFFER> Proxy(Client);\n", cls->name);
-	OutH(0, "			return Proxy;\n");
 	OutH(0, "		}\n");
 	for(f=0; f<cls->funs_count; f++) {
 		int need_length = 0;
@@ -508,7 +502,7 @@ int ddlgen_code_task_class_prox(const DDL_CLS* cls, const DDL_TASK* task)
 		}
 		OutH(0, ")\n");
 		OutH(1, "	{\n");
-		OutH(1, "		BUFFER Buf;\n");
+		OutH(1, "		_Buf.Reset();\n\n");
 		if(need_length) {
 			OutH(2, "	_U32 __length;\n");
 		}
@@ -517,34 +511,34 @@ int ddlgen_code_task_class_prox(const DDL_CLS* cls, const DDL_TASK* task)
 			if(strcmp(cls->funs[f].args[a].type, "string")==0) {
 				if(!cls->funs[f].args[a].size[0] && !cls->funs[f].args[a].count[0]) {
 					OutH(3, "__length = DDL::StringLength(%s);\n", cls->funs[f].args[a].name);
-					OutH(3, "if(!Buf.Write(__length)) return false;\n");
-					OutH(3, "if(!Buf.WriteData(%s, (unsigned int)sizeof(%s[0])*__length)) return false;\n", cls->funs[f].args[a].name, cls->funs[f].args[a].name);
+					OutH(3, "if(!_Buf.Write(__length)) return false;\n");
+					OutH(3, "if(!_Buf.WriteData(%s, (unsigned int)sizeof(%s[0])*__length)) return false;\n", cls->funs[f].args[a].name, cls->funs[f].args[a].name);
 					continue;
 				}
 				if(cls->funs[f].args[a].size[0] && !cls->funs[f].args[a].count[0]) {
-					OutH(3, "if(!Buf.WriteString(%s)) return false;\n", cls->funs[f].args[a].name);
+					OutH(3, "if(!_Buf.WriteString(%s)) return false;\n", cls->funs[f].args[a].name);
 					continue;
 				}
 				if(cls->funs[f].args[a].size[0] && cls->funs[f].args[a].count[0]) {
-					OutH(3, "	if(!Buf.WriteStringPointer(%s, (_U16)(%s))) return false;\n", cls->funs[f].args[a].name, cls->funs[f].args[a].count);
+					OutH(3, "	if(!_Buf.WriteStringPointer(%s, (_U16)(%s))) return false;\n", cls->funs[f].args[a].name, cls->funs[f].args[a].count);
 					continue;
 				}
 			} else {
 				if(cls->funs[f].args[a].count[0]=='\0') {
-					OutH(3, "if(!Buf.Write(%s)) return false;\n", cls->funs[f].args[a].name);
+					OutH(3, "if(!_Buf.Write(%s)) return false;\n", cls->funs[f].args[a].name);
 					continue;
 				} else {
 					OutH(3, "__length = (_U16)(%s);\n", cls->funs[f].args[a].count);
-					OutH(3, "if(!Buf.Write(__length)) return false;\n");
-					OutH(3, "if(!Buf.WritePointer(%s, __length)) return false;\n", cls->funs[f].args[a].name);
+					OutH(3, "if(!_Buf.Write(__length)) return false;\n");
+					OutH(3, "if(!_Buf.WritePointer(%s, __length)) return false;\n", cls->funs[f].args[a].name);
 					continue;
 				}
 			}
 			OutH(2, "	bu ke neng!!!!!!\n");
 		}
-		OutH(0, "\n");
+		if(cls->funs[f].args_count>0) OutH(0, "\n");
 		OutH(1, "		// send\n");
-		OutH(1, "		return this->GetClient()->Send(this->GetClassID(), %d, Buf);\n", f);
+		OutH(1, "		return GetClient()->SendData(this->GetClassID(), %d, _Buf.GetSize(), _Buf.GetBuf());\n", f);
 		OutH(1, "	}\n");
 	}
 	OutH(0, "	};\n");

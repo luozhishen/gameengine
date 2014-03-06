@@ -27,7 +27,7 @@ namespace Zion
 		bool InProcess();
 
 		//
-		bool Send(_U16 iid, _U16 fid, DDL::MemoryWriter& Buf);
+		bool SendData(_U16 iid, _U16 fid, _U32 len, const _U8* buf);
 
 		// DATASYNC_S2C
 		void DS_SetMode(_U32 mode);
@@ -57,8 +57,8 @@ namespace Zion
 		List<OBJECT_ADDITEM> m_NewQ;
 		List<OBJECT_ADDITEM> m_WatQ;
 		Array<A_UUID> m_DelList;
-		DDLProxy::DATASYNC_BINARY_C2S<CClient, DDL::TMemoryWriter<1024>> m_Binary;
-		DDLProxy::DATASYNC_JSON_C2S<CClient, DDL::TMemoryWriter<1024>> m_Json;
+		DDLProxy::DATASYNC_BINARY_C2S<1024> m_Binary;
+		DDLProxy::DATASYNC_JSON_C2S<1024> m_Json;
 		LiveData::CAccesser* m_pAccesser;
 	};
 

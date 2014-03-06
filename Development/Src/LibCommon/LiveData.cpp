@@ -33,7 +33,7 @@ namespace Zion
 			m_bDirty = false;
 		}
 
-		CObject::CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
+		CObject::CObject(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
 		{
 		}
 
@@ -47,21 +47,21 @@ namespace Zion
 			return m_Monitor.Clean();
 		}
 
-		CManager::CManager()
+		CManagerBase::CManagerBase()
 		{
 		}
 
-		void CManager::EnableMonitor(bool bEnable)
+		void CManagerBase::EnableMonitor(bool bEnable)
 		{
 			m_bEnableMonitor = bEnable;
 		}
 
-		bool CManager::IsEnableMointor()
+		bool CManagerBase::IsEnableMointor()
 		{
 			return m_bEnableMonitor;
 		}
 
-		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo)
+		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo)
 		{
 			A_UUID _uuid;
 			AUuidGenerate(_uuid);
@@ -78,7 +78,7 @@ namespace Zion
 			return NULL;
 		}
 
-		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* data)
+		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* data)
 		{
 			if(m_ObjMap.find(data->_uuid)==m_ObjMap.end())
 			{
@@ -92,7 +92,7 @@ namespace Zion
 			return NULL;
 		}
 
-		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
+		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			DDL::MemoryReader reader(buf, len);
@@ -116,7 +116,7 @@ namespace Zion
 			return NULL;
 		}
 
-		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
+		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			String val(str);
@@ -140,7 +140,7 @@ namespace Zion
 			return NULL;
 		}
 
-		bool CManager::Remove(const A_UUID& _uuid)
+		bool CManagerBase::Remove(const A_UUID& _uuid)
 		{
 			Map<A_UUID, CObject*>::iterator o = m_ObjMap.find(_uuid);
 			if(o==m_ObjMap.end())
@@ -155,7 +155,7 @@ namespace Zion
 			}
 		}
 
-		void CManager::Clear()
+		void CManagerBase::Clear()
 		{
 			Map<A_UUID, CObject*>::iterator i;
 			for(i=m_ObjMap.begin(); i!=m_ObjMap.end(); i++)
@@ -165,19 +165,19 @@ namespace Zion
 			m_ObjMap.clear();
 		}
 
-		CObject* CManager::Get(const A_UUID& _uuid)
+		CObject* CManagerBase::Get(const A_UUID& _uuid)
 		{
 			Map<A_UUID, CObject*>::iterator o = m_ObjMap.find(_uuid);
 			if(o==m_ObjMap.end()) return NULL;
 			return o->second;
 		}
 
-		CObject* CManager::FindFirst()
+		CObject* CManagerBase::FindFirst()
 		{
 			return m_ObjMap.begin()->second;
 		}
 
-		CObject* CManager::FindNext(CObject* obj)
+		CObject* CManagerBase::FindNext(CObject* obj)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)obj->GetData();
 			Map<A_UUID, CObject*>::iterator i = m_ObjMap.find(data->_uuid);
@@ -187,6 +187,10 @@ namespace Zion
 				return NULL;
 			}
 			return i->second;
+		}
+
+		CManager::CManager()
+		{
 		}
 
 	}

@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="mo_base_android.cpp" />
     <ClCompile Include="mo_common.cpp" />
     <ClCompile Include="mo_base_win32.cpp" />
     <ClCompile Include="mo_client.cpp" />
     <ClCompile Include="mo_error.cpp" />
+    <ClCompile Include="mo_request_android.cpp" />
     <ClCompile Include="mo_request_win32.cpp" />
   </ItemGroup>
   <ItemGroup>

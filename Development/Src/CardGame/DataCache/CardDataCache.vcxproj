@@ -22,20 +22,29 @@
     <ProjectReference Include="..\..\LibBase\LibBase.vcxproj">
       <Project>{73a3a0da-85db-4571-9381-686cd246e80b}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\LibCommon\LibCommon.vcxproj">
+      <Project>{78db340f-f6fe-41cc-8704-60e805039bd8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LibDataCache\LibDataCache.vcxproj">
+      <Project>{ff357a6f-54a9-459a-b9d0-ff34fb237eb8}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\LibJsonRPC\LibJsonRPC.vcxproj">
       <Project>{3e65f4ac-19e1-479b-acab-f929b699ebb9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\LibUV\LibUV.vcxproj">
       <Project>{6c67909c-c749-4ae0-9f49-64b5d60b7d4c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\LibCommon\LibCardCommon.vcxproj">
+      <Project>{eb833180-a16a-47ee-82e3-11a372013c12}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TestJsonRPC.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{178A1E13-6D70-4E26-AB6D-57285371B2E3}</ProjectGuid>
+    <ProjectGuid>{6488DA96-C6B6-49DB-8459-123BCA30BB49}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>TestJsonRPC</RootNamespace>
+    <RootNamespace>CardDataCache</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

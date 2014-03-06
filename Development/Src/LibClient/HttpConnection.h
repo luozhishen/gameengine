@@ -1,8 +1,6 @@
 #ifndef __HTTP_CLIENT_CONNECTION__
 #define __HTTP_CLIENT_CONNECTION__
 
-#include <mosdk.h>
-
 namespace Zion
 {
 
@@ -16,7 +14,11 @@ namespace Zion
 			STATE_RETRY,
 		};
 
-		typedef std::tr1::function<void (CHttpConnection*, STATE)> STATE_CALLBACK;
+#ifdef ZION_DISABLE_STL_FUNCTION
+		typedef void(*STATE_CALLBACK)(CHttpConnection*, STATE)>;
+#else
+		typedef std::tr1::function<void(CHttpConnection*, STATE)> STATE_CALLBACK;
+#endif
 
 		CHttpConnection(CClient* pClient);
 		virtual ~CHttpConnection();

@@ -1,3 +1,24 @@
+#include <uv.h>
+
+void fib(uv_work_t *req) {
+	int i = 0;
+	i = 10;
+}
+
+void after_fib(uv_work_t *req, int status) {
+	int i = 0;
+	i = 10;
+}
+
+int main(int argc, char* argv[])
+{
+	uv_work_t req;
+	uv_queue_work(uv_default_loop(), &req, fib, after_fib);
+	uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+	return 0;
+}
+
+/*
 #include <ZionBase.h>
 #include <JsonRPC.h>
 
@@ -19,12 +40,13 @@ int main(int argc, char* argv[])
 	Zion::JsonRPC_Stop(pServer);
 	Zion::JsonRPC_DestroyServer(pServer);
 
-/*
+#if 0
 	Zion::CJsonRPCClient* pClient = Zion::JsonRPC_GetClient("127.0.0.1:8000");
 	printf("send data to xxxxxxx\n");
 	JsonRPC_Send(pClient, "welcome", "\"welcome aaaaaaaaa\"");
 	getchar();
-*/
+#endif
 
 	return 0;
 }
+*/

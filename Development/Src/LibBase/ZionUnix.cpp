@@ -1,6 +1,12 @@
 #ifndef	_WIN32
 
-#include "ZionDefines.h"
+void zion_set_fatal(bool msgbox)
+{
+}
+
+void zion_fatal(const char* fmt, ...)
+{
+}
 
 static _U32 atom_unix_add(_U32 volatile *mem, _U32 val)
 {

@@ -14,6 +14,9 @@ typedef double					_F64;
 typedef char*					_STR;
 
 #include <assert.h>
+extern void zion_set_fatal(bool msgbox);
+extern void zion_fatal(const char* fmt, ...);
+
 #define ZION_ASSERT(x)			assert(x)
 
 #ifdef	_DEBUG
@@ -21,6 +24,8 @@ typedef char*					_STR;
 #else
 #define	ZION_VERIFY(expr)		(void)(expr)
 #endif
+
+#define ZION_FATAL	zion_fatal
 
 #define ZION_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 
@@ -45,6 +50,7 @@ typedef char*					_STR;
 
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
+
 	#define A_MUTEX					CRITICAL_SECTION
 	#define A_MUTEX_INIT			InitializeCriticalSection
 	#define A_MUTEX_DESTROY			DeleteCriticalSection
@@ -90,12 +96,14 @@ typedef char*					_STR;
 	ATOM_SLIST_ENTRY* atom_slist_flush(ATOM_SLIST_HEADER* head);
 
 	#include <pthread.h>
+
 	#define A_MUTEX					pthread_mutex_t
 	#define A_MUTEX_INIT(x)			pthread_mutex_init(x, NULL)
 	#define A_MUTEX_DESTROY			pthread_mutex_destroy
 	#define A_MUTEX_TRYLOCK			pthread_mutex_trylock
 	#define A_MUTEX_LOCK			pthread_mutex_lock
 	#define A_MUTEX_UNLOCK			pthread_mutex_unlock
+
 	#define A_ATOM_INC(x)			atom_unix_inc(x)
 	#define A_ATOM_DEC(x)			atom_unxi_dec(x)
 	#define A_ATOM_XCHG(v, e, c)	atom_unix_cas(v, e, c)
@@ -107,11 +115,13 @@ typedef char*					_STR;
 	#define A_SLIST_POP				atom_slist_pop
 #endif
 
+#ifdef _WIN32
 #pragma warning(disable:4121)
 #pragma warning(disable:4100)
 #pragma warning(disable:4189)
 #pragma warning(disable:4355)
 #pragma warning(disable:4996)
 #pragma warning(disable:4127)
+#endif
 
 #endif

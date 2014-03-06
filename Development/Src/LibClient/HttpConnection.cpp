@@ -1,5 +1,6 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
+#include <mosdk.h>
 #include "ZionClient.h"
 #include "ZionClientApp.h"
 #include "HttpConnection.h"

@@ -35,7 +35,12 @@ namespace Zion
 			STATE_LOGINED,
 			STATE_FAILED,
 		} CLIENT_STATE;
+
+#ifdef ZION_DISABLE_STL_FUNCTION
+		typedef void (*LOG_CALLBACK)(const char*)>;
+#else
 		typedef std::tr1::function<void (const char*)> LOG_CALLBACK;
+#endif
 
 		enum {
 			ERRCODE_SUCCESSED = 0,

@@ -41,6 +41,7 @@
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="ZionWin32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfusedNumber.h" />

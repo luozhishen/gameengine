@@ -20,27 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JsonRPC.cpp" />
-    <ClCompile Include="libuv\src\fs-poll.c" />
-    <ClCompile Include="libuv\src\inet.c" />
-    <ClCompile Include="libuv\src\os.c" />
-    <ClCompile Include="libuv\src\uv-common.c" />
-    <ClCompile Include="libuv\src\version.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JsonRPC.h" />
-    <ClInclude Include="libuv\include\pthread-fixes.h" />
-    <ClInclude Include="libuv\include\stdint-msvc2008.h" />
-    <ClInclude Include="libuv\include\tree.h" />
-    <ClInclude Include="libuv\include\uv-bsd.h" />
-    <ClInclude Include="libuv\include\uv-darwin.h" />
-    <ClInclude Include="libuv\include\uv-errno.h" />
-    <ClInclude Include="libuv\include\uv-linux.h" />
-    <ClInclude Include="libuv\include\uv-sunos.h" />
-    <ClInclude Include="libuv\include\uv-unix.h" />
-    <ClInclude Include="libuv\include\uv-win.h" />
-    <ClInclude Include="libuv\include\uv.h" />
-    <ClInclude Include="libuv\src\queue.h" />
-    <ClInclude Include="libuv\src\uv-common.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3E65F4AC-19E1-479B-ACAB-F929B699EBB9}</ProjectGuid>
@@ -96,7 +78,6 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\libuv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,7 +91,6 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\libuv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,7 +106,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\libuv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,7 +123,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\libuv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

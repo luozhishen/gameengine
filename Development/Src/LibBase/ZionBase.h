@@ -1,12 +1,6 @@
 #ifndef	__ZION_BASE__
 #define	__ZION_BASE__
 
-#ifndef _WIN32
-#include <tr1/functional>
-#else
-#include <functional>
-#endif
-
 #include "ZionDefines.h"
 #include "ZionSTL.h"
 #include "ZionSocket.h"

@@ -1,5 +1,5 @@
 #include <ZionBase.h>
-#include <StubDispatcher.h>
+#include <ZionCommon.h>
 #include "ZionClient.h"
 #include "ZionClientApp.h"
 #include "ClientConnection.h"

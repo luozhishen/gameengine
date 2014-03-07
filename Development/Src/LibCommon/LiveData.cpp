@@ -7,8 +7,9 @@ namespace Zion
 	namespace LiveData
 	{
 
-		CMonitor::CMonitor(const DDLReflect::STRUCT_INFO* info)
+		CMonitor::CMonitor(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* info)
 		{
+			m_pManager = pManager;
 			m_pInfo = info;
 			m_bDirty = false;
 		}
@@ -21,11 +22,13 @@ namespace Zion
 		void CMonitor::SetDirty()
 		{
 			m_bDirty = true;
+			m_pManager->SetLiveDataChanged();
 		}
 
 		void CMonitor::SetDirty(const char* name, _U32 offset, _U32 size)
 		{
 			m_bDirty = true;
+			m_pManager->SetLiveDataChanged();
 		}
 
 		void CMonitor::Clean()
@@ -33,7 +36,7 @@ namespace Zion
 			m_bDirty = false;
 		}
 
-		CObject::CObject(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pInfo), DataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
+		CObject::CObject(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pManager, pInfo), DataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
 		{
 		}
 
@@ -189,7 +192,21 @@ namespace Zion
 			return i->second;
 		}
 
-		
+		bool CManagerBase::IsLiveDataChanged()
+		{
+			return m_bIsLiveDataChanged;
+		}
+
+		void CManagerBase::SetLiveDataChanged()
+		{
+			m_bIsLiveDataChanged = true;
+		}
+
+		void CManagerBase::ClearLiveDataChanged()
+		{
+			m_bIsLiveDataChanged = false;
+		}
+
 		CRequestClient::CRequestClient(CManager* pManager)
 		{
 			m_pManager = pManager;
@@ -236,6 +253,18 @@ namespace Zion
 
 		bool CManager::SendRequestData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 		{
+			ClearLiveDataChanged();
+
+			if(!m_RequestClient.Dispatch(iid, fid, len, data))
+			{
+				return false;
+			}
+
+			if(!IsLiveDataChanged())
+			{
+				return true;
+			}
+
 			if(!m_pRequestClientImpl) return true;
 			return m_pRequestClientImpl->SendData(iid, fid, len, data);
 		}

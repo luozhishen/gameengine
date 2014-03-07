@@ -14,7 +14,7 @@ namespace Zion
 		class CMonitor : public DataObject::IMonitor
 		{
 		public:
-			CMonitor(const DDLReflect::STRUCT_INFO* info);
+			CMonitor(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* info);
 
 			bool IsDirty();
 			void SetDirty();
@@ -22,6 +22,7 @@ namespace Zion
 			void Clean();
 
 		private:
+			CManagerBase* m_pManager;
 			const DDLReflect::STRUCT_INFO* m_pInfo;
 			bool m_bDirty;
 		};
@@ -41,6 +42,7 @@ namespace Zion
 
 		class CManagerBase
 		{
+			friend class CMonitor;
 		public:
 			CManagerBase();
 
@@ -58,8 +60,15 @@ namespace Zion
 			CObject* FindFirst();
 			CObject* FindNext(CObject* obj);
 
+			bool IsLiveDataChanged();
+
 		protected:
+			void SetLiveDataChanged();
+			void ClearLiveDataChanged();
+
+		private:
 			bool m_bEnableMonitor;
+			bool m_bIsLiveDataChanged;
 			Map<A_UUID, CObject*> m_ObjMap;
 		};
 

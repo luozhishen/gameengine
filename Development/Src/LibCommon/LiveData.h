@@ -46,6 +46,9 @@ namespace Zion
 		public:
 			CManagerBase();
 
+			void InitRandom(_U32 seed);
+			_F32 Rand(); // return 0~1.0
+
 			void EnableMonitor(bool bEnable);
 			bool IsEnableMointor();
 
@@ -67,6 +70,7 @@ namespace Zion
 			void ClearLiveDataChanged();
 
 		private:
+			_U32 m_LastNum;
 			bool m_bEnableMonitor;
 			bool m_bIsLiveDataChanged;
 			Map<A_UUID, CObject*> m_ObjMap;

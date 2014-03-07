@@ -8,6 +8,22 @@ namespace Zion
 	namespace DataCache
 	{
 
+		static IServer* g_singleton_server = NULL;
+		IServer* IServer::Singleton()
+		{
+			return g_singleton_server;
+		}
+
+		IServer::IServer()
+		{
+			g_singleton_server = this;
+		}
+
+		IServer::~IServer()
+		{
+			g_singleton_server = NULL;
+		}
+
 		void JsonRPC_GetAvatar(const JSONRPC_RESPONSE& res, const char* args)
 		{
 		}

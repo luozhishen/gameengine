@@ -19,13 +19,6 @@ class DATASYNC_JSON_C2S
 	DS_RemoveObjects(A_UUID _uuid[count], _U32 count);
 };
 
-class DATASYNC_BINARY_C2S
-{
-	DS_CreateObject(_U16 type, _U8 buf[len], _U32 len);
-	DS_UpdateObject(A_UUID _uuid, _U8 buf[len], _U32 len);
-	DS_RemoveObjects(A_UUID _uuid[count], _U32 count);
-};
-
 class DATASYNC_JSON_S2C
 {
 	DS_SetMode(_U32 mode);
@@ -37,6 +30,20 @@ class DATASYNC_JSON_S2C
 	DS_CreateObjectDone(A_UUID _uuid);
 	DS_CreateObject(string type, string json);
 	DS_UpdateObject(A_UUID _uuid, string json);
+	DS_RemoveObjects(A_UUID _uuid[count], _U32 count);
+};
+
+task[GEN_CLASS_STUB(DATASYNC_JSON_C2S)];
+task[GEN_CLASS_PROXY(DATASYNC_JSON_C2S)];
+task[GEN_CLASS_STUB(DATASYNC_JSON_S2C)];
+task[GEN_CLASS_PROXY(DATASYNC_JSON_S2C)];
+task[GEN_PHP_STUB(DATASYNC_JSON_C2S)];
+task[GEN_PHP_PROXY(DATASYNC_JSON_S2C)];
+
+class DATASYNC_BINARY_C2S
+{
+	DS_CreateObject(_U16 type, _U8 buf[len], _U32 len);
+	DS_UpdateObject(A_UUID _uuid, _U8 buf[len], _U32 len);
 	DS_RemoveObjects(A_UUID _uuid[count], _U32 count);
 };
 
@@ -53,13 +60,6 @@ class DATASYNC_BINARY_S2C
 	DS_UpdateObject(A_UUID _uuid, _U8 buf[len], _U32 len);
 	DS_RemoveObjects(A_UUID _uuid[count], _U32 count);
 };
-
-task[GEN_CLASS_STUB(DATASYNC_JSON_C2S)];
-task[GEN_CLASS_PROXY(DATASYNC_JSON_C2S)];
-task[GEN_CLASS_STUB(DATASYNC_JSON_S2C)];
-task[GEN_CLASS_PROXY(DATASYNC_JSON_S2C)];
-task[GEN_PHP_STUB(DATASYNC_JSON_C2S)];
-task[GEN_PHP_PROXY(DATASYNC_JSON_S2C)];
 
 task[GEN_CLASS_STUB(DATASYNC_BINARY_C2S)];
 task[GEN_CLASS_PROXY(DATASYNC_BINARY_C2S)];

@@ -1,10 +1,8 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <JsonRPC.h>
-#include "DataCache.h"
 #include "DataCacheJsonRpc.h"
-#include "DataCacheServer.h"
-
+#include "DataCacheDBApi.h"
 #include <stdio.h>
 
 static char rpcep[1000] = "127.0.0.1:1980";
@@ -19,13 +17,6 @@ namespace Zion
 			// step 1: parse command line
 
 			// step 2: load content
-			Zion::InitDDLStub();
-			Zion::InitContentObjects();
-			Zion::InitLiveObjects();
-			if(!ContentObject::LoadContent())
-			{
-				ZION_FATAL("load content failed");
-			}
 
 			// step 3: start rpc server
 			Zion::CJsonRPCServer* pServer = Zion::JsonRPC_CreateServer();
@@ -53,4 +44,9 @@ namespace Zion
 		}
 
 	}
+}
+
+int main(int argc, char* argv[])
+{
+	return Zion::DataCache::Main(argc, argv);
 }

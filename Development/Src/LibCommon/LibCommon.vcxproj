@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="DataSyncDDL.cpp" />
     <ClCompile Include="LiveAccesser.cpp" />
-    <ClCompile Include="StubDispatcher.cpp" />
     <ClCompile Include="LiveData.cpp" />
     <ClCompile Include="ZionCommon.cpp" />
     <ClCompile Include="CommonDDL.cpp" />
@@ -32,7 +31,6 @@
   <ItemGroup>
     <ClInclude Include="DataSyncDDL.h" />
     <ClInclude Include="LiveAccesser.h" />
-    <ClInclude Include="StubDispatcher.h" />
     <ClInclude Include="LiveData.h" />
     <ClInclude Include="ZionCommon.h" />
     <ClInclude Include="CommonDDL.h" />

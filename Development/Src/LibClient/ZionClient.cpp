@@ -160,7 +160,7 @@ namespace Zion
 	{
 		_U16 iid = GetClientStubID(pStub->GetClassInfo());
 		ZION_ASSERT(iid!=(_U16)-1);
-		CStubDispatcher::RegisterStub(iid, pStub);
+		DDLStub::CDispatcher::RegisterStub(iid, pStub);
 	}
 
 	void CClient::OnLoginDone()
@@ -181,7 +181,7 @@ namespace Zion
 	void CClient::OnData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
 		_OnData(iid, fid, len, data);
-		CStubDispatcher::Dispatch(iid, fid, len, data);
+		DDLStub::CDispatcher::Dispatch(iid, fid, len, data);
 	}
 
 	bool CClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)

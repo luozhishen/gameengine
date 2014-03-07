@@ -22,7 +22,7 @@ namespace Zion
 	class CClientLoginMethod;
 	class CDataSyncClient;
 
-	class CClient : public CNoCopy, private CStubDispatcher, public DDLProxy::IClient
+	class CClient : public CNoCopy, private DDLStub::CDispatcher, public DDLProxy::IClient
 	{
 		friend class CClientApp;
 		friend class CStressClient;

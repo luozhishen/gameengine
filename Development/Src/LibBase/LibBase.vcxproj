@@ -22,6 +22,7 @@
     <ClCompile Include="ConfusedNumber.cpp" />
     <ClCompile Include="ConfusedNumberDDL.cpp" />
     <ClCompile Include="DataObject.cpp" />
+    <ClCompile Include="DDLStub.cpp" />
     <ClCompile Include="ZionBase.cpp" />
     <ClCompile Include="ZionHash.cpp" />
     <ClCompile Include="ZionLog.cpp" />

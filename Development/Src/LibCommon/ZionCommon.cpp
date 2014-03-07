@@ -7,7 +7,7 @@ namespace Zion
 {
 
 	static char _global_game_dir[400] = "";
-	const char* ZionGameDir()
+	const char* GetHomeDirectory()
 	{
 		if(_global_game_dir[0]) return _global_game_dir;
 		if(!GetExeDir()) return "";
@@ -16,12 +16,12 @@ namespace Zion
 		strcpy(path, GetExeDir());
 		p = strrchr(path, ZION_PATH_SLASH);
 		if(!p) return NULL;
-		sprintf(p, "%c..%c..%c%s%c", ZION_PATH_SLASH, ZION_PATH_SLASH, ZION_PATH_SLASH, ZionGameName(), ZION_PATH_SLASH);
+		sprintf(p, "%c..%c..%c%s%c", ZION_PATH_SLASH, ZION_PATH_SLASH, ZION_PATH_SLASH, GetAppName(), ZION_PATH_SLASH);
 		strcpy(_global_game_dir, path);
 		return _global_game_dir;
 	}
 
-	void ZionSetGameDir(const char* path)
+	void SetHomeDirectory(const char* path)
 	{
 		strcpy(_global_game_dir, path);
 	}

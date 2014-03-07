@@ -6,7 +6,7 @@ namespace Zion
 	namespace LiveData
 	{
 
-		class CAccesser : public CStubDispatcher
+		class CAccesser : public DDLStub::CDispatcher
 		{
 		public:
 			CAccesser(CManager* pManager);

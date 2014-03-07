@@ -5,14 +5,13 @@
 #include "ContentObject.h"
 #include "LiveObject.h"
 #include "LiveData.h"
-#include "StubDispatcher.h"
 
 namespace Zion
 {
 
-	const char* ZionGameName();
-	const char* ZionGameDir();
-	void ZionSetGameDir(const char* path);
+	const char* GetAppName();
+	const char* GetHomeDirectory();
+	void SetHomeDirectory(const char* path);
 
 	_U16 RegisterClientStub(const DDLReflect::CLASS_INFO* pClassInfo);
 	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo, _U32 nodeid=-1);

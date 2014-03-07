@@ -84,14 +84,14 @@ extern CClientStressApp* g_ClientStressApp;
 CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client Stress - ")), m_StressLoader(this)
 {
 	wxString title = GetTitle();
-	title = title + wxString::FromUTF8(Zion::ZionGameName());
+	title = title + wxString::FromUTF8(Zion::GetAppName());
 	SetTitle(title);
 
 	m_nCurrentIndex = (_U32)-1;
 	m_nViewCount = 0;
 	m_Timer.SetOwner(this, ID_TIMER);
 
-	m_pCmdHistory = ZION_NEW Zion::CmdHistory(Zion::ZionGameDir());
+	m_pCmdHistory = ZION_NEW Zion::CmdHistory(Zion::GetHomeDirectory());
 
 	// create client
 	InitClient();
@@ -112,7 +112,7 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString(wxT("/"))+wxString::FromUTF8(Zion::ZionGameName()));
+		pConfig->SetPath(wxString(wxT("/"))+wxString::FromUTF8(Zion::GetAppName()));
 		m_FrameData.x = pConfig->Read(wxT("x"), 50);
 		m_FrameData.y = pConfig->Read(wxT("y"), 50);
 		m_FrameData.w = pConfig->Read(wxT("w"), 350);
@@ -133,7 +133,7 @@ CClientStressFrame::~CClientStressFrame()
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::ZionGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::GetAppName()));
 		pConfig->Write(wxT("x"), (long)m_FrameData.x);
 		pConfig->Write(wxT("y"), (long)m_FrameData.y);
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
@@ -264,7 +264,7 @@ void CClientStressFrame::OnQuit(wxCommandEvent&)
 void CClientStressFrame::OnAbout(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Zion Client Stress for %s\n(C) 2011-2012 gamemake@gmail.com"), wxString::FromUTF8(Zion::ZionGameName()));
+	txt.Printf(wxT("Zion Client Stress for %s\n(C) 2011-2012 gamemake@gmail.com"), wxString::FromUTF8(Zion::GetAppName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 
@@ -589,7 +589,7 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 
 bool CClientStressFrame::LoadStressTemplate()
 {
-	Zion::String file = Zion::StringFormat("%sConfig/StressTemplate.json", Zion::ZionGameDir());
+	Zion::String file = Zion::StringFormat("%sConfig/StressTemplate.json", Zion::GetHomeDirectory());
 
 	m_pCase->Clear();
 	m_pCase->Insert(wxString::FromUTF8("<EMPTY>"), 0);

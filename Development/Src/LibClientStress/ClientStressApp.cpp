@@ -74,7 +74,7 @@ bool CClientStressApp::OnInit()
 	{
 		InitCase();
 
-		Zion::String file = Zion::StringFormat("%sConfig/StressTemplate.json", Zion::ZionGameDir());
+		Zion::String file = Zion::StringFormat("%sConfig/StressTemplate.json", Zion::GetHomeDirectory());
 		Zion::CStressLoader loader;
 		if(!loader.LoadTemplate(file.c_str()))
 		{

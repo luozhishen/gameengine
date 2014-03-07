@@ -38,6 +38,19 @@ namespace DDLStub
 		CLASS* _Class;
 	};
 
+	class CDispatcher
+	{
+	public:
+		CDispatcher();
+
+		bool HasStub(_U16 iid);
+		bool RegisterStub(_U16 iid, IStub* pStub);
+		bool Dispatch(_U16 iid, _U16 fid, _U32 len, const _U8* data);
+
+	private:
+		Zion::Map<_U16, IStub*> m_DDLStubs;
+	};
+
 }
 
 #endif

@@ -189,8 +189,106 @@ namespace Zion
 			return i->second;
 		}
 
-		CManager::CManager()
+		
+		CRequestClient::CRequestClient(CManager* pManager)
 		{
+			m_pManager = pManager;
+		}
+
+		CRequestClient::~CRequestClient()
+		{
+
+		}
+
+		bool CRequestClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+		{
+			if(!m_pManager) return false;
+			return m_pManager->SendRequestData(iid, fid, len, data);
+		}
+
+		CResponseClient::CResponseClient(CManager* pManager)
+		{
+			m_pManager = pManager;
+		}
+
+		CResponseClient::~CResponseClient()
+		{
+
+		}
+
+		bool CResponseClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+		{
+			if(!m_pManager) return false;
+			return m_pManager->SendResponseData(iid, fid, len, data);
+		}
+
+		CManager::CManager()
+			: m_RequestClient(this), m_ResponseClient(this)
+		{
+			m_pRequestClientImpl = NULL;
+			m_pResponseStubImpl = NULL;
+		}
+
+		bool CManager::RegisterRequestStub(_U16 iid, DDLStub::IStub* pStub)
+		{
+			return m_RequestClient.RegisterStub(iid, pStub);
+		}
+
+		bool CManager::SendRequestData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+		{
+			if(!m_pRequestClientImpl) return true;
+			return m_pRequestClientImpl->SendData(iid, fid, len, data);
+		}
+
+		bool CManager::SendResponseData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+		{
+			if(!m_pResponseStubImpl) return true;
+			return m_pResponseStubImpl->Dispatch(iid, fid, len, data);
+		}
+
+		bool CManager::HasRequestClient()
+		{
+			return m_pRequestClientImpl!=NULL;
+		}
+
+		bool CManager::HasResponseClient()
+		{
+			return m_pResponseClientImpl!=NULL;
+		}
+
+		bool CManager::HasResponseStub()
+		{
+			return m_pResponseStubImpl!=NULL;
+		}
+
+		void CManager::SetRequestClient(DDLProxy::IClient* pRquestClientImpl)
+		{
+			m_pRequestClientImpl = pRquestClientImpl;
+		}
+
+		void CManager::SetResponseClient(DDLProxy::IClient* pResponseClientImpl)
+		{
+			m_pResponseClientImpl = pResponseClientImpl;
+		}
+
+		void CManager::SetResponseStub(DDLStub::CDispatcher* pResponseStubImpl)
+		{
+			m_pResponseStubImpl = pResponseStubImpl;
+		}
+
+		DDLProxy::IClient* CManager::GetRequestClient()
+		{
+			return m_pRequestClientImpl;
+		}
+
+		DDLProxy::IClient* CManager::GetResponseClient()
+		{
+			return m_pResponseClientImpl;
+		}
+
+		DDLStub::CDispatcher* CManager::GetResponseStub()
+		{
+			return m_pResponseStubImpl;
 		}
 
 	}

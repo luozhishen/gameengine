@@ -6,7 +6,7 @@
 namespace Zion
 {
 
-	const char* ZionGameName()
+	const char* GetAppName()
 	{
 		return "CardGame";
 	}

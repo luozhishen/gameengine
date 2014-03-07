@@ -1,27 +1,28 @@
-#include <ZionBase.h>
-#include "StubDispatcher.h"
+#include "ZionBase.h"
 
-namespace Zion
+namespace DDLStub
 {
 
-	CStubDispatcher::CStubDispatcher()
+	CDispatcher::CDispatcher()
 	{
 	}
 
-	bool CStubDispatcher::HasStub(_U16 iid)
+	bool CDispatcher::HasStub(_U16 iid)
 	{
 		return m_DDLStubs.find(iid)!=m_DDLStubs.end();
 	}
 
-	void CStubDispatcher::RegisterStub(_U16 iid, DDLStub::IStub* pStub)
+	bool CDispatcher::RegisterStub(_U16 iid, IStub* pStub)
 	{
 		ZION_ASSERT(m_DDLStubs.find(iid)==m_DDLStubs.end());
+		if(m_DDLStubs.find(iid)!=m_DDLStubs.end()) return false;
 		m_DDLStubs[iid] = pStub;
+		return true;
 	}
 
-	bool CStubDispatcher::Dispatch(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+	bool CDispatcher::Dispatch(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 	{
-		Zion::Map<_U16, DDLStub::IStub*>::iterator i;
+		Zion::Map<_U16, IStub*>::iterator i;
 		i = m_DDLStubs.find(iid);
 		if(i==m_DDLStubs.end())
 		{

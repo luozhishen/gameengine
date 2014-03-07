@@ -54,7 +54,7 @@ END_EVENT_TABLE()
 CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Zion Editor - "))
 {
 	wxString title = GetTitle();
-	title = title + wxString::FromUTF8(Zion::ZionGameName());
+	title = title + wxString::FromUTF8(Zion::GetAppName());
 	SetTitle(title);
 
 	// menu
@@ -69,7 +69,7 @@ CEditorFrame::CEditorFrame() : wxFrame(NULL, wxID_ANY, wxT("Zion Editor - "))
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::ZionGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::GetAppName()));
 		m_FrameData.x = pConfig->Read(wxT("x"), 50);
 		m_FrameData.y = pConfig->Read(wxT("y"), 50);
 		m_FrameData.w = pConfig->Read(wxT("w"), 350);
@@ -85,7 +85,7 @@ CEditorFrame::~CEditorFrame()
 	wxConfigBase *pConfig = wxConfigBase::Get();
 	if(pConfig)
 	{
-		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::ZionGameName()));
+		pConfig->SetPath(wxString::FromUTF8("/")+wxString::FromUTF8(Zion::GetAppName()));
 		pConfig->Write(wxT("x"), (long)m_FrameData.x);
 		pConfig->Write(wxT("y"), (long)m_FrameData.y);
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
@@ -188,7 +188,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 	case ID_COOK_SAVE:
 		if(m_pContentDataView->CheckModify(false))
 		{
-			if(!Zion::ContentObject::SaveContentToBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::ZionGameDir()).c_str(), "e80cb90fe7042fd9"))
+			if(!Zion::ContentObject::SaveContentToBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::GetHomeDirectory()).c_str(), "e80cb90fe7042fd9"))
 			{
 				wxMessageBox(wxT("error in SaveContentToBinaryFile"), wxT("Error"));
 			}
@@ -202,7 +202,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		if(m_pContentDataView->CheckModify(true))
 		{
 			Zion::ContentObject::ClearContents();
-			if(!Zion::ContentObject::LoadContentFromBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::ZionGameDir()).c_str(), "e80cb90fe7042fd9"))
+			if(!Zion::ContentObject::LoadContentFromBinaryFile(Zion::StringFormat("%s/Content/CookedData.xxx", Zion::GetHomeDirectory()).c_str(), "e80cb90fe7042fd9"))
 			{
 				wxMessageBox(wxT("error in LoadContentFromBinaryFile"), wxT("Error"));
 			}
@@ -216,7 +216,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		if(m_pContentDataView->CheckModify(true))
 		{
 			CImportDlg dlg(this);
-			Zion::String path = Zion::StringFormat("%s%s", Zion::ZionGameDir(), "Config/ContentTemplate.json");
+			Zion::String path = Zion::StringFormat("%s%s", Zion::GetHomeDirectory(), "Config/ContentTemplate.json");
 			if(dlg.LoadTemplateDefine(path.c_str()))
 			{
 				dlg.ShowModal();
@@ -250,7 +250,7 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 void CEditorFrame::OnHelpMenu(wxCommandEvent&)
 {
 	wxString txt;
-	txt.Printf(wxT("Zion Editor for %s\n(C) 2011-2012 gamemake@gmail.com"), wxString::FromUTF8(Zion::ZionGameName()));
+	txt.Printf(wxT("Zion Editor for %s\n(C) 2011-2012 gamemake@gmail.com"), wxString::FromUTF8(Zion::GetAppName()));
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 

@@ -12,7 +12,7 @@
 namespace Zion
 {
 
-	const char* ZionGameDir();
+	const char* GetHomeDirectory();
 
 	namespace ContentObject
 	{
@@ -523,7 +523,7 @@ namespace Zion
 			Map<String, CContentGroup>::iterator i;
 			for(i=g_content_group_map.begin(); i!=g_content_group_map.end(); i++)
 			{
-				String file = StringFormat("%s%s%s", path?path:ZionGameDir(), path?"":"Content/Json/", i->second._file);
+				String file = StringFormat("%s%s%s", path?path:GetHomeDirectory(), path?"":"Content/Json/", i->second._file);
 				if(LoadContentFromJsonFile(file.c_str(), ignore))
 				{
 					i->second._dirty = false;
@@ -675,7 +675,7 @@ namespace Zion
 			}
 			else
 			{
-				realpath = StringFormat("%sContent/Json/", ZionGameDir());
+				realpath = StringFormat("%sContent/Json/", GetHomeDirectory());
 			}
 
 			Map<String, std::ofstream*> vmap;

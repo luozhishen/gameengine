@@ -49,7 +49,7 @@ CStressViewDlg::CStressViewDlg(wxWindow* pParent) : wxDialog(pParent, wxID_ANY, 
 	m_Timer.SetOwner(this, ID_SVD_TIMER);
 
 	wxString txt;
-	txt.Printf(wxT("%s for %s [UID=%s]"), GetTitle(), wxString::FromUTF8(Zion::ZionGameName()), wxString::FromUTF8(Zion::CClientApp::GetDefault()->GetParam("UidBase", "0")));
+	txt.Printf(wxT("%s for %s [UID=%s]"), GetTitle(), wxString::FromUTF8(Zion::GetAppName()), wxString::FromUTF8(Zion::CClientApp::GetDefault()->GetParam("UidBase", "0")));
 	SetTitle(txt);
 
 	wxNotebook* pViewTab = ZION_NEW wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
@@ -138,7 +138,7 @@ CStressViewDlg::~CStressViewDlg()
 
 bool CStressViewDlg::LoadCounterConfig()
 {
-	Zion::String file = Zion::StringFormat("%sConfig/StressCounter.json", Zion::ZionGameDir());
+	Zion::String file = Zion::StringFormat("%sConfig/StressCounter.json", Zion::GetHomeDirectory());
 
 	Json::Value root;
 	std::ifstream f(file.c_str(), std::ifstream::binary);

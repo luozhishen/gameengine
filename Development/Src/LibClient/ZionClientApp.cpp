@@ -68,7 +68,7 @@ namespace Zion
 	{
 		m_Params.clear();
 
-		Zion::String strXmlFile = path?path:Zion::ZionGameDir();
+		Zion::String strXmlFile = path?path:Zion::GetHomeDirectory();
 		if(path)
 		{
 			strXmlFile = Zion::StringFormat("%s%s", path, "Client.json");
@@ -114,7 +114,7 @@ namespace Zion
 		}
 
 		Zion::String json_file = writer.write(root);
-		Zion::String strXmlFile = Zion::ZionGameDir();
+		Zion::String strXmlFile = Zion::GetHomeDirectory();
 		strXmlFile += "\\Config\\Client.json";
 		std::ofstream ofs;
 		ofs.open(strXmlFile.c_str());

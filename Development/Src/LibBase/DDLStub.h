@@ -15,7 +15,6 @@ namespace DDLStub
 		{
 		}
 
-		
 		virtual const ::DDLReflect::CLASS_INFO* GetClassInfo() = 0;
 		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf) = 0;
 	};

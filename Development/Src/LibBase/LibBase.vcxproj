@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClCompile Include="ConfusedNumber.cpp" />
     <ClCompile Include="ConfusedNumberDDL.cpp" />
-    <ClCompile Include="DataObject.cpp" />
+    <ClCompile Include="DDLDataObject.cpp" />
     <ClCompile Include="DDLStub.cpp" />
     <ClCompile Include="ZionBase.cpp" />
     <ClCompile Include="ZionHash.cpp" />
@@ -47,7 +47,7 @@
   <ItemGroup>
     <ClInclude Include="ConfusedNumber.h" />
     <ClInclude Include="ConfusedNumberDDL.h" />
-    <ClInclude Include="DataObject.h" />
+    <ClInclude Include="DDLDataObject.h" />
     <ClInclude Include="ZionBase.h" />
     <ClInclude Include="ZionDefines.h" />
     <ClInclude Include="ZionHash.h" />

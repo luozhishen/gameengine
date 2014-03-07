@@ -9,11 +9,11 @@
 #include "ZionHash.h"
 #include "DDL.h"
 #include "DDLReflect.h"
+#include "ConfusedNumber.h"
 #include "DDLProxy.h"
 #include "DDLStub.h"
-#include "DataObject.h"
+#include "DDLDataObject.h"
 #include "sigslot.h"
-#include "ConfusedNumber.h"
 
 namespace Zion
 {

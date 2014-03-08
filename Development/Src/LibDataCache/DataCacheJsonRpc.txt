@@ -14,3 +14,15 @@ return		none
 function	ExecuteDDL
 argements	avatar_id, method_name, data
 return		none
+
+function	CreateObject
+argements	avatar_id, uuid, type, data
+return		none
+
+function	UpdateObject
+argements	avatar_id, uuid, data
+return		none
+
+function	RemoveObject
+argements	avatar_id, uuids
+return		none

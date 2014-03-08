@@ -15,7 +15,7 @@ namespace DDLReflect
 		// 1 DS_UpdateObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "data", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 DS_RemoveObjects
+		// 2 DS_DeleteObject
 		{TYPE_UUID|TYPE_ARRAY, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
@@ -23,7 +23,7 @@ namespace DDLReflect
 	{
 		{"DS_CreateObject", 2, _class_DATASYNC_JSON_C2S_fieldinfos+0},
 		{"DS_UpdateObject", 2, _class_DATASYNC_JSON_C2S_fieldinfos+2},
-		{"DS_RemoveObjects", 2, _class_DATASYNC_JSON_C2S_fieldinfos+4},
+		{"DS_DeleteObject", 2, _class_DATASYNC_JSON_C2S_fieldinfos+4},
 	};
 	static CLASS_INFO _class_DATASYNC_JSON_C2S_info = { 0, "DATASYNC_JSON_C2S", 3, _class_DATASYNC_JSON_C2S_funcinfos };
 	template<>
@@ -51,7 +51,7 @@ namespace DDLReflect
 		// 6 DS_UpdateObject
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRING, "json", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 7 DS_RemoveObjects
+		// 7 DS_DeleteObject
 		{TYPE_UUID|TYPE_ARRAY, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
@@ -64,7 +64,7 @@ namespace DDLReflect
 		{"DS_CreateObjectDone", 1, _class_DATASYNC_JSON_S2C_fieldinfos+2},
 		{"DS_CreateObject", 2, _class_DATASYNC_JSON_S2C_fieldinfos+3},
 		{"DS_UpdateObject", 2, _class_DATASYNC_JSON_S2C_fieldinfos+5},
-		{"DS_RemoveObjects", 2, _class_DATASYNC_JSON_S2C_fieldinfos+7},
+		{"DS_DeleteObject", 2, _class_DATASYNC_JSON_S2C_fieldinfos+7},
 	};
 	static CLASS_INFO _class_DATASYNC_JSON_S2C_info = { 0, "DATASYNC_JSON_S2C", 8, _class_DATASYNC_JSON_S2C_funcinfos };
 	template<>
@@ -86,7 +86,7 @@ namespace DDLReflect
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8|TYPE_ARRAY, "buf", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "len", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 2 DS_RemoveObjects
+		// 2 DS_DeleteObject
 		{TYPE_UUID|TYPE_ARRAY, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
@@ -94,7 +94,7 @@ namespace DDLReflect
 	{
 		{"DS_CreateObject", 3, _class_DATASYNC_BINARY_C2S_fieldinfos+0},
 		{"DS_UpdateObject", 3, _class_DATASYNC_BINARY_C2S_fieldinfos+3},
-		{"DS_RemoveObjects", 2, _class_DATASYNC_BINARY_C2S_fieldinfos+6},
+		{"DS_DeleteObject", 2, _class_DATASYNC_BINARY_C2S_fieldinfos+6},
 	};
 	static CLASS_INFO _class_DATASYNC_BINARY_C2S_info = { 0, "DATASYNC_BINARY_C2S", 3, _class_DATASYNC_BINARY_C2S_funcinfos };
 	template<>
@@ -124,7 +124,7 @@ namespace DDLReflect
 		{TYPE_UUID, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U8|TYPE_ARRAY, "buf", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "len", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		// 7 DS_RemoveObjects
+		// 7 DS_DeleteObject
 		{TYPE_UUID|TYPE_ARRAY, "_uuid", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
@@ -137,7 +137,7 @@ namespace DDLReflect
 		{"DS_CreateObjectDone", 1, _class_DATASYNC_BINARY_S2C_fieldinfos+2},
 		{"DS_CreateObject", 3, _class_DATASYNC_BINARY_S2C_fieldinfos+3},
 		{"DS_UpdateObject", 3, _class_DATASYNC_BINARY_S2C_fieldinfos+6},
-		{"DS_RemoveObjects", 2, _class_DATASYNC_BINARY_S2C_fieldinfos+9},
+		{"DS_DeleteObject", 2, _class_DATASYNC_BINARY_S2C_fieldinfos+9},
 	};
 	static CLASS_INFO _class_DATASYNC_BINARY_S2C_info = { 0, "DATASYNC_BINARY_S2C", 8, _class_DATASYNC_BINARY_S2C_funcinfos };
 	template<>

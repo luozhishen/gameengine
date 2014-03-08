@@ -8,13 +8,13 @@ namespace Zion
 
 		class CMonitor;
 		class CObject;
-		class CManagerBase;
 		class CManager;
+		class CAccesser;
 
 		class CMonitor : public DDLDataObject::IMonitor
 		{
 		public:
-			CMonitor(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* info);
+			CMonitor(CManager* pManager, const DDLReflect::STRUCT_INFO* info);
 
 			bool IsDirty();
 			void SetDirty();
@@ -22,7 +22,7 @@ namespace Zion
 			void Clean();
 
 		private:
-			CManagerBase* m_pManager;
+			CManager* m_pManager;
 			const DDLReflect::STRUCT_INFO* m_pInfo;
 			bool m_bDirty;
 		};
@@ -30,21 +30,21 @@ namespace Zion
 		class CObject : public DDLDataObject::CObject
 		{
 		public:
-			CObject(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData);
+			CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData);
 
 			bool IsDirty();
 			void Clean();
 
 		private:
-			CManagerBase* m_pManager;
+			CManager* m_pManager;
 			CMonitor m_Monitor;
 		};
 
-		class CManagerBase
+		class CManager
 		{
 			friend class CMonitor;
 		public:
-			CManagerBase();
+			CManager();
 
 			void InitRandom(_U32 seed);
 			_F32 Rand(); // return 0~1.0
@@ -79,31 +79,31 @@ namespace Zion
 		class CRequestClient : public DDLProxy::IClient, public DDLStub::CDispatcher
 		{
 		public:
-			CRequestClient(CManager* pManager);
+			CRequestClient(CAccesser* pManager);
 			virtual ~CRequestClient();
 
 			virtual bool SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 
 		private:
-			CManager* m_pManager;
+			CAccesser* m_pManager;
 		};
 
 		class CResponseClient : public DDLProxy::IClient
 		{
 		public:
-			CResponseClient(CManager* pManager);
+			CResponseClient(CAccesser* pManager);
 			virtual ~CResponseClient();
 
 			virtual bool SendData(_U16 iid, _U16 fid, _U32 len, const _U8* data);
 
 		private:
-			CManager* m_pManager;
+			CAccesser* m_pManager;
 		};
 
-		class CManager : public CManagerBase
+		class CAccesser : public CManager
 		{
 		public:
-			CManager();
+			CAccesser();
 
 			bool RegisterRequestStub(_U16 iid, DDLStub::IStub* pStub);
 			bool SendRequestData(_U16 iid, _U16 fid, _U32 len, const _U8* data);

@@ -21,15 +21,14 @@ namespace Zion
 	typedef void(JSON_CALLBACK_PROC)(bool error, const char* args);
 	*/
 	typedef std::function<void(const JSONRPC_RESPONSE& res, const char*)>	JSON_RESPONSE_PROC;
-	typedef std::function<void(const char*)>								JSON_CALLBACK_PROC;
+	typedef std::function<void(int errcode, const char*)>											JSON_CALLBACK_PROC;
 
-	CJsonRPCServer* JsonRPC_CreateServer();
-	void JsonRPC_DestroyServer(CJsonRPCServer* pServer);
+	void JsonRPC_Bind(const char* method, JSON_RESPONSE_PROC proc);
+	bool JsonRPC_Start(const char* ep);
+	void JsonRPC_Stop();
 
-	void JsonRPC_Bind(CJsonRPCServer* pServer, const char* method, JSON_RESPONSE_PROC proc);
-	bool JsonRPC_Start(CJsonRPCServer* pServer, const char* ep);
-	void JsonRPC_Stop(CJsonRPCServer* pServer);
-	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, const char* args);
+	bool JsonRPC_Valid(const JSONRPC_RESPONSE& res);
+	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, int errcode, const char* args=NULL);
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep);
 	void JsonRPC_StopClients();

@@ -1,3 +1,4 @@
+#include <ZionBase.h>
 #include <DataCache.h>
 
 int main(int argc, char* argv[])

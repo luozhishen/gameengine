@@ -1,7 +1,6 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <JsonRPC.h>
-#include "DataCacheJsonRpc.h"
 #include "DataCacheServer.h"
 
 namespace Zion
@@ -9,23 +8,35 @@ namespace Zion
 	namespace DataCache
 	{
 
-		CServer::CServer()
+		void RPCIMPL_GetAvatar(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
 		}
 
-		CServer::~CServer()
+		void RPCIMPL_KeepAlive(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
 		}
 
-		void CServer::GetAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_SaveToDB(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
 		}
 
-		void CServer::KeepAlive(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_ExecuteDDL(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id, const char* method_name, const _U8* buf, _U32 len)
 		{
 		}
 
-		void CServer::ExecuteDDL(const JSONRPC_RESPONSE& res, _U32 avatar_id, const char* method, const char* data)
+		void RPCIMPL_CreateObject(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
+		{
+		}
+
+		void RPCIMPL_UpdateObject(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* data)
+		{
+		}
+
+		void RPCIMPL_DeleteObject(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID* _uuids, _U32 count)
+		{
+		}
+
+		void RPCIMPL_FlushAllData()
 		{
 		}
 

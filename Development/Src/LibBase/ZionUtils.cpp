@@ -317,7 +317,7 @@ namespace Zion
 
 #endif
 
-	void ToHexString(const void* data, _U32 size, String& out)
+	void ToHex(const void* data, _U32 size, String& out)
 	{
 		const char tab[]={"0123456789abcdef"};
 		char txt[1000];
@@ -329,6 +329,11 @@ namespace Zion
 		}
 		txt[size*2] ='\0';
 		out = txt;
+	}
+
+	bool ToBin(const char* text, void* data, _U32 size)
+	{
+		return true;
 	}
 
 	static _U32 crc32_tab[] = {

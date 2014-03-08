@@ -7,7 +7,7 @@ namespace Zion
 	namespace LiveData
 	{
 
-		CMonitor::CMonitor(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* info)
+		CMonitor::CMonitor(CManager* pManager, const DDLReflect::STRUCT_INFO* info)
 		{
 			m_pManager = pManager;
 			m_pInfo = info;
@@ -36,7 +36,7 @@ namespace Zion
 			m_bDirty = false;
 		}
 
-		CObject::CObject(CManagerBase* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pManager, pInfo), DDLDataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
+		CObject::CObject(CManager* pManager, const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* pData) : m_Monitor(pManager, pInfo), DDLDataObject::CObject(&m_Monitor, pInfo, pData, "", 0)
 		{
 		}
 
@@ -50,33 +50,33 @@ namespace Zion
 			return m_Monitor.Clean();
 		}
 
-		CManagerBase::CManagerBase()
+		CManager::CManager()
 		{
 		}
 
-		void CManagerBase::InitRandom(_U32 seed)
+		void CManager::InitRandom(_U32 seed)
 		{
 			m_LastNum = seed;
 		}
 
-		_F32 CManagerBase::Rand()
+		_F32 CManager::Rand()
 		{
 			String val = CHashMD5::CalcToString(&m_LastNum, sizeof(m_LastNum));
 			_U32 m_LastNum = CalcCRC32(val.c_str(), (_U32)val.size());
 			return ((_F32)(m_LastNum & 0xffffff)) / 0xffffff;
 		}
 
-		void CManagerBase::EnableMonitor(bool bEnable)
+		void CManager::EnableMonitor(bool bEnable)
 		{
 			m_bEnableMonitor = bEnable;
 		}
 
-		bool CManagerBase::IsEnableMointor()
+		bool CManager::IsEnableMointor()
 		{
 			return m_bEnableMonitor;
 		}
 
-		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo)
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo)
 		{
 			A_UUID _uuid;
 			AUuidGenerate(_uuid);
@@ -93,7 +93,7 @@ namespace Zion
 			return NULL;
 		}
 
-		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* data)
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* data)
 		{
 			if(m_ObjMap.find(data->_uuid)==m_ObjMap.end())
 			{
@@ -107,7 +107,7 @@ namespace Zion
 			return NULL;
 		}
 
-		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			DDL::MemoryReader reader(buf, len);
@@ -131,7 +131,7 @@ namespace Zion
 			return NULL;
 		}
 
-		CObject* CManagerBase::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
+		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			String val(str);
@@ -155,7 +155,7 @@ namespace Zion
 			return NULL;
 		}
 
-		bool CManagerBase::Remove(const A_UUID& _uuid)
+		bool CManager::Remove(const A_UUID& _uuid)
 		{
 			Map<A_UUID, CObject*>::iterator o = m_ObjMap.find(_uuid);
 			if(o==m_ObjMap.end())
@@ -170,7 +170,7 @@ namespace Zion
 			}
 		}
 
-		void CManagerBase::Clear()
+		void CManager::Clear()
 		{
 			Map<A_UUID, CObject*>::iterator i;
 			for(i=m_ObjMap.begin(); i!=m_ObjMap.end(); i++)
@@ -180,19 +180,19 @@ namespace Zion
 			m_ObjMap.clear();
 		}
 
-		CObject* CManagerBase::Get(const A_UUID& _uuid)
+		CObject* CManager::Get(const A_UUID& _uuid)
 		{
 			Map<A_UUID, CObject*>::iterator o = m_ObjMap.find(_uuid);
 			if(o==m_ObjMap.end()) return NULL;
 			return o->second;
 		}
 
-		CObject* CManagerBase::FindFirst()
+		CObject* CManager::FindFirst()
 		{
 			return m_ObjMap.begin()->second;
 		}
 
-		CObject* CManagerBase::FindNext(CObject* obj)
+		CObject* CManager::FindNext(CObject* obj)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)obj->GetData();
 			Map<A_UUID, CObject*>::iterator i = m_ObjMap.find(data->_uuid);
@@ -204,22 +204,22 @@ namespace Zion
 			return i->second;
 		}
 
-		bool CManagerBase::IsLiveDataChanged()
+		bool CManager::IsLiveDataChanged()
 		{
 			return m_bIsLiveDataChanged;
 		}
 
-		void CManagerBase::SetLiveDataChanged()
+		void CManager::SetLiveDataChanged()
 		{
 			m_bIsLiveDataChanged = true;
 		}
 
-		void CManagerBase::ClearLiveDataChanged()
+		void CManager::ClearLiveDataChanged()
 		{
 			m_bIsLiveDataChanged = false;
 		}
 
-		CRequestClient::CRequestClient(CManager* pManager)
+		CRequestClient::CRequestClient(CAccesser* pManager)
 		{
 			m_pManager = pManager;
 		}
@@ -235,7 +235,7 @@ namespace Zion
 			return m_pManager->SendRequestData(iid, fid, len, data);
 		}
 
-		CResponseClient::CResponseClient(CManager* pManager)
+		CResponseClient::CResponseClient(CAccesser* pManager)
 		{
 			m_pManager = pManager;
 		}
@@ -251,19 +251,19 @@ namespace Zion
 			return m_pManager->SendResponseData(iid, fid, len, data);
 		}
 
-		CManager::CManager()
+		CAccesser::CAccesser()
 			: m_RequestClient(this), m_ResponseClient(this)
 		{
 			m_pRequestClientImpl = NULL;
 			m_pResponseStubImpl = NULL;
 		}
 
-		bool CManager::RegisterRequestStub(_U16 iid, DDLStub::IStub* pStub)
+		bool CAccesser::RegisterRequestStub(_U16 iid, DDLStub::IStub* pStub)
 		{
 			return m_RequestClient.RegisterStub(iid, pStub);
 		}
 
-		bool CManager::SendRequestData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+		bool CAccesser::SendRequestData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 		{
 			ClearLiveDataChanged();
 
@@ -281,53 +281,53 @@ namespace Zion
 			return m_pRequestClientImpl->SendData(iid, fid, len, data);
 		}
 
-		bool CManager::SendResponseData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
+		bool CAccesser::SendResponseData(_U16 iid, _U16 fid, _U32 len, const _U8* data)
 		{
 			if(!m_pResponseStubImpl) return true;
 			return m_pResponseStubImpl->Dispatch(iid, fid, len, data);
 		}
 
-		bool CManager::HasRequestClient()
+		bool CAccesser::HasRequestClient()
 		{
 			return m_pRequestClientImpl!=NULL;
 		}
 
-		bool CManager::HasResponseClient()
+		bool CAccesser::HasResponseClient()
 		{
 			return m_pResponseClientImpl!=NULL;
 		}
 
-		bool CManager::HasResponseStub()
+		bool CAccesser::HasResponseStub()
 		{
 			return m_pResponseStubImpl!=NULL;
 		}
 
-		void CManager::SetRequestClient(DDLProxy::IClient* pRquestClientImpl)
+		void CAccesser::SetRequestClient(DDLProxy::IClient* pRquestClientImpl)
 		{
 			m_pRequestClientImpl = pRquestClientImpl;
 		}
 
-		void CManager::SetResponseClient(DDLProxy::IClient* pResponseClientImpl)
+		void CAccesser::SetResponseClient(DDLProxy::IClient* pResponseClientImpl)
 		{
 			m_pResponseClientImpl = pResponseClientImpl;
 		}
 
-		void CManager::SetResponseStub(DDLStub::CDispatcher* pResponseStubImpl)
+		void CAccesser::SetResponseStub(DDLStub::CDispatcher* pResponseStubImpl)
 		{
 			m_pResponseStubImpl = pResponseStubImpl;
 		}
 
-		DDLProxy::IClient* CManager::GetRequestClient()
+		DDLProxy::IClient* CAccesser::GetRequestClient()
 		{
 			return m_pRequestClientImpl;
 		}
 
-		DDLProxy::IClient* CManager::GetResponseClient()
+		DDLProxy::IClient* CAccesser::GetResponseClient()
 		{
 			return m_pResponseClientImpl;
 		}
 
-		DDLStub::CDispatcher* CManager::GetResponseStub()
+		DDLStub::CDispatcher* CAccesser::GetResponseStub()
 		{
 			return m_pResponseStubImpl;
 		}

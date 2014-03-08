@@ -27,7 +27,8 @@ namespace Zion
 	bool RenameFile(const char* n1, const char* n2);
 	bool RemoveFile(const char* n);
 
-	void ToHexString(const void* data, _U32 size, String& out);
+	void ToHex(const void* data, _U32 size, String& out);
+	bool ToBin(const char* text, void* data, _U32 size);
 
 	_U32 CalcCRC32(const void* data, _U32 len);
 

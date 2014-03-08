@@ -19,21 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AvatarData.cpp" />
     <ClCompile Include="DataCache.cpp" />
     <ClCompile Include="DataCacheDBApi.cpp" />
     <ClCompile Include="DataCacheJsonRpc.cpp" />
     <ClCompile Include="DataCacheServer.cpp" />
+    <ClCompile Include="SimpleDataCacheServer.cpp" />
+    <ClCompile Include="sqlite\SqliteLib.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AvatarData.h" />
     <ClInclude Include="DataCache.h" />
     <ClInclude Include="DataCacheDBApi.h" />
     <ClInclude Include="DataCacheJsonRpc.h" />
     <ClInclude Include="DataCacheServer.h" />
+    <ClInclude Include="SimpleDataCacheServer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DataCache.txt" />
+    <None Include="DataCacheJsonRpc.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FF357A6F-54A9-459A-B9D0-FF34FB237EB8}</ProjectGuid>

@@ -306,7 +306,7 @@ function DATASYNC_JSON_C2S_Dispatcher($fname, $_array, $_this)
 		$_this->DS_UpdateObject($___uuid, $__data);
 		return true;
 	}
-	if($fname=='DS_RemoveObjects')
+	if($fname=='DS_DeleteObject')
 	{
 		if(!is_array($_array['_uuid'])) return false;
 		$___uuid = array();
@@ -319,7 +319,7 @@ function DATASYNC_JSON_C2S_Dispatcher($fname, $_array, $_this)
 		if(!is_int($_array['count'])) return false;
 		if($_array['count']<0 || $_array['count']>4294967295) return false;
 		$__count = $_array['count'];
-		$_this->DS_RemoveObjects($___uuid, $__count);
+		$_this->DS_DeleteObject($___uuid, $__count);
 		return true;
 	}
 	return false;
@@ -378,7 +378,7 @@ class DATASYNC_JSON_S2C
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","message":{'.$__result.'}}');
 		return true;
 	}
-	public function DS_RemoveObjects($_uuid, $count)
+	public function DS_DeleteObject($_uuid, $count)
 	{
 		if(!is_array($_uuid)) return false;
 		$__result = '"_uuid":[';
@@ -392,7 +392,7 @@ class DATASYNC_JSON_S2C
 		if(!is_int($count)) return false;
 		if($count<0 || $count>4294967295) return false;
 		$__result = $__result.',"count":'.$count;
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_RemoveObjects","message":{'.$__result.'}}');
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_DeleteObject","message":{'.$__result.'}}');
 		return true;
 	}
 }

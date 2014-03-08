@@ -119,7 +119,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->DS_RemoveObjects(_prefix__uuid, _prefix_count);
+				DDLStub<CLASS>::GetClass()->DS_DeleteObject(_prefix__uuid, _prefix_count);
 				return true;
 			}
 			return false;
@@ -173,7 +173,7 @@ namespace DDLProxy
 			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
-		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
+		bool DS_DeleteObject(const A_UUID* _uuid, _U32 count)
 		{
 			_Buf.Reset();
 
@@ -312,7 +312,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->DS_RemoveObjects(_prefix__uuid, _prefix_count);
+				DDLStub<CLASS>::GetClass()->DS_DeleteObject(_prefix__uuid, _prefix_count);
 				return true;
 			}
 			return false;
@@ -415,7 +415,7 @@ namespace DDLProxy
 			return GetClient()->SendData(this->GetClassID(), 6, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
-		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
+		bool DS_DeleteObject(const A_UUID* _uuid, _U32 count)
 		{
 			_Buf.Reset();
 
@@ -525,7 +525,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->DS_RemoveObjects(_prefix__uuid, _prefix_count);
+				DDLStub<CLASS>::GetClass()->DS_DeleteObject(_prefix__uuid, _prefix_count);
 				return true;
 			}
 			return false;
@@ -581,7 +581,7 @@ namespace DDLProxy
 			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
-		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
+		bool DS_DeleteObject(const A_UUID* _uuid, _U32 count)
 		{
 			_Buf.Reset();
 
@@ -720,7 +720,7 @@ namespace DDLStub
 				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->DS_RemoveObjects(_prefix__uuid, _prefix_count);
+				DDLStub<CLASS>::GetClass()->DS_DeleteObject(_prefix__uuid, _prefix_count);
 				return true;
 			}
 			return false;
@@ -825,7 +825,7 @@ namespace DDLProxy
 			return GetClient()->SendData(this->GetClassID(), 6, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
-		bool DS_RemoveObjects(const A_UUID* _uuid, _U32 count)
+		bool DS_DeleteObject(const A_UUID* _uuid, _U32 count)
 		{
 			_Buf.Reset();
 

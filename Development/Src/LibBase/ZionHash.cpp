@@ -173,7 +173,7 @@ namespace Zion
 	{
 		_U8 md[DIGEST_LENGTH];
 		Final(md);
-		ToHexString(md, DIGEST_LENGTH, out);
+		ToHex(md, DIGEST_LENGTH, out);
 	}
 
 	#define MD5_S11 7
@@ -393,7 +393,7 @@ namespace Zion
 	{
 		_U8 md[DIGEST_LENGTH];
 		Final(md);
-		ToHexString(md, DIGEST_LENGTH, out);
+		ToHex(md, DIGEST_LENGTH, out);
 	}
 
 	void CHashSha1::process()

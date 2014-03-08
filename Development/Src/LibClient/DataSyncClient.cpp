@@ -35,7 +35,7 @@ namespace Zion
 	{
 		if((m_Flag&SYNCFLAG_CLIENT_ACTIVE)==0) return false;
 
-		if(!m_Manager.Remove(_uuid))
+		if(!m_Accesser.Remove(_uuid))
 		{
 			return false;
 		}
@@ -45,7 +45,7 @@ namespace Zion
 
 	LiveData::CObject* CDataSyncClient::GetObject(const A_UUID& _uuid)
 	{
-		return m_Manager.Get(_uuid);
+		return m_Accesser.Get(_uuid);
 	}
 
 	void CDataSyncClient::Sync()
@@ -87,21 +87,21 @@ namespace Zion
 			switch((m_Flag&SYNCFLAG_MODEMASK))
 			{
 			case SYNCFLAG_BINARY:
-				m_Binary.DS_RemoveObjects(&m_DelList[0], (_U32)m_DelList.size());
+				m_Binary.DS_DeleteObject(&m_DelList[0], (_U32)m_DelList.size());
 				break;
 			case SYNCFLAG_JSON:
-				m_Json.DS_RemoveObjects(&m_DelList[0], (_U32)m_DelList.size());
+				m_Json.DS_DeleteObject(&m_DelList[0], (_U32)m_DelList.size());
 				break;
 			}
 			m_DelList.clear();
 		}
 
-		LiveData::CObject* obj = m_Manager.FindFirst();
+		LiveData::CObject* obj = m_Accesser.FindFirst();
 		while(obj)
 		{
 			if(!obj->IsDirty())
 			{
-				obj = m_Manager.FindNext(obj);
+				obj = m_Accesser.FindNext(obj);
 				continue;
 			}
 
@@ -134,48 +134,13 @@ namespace Zion
 			}
 
 			obj->Clean();
-			obj = m_Manager.FindNext(obj);
+			obj = m_Accesser.FindNext(obj);
 		}
 	}
 
 	bool CDataSyncClient::InProcess()
 	{
 		return m_Flag==0 || !m_bReady || !m_WatQ.empty();
-	}
-
-	bool CDataSyncClient::SendData(_U16 iid, _U16 fid, _U32 len, const _U8* buf)
-	{
-		switch(m_Mode)
-		{
-		case SYNCMODE_CLIENT_ACTIVE:
-			if(!m_pAccesser->Dispatch(iid, fid, len, buf))
-			{
-				ZION_ASSERT(0);
-				return false;
-			}
-			break;
-		case SYNCMODE_SERVER_ACTIVE:
-			if(!GetClient()->SendData(iid, fid, len, buf))
-			{
-				ZION_ASSERT(0);
-				return false;
-			}
-			break;
-		case SYNCMODE_VERIFY:
-			if(!m_pAccesser->Dispatch(iid, fid, len, buf))
-			{
-				ZION_ASSERT(0);
-				return false;
-			}
-			if(!GetClient()->SendData(iid, fid, len, buf))
-			{
-				ZION_ASSERT(0);
-				return false;
-			}
-			break;
-		}
-
-		return true;
 	}
 
 	void CDataSyncClient::DS_SetMode(_U32 mode)
@@ -217,7 +182,7 @@ namespace Zion
 		A_LIVE_OBJECT* _obj = m_WatQ.front().obj;
 		_obj->_uuid = _uuid;
 		m_WatQ.pop_front();
-		if(!m_Manager.Append(_info, _obj))
+		if(!m_Accesser.Append(_info, _obj))
 		{
 			DDLReflect::DestoryObject(_info, _obj);
 			return;
@@ -233,7 +198,7 @@ namespace Zion
 			return;
 		}
 
-		m_Manager.Append(_info, data);
+		m_Accesser.Append(_info, data);
 	}
 
 	void CDataSyncClient::DS_CreateObject(_U16 type, const _U8* data, _U32 len)
@@ -245,12 +210,12 @@ namespace Zion
 			return;
 		}
 
-		m_Manager.Append(_info, data, len);
+		m_Accesser.Append(_info, data, len);
 	}
 
 	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const char* json)
 	{
-		LiveData::CObject* obj = m_Manager.Get(_uuid);
+		LiveData::CObject* obj = m_Accesser.Get(_uuid);
 		if(!obj)
 		{
 			ZION_ASSERT(0);
@@ -274,7 +239,7 @@ namespace Zion
 
 	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const _U8* buf, _U32 len)
 	{
-		LiveData::CObject* obj = m_Manager.Get(_uuid);
+		LiveData::CObject* obj = m_Accesser.Get(_uuid);
 		if(!obj)
 		{
 			ZION_ASSERT(0);
@@ -296,11 +261,11 @@ namespace Zion
 		memcpy(obj->GetData(), data, info->size);
 	}
 
-	void CDataSyncClient::DS_RemoveObjects(const A_UUID* _uuids, _U32 count)
+	void CDataSyncClient::DS_DeleteObject(const A_UUID* _uuids, _U32 count)
 	{
 		for(_U32 i=0; i<count; i++)
 		{
-			m_Manager.Remove(_uuids[i]);
+			m_Accesser.Remove(_uuids[i]);
 		}
 	}
 
@@ -319,7 +284,7 @@ namespace Zion
 		}
 
 		m_DelList.clear();
-		m_Manager.Clear();
+		m_Accesser.Clear();
 	}
 
 }

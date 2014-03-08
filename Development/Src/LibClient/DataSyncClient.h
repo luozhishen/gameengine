@@ -2,7 +2,6 @@
 #define __ZION_CLIENT_DATASYNC__
 
 #include <DataSyncDDL.h>
-#include <LiveAccesser.h>
 
 namespace Zion
 {
@@ -26,9 +25,6 @@ namespace Zion
 		void Sync();
 		bool InProcess();
 
-		//
-		bool SendData(_U16 iid, _U16 fid, _U32 len, const _U8* buf);
-
 		// DATASYNC_S2C
 		void DS_SetMode(_U32 mode);
 		void DS_SyncOpen(_U32 flag);
@@ -39,7 +35,7 @@ namespace Zion
 		void DS_CreateObject(_U16 type, const _U8* data, _U32 len);
 		void DS_UpdateObject(const A_UUID& _uuid, const char* data);
 		void DS_UpdateObject(const A_UUID& _uuid, const _U8* data, _U32 len);
-		void DS_RemoveObjects(const A_UUID* _uuids, _U32 count);
+		void DS_DeleteObject(const A_UUID* _uuids, _U32 count);
 
 	private:
 		struct OBJECT_ADDITEM
@@ -50,7 +46,7 @@ namespace Zion
 
 		void Clear();
 
-		LiveData::CManager m_Manager;
+		LiveData::CAccesser m_Accesser;
 		_U32 m_Mode;
 		_U32 m_Flag;
 		bool m_bReady;

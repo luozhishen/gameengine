@@ -6,16 +6,13 @@ namespace Zion
 	namespace DataCache
 	{
 
-		class IDatabase
-		{
-		public:
-			~IDatabase() { }
-
-		};
-
 		bool InitDatabase();
 		void FiniDatabase();
-		IDatabase* GetDatabase();
+
+		bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
+		bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
+		bool UpdateAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* data);
+		bool DeleteAvatarObject(_U32 avatar_id, const A_UUID* _uuids, _U32 count);
 
 	}
 }

@@ -1,5 +1,6 @@
 #include <ZionBase.h>
 #include "DataCacheDBApi.h"
+#include "DataCache.h"
 
 #include "sqlite\sqlite3.h"
 
@@ -56,7 +57,7 @@ namespace Zion
 
 		bool InitDatabase()
 		{
-			if(SQLITE_OK!=sqlite3_open("./Database.db", &g_sqlite))
+			if(SQLITE_OK!=sqlite3_open(CONFIG_DATABASE.c_str(), &g_sqlite))
 			{
 				printf("error in sqlite3_open(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;

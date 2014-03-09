@@ -5,6 +5,7 @@
 #include "DataCacheJsonRpc.h"
 #include "DataCacheServer.h"
 #include "SimpleDataCacheServer.h"
+#include "DataCacheDBApi.h"
 
 #include <stdio.h>
 
@@ -79,32 +80,45 @@ namespace Zion
 				Zion::InitDDLStub();
 				Zion::InitContentObjects();
 				Zion::InitLiveObjects();
+				printf("loading content..\n");
 				if(!ContentObject::LoadContent())
 				{
 					ZION_FATAL("load content failed");
 				}
+				printf("all content loaded.\n");
 			}
 
-			// step 3: start rpc server
+			// step 3: init database
+			printf("init database\n");
+			if(!InitDatabase())
+			{
+				ZION_FATAL("");
+			}
+
+			// step 4: start rpc server
 			JsonRPC_Bind("getAvatar",		JsonRPC_GetAvatar);
+			JsonRPC_Bind("saveAvatar",		JsonRPC_SaveAvatar);
+			JsonRPC_Bind("clearAvatar",		JsonRPC_ClearAvatar);
 			JsonRPC_Bind("keepAlive",		JsonRPC_KeepAlive);
-			JsonRPC_Bind("saveToDB",		JsonRPC_SaveToDB);
 			JsonRPC_Bind("executeDDL",		JsonRPC_ExecuteDDL);
 			JsonRPC_Bind("createObject",	JsonRPC_CreateObject);
 			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);
 			JsonRPC_Bind("deleteObject",	JsonRPC_DeleteObject);
+			printf("start JsonRpc Server...\n");
 			if(!JsonRPC_Start(rpcep))
 			{
 				ZION_FATAL("start jsonrpc failed");
 			}
 
-			// step 4: wait process terminiate signal
+			// step 5: wait process terminiate signal
 			getchar();
 
-			// step 5: stop rpc server
+			// step 6: stop rpc server
+			printf("stoping JsonRpc server\n");
 			JsonRPC_Stop();
 
-			// step 6: wait all cache data flush to database
+			// step 7: wait all cache data flush to database
+			printf("flash all data to database\n");
 			if(CONFIG_SIMPLE_MODE)
 			{
 				RPCSIMPLE_FlushAllData();
@@ -114,7 +128,12 @@ namespace Zion
 				RPCIMPL_FlushAllData();
 			}
 
-			// step 7: process exit
+			// step 8: close database
+			printf("fini database\n");
+			FiniDatabase();
+
+			// step 9: process exit
+			printf("exit.\n");
 			return 0;
 		}
 

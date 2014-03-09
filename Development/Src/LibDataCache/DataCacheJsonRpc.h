@@ -7,8 +7,9 @@ namespace Zion
 	{
 
 		void JsonRPC_GetAvatar(const JSONRPC_RESPONSE& res, const char* args);
+		void JsonRPC_SaveAvatar(const JSONRPC_RESPONSE& res, const char* args);
+		void JsonRPC_ClearAvatar(const JSONRPC_RESPONSE& res, const char* args);
 		void JsonRPC_KeepAlive(const JSONRPC_RESPONSE& res, const char* args);
-		void JsonRPC_SaveToDB(const JSONRPC_RESPONSE& res, const char* args);
 		void JsonRPC_ExecuteDDL(const JSONRPC_RESPONSE& res, const char* args);
 		void JsonRPC_CreateObject(const JSONRPC_RESPONSE& res, const char* args);
 		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE& res, const char* args);

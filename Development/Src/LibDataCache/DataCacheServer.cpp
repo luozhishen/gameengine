@@ -12,11 +12,15 @@ namespace Zion
 		{
 		}
 
-		void RPCIMPL_KeepAlive(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_SaveAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
 		}
 
-		void RPCIMPL_SaveToDB(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_ClearAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		{
+		}
+
+		void RPCIMPL_KeepAlive(const Zion::JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
 		}
 

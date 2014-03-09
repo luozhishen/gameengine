@@ -7,8 +7,16 @@ return
   success	{ "uuid:type" : {obj}, ... }
   failed	""
 
+function	SaveAvatar
+argements	avatar_id
+return		none
+
+function	ClearAvatar
+argements	avatar_id
+return		none
+
 function	KeepAlive
-argments	avatar_id
+argements	avatar_id
 return		none
 
 function	ExecuteDDL

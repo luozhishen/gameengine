@@ -35,6 +35,54 @@ namespace Zion
 			JsonRPC_Send(res, -1);
 		}
 
+		void JsonRPC_SaveAvatar(const JSONRPC_RESPONSE& res, const char* args)
+		{
+			Json::Reader reader;
+			Json::Value _args;
+			Json::Value _avatar_id;
+			for(;;)
+			{
+				if(!reader.parse(String(args), _args)) break;
+				if(!_args.isArray() || _args.size()!=1) break;
+				_avatar_id = _args.get((Json::Value::UInt)0, Json::nullValue);
+				if(!_avatar_id.isUInt()) break;
+				if(CONFIG_SIMPLE_MODE)
+				{
+					RPCSIMPLE_SaveAvatar(res, (_U32)_avatar_id.asUInt());
+				}
+				else
+				{
+					RPCIMPL_SaveAvatar(res, (_U32)_avatar_id.asUInt());
+				}
+				return;
+			}
+			JsonRPC_Send(res, -1);
+		}
+
+		void JsonRPC_ClearAvatar(const JSONRPC_RESPONSE& res, const char* args)
+		{
+			Json::Reader reader;
+			Json::Value _args;
+			Json::Value _avatar_id;
+			for(;;)
+			{
+				if(!reader.parse(String(args), _args)) break;
+				if(!_args.isArray() || _args.size()!=1) break;
+				_avatar_id = _args.get((Json::Value::UInt)0, Json::nullValue);
+				if(!_avatar_id.isUInt()) break;
+				if(CONFIG_SIMPLE_MODE)
+				{
+					RPCSIMPLE_ClearAvatar(res, (_U32)_avatar_id.asUInt());
+				}
+				else
+				{
+					RPCIMPL_ClearAvatar(res, (_U32)_avatar_id.asUInt());
+				}
+				return;
+			}
+			JsonRPC_Send(res, -1);
+		}
+
 		void JsonRPC_KeepAlive(const JSONRPC_RESPONSE& res, const char* args)
 		{
 			Json::Reader reader;
@@ -53,30 +101,6 @@ namespace Zion
 				else
 				{
 					RPCIMPL_KeepAlive(res, (_U32)_avatar_id.asUInt());
-				}
-				return;
-			}
-			JsonRPC_Send(res, -1);
-		}
-
-		void JsonRPC_SaveToDB(const JSONRPC_RESPONSE& res, const char* args)
-		{
-			Json::Reader reader;
-			Json::Value _args;
-			Json::Value _avatar_id;
-			for(;;)
-			{
-				if(!reader.parse(String(args), _args)) break;
-				if(!_args.isArray() || _args.size()!=1) break;
-				_avatar_id = _args.get((Json::Value::UInt)0, Json::nullValue);
-				if(!_avatar_id.isUInt()) break;
-				if(CONFIG_SIMPLE_MODE)
-				{
-					RPCSIMPLE_SaveToDB(res, (_U32)_avatar_id.asUInt());
-				}
-				else
-				{
-					RPCIMPL_SaveToDB(res, (_U32)_avatar_id.asUInt());
 				}
 				return;
 			}

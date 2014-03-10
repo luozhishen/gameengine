@@ -14,14 +14,6 @@
     <ProjectGuid>{BE02B479-5C9D-4876-92D2-D810A64260D8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>RpcGen</RootNamespace>
-    <SccProjectName>
-    </SccProjectName>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccProvider>
-    </SccProvider>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

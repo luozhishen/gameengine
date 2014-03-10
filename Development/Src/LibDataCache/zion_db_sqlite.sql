@@ -1,11 +1,12 @@
 
 -- 角色表
 CREATE TABLE avatar_table (
-  avatar_id integer AUTOINCERMENT,	-- COMMENT '角色ID',
-  user_id integer,					-- COMMENT '用户ID',
-  server_id integer,				-- COMMENT '角色所在服务器ID',
-  avatar_name text,					-- COMMENT '角色名称',
-  avatar_desc text					-- COMMENT '角色基本信息'
+  avatar_id integer PRIMARY_KEY AUTOINCERMENT,	-- COMMENT '角色ID',
+  user_id integer,								-- COMMENT '用户ID',
+  server_id integer,							-- COMMENT '角色所在服务器ID',
+  flag integer,									-- COMMENT '角色状态 只有0表示可用',
+  avatar_name text,								-- COMMENT '角色名称',
+  avatar_desc text								-- COMMENT '角色基本信息'
 );
 CREATE UNIQUE INDEX avatar_table_id_index ON avatar_table(avatar_id);
 CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_name);

@@ -35,6 +35,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DataCacheJsonRpc.txt" />
+    <None Include="zion_db_mysql.sql" />
+    <None Include="zion_db_sqlite.sql" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FF357A6F-54A9-459A-B9D0-FF34FB237EB8}</ProjectGuid>

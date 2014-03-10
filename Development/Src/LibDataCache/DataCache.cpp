@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 
-static char rpcep[1000] = "127.0.0.1:1980";
 static bool g_simple_server = true;
 
 namespace Zion
@@ -18,7 +17,7 @@ namespace Zion
 	{
 
 		bool CONFIG_SIMPLE_MODE = true;
-		String CONFIG_DATABASE("sqlite:zion_db.sqlite");
+		String CONFIG_DATABASE("E:\\zion_db.sqlite");
 		String CONFIG_RPCEP("0.0.0.0:1982");
 
 		static bool ParseArgs(int argc, char* argv[])
@@ -96,6 +95,9 @@ namespace Zion
 			}
 
 			// step 4: start rpc server
+			JsonRPC_Bind("createAvatar",	JsonRPC_CreateAvatar);
+			JsonRPC_Bind("deleteAvatar",	JsonRPC_DeleteAvatar);
+			JsonRPC_Bind("listAvatar",		JsonRPC_GetAvatarList);
 			JsonRPC_Bind("getAvatar",		JsonRPC_GetAvatar);
 			JsonRPC_Bind("saveAvatar",		JsonRPC_SaveAvatar);
 			JsonRPC_Bind("clearAvatar",		JsonRPC_ClearAvatar);
@@ -105,12 +107,13 @@ namespace Zion
 			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);
 			JsonRPC_Bind("deleteObject",	JsonRPC_DeleteObject);
 			printf("start JsonRpc Server...\n");
-			if(!JsonRPC_Start(rpcep))
+			if(!JsonRPC_Start(CONFIG_RPCEP.c_str()))
 			{
 				ZION_FATAL("start jsonrpc failed");
 			}
 
 			// step 5: wait process terminiate signal
+			printf("server running...\n");
 			getchar();
 
 			// step 6: stop rpc server

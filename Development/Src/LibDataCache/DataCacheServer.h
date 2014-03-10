@@ -6,6 +6,17 @@ namespace Zion
 	namespace DataCache
 	{
 
+		void RPCIMPL_CreateAvatar(
+				const JSONRPC_RESPONSE& res,
+				_U32 user_id,
+				_U32 server_id,
+				const char* avatar_name,
+				const char* avatar_desc,
+				const Array<A_UUID>& uuids,
+				const Array<String>& types,
+				const Array<String>& datas);
+		void RPCIMPL_DeleteAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id);
+		void RPCIMPL_GetAvatarList(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 server_id);
 		void RPCIMPL_GetAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id);
 		void RPCIMPL_SaveAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id);
 		void RPCIMPL_ClearAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id);

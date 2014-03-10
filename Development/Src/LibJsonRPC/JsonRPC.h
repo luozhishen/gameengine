@@ -28,7 +28,7 @@ namespace Zion
 	void JsonRPC_Stop();
 
 	bool JsonRPC_Valid(const JSONRPC_RESPONSE& res);
-	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, int errcode, const char* args=NULL);
+	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, const char* args=NULL);
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep);
 	void JsonRPC_StopClients();

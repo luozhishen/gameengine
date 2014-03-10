@@ -75,7 +75,7 @@ namespace Zion
 
 		bool Start(const char* ep);
 		void Stop();
-		bool Send(_U32 conn, _U32 seq, int errcode, const char* data);
+		bool Send(_U32 conn, _U32 seq, const char* data);
 
 		void Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data);
 		void Detach(_U32 id, CJsonRPCServerConnection* pConn);
@@ -173,12 +173,12 @@ namespace Zion
 		return res.seq!=0;
 	}
 
-	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, int errcode, const char* args)
+	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, const char* args)
 	{
 		if(res.seq==0) return true;
 		ZION_ASSERT(res.server!=NULL && res.conn!=(_U32)-1);
-		if(res.server==NULL || res.conn!=(_U32)-1) return false;
-		return ((CJsonRPCServer*)res.server)->Send(res.conn, res.seq, errcode, args);
+		if(res.server==NULL || res.conn==(_U32)-1) return false;
+		return ((CJsonRPCServer*)res.server)->Send(res.conn, res.seq, args);
 	}
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep)
@@ -437,7 +437,7 @@ namespace Zion
 		memcpy(host, ep, pos-ep);
 		host[pos-ep] = '\0';
 		uv_ip4_addr(host, atoi(pos+1), &ip4);
-		if(ip4.sin_addr.S_un.S_addr==0)
+		if(ip4.sin_addr.S_un.S_addr==INADDR_NONE)
 		{
 			uv_ip6_addr(host, atoi(pos+1), &ip6);
 		}
@@ -482,7 +482,7 @@ namespace Zion
 		uv_loop_delete(m_uv_loop);
 	}
 
-	bool CJsonRPCServer::Send(_U32 conn, _U32 seq, int errcode, const char* data)
+	bool CJsonRPCServer::Send(_U32 conn, _U32 seq, const char* data)
 	{
 		Map<_U32, CJsonRPCServerConnection*>::iterator i;
 		i = m_Clients.find(conn);
@@ -554,15 +554,10 @@ namespace Zion
 
 	void CJsonRPCServer::QuitEvent(uv_async_t* handle, int status)
 	{
+		uv_close((uv_handle_t*)handle, NULL);
+
 		CJsonRPCServer* pServer = (CJsonRPCServer*)((char*)handle - ZION_OFFSETOF(CJsonRPCServer, m_uv_quit));
-
 		uv_close((uv_handle_t*)&pServer->m_server, &CJsonRPCServer::OnClose);
-
-		Map<_U32, CJsonRPCServerConnection*>::iterator i;
-		for(i=pServer->m_Clients.begin(); i!=pServer->m_Clients.end(); i++)
-		{
-			i->second->Shutdown();
-		}
 	}
 
 	CJsonRPCClient::CJsonRPCClient(struct sockaddr* sa)

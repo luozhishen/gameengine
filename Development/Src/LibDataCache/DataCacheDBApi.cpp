@@ -21,6 +21,8 @@ namespace Zion
 		static sqlite3_stmt* g_sqlite_list = NULL;
 		static int g_sqlite_list_user_id = -1;
 		static int g_sqlite_list_server_id = -1;
+		static sqlite3_stmt* g_sqlite_check = NULL;
+		static int g_sqlite_check_avatar_id = -1;
 		static sqlite3_stmt* g_sqlite_load = NULL;
 		static int g_sqlite_load_avatar_id = -1;
 		static sqlite3_stmt* g_sqlite_insert = NULL;
@@ -38,20 +40,20 @@ namespace Zion
 
 		static const char* sqls[] = {
 			"CREATE TABLE avatar_table (\n"
-			"	avatar_id	integer PRIMARY_KEY NOT_NULL AUTO_INCREMENT,\n"
-			"	user_id		integer,\n"
-			"	server_id	integer,\n"
-			"	flag		integer,\n"
-			"	avatar_name	text,\n"
-			"	avatar_desc	text\n"
+			"	avatar_id	INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+			"	user_id		INTEGER,\n"
+			"	server_id	INTEGER,\n"
+			"	flag		INTEGER,\n"
+			"	avatar_name	TEXT,\n"
+			"	avatar_desc	TEXT\n"
 			")",
 			"CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_name)",
 			"CREATE INDEX avatar_table_user_index ON avatar_table(user_id, server_id)",
 			"CREATE TABLE avatar_object_table (\n"
-			"	avatar_id integer,\n"
-			"	object_uuid text,\n"
-			"	object_type text,\n"
-			"	object_data text\n"
+			"	avatar_id INTEGER,\n"
+			"	object_uuid TEXT,\n"
+			"	object_type TEXT,\n"
+			"	object_data TEXT\n"
 			")\n",
 			"CREATE UNIQUE INDEX avatar_object_table_index ON avatar_object_table(avatar_id, object_uuid)\n",
 			NULL
@@ -82,6 +84,7 @@ namespace Zion
 			}
 			if(table_count==0)
 			{
+				printf("table not found. create tables...\n");
 				for(_U32 i=0; sqls[i]!=NULL; i++)
 				{
 					if(SQLITE_OK!=sqlite3_exec(g_sqlite, sqls[i], NULL, NULL, NULL))
@@ -97,7 +100,7 @@ namespace Zion
 				return false;
 			}
 
-			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "INSERT INTO avatar_table(avatar_id, user_id, server_id, flag, avatar_name, avatar_desc) VALUES(NULL, :user_id, :server_id, 0, :avatar_name, :avatar_desc)", -1, &g_sqlite_create, NULL))
+			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "INSERT INTO avatar_table(user_id, server_id, flag, avatar_name, avatar_desc) VALUES(:user_id, :server_id, 0, :avatar_name, :avatar_desc)", -1, &g_sqlite_create, NULL))
 			{
 				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
@@ -114,7 +117,7 @@ namespace Zion
 			}
 			g_sqlite_delete_avatar_id = sqlite3_bind_parameter_index(g_sqlite_delete, ":avatar_id");
 
-			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "SELECT avatar_id, avatar_name, avatar_desc FROM avatar_table WHERE user_id=:user_id AND server_id=:server_id", -1, &g_sqlite_list, NULL))
+			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "SELECT avatar_id, flag, avatar_name, avatar_desc FROM avatar_table WHERE user_id=:user_id AND server_id=:server_id", -1, &g_sqlite_list, NULL))
 			{
 				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
@@ -122,7 +125,14 @@ namespace Zion
 			g_sqlite_list_user_id = sqlite3_bind_parameter_index(g_sqlite_list, ":user_id");
 			g_sqlite_list_server_id = sqlite3_bind_parameter_index(g_sqlite_list, ":server_id");
 
-			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "SELECT object_uuid, object_type, object_data FROM avatar_object_table where avatar_id=:avatar_id", -1, &g_sqlite_load, NULL))
+			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "SELECT flag WHERE avatar_id=:avatar_id", -1, &g_sqlite_check, NULL))
+			{
+				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				return false;
+			}
+			g_sqlite_check_avatar_id = sqlite3_bind_parameter_index(g_sqlite_check, ":avatar_id");
+
+			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "SELECT object_uuid, object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id", -1, &g_sqlite_load, NULL))
 			{
 				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
@@ -161,16 +171,10 @@ namespace Zion
 
 		void FiniDatabase()
 		{
-			sqlite3_reset(g_sqlite_create);
-			sqlite3_reset(g_sqlite_delete);
-			sqlite3_reset(g_sqlite_list);
-			sqlite3_reset(g_sqlite_load);
-			sqlite3_reset(g_sqlite_insert);
-			sqlite3_reset(g_sqlite_update);
-			sqlite3_reset(g_sqlite_remove);
 			sqlite3_finalize(g_sqlite_create);
 			sqlite3_finalize(g_sqlite_delete);
 			sqlite3_finalize(g_sqlite_list);
+			sqlite3_finalize(g_sqlite_check);
 			sqlite3_finalize(g_sqlite_load);
 			sqlite3_finalize(g_sqlite_insert);
 			sqlite3_finalize(g_sqlite_update);
@@ -179,6 +183,7 @@ namespace Zion
 			g_sqlite_create = NULL;
 			g_sqlite_delete = NULL;
 			g_sqlite_list = NULL;
+			g_sqlite_check = NULL;
 			g_sqlite_load = NULL;
 			g_sqlite_insert = NULL;
 			g_sqlite_update = NULL;
@@ -187,6 +192,11 @@ namespace Zion
 
 			sqlite3_shutdown();
 			sqlite3_os_end();
+		}
+
+		_U32 LoginUser(const char* token)
+		{
+			return 0;
 		}
 
 		_U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
@@ -253,7 +263,7 @@ namespace Zion
 			return true;
 		}
 
-		bool GetAvatarList(_U32 user_id, _U32 server_id, bool (*callback)(void*, _U32, const char*, const char*), void* userptr)
+		bool GetAvatarList(_U32 user_id, _U32 server_id, bool (*callback)(void*, _U32, _U32, const char*, const char*), void* userptr)
 		{
 			if(SQLITE_OK!=sqlite3_reset(g_sqlite_list))
 			{
@@ -285,8 +295,9 @@ namespace Zion
 
 				if(!callback(userptr,
 					(_U32)sqlite3_column_int(g_sqlite_list, 0),
-					(const char*)sqlite3_column_text(g_sqlite_list, 1),
-					(const char*)sqlite3_column_text(g_sqlite_list, 2)))
+					(_U32)sqlite3_column_int(g_sqlite_list, 1),
+					(const char*)sqlite3_column_text(g_sqlite_list, 3),
+					(const char*)sqlite3_column_text(g_sqlite_list, 4)))
 				{
 					return false;
 				}
@@ -296,6 +307,40 @@ namespace Zion
 
 		bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
 		{
+			if(SQLITE_OK!=sqlite3_reset(g_sqlite_check))
+			{
+				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				return false;
+			}
+
+			if(SQLITE_OK!=sqlite3_bind_int(g_sqlite_load, g_sqlite_check_avatar_id, (int)avatar_id))
+			{
+				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				return false;
+			}
+
+			bool flag = false;
+			while(1)
+			{
+				int ret = sqlite3_step(g_sqlite_list);
+				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
+				if(ret!=SQLITE_ROW)
+				{
+					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					return false;
+				}
+
+				if(sqlite3_column_int(g_sqlite_list, 0)==0)
+				{
+					flag = true;
+				}
+			}
+			if(!flag)
+			{
+				printf("avatar(%u) not found or disable", avatar_id);
+				return false;
+			}
+
 			if(SQLITE_OK!=sqlite3_reset(g_sqlite_load))
 			{
 				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));

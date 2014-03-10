@@ -1,23 +1,40 @@
 
--- 角色表
-CREATE TABLE avatar_table (
-  avatar_id integer PRIMARY_KEY AUTOINCERMENT,	-- COMMENT '角色ID',
-  user_id integer,								-- COMMENT '用户ID',
-  server_id integer,							-- COMMENT '角色所在服务器ID',
-  flag integer,									-- COMMENT '角色状态 只有0表示可用',
-  avatar_name text,								-- COMMENT '角色名称',
-  avatar_desc text								-- COMMENT '角色基本信息'
-);
-CREATE UNIQUE INDEX avatar_table_id_index ON avatar_table(avatar_id);
-CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_name);
-CREATE INDEX avatar_table_user_index ON avatar_table(user_id);
-CREATE INDEX avatar_table_server_index ON avatar_table(server_id);
+CREATE TABLE user_table (
+	user_id			INTEGER PRIMARY KEY AUTOINCREMENT,
+	token			TEXT NOT NULL,
+	state			INTEGER NOT NULL,
+	freeze_duetime	TIMESTAMP DEFAULT 0 COMMENT '封停到期时间',
+	session_key varchar(1000) DEFAULT '' COMMENT 'session key',
+	session_data varchar(1000) DEFAULT '' COMMENT 'session_data',
+	PRIMARY KEY (user_id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- 角色对象表
+CREATE TABLE login_history_table (
+	user_id int(11) NOT NULL COMMENT '用户ID',
+	ip varchar(11) NOT NULL COMMENT '登录IP',
+	dv_type varchar(100) NOT NULL COMMENT '设备名称',
+	os_type varchar(100) NOT NULL COMMENT '系统名称',
+	dv_id varchar(100) NOT NULL COMMENT '设备标识',
+	session_key varchar(100) NOT NULL COMMENT 'session key',
+	create_ts TIMESTAMP NOT NULL COMMENT '创建时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE avatar_table (
+	avatar_id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id		INTEGER,
+	server_id	INTEGER,
+	flag		INTEGER,
+	avatar_name	TEXT,
+	avatar_desc	TEXT
+);
+CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_name);
+CREATE INDEX avatar_table_user_index ON avatar_table(user_id, server_id);
 CREATE TABLE avatar_object_table (
-  avatar_id integer,				-- COMMENT '角色ID',
-  object_uuid text,					-- COMMENT '对象UUID;,
-  object_type text,					-- COMMENT '对象类型', 
-  object_data text					-- COMMENT '对象数据'
+	avatar_id INTEGER,
+	object_uuid TEXT,
+	object_type TEXT,
+	object_data TEXT
 );
 CREATE UNIQUE INDEX avatar_object_table_index ON avatar_object_table(avatar_id, object_uuid);

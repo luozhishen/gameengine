@@ -17,11 +17,11 @@ namespace Zion
 	} JSONRPC_RESPONSE;
 
 	/*
-	typedef void(JSON_RESPONSE_PROC)(cosnt JSONRPC_RESPONSE& res, const char* args);
+	typedef void(JSON_RESPONSE_PROC)(cosnt JSONRPC_RESPONSE& res, const Json::Value& data);
 	typedef void(JSON_CALLBACK_PROC)(bool error, const char* args);
 	*/
-	typedef std::function<void(const JSONRPC_RESPONSE& res, const char*)>	JSON_RESPONSE_PROC;
-	typedef std::function<void(int errcode, const char*)>											JSON_CALLBACK_PROC;
+	typedef std::function<void(const JSONRPC_RESPONSE& res, const Json::Value& data)>	JSON_RESPONSE_PROC;
+	typedef std::function<void(int errcode, const char*)>								JSON_CALLBACK_PROC;
 
 	void JsonRPC_Bind(const char* method, JSON_RESPONSE_PROC proc);
 	bool JsonRPC_Start(const char* ep);

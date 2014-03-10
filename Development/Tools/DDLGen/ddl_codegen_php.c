@@ -257,6 +257,7 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 		DDL_FUN* fun = &cls->funs[f];
 		OutP(1, "if($fname=='%s')\n", fun->name);
 		OutP(1, "{\n");
+		OutP(1, "	if(count($_array)!=%d) return false;\n", fun->args_count);
 		for(a=0; a<(int)fun->args_count; a++)
 		{
 			DDL_ARG _arg;
@@ -264,9 +265,9 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 			ddlgen_fixarg(&fun->args[a], &_arg);
 
 			if(arg->count[0]!='\0') {
-				OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
+				OutP(2, "if(!is_array($_array[%d])) return false;\n", a);
 				OutP(2, "$__%s = array();\n", arg->name);
-				OutP(2, "$_earray = $_array['%s'];\n", arg->name);
+				OutP(2, "$_earray = $_array[%d];\n", a);
 				OutP(2, "for($__i=0; $__i<count($_earray); $__i++)\n");
 				OutP(2, "{\n");
 				if(is_struct(arg)) {
@@ -286,19 +287,19 @@ int ddlgen_codephp_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 				OutP(2, "}\n");
 			} else {
 				if(is_struct(arg)) {
-					OutP(2, "if(!is_array($_array['%s'])) return false;\n", arg->name);
+					OutP(2, "if(!is_array($_array[%d])) return false;\n", a);
 					OutP(2, "$__%s = new %s;\n", arg->name, arg->type);
-					OutP(2, "if(!$__%s->FromArray($_array['%s'])) return false;\n", arg->name, arg->name);
+					OutP(2, "if(!$__%s->FromArray($_array[%d])) return false;\n", arg->name, a);
 				} else {
 					if(strcmp(get_phptype(arg), "float")==0) {
-						OutP(2, "if(!is_numeric($_array['%s'])) return false;\n", arg->name);
+						OutP(2, "if(!is_numeric($_array[%d])) return false;\n", a);
 					} else {
-						OutP(2, "if(!is_%s($_array['%s'])) return false;\n", get_phptype(arg), arg->name);
+						OutP(2, "if(!is_%s($_array[%d])) return false;\n", get_phptype(arg), a);
 						if(need_range(arg)) {
-							OutP(2, "if($_array['%s']<%s || $_array['%s']>%s) return false;\n", arg->name, range_min(arg), arg->name, range_max(arg));
+							OutP(2, "if($_array[%d]<%s || $_array[%d]>%s) return false;\n", a, range_min(arg), a, range_max(arg));
 						}
 					}
-					OutP(2, "$__%s = $_array['%s'];\n", arg->name, arg->name);
+					OutP(2, "$__%s = $_array[%d];\n", arg->name, a);
 				}
 			}
 		}
@@ -339,25 +340,30 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 		OutP(0, ")\n");
 		OutP(1, "{\n");
 		if(fun->args_count==0) {
-			OutP(1, "	ZionSession::Get()->Send('{\"method\":\"%s.%s\",\"message\":{}}');\n", cls->name, fun->name);
+			OutP(1, "	ZionSession::Get()->Send('{\"method\":\"%s.%s\",\"args\":[]}');\n", cls->name, fun->name);
 			OutP(1, "	return true;\n");
 			OutP(1, "}\n");
 			continue;
 		}
+		OutP(1, "	$__result = '';\n");
 
 		for(a=0; a<(int)fun->args_count; a++)
 		{
 			DDL_ARG _arg;
 			DDL_ARG* arg = &_arg;
 			ddlgen_fixarg(&fun->args[a], &_arg);
+			if(a>0) {
+				OutP(2,	"$__result += ','\n");
+			}
+
 			if(arg->count[0]!='\0') {
 				OutP(2, "if(!is_array($%s)) return false;\n", arg->name);
-				OutP(2, "$__result = %s'%s\"%s\":[';\n", a>0?"$__result.":"", a>0?",":"", arg->name);
+				OutP(2, "$__result += '[';\n");
 				OutP(2, "for($__i=0; $__i<count($%s); $__i++)\n", arg->name);
 				OutP(2, "{\n");
-				OutP(2, "	if($__i>0) $__result = $__result.',';\n");
+				OutP(2, "	if($__i>0) $__result += ',';\n");
 				if(is_struct(arg)) {
-					OutP(3, "$__result = $__result.$%s[$__i]->ToString();\n", arg->name);
+					OutP(3, "$__result += $%s[$__i]->ToString();\n", arg->name);
 				} else {
 					if(strcmp(get_phptype(arg), "float")==0) {
 						OutP(3, "if(!is_numeric($%s[$__i])) return false;\n", arg->name);
@@ -368,17 +374,17 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 						}
 					}
 					if(strcmp(get_phptype(arg), "string")==0) {
-						OutP(3, "$__result = $__result.'\"'.$%s[$__i].'\"';\n", arg->name);
+						OutP(3, "$__result += '\"'.$%s[$__i].'\"';\n", arg->name);
 					} else {
-						OutP(3, "$__result = $__result.$%s[$__i];\n", arg->name);
+						OutP(3, "$__result += $%s[$__i];\n", arg->name);
 					}
 				}
 				OutP(2, "}\n");
-				OutP(2, "$__result = $__result.']';\n");
+				OutP(2, "$__result += ']';\n");
 			} else {
 				if(is_struct(arg)) {
 					OutP(2, "if(!is_object($%s) || get_class($%s)!='%s') return false;\n", arg->name, arg->name, arg->type);
-					OutP(2, "$__result = %s'%s\"%s\":'.$%s->ToString();\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
+					OutP(2, "$__result += $%s->ToString();\n", arg->name);
 				} else {
 					if(strcmp(get_phptype(arg), "float")==0) {
 						OutP(2, "if(!is_numeric($%s)) return false;\n", arg->name);
@@ -389,14 +395,14 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 						}
 					}
 					if(strcmp(get_phptype(arg), "string")==0) {
-						OutP(2, "$__result = %s'%s\"%s\":\"'.$%s.'\"';\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
+						OutP(2, "$__result += '\"'.$%s.'\"';\n", arg->name);
 					} else {
-						OutP(2, "$__result = %s'%s\"%s\":'.$%s;\n", a>0?"$__result.":"", a>0?",":"", arg->name, arg->name);
+						OutP(2, "$__result += $%s;\n", arg->name);
 					}
 				}
 			}
 		}
-		OutP(1, "	ZionSession::Get()->Send('{\"method\":\"%s.%s\",\"message\":{'.$__result.'}}');\n", cls->name, fun->name);
+		OutP(1, "	ZionSession::Get()->Send('{\"method\":\"%s.%s\",\"args\":['.$__result.']}');\n", cls->name, fun->name);
 		OutP(1, "	return true;\n");
 		OutP(1, "}\n");
 	}

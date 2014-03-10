@@ -17,7 +17,7 @@ namespace Zion
 	{
 
 		bool CONFIG_SIMPLE_MODE = true;
-		String CONFIG_DATABASE("E:\\zion_db.sqlite");
+		String CONFIG_DATABASE("zion_db.sqlite");
 		String CONFIG_RPCEP("0.0.0.0:1982");
 
 		static bool ParseArgs(int argc, char* argv[])

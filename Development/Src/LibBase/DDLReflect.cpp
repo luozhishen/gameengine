@@ -31,15 +31,26 @@ namespace DDLReflect
 
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Json::Value& json)
 	{
-		if(!json.isObject()) return false;
+		json = Json::arrayValue;
 		DDL::MemoryReader buf(data, len);
-		return call_jsonread(buf, def->finfos, def->fcount, json);
+		for(_U16 i=0; i<def->fcount; i++)
+		{
+			Json::Value svalue(Json::nullValue);
+			if(!call_jsonread(buf, def->finfos[i].type, def->finfos[i].sinfo, svalue)) return false;
+			json.append(svalue);
+		}
+		return true;
 	}
 
 	bool Json2Call(const FUNCTION_INFO* def, const Json::Value& json, _U32& len, _U8* data)
 	{
+		if(!json.isArray() || def->fcount!=(_U16)json.size()) return false;
 		DDL::MemoryWriter buf(data, len);
-		return call_jsonwrite(buf, def->finfos, def->fcount, json);
+		for(_U16 i=0; i<def->fcount; i++)
+		{
+			if(!call_jsonwrite(buf, def->finfos[i].type, def->finfos[i].sinfo, json.get((Json::Value::UInt)i, Json::nullValue))) return false;
+		}
+		return true;
 	}
 
 	bool Call2Json(const FUNCTION_INFO* def, _U32 len, const _U8* data, Zion::String& json)

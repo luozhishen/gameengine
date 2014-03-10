@@ -179,6 +179,20 @@ namespace Zion
 
 		Map<_U32, CSimpleAvatarData*> g_AvatarMap;
 
+		void RPCSIMPLE_UserLogin(const JSONRPC_RESPONSE& res, const char* token)
+		{
+			_U32 user_id = LoginUser(token);
+			if(user_id!=(_U32)-1)
+			{
+				JsonRPC_Send(res, StringFormat("[0,%u]", user_id).c_str());
+			}
+			else
+			{
+				JsonRPC_Send(res, "[-1]");
+			}
+			return;
+		}
+
 		void RPCSIMPLE_CreateAvatar(
 				const JSONRPC_RESPONSE& res,
 				_U32 user_id,
@@ -224,12 +238,14 @@ namespace Zion
 			return;
 		}
 
-		static bool GetAvatarListCallback(void* userptr, _U32 avatar_id, const char* avatar_name, const char* avatar_desc)
+		static bool GetAvatarListCallback(void* userptr, _U32 avatar_id, _U32 flag, const char* avatar_name, const char* avatar_desc)
 		{
 			String& val = *((String*)userptr);
 			if(!val.empty()) val += ",";
 			val += '{';
 			val += StringFormat("\"%s\":%u", "avatar_id", avatar_id);
+			val += ",";
+			val += StringFormat("\"%s\":%u", "flag", flag);
 			val += ",";
 			val += StringFormat("\"%s\":\"%s\"", "avatar_name", avatar_name);
 			val += ",";

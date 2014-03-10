@@ -6,6 +6,7 @@ namespace Zion
 	namespace DataCache
 	{
 
+		void RPCSIMPLE_UserLogin(const JSONRPC_RESPONSE& res, const char* token);
 		void RPCSIMPLE_CreateAvatar(
 				const JSONRPC_RESPONSE& res,
 				_U32 user_id,

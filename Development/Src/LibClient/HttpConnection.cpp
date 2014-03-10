@@ -134,12 +134,12 @@ namespace Zion
 		ZION_ASSERT(bRet);
 		if(!bRet) return;
 		Json::Value root(Json::objectValue);
-		Json::Value message(Json::objectValue);
-		bRet = Call2Json(classinfo->finfos+fid, len, data, message);
+		Json::Value args(Json::arrayValue);
+		bRet = Call2Json(classinfo->finfos+fid, len, data, args);
 		ZION_ASSERT(bRet);
 		if(!bRet) return;
 		root["method"] = StringFormat("%s.%s", classinfo->name, classinfo->finfos[fid].name);
-		root["message"] = message;
+		root["args"] = args;
 		Json::FastWriter writer;
 		String json = writer.write(root);
 		CLIENT_LOG(GetClient(), "send request : %s", json.c_str());
@@ -390,7 +390,7 @@ namespace Zion
 
 			if(		!elm.isObject()
 				||	!elm.isMember("method") || !elm["method"].isString()
-				||	!elm.isMember("message") || !elm["message"].isObject())
+				||	!elm.isMember("args") || !elm["args"].isArray())
 			{
 				Json::FastWriter writer;
 				String json = writer.write(elm);
@@ -408,10 +408,10 @@ namespace Zion
 
 			_U32 len = 300*1024;
 			_U8* data = (_U8*)ZION_ALLOC(len);
-			if(!DDLReflect::Json2Call(&cls->finfos[fid], elm["message"], len, data))
+			if(!DDLReflect::Json2Call(&cls->finfos[fid], elm["args"], len, data))
 			{
 				Json::FastWriter writer;
-				String json = writer.write(elm["message"]);
+				String json = writer.write(elm["args"]);
 				CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", fid, json.c_str());
 				ZION_FREE(data);
 				break;

@@ -1,8 +1,9 @@
 #include <ZionDefines.h>
 #include <ZionSTL.h>
+#include <json/jsoncpp.h>
+#include "JsonRPC.h"
 
 #include "uv.h"
-#include "JsonRPC.h"
 
 #pragma comment(lib, "ws2_32")
 #pragma comment(lib, "IPHLPAPI.lib")
@@ -77,7 +78,7 @@ namespace Zion
 		void Stop();
 		bool Send(_U32 conn, _U32 seq, const char* data);
 
-		void Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data);
+		void Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const Json::Value& data);
 		void Detach(_U32 id, CJsonRPCServerConnection* pConn);
 
 		static void OnConnect(uv_stream_t* server, int status);
@@ -402,9 +403,17 @@ namespace Zion
 			return;
 		}
 
+		Json::Reader reader;
+		Json::Value node;
+		if(!reader.parse(String(pos+1), node) || !node.isArray())
+		{
+			ZION_ASSERT(!"invalid data format");
+			return;
+		}
+
 		String method;
 		method.append(data, pos-data);
-		m_pServer->Call(this, seq, method.c_str(), pos+1);
+		m_pServer->Call(this, seq, method.c_str(), node);
 	}
 
 	CJsonRPCServer::CJsonRPCServer()
@@ -490,7 +499,7 @@ namespace Zion
 		return i->second->Send(seq, NULL, data);
 	}
 
-	void CJsonRPCServer::Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data)
+	void CJsonRPCServer::Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const Json::Value& data)
 	{
 		Map<String, JSON_RESPONSE_PROC>::iterator i;
 		i = m_Methods.find(method);

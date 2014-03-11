@@ -348,6 +348,11 @@ namespace Zion
 				pConn->m_PacketLen = *((const _U32*)(data+0));
 				pConn->m_PacketSeq = *((const _U32*)(data+4));
 				pConn->m_PacketData = "";
+				if(pConn->m_PacketLen>2*1024*1024)
+				{
+					ZION_ASSERT(!"packet length too larger");
+					pConn->Shutdown();
+				}
 				plen = 8;
 			}
 
@@ -400,6 +405,7 @@ namespace Zion
 		if(!pos)
 		{
 			ZION_ASSERT(!"invalid data format");
+			Shutdown();
 			return;
 		}
 
@@ -408,6 +414,7 @@ namespace Zion
 		if(!reader.parse(String(pos+1), node) || !node.isArray())
 		{
 			ZION_ASSERT(!"invalid data format");
+			Shutdown();
 			return;
 		}
 

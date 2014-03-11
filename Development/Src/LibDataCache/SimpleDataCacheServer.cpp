@@ -155,26 +155,19 @@ namespace Zion
 
 		void CSimpleAvatarData::Send(const JSONRPC_RESPONSE& res)
 		{
-			String ret = "{";
+			String ret;
 			bool first = true;
 			Map<A_UUID, OBJECT_DATA>::iterator i;
 			for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
 			{
-				if(!first)
-				{
-					ret += ",";
-				}
-				else
-				{
-					first = false;
-				}
+				if(!ret.empty()) ret += ",";
+
 				char suuid[100];
 				AUuidToString(i->second._uuid, suuid);
 				ret += StringFormat("\"%s:%s\":", suuid, i->second._type);
 				ret += i->second._data;
 			}
-			ret = "}";
-			JsonRPC_Send(res, ("[0, " + ret + "]").c_str());
+			JsonRPC_Send(res, ("[0, {" + ret + "}]").c_str());
 		}
 
 		Map<_U32, CSimpleAvatarData*> g_AvatarMap;
@@ -238,14 +231,14 @@ namespace Zion
 			return;
 		}
 
-		static bool GetAvatarListCallback(void* userptr, _U32 avatar_id, _U32 flag, const char* avatar_name, const char* avatar_desc)
+		static bool GetAvatarListCallback(void* userptr, _U32 avatar_id, _U32 state, const char* avatar_name, const char* avatar_desc)
 		{
 			String& val = *((String*)userptr);
 			if(!val.empty()) val += ",";
 			val += '{';
 			val += StringFormat("\"%s\":%u", "avatar_id", avatar_id);
 			val += ",";
-			val += StringFormat("\"%s\":%u", "flag", flag);
+			val += StringFormat("\"%s\":%u", "state", state);
 			val += ",";
 			val += StringFormat("\"%s\":\"%s\"", "avatar_name", avatar_name);
 			val += ",";
@@ -257,11 +250,14 @@ namespace Zion
 		void RPCSIMPLE_GetAvatarList(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 server_id)
 		{
 			String val;
-			if(GetAvatarList(user_id, server_id, GetAvatarListCallback, &val))
+			if(!GetAvatarList(user_id, server_id, GetAvatarListCallback, &val))
+			{
+				JsonRPC_Send(res, "[-1]");
+			}
+			else
 			{
 				JsonRPC_Send(res, StringFormat("[0,[%s]]", val.c_str()).c_str());
 			}
-			JsonRPC_Send(res, "[-1]");
 			return;
 		}
 

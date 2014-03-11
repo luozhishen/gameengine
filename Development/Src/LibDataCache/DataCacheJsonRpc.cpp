@@ -13,19 +13,21 @@ namespace Zion
 
 		void JsonRPC_UserLogin(const JSONRPC_RESPONSE& res, const Json::Value& args)
 		{
-			Json::Value _user_id;
+			Json::Value _token;
 			for(;;)
 			{
 				if(args.size()!=1) break;
 
-				_user_id = args.get((Json::Value::UInt)0, Json::nullValue);
-				if(!_user_id.isUInt()) break;
+				_token = args.get((Json::Value::UInt)0, Json::nullValue);
+				if(!_token.isString()) break;
 
 				if(CONFIG_SIMPLE_MODE)
 				{
+					RPCSIMPLE_UserLogin(res, _token.asCString());
 				}
 				else
 				{
+					RPCIMPL_UserLogin(res, _token.asCString());
 				}
 				return;
 			}

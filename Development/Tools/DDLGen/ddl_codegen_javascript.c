@@ -245,11 +245,72 @@ int ddlgen_codejs_task_struct(const DDL_STR* str, const DDL_TASK* task)
 
 int ddlgen_codejs_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 {
+	int f, a;
+	OutJS(0,"\n");
+	OutJS(0,"function STUB_%s(_this)\n", cls->name);
+	OutJS(0,"{\n");
+	OutJS(0,"	this._this = _this;\n");
+	OutJS(0,"}\n");
+	OutJS(0,"STUB_%s.prototype.Dispatch = function (fname, _arguments) {\n", cls->name);
+	OutJS(0,"	var _fun;\n");
+	OutJS(0,"	switch(fname) {\n");
+	for(f=0; f<(int)cls->funs_count; f++)
+	{
+		DDL_FUN* fun = &cls->funs[f];
+		OutJS(1,"case '%s':\n", fun->name);
+		OutJS(1,"	if(count(_arguments.length)!=%d) break;\n", fun->args_count);
+		OutJS(1,"	_fun = this._this.%s;\n", fun->name);
+		OutJS(1,"	_fun.call(this._this, _arguments);\n");
+		OutJS(1,"	return true;\n");
+		for(a=0; a<(int)fun->args_count; a++)
+		{
+/*
+			DDL_ARG _arg;
+			DDL_ARG* arg = &_arg;
+			ddlgen_fixarg(&fun->args[a], &_arg);
+
+		_fun = this._this[fname];
+		if(_fun!=undefined) {
+			_fun.call(this._this, arguments);
+*/
+		}
+	}
+	OutJS(0,"	}\n");
+	OutJS(0,"	return false;\n");
+	OutJS(0,"}\n");
+	OutJS(0,"exports_stub.%s = STUB_%s\n", cls->name, cls->name);
 	return 1;
 }
 
 int ddlgen_codejs_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 {
+	int f, a;
+	OutJS(0,"\n");
+	OutJS(0,"function PROXY_%s(_this)\n", cls->name);
+	OutJS(0,"{\n");
+	OutJS(0,"	this._this = _this;\n");
+	OutJS(0,"}\n");
+	for(f=0; f<(int)cls->funs_count; f++)
+	{
+		DDL_FUN* fun = &cls->funs[f];
+		OutJS(0,"PROXY_%s.prototype.%s = function () {\n", cls->name, fun->name);
+		OutJS(0,"	if(count(arguments.length)!=%d) return undefined;\n", fun->args_count);
+		OutJS(0,"	return '{\"method_name\":\"%s.%s\",\"args\":' + JSON.stringify(arguments) + '}';\n", cls->name, fun->name);
+		OutJS(0,"}\n");
+		for(a=0; a<(int)fun->args_count; a++)
+		{
+/*
+			DDL_ARG _arg;
+			DDL_ARG* arg = &_arg;
+			ddlgen_fixarg(&fun->args[a], &_arg);
+
+		_fun = this._this[fname];
+		if(_fun!=undefined) {
+			_fun.call(this._this, arguments);
+*/
+		}
+	}
+	OutJS(0,"exports_proxy.%s = PROXY_%s\n", cls->name, cls->name);
 	return 1;
 }
 

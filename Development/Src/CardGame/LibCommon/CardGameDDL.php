@@ -82,6 +82,120 @@ class A_LIVE_OBJECT
 	}
 };
 
+function DATASYNC_JSON_C2S_Dispatcher($fname, $_array, $_this)
+{
+	if($fname=='DS_CreateObject')
+	{
+		if(count($_array)!=2) return false;
+		if(!is_string($_array[0])) return false;
+		$__type = $_array[0];
+		if(!is_string($_array[1])) return false;
+		$__data = $_array[1];
+		$_this->DS_CreateObject($__type, $__data);
+		return true;
+	}
+	if($fname=='DS_UpdateObject')
+	{
+		if(count($_array)!=2) return false;
+		if(!is_string($_array[0])) return false;
+		$___uuid = $_array[0];
+		if(!is_string($_array[1])) return false;
+		$__data = $_array[1];
+		$_this->DS_UpdateObject($___uuid, $__data);
+		return true;
+	}
+	if($fname=='DS_DeleteObject')
+	{
+		if(count($_array)!=2) return false;
+		if(!is_array($_array[0])) return false;
+		$___uuid = array();
+		$_earray = $_array[0];
+		for($__i=0; $__i<count($_earray); $__i++)
+		{
+			if(!is_string($_earray[$__i])) return false;
+			$___uuid[$__i] = $_earray[$__i];
+		}
+		if(!is_int($_array[1])) return false;
+		if($_array[1]<0 || $_array[1]>4294967295) return false;
+		$__count = $_array[1];
+		$_this->DS_DeleteObject($___uuid, $__count);
+		return true;
+	}
+	return false;
+}
+
+class DATASYNC_JSON_S2C
+{
+	public function DS_SyncOpen($flag)
+	{
+		$__result = '';
+		if(!is_int($flag)) return false;
+		if($flag<0 || $flag>4294967295) return false;
+		$__result += $flag;
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SyncOpen","args":['.$__result.']}');
+		return true;
+	}
+	public function DS_SyncReady()
+	{
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SyncReady","args":[]}');
+		return true;
+	}
+	public function DS_SyncClose()
+	{
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SyncClose","args":[]}');
+		return true;
+	}
+	public function DS_CreateObjectDone($_uuid)
+	{
+		$__result = '';
+		if(!is_string($_uuid)) return false;
+		$__result += '"'.$_uuid.'"';
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_CreateObjectDone","args":['.$__result.']}');
+		return true;
+	}
+	public function DS_CreateObject($type, $json)
+	{
+		$__result = '';
+		if(!is_string($type)) return false;
+		$__result += '"'.$type.'"';
+		$__result += ','
+		if(!is_string($json)) return false;
+		$__result += '"'.$json.'"';
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_CreateObject","args":['.$__result.']}');
+		return true;
+	}
+	public function DS_UpdateObject($_uuid, $json)
+	{
+		$__result = '';
+		if(!is_string($_uuid)) return false;
+		$__result += '"'.$_uuid.'"';
+		$__result += ','
+		if(!is_string($json)) return false;
+		$__result += '"'.$json.'"';
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","args":['.$__result.']}');
+		return true;
+	}
+	public function DS_DeleteObject($_uuid, $count)
+	{
+		$__result = '';
+		if(!is_array($_uuid)) return false;
+		$__result += '[';
+		for($__i=0; $__i<count($_uuid); $__i++)
+		{
+			if($__i>0) $__result += ',';
+			if(!is_string($_uuid[$__i])) return false;
+			$__result += '"'.$_uuid[$__i].'"';
+		}
+		$__result += ']';
+		$__result += ','
+		if(!is_int($count)) return false;
+		if($count<0 || $count>4294967295) return false;
+		$__result += $count;
+		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_DeleteObject","args":['.$__result.']}');
+		return true;
+	}
+}
+
 class CARD_AVATAR_OPERATOR extends A_CONTENT_OBJECT
 {
 	public $v1; // int

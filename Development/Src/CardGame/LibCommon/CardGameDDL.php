@@ -330,15 +330,6 @@ function DATASYNC_JSON_C2S_Dispatcher($fname, $_array, $_this)
 
 class DATASYNC_JSON_S2C
 {
-	public function DS_SetMode($mode)
-	{
-		$__result = '';
-		if(!is_int($mode)) return false;
-		if($mode<0 || $mode>4294967295) return false;
-		$__result += $mode;
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SetMode","args":['.$__result.']}');
-		return true;
-	}
 	public function DS_SyncOpen($flag)
 	{
 		$__result = '';

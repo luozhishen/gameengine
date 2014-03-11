@@ -10,8 +10,7 @@ namespace Zion
 	{
 		pClient->RegisterStub(new DDLStub::DATASYNC_BINARY_S2C<CDataSyncClient>(this));
 		pClient->RegisterStub(new DDLStub::DATASYNC_JSON_S2C<CDataSyncClient>(this));
-		m_Mode = SYNCMODE_NONE;
-		m_Flag = (_U32)-1;
+		m_Flag = 0;
 	}
 
 	CDataSyncClient::~CDataSyncClient()
@@ -21,7 +20,7 @@ namespace Zion
 
 	A_LIVE_OBJECT* CDataSyncClient::CreateObject(const DDLReflect::STRUCT_INFO* pInfo)
 	{
-		if((m_Flag&SYNCFLAG_CLIENT_ACTIVE)==0) return NULL;
+		if((m_Flag&SYNCFLAG_CLIENT)==0) return NULL;
 		if(!DDLReflect::IsChild(DDLReflect::GetStruct<A_LIVE_OBJECT>(), pInfo)) return NULL;
 
 		A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
@@ -33,7 +32,7 @@ namespace Zion
 
 	bool CDataSyncClient::RemoveObject(const A_UUID& _uuid)
 	{
-		if((m_Flag&SYNCFLAG_CLIENT_ACTIVE)==0) return false;
+		if((m_Flag&SYNCFLAG_CLIENT)==0) return false;
 
 		if(!m_Accesser.Remove(_uuid))
 		{
@@ -53,7 +52,7 @@ namespace Zion
 		while(!m_NewQ.empty())
 		{
 			OBJECT_ADDITEM& item = m_NewQ.front();
-			switch((m_Flag&SYNCFLAG_MODEMASK))
+			switch((m_Flag&SYNCFLAG_DATAFORMAT_MASK))
 			{
 			case SYNCFLAG_BINARY:
 				{
@@ -84,7 +83,7 @@ namespace Zion
 
 		if(!m_DelList.empty())
 		{
-			switch((m_Flag&SYNCFLAG_MODEMASK))
+			switch((m_Flag&SYNCFLAG_DATAFORMAT_MASK))
 			{
 			case SYNCFLAG_BINARY:
 				m_Binary.DS_DeleteObject(&m_DelList[0], (_U32)m_DelList.size());
@@ -107,7 +106,7 @@ namespace Zion
 
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)obj->GetData();
 
-			switch((m_Flag&SYNCFLAG_MODEMASK))
+			switch((m_Flag&SYNCFLAG_DATAFORMAT_MASK))
 			{
 			case SYNCFLAG_BINARY:
 				{
@@ -141,11 +140,6 @@ namespace Zion
 	bool CDataSyncClient::InProcess()
 	{
 		return m_Flag==0 || !m_bReady || !m_WatQ.empty();
-	}
-
-	void CDataSyncClient::DS_SetMode(_U32 mode)
-	{
-		m_Mode = mode;
 	}
 
 	void CDataSyncClient::DS_SyncOpen(_U32 flag)

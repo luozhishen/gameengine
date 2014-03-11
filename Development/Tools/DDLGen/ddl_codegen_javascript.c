@@ -18,15 +18,86 @@ int ddlgen_codejs_open(const char* filename)
 {
 	_P = fopen(filename, "wt");
 	if(!_P) return 0;
+	OutJS(0, "\"use strict\";\n");
 	OutJS(0, "\n");
 	OutJS(0, "function isArray(o) {\n");
 	OutJS(0, "	return Object.prototype.toString.call(o) === '[object Array]';\n");
 	OutJS(0, "}\n");
+	OutJS(0, "\n");
+	OutJS(0, "exports_struct = {};\n");
+	OutJS(0, "exports_stub = {};\n");
+	OutJS(0, "exports_proxy = {};\n");
 	return 1;
 }
 
 void ddlgen_codejs_close()
 {
+	OutJS(0, "module.exports.struct = exports_struct;\n");
+	OutJS(0, "module.exports.stub = exports_stub;\n");
+	OutJS(0, "module.exports.proxy = exports_proxy;\n");
+	OutJS(0, "\n");
+	OutJS(0, "module.exports.isLiveObject = function(val) {\n");
+	OutJS(0, "	try {\n");
+	OutJS(0, "		if(!exports_struct.hasOwnProperty(val.__typename)) {\n");
+	OutJS(0, "			return false;\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "		if(val.__proto__!=exports_struct[val.__typename]) {\n");
+	OutJS(0, "			return false;\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "		var proto = this.__proto;\n");
+	OutJS(0, "		while(proto) {\n");
+	OutJS(0, "			if(proto==A_LIVE_OBJECT) {\n");
+	OutJS(0, "				return true;\n");
+	OutJS(0, "			}\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "	} catch(err) {\n");
+	OutJS(0, "	}\n");
+	OutJS(0, "	return false;\n");
+	OutJS(0, "}\n");
+	OutJS(0, "\n");
+	OutJS(0, "module.exports.isContentObject = function(val) {\n");
+	OutJS(0, "	try {\n");
+	OutJS(0, "		if(!exports_struct.hasOwnProperty(val.__typename)) {\n");
+	OutJS(0, "			return false;\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "		if(val.__proto__!=exports_struct[val.__typename]) {\n");
+	OutJS(0, "			return false;\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "		var proto = this.__proto;\n");
+	OutJS(0, "		while(proto) {\n");
+	OutJS(0, "			if(proto==A_CONTENT_OBJECT) {\n");
+	OutJS(0, "				return true;\n");
+	OutJS(0, "			}\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "	} catch(err) {\n");
+	OutJS(0, "	}\n");
+	OutJS(0, "	return false;\n");
+	OutJS(0, "}\n");
+	OutJS(0, "\n");
+	OutJS(0, "module.exports.createObject = function(typename) {\n");
+	OutJS(0, "	if(!exports_struct.hasOwnProperty(typename)) {\n");
+	OutJS(0, "		return undefined;\n");
+	OutJS(0, "	}\n");
+	OutJS(0, "	return new exports_struct[typename];\n");
+	OutJS(0, "}\n");
+	OutJS(0, "\n");
+	OutJS(0, "module.exports.checkObjectType = function(obj, typename) {\n");
+	OutJS(0, "	try {\n");
+	OutJS(0, "		if(obj.__typename!=typename) {\n");
+	OutJS(0, "			return false;\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "		if(!exports_struct.hasOwnProperty(typename)) {\n");
+	OutJS(0, "			return false;\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "		if(obj.__proto__!=exports_struct[typename]) {\n");
+	OutJS(0, "			return false;\n");
+	OutJS(0, "		}\n");
+	OutJS(0, "		return true;\n");
+	OutJS(0, "	} catch(err) {\n");
+	OutJS(0, "	}\n");
+	OutJS(0, "	return false;\n");
+	OutJS(0, "}\n");
+	OutJS(0, "\n");
 	fclose(_P);
 	_P = NULL;
 }
@@ -45,6 +116,7 @@ int ddlgen_codejs_task_struct(const DDL_STR* str, const DDL_TASK* task)
 	if(str->parent[0]!='\0') {
 		OutJS(1, "%s.call(this);\n", str->parent);
 	}
+	OutJS(0, "	this.__typename = '%s';\n", str->name);
 	for(a=0; a<str->args_count; a++) {
 		DDL_ARG _arg;
 		DDL_ARG* arg = &_arg;
@@ -166,7 +238,7 @@ int ddlgen_codejs_task_struct(const DDL_STR* str, const DDL_TASK* task)
 	if(str->parent[0]!='\0') {
 		OutJS(0, "%s.prototype = %s;\n", str->name, str->parent);
 	}
-	OutJS(0, "module.exports.%s = %s;\n", str->name, str->name);
+	OutJS(0, "exports_struct.%s = %s;\n", str->name, str->name);
 
 	return 1;
 }

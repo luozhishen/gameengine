@@ -18,7 +18,7 @@ namespace Zion
 
 		bool CONFIG_SIMPLE_MODE = true;
 		String CONFIG_DATABASE("zion_db.sqlite");
-		String CONFIG_RPCEP("0.0.0.0:1982");
+		String CONFIG_RPCEP("0.0.0.0:1980");
 
 		static bool ParseArgs(int argc, char* argv[])
 		{
@@ -27,7 +27,7 @@ namespace Zion
 				String name, value;
 				char* pos = strchr(argv[i], '=');
 				if(!pos) pos = argv[i] + strlen(argv[i]);
-				char* pos1 = strchr(argv[i], ':');
+				char* pos1 = strrchr(argv[i], ':');
 				if(!pos1 && pos1<pos) pos = pos1;
 				name.copy(argv[i], pos1-argv[i]);
 				if(*pos!='\0') value = pos + 1;
@@ -63,7 +63,7 @@ namespace Zion
 				printf("Usage : %s\n", argv[0]);
 				printf("		-simple=[on|off]\n");
 				printf("		-db=[database string]\n");
-				printf("		-rpcep=[127.0.0.1:1982]\n");
+				printf("		-rpcep=[127.0.0.1:1980]\n");
 				return -1;
 			}
 

@@ -4,6 +4,10 @@
 	[
 		{
 			"type":"CARD_AVATAR_OPERATOR",
+			"data":{"_name":"kkk","_uuid":"8a0f7438-1228-4401-aed7-b93e0c05f312","v1":0,"v2":0,"v3":0.0}
+		},
+		{
+			"type":"CARD_AVATAR_OPERATOR",
 			"data":{"_name":"aaaa","_uuid":"38e9c2e8-cb19-4179-a1f4-63bcfc306aaf","v1":1987,"v2":-1980,"v3":-0.1982000023126602}
 		}
 	]

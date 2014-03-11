@@ -47,7 +47,6 @@ namespace Zion
 		void Clear();
 
 		LiveData::CAccesser m_Accesser;
-		_U32 m_Mode;
 		_U32 m_Flag;
 		bool m_bReady;
 		List<OBJECT_ADDITEM> m_NewQ;

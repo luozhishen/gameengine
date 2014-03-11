@@ -205,10 +205,15 @@ namespace Zion
 					}
 					else
 					{
-						Json::Value session_key = root["session_key"];
+						Json::Value& session_key = root["session_key"];
 						m_SessionKey = session_key.asString();
 						m_nState = CClient::STATE_LOGINED;
 						m_nHttpState = STATE_RUNNING;
+
+						Json::Value& response = root["response"];
+						if(response.isArray()) {
+							ProcessRequest(response);
+						}
 					}
 				}
 			}
@@ -371,17 +376,19 @@ namespace Zion
 			return MOERROR_NOERROR;
 		}
 
-		Zion::String jsonstr = Zion::StringFormat("{\"array\":[%s]}", result);
-
 		Json::Value root;
 		Json::Reader reader;
-		if(!reader.parse(jsonstr.c_str(), jsonstr.c_str()+jsonstr.size(), root) || !root.isMember("array") || !root["array"].isArray())
+		if(!reader.parse(result, result + strlen(result), root) || !root.isArray())
 		{
 			CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
 			return MOERROR_UNKNOWN;
 		}
 
-		Json::Value& _array = root["array"];
+		return ProcessRequest(root);
+	}
+
+	int CHttpConnection::ProcessRequest(Json::Value& _array)
+	{
 		Json::Value _default;
 		Json::Value::UInt i;
 		for(i=0; i<_array.size(); i++)
@@ -394,7 +401,7 @@ namespace Zion
 			{
 				Json::FastWriter writer;
 				String json = writer.write(elm);
-				CLIENT_LOG(GetClient(), "http_connection : invalid data, (%d) %s", json.c_str());
+				CLIENT_LOG(GetClient(), "http_connection : invalid data");
 				break;
 			}
 
@@ -402,7 +409,7 @@ namespace Zion
 			_U16 fid;
 			if(!GetClientFunctionStub(elm["method"].asCString(), cls, fid))
 			{
-				CLIENT_LOG(GetClient(), "http_connection : invalid method name %s", elm["method"].asCString());
+				CLIENT_LOG(GetClient(), "http_connection : invalid method name");
 				break;
 			}
 
@@ -412,7 +419,7 @@ namespace Zion
 			{
 				Json::FastWriter writer;
 				String json = writer.write(elm["args"]);
-				CLIENT_LOG(GetClient(), "http_connection : invalid method data, (%d) %s", fid, json.c_str());
+				CLIENT_LOG(GetClient(), "http_connection : invalid method data");
 				ZION_FREE(data);
 				break;
 			}
@@ -436,7 +443,7 @@ namespace Zion
 		}
 		Zion::Map<Zion::String, Zion::String> params;
 		params["session_key"] = m_SessionKey;
-		params["request"] = m_LastRequestString;
+		params["request"] = "[" + m_LastRequestString + "]";
 		params["seq"] = Zion::StringFormat("%d", m_nRequestSeq);
 		String url = StringFormat(m_BaseUrl.c_str(), "request");
 		m_pCurrentRequest = MORequestString(url.c_str(), params);

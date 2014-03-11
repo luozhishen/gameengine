@@ -39,6 +39,7 @@ namespace Zion
 		void ProcessQueueRequest();
 		void ProcessPullRequest();
 		int ProcessRequest(MOREQUEST* request);
+		int ProcessRequest(Json::Value& _array);
 		void SendRequest();
 
 	private:

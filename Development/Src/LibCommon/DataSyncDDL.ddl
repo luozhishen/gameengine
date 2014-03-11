@@ -1,16 +1,13 @@
 
 include "CommonDDL.ddl"
 
-const _U32 SYNCFLAG_MODEMASK = 1;
+const _U32 SYNCFLAG_DATAFORMAT_MASK = 1;
 const _U32 SYNCFLAG_BINARY = 0;
 const _U32 SYNCFLAG_JSON = 1;
-const _U32 SYNCFLAG_CLIENT_ACTIVE = 2;
+const _U32 SYNCFLAG_MODE_MASK = 14;
+const _U32 SYNCFLAG_CLIENT = 2;
 const _U32 SYNCFLAG_SERVER = 4;
-
-const _U32 SYNCMODE_NONE = 0;
-const _U32 SYNCMODE_CLIENT_ACTIVE = 1;
-const _U32 SYNCMODE_SERVER_ACTIVE = 2;
-const _U32 SYNCMODE_VERIFY = 3;
+const _U32 SYNCMODE_VERIFY = 8;
 
 class DATASYNC_JSON_C2S
 {
@@ -21,8 +18,6 @@ class DATASYNC_JSON_C2S
 
 class DATASYNC_JSON_S2C
 {
-	DS_SetMode(_U32 mode);
-
 	DS_SyncOpen(_U32 flag);
 	DS_SyncReady();
 	DS_SyncClose();
@@ -49,8 +44,6 @@ class DATASYNC_BINARY_C2S
 
 class DATASYNC_BINARY_S2C
 {
-	DS_SetMode(_U32 mode);
-
 	DS_SyncOpen(_U32 flag);
 	DS_SyncReady();
 	DS_SyncClose();

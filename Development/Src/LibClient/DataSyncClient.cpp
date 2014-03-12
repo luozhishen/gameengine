@@ -142,6 +142,11 @@ namespace Zion
 		return m_Flag==0 || !m_bReady || !m_WatQ.empty();
 	}
 
+	_U32 CDataSyncClient::GetSyncFlag()
+	{
+		return m_Flag;
+	}
+
 	void CDataSyncClient::DS_SyncOpen(_U32 flag)
 	{
 		ZION_ASSERT(m_Flag==(_U32)-1);

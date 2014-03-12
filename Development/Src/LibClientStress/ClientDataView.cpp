@@ -7,6 +7,7 @@
 #include <wx/treectrl.h>
 #include <wx/config.h>
 #include <wx/utils.h>
+#include <wx/statline.h>
 
 #include <ZionBase.h>
 #include <ZionCommon.h>
@@ -27,6 +28,91 @@
 #include "ClientStressFrame.h"
 #include "ClientDataView.h"
 
+class CNewObjectDlg : public wxDialog
+{	
+	DECLARE_EVENT_TABLE()
+public:
+	CNewObjectDlg();
+	virtual ~CNewObjectDlg();
+
+	void InitCombox();
+	wxString GetType();
+
+    virtual int ShowModal();
+
+	void OnOK(wxCommandEvent& event);
+
+private:
+	wxComboBox* m_comboBoxType;
+	wxButton* m_sdbSizerOK;
+	wxButton* m_sdbSizerCancel;
+};
+
+BEGIN_EVENT_TABLE(CNewObjectDlg, wxDialog)
+	EVT_BUTTON(wxID_OK, CNewObjectDlg::OnOK)
+END_EVENT_TABLE()
+
+CNewObjectDlg::CNewObjectDlg() : wxDialog(NULL, wxID_ANY, wxT("Create Live Object"), wxDefaultPosition, wxSize(365, 150), wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
+{
+//	SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bMainSizer = ZION_NEW wxBoxSizer( wxVERTICAL );
+
+	wxStaticText* staticText2 = ZION_NEW wxStaticText( this, wxID_ANY, wxT("Choose Content Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	staticText2->Wrap( -1 );
+	bMainSizer->Add( staticText2, 0, wxEXPAND | wxALL, 5 );
+	m_comboBoxType = ZION_NEW wxComboBox( this, wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL,  wxCB_READONLY); 
+	bMainSizer->Add( m_comboBoxType, 0, wxEXPAND | wxALL, 5 );
+	wxStaticLine* m_staticline1 = ZION_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bMainSizer->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
+
+	wxStdDialogButtonSizer* sdbSizer1 = ZION_NEW wxStdDialogButtonSizer();
+	wxButton* m_sdbSizerOK = ZION_NEW wxButton( this, wxID_OK );
+	sdbSizer1->AddButton( m_sdbSizerOK );
+	wxButton* m_sdbSizerCancel = ZION_NEW wxButton( this, wxID_CANCEL );
+	sdbSizer1->AddButton( m_sdbSizerCancel );
+	sdbSizer1->Realize();
+
+	bMainSizer->Add( sdbSizer1, 0, wxEXPAND, 5 );
+	SetSizer( bMainSizer );
+	Layout();
+
+	InitCombox();
+}
+
+
+CNewObjectDlg::~CNewObjectDlg()
+{
+}
+
+void CNewObjectDlg::InitCombox()
+{
+	Zion::Array<const DDLReflect::STRUCT_INFO*> list;
+	Zion::LiveObject::GetTypeList(list);
+	Zion::Array<const DDLReflect::STRUCT_INFO*>::iterator i;
+	for(i=list.begin(); i!=list.end(); i++)
+	{
+		m_comboBoxType->Insert(wxString::FromUTF8((*i)->name), m_comboBoxType->GetCount());
+	}
+
+	m_comboBoxType->SetSelection(0);
+}
+
+wxString CNewObjectDlg::GetType()
+{
+	wxString strRet = m_comboBoxType->GetStringSelection();
+	return strRet;
+}
+
+int CNewObjectDlg::ShowModal()
+{
+	return wxDialog::ShowModal();
+}
+
+void CNewObjectDlg::OnOK(wxCommandEvent& event)
+{
+	event.Skip();
+}
 
 CClientDataSyncProxy::CClientDataSyncProxy(CClientDataView* pDataView, _U32 index)
 {
@@ -138,9 +224,14 @@ void CClientDataView::OnNewClick(wxCommandEvent& event)
 	_U32 index = GetCurrentClient();
 	if(index==(_U32)-1) return;
 	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
+
+	CNewObjectDlg Dlg;
+	Dlg.ShowModal();
+
 	if(pClient->GetSyncFlag()==(_U32)-1) return;
 	if((pClient->GetSyncFlag()&SYNCFLAG_CLIENT)==0) return;
 	OnClear();
+
 }
 
 void CClientDataView::OnSaveClick(wxCommandEvent& event)

@@ -10,7 +10,7 @@ namespace Zion
 	{
 		pClient->RegisterStub(new DDLStub::DATASYNC_BINARY_S2C<CDataSyncClient>(this));
 		pClient->RegisterStub(new DDLStub::DATASYNC_JSON_S2C<CDataSyncClient>(this));
-		m_Flag = 0;
+		m_Flag = (_U32)-1;
 	}
 
 	CDataSyncClient::~CDataSyncClient()

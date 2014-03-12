@@ -20,6 +20,7 @@
 #include "ClientStressFrame.h"
 #include "ClientLogView.h"
 #include "ClientCaseView.h"
+#include "ClientDataView.h"
 
 #include <process.h>
 static volatile int tick_thread_state = 0;
@@ -152,4 +153,5 @@ void CClientStressApp::InitClientView(CClientStressFrame* pFrame, wxWindow* pPar
 {
 	pFrame->AddView(ZION_NEW CClientLogView(pFrame, pParent));
 	pFrame->AddView(ZION_NEW CClientCaseView(pFrame, pParent));
+	pFrame->AddView(ZION_NEW CClientDataView(pFrame, pParent));
 }

@@ -24,9 +24,9 @@ namespace Zion
 
 		void Sync();
 		bool InProcess();
+		_U32 GetSyncFlag();
 
 		// DATASYNC_S2C
-		void DS_SetMode(_U32 mode);
 		void DS_SyncOpen(_U32 flag);
 		void DS_SyncReady();
 		void DS_SyncClose();
@@ -36,6 +36,12 @@ namespace Zion
 		void DS_UpdateObject(const A_UUID& _uuid, const char* data);
 		void DS_UpdateObject(const A_UUID& _uuid, const _U8* data, _U32 len);
 		void DS_DeleteObject(const A_UUID* _uuids, _U32 count);
+
+		sigslot::signal0<>								_OnSyncOpen;
+		sigslot::signal0<>								_OnSyncClose;
+		sigslot::signal1<const A_UUID&>					_OnObjectCreate;
+		sigslot::signal1<const A_UUID&>					_OnObjectUpdate;
+		sigslot::signal1<const A_UUID&>					_OnObjectDelete;
 
 	private:
 		struct OBJECT_ADDITEM

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="CaseConfigDlg.cpp" />
     <ClCompile Include="ClientCaseView.cpp" />
+    <ClCompile Include="ClientDataView.cpp" />
     <ClCompile Include="ClientLogView.cpp" />
     <ClCompile Include="ClientStressApp.cpp" />
     <ClCompile Include="ClientStressFrame.cpp" />
@@ -38,6 +39,7 @@
   <ItemGroup>
     <ClInclude Include="CaseConfigDlg.h" />
     <ClInclude Include="ClientCaseView.h" />
+    <ClInclude Include="ClientDataView.h" />
     <ClInclude Include="ClientLogView.h" />
     <ClInclude Include="ClientStressApp.h" />
     <ClInclude Include="ClientStressFrame.h" />

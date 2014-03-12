@@ -154,6 +154,7 @@ namespace Zion
 		ZION_ASSERT(m_Flag!=(_U32)-1);
 		ZION_ASSERT(!m_bReady);
 		m_bReady = true;
+		_OnSyncOpen();
 	}
 
 	void CDataSyncClient::DS_SyncClose()
@@ -162,6 +163,7 @@ namespace Zion
 		ZION_ASSERT(m_bReady);
 		m_Flag = (_U32)-1;
 		Clear();
+		_OnSyncClose();
 	}
 
 	void CDataSyncClient::DS_CreateObjectDone(const A_UUID& _uuid)
@@ -181,6 +183,7 @@ namespace Zion
 			DDLReflect::DestoryObject(_info, _obj);
 			return;
 		}
+		_OnObjectCreate(_uuid);
 	}
 
 	void CDataSyncClient::DS_CreateObject(const char* type, const char* data)
@@ -192,7 +195,8 @@ namespace Zion
 			return;
 		}
 
-		m_Accesser.Append(_info, data);
+		LiveData::CObject* pObject = m_Accesser.Append(_info, data);
+		_OnObjectCreate(pObject->GetUUID("_uuid"));
 	}
 
 	void CDataSyncClient::DS_CreateObject(_U16 type, const _U8* data, _U32 len)
@@ -204,7 +208,8 @@ namespace Zion
 			return;
 		}
 
-		m_Accesser.Append(_info, data, len);
+		LiveData::CObject* pObject = m_Accesser.Append(_info, data, len);
+		_OnObjectCreate(pObject->GetUUID("_uuid"));
 	}
 
 	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const char* json)
@@ -229,6 +234,7 @@ namespace Zion
 			return;
 		}
 		memcpy(obj->GetData(), data, info->size);
+		_OnObjectUpdate(obj->GetUUID("_uuid"));
 	}
 
 	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const _U8* buf, _U32 len)
@@ -253,12 +259,14 @@ namespace Zion
 			return;
 		}
 		memcpy(obj->GetData(), data, info->size);
+		_OnObjectUpdate(obj->GetUUID("_uuid"));
 	}
 
 	void CDataSyncClient::DS_DeleteObject(const A_UUID* _uuids, _U32 count)
 	{
 		for(_U32 i=0; i<count; i++)
 		{
+			_OnObjectDelete(_uuids[i]);
 			m_Accesser.Remove(_uuids[i]);
 		}
 	}

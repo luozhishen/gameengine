@@ -210,7 +210,7 @@ namespace Zion
 						m_nState = CClient::STATE_LOGINED;
 						m_nHttpState = STATE_RUNNING;
 
-						Json::Value& response = root["response"];
+						Json::Value& response = root["responses"];
 						if(response.isArray()) {
 							ProcessRequest(response);
 						}

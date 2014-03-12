@@ -4,9 +4,9 @@ function isArray(o) {
 	return Object.prototype.toString.call(o) === '[object Array]';
 }
 
-exports_struct = {};
-exports_stub = {};
-exports_proxy = {};
+var exports_struct = {};
+var exports_stub = {};
+var exports_proxy = {};
 
 function A_CONTENT_OBJECT() {
 	this.__typename = 'A_CONTENT_OBJECT';
@@ -59,37 +59,51 @@ STUB_DATASYNC_JSON_C2S.prototype.Dispatch = function (fname, _arguments) {
 }
 exports_stub.DATASYNC_JSON_C2S = STUB_DATASYNC_JSON_C2S
 
-function PROXY_DATASYNC_JSON_S2C(_this)
+function PROXY_DATASYNC_JSON_S2C()
 {
-	this._this = _this;
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_SyncOpen = function () {
-	if(count(arguments.length)!=1) return undefined;
-	return '{"method_name":"DATASYNC_JSON_S2C.DS_SyncOpen","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=1) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	return '{"method":"DATASYNC_JSON_S2C.DS_SyncOpen","args":[' + args.join() + ']}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_SyncReady = function () {
-	if(count(arguments.length)!=0) return undefined;
-	return '{"method_name":"DATASYNC_JSON_S2C.DS_SyncReady","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=0) return undefined;
+	var args = [];
+	return '{"method":"DATASYNC_JSON_S2C.DS_SyncReady","args":[' + args.join() + ']}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_SyncClose = function () {
-	if(count(arguments.length)!=0) return undefined;
-	return '{"method_name":"DATASYNC_JSON_S2C.DS_SyncClose","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=0) return undefined;
+	var args = [];
+	return '{"method":"DATASYNC_JSON_S2C.DS_SyncClose","args":[' + args.join() + ']}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_CreateObjectDone = function () {
-	if(count(arguments.length)!=1) return undefined;
-	return '{"method_name":"DATASYNC_JSON_S2C.DS_CreateObjectDone","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=1) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	return '{"method":"DATASYNC_JSON_S2C.DS_CreateObjectDone","args":[' + args.join() + ']}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_CreateObject = function () {
-	if(count(arguments.length)!=2) return undefined;
-	return '{"method_name":"DATASYNC_JSON_S2C.DS_CreateObject","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=2) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	args.push(JSON.stringify(arguments[1]));
+	return '{"method":"DATASYNC_JSON_S2C.DS_CreateObject","args":[' + args.join() + ']}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_UpdateObject = function () {
-	if(count(arguments.length)!=2) return undefined;
-	return '{"method_name":"DATASYNC_JSON_S2C.DS_UpdateObject","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=2) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	args.push(JSON.stringify(arguments[1]));
+	return '{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","args":[' + args.join() + ']}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_DeleteObject = function () {
-	if(count(arguments.length)!=2) return undefined;
-	return '{"method_name":"DATASYNC_JSON_S2C.DS_DeleteObject","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=2) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	args.push(JSON.stringify(arguments[1]));
+	return '{"method":"DATASYNC_JSON_S2C.DS_DeleteObject","args":[' + args.join() + ']}';
 }
 exports_proxy.DATASYNC_JSON_S2C = PROXY_DATASYNC_JSON_S2C
 
@@ -201,31 +215,42 @@ STUB_CARDGAME_C2S.prototype.Dispatch = function (fname, _arguments) {
 }
 exports_stub.CARDGAME_C2S = STUB_CARDGAME_C2S
 
-function PROXY_CARDGAME_S2C(_this)
+function PROXY_CARDGAME_S2C()
 {
-	this._this = _this;
 }
 PROXY_CARDGAME_S2C.prototype.Pong = function () {
-	if(count(arguments.length)!=0) return undefined;
-	return '{"method_name":"CARDGAME_S2C.Pong","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=0) return undefined;
+	var args = [];
+	return '{"method":"CARDGAME_S2C.Pong","args":[' + args.join() + ']}';
 }
 PROXY_CARDGAME_S2C.prototype.GetAvatarListCallback = function () {
-	if(count(arguments.length)!=3) return undefined;
-	return '{"method_name":"CARDGAME_S2C.GetAvatarListCallback","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=3) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	args.push(JSON.stringify(arguments[1]));
+	args.push(JSON.stringify(arguments[2]));
+	return '{"method":"CARDGAME_S2C.GetAvatarListCallback","args":[' + args.join() + ']}';
 }
 PROXY_CARDGAME_S2C.prototype.CreateAvatarCallback = function () {
-	if(count(arguments.length)!=1) return undefined;
-	return '{"method_name":"CARDGAME_S2C.CreateAvatarCallback","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=1) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	return '{"method":"CARDGAME_S2C.CreateAvatarCallback","args":[' + args.join() + ']}';
 }
 PROXY_CARDGAME_S2C.prototype.EnterGameCallback = function () {
-	if(count(arguments.length)!=1) return undefined;
-	return '{"method_name":"CARDGAME_S2C.EnterGameCallback","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=1) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	return '{"method":"CARDGAME_S2C.EnterGameCallback","args":[' + args.join() + ']}';
 }
 PROXY_CARDGAME_S2C.prototype.LeaveGameCallback = function () {
-	if(count(arguments.length)!=1) return undefined;
-	return '{"method_name":"CARDGAME_S2C.LeaveGameCallback","args":' + JSON.stringify(arguments) + '}';
+	if(arguments.length!=1) return undefined;
+	var args = [];
+	args.push(JSON.stringify(arguments[0]));
+	return '{"method":"CARDGAME_S2C.LeaveGameCallback","args":[' + args.join() + ']}';
 }
 exports_proxy.CARDGAME_S2C = PROXY_CARDGAME_S2C
+
 module.exports.struct = exports_struct;
 module.exports.stub = exports_stub;
 module.exports.proxy = exports_proxy;

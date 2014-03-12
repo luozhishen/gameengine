@@ -24,14 +24,15 @@ int ddlgen_codejs_open(const char* filename)
 	OutJS(0, "	return Object.prototype.toString.call(o) === '[object Array]';\n");
 	OutJS(0, "}\n");
 	OutJS(0, "\n");
-	OutJS(0, "exports_struct = {};\n");
-	OutJS(0, "exports_stub = {};\n");
-	OutJS(0, "exports_proxy = {};\n");
+	OutJS(0, "var exports_struct = {};\n");
+	OutJS(0, "var exports_stub = {};\n");
+	OutJS(0, "var exports_proxy = {};\n");
 	return 1;
 }
 
 void ddlgen_codejs_close()
 {
+	OutJS(0, "\n");
 	OutJS(0, "module.exports.struct = exports_struct;\n");
 	OutJS(0, "module.exports.stub = exports_stub;\n");
 	OutJS(0, "module.exports.proxy = exports_proxy;\n");
@@ -286,19 +287,18 @@ int ddlgen_codejs_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 {
 	int f, a;
 	OutJS(0,"\n");
-	OutJS(0,"function PROXY_%s(_this)\n", cls->name);
+	OutJS(0,"function PROXY_%s()\n", cls->name);
 	OutJS(0,"{\n");
-	OutJS(0,"	this._this = _this;\n");
 	OutJS(0,"}\n");
 	for(f=0; f<(int)cls->funs_count; f++)
 	{
 		DDL_FUN* fun = &cls->funs[f];
 		OutJS(0,"PROXY_%s.prototype.%s = function () {\n", cls->name, fun->name);
-		OutJS(0,"	if(count(arguments.length)!=%d) return undefined;\n", fun->args_count);
-		OutJS(0,"	return '{\"method_name\":\"%s.%s\",\"args\":' + JSON.stringify(arguments) + '}';\n", cls->name, fun->name);
-		OutJS(0,"}\n");
+		OutJS(0,"	if(arguments.length!=%d) return undefined;\n", fun->args_count);
+		OutJS(0,"	var args = [];\n", fun->args_count);
 		for(a=0; a<(int)fun->args_count; a++)
 		{
+			OutJS(1,"args.push(JSON.stringify(arguments[%d]));\n", a);
 /*
 			DDL_ARG _arg;
 			DDL_ARG* arg = &_arg;
@@ -309,6 +309,10 @@ int ddlgen_codejs_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 			_fun.call(this._this, arguments);
 */
 		}
+
+
+		OutJS(0,"	return '{\"method\":\"%s.%s\",\"args\":[' + args.join() + ']}';\n", cls->name, fun->name);
+		OutJS(0,"}\n");
 	}
 	OutJS(0,"exports_proxy.%s = PROXY_%s\n", cls->name, cls->name);
 	return 1;

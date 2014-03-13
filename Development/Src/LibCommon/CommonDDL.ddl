@@ -7,5 +7,5 @@ struct A_CONTENT_OBJECT
 
 struct A_LIVE_OBJECT
 {
-	A_UUID _uuid;
+	[readonly] A_UUID _uuid;
 };

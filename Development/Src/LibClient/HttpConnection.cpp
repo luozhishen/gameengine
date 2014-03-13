@@ -210,6 +210,10 @@ namespace Zion
 						m_nState = CClient::STATE_LOGINED;
 						m_nHttpState = STATE_RUNNING;
 
+						m_nRequestSeq = 1;
+						m_nPullSeq = 1;
+						GetClient()->GetClientApp()->QueueLoginDone(GetClient());
+
 						Json::Value& response = root["responses"];
 						if(response.isArray()) {
 							ProcessRequest(response);
@@ -231,12 +235,6 @@ namespace Zion
 		if(m_nState==CClient::STATE_FAILED)
 		{
 			GetClient()->GetClientApp()->QueueLoginFailed(GetClient());
-		}
-		if(m_nState==CClient::STATE_LOGINED)
-		{
-			m_nRequestSeq = 1;
-			m_nPullSeq = 1;
-			GetClient()->GetClientApp()->QueueLoginDone(GetClient());
 		}
 	}
 

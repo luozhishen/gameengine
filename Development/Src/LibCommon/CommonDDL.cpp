@@ -80,7 +80,7 @@ namespace DDLReflect
 
 	static FIELD_INFO _struct_A_LIVE_OBJECT_fieldinfo[] =
 	{
-		{TYPE_UUID, "_uuid", 0, (_U16)ZION_OFFSETOF(A_LIVE_OBJECT, _uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
+		{TYPE_UUID, "_uuid", 0|FLAG_READONLY, (_U16)ZION_OFFSETOF(A_LIVE_OBJECT, _uuid), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_UUID), NULL},
 	};
 	STRUCT_INFO _rfl_struct_A_LIVE_OBJECT_info = { NULL, "A_LIVE_OBJECT", sizeof(A_LIVE_OBJECT), 1, _struct_A_LIVE_OBJECT_fieldinfo, _struct_A_LIVE_OBJECT_readproc, _struct_A_LIVE_OBJECT_writeproc };
 	template<>

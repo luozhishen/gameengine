@@ -32,6 +32,7 @@ public:
 	void OnNewClick(wxCommandEvent& event);
 	void OnSaveClick(wxCommandEvent& event);
 	void OnCancelClick(wxCommandEvent& event);
+	void OnDeleteClick(wxCommandEvent& event);
 	void OnObjectClick(wxListEvent& event);
 
 	virtual void OnSwitchTo(_U32 index);

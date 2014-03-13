@@ -159,6 +159,7 @@ enum
 	ID_DATA_OBJECT_NEW,
 	ID_DATA_OBJECT_SAVE,
 	ID_DATA_OBJECT_CANCEL,
+	ID_DATA_OBJECT_DELETE,
 };
 
 BEGIN_EVENT_TABLE(CClientDataView, CStressFrameView)
@@ -167,6 +168,7 @@ BEGIN_EVENT_TABLE(CClientDataView, CStressFrameView)
 	EVT_BUTTON(ID_DATA_OBJECT_NEW,		CClientDataView::OnNewClick)
 	EVT_BUTTON(ID_DATA_OBJECT_SAVE,		CClientDataView::OnSaveClick)
 	EVT_BUTTON(ID_DATA_OBJECT_CANCEL,	CClientDataView::OnCancelClick)
+	EVT_BUTTON(ID_DATA_OBJECT_DELETE,	CClientDataView::OnDeleteClick)
 END_EVENT_TABLE()
 
 CClientDataView::CClientDataView( CClientStressFrame* pFrame, wxWindow* pParent ) : CStressFrameView(pFrame, pParent, wxT("Data View"))
@@ -184,6 +186,7 @@ CClientDataView::CClientDataView( CClientStressFrame* pFrame, wxWindow* pParent 
 	wxBoxSizer* pPanelSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* pBarSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_SYNC, wxT("Sync")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_DELETE, wxT("Delete")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_NEW, wxT("New")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_SAVE, wxT("Save")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_CANCEL, wxT("Cancel")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
@@ -267,6 +270,10 @@ void CClientDataView::OnCancelClick(wxCommandEvent& event)
 	if(GetCurrentClient()==(_U32)-1) return;
 	if(!m_pObjectData) return;
 	ClearEditor();
+}
+
+void CClientDataView::OnDeleteClick(wxCommandEvent& event)
+{
 }
 
 void CClientDataView::OnObjectClick(wxListEvent& event)

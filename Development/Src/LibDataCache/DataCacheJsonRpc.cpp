@@ -285,7 +285,7 @@ namespace Zion
 			Json::Value _data;
 			for(;;)
 			{
-				if(args.size()!=4) break;
+				if(args.size()!=3) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
 				_suuid = args.get((Json::Value::UInt)1, Json::nullValue);
@@ -314,7 +314,7 @@ namespace Zion
 			Json::Value _suuid;
 			for(;;)
 			{
-				if(args.size()!=4) break;
+				if(args.size()!=2) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
 				_suuid = args.get((Json::Value::UInt)1, Json::nullValue);

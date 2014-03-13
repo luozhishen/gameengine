@@ -352,7 +352,7 @@ namespace Zion
 				CSimpleAvatarData* pAvatar = i->second;
 				if(pAvatar->UpdateObject(_uuid, data))
 				{
-					JsonRPC_Send(res, 0);
+					JsonRPC_Send(res, "[0]");
 					return;
 				}
 			}

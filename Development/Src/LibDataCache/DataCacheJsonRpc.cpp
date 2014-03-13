@@ -261,18 +261,17 @@ namespace Zion
 				_type = args.get((Json::Value::UInt)2, Json::nullValue);
 				if(!_type.isString()) break;
 				_data = args.get((Json::Value::UInt)3, Json::nullValue);
-				if(!_data.isObject()) break;
+				if(!_data.isString()) break;
 
 				A_UUID _uuid;
 				if(!AUuidFromString(_suuid.asCString(), _uuid)) break;
-				Json::FastWriter writer;
 				if(CONFIG_SIMPLE_MODE)
 				{
-					RPCSIMPLE_CreateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _type.asCString(), writer.write(_data).c_str());
+					RPCSIMPLE_CreateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _type.asCString(), _data.asCString());
 				}
 				else
 				{
-					RPCIMPL_CreateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _type.asCString(), writer.write(_data).c_str());
+					RPCIMPL_CreateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _type.asCString(), _data.asCString());
 				}
 				return;
 			}
@@ -292,18 +291,17 @@ namespace Zion
 				_suuid = args.get((Json::Value::UInt)1, Json::nullValue);
 				if(!_suuid.isString()) break;
 				_data = args.get((Json::Value::UInt)2, Json::nullValue);
-				if(!_data.isObject()) break;
+				if(!_data.isString()) break;
 
 				A_UUID _uuid;
 				if(!AUuidFromString(_suuid.asCString(), _uuid)) break;
-				Json::FastWriter writer;
 				if(CONFIG_SIMPLE_MODE)
 				{
-					RPCSIMPLE_UpdateObject(res, (_U32)_avatar_id.asUInt(), _uuid, writer.write(_data).c_str());
+					RPCSIMPLE_UpdateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _data.asCString());
 				}
 				else
 				{
-					RPCIMPL_UpdateObject(res, (_U32)_avatar_id.asUInt(), _uuid, writer.write(_data).c_str());
+					RPCIMPL_UpdateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _data.asCString());
 				}
 				return;
 			}

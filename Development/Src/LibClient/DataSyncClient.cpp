@@ -142,9 +142,19 @@ namespace Zion
 		return m_Flag==0 || !m_bReady || !m_WatQ.empty();
 	}
 
+	bool CDataSyncClient::IsReady()
+	{
+		return m_bReady;
+	}
+
 	_U32 CDataSyncClient::GetSyncFlag()
 	{
 		return m_Flag;
+	}
+
+	LiveData::CAccesser& CDataSyncClient::GetAccesser()
+	{
+		return m_Accesser;
 	}
 
 	void CDataSyncClient::DS_SyncOpen(_U32 flag)

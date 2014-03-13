@@ -292,6 +292,14 @@ namespace DDLDataObject
 		return (char*)m_pData + m_Offset;
 	}
 
+	void CObject::SetData(const void* data)
+	{
+		memcpy(m_pData, data, (size_t)m_pInfo->size);
+		if(m_pMonitor)
+		{
+			m_pMonitor->SetDirty("", m_Offset, m_pInfo->size);
+		}
+	}
 
 	bool CObject::SetU8(const char* name, _U8 val)
 	{

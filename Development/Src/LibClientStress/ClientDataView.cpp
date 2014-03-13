@@ -162,6 +162,7 @@ enum
 };
 
 BEGIN_EVENT_TABLE(CClientDataView, CStressFrameView)
+	EVT_LIST_ITEM_SELECTED(ID_DATALIST, CClientDataView::OnObjectClick)
 	EVT_BUTTON(ID_DATA_SYNC,			CClientDataView::OnSyncClick)
 	EVT_BUTTON(ID_DATA_OBJECT_NEW,		CClientDataView::OnNewClick)
 	EVT_BUTTON(ID_DATA_OBJECT_SAVE,		CClientDataView::OnSaveClick)
@@ -198,6 +199,9 @@ CClientDataView::CClientDataView( CClientStressFrame* pFrame, wxWindow* pParent 
 	pPanelSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
 	pPanelSizer->Add(pSplitter, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	SetSizer(pPanelSizer);
+
+	m_ObjectType = NULL;
+	m_pObjectData = NULL;
 }
 
 CClientDataView::~CClientDataView()
@@ -224,28 +228,80 @@ void CClientDataView::OnNewClick(wxCommandEvent& event)
 	_U32 index = GetCurrentClient();
 	if(index==(_U32)-1) return;
 	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
-
-	CNewObjectDlg Dlg;
-	Dlg.ShowModal();
-
 	if(pClient->GetSyncFlag()==(_U32)-1) return;
 	if((pClient->GetSyncFlag()&SYNCFLAG_CLIENT)==0) return;
-	OnClear();
 
+	CNewObjectDlg Dlg;
+	if(Dlg.ShowModal()!=wxID_OK) return;
+
+	const DDLReflect::STRUCT_INFO* pType;
+	pType = Zion::LiveObject::GetType((const char*)Dlg.GetType().ToUTF8());
+
+	SetEditObject(NULL, pType, NULL);
 }
 
 void CClientDataView::OnSaveClick(wxCommandEvent& event)
 {
-	if(GetCurrentClient()==(_U32)-1) return;
+	_U32 index = GetCurrentClient();
+	if(index==(_U32)-1) return;
+	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
+
+	if(pClient->GetSyncFlag()==(_U32)-1) return;
+	if((pClient->GetSyncFlag()&SYNCFLAG_CLIENT)==0) return;
+	if(!m_pObjectData) return;
+	if(m_IsObjectNew)
+	{
+		A_LIVE_OBJECT* pData = pClient->CreateObject(m_ObjectType);
+		memcpy(pData, m_pObjectData, m_ObjectType->size);
+		ClearEditor();
+	}
+	else
+	{
+		Zion::LiveData::CObject* pObject = pClient->GetObject(m_ObjectUUID);
+		pObject->SetData(m_pObjectData);
+	}
 }
 
 void CClientDataView::OnCancelClick(wxCommandEvent& event)
 {
 	if(GetCurrentClient()==(_U32)-1) return;
+	if(!m_pObjectData) return;
+	ClearEditor();
+}
+
+void CClientDataView::OnObjectClick(wxListEvent& event)
+{
+	ClearEditor();
+
+	long nSelectIndex = event.GetIndex();
+	wxUIntPtr Ptr = m_pDataList->GetItemData(nSelectIndex);
+	Zion::LiveData::CObject* pObject = (Zion::LiveData::CObject*)Ptr;
+
+	SetEditObject(&pObject->GetUUID("_uuid"), pObject->GetStructInfo(), (A_LIVE_OBJECT*)pObject->GetData());
 }
 
 void CClientDataView::OnSwitchTo(_U32 index)
 {
+	ClearEditor();
+//	m_pDataList->ClearAll();
+	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
+	if(pClient->GetSyncFlag()==(_U32)-1) return;
+	if(!pClient->IsReady()) return;
+
+	Zion::LiveData::CObject* pObject;
+	pObject = pClient->GetAccesser().FindFirst();
+	while(pObject)
+	{
+		char suuid[100];
+		AUuidToString(pObject->GetUUID("_uuid"), suuid);
+		long id = m_pDataList->InsertItem(m_pDataList->GetItemCount(), wxString::FromUTF8(suuid));
+		m_pDataList->SetItem(id, 1, wxString::FromUTF8(pObject->GetStructInfo()->name));
+		m_pDataList->SetItem(id, 2, wxT(""));
+		m_pDataList->SetItemPtrData(id, (wxUIntPtr)pObject);
+
+		pObject = pClient->GetAccesser().FindNext(pObject);
+	}
+
 }
 
 void CClientDataView::OnClear()
@@ -267,20 +323,54 @@ void CClientDataView::OnNewCase(_U32 index, Zion::CStressCase* pCase)
 
 void CClientDataView::OnSyncOpen(_U32 nIndex)
 {
+	OnSwitchTo(GetCurrentClient());
 }
 
 void CClientDataView::OnSyncClose(_U32 nIndex)
 {
+	OnSwitchTo(GetCurrentClient());
 }
 
 void CClientDataView::OnObjectCreate(_U32 nIndex, const A_UUID& _uuid)
 {
+	OnSwitchTo(GetCurrentClient());
 }
 
 void CClientDataView::OnObjectUpdate(_U32 nIndex, const A_UUID& _uuid)
 {
+	OnSwitchTo(GetCurrentClient());
 }
 
 void CClientDataView::OnObjectDelete(_U32 nIndex, const A_UUID& _uuid)
 {
+	OnSwitchTo(GetCurrentClient());
+}
+
+void CClientDataView::SetEditObject(const A_UUID* pUUID, const DDLReflect::STRUCT_INFO*	pType, A_LIVE_OBJECT* pData)
+{
+	ClearEditor();
+
+	if(pUUID)
+	{
+		m_IsObjectNew = false;
+		m_ObjectUUID = *pUUID;
+	}
+	else
+	{
+		m_IsObjectNew = true;
+	}
+
+	m_ObjectType = pType;
+	m_pObjectData = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pType);
+	if(pData) memcpy(m_pObjectData, pData, (size_t)pType->size);
+	m_pDataView->Set(m_ObjectType, m_pObjectData);
+}
+
+void CClientDataView::ClearEditor()
+{
+	m_pDataView->Clear();
+	if(m_pObjectData) DDLReflect::DestoryObject(m_ObjectType, m_pObjectData);
+	m_ObjectType = NULL;
+	m_pObjectData = NULL;
+	m_pBarText->SetLabel(wxT(""));
 }

@@ -36,23 +36,23 @@ function STUB_DATASYNC_JSON_C2S(_this)
 {
 	this._this = _this;
 }
-STUB_DATASYNC_JSON_C2S.prototype.Dispatch = function (fname, _arguments) {
+STUB_DATASYNC_JSON_C2S.prototype.Dispatch = function (cmd, args) {
 	var _fun;
-	switch(fname) {
+	switch(cmd) {
 	case 'DS_CreateObject':
-		if(count(_arguments.length)!=2) break;
+		if(args.length!=2) break;
 		_fun = this._this.DS_CreateObject;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	case 'DS_UpdateObject':
-		if(count(_arguments.length)!=2) break;
+		if(args.length!=2) break;
 		_fun = this._this.DS_UpdateObject;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	case 'DS_DeleteObject':
-		if(count(_arguments.length)!=2) break;
+		if(args.length!=2) break;
 		_fun = this._this.DS_DeleteObject;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	}
 	return false;
@@ -65,45 +65,45 @@ function PROXY_DATASYNC_JSON_S2C()
 PROXY_DATASYNC_JSON_S2C.prototype.DS_SyncOpen = function () {
 	if(arguments.length!=1) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	return '{"method":"DATASYNC_JSON_S2C.DS_SyncOpen","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	return '{"method":"DATASYNC_JSON_S2C.DS_SyncOpen","args":' + JSON.stringify(args) + '}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_SyncReady = function () {
 	if(arguments.length!=0) return undefined;
 	var args = [];
-	return '{"method":"DATASYNC_JSON_S2C.DS_SyncReady","args":[' + args.join() + ']}';
+	return '{"method":"DATASYNC_JSON_S2C.DS_SyncReady","args":' + JSON.stringify(args) + '}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_SyncClose = function () {
 	if(arguments.length!=0) return undefined;
 	var args = [];
-	return '{"method":"DATASYNC_JSON_S2C.DS_SyncClose","args":[' + args.join() + ']}';
+	return '{"method":"DATASYNC_JSON_S2C.DS_SyncClose","args":' + JSON.stringify(args) + '}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_CreateObjectDone = function () {
 	if(arguments.length!=1) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	return '{"method":"DATASYNC_JSON_S2C.DS_CreateObjectDone","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	return '{"method":"DATASYNC_JSON_S2C.DS_CreateObjectDone","args":' + JSON.stringify(args) + '}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_CreateObject = function () {
 	if(arguments.length!=2) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	args.push(JSON.stringify(arguments[1]));
-	return '{"method":"DATASYNC_JSON_S2C.DS_CreateObject","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	args.push(arguments[1]);
+	return '{"method":"DATASYNC_JSON_S2C.DS_CreateObject","args":' + JSON.stringify(args) + '}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_UpdateObject = function () {
 	if(arguments.length!=2) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	args.push(JSON.stringify(arguments[1]));
-	return '{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	args.push(arguments[1]);
+	return '{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","args":' + JSON.stringify(args) + '}';
 }
 PROXY_DATASYNC_JSON_S2C.prototype.DS_DeleteObject = function () {
 	if(arguments.length!=2) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	args.push(JSON.stringify(arguments[1]));
-	return '{"method":"DATASYNC_JSON_S2C.DS_DeleteObject","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	args.push(arguments[1]);
+	return '{"method":"DATASYNC_JSON_S2C.DS_DeleteObject","args":' + JSON.stringify(args) + '}';
 }
 exports_proxy.DATASYNC_JSON_S2C = PROXY_DATASYNC_JSON_S2C
 
@@ -177,38 +177,38 @@ function STUB_CARDGAME_C2S(_this)
 {
 	this._this = _this;
 }
-STUB_CARDGAME_C2S.prototype.Dispatch = function (fname, _arguments) {
+STUB_CARDGAME_C2S.prototype.Dispatch = function (cmd, args) {
 	var _fun;
-	switch(fname) {
+	switch(cmd) {
 	case 'Ping':
-		if(count(_arguments.length)!=0) break;
+		if(args.length!=0) break;
 		_fun = this._this.Ping;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	case 'SelectServer':
-		if(count(_arguments.length)!=1) break;
+		if(args.length!=1) break;
 		_fun = this._this.SelectServer;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	case 'GetAvatarList':
-		if(count(_arguments.length)!=0) break;
+		if(args.length!=0) break;
 		_fun = this._this.GetAvatarList;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	case 'CreateAvatar':
-		if(count(_arguments.length)!=2) break;
+		if(args.length!=2) break;
 		_fun = this._this.CreateAvatar;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	case 'EnterGame':
-		if(count(_arguments.length)!=1) break;
+		if(args.length!=1) break;
 		_fun = this._this.EnterGame;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	case 'LeaveGame':
-		if(count(_arguments.length)!=0) break;
+		if(args.length!=0) break;
 		_fun = this._this.LeaveGame;
-		_fun.call(this._this, _arguments);
+		_fun.apply(this._this, args);
 		return true;
 	}
 	return false;
@@ -221,33 +221,33 @@ function PROXY_CARDGAME_S2C()
 PROXY_CARDGAME_S2C.prototype.Pong = function () {
 	if(arguments.length!=0) return undefined;
 	var args = [];
-	return '{"method":"CARDGAME_S2C.Pong","args":[' + args.join() + ']}';
+	return '{"method":"CARDGAME_S2C.Pong","args":' + JSON.stringify(args) + '}';
 }
 PROXY_CARDGAME_S2C.prototype.GetAvatarListCallback = function () {
 	if(arguments.length!=3) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	args.push(JSON.stringify(arguments[1]));
-	args.push(JSON.stringify(arguments[2]));
-	return '{"method":"CARDGAME_S2C.GetAvatarListCallback","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	args.push(arguments[1]);
+	args.push(arguments[2]);
+	return '{"method":"CARDGAME_S2C.GetAvatarListCallback","args":' + JSON.stringify(args) + '}';
 }
 PROXY_CARDGAME_S2C.prototype.CreateAvatarCallback = function () {
 	if(arguments.length!=1) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	return '{"method":"CARDGAME_S2C.CreateAvatarCallback","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	return '{"method":"CARDGAME_S2C.CreateAvatarCallback","args":' + JSON.stringify(args) + '}';
 }
 PROXY_CARDGAME_S2C.prototype.EnterGameCallback = function () {
 	if(arguments.length!=1) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	return '{"method":"CARDGAME_S2C.EnterGameCallback","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	return '{"method":"CARDGAME_S2C.EnterGameCallback","args":' + JSON.stringify(args) + '}';
 }
 PROXY_CARDGAME_S2C.prototype.LeaveGameCallback = function () {
 	if(arguments.length!=1) return undefined;
 	var args = [];
-	args.push(JSON.stringify(arguments[0]));
-	return '{"method":"CARDGAME_S2C.LeaveGameCallback","args":[' + args.join() + ']}';
+	args.push(arguments[0]);
+	return '{"method":"CARDGAME_S2C.LeaveGameCallback","args":' + JSON.stringify(args) + '}';
 }
 exports_proxy.CARDGAME_S2C = PROXY_CARDGAME_S2C
 

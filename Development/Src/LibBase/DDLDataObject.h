@@ -82,6 +82,7 @@ namespace DDLDataObject
 
 		const CObject Ref(const char* name);
 		void* GetData();
+		void SetData(const void* data);
 
 		bool SetU8(const char* name, _U8 val);
 		bool SetU16(const char* name, _U16 val);

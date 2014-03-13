@@ -32,6 +32,7 @@ public:
 	void OnNewClick(wxCommandEvent& event);
 	void OnSaveClick(wxCommandEvent& event);
 	void OnCancelClick(wxCommandEvent& event);
+	void OnObjectClick(wxListEvent& event);
 
 	virtual void OnSwitchTo(_U32 index);
 	virtual void OnClear();
@@ -44,7 +45,15 @@ public:
 	void OnObjectUpdate(_U32 nIndex, const A_UUID& _uuid);
 	void OnObjectDelete(_U32 nIndex, const A_UUID& _uuid);
 
+	void SetEditObject(const A_UUID* pUUID, const DDLReflect::STRUCT_INFO*	pType, A_LIVE_OBJECT* pData);
+	void ClearEditor();
+
 private:
+	bool							m_IsObjectNew;
+	A_UUID							m_ObjectUUID;
+	const DDLReflect::STRUCT_INFO*	m_ObjectType;
+	A_LIVE_OBJECT*					m_pObjectData;
+
 	wxListCtrl* m_pDataList;
 	wxStaticText* m_pBarText;
 	CStructEditView* m_pDataView;

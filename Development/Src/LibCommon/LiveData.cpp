@@ -95,7 +95,7 @@ namespace Zion
 
 		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, A_LIVE_OBJECT* data)
 		{
-			if(m_ObjMap.find(data->_uuid)==m_ObjMap.end())
+			if(m_ObjMap.find(data->_uuid)!=m_ObjMap.end())
 			{
 				ZION_ASSERT(!"live object alread existed");
 				return NULL;
@@ -104,7 +104,7 @@ namespace Zion
 			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			obj->Clean();
 			m_ObjMap[data->_uuid] = obj;
-			return NULL;
+			return obj;
 		}
 
 		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const _U8* buf, _U32 len)
@@ -128,21 +128,21 @@ namespace Zion
 			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			obj->Clean();
 			m_ObjMap[data->_uuid] = obj;
-			return NULL;
+			return obj;
 		}
 
 		CObject* CManager::Append(const DDLReflect::STRUCT_INFO* pInfo, const char* str)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pInfo);
 			String val(str);
-			if(!DDLReflect::Struct2Json(pInfo, (_U8*)data, val))
+			if(!DDLReflect::Json2Struct(pInfo, Zion::String(val), (_U8*)data))
 			{
 				ZION_ASSERT(!"live object serialize json error");
 				DDLReflect::DestoryObject(pInfo, data);
 				return NULL;
 			}
 
-			if(m_ObjMap.find(data->_uuid)==m_ObjMap.end())
+			if(m_ObjMap.find(data->_uuid)!=m_ObjMap.end())
 			{
 				ZION_ASSERT(!"live object alread existed");
 				DDLReflect::DestoryObject(pInfo, data);
@@ -152,7 +152,7 @@ namespace Zion
 			CObject* obj = ZION_NEW CObject(this, pInfo, data);
 			obj->Clean();
 			m_ObjMap[data->_uuid] = obj;
-			return NULL;
+			return obj;
 		}
 
 		bool CManager::Remove(const A_UUID& _uuid)
@@ -189,18 +189,19 @@ namespace Zion
 
 		CObject* CManager::FindFirst()
 		{
-			return m_ObjMap.begin()->second;
+			return m_ObjMap.begin()==m_ObjMap.end()?NULL:m_ObjMap.begin()->second;
 		}
 
 		CObject* CManager::FindNext(CObject* obj)
 		{
 			A_LIVE_OBJECT* data = (A_LIVE_OBJECT*)obj->GetData();
 			Map<A_UUID, CObject*>::iterator i = m_ObjMap.find(data->_uuid);
-			if(i==m_ObjMap.end() || (++i)==m_ObjMap.end())
+			if(i==m_ObjMap.end())
 			{
 				ZION_ASSERT(!"error");
 				return NULL;
 			}
+			 if((++i)==m_ObjMap.end()) return NULL;
 			return i->second;
 		}
 

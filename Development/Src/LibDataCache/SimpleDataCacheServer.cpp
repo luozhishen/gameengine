@@ -164,7 +164,7 @@ namespace Zion
 
 				char suuid[100];
 				AUuidToString(i->second._uuid, suuid);
-				ret += StringFormat("\"%s:%s\":", suuid, i->second._type);
+				ret += StringFormat("\"%s:%s\":", suuid, i->second._type.c_str());
 				ret += i->second._data;
 			}
 			JsonRPC_Send(res, ("[0, {" + ret + "}]").c_str());
@@ -274,6 +274,7 @@ namespace Zion
 					JsonRPC_Send(res, "[-1]");
 					return;
 				}
+				g_AvatarMap[avatar_id] = pAvatar;
 			}
 			else
 			{

@@ -252,16 +252,16 @@ int ddlgen_codejs_task_class_stub(const DDL_CLS* cls, const DDL_TASK* task)
 	OutJS(0,"{\n");
 	OutJS(0,"	this._this = _this;\n");
 	OutJS(0,"}\n");
-	OutJS(0,"STUB_%s.prototype.Dispatch = function (fname, _arguments) {\n", cls->name);
+	OutJS(0,"STUB_%s.prototype.Dispatch = function (cmd, args) {\n", cls->name);
 	OutJS(0,"	var _fun;\n");
-	OutJS(0,"	switch(fname) {\n");
+	OutJS(0,"	switch(cmd) {\n");
 	for(f=0; f<(int)cls->funs_count; f++)
 	{
 		DDL_FUN* fun = &cls->funs[f];
 		OutJS(1,"case '%s':\n", fun->name);
-		OutJS(1,"	if(count(_arguments.length)!=%d) break;\n", fun->args_count);
+		OutJS(1,"	if(args.length!=%d) break;\n", fun->args_count);
 		OutJS(1,"	_fun = this._this.%s;\n", fun->name);
-		OutJS(1,"	_fun.call(this._this, _arguments);\n");
+		OutJS(1,"	_fun.apply(this._this, args);\n");
 		OutJS(1,"	return true;\n");
 		for(a=0; a<(int)fun->args_count; a++)
 		{
@@ -298,7 +298,7 @@ int ddlgen_codejs_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 		OutJS(0,"	var args = [];\n", fun->args_count);
 		for(a=0; a<(int)fun->args_count; a++)
 		{
-			OutJS(1,"args.push(JSON.stringify(arguments[%d]));\n", a);
+			OutJS(1,"args.push(arguments[%d]);\n", a);
 /*
 			DDL_ARG _arg;
 			DDL_ARG* arg = &_arg;
@@ -311,7 +311,7 @@ int ddlgen_codejs_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 		}
 
 
-		OutJS(0,"	return '{\"method\":\"%s.%s\",\"args\":[' + args.join() + ']}';\n", cls->name, fun->name);
+		OutJS(0,"	return '{\"method\":\"%s.%s\",\"args\":' + JSON.stringify(args) + '}';\n", cls->name, fun->name);
 		OutJS(0,"}\n");
 	}
 	OutJS(0,"exports_proxy.%s = PROXY_%s\n", cls->name, cls->name);

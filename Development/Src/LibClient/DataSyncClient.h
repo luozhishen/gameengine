@@ -3,6 +3,10 @@
 
 #include <DataSyncDDL.h>
 
+#ifdef GetObject
+#undef GetObject
+#endif
+
 namespace Zion
 {
 
@@ -24,7 +28,10 @@ namespace Zion
 
 		void Sync();
 		bool InProcess();
+		bool IsReady();
 		_U32 GetSyncFlag();
+		LiveData::CAccesser& GetAccesser();
+
 
 		// DATASYNC_S2C
 		void DS_SyncOpen(_U32 flag);

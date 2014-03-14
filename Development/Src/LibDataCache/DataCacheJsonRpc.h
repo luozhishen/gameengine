@@ -18,6 +18,7 @@ namespace Zion
 		void JsonRPC_CreateObject(const JSONRPC_RESPONSE& res, const Json::Value& args);
 		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE& res, const Json::Value& args);
 		void JsonRPC_DeleteObject(const JSONRPC_RESPONSE& res, const Json::Value& args);
+		void JsonRPC_LoadObjectFromDB(const JSONRPC_RESPONSE& res, const Json::Value& args);
 
 	}
 }

@@ -27,6 +27,7 @@ namespace Zion
 		void RPCSIMPLE_CreateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
 		void RPCSIMPLE_UpdateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* data);
 		void RPCSIMPLE_DeleteObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID* _uuids, _U32 count);
+		void RPCSIMPLE_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid);
 		void RPCSIMPLE_FlushAllData();
 
 	}

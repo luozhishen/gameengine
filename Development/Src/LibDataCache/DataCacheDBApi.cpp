@@ -47,6 +47,9 @@ namespace Zion
 		static sqlite3_stmt* g_sqlite_remove = NULL;
 		static int g_sqlite_remove_avatar_id = -1;
 		static int g_sqlite_remove_object_uuid = -1;
+		static sqlite3_stmt* g_sqlite_query = NULL;
+		static int g_sqlite_query_avatar_id = -1;
+		static int g_sqlite_query_object_uuid = -1;
 
 		static const char* sqls[] = {
 			"CREATE TABLE user_table (\n"
@@ -226,6 +229,14 @@ namespace Zion
 			g_sqlite_remove_avatar_id = sqlite3_bind_parameter_index(g_sqlite_remove, ":avatar_id");
 			g_sqlite_remove_object_uuid = sqlite3_bind_parameter_index(g_sqlite_remove, ":object_uuid");
 
+			if(SQLITE_OK!=sqlite3_prepare(g_sqlite, "SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id and object_uuid=:object_uuid", -1, &g_sqlite_query, NULL))
+			{
+				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				return false;
+			}
+			g_sqlite_query_avatar_id = sqlite3_bind_parameter_index(g_sqlite_remove, ":avatar_id");
+			g_sqlite_query_object_uuid = sqlite3_bind_parameter_index(g_sqlite_remove, ":object_uuid");
+
 			return true;
 		}
 
@@ -242,6 +253,7 @@ namespace Zion
 			sqlite3_finalize(g_sqlite_insert);
 			sqlite3_finalize(g_sqlite_update);
 			sqlite3_finalize(g_sqlite_remove);
+			sqlite3_finalize(g_sqlite_query);
 			sqlite3_close(g_sqlite);
 
 			g_sqlite_login = NULL;
@@ -255,6 +267,7 @@ namespace Zion
 			g_sqlite_insert = NULL;
 			g_sqlite_update = NULL;
 			g_sqlite_delete = NULL;
+			g_sqlite_query = NULL;
 			g_sqlite = NULL;
 
 			sqlite3_shutdown();
@@ -648,6 +661,54 @@ namespace Zion
 				}
 			}
 			return true;
+		}
+
+		bool QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
+		{
+			char suuid[100];
+			AUuidToString(_uuid, suuid);
+
+			if(SQLITE_OK!=sqlite3_reset(g_sqlite_query))
+			{
+				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				return false;
+			}
+
+			if(SQLITE_OK!=sqlite3_bind_int(g_sqlite_query, g_sqlite_query_avatar_id, (int)avatar_id))
+			{
+				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				return false;
+			}
+			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_query, g_sqlite_query_object_uuid, suuid, -1, NULL))
+			{
+				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				return false;
+			}
+
+			int ret, count = 0;
+			while(1)
+			{
+				ret = sqlite3_step(g_sqlite_query);
+				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
+				if(ret!=SQLITE_ROW)
+				{
+					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					return false;
+				}
+
+				ZION_ASSERT(count==0);
+				count++;
+
+				if(!callback(userptr,
+					_uuid,
+					(const char*)sqlite3_column_text(g_sqlite_list, 0),
+					(const char*)sqlite3_column_text(g_sqlite_list, 1)))
+				{
+					return false;
+				}
+
+			}
+			return count==1;
 		}
 
 	}

@@ -1,36 +1,40 @@
 
 DataCache JsonRpc Api:
 
-function	GetAvatar
+function	getAvatar
 argements	avatar_id
 return
   success	{ "uuid:type" : {obj}, ... }
   failed	""
 
-function	SaveAvatar
+function	saveAvatar
 argements	avatar_id
 return		none
 
-function	ClearAvatar
+function	clearAvatar
 argements	avatar_id
 return		none
 
-function	KeepAlive
+function	keepAlive
 argements	avatar_id
 return		none
 
-function	ExecuteDDL
+function	executeDDL
 argements	avatar_id, method_name, data
 return		none
 
-function	CreateObject
+function	createObject
 argements	avatar_id, uuid, type, data
 return		none
 
-function	UpdateObject
+function	updateObject
 argements	avatar_id, uuid, data
 return		none
 
-function	RemoveObject
+function	removeObject
 argements	avatar_id, uuids
 return		none
+
+function	createObjectFromDB
+argements	avatar_id, uuid
+return		[uuid, type, data]

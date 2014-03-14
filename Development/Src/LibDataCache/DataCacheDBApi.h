@@ -17,6 +17,7 @@ namespace Zion
 		bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
 		bool UpdateAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* data);
 		bool DeleteAvatarObject(_U32 avatar_id, const A_UUID* _uuids, _U32 count);
+		bool QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 
 	}
 }

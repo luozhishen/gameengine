@@ -67,6 +67,10 @@ namespace Zion
 		{
 		}
 
+		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid)
+		{
+		}
+
 		void RPCIMPL_FlushAllData()
 		{
 		}

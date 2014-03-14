@@ -326,7 +326,7 @@ namespace Zion
 				{
 					Json::Value item = _suuid.get((Json::UInt)i, Json::nullValue);
 					if(!item.isString()) break;
-					if(!AUuidFromString(_suuid.asCString(), _uuids[i])) break;
+					if(!AUuidFromString(item.asCString(), _uuids[i])) break;
 				}
 				if(i!=(_U32)_uuids.size()) break;
 				Json::FastWriter writer;
@@ -337,6 +337,32 @@ namespace Zion
 				else
 				{
 					RPCIMPL_DeleteObject(res, (_U32)_avatar_id.asUInt(), &_uuids[0], (_U32)_uuids.size());
+				}
+				return;
+			}
+			JsonRPC_Send(res, "[-1]");
+		}
+
+		void JsonRPC_loadObjectFromDB(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		{
+			Json::Value _avatar_id;
+			Json::Value juuid;
+			for(;;)
+			{
+				if(args.size()!=2) break;
+				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
+				if(!_avatar_id.isUInt()) break;
+				juuid = args.get((Json::Value::UInt)1, Json::nullValue);
+				if(!juuid.isString()) break;
+				A_UUID _uuid;
+				if(!AUuidFromString(juuid.asCString(), _uuid)) break;
+				if(CONFIG_SIMPLE_MODE)
+				{
+					RPCSIMPLE_LoadObjectFromDB(res, (_U32)_avatar_id.asUInt(), _uuid);
+				}
+				else
+				{
+					RPCIMPL_LoadObjectFromDB(res, (_U32)_avatar_id.asUInt(), _uuid);
 				}
 				return;
 			}

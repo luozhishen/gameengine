@@ -164,7 +164,7 @@ enum
 
 BEGIN_EVENT_TABLE(CClientDataView, CStressFrameView)
 	EVT_LIST_ITEM_SELECTED(ID_DATALIST, CClientDataView::OnObjectClick)
-	EVT_BUTTON(ID_DATA_SYNC,			CClientDataView::OnSyncClick)
+	//EVT_BUTTON(ID_DATA_SYNC,			CClientDataView::OnSyncClick)
 	EVT_BUTTON(ID_DATA_OBJECT_NEW,		CClientDataView::OnNewClick)
 	EVT_BUTTON(ID_DATA_OBJECT_SAVE,		CClientDataView::OnSaveClick)
 	EVT_BUTTON(ID_DATA_OBJECT_CANCEL,	CClientDataView::OnCancelClick)
@@ -177,22 +177,28 @@ CClientDataView::CClientDataView( CClientStressFrame* pFrame, wxWindow* pParent 
     pSplitter->SetSashGravity(0);
 
 	m_pDataList = ZION_NEW wxListCtrl(pSplitter, ID_DATALIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL);
-	m_pDataList->InsertColumn(0, wxT("UUID"), 0, 100);
-	m_pDataList->InsertColumn(1, wxT("Type"), 0, 100);
+	m_pDataList->InsertColumn(0, wxT("UUID"), 0, 260);
+	m_pDataList->InsertColumn(1, wxT("Type"), 0, 150);
 	m_pDataList->InsertColumn(2, wxT("Value"), 0, wxLIST_AUTOSIZE);
 	wxPanel* pBottomPanel = ZION_NEW wxPanel(pSplitter);
 	pSplitter->SplitHorizontally(m_pDataList, pBottomPanel, 100);
 
 	wxBoxSizer* pPanelSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* pBarSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
-	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_SYNC, wxT("Sync")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_DELETE, wxT("Delete")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_NEW, wxT("New")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_SAVE, wxT("Save")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-	pBarSizer->Add(ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_CANCEL, wxT("Cancel")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+
+	//m_pSyncButton	= ZION_NEW wxButton(pBottomPanel, ID_DATA_SYNC, wxT("Sync"));
+	m_pNewButton	= ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_NEW, wxT("New"));
+	m_pDeleteButton	= ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_DELETE, wxT("Delete"));
+	m_pSaveButton	= ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_SAVE, wxT("Save"));
+	m_pCancelButton	= ZION_NEW wxButton(pBottomPanel, ID_DATA_OBJECT_CANCEL, wxT("Cancel"));
+	//pBarSizer->Add(m_pSyncButton,	0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pBarSizer->Add(m_pDeleteButton,	0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pBarSizer->Add(m_pNewButton,	0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pBarSizer->Add(m_pSaveButton,	0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	pBarSizer->Add(m_pCancelButton,	0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 	pBarSizer->Add(10, 10);
-	m_pBarText = ZION_NEW wxStaticText(pBottomPanel, wxID_ANY, wxT(""));
-	pBarSizer->Add(m_pBarText, 1, wxGROW|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	m_pBarText = ZION_NEW wxStaticText(pBottomPanel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT | wxALIGN_CENTRE_HORIZONTAL);
+	pBarSizer->Add(m_pBarText, 1, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
 	pPanelSizer->Add(pBarSizer, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	m_pDataView = ZION_NEW CStructEditView(pBottomPanel);
@@ -205,6 +211,12 @@ CClientDataView::CClientDataView( CClientStressFrame* pFrame, wxWindow* pParent 
 
 	m_ObjectType = NULL;
 	m_pObjectData = NULL;
+
+	//m_pSyncButton->Enable(false);
+	m_pDeleteButton->Enable(false);
+	m_pNewButton->Enable(false);
+	m_pSaveButton->Enable(false);
+	m_pCancelButton->Enable(false);
 }
 
 CClientDataView::~CClientDataView()
@@ -215,7 +227,7 @@ CClientDataView::~CClientDataView()
 		m_ProxyMap.erase(m_ProxyMap.begin());
 	}
 }
-
+/*
 void CClientDataView::OnSyncClick(wxCommandEvent& event)
 {
 	_U32 index = GetCurrentClient();
@@ -225,7 +237,7 @@ void CClientDataView::OnSyncClick(wxCommandEvent& event)
 	if((pClient->GetSyncFlag()&SYNCFLAG_CLIENT)==0) return;
 	pClient->Sync();
 }
-
+*/
 void CClientDataView::OnNewClick(wxCommandEvent& event)
 {
 	_U32 index = GetCurrentClient();
@@ -257,23 +269,58 @@ void CClientDataView::OnSaveClick(wxCommandEvent& event)
 		A_LIVE_OBJECT* pData = pClient->CreateObject(m_ObjectType);
 		memcpy(pData, m_pObjectData, m_ObjectType->size);
 		ClearEditor();
+
+		m_pDeleteButton->Enable(false);
+		m_pNewButton->Enable(true);
+		m_pSaveButton->Enable(false);
+		m_pCancelButton->Enable(false);
 	}
 	else
 	{
 		Zion::LiveData::CObject* pObject = pClient->GetObject(m_ObjectUUID);
 		pObject->SetData(m_pObjectData);
+
+		m_pDeleteButton->Enable(true);
+		m_pNewButton->Enable(true);
+		m_pSaveButton->Enable(true);
+		m_pCancelButton->Enable(true);
 	}
+	pClient->Sync();
 }
 
 void CClientDataView::OnCancelClick(wxCommandEvent& event)
 {
-	if(GetCurrentClient()==(_U32)-1) return;
+	_U32 index = GetCurrentClient();
+	if(index==(_U32)-1) return;
+	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
+
+	if(pClient->GetSyncFlag()==(_U32)-1) return;
+	if((pClient->GetSyncFlag()&SYNCFLAG_CLIENT)==0) return;
 	if(!m_pObjectData) return;
-	ClearEditor();
+	if(m_IsObjectNew)
+	{
+		ClearEditor();
+	}
+	else
+	{
+		Zion::LiveData::CObject* pObject = pClient->GetObject(m_ObjectUUID);
+		SetEditObject(&pObject->GetUUID("_uuid"), pObject->GetStructInfo(), (A_LIVE_OBJECT*)pObject->GetData());
+	}
 }
 
 void CClientDataView::OnDeleteClick(wxCommandEvent& event)
 {
+	_U32 index = GetCurrentClient();
+	if(index==(_U32)-1) return;
+	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
+
+	if(pClient->GetSyncFlag()==(_U32)-1) return;
+	if((pClient->GetSyncFlag()&SYNCFLAG_CLIENT)==0) return;
+	if(!m_pObjectData) return;
+	if(m_IsObjectNew) return;
+
+	pClient->RemoveObject(m_pObjectData->_uuid);
+	pClient->Sync();
 }
 
 void CClientDataView::OnObjectClick(wxListEvent& event)
@@ -308,7 +355,6 @@ void CClientDataView::OnSwitchTo(_U32 index)
 
 		pObject = pClient->GetAccesser().FindNext(pObject);
 	}
-
 }
 
 void CClientDataView::OnClear()
@@ -331,11 +377,19 @@ void CClientDataView::OnNewCase(_U32 index, Zion::CStressCase* pCase)
 void CClientDataView::OnSyncOpen(_U32 nIndex)
 {
 	OnSwitchTo(GetCurrentClient());
+	m_pDeleteButton->Enable(false);
+	m_pNewButton->Enable(true);
+	m_pSaveButton->Enable(false);
+	m_pCancelButton->Enable(false);
 }
 
 void CClientDataView::OnSyncClose(_U32 nIndex)
 {
 	OnSwitchTo(GetCurrentClient());
+	m_pDeleteButton->Enable(false);
+	m_pNewButton->Enable(false);
+	m_pSaveButton->Enable(false);
+	m_pCancelButton->Enable(false);
 }
 
 void CClientDataView::OnObjectCreate(_U32 nIndex, const A_UUID& _uuid)
@@ -371,6 +425,31 @@ void CClientDataView::SetEditObject(const A_UUID* pUUID, const DDLReflect::STRUC
 	m_pObjectData = (A_LIVE_OBJECT*)DDLReflect::CreateObject(pType);
 	if(pData) memcpy(m_pObjectData, pData, (size_t)pType->size);
 	m_pDataView->Set(m_ObjectType, m_pObjectData);
+
+	Zion::String val;
+	if(pUUID)
+	{
+		char suuid[100];
+		AUuidToString(*pUUID, suuid);
+		val = Zion::StringFormat("UUID : %s TYPE : %s", suuid, pType->name);
+
+		//m_pSyncButton->Enable(true);
+		m_pDeleteButton->Enable(true);
+		m_pNewButton->Enable(true);
+		m_pSaveButton->Enable(true);
+		m_pCancelButton->Enable(true);
+	}
+	else
+	{
+		val = Zion::StringFormat("UUID : [NEW OBJECT] TYPE : %s", pType->name);
+
+		//m_pSyncButton->Enable(true);
+		m_pDeleteButton->Enable(false);
+		m_pNewButton->Enable(false);
+		m_pSaveButton->Enable(true);
+		m_pCancelButton->Enable(true);
+	}
+	m_pBarText->SetLabel(wxString::FromUTF8(val.c_str()));
 }
 
 void CClientDataView::ClearEditor()

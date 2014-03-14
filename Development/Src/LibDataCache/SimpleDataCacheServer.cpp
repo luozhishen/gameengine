@@ -23,9 +23,11 @@ namespace Zion
 			CSimpleAvatarData(_U32 avatar_id);
 			~CSimpleAvatarData();
 
-			bool CreateObject(const A_UUID& _uuid, const char* type, const char* data);
+			bool CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty);
 			bool UpdateObject(const A_UUID& _uuid, const char* data);
 			bool DeleteObject(const A_UUID& _uuid);
+			bool ExistObject(const A_UUID& _uuid);
+			OBJECT_DATA* GetObject(const A_UUID& _uuid);
 
 			bool IsDirty();
 			_U32 GetAvatarID() { return m_AvatarID; }
@@ -49,7 +51,7 @@ namespace Zion
 		{
 		}
 
-		bool CSimpleAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data)
+		bool CSimpleAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty)
 		{
 			if(m_Objects.find(_uuid)!=m_Objects.end())
 			{
@@ -57,7 +59,7 @@ namespace Zion
 				return false;
 			}
 
-			OBJECT_DATA od = { _uuid, type, data, false, true };
+			OBJECT_DATA od = { _uuid, type, data, is_dirty, is_new };
 			m_Objects[_uuid] = od;
 			return true;
 		}
@@ -88,7 +90,19 @@ namespace Zion
 			m_Objects.erase(i);
 			return true;
 		}
-		
+
+		bool CSimpleAvatarData::ExistObject(const A_UUID& _uuid)
+		{
+			return m_Objects.find(_uuid)!=m_Objects.end() || m_DelList.find(_uuid)!=m_DelList.end();
+		}
+
+		CSimpleAvatarData::OBJECT_DATA* CSimpleAvatarData::GetObject(const A_UUID& _uuid)
+		{
+			Map<A_UUID, OBJECT_DATA>::iterator i = m_Objects.find(_uuid);
+			if(i==m_Objects.end()) return NULL;
+			return &i->second;
+		}
+
 		bool CSimpleAvatarData::IsDirty()
 		{
 			if(!m_DelList.empty()) return true;
@@ -101,15 +115,15 @@ namespace Zion
 			return false;
 		}
 
-		static bool db_callback(void* userptr, const A_UUID& _uuid, const char* type, const char* data)
+		static bool db_load_callback(void* userptr, const A_UUID& _uuid, const char* type, const char* data)
 		{
-			((CSimpleAvatarData*)userptr)->CreateObject(_uuid, type, data);
+			((CSimpleAvatarData*)userptr)->CreateObject(_uuid, type, data, false, false);
 			return true;
 		}
 
 		bool CSimpleAvatarData::Load()
 		{
-			if(!LoadAvatar(m_AvatarID, db_callback, this))
+			if(!LoadAvatar(m_AvatarID, db_load_callback, this))
 			{
 				return false;
 			}
@@ -346,7 +360,7 @@ namespace Zion
 			if(i!=g_AvatarMap.end())
 			{
 				CSimpleAvatarData* pAvatar = i->second;
-				if(pAvatar->CreateObject(_uuid, type, data))
+				if(pAvatar->CreateObject(_uuid, type, data, false, true))
 				{
 					JsonRPC_Send(res, "[0]");
 					return;
@@ -381,6 +395,32 @@ namespace Zion
 					pAvatar->DeleteObject(_uuids[l]);
 				}
 				JsonRPC_Send(res, "[0]");
+				return;
+			}
+			JsonRPC_Send(res, "[-1]");
+		}
+
+		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid);
+		void RPCSIMPLE_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid)
+		{
+			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			if(i!=g_AvatarMap.end())
+			{
+				CSimpleAvatarData* pAvatar = i->second;
+				if(!pAvatar->ExistObject(_uuid))
+				{
+					if(QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
+					{
+						CSimpleAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
+						if(pObject)
+						{
+							char suuid[100];
+							AUuidToString(_uuid, suuid);
+							JsonRPC_Send(res, StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
+							return;
+						}
+					}
+				}
 			}
 			JsonRPC_Send(res, "[-1]");
 		}

@@ -28,7 +28,7 @@ public:
 	CClientDataView(CClientStressFrame* pFrame, wxWindow* pParent);
 	~CClientDataView();
 
-	void OnSyncClick(wxCommandEvent& event);
+	//void OnSyncClick(wxCommandEvent& event);
 	void OnNewClick(wxCommandEvent& event);
 	void OnSaveClick(wxCommandEvent& event);
 	void OnCancelClick(wxCommandEvent& event);
@@ -55,9 +55,14 @@ private:
 	const DDLReflect::STRUCT_INFO*	m_ObjectType;
 	A_LIVE_OBJECT*					m_pObjectData;
 
-	wxListCtrl* m_pDataList;
-	wxStaticText* m_pBarText;
-	CStructEditView* m_pDataView;
+	//wxButton*			m_pSyncButton;
+	wxButton*			m_pDeleteButton;
+	wxButton*			m_pNewButton;
+	wxButton*			m_pSaveButton;
+	wxButton*			m_pCancelButton;
+	wxListCtrl*			m_pDataList;
+	wxStaticText*		m_pBarText;
+	CStructEditView*	m_pDataView;
 	Zion::Map<_U32, CClientDataSyncProxy*> m_ProxyMap;
 };
 

@@ -52,6 +52,9 @@ namespace Zion
 
 		CManager::CManager()
 		{
+			m_LastNum = 0;
+			m_bEnableMonitor = true;
+			m_bIsLiveDataChanged = false;
 		}
 
 		void CManager::InitRandom(_U32 seed)
@@ -178,6 +181,9 @@ namespace Zion
 				ZION_DELETE i->second;
 			}
 			m_ObjMap.clear();
+			m_LastNum = 0;
+			m_bEnableMonitor = true;
+			m_bIsLiveDataChanged = false;
 		}
 
 		CObject* CManager::Get(const A_UUID& _uuid)

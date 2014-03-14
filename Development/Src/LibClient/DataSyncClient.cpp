@@ -11,6 +11,7 @@ namespace Zion
 		pClient->RegisterStub(new DDLStub::DATASYNC_BINARY_S2C<CDataSyncClient>(this));
 		pClient->RegisterStub(new DDLStub::DATASYNC_JSON_S2C<CDataSyncClient>(this));
 		m_Flag = (_U32)-1;
+		pClient->_OnDisconnected.connect(this, &CDataSyncClient::OnDisconnected);
 	}
 
 	CDataSyncClient::~CDataSyncClient()
@@ -178,6 +179,8 @@ namespace Zion
 		ZION_ASSERT(m_bReady);
 		m_Flag = (_U32)-1;
 		Clear();
+		m_Accesser.Clear();
+
 		_OnSyncClose();
 	}
 
@@ -211,7 +214,11 @@ namespace Zion
 		}
 
 		LiveData::CObject* pObject = m_Accesser.Append(_info, data);
-		_OnObjectCreate(pObject->GetUUID("_uuid"));
+
+		if(!m_bReady)
+		{
+			_OnObjectCreate(pObject->GetUUID("_uuid"));
+		}
 	}
 
 	void CDataSyncClient::DS_CreateObject(_U16 type, const _U8* data, _U32 len)
@@ -224,7 +231,11 @@ namespace Zion
 		}
 
 		LiveData::CObject* pObject = m_Accesser.Append(_info, data, len);
-		_OnObjectCreate(pObject->GetUUID("_uuid"));
+
+		if(!m_bReady)
+		{
+			_OnObjectCreate(pObject->GetUUID("_uuid"));
+		}
 	}
 
 	void CDataSyncClient::DS_UpdateObject(const A_UUID& _uuid, const char* json)
@@ -283,6 +294,14 @@ namespace Zion
 		{
 			_OnObjectDelete(_uuids[i]);
 			m_Accesser.Remove(_uuids[i]);
+		}
+	}
+
+	void CDataSyncClient::OnDisconnected()
+	{
+		if(m_Flag!=(_U32)-1)
+		{
+			DS_SyncClose();
 		}
 	}
 

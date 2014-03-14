@@ -290,7 +290,7 @@ void CClientDataView::OnObjectClick(wxListEvent& event)
 void CClientDataView::OnSwitchTo(_U32 index)
 {
 	ClearEditor();
-//	m_pDataList->ClearAll();
+	m_pDataList->DeleteAllItems();
 	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
 	if(pClient->GetSyncFlag()==(_U32)-1) return;
 	if(!pClient->IsReady()) return;

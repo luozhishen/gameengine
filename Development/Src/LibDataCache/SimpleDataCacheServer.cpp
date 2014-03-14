@@ -89,12 +89,6 @@ namespace Zion
 			return true;
 		}
 		
-		static bool db_callback(void* userptr, const A_UUID& _uuid, const char* type, const char* data)
-		{
-			((CSimpleAvatarData*)userptr)->CreateObject(_uuid, type, data);
-			return true;
-		}
-
 		bool CSimpleAvatarData::IsDirty()
 		{
 			if(!m_DelList.empty()) return true;
@@ -107,9 +101,26 @@ namespace Zion
 			return false;
 		}
 
+		static bool db_callback(void* userptr, const A_UUID& _uuid, const char* type, const char* data)
+		{
+			((CSimpleAvatarData*)userptr)->CreateObject(_uuid, type, data);
+			return true;
+		}
+
 		bool CSimpleAvatarData::Load()
 		{
-			return LoadAvatar(m_AvatarID, db_callback, this);
+			if(!LoadAvatar(m_AvatarID, db_callback, this))
+			{
+				return false;
+			}
+
+			Map<A_UUID, OBJECT_DATA>::iterator i;
+			for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
+			{
+				i->second._dirty = false;
+				i->second._is_new = false;
+			}
+			return true;
 		}
 
 		bool CSimpleAvatarData::Save()

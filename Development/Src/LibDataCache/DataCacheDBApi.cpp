@@ -556,17 +556,17 @@ namespace Zion
 				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
-			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_insert, g_sqlite_insert_object_uuid, suuid, (int)strlen(suuid), NULL))
+			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_insert, g_sqlite_insert_object_uuid, suuid, -1, NULL))
 			{
 				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
-			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_insert, g_sqlite_insert_object_type, type, (int)strlen(type), NULL))
+			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_insert, g_sqlite_insert_object_type, type, -1, NULL))
 			{
 				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
-			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_insert, g_sqlite_insert_object_data, data, (int)strlen(data), NULL))
+			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_insert, g_sqlite_insert_object_data, data, -1, NULL))
 			{
 				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
@@ -574,7 +574,7 @@ namespace Zion
 
 			if(SQLITE_DONE!=sqlite3_step(g_sqlite_insert))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
 
@@ -597,12 +597,12 @@ namespace Zion
 				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
-			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_update, g_sqlite_update_object_uuid, suuid, (int)strlen(suuid), NULL))
+			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_update, g_sqlite_update_object_uuid, suuid, -1, NULL))
 			{
 				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
-			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_update, g_sqlite_update_object_data, data, (int)strlen(data), NULL))
+			if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_update, g_sqlite_update_object_data, data, -1, NULL))
 			{
 				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
@@ -610,7 +610,7 @@ namespace Zion
 
 			if(SQLITE_DONE!=sqlite3_step(g_sqlite_update))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
 
@@ -635,7 +635,7 @@ namespace Zion
 					printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
-				if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_remove, g_sqlite_remove_object_uuid, suuid, (int)strlen(suuid), NULL))
+				if(SQLITE_OK!=sqlite3_bind_text(g_sqlite_remove, g_sqlite_remove_object_uuid, suuid, -1, NULL))
 				{
 					printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
@@ -643,7 +643,7 @@ namespace Zion
 
 				if(SQLITE_DONE!=sqlite3_step(g_sqlite_remove))
 				{
-					printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 			}

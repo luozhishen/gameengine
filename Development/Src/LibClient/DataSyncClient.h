@@ -10,7 +10,7 @@
 namespace Zion
 {
 
-	class CDataSyncClient : public CClientComponent
+	class CDataSyncClient : public CClientComponent, public sigslot::has_slots<>
 	{
 	public:
 		CDataSyncClient(CClient* pClient);
@@ -32,7 +32,6 @@ namespace Zion
 		_U32 GetSyncFlag();
 		LiveData::CAccesser& GetAccesser();
 
-
 		// DATASYNC_S2C
 		void DS_SyncOpen(_U32 flag);
 		void DS_SyncReady();
@@ -43,6 +42,9 @@ namespace Zion
 		void DS_UpdateObject(const A_UUID& _uuid, const char* data);
 		void DS_UpdateObject(const A_UUID& _uuid, const _U8* data, _U32 len);
 		void DS_DeleteObject(const A_UUID* _uuids, _U32 count);
+
+		//
+		void OnDisconnected();
 
 		sigslot::signal0<>								_OnSyncOpen;
 		sigslot::signal0<>								_OnSyncClose;

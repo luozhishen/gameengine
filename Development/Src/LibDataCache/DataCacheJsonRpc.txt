@@ -1,7 +1,6 @@
 
 DataCache JsonRpc Api:
 
-
 function	loginUser
 arguments	token
 return		user_id
@@ -51,3 +50,7 @@ return		none
 function	deleteObject
 argements	avatar_id, uuids
 return		none
+
+function	createObjectFromDB
+argements	avatar_id, uuid
+return		[uuid, type, data]

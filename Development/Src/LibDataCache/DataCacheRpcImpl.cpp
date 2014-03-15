@@ -1,6 +1,6 @@
 #include <ZionBase.h>
 #include <JsonRPC.h>
-#include "SimpleDataCacheServer.h"
+#include "DataCacheRpcImpl.h"
 #include "DataCacheDBApi.h"
 
 namespace Zion
@@ -8,7 +8,7 @@ namespace Zion
 	namespace DataCache
 	{
 
-		class CSimpleAvatarData
+		class CAvatarData
 		{
 		public:
 			struct OBJECT_DATA
@@ -20,8 +20,8 @@ namespace Zion
 				bool _is_new;
 			};
 
-			CSimpleAvatarData(_U32 avatar_id);
-			~CSimpleAvatarData();
+			CAvatarData(_U32 avatar_id);
+			~CAvatarData();
 
 			bool CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty);
 			bool UpdateObject(const A_UUID& _uuid, const char* data);
@@ -42,16 +42,16 @@ namespace Zion
 			Set<A_UUID> m_DelList;
 		};
 
-		CSimpleAvatarData::CSimpleAvatarData(_U32 avatar_id)
+		CAvatarData::CAvatarData(_U32 avatar_id)
 		{
 			m_AvatarID = avatar_id;
 		}
 
-		CSimpleAvatarData::~CSimpleAvatarData()
+		CAvatarData::~CAvatarData()
 		{
 		}
 
-		bool CSimpleAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty)
+		bool CAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty)
 		{
 			if(m_Objects.find(_uuid)!=m_Objects.end())
 			{
@@ -64,7 +64,7 @@ namespace Zion
 			return true;
 		}
 
-		bool CSimpleAvatarData::UpdateObject(const A_UUID& _uuid, const char* data)
+		bool CAvatarData::UpdateObject(const A_UUID& _uuid, const char* data)
 		{
 			Map<A_UUID, OBJECT_DATA>::iterator i = m_Objects.find(_uuid);
 			if(i==m_Objects.end())
@@ -78,7 +78,7 @@ namespace Zion
 			return true;
 		}
 
-		bool CSimpleAvatarData::DeleteObject(const A_UUID& _uuid)
+		bool CAvatarData::DeleteObject(const A_UUID& _uuid)
 		{
 			Map<A_UUID, OBJECT_DATA>::iterator i = m_Objects.find(_uuid);
 			if(i==m_Objects.end())
@@ -91,19 +91,19 @@ namespace Zion
 			return true;
 		}
 
-		bool CSimpleAvatarData::ExistObject(const A_UUID& _uuid)
+		bool CAvatarData::ExistObject(const A_UUID& _uuid)
 		{
 			return m_Objects.find(_uuid)!=m_Objects.end() || m_DelList.find(_uuid)!=m_DelList.end();
 		}
 
-		CSimpleAvatarData::OBJECT_DATA* CSimpleAvatarData::GetObject(const A_UUID& _uuid)
+		CAvatarData::OBJECT_DATA* CAvatarData::GetObject(const A_UUID& _uuid)
 		{
 			Map<A_UUID, OBJECT_DATA>::iterator i = m_Objects.find(_uuid);
 			if(i==m_Objects.end()) return NULL;
 			return &i->second;
 		}
 
-		bool CSimpleAvatarData::IsDirty()
+		bool CAvatarData::IsDirty()
 		{
 			if(!m_DelList.empty()) return true;
 
@@ -117,11 +117,11 @@ namespace Zion
 
 		static bool db_load_callback(void* userptr, const A_UUID& _uuid, const char* type, const char* data)
 		{
-			((CSimpleAvatarData*)userptr)->CreateObject(_uuid, type, data, false, false);
+			((CAvatarData*)userptr)->CreateObject(_uuid, type, data, false, false);
 			return true;
 		}
 
-		bool CSimpleAvatarData::Load()
+		bool CAvatarData::Load()
 		{
 			if(!LoadAvatar(m_AvatarID, db_load_callback, this))
 			{
@@ -137,7 +137,7 @@ namespace Zion
 			return true;
 		}
 
-		bool CSimpleAvatarData::Save()
+		bool CAvatarData::Save()
 		{
 			Set<A_UUID>::iterator i1;
 			while(!m_DelList.empty())
@@ -178,7 +178,7 @@ namespace Zion
 			return true;
 		}
 
-		void CSimpleAvatarData::Send(const JSONRPC_RESPONSE& res)
+		void CAvatarData::Send(const JSONRPC_RESPONSE& res)
 		{
 			String ret;
 			bool first = true;
@@ -195,9 +195,9 @@ namespace Zion
 			JsonRPC_Send(res, ("[0, {" + ret + "}]").c_str());
 		}
 
-		Map<_U32, CSimpleAvatarData*> g_AvatarMap;
+		Map<_U32, CAvatarData*> g_AvatarMap;
 
-		void RPCSIMPLE_UserLogin(const JSONRPC_RESPONSE& res, const char* token)
+		void RPCIMPL_LoginUser(const JSONRPC_RESPONSE& res, const char* token)
 		{
 			_U32 user_id = LoginUser(token);
 			if(user_id!=(_U32)-1)
@@ -211,7 +211,7 @@ namespace Zion
 			return;
 		}
 
-		void RPCSIMPLE_CreateAvatar(
+		void RPCIMPL_CreateAvatar(
 				const JSONRPC_RESPONSE& res,
 				_U32 user_id,
 				_U32 server_id,
@@ -245,7 +245,7 @@ namespace Zion
 			return;
 		}
 
-		void RPCSIMPLE_DeleteAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_DeleteAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
 			if(DeleteAvatar(avatar_id))
 			{
@@ -272,7 +272,7 @@ namespace Zion
 			return true;
 		}
 
-		void RPCSIMPLE_GetAvatarList(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 server_id)
+		void RPCIMPL_GetAvatarList(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 server_id)
 		{
 			String val;
 			if(!GetAvatarList(user_id, server_id, GetAvatarListCallback, &val))
@@ -286,13 +286,13 @@ namespace Zion
 			return;
 		}
 
-		void RPCSIMPLE_GetAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_GetAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
-			CSimpleAvatarData* pAvatar = NULL;
-			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			CAvatarData* pAvatar = NULL;
+			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i==g_AvatarMap.end())
 			{
-				pAvatar = ZION_NEW CSimpleAvatarData(avatar_id);
+				pAvatar = ZION_NEW CAvatarData(avatar_id);
 				if(!pAvatar->Load())
 				{
 					ZION_DELETE pAvatar;
@@ -308,9 +308,9 @@ namespace Zion
 			pAvatar->Send(res);
 		}
 		
-		void RPCSIMPLE_SaveAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_SaveAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
-			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i==g_AvatarMap.end())
 			{
 				JsonRPC_Send(res, "[-1]");
@@ -326,9 +326,9 @@ namespace Zion
 			JsonRPC_Send(res, "[0]");
 		}
 
-		void RPCSIMPLE_ClearAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_ClearAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
-			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i==g_AvatarMap.end())
 			{
 				JsonRPC_Send(res, "[-1]");
@@ -344,22 +344,17 @@ namespace Zion
 			JsonRPC_Send(res, "[0]");
 		}
 
-		void RPCSIMPLE_KeepAlive(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_KeepAlive(const JSONRPC_RESPONSE& res, _U32 avatar_id)
 		{
 			JsonRPC_Send(res, "[0]");
 		}
 
-		void RPCSIMPLE_ExecuteDDL(const JSONRPC_RESPONSE& res, _U32 avatar_id, const char* method_name, const _U8* buf, _U32 len)
+		void RPCIMPL_CreateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
 		{
-			JsonRPC_Send(res, "[0]");
-		}
-
-		void RPCSIMPLE_CreateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
-		{
-			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())
 			{
-				CSimpleAvatarData* pAvatar = i->second;
+				CAvatarData* pAvatar = i->second;
 				if(pAvatar->CreateObject(_uuid, type, data, false, true))
 				{
 					JsonRPC_Send(res, "[0]");
@@ -369,12 +364,12 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void RPCSIMPLE_UpdateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* data)
+		void RPCIMPL_UpdateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* data)
 		{
-			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())
 			{
-				CSimpleAvatarData* pAvatar = i->second;
+				CAvatarData* pAvatar = i->second;
 				if(pAvatar->UpdateObject(_uuid, data))
 				{
 					JsonRPC_Send(res, "[0]");
@@ -384,12 +379,12 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void RPCSIMPLE_DeleteObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID* _uuids, _U32 count)
+		void RPCIMPL_DeleteObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID* _uuids, _U32 count)
 		{
-			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())
 			{
-				CSimpleAvatarData* pAvatar = i->second;
+				CAvatarData* pAvatar = i->second;
 				for(_U32 l=0; l<count; l++)
 				{
 					pAvatar->DeleteObject(_uuids[l]);
@@ -401,17 +396,17 @@ namespace Zion
 		}
 
 		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid);
-		void RPCSIMPLE_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid)
+		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid)
 		{
-			Map<_U32, CSimpleAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
+			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())
 			{
-				CSimpleAvatarData* pAvatar = i->second;
+				CAvatarData* pAvatar = i->second;
 				if(!pAvatar->ExistObject(_uuid))
 				{
 					if(QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
 					{
-						CSimpleAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
+						CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
 						if(pObject)
 						{
 							char suuid[100];
@@ -425,9 +420,9 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void RPCSIMPLE_FlushAllData()
+		void RPCIMPL_FlushAllData()
 		{
-			Map<_U32, CSimpleAvatarData*>::iterator i;
+			Map<_U32, CAvatarData*>::iterator i;
 			for(i=g_AvatarMap.begin(); i!=g_AvatarMap.end(); i++)
 			{
 				if(!i->second->Save())

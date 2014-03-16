@@ -22,11 +22,13 @@
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="SessionJsonRpc.cpp" />
     <ClCompile Include="SessionRpcImpl.cpp" />
+    <ClCompile Include="UserSession.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Session.h" />
     <ClInclude Include="SessionJsonRpc.h" />
     <ClInclude Include="SessionRpcImpl.h" />
+    <ClInclude Include="UserSession.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SessionJsonRpc.txt" />

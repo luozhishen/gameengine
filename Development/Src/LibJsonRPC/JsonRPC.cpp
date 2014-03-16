@@ -177,9 +177,9 @@ namespace Zion
 	bool JsonRPC_Send(const JSONRPC_RESPONSE& res, const char* args)
 	{
 		if(res.seq==0) return true;
-		ZION_ASSERT(res.server!=NULL && res.conn!=(_U32)-1);
-		if(res.server==NULL || res.conn==(_U32)-1) return false;
-		return ((CJsonRPCServer*)res.server)->Send(res.conn, res.seq, args);
+		ZION_ASSERT(res.conn!=(_U32)-1);
+		if(res.conn==(_U32)-1) return false;
+		return g_JsonRPCServer.Send(res.conn, res.seq, args);
 	}
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep)
@@ -516,7 +516,7 @@ namespace Zion
 			return;
 		}
 
-		JSONRPC_RESPONSE res = { this, pConn->GetID(), seq };
+		JSONRPC_RESPONSE res = { pConn->GetID(), seq };
 
 		i->second(res, data);
 	}

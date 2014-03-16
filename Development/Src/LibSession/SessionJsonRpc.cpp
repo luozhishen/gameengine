@@ -40,23 +40,7 @@ namespace Zion
 		}
 
 		void JsonRpc_LockUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_LockUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq);
-		{
-			for(;;)
-			{
-				if(args.size()!=2) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				RPCIMPL_LockUser(res, (_U32)user_id.asUInt(), (_U32)user_seq.asUInt());
-				return;
-			}
-			JsonRPC_Send(res, "[-1]");
-		}
-
-		void JsonRpc_UnlockUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_UnlockUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, const char* session_data);
+		// void RPCIMPL_LockUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, _U32 req_seq)
 		{
 			for(;;)
 			{
@@ -65,9 +49,29 @@ namespace Zion
 				if(!user_id.isUInt()) break;
 				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
 				if(!user_seq.isUInt()) break;
-				Json::Value session_data = args.get((Json::UInt)2, Json::nullValue);
+				Json::Value req_seq = args.get((Json::UInt)2, Json::nullValue);
+				if(!req_seq.isUInt()) break;
+				RPCIMPL_LockUser(res, (_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)req_seq.asUInt());
+				return;
+			}
+			JsonRPC_Send(res, "[-1]");
+		}
+
+		void JsonRpc_UnlockUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		// void RPCIMPL_UnlockUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, const char* last_response, const char* session_data)
+		{
+			for(;;)
+			{
+				if(args.size()!=4) break;
+				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
+				if(!user_id.isUInt()) break;
+				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
+				if(!user_seq.isUInt()) break;
+				Json::Value last_response = args.get((Json::UInt)2, Json::nullValue);
+				if(!last_response.isString()) break;
+				Json::Value session_data = args.get((Json::UInt)3, Json::nullValue);
 				if(!user_seq.isString()) break;
-				RPCIMPL_UnlockUser(res, (_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), user_seq.asCString());
+				RPCIMPL_UnlockUser(res, (_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), last_response.asCString(),user_seq.asCString());
 				return;
 			}
 			JsonRPC_Send(res, "[-1]");
@@ -78,16 +82,18 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.size()!=4) break;
+				if(args.size()!=5) break;
 				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
 				if(!user_id.isUInt()) break;
 				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
 				if(!user_seq.isUInt()) break;
-				Json::Value avatar_id = args.get((Json::UInt)2, Json::nullValue);
+				Json::Value server_id = args.get((Json::UInt)2, Json::nullValue);
+				if(!server_id.isUInt()) break;
+				Json::Value avatar_id = args.get((Json::UInt)3, Json::nullValue);
 				if(!avatar_id.isUInt()) break;
-				Json::Value avatar_name = args.get((Json::UInt)3, Json::nullValue);
+				Json::Value avatar_name = args.get((Json::UInt)4, Json::nullValue);
 				if(!avatar_name.isString()) break;
-				RPCIMPL_BindAvatar(res, (_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)avatar_id.asUInt(), avatar_name.asCString());
+				RPCIMPL_BindAvatar(res, (_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)server_id.asUInt(), (_U32)avatar_id.asUInt(), avatar_name.asCString());
 				return;
 			}
 			JsonRPC_Send(res, "[-1]");
@@ -130,12 +136,14 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.size()!=2) break;
-				Json::Value avatar_id = args.get((Json::UInt)0, Json::nullValue);
+				if(args.size()!=3) break;
+				Json::Value server_id = args.get((Json::UInt)0, Json::nullValue);
+				if(!server_id.isUInt()) break;
+				Json::Value avatar_id = args.get((Json::UInt)1, Json::nullValue);
 				if(!avatar_id.isUInt()) break;
-				Json::Value msg = args.get((Json::UInt)1, Json::nullValue);
+				Json::Value msg = args.get((Json::UInt)2, Json::nullValue);
 				if(!msg.isString()) break;
-				RPCIMPL_SendToAvatarID(res, (_U32)avatar_id.asUInt(), msg.asCString());
+				RPCIMPL_SendToAvatarID(res, (_U32)server_id.asUInt(), (_U32)avatar_id.asUInt(), msg.asCString());
 				return;
 			}
 			JsonRPC_Send(res, "[-1]");
@@ -146,12 +154,14 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.size()!=2) break;
-				Json::Value avatar_name = args.get((Json::UInt)0, Json::nullValue);
+				if(args.size()!=3) break;
+				Json::Value server_id = args.get((Json::UInt)0, Json::nullValue);
+				if(!server_id.isUInt()) break;
+				Json::Value avatar_name = args.get((Json::UInt)1, Json::nullValue);
 				if(!avatar_name.isString()) break;
-				Json::Value msg = args.get((Json::UInt)1, Json::nullValue);
+				Json::Value msg = args.get((Json::UInt)2, Json::nullValue);
 				if(!msg.isString()) break;
-				RPCIMPL_SendToAvatarName(res, avatar_name.asCString(), msg.asCString());
+				RPCIMPL_SendToAvatarName(res, (_U32)server_id.asUInt(), avatar_name.asCString(), msg.asCString());
 				return;
 			}
 			JsonRPC_Send(res, "[-1]");

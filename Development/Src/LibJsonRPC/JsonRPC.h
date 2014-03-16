@@ -11,7 +11,6 @@ namespace Zion
 	
 	typedef struct JSONRPC_RESPONSE
 	{
-		CJsonRPCServer*	server;
 		_U32			conn;
 		_U32			seq;
 	} JSONRPC_RESPONSE;

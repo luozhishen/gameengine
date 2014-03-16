@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="DataCache.cpp" />
     <ClCompile Include="DataCacheDBApi.cpp" />
+    <ClCompile Include="DataCacheDBMysqlApi.cpp" />
     <ClCompile Include="DataCacheJsonRpc.cpp" />
     <ClCompile Include="DataCacheRpcImpl.cpp" />
     <ClCompile Include="sqlite\SqliteLib.c" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="DataCache.h" />
     <ClInclude Include="DataCacheDBApi.h" />
+    <ClInclude Include="DataCacheDBMysqlApi.h" />
     <ClInclude Include="DataCacheJsonRpc.h" />
     <ClInclude Include="DataCacheRpcImpl.h" />
   </ItemGroup>

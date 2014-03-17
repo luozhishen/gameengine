@@ -1,7 +1,7 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <JsonRPC.h>
-#include "DataCache.h"
+#include "DataCacheServer.h"
 #include "DataCacheJsonRpc.h"
 #include "DataCacheRpcImpl.h"
 #include "DataCacheDBApi.h"
@@ -109,4 +109,9 @@ namespace Zion
 		}
 
 	}
+}
+
+int main(int argc, char* argv[])
+{
+	return Zion::DataCache::Main(argc, argv);
 }

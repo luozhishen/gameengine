@@ -25,14 +25,10 @@ namespace Zion
 		void RPCIMPL_LogoutUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq)
 		// return errcode
 		{
-			CUserSession* session = g_Manager.GetUser(user_id, user_seq);
-			if(session)
+			if(g_Manager.Logout(user_id, user_seq))
 			{
-				if(session->Logout())
-				{
-					JsonRPC_Send(res, "[0]");
-					return;
-				}
+				JsonRPC_Send(res, "[0]");
+				return;
 			}
 			JsonRPC_Send(res, "[-1]");
 		}
@@ -65,7 +61,7 @@ namespace Zion
 			{
 				if(session->Unlock(last_response, session_data))
 				{
-					JsonRPC_Send(res, StringFormat("[0,%u,%u,\"\",\"%s\"]", session->GetServerID(), session->GetAvatarID(), session->GetSessionData().c_str()).c_str());
+					JsonRPC_Send(res, "[0]");
 					return;
 				}
 			}

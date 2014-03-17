@@ -1,6 +1,6 @@
 #include <ZionBase.h>
 #include "DataCacheDBApi.h"
-#include "DataCache.h"
+#include "DataCacheServer.h"
 
 #include "sqlite\sqlite3.h"
 #include <time.h>

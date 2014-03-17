@@ -19,44 +19,60 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="SessionJsonRpc.cpp" />
-    <ClCompile Include="SessionRpcImpl.cpp" />
-    <ClCompile Include="UserSession.cpp" />
+    <ClCompile Include="DataCacheServer.cpp" />
+    <ClCompile Include="DataCacheDBApi.cpp" />
+    <ClCompile Include="DataCacheDBMysqlApi.cpp" />
+    <ClCompile Include="DataCacheJsonRpc.cpp" />
+    <ClCompile Include="DataCacheRpcImpl.cpp" />
+    <ClCompile Include="sqlite\SqliteLib.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="SessionJsonRpc.h" />
-    <ClInclude Include="SessionRpcImpl.h" />
-    <ClInclude Include="UserSession.h" />
+    <ClInclude Include="DataCacheServer.h" />
+    <ClInclude Include="DataCacheDBApi.h" />
+    <ClInclude Include="DataCacheDBMysqlApi.h" />
+    <ClInclude Include="DataCacheJsonRpc.h" />
+    <ClInclude Include="DataCacheRpcImpl.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SessionJsonRpc.txt" />
+    <None Include="DataCacheJsonRpc.txt" />
+    <None Include="zion_db_mysql.sql" />
+    <None Include="zion_db_sqlite.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibBase\LibBase.vcxproj">
+      <Project>{73a3a0da-85db-4571-9381-686cd246e80b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibJsonRPC\LibJsonRPC.vcxproj">
+      <Project>{3e65f4ac-19e1-479b-acab-f929b699ebb9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibUV\LibUV.vcxproj">
+      <Project>{6c67909c-c749-4ae0-9f49-64b5d60b7d4c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{13624C49-B8FF-403C-84F3-48BDCCCBE411}</ProjectGuid>
+    <ProjectGuid>{FF357A6F-54A9-459A-B9D0-FF34FB237EB8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LibSession</RootNamespace>
+    <RootNamespace>DataCacheServer</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>

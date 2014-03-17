@@ -1,7 +1,7 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <JsonRPC.h>
-#include "DataCache.h"
+#include "DataCacheServer.h"
 #include "DataCacheJsonRPC.h"
 #include "DataCacheRpcImpl.h"
 

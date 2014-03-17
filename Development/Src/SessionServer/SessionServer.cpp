@@ -1,7 +1,7 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <JsonRPC.h>
-#include "Session.h"
+#include "SessionServer.h"
 #include "SessionJsonRpc.h"
 
 #include <stdio.h>
@@ -87,4 +87,9 @@ namespace Zion
 		}
 
 	}
+}
+
+int main(int argc, char* argv[])
+{
+	return Zion::Session::Main(argc, argv);
 }

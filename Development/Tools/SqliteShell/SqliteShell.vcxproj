@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Src\LibDataCache\sqlite\SqliteLib.c" />
-    <ClCompile Include="..\..\Src\LibDataCache\sqlite\SqliteShell.c" />
+    <ClCompile Include="..\..\Src\DataCacheServer\sqlite\SqliteLib.c" />
+    <ClCompile Include="..\..\Src\DataCacheServer\sqlite\SqliteShell.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E437BAE3-9D6B-4EED-B282-2834BE8ADFFB}</ProjectGuid>

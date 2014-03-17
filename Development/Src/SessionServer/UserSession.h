@@ -29,6 +29,7 @@ namespace Zion
 
 		class CDomain
 		{
+			friend class CUserSession;
 		public:
 			CDomain(CManager* pManager, _U32 nDomainID);
 			~CDomain();
@@ -60,6 +61,7 @@ namespace Zion
 			CDomain* GetDomain(_U32 nDomainID);
 
 			bool Logout();
+			bool IsLocked();
 			bool Lock();
 			bool Unlock(const char* last_response, const char* session_data);
 			bool BindAvatar(_U32 server_id, _U32 avatar_id, const char* avatar_name);
@@ -77,6 +79,7 @@ namespace Zion
 			CManager* m_pManager;
 			_U32 m_nUserID;
 			_U32 m_nUserSeq;
+			bool m_bLocked;
 			_U32 m_nServerID;
 			_U32 m_nAvatarID;
 			String m_AvatarName;
@@ -84,12 +87,14 @@ namespace Zion
 			Map<_U32, CDomain*> m_Domains;
 			_U32 m_nReqSeq;
 			String m_LastResponse;
+			String m_SessionData;
 			_U32 m_nMsgSeq;
 			String m_LastMsg;
 		};
 
 		class CManager
 		{
+			friend class CUserSession;
 		public:
 			CManager();
 			~CManager();
@@ -100,10 +105,13 @@ namespace Zion
 			CUserSession* GetAvatar(_U32 server_id, _U32 avatar_id);
 			CUserSession* GetAvatar(_U32 server_id, const char* avatar_name);
 			CUserSession* Login(_U32 nUserID);
+			bool Logout(_U32 nUserID, _U32 nUserSeq);
 
-		private:
+		protected:
 			Map<_U32, CDomain*> m_Domains;
 			Map<_U32, CUserSession*> m_Users;
+			Map<_U64, CUserSession*> m_AvatarIDs;
+			Map<String, CUserSession*> m_AvatarNames;
 		};
 	}
 }

@@ -195,7 +195,7 @@ int bsdiff(u_char* old, off_t oldsize, u_char* newp, off_t newsize, FILE* pf)
 {
 	size_t offset;
 	off_t *I=NULL,*V=NULL;
-	off_t scan,pos,len;
+	off_t scan,pos = 0,len;
 	off_t lastscan,lastpos,lastoffset;
 	off_t oldscore,scsc;
 	off_t s,Sf,lenf,Sb,lenb;

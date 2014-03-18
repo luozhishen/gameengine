@@ -596,6 +596,7 @@ namespace Zion
 		}
 		if(res->count==1)
 		{
+			uv_close((uv_handle_t*)&res->async, NULL);
 			ZION_DELETE res;
 			return;
 		}

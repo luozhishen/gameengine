@@ -201,7 +201,7 @@ namespace Zion
 				{
 					String out;
 					_U32 next_seq = session->GetMsg(msg_seq, out);
-					JsonRPC_Send(res, StringFormat("[0,%u,%s]", msg_seq+1, out.c_str()).c_str());
+					JsonRPC_Send(res, StringFormat("[0,%u,%s]", next_seq, out.c_str()).c_str());
 					return;
 				}
 				if(msg_seq==session->GetMsgSeq()+1)

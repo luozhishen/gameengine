@@ -6,18 +6,18 @@ namespace Zion
 	namespace DataCache
 	{
 
-		void JsonRPC_LoginUser(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_CreateAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_DeleteAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_GetAvatarList(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_GetAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_SaveAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_ClearAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_KeepAlive(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_CreateObject(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_DeleteObject(const JSONRPC_RESPONSE& res, const Json::Value& args);
-		void JsonRPC_LoadObjectFromDB(const JSONRPC_RESPONSE& res, const Json::Value& args);
+		void JsonRPC_LoginUser(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_CreateAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_DeleteAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_GetAvatarList(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_GetAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_SaveAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_ClearAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_KeepAlive(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_CreateObject(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_DeleteObject(const JSONRPC_RESPONSE* res, const Json::Value& args);
+		void JsonRPC_LoadObjectFromDB(const JSONRPC_RESPONSE* res, const Json::Value& args);
 
 	}
 }

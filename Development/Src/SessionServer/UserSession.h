@@ -73,7 +73,7 @@ namespace Zion
 			bool SendMsg(CMessage& OutMsg);
 			_U32 GetMsgSeq();
 			_U32 GetMsg(_U32 nMsgSeq, String& out);
-			bool WaitMsg(const JSONRPC_RESPONSE& res);
+			bool WaitMsg(const JSONRPC_RESPONSE* res);
 
 		private:
 			CManager* m_pManager;

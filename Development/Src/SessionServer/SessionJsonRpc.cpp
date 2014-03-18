@@ -9,8 +9,8 @@ namespace Zion
 	namespace Session
 	{
 
-		void JsonRpc_LoginUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_LoginUser(const JSONRPC_RESPONSE& res, _U32 user_id);
+		void JsonRpc_LoginUser(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_LoginUser(const JSONRPC_RESPONSE* res, _U32 user_id);
 		{
 			for(;;)
 			{
@@ -23,8 +23,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_LogoutUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_LogoutUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq);
+		void JsonRpc_LogoutUser(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_LogoutUser(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq);
 		{
 			for(;;)
 			{
@@ -39,8 +39,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_LockUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_LockUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, _U32 req_seq)
+		void JsonRpc_LockUser(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_LockUser(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq, _U32 req_seq)
 		{
 			for(;;)
 			{
@@ -57,8 +57,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_UnlockUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_UnlockUser(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, const char* last_response, const char* session_data)
+		void JsonRpc_UnlockUser(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_UnlockUser(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq, const char* last_response, const char* session_data)
 		{
 			for(;;)
 			{
@@ -77,8 +77,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_BindAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_BindAvatar(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, _U32 avatar_id, const char* avatar_name);
+		void JsonRpc_BindAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_BindAvatar(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq, _U32 avatar_id, const char* avatar_name);
 		{
 			for(;;)
 			{
@@ -99,8 +99,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_UnbindAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_UnbindAvatar(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq);
+		void JsonRpc_UnbindAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_UnbindAvatar(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq);
 		{
 			for(;;)
 			{
@@ -115,8 +115,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_SendToUserID(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_SendToUserID(const JSONRPC_RESPONSE& res, _U32 user_id, const char* msg);
+		void JsonRpc_SendToUserID(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_SendToUserID(const JSONRPC_RESPONSE* res, _U32 user_id, const char* msg);
 		{
 			for(;;)
 			{
@@ -131,8 +131,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_SendToAvatarID(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_SendToAvatarID(const JSONRPC_RESPONSE& res, _U32 avatar_id, const char* msg);
+		void JsonRpc_SendToAvatarID(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_SendToAvatarID(const JSONRPC_RESPONSE* res, _U32 avatar_id, const char* msg);
 		{
 			for(;;)
 			{
@@ -149,8 +149,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_SendToAvatarName(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_SendToAvatarName(const JSONRPC_RESPONSE& res, const char* avatar_name, const char* msg);
+		void JsonRpc_SendToAvatarName(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_SendToAvatarName(const JSONRPC_RESPONSE* res, const char* avatar_name, const char* msg);
 		{
 			for(;;)
 			{
@@ -167,8 +167,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_JoinDomain(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_JoinDomain(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, _U32 domain_id);
+		void JsonRpc_JoinDomain(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_JoinDomain(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq, _U32 domain_id);
 		{
 			for(;;)
 			{
@@ -185,8 +185,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_LeaveDomain(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_LeaveDomain(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, _U32 domain_id);
+		void JsonRpc_LeaveDomain(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_LeaveDomain(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq, _U32 domain_id);
 		{
 			for(;;)
 			{
@@ -203,8 +203,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_SendToDomain(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_SendToDomain(const JSONRPC_RESPONSE& res, _U32 domain_id, const char* msg);
+		void JsonRpc_SendToDomain(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_SendToDomain(const JSONRPC_RESPONSE* res, _U32 domain_id, const char* msg);
 		{
 			for(;;)
 			{
@@ -219,8 +219,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_WaitForMessage(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_WaitForMessage(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, _U32 msg_seq);
+		void JsonRpc_WaitForMessage(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_WaitForMessage(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq, _U32 msg_seq);
 		{
 			for(;;)
 			{
@@ -237,8 +237,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRpc_GetMessage(const JSONRPC_RESPONSE& res, const Json::Value& args)
-		// void RPCIMPL_GetMessage(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 user_seq, _U32 msg_seq);
+		void JsonRpc_GetMessage(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		// void RPCIMPL_GetMessage(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 user_seq, _U32 msg_seq);
 		{
 			for(;;)
 			{

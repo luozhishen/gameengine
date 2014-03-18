@@ -34,7 +34,7 @@ namespace Zion
 
 			bool Load();
 			bool Save();
-			void Send(const JSONRPC_RESPONSE& res);
+			void Send(const JSONRPC_RESPONSE* res);
 
 		private:
 			_U32 m_AvatarID;
@@ -178,7 +178,7 @@ namespace Zion
 			return true;
 		}
 
-		void CAvatarData::Send(const JSONRPC_RESPONSE& res)
+		void CAvatarData::Send(const JSONRPC_RESPONSE* res)
 		{
 			String ret;
 			bool first = true;
@@ -197,7 +197,7 @@ namespace Zion
 
 		Map<_U32, CAvatarData*> g_AvatarMap;
 
-		void RPCIMPL_LoginUser(const JSONRPC_RESPONSE& res, const char* token)
+		void RPCIMPL_LoginUser(const JSONRPC_RESPONSE* res, const char* token)
 		{
 			_U32 user_id = LoginUser(token);
 			if(user_id!=(_U32)-1)
@@ -212,7 +212,7 @@ namespace Zion
 		}
 
 		void RPCIMPL_CreateAvatar(
-				const JSONRPC_RESPONSE& res,
+				const JSONRPC_RESPONSE* res,
 				_U32 user_id,
 				_U32 server_id,
 				const char* avatar_name,
@@ -245,7 +245,7 @@ namespace Zion
 			return;
 		}
 
-		void RPCIMPL_DeleteAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_DeleteAvatar(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
 			if(DeleteAvatar(avatar_id))
 			{
@@ -272,7 +272,7 @@ namespace Zion
 			return true;
 		}
 
-		void RPCIMPL_GetAvatarList(const JSONRPC_RESPONSE& res, _U32 user_id, _U32 server_id)
+		void RPCIMPL_GetAvatarList(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 server_id)
 		{
 			String val;
 			if(!GetAvatarList(user_id, server_id, GetAvatarListCallback, &val))
@@ -286,7 +286,7 @@ namespace Zion
 			return;
 		}
 
-		void RPCIMPL_GetAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_GetAvatar(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
 			CAvatarData* pAvatar = NULL;
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
@@ -308,7 +308,7 @@ namespace Zion
 			pAvatar->Send(res);
 		}
 		
-		void RPCIMPL_SaveAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_SaveAvatar(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i==g_AvatarMap.end())
@@ -326,7 +326,7 @@ namespace Zion
 			JsonRPC_Send(res, "[0]");
 		}
 
-		void RPCIMPL_ClearAvatar(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_ClearAvatar(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i==g_AvatarMap.end())
@@ -344,12 +344,12 @@ namespace Zion
 			JsonRPC_Send(res, "[0]");
 		}
 
-		void RPCIMPL_KeepAlive(const JSONRPC_RESPONSE& res, _U32 avatar_id)
+		void RPCIMPL_KeepAlive(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
 			JsonRPC_Send(res, "[0]");
 		}
 
-		void RPCIMPL_CreateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
+		void RPCIMPL_CreateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
 		{
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())
@@ -364,7 +364,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void RPCIMPL_UpdateObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid, const char* data)
+		void RPCIMPL_UpdateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid, const char* data)
 		{
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())
@@ -379,7 +379,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void RPCIMPL_DeleteObject(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID* _uuids, _U32 count)
+		void RPCIMPL_DeleteObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID* _uuids, _U32 count)
 		{
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())
@@ -395,8 +395,8 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid);
-		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE& res, _U32 avatar_id, const A_UUID& _uuid)
+		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid);
+		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid)
 		{
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
 			if(i!=g_AvatarMap.end())

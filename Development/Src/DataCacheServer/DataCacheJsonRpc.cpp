@@ -10,7 +10,7 @@ namespace Zion
 	namespace DataCache
 	{
 
-		void JsonRPC_LoginUser(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_LoginUser(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _token;
 			for(;;)
@@ -26,7 +26,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_CreateAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_CreateAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _user_id;
 			Json::Value _server_id;
@@ -63,7 +63,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_DeleteAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_DeleteAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -77,7 +77,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_GetAvatarList(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_GetAvatarList(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _user_id;
 			Json::Value _server_id;
@@ -94,7 +94,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_GetAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_GetAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -108,7 +108,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_SaveAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_SaveAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -122,7 +122,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_ClearAvatar(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_ClearAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -136,7 +136,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_KeepAlive(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_KeepAlive(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -150,7 +150,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_CreateObject(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_CreateObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value _suuid;
@@ -176,7 +176,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value _suuid;
@@ -199,7 +199,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_DeleteObject(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_DeleteObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value _suuid;
@@ -227,7 +227,7 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void JsonRPC_loadObjectFromDB(const JSONRPC_RESPONSE& res, const Json::Value& args)
+		void JsonRPC_loadObjectFromDB(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value juuid;

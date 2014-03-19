@@ -97,6 +97,21 @@ namespace Zion
 			NULL
 		};
 
+		static CRITICAL_SECTION g_GlobalLocker;
+
+		class CAutoLocker
+		{
+		public:
+			CAutoLocker()
+			{
+				EnterCriticalSection(&g_GlobalLocker);
+			}
+			~CAutoLocker()
+			{
+				LeaveCriticalSection(&g_GlobalLocker);
+			}
+		};
+
 		static int sqlite_callback(void* userptr, int argc, char** argv,char** name)
 		{
 			*((int*)userptr) = atoi(argv[0]);
@@ -105,6 +120,7 @@ namespace Zion
 
 		bool InitDatabase()
 		{
+			InitializeCriticalSection(&g_GlobalLocker);
 			sqlite3_os_init();
 			sqlite3_initialize();
 
@@ -272,10 +288,14 @@ namespace Zion
 
 			sqlite3_shutdown();
 			sqlite3_os_end();
+			DeleteCriticalSection(&g_GlobalLocker);
 		}
 
 		_U32 LoginUser(const char* token)
 		{
+			CAutoLocker locker;
+			printf("LoginUser token = %s\n", token);
+
 			if(SQLITE_OK!=sqlite3_reset(g_sqlite_login))
 			{
 				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
@@ -294,7 +314,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(g_sqlite_login, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 
@@ -319,7 +339,7 @@ namespace Zion
 				int ret = sqlite3_step(g_sqlite_adduser);
 				if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
 				{
-					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(g_sqlite_adduser, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 				user_id = (_U32)sqlite3_last_insert_rowid(g_sqlite);
@@ -363,7 +383,7 @@ namespace Zion
 			ret = sqlite3_step(g_sqlite_history);
 			if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
 			{
-				printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				printf("error in sqlite3_step(g_sqlite_history, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return (_U32)-1;
 			}
 
@@ -372,6 +392,8 @@ namespace Zion
 
 		_U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
 		{
+			CAutoLocker locker;
+
 			if(SQLITE_OK!=sqlite3_reset(g_sqlite_create))
 			{
 				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
@@ -403,7 +425,7 @@ namespace Zion
 			ret = sqlite3_step(g_sqlite_create);
 			if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
 			{
-				printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				printf("error in sqlite3_step(g_sqlite_create, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return (_U32)-1;
 			}
 
@@ -412,6 +434,8 @@ namespace Zion
 
 		bool DeleteAvatar(_U32 avatar_id)
 		{
+			CAutoLocker locker;
+
 			if(SQLITE_OK!=sqlite3_reset(g_sqlite_delete))
 			{
 				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
@@ -428,7 +452,7 @@ namespace Zion
 			ret = sqlite3_step(g_sqlite_delete);
 			if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
 			{
-				printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				printf("error in sqlite3_step(g_sqlite_delete, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
 			return true;
@@ -436,6 +460,8 @@ namespace Zion
 
 		bool GetAvatarList(_U32 user_id, _U32 server_id, bool (*callback)(void*, _U32, _U32, const char*, const char*), void* userptr)
 		{
+			CAutoLocker locker;
+
 			if(SQLITE_OK!=sqlite3_reset(g_sqlite_list))
 			{
 				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
@@ -460,7 +486,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(g_sqlite_list, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 
@@ -478,6 +504,8 @@ namespace Zion
 
 		bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
 		{
+			CAutoLocker locker;
+
 			if(SQLITE_OK!=sqlite3_reset(g_sqlite_check))
 			{
 				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
@@ -498,7 +526,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(g_sqlite_check, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 
@@ -534,7 +562,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(g_sqlite_load, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 
@@ -555,6 +583,8 @@ namespace Zion
 
 		bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
 		{
+			CAutoLocker locker;
+
 			char suuid[100];
 			AUuidToString(_uuid, suuid);
 
@@ -587,7 +617,7 @@ namespace Zion
 
 			if(SQLITE_DONE!=sqlite3_step(g_sqlite_insert))
 			{
-				printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				printf("error in sqlite3_step(g_sqlite_insert, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
 
@@ -596,6 +626,8 @@ namespace Zion
 
 		bool UpdateAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* data)
 		{
+			CAutoLocker locker;
+
 			char suuid[100];
 			AUuidToString(_uuid, suuid);
 
@@ -623,7 +655,7 @@ namespace Zion
 
 			if(SQLITE_DONE!=sqlite3_step(g_sqlite_update))
 			{
-				printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+				printf("error in sqlite3_step(g_sqlite_update, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 				return false;
 			}
 
@@ -632,6 +664,8 @@ namespace Zion
 
 		bool DeleteAvatarObject(_U32 avatar_id, const A_UUID* _uuids, _U32 count)
 		{
+			CAutoLocker locker;
+
 			char suuid[100];
 			for(_U32 i=0; i<count; i++)
 			{
@@ -656,7 +690,7 @@ namespace Zion
 
 				if(SQLITE_DONE!=sqlite3_step(g_sqlite_remove))
 				{
-					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(g_sqlite_remove, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 			}
@@ -665,6 +699,8 @@ namespace Zion
 
 		bool QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
 		{
+			CAutoLocker locker;
+
 			char suuid[100];
 			AUuidToString(_uuid, suuid);
 
@@ -692,7 +728,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(%d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
+					printf("error in sqlite3_step(g_sqlite_query, %d), %s", sqlite3_errcode(g_sqlite), sqlite3_errmsg(g_sqlite));
 					return false;
 				}
 

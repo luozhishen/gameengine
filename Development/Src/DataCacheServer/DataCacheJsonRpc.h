@@ -6,6 +6,7 @@ namespace Zion
 	namespace DataCache
 	{
 
+		void JsonRPC_Echo(const JSONRPC_RESPONSE* res, const Json::Value& args);
 		void JsonRPC_LoginUser(const JSONRPC_RESPONSE* res, const Json::Value& args);
 		void JsonRPC_CreateAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args);
 		void JsonRPC_DeleteAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args);

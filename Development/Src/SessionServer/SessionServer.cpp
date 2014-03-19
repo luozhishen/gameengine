@@ -12,6 +12,7 @@ namespace Zion
 	{
 
 		String CONFIG_RPCEP("0.0.0.0:1980");
+		bool CONFIG_SINGLETHREAD = false;
 
 		static bool ParseArgs(int argc, char* argv[])
 		{
@@ -28,6 +29,12 @@ namespace Zion
 				if(name=="-rpcep")
 				{
 					CONFIG_RPCEP = value;
+					continue;
+				}
+				if(name=="-singlethread")
+				{
+					CONFIG_SINGLETHREAD = true;
+					if(value=="false") CONFIG_SINGLETHREAD = false;
 					continue;
 				}
 
@@ -53,7 +60,7 @@ namespace Zion
 			printf("\n");
 
 			// step 2: start rpc server
-			CJsonRPCServer* pServer = JsonRPC_Create(false);
+			CJsonRPCServer* pServer = JsonRPC_Create(CONFIG_SINGLETHREAD);
 			JsonRPC_Bind(pServer, "loginUser",			JsonRpc_LoginUser);
 			JsonRPC_Bind(pServer, "logoutUser",			JsonRpc_LogoutUser);
 			JsonRPC_Bind(pServer, "lockUser",			JsonRpc_LockUser);

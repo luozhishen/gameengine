@@ -10,6 +10,11 @@ namespace Zion
 	namespace DataCache
 	{
 
+		void JsonRPC_Echo(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		{
+			JsonRPC_Send(res, "[0]");
+		}
+
 		void JsonRPC_LoginUser(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _token;

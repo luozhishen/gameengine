@@ -4,6 +4,7 @@
 
 #include <wx/wx.h>
 #include <wx/string.h>
+#include <ZionDefines.h>
 #include <ZionSTL.h>
 
 #include "OLEAutoExcelWrapper.h"

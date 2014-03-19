@@ -1,3 +1,4 @@
+#include <ZionDefines.h>
 #include <ZionSTL.h>
 #include "mo_common.h"
 

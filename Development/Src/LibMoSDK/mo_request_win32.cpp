@@ -4,6 +4,7 @@
 #pragma warning(disable:4996)
 #pragma warning(disable:4121)
 
+#include <ZionDefines.h>
 #include <ZionSTL.h>
 #include <crtdbg.h>
 #include "mosdk.h"

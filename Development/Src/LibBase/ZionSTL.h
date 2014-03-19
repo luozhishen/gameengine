@@ -10,11 +10,11 @@
 
 namespace Zion
 {
-
+/*
 	void* ZionMalloc(unsigned int size);
 	void* ZionRealloc(void* p, unsigned int size);
 	void ZionFree(void* p);
-
+*/
 	template <class T>
 	class ZionSTLAlocator {
 	public:
@@ -41,12 +41,12 @@ namespace Zion
 		pointer allocate(size_type n, typename ZionSTLAlocator<T>::const_pointer hint = 0)
 		{
 			(void)(hint);
-			return (pointer)ZionMalloc((unsigned int)n*sizeof(T));
+			return (pointer)ZION_ALLOC((unsigned int)n*sizeof(T));
 		};
 		void deallocate(pointer p, size_type n)
 		{
 			(void)(n);
-			ZionFree(p);
+			ZION_FREE(p);
 		}
 
 		size_type max_size() const throw()

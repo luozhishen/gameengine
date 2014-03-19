@@ -1,5 +1,6 @@
 #ifdef ANDROID
 
+#include <ZionDefines.h>
 #include <ZionSTL.h>
 #include "mosdk.h"
 

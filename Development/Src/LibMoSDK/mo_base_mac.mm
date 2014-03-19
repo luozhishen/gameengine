@@ -1,5 +1,6 @@
 #ifndef _WIN32
 
+#include <ZionDefines.h>
 #include <ZionSTL.h>
 #include "mosdk.h"
 

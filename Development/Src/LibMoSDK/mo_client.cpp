@@ -1,6 +1,7 @@
 #pragma warning(disable:4100)
 #pragma warning(disable:4996)
 
+#include <ZionDefines.h>
 #include <ZionSTL.h>
 #include "mosdk.h"
 #include "mo_common.h"

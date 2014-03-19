@@ -29,13 +29,19 @@ extern void zion_fatal(const char* fmt, ...);
 
 #define ZION_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 
+#define ZION_MEMPOOL_MIN_NDX	7
+#define ZION_MEMPOOL_MAX_NDX	20
+
+extern void* zion_malloc(size_t size);
+extern void zion_free(void* mem);
+
 #ifdef _WIN32
 	#define _CRTDBG_MAP_ALLOC
 	#include <stdlib.h>
 	#include <crtdbg.h>
 	#include <malloc.h>
-	#define ZION_ALLOC(x)			malloc(x)
-	#define ZION_FREE(x)			free(x)
+	#define ZION_ALLOC(x)			zion_malloc(x)//malloc(x)
+	#define ZION_FREE(x)			zion_free(x)//free(x)
 	#define ZION_ALIGN_ALLOC(x)		_aligned_malloc(x, 16)
 	#define ZION_ALIGN_FREE(x)		_aligned_free(x)
 	#ifdef _DEBUG

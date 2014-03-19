@@ -67,6 +67,7 @@ namespace Zion
 
 		_U32 m_PacketLen;
 		_U32 m_PacketSeq;
+		_U32 m_PacketDataLen;
 		String m_PacketData;
 	};
 
@@ -375,7 +376,6 @@ namespace Zion
 		}
 
 		pConn->m_RecvLen += nread;
-
 		char* data = pConn->m_RecvBuf;
 		_U32 data_len = pConn->m_RecvLen;
 		for(;;)
@@ -384,15 +384,16 @@ namespace Zion
 
 			if(pConn->m_PacketLen!=(_U32)-1)
 			{
-				if(data_len + pConn->m_PacketData.size()<pConn->m_PacketLen)
+				if(data_len + pConn->m_PacketDataLen<pConn->m_PacketLen)
 				{
 					plen = data_len;
 				}
 				else
 				{
-					plen = pConn->m_PacketLen - pConn->m_PacketData.size();
+					plen = pConn->m_PacketLen - pConn->m_PacketDataLen;
 				}
 				pConn->m_PacketData.append(data, plen);
+				pConn->m_PacketDataLen += plen;
 				if(pConn->m_PacketLen==pConn->m_PacketData.size())
 				{
 					pConn->m_PacketLen = (_U32)-1;
@@ -401,9 +402,10 @@ namespace Zion
 			}
 			else
 			{
-				if(pConn->m_RecvLen<8) break;
+				if(data_len<8) break;
 				pConn->m_PacketLen = *((const _U32*)(data+0));
 				pConn->m_PacketSeq = *((const _U32*)(data+4));
+				pConn->m_PacketDataLen = 0;
 				pConn->m_PacketData = "";
 				if(pConn->m_PacketLen>2*1024*1024)
 				{
@@ -414,13 +416,22 @@ namespace Zion
 			}
 
 			ZION_ASSERT(plen<=data_len);
-			if(plen==data_len)
-			{
-				pConn->m_RecvLen = 0;
-				break;
-			}
-			memmove(data, data+plen, data_len-plen);
 			data_len -= plen;
+			if(data_len==0) break;
+			data += plen;
+		}
+		if(data_len==0)
+		{
+			pConn->m_RecvLen = 0;
+		}
+		else if(data_len<pConn->m_RecvLen)
+		{
+			pConn->m_RecvLen = data_len;
+			memmove(pConn->m_RecvBuf, data, (size_t)data_len);
+		}
+		else
+		{
+			ZION_ASSERT(data_len==pConn->m_RecvLen);
 		}
 	}
 
@@ -562,7 +573,7 @@ namespace Zion
 
 	void async_worker(uv_work_t *req)
 	{
-		JSONRPC_RESPONSE_MUTITHREAD* res = (JSONRPC_RESPONSE_MUTITHREAD*)((_U8*)req + ZION_OFFSETOF(JSONRPC_RESPONSE_MUTITHREAD, work));
+		JSONRPC_RESPONSE_MUTITHREAD* res = (JSONRPC_RESPONSE_MUTITHREAD*)((_U8*)req - ZION_OFFSETOF(JSONRPC_RESPONSE_MUTITHREAD, work));
 		ZION_ASSERT(res->count==0);
 		res->count = 1;
 		Json::Reader reader;
@@ -573,6 +584,7 @@ namespace Zion
 			return;
 		}
 
+		res->args = "";
 		res->proc(&res->res, json);
 
 		if(!res->pending)
@@ -585,9 +597,15 @@ namespace Zion
 		}
 	}
 
+	void async_close(uv_handle_t* handle)
+	{
+		JSONRPC_RESPONSE_MUTITHREAD* res = (JSONRPC_RESPONSE_MUTITHREAD*)((_U8*)handle - ZION_OFFSETOF(JSONRPC_RESPONSE_MUTITHREAD, async));
+		ZION_DELETE res;
+	}
+
 	void async_worker_after(uv_work_t *req, int status)
 	{
-		JSONRPC_RESPONSE_MUTITHREAD* res = (JSONRPC_RESPONSE_MUTITHREAD*)((_U8*)req + ZION_OFFSETOF(JSONRPC_RESPONSE_MUTITHREAD, work));
+		JSONRPC_RESPONSE_MUTITHREAD* res = (JSONRPC_RESPONSE_MUTITHREAD*)((_U8*)req - ZION_OFFSETOF(JSONRPC_RESPONSE_MUTITHREAD, work));
 		if(!res->pending)
 		{
 			ZION_ASSERT(res->res.seq!=0);
@@ -596,8 +614,7 @@ namespace Zion
 		}
 		if(res->count==1)
 		{
-			uv_close((uv_handle_t*)&res->async, NULL);
-			ZION_DELETE res;
+			uv_close((uv_handle_t*)&res->async, async_close);
 			return;
 		}
 		ZION_ASSERT(res->count==2);
@@ -610,14 +627,14 @@ namespace Zion
 
 	void async_worker_return(uv_async_t* handle, int status)
 	{
-		JSONRPC_RESPONSE_MUTITHREAD* res = (JSONRPC_RESPONSE_MUTITHREAD*)((_U8*)handle + ZION_OFFSETOF(JSONRPC_RESPONSE_MUTITHREAD, async));
+		JSONRPC_RESPONSE_MUTITHREAD* res = (JSONRPC_RESPONSE_MUTITHREAD*)((_U8*)handle - ZION_OFFSETOF(JSONRPC_RESPONSE_MUTITHREAD, async));
 		ZION_ASSERT(res->pending);
 		ZION_ASSERT(res->res.seq!=0);
 		ZION_ASSERT(res->res.conn!=(_U32)-1);
 		res->res.server->Send(res->res.conn, res->res.seq, res->args.c_str());
 		if(res->count==1)
 		{
-			ZION_DELETE res;
+			uv_close((uv_handle_t*)&res->async, async_close);
 			return;
 		}
 		ZION_ASSERT(res->count==2);

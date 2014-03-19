@@ -29,9 +29,6 @@ extern void zion_fatal(const char* fmt, ...);
 
 #define ZION_OFFSETOF(type, member) ((size_t)(&((type*)NULL)->member))
 
-#define ZION_MEMPOOL_MIN_NDX	7
-#define ZION_MEMPOOL_MAX_NDX	20
-
 extern void* zion_malloc(size_t size);
 extern void zion_free(void* mem);
 

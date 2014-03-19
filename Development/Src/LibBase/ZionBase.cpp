@@ -1,5 +1,8 @@
 #include "ZionBase.h"
 
+#define ZION_MEMPOOL_MIN_NDX	5
+#define ZION_MEMPOOL_MAX_NDX	20
+
 class ZionMempoolInit
 {
 public:
@@ -34,14 +37,21 @@ void* zion_malloc(size_t size)
 	}
 
 	A_MEM_ENTRY* entry = (A_MEM_ENTRY*)A_SLIST_POP(&_GlobalZionMempoolInit.Pool[ndx]);
-	if(!entry) entry = (A_MEM_ENTRY*)malloc(MEM_ENTRY_SIZE+((size_t)1<<ndx));
-	return entry;
+	if(!entry)
+	{
+		entry = (A_MEM_ENTRY*)malloc(MEM_ENTRY_SIZE+((size_t)1<<ndx));
+		entry->ndx = ndx;
+	}
+	return (char*)entry + MEM_ENTRY_SIZE;
 }
 
 void zion_free(void* mem)
 {
-	A_MEM_ENTRY* entry = (A_MEM_ENTRY*)((char*)mem - MEM_ENTRY_SIZE);
-	A_SLIST_PUSH(&_GlobalZionMempoolInit.Pool[entry->ndx], &entry->entry);
+	if(mem)
+	{
+		A_MEM_ENTRY* entry = (A_MEM_ENTRY*)((char*)mem - MEM_ENTRY_SIZE);
+		A_SLIST_PUSH(&_GlobalZionMempoolInit.Pool[entry->ndx], &entry->entry);
+	}
 }
 
 ZionMempoolInit::ZionMempoolInit()

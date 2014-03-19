@@ -123,59 +123,73 @@ namespace Zion
 
 		bool CAvatarData::Load()
 		{
-			if(!LoadAvatar(m_AvatarID, db_load_callback, this))
+			IDBApi* db = AllocDataBase();
+			if(db)
 			{
-				return false;
+				if(db->LoadAvatar(m_AvatarID, db_load_callback, this))
+				{
+					Map<A_UUID, OBJECT_DATA>::iterator i;
+					for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
+					{
+						i->second._dirty = false;
+						i->second._is_new = false;
+					}
+					FreeDatabase(db);
+					return false;
+				}
+				FreeDatabase(db);
 			}
-
-			Map<A_UUID, OBJECT_DATA>::iterator i;
-			for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
-			{
-				i->second._dirty = false;
-				i->second._is_new = false;
-			}
-			return true;
+			return false;
 		}
 
 		bool CAvatarData::Save()
 		{
-			Set<A_UUID>::iterator i1;
-			while(!m_DelList.empty())
+			IDBApi* db = AllocDataBase();
+			while(db)
 			{
-				if(!DeleteAvatarObject(m_AvatarID, &(*m_DelList.begin()), 1))
+				Set<A_UUID>::iterator i1;
+				while(!m_DelList.empty())
 				{
-					return false;
+					if(!db->DeleteAvatarObject(m_AvatarID, &(*m_DelList.begin()), 1))
+					{
+						break;
+					}
+					m_DelList.erase(m_DelList.begin());
 				}
 
-				m_DelList.erase(m_DelList.begin());
-			}
+				Map<A_UUID, OBJECT_DATA>::iterator i;
+				for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
+				{
+					if(i->second._is_new)
+					{
+						if(!db->InsertAvatarObject(m_AvatarID, i->second._uuid, i->second._type.c_str(), i->second._data.c_str()))
+						{
+							break;
+						}
+						i->second._is_new = false;
+						i->second._dirty = false;
+						continue;
+					}
 
-			Map<A_UUID, OBJECT_DATA>::iterator i;
-			for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
+					if(i->second._dirty)
+					{
+						if(!db->UpdateAvatarObject(m_AvatarID, i->second._uuid, i->second._data.c_str()))
+						{
+							break;
+						}
+						i->second._dirty = false;
+						continue;
+					}
+				}
+				
+				FreeDatabase(db);
+				return true;
+			}
+			if(db)
 			{
-				if(i->second._is_new)
-				{
-					if(!InsertAvatarObject(m_AvatarID, i->second._uuid, i->second._type.c_str(), i->second._data.c_str()))
-					{
-						return false;
-					}
-					i->second._is_new = false;
-					i->second._dirty = false;
-					continue;
-				}
-
-				if(i->second._dirty)
-				{
-					if(!UpdateAvatarObject(m_AvatarID, i->second._uuid, i->second._data.c_str()))
-					{
-						return false;
-					}
-					i->second._dirty = false;
-					continue;
-				}
+				FreeDatabase(db);
 			}
-
-			return true;
+			return false;
 		}
 
 		void CAvatarData::Send(const JSONRPC_RESPONSE* res)
@@ -199,15 +213,19 @@ namespace Zion
 
 		void RPCIMPL_LoginUser(const JSONRPC_RESPONSE* res, const char* token)
 		{
-			_U32 user_id = LoginUser(token);
-			if(user_id!=(_U32)-1)
+			IDBApi* db = AllocDataBase();
+			if(db)
 			{
-				JsonRPC_Send(res, StringFormat("[0,%u]", user_id).c_str());
+				_U32 user_id = db->LoginUser(token);
+				if(user_id!=(_U32)-1)
+				{
+					FreeDatabase(db);
+					JsonRPC_Send(res, StringFormat("[0,%u]", user_id).c_str());
+					return;
+				}
+				FreeDatabase(db);
 			}
-			else
-			{
-				JsonRPC_Send(res, "[-1]");
-			}
+			JsonRPC_Send(res, "[-1]");
 			return;
 		}
 
@@ -221,25 +239,31 @@ namespace Zion
 				const Array<String>& types,
 				const Array<String>& datas)
 		{
-			if(uuids.size()==types.size() && uuids.size()==datas.size())
+			IDBApi* db = AllocDataBase();
+			if(db)
 			{
-				_U32 avatar_id = CreateAvatar(user_id, server_id, avatar_name, avatar_desc);
-				if(avatar_id!=(_U32)-1)
+				if(uuids.size()==types.size() && uuids.size()==datas.size())
 				{
-					size_t i;
-					for(i=0; i<uuids.size(); i++)
+					_U32 avatar_id = db->CreateAvatar(user_id, server_id, avatar_name, avatar_desc);
+					if(avatar_id!=(_U32)-1)
 					{
-						if(!InsertAvatarObject(avatar_id, uuids[i], types[i].c_str(), datas[i].c_str()))
+						size_t i;
+						for(i=0; i<uuids.size(); i++)
 						{
-							break;
+							if(!db->InsertAvatarObject(avatar_id, uuids[i], types[i].c_str(), datas[i].c_str()))
+							{
+								break;
+							}
+						}
+						if(i==uuids.size())
+						{
+							JsonRPC_Send(res, StringFormat("[0,%u]", avatar_id).c_str());
+							FreeDatabase(db);
+							return;
 						}
 					}
-					if(i==uuids.size())
-					{
-						JsonRPC_Send(res, StringFormat("[0,%u]", avatar_id).c_str());
-						return;
-					}
 				}
+				FreeDatabase(db);
 			}
 			JsonRPC_Send(res, "[-1]");
 			return;
@@ -247,10 +271,16 @@ namespace Zion
 
 		void RPCIMPL_DeleteAvatar(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
-			if(DeleteAvatar(avatar_id))
+			IDBApi* db = AllocDataBase();
+			if(db)
 			{
-				JsonRPC_Send(res, "[0]");
-				return;
+				if(db->DeleteAvatar(avatar_id))
+				{
+					JsonRPC_Send(res, "[0]");
+					FreeDatabase(db);
+					return;
+				}
+				FreeDatabase(db);
 			}
 			JsonRPC_Send(res, "[-1]");
 			return;
@@ -274,15 +304,19 @@ namespace Zion
 
 		void RPCIMPL_GetAvatarList(const JSONRPC_RESPONSE* res, _U32 user_id, _U32 server_id)
 		{
-			String val;
-			if(!GetAvatarList(user_id, server_id, GetAvatarListCallback, &val))
+			IDBApi* db = AllocDataBase();
+			if(db)
 			{
-				JsonRPC_Send(res, "[-1]");
+				String val;
+				if(db->GetAvatarList(user_id, server_id, GetAvatarListCallback, &val))
+				{
+					JsonRPC_Send(res, StringFormat("[0,[%s]]", val.c_str()).c_str());
+					FreeDatabase(db);
+					return;
+				}
+				FreeDatabase(db);
 			}
-			else
-			{
-				JsonRPC_Send(res, StringFormat("[0,[%s]]", val.c_str()).c_str());
-			}
+			JsonRPC_Send(res, "[-1]");
 			return;
 		}
 
@@ -395,7 +429,6 @@ namespace Zion
 			JsonRPC_Send(res, "[-1]");
 		}
 
-		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid);
 		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid)
 		{
 			Map<_U32, CAvatarData*>::iterator i = g_AvatarMap.find(avatar_id);
@@ -404,16 +437,22 @@ namespace Zion
 				CAvatarData* pAvatar = i->second;
 				if(!pAvatar->ExistObject(_uuid))
 				{
-					if(QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
+					IDBApi* db = AllocDataBase();
+					if(db)
 					{
-						CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
-						if(pObject)
+						if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
 						{
-							char suuid[100];
-							AUuidToString(_uuid, suuid);
-							JsonRPC_Send(res, StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
-							return;
+							CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
+							if(pObject)
+							{
+								char suuid[100];
+								AUuidToString(_uuid, suuid);
+								JsonRPC_Send(res, StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
+								FreeDatabase(db);
+								return;
+							}
 						}
+						FreeDatabase(db);
 					}
 				}
 			}

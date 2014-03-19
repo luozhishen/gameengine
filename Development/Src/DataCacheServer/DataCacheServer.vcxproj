@@ -19,17 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataCacheDBApiSqlite.cpp" />
     <ClCompile Include="DataCacheServer.cpp" />
     <ClCompile Include="DataCacheDBApi.cpp" />
-    <ClCompile Include="DataCacheDBMysqlApi.cpp" />
+    <ClCompile Include="DataCacheDBApiMysql.cpp" />
     <ClCompile Include="DataCacheJsonRpc.cpp" />
     <ClCompile Include="DataCacheRpcImpl.cpp" />
     <ClCompile Include="sqlite\SqliteLib.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataCacheDBApiSqlite.h" />
     <ClInclude Include="DataCacheServer.h" />
     <ClInclude Include="DataCacheDBApi.h" />
-    <ClInclude Include="DataCacheDBMysqlApi.h" />
+    <ClInclude Include="DataCacheDBApiMysql.h" />
     <ClInclude Include="DataCacheJsonRpc.h" />
     <ClInclude Include="DataCacheRpcImpl.h" />
   </ItemGroup>

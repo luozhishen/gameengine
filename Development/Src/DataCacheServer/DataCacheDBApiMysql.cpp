@@ -75,7 +75,7 @@ namespace Zion
 			const char* sql = NULL;
 
 			m_stmt_login = mysql_stmt_init(m_mysql);
-			sql = "SELECT user_id, state, freeze_duetime FROM user_table WHERE token=:token";
+			sql = "SELECT user_id, state, freeze_duetime FROM user_table WHERE token=?";
 			if(0!=mysql_stmt_prepare(m_stmt_login, sql, (unsigned long)strlen(sql)) || mysql_stmt_param_count(m_stmt_login)!=sizeof(m_login_param)/sizeof(m_login_param[0]))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
@@ -90,77 +90,77 @@ namespace Zion
 			*/
 
 			m_stmt_adduser = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO user_table(token, state, freeze_duetime) VALUES(:token, 0, 0)";
+			sql = "INSERT INTO user_table(token, state, freeze_duetime) VALUES(?, 0, 0)";
 			if(0!=mysql_stmt_prepare(m_stmt_adduser, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_history = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO login_history_table(user_id, ip, dv_type, os_type, dv_id, create_ts) VALUES(:user_id, :ip, :dv_type, :os_type, :dv_id, datetime('now', 'unixepoch'))";
+			sql = "INSERT INTO login_history_table(user_id, ip, dv_type, os_type, dv_id, create_ts) VALUES(?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
 			if(0!=mysql_stmt_prepare(m_stmt_history, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_create = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO avatar_table(user_id, server_id, flag, avatar_name, avatar_desc) VALUES(:user_id, :server_id, 0, :avatar_name, :avatar_desc)";
+			sql = "INSERT INTO avatar_table(user_id, server_id, avatar_name, avatar_desc) VALUES(?, ?, ?, ?)";
 			if(0!=mysql_stmt_prepare(m_stmt_create, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_delete = mysql_stmt_init(m_mysql);
-			sql = "UPDATE avatar_table SET flag = 1 WHERE avatar_id=:avatar_id";
+			sql = "UPDATE avatar_table SET state = 1 WHERE avatar_id=?";
 			if(0!=mysql_stmt_prepare(m_stmt_delete, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_list = mysql_stmt_init(m_mysql);
-			sql = "SELECT avatar_id, flag, avatar_name, avatar_desc FROM avatar_table WHERE user_id=:user_id AND server_id=:server_id";
+			sql = "SELECT avatar_id, state, freeze_duetime, avatar_name, avatar_desc FROM avatar_table WHERE user_id=? AND server_id=?";
 			if(0!=mysql_stmt_prepare(m_stmt_list, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_check = mysql_stmt_init(m_mysql);
-			sql = "SELECT flag, avatar_name FROM avatar_table WHERE avatar_id=:avatar_id";
+			sql = "SELECT state, freeze_duetime, avatar_name FROM avatar_table WHERE avatar_id=?";
 			if(0!=mysql_stmt_prepare(m_stmt_check, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_load = mysql_stmt_init(m_mysql);
-			sql = "SELECT object_uuid, object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id";
+			sql = "SELECT object_uuid, object_type, object_data FROM avatar_object_table WHERE avatar_id=?";
 			if(0!=mysql_stmt_prepare(m_stmt_load, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_insert = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO avatar_object_table values(:avatar_id, :object_uuid, :object_type, :object_data)";
+			sql = "INSERT INTO avatar_object_table values(?, ?, ?, ?)";
 			if(0!=mysql_stmt_prepare(m_stmt_insert, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_update = mysql_stmt_init(m_mysql);
-			sql = "UPDATE avatar_object_table SET object_data=:object_data WHERE avatar_id=:avatar_id and object_uuid=:object_uuid";
+			sql = "UPDATE avatar_object_table SET object_data=? WHERE avatar_id=? and object_uuid=?";
 			if(0!=mysql_stmt_prepare(m_stmt_update, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_remove = mysql_stmt_init(m_mysql);
-			sql = "DELETE FROM avatar_object_table WHERE avatar_id=:avatar_id and object_uuid=:object_uuid";
+			sql = "DELETE FROM avatar_object_table WHERE avatar_id=? and object_uuid=?";
 			if(0!=mysql_stmt_prepare(m_stmt_remove, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
 
 			m_stmt_query = mysql_stmt_init(m_mysql);
-			sql = "SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id and object_uuid=:object_uuid";
+			sql = "SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=? and object_uuid=?";
 			if(0!=mysql_stmt_prepare(m_stmt_query, sql, (unsigned long)strlen(sql)))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
@@ -200,10 +200,35 @@ namespace Zion
 
 		_U32 CMysqlDBApi::LoginUser(const char* token)
 		{
-			if(!mysql_stmt_reset(m_stmt_login))
+			if(mysql_stmt_reset(m_stmt_login)!=0)
 			{
 				printf("error in mysql_stmt_reset(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 				return (_U32)-1;
+			}
+			m_login_param[0].buffer = (char *)token;
+			m_login_param[0].buffer_length = (unsigned long)strlen(token);
+			if(mysql_stmt_bind_param(m_stmt_login, m_login_param)!=0)
+			{
+				printf("error in mysql_stmt_bind_param(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return (_U32)-1;
+			}
+			if(mysql_stmt_execute(m_stmt_login)!=0)
+			{
+				printf("error in mysql_stmt_execute(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return (_U32)-1;
+			}
+			while(mysql_stmt_fetch(m_stmt_login)==0)
+			{
+				MYSQL_BIND arg[3];
+				memset(arg, 0, sizeof(arg));
+				if(	mysql_stmt_fetch_column(m_stmt_login, arg, 0, 0)!=0 ||
+					mysql_stmt_fetch_column(m_stmt_login, arg, 1, 1)!=0 ||
+					mysql_stmt_fetch_column(m_stmt_login, arg, 2, 2)!=0)
+				{
+					printf("error in mysql_stmt_fetch_column(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+					return (_U32)-1;
+				}
+				int i = 10;
 			}
 
 			return (_U32)-1;

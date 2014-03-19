@@ -17,7 +17,9 @@ namespace Zion
 
 		bool InitDatabase()
 		{
-			g_Sqlite = CreateSqliteDatabase(CONFIG_DATABASE.c_str());
+			g_Sqlite = CreateMysqlDatabase("localhost", 0, "root", "", "ziondb");
+//			g_Sqlite = CreateSqliteDatabase(CONFIG_DATABASE.c_str());
+			g_Sqlite->LoginUser("aaaaa");
 			A_MUTEX_INIT(&g_Mutex);
 			return true;
 		}

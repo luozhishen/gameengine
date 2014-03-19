@@ -29,6 +29,7 @@ namespace Zion
 			MYSQL		m_mysql_instance;
 			MYSQL*		m_mysql;
 			MYSQL_STMT* m_stmt_login;
+			MYSQL_BIND	m_login_param[1];
 			MYSQL_STMT* m_stmt_adduser;
 			MYSQL_STMT* m_stmt_history;
 			MYSQL_STMT* m_stmt_create;
@@ -49,6 +50,20 @@ namespace Zion
 
 		CMysqlDBApi::CMysqlDBApi(const char* host, unsigned int port, const char* username, const char* password, const char* db)
 		{
+			m_stmt_login = NULL;
+			m_stmt_adduser = NULL;
+			m_stmt_history = NULL;
+			m_stmt_create = NULL;
+			m_stmt_delete = NULL;
+			m_stmt_list = NULL;
+			m_stmt_check = NULL;
+			m_stmt_load = NULL;
+			m_stmt_insert = NULL;
+			m_stmt_update = NULL;
+			m_stmt_remove = NULL;
+			m_stmt_query = NULL;
+			m_mysql = NULL;
+
 			m_mysql = mysql_init(&m_mysql_instance);
 			ZION_ASSERT(m_mysql);
 			if(!m_mysql) return;
@@ -61,10 +76,18 @@ namespace Zion
 
 			m_stmt_login = mysql_stmt_init(m_mysql);
 			sql = "SELECT user_id, state, freeze_duetime FROM user_table WHERE token=:token";
-			if(0!=mysql_stmt_prepare(m_stmt_login, sql, (unsigned long)strlen(sql)))
+			if(0!=mysql_stmt_prepare(m_stmt_login, sql, (unsigned long)strlen(sql)) || mysql_stmt_param_count(m_stmt_login)!=sizeof(m_login_param)/sizeof(m_login_param[0]))
 			{
 				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 			}
+			memset(m_login_param, 0, sizeof(m_login_param));
+			m_login_param[0].buffer_type = MYSQL_TYPE_STRING;
+			/*
+			m_login_param[0].buffer = (char *)str_data;
+			m_login_param[0].buffer_length = STRING_SIZE;
+			m_login_param[0].is_null = 0;
+			m_login_param[0].length = &str_length;
+			*/
 
 			m_stmt_adduser = mysql_stmt_init(m_mysql);
 			sql = "INSERT INTO user_table(token, state, freeze_duetime) VALUES(:token, 0, 0)";
@@ -146,10 +169,43 @@ namespace Zion
 
 		CMysqlDBApi::~CMysqlDBApi()
 		{
+			if(m_stmt_login)	mysql_stmt_close(m_stmt_login);
+			if(m_stmt_adduser)	mysql_stmt_close(m_stmt_adduser);
+			if(m_stmt_history)	mysql_stmt_close(m_stmt_history);
+			if(m_stmt_create)	mysql_stmt_close(m_stmt_create);
+			if(m_stmt_delete)	mysql_stmt_close(m_stmt_delete);
+			if(m_stmt_list)		mysql_stmt_close(m_stmt_list);
+			if(m_stmt_check)	mysql_stmt_close(m_stmt_check);
+			if(m_stmt_load)		mysql_stmt_close(m_stmt_load);
+			if(m_stmt_insert)	mysql_stmt_close(m_stmt_insert);
+			if(m_stmt_update)	mysql_stmt_close(m_stmt_update);
+			if(m_stmt_remove)	mysql_stmt_close(m_stmt_remove);
+			if(m_stmt_query)	mysql_stmt_close(m_stmt_query);
+			if(m_mysql)			mysql_close(m_mysql);
+
+			m_stmt_login = NULL;
+			m_stmt_adduser = NULL;
+			m_stmt_history = NULL;
+			m_stmt_create = NULL;
+			m_stmt_delete = NULL;
+			m_stmt_list = NULL;
+			m_stmt_check = NULL;
+			m_stmt_load = NULL;
+			m_stmt_insert = NULL;
+			m_stmt_update = NULL;
+			m_stmt_remove = NULL;
+			m_stmt_query = NULL;
+			m_mysql = NULL;
 		}
 
 		_U32 CMysqlDBApi::LoginUser(const char* token)
 		{
+			if(!mysql_stmt_reset(m_stmt_login))
+			{
+				printf("error in mysql_stmt_reset(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return (_U32)-1;
+			}
+
 			return (_U32)-1;
 		}
 

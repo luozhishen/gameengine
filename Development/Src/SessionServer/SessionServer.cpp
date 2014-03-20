@@ -61,6 +61,7 @@ namespace Zion
 
 			// step 2: start rpc server
 			CJsonRPCServer* pServer = JsonRPC_Create(CONFIG_SINGLETHREAD);
+			JsonRPC_Bind(pServer, "echo",				JsonRPC_Echo);
 			JsonRPC_Bind(pServer, "loginUser",			JsonRpc_LoginUser);
 			JsonRPC_Bind(pServer, "logoutUser",			JsonRpc_LogoutUser);
 			JsonRPC_Bind(pServer, "lockUser",			JsonRpc_LockUser);

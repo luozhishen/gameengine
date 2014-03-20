@@ -6,6 +6,7 @@ namespace Zion
 	namespace Session
 	{
 
+		void JsonRPC_Echo(const JSONRPC_RESPONSE* res, const Json::Value& args);
 		void JsonRpc_LoginUser(const JSONRPC_RESPONSE* res, const Json::Value& args);
 		void JsonRpc_LogoutUser(const JSONRPC_RESPONSE* res, const Json::Value& args);
 		void JsonRpc_LockUser(const JSONRPC_RESPONSE* res, const Json::Value& args);

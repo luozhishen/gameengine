@@ -216,7 +216,7 @@ namespace Zion
 			IDBApi* db = AllocDataBase();
 			if(db)
 			{
-				_U32 user_id = db->LoginUser(token);
+				_U32 user_id = db->LoginUser(token, "ip", "dv_type", "os_type", "dv_id");
 				if(user_id!=(_U32)-1)
 				{
 					FreeDatabase(db);

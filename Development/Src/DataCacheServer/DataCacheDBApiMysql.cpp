@@ -3,6 +3,7 @@
 #include "DataCacheDBApiMysql.h"
 
 #include <mysql.h>
+#include <time.h>
 
 namespace Zion
 {
@@ -15,7 +16,11 @@ namespace Zion
 			CMysqlDBApi(const char* host, unsigned int port, const char* username, const char* password, const char* db);
 			virtual ~CMysqlDBApi();
 
-			virtual _U32 LoginUser(const char* token);
+			virtual bool Check();
+			virtual bool Connect();
+			virtual bool Disconnect();
+
+			virtual _U32 LoginUser(const char* token, const char* ip, const char* dv_type, const char* os_type, const char* dv_id);
 			virtual _U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc);
 			virtual bool DeleteAvatar(_U32 avatar_id);
 			virtual bool GetAvatarList(_U32 user_id, _U32 server_id, bool (*callback)(void*, _U32, _U32, const char*, const char*), void* userptr);
@@ -26,21 +31,13 @@ namespace Zion
 			virtual bool QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 
 		private:
-			MYSQL		m_mysql_instance;
-			MYSQL*		m_mysql;
-			MYSQL_STMT* m_stmt_login;
-			MYSQL_BIND	m_login_param[1];
-			MYSQL_STMT* m_stmt_adduser;
-			MYSQL_STMT* m_stmt_history;
-			MYSQL_STMT* m_stmt_create;
-			MYSQL_STMT* m_stmt_delete;
-			MYSQL_STMT* m_stmt_list;
-			MYSQL_STMT* m_stmt_check;
-			MYSQL_STMT* m_stmt_load;
-			MYSQL_STMT* m_stmt_insert;
-			MYSQL_STMT* m_stmt_update;
-			MYSQL_STMT* m_stmt_remove;
-			MYSQL_STMT* m_stmt_query;
+			String	m_host;
+			_U32	m_port;
+			String	m_username;
+			String	m_password;
+			String	m_db;
+			MYSQL	m_mysql_instance;
+			MYSQL*	m_mysql;
 		};
 
 		IDBApi* CreateMysqlDatabase(const char* host, unsigned int port, const char* username, const char* password, const char* db)
@@ -50,228 +47,304 @@ namespace Zion
 
 		CMysqlDBApi::CMysqlDBApi(const char* host, unsigned int port, const char* username, const char* password, const char* db)
 		{
-			m_stmt_login = NULL;
-			m_stmt_adduser = NULL;
-			m_stmt_history = NULL;
-			m_stmt_create = NULL;
-			m_stmt_delete = NULL;
-			m_stmt_list = NULL;
-			m_stmt_check = NULL;
-			m_stmt_load = NULL;
-			m_stmt_insert = NULL;
-			m_stmt_update = NULL;
-			m_stmt_remove = NULL;
-			m_stmt_query = NULL;
-			m_mysql = NULL;
-
-			m_mysql = mysql_init(&m_mysql_instance);
-			ZION_ASSERT(m_mysql);
-			if(!m_mysql) return;
-
-			m_mysql = mysql_real_connect(m_mysql, host, username, password, db, port, NULL, 0);
-			ZION_ASSERT(m_mysql);
-			if(!m_mysql) return;
-
-			const char* sql = NULL;
-
-			m_stmt_login = mysql_stmt_init(m_mysql);
-			sql = "SELECT user_id, state, freeze_duetime FROM user_table WHERE token=?";
-			if(0!=mysql_stmt_prepare(m_stmt_login, sql, (unsigned long)strlen(sql)) || mysql_stmt_param_count(m_stmt_login)!=sizeof(m_login_param)/sizeof(m_login_param[0]))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-			memset(m_login_param, 0, sizeof(m_login_param));
-			m_login_param[0].buffer_type = MYSQL_TYPE_STRING;
-			/*
-			m_login_param[0].buffer = (char *)str_data;
-			m_login_param[0].buffer_length = STRING_SIZE;
-			m_login_param[0].is_null = 0;
-			m_login_param[0].length = &str_length;
-			*/
-
-			m_stmt_adduser = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO user_table(token, state, freeze_duetime) VALUES(?, 0, 0)";
-			if(0!=mysql_stmt_prepare(m_stmt_adduser, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_history = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO login_history_table(user_id, ip, dv_type, os_type, dv_id, create_ts) VALUES(?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
-			if(0!=mysql_stmt_prepare(m_stmt_history, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_create = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO avatar_table(user_id, server_id, avatar_name, avatar_desc) VALUES(?, ?, ?, ?)";
-			if(0!=mysql_stmt_prepare(m_stmt_create, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_delete = mysql_stmt_init(m_mysql);
-			sql = "UPDATE avatar_table SET state = 1 WHERE avatar_id=?";
-			if(0!=mysql_stmt_prepare(m_stmt_delete, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_list = mysql_stmt_init(m_mysql);
-			sql = "SELECT avatar_id, state, freeze_duetime, avatar_name, avatar_desc FROM avatar_table WHERE user_id=? AND server_id=?";
-			if(0!=mysql_stmt_prepare(m_stmt_list, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_check = mysql_stmt_init(m_mysql);
-			sql = "SELECT state, freeze_duetime, avatar_name FROM avatar_table WHERE avatar_id=?";
-			if(0!=mysql_stmt_prepare(m_stmt_check, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_load = mysql_stmt_init(m_mysql);
-			sql = "SELECT object_uuid, object_type, object_data FROM avatar_object_table WHERE avatar_id=?";
-			if(0!=mysql_stmt_prepare(m_stmt_load, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_insert = mysql_stmt_init(m_mysql);
-			sql = "INSERT INTO avatar_object_table values(?, ?, ?, ?)";
-			if(0!=mysql_stmt_prepare(m_stmt_insert, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_update = mysql_stmt_init(m_mysql);
-			sql = "UPDATE avatar_object_table SET object_data=? WHERE avatar_id=? and object_uuid=?";
-			if(0!=mysql_stmt_prepare(m_stmt_update, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_remove = mysql_stmt_init(m_mysql);
-			sql = "DELETE FROM avatar_object_table WHERE avatar_id=? and object_uuid=?";
-			if(0!=mysql_stmt_prepare(m_stmt_remove, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
-
-			m_stmt_query = mysql_stmt_init(m_mysql);
-			sql = "SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=? and object_uuid=?";
-			if(0!=mysql_stmt_prepare(m_stmt_query, sql, (unsigned long)strlen(sql)))
-			{
-				ZION_FATAL("error in mysql_stmt_prepare(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-			}
+			m_host		= host;
+			m_port		= port;
+			m_username	= username;
+			m_password	= password;
+			m_db		= db;
+			m_mysql		= NULL;
 		}
 
 		CMysqlDBApi::~CMysqlDBApi()
 		{
-			if(m_stmt_login)	mysql_stmt_close(m_stmt_login);
-			if(m_stmt_adduser)	mysql_stmt_close(m_stmt_adduser);
-			if(m_stmt_history)	mysql_stmt_close(m_stmt_history);
-			if(m_stmt_create)	mysql_stmt_close(m_stmt_create);
-			if(m_stmt_delete)	mysql_stmt_close(m_stmt_delete);
-			if(m_stmt_list)		mysql_stmt_close(m_stmt_list);
-			if(m_stmt_check)	mysql_stmt_close(m_stmt_check);
-			if(m_stmt_load)		mysql_stmt_close(m_stmt_load);
-			if(m_stmt_insert)	mysql_stmt_close(m_stmt_insert);
-			if(m_stmt_update)	mysql_stmt_close(m_stmt_update);
-			if(m_stmt_remove)	mysql_stmt_close(m_stmt_remove);
-			if(m_stmt_query)	mysql_stmt_close(m_stmt_query);
-			if(m_mysql)			mysql_close(m_mysql);
-
-			m_stmt_login = NULL;
-			m_stmt_adduser = NULL;
-			m_stmt_history = NULL;
-			m_stmt_create = NULL;
-			m_stmt_delete = NULL;
-			m_stmt_list = NULL;
-			m_stmt_check = NULL;
-			m_stmt_load = NULL;
-			m_stmt_insert = NULL;
-			m_stmt_update = NULL;
-			m_stmt_remove = NULL;
-			m_stmt_query = NULL;
-			m_mysql = NULL;
+			if(m_mysql)
+			{
+				mysql_close(m_mysql);
+				m_mysql = NULL;
+			}
 		}
 
-		_U32 CMysqlDBApi::LoginUser(const char* token)
+		bool CMysqlDBApi::Check()
 		{
-			if(mysql_stmt_reset(m_stmt_login)!=0)
+			if(m_mysql==NULL) return false;
+			if(mysql_ping(m_mysql)!=0) return false;
+			return true;
+		}
+
+		bool CMysqlDBApi::Connect()
+		{
+			Disconnect();
+
+			m_mysql = mysql_init(&m_mysql_instance);
+			ZION_ASSERT(m_mysql);
+			if(!m_mysql)
 			{
-				printf("error in mysql_stmt_reset(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return (_U32)-1;
-			}
-			m_login_param[0].buffer = (char *)token;
-			m_login_param[0].buffer_length = (unsigned long)strlen(token);
-			if(mysql_stmt_bind_param(m_stmt_login, m_login_param)!=0)
-			{
-				printf("error in mysql_stmt_bind_param(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return (_U32)-1;
-			}
-			if(mysql_stmt_execute(m_stmt_login)!=0)
-			{
-				printf("error in mysql_stmt_execute(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return (_U32)-1;
-			}
-			while(mysql_stmt_fetch(m_stmt_login)==0)
-			{
-				MYSQL_BIND arg[3];
-				memset(arg, 0, sizeof(arg));
-				if(	mysql_stmt_fetch_column(m_stmt_login, arg, 0, 0)!=0 ||
-					mysql_stmt_fetch_column(m_stmt_login, arg, 1, 1)!=0 ||
-					mysql_stmt_fetch_column(m_stmt_login, arg, 2, 2)!=0)
-				{
-					printf("error in mysql_stmt_fetch_column(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-					return (_U32)-1;
-				}
-				int i = 10;
+				printf("error in mysql_init(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
 			}
 
-			return (_U32)-1;
+			m_mysql = mysql_real_connect(m_mysql, m_host.c_str(), m_username.c_str(), m_password.c_str(), m_db.c_str(), m_port, NULL, 0);
+			ZION_ASSERT(m_mysql);
+			if(!m_mysql)
+			{
+				printf("error in mysql_real_connect(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			return true;
+		}
+
+		bool CMysqlDBApi::Disconnect()
+		{
+			if(m_mysql)
+			{
+				mysql_close(m_mysql);
+				m_mysql = NULL;
+			}
+			return true;
+		}
+
+		_U32 CMysqlDBApi::LoginUser(const char* token, const char* ip, const char* dv_type, const char* os_type, const char* dv_id)
+		{
+			String sql = StringFormat("SELECT user_id, state, UNIX_TIMESTAMP(freeze_duetime) FROM user_table WHERE token='%s'", token);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return (_U32)-1;
+			}
+			MYSQL_RES *result = mysql_store_result(m_mysql);
+			if(!result)
+			{
+				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return (_U32)-1;
+			}
+			ZION_ASSERT(mysql_num_fields(result)==3);
+			MYSQL_ROW row;
+			_U32 user_id = (_U32)-1;
+			bool disable = false;
+			while((row=mysql_fetch_row(result))!=NULL)
+			{
+				user_id = (_U32)atoi(row[0]);
+				int state = (_U32)atoi(row[1]);
+				time_t freeze = (time_t)atoi(row[2]);
+				disable = (state!=0 || freeze>=time(NULL));
+			}
+			mysql_free_result(result);
+
+			if(user_id==(_U32)-1)
+			{
+				sql = StringFormat("INSERT INTO user_table(token, state, freeze_duetime) VALUES('%s', 0, 0)", token);
+				if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+				{
+					printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+					return (_U32)-1;
+				}
+				user_id = (_U32)mysql_insert_id(m_mysql);
+			}
+			else if(disable)
+			{
+				return (_U32)-1;
+			}
+
+			sql = StringFormat("INSERT INTO login_history_table(user_id, ip, dv_type, os_type, dv_id, create_ts) VALUES(%u, '%s', '%s', '%s', '%s', CURRENT_TIMESTAMP)", user_id, ip, dv_type, os_type, dv_id);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return (_U32)-1;
+			}
+
+			return user_id;
 		}
 
 		_U32 CMysqlDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
 		{
-			return (_U32)-1;
+			String sql = StringFormat("INSERT INTO avatar_table(user_id, server_id, avatar_name, avatar_desc) VALUES(%u, %u, '%s', '%s')",
+				user_id, server_id, avatar_name, avatar_desc);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return (_U32)-1;
+			}
+			return (_U32)mysql_insert_id(m_mysql);
 		}
 
 		bool CMysqlDBApi::DeleteAvatar(_U32 avatar_id)
 		{
-			return false;
+			String sql = StringFormat("UPDATE avatar_table SET state = 1 WHERE avatar_id=%u and state=0", avatar_id);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 
 		bool CMysqlDBApi::GetAvatarList(_U32 user_id, _U32 server_id, bool (*callback)(void*, _U32, _U32, const char*, const char*), void* userptr)
 		{
-			return false;
+			String sql = StringFormat("SELECT avatar_id, state, freeze_duetime, avatar_name, avatar_desc FROM avatar_table WHERE user_id=%u AND server_id=%u AND state!=1", user_id, server_id);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			MYSQL_RES *result = mysql_store_result(m_mysql);
+			if(!result)
+			{
+				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			ZION_ASSERT(mysql_num_fields(result)==5);
+			MYSQL_ROW row;
+			while((row=mysql_fetch_row(result))!=NULL)
+			{
+				_U32 avatar_id = (_U32)atoi(row[0]);
+				int state = (_U32)atoi(row[1]);
+				time_t freeze = (time_t)atoi(row[2]);
+				bool disable = (state!=0 || freeze>=time(NULL));
+				if(state==0 && freeze>time(NULL)) state = 2;
+				if(!callback(userptr, avatar_id, state, row[3], row[4]))
+				{
+					mysql_free_result(result);
+					return false;
+				}
+
+			}
+			mysql_free_result(result);
+			return true;
 		}
 
 		bool CMysqlDBApi::LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
 		{
-			return false;
+			String sql = StringFormat("SELECT state, freeze_duetime FROM avatar_table WHERE avatar_id=%u AND state==1", avatar_id);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			MYSQL_RES *result = mysql_store_result(m_mysql);
+			if(!result)
+			{
+				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			ZION_ASSERT(mysql_num_fields(result)==2);
+			MYSQL_ROW row;
+			bool disable = true;
+			while((row=mysql_fetch_row(result))!=NULL)
+			{
+				int state = (_U32)atoi(row[0]);
+				time_t freeze = (time_t)atoi(row[1]);
+				disable = (state!=0 || freeze>=time(NULL));
+			}
+			mysql_free_result(result);
+			if(disable) return false;
+
+			sql = StringFormat("SELECT object_uuid, object_type, object_data FROM avatar_object_table WHERE avatar_id=%u", avatar_id);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			result = mysql_store_result(m_mysql);
+			if(!result)
+			{
+				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			ZION_ASSERT(mysql_num_fields(result)==3);
+			A_UUID uuid;
+			while((row=mysql_fetch_row(result))!=NULL)
+			{
+				if(!AUuidFromString(row[0], uuid))
+				{
+					mysql_free_result(result);
+					return false;
+				}
+
+				if(!callback(userptr, uuid, row[1], row[2]))
+				{
+					mysql_free_result(result);
+					return false;
+				}
+			}
+			mysql_free_result(result);
+			return true;
 		}
 
 		bool CMysqlDBApi::InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
 		{
-			return false;
+			char suuid[100];
+			AUuidToString(_uuid, suuid);
+			String sql = StringFormat("INSERT INTO avatar_object_table values(%u, '%s', '%s', '%s')", -1, suuid, type, data);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			return true;
 		}
 
 		bool CMysqlDBApi::UpdateAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* data)
 		{
-			return false;
+			char suuid[100];
+			AUuidToString(_uuid, suuid);
+			String sql = StringFormat("UPDATE avatar_object_table SET object_data='%s' WHERE avatar_id=%u and object_uuid='%s'", data, avatar_id, suuid);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			return true;
 		}
 
 		bool CMysqlDBApi::DeleteAvatarObject(_U32 avatar_id, const A_UUID* _uuids, _U32 count)
 		{
-			return false;
+			char suuid[100];
+			for(_U32 i=0; i<count; i++)
+			{
+				AUuidToString(_uuids[i], suuid);
+				String sql = StringFormat("DELETE FROM avatar_object_table WHERE avatar_id=%u and object_uuid='%s'", avatar_id, suuid);
+				if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+				{
+					printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+					return false;
+				}
+			}
+			return true;
 		}
 
 		bool CMysqlDBApi::QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
 		{
-			return false;
+			char suuid[100];
+			AUuidToString(_uuid, suuid);
+			String sql = StringFormat("SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=%u and object_uuid='%s'", avatar_id, suuid);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			MYSQL_RES *result = mysql_store_result(m_mysql);
+			if(!result)
+			{
+				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			ZION_ASSERT(mysql_num_fields(result)==2);
+			MYSQL_ROW row;
+			int count = 0;
+			while((row=mysql_fetch_row(result))!=NULL)
+			{
+				if(!callback(userptr, _uuid, row[0], row[1]))
+				{
+					mysql_free_result(result);
+					return false;
+				}
+				count += 1;
+			}
+			mysql_free_result(result);
+			return count==1;
 		}
 
 	}

@@ -13,8 +13,10 @@ namespace Zion
 	namespace DataCache
 	{
 
-		String CONFIG_DATABASE("zion_db.sqlite");
-		String CONFIG_RPCEP("0.0.0.0:1980");
+		String	CONFIG_DATABASE("sqlite:zion_db.sqlite");
+		_U32	CONFIG_DATABASE_COUNT_MAX = 100;
+		_U32	CONFIG_DATABASE_COUNT_INIT = 10;
+		String	CONFIG_RPCEP("0.0.0.0:1980");
 		bool CONFIG_SINGLETHREAD = false;
 
 		static bool ParseArgs(int argc, char* argv[])
@@ -34,6 +36,16 @@ namespace Zion
 					CONFIG_DATABASE = value;
 					continue;
 				}
+				if(name=="-db_conn_max" && !value.empty())
+				{
+					CONFIG_DATABASE_COUNT_MAX = (_U32)atoi(value.c_str());
+					continue;
+				}
+				if(name=="-db_conn_init" && !value.empty())
+				{
+					CONFIG_DATABASE_COUNT_INIT = (_U32)atoi(value.c_str());
+					continue;
+				}
 				if(name=="-rpcep")
 				{
 					CONFIG_RPCEP = value;
@@ -48,6 +60,15 @@ namespace Zion
 
 				return false;
 			}
+
+			if(CONFIG_DATABASE_COUNT_INIT<1) CONFIG_DATABASE_COUNT_INIT = 1;
+			if(CONFIG_DATABASE_COUNT_MAX<CONFIG_DATABASE_COUNT_INIT) CONFIG_DATABASE_COUNT_MAX = CONFIG_DATABASE_COUNT_INIT;
+			if(CONFIG_SINGLETHREAD)
+			{
+				CONFIG_DATABASE_COUNT_INIT = 1;
+				CONFIG_DATABASE_COUNT_MAX = 1;
+			}
+
 			return true;
 		}
 
@@ -66,6 +87,8 @@ namespace Zion
 
 			printf("CONFIG :\n");
 			printf("	DATABASE = %s\n", CONFIG_DATABASE.c_str());
+			printf("	DATABASE_COUNT_MAX = %u\n", CONFIG_DATABASE_COUNT_MAX);
+			printf("	DATABASE_COUNT_INIT = %u\n", CONFIG_DATABASE_COUNT_INIT);
 			printf("	RPCEP = %s\n", CONFIG_RPCEP.c_str());
 			printf("\n");
 

@@ -124,6 +124,7 @@ namespace Zion
 				if(!g_Conns.empty())
 				{
 					db = g_Conns.front();
+					g_Conns.pop_front();
 					break;
 				}
 

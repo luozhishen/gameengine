@@ -1,11 +1,12 @@
 -- 用户表
 CREATE TABLE user_table (
   user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  token varchar(1000) NOT NULL COMMENT '用户标识',
+  token varchar(200) NOT NULL COMMENT '用户标识',
   state int(11) DEFAULT 0 COMMENT '用户状态 0:激活 1:冻结',
   freeze_duetime TIMESTAMP DEFAULT 0 COMMENT '封停到期时间',
   PRIMARY KEY (user_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE UNIQUE INDEX user_table_token_index ON user_table(token);
 
 -- 用户登录历史表
 CREATE TABLE login_history_table (
@@ -15,7 +16,8 @@ CREATE TABLE login_history_table (
   os_type varchar(100) NOT NULL COMMENT '系统名称',
   dv_id varchar(100) NOT NULL COMMENT '设备标识',
   create_ts TIMESTAMP NOT NULL COMMENT '创建时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX login_history_table_user_index ON login_history_table(user_id);
 
 -- 角色表
 CREATE TABLE avatar_table (
@@ -29,6 +31,7 @@ CREATE TABLE avatar_table (
   PRIMARY KEY (avatar_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(server_id, avatar_name);
+CREATE INDEX avatar_table_user_index ON avatar_table(user_id, server_id);
 
 -- 角色对象表
 CREATE TABLE avatar_object_table (

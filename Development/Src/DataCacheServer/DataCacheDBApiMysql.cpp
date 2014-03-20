@@ -82,7 +82,12 @@ namespace Zion
 				printf("error in mysql_init(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
 				return false;
 			}
-
+			my_bool val = 1;
+			if(mysql_options(m_mysql, MYSQL_OPT_RECONNECT, (char*)&val)!=0)
+			{
+				printf("error in mysql_init(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
 			m_mysql = mysql_real_connect(m_mysql, m_host.c_str(), m_username.c_str(), m_password.c_str(), m_db.c_str(), m_port, NULL, 0);
 			ZION_ASSERT(m_mysql);
 			if(!m_mysql)
@@ -217,7 +222,7 @@ namespace Zion
 
 		bool CMysqlDBApi::LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
 		{
-			String sql = StringFormat("SELECT state, freeze_duetime FROM avatar_table WHERE avatar_id=%u AND state==1", avatar_id);
+			String sql = StringFormat("SELECT state, freeze_duetime FROM avatar_table WHERE avatar_id=%u AND state=0", avatar_id);
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 			{
 				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));

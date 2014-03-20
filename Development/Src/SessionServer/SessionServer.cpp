@@ -22,8 +22,8 @@ namespace Zion
 				char* pos = strchr(argv[i], '=');
 				if(!pos) pos = argv[i] + strlen(argv[i]);
 				char* pos1 = strrchr(argv[i], ':');
-				if(!pos1 && pos1<pos) pos = pos1;
-				name.copy(argv[i], pos1-argv[i]);
+				if(pos1 && pos1<pos) pos = pos1;
+				name.append(argv[i], pos-argv[i]);
 				if(*pos!='\0') value = pos + 1;
 
 				if(name=="-rpcep")

@@ -21,44 +21,6 @@ namespace Zion
 			uv_rwlock_t g_AvatarLocker;
 		};
 
-		CAvatarManager::CAvatarManager()
-		{
-			uv_rwlock_init(&g_AvatarLocker);
-		}
-
-		CAvatarManager::~CAvatarManager()
-		{
-			uv_rwlock_destroy(&g_AvatarLocker);
-		}
-
-		CAvatarData* CAvatarManager::GetAvatar(_U32 avatar_id)
-		{
-			CAvatarData* pAvatar = NULL;
-			Map<_U32, CAvatarData*>::iterator i;
-			uv_rwlock_rdlock(&g_AvatarLocker);
-			i = g_AvatarMap.find(avatar_id);
-			if(i!=g_AvatarMap.end()) pAvatar = i->second;
-			uv_rwlock_rdunlock(&g_AvatarLocker);
-			return pAvatar;
-		}
-
-		bool CAvatarManager::SetAvatar(_U32 avatar_id, CAvatarData* pAvatar)
-		{
-			Map<_U32, CAvatarData*>::iterator i;
-			bool result = false;
-			uv_rwlock_wrlock(&g_AvatarLocker);
-			i = g_AvatarMap.find(avatar_id);
-			if(i==g_AvatarMap.end())
-			{
-				g_AvatarMap[avatar_id] = pAvatar;
-				result = true;
-			}
-			uv_rwlock_wrunlock(&g_AvatarLocker);
-			return result;
-		}
-
-		static CAvatarManager g_Manager;
-
 		class CAvatarData
 		{
 		public:
@@ -87,19 +49,85 @@ namespace Zion
 			bool Save();
 			void Send(const JSONRPC_RESPONSE* res);
 
+			void Lock();
+			void Unlock();
+			void Delete();
+			bool IsDeleted();
+
 		private:
+			A_MUTEX m_Mutex;
+			bool m_bDeleted;
+
 			_U32 m_AvatarID;
 			Map<A_UUID, OBJECT_DATA> m_Objects;
 			Set<A_UUID> m_DelList;
 		};
 
+		static CAvatarManager g_Manager;
+
+		CAvatarManager::CAvatarManager()
+		{
+			uv_rwlock_init(&g_AvatarLocker);
+		}
+
+		CAvatarManager::~CAvatarManager()
+		{
+			uv_rwlock_destroy(&g_AvatarLocker);
+		}
+
+		CAvatarData* CAvatarManager::GetAvatar(_U32 avatar_id)
+		{
+			CAvatarData* pAvatar = NULL;
+			Map<_U32, CAvatarData*>::iterator i;
+			uv_rwlock_rdlock(&g_AvatarLocker);
+			i = g_AvatarMap.find(avatar_id);
+			if(i!=g_AvatarMap.end() && !pAvatar->IsDeleted())
+			{
+				pAvatar = i->second;
+				pAvatar->Lock();
+				if(pAvatar->IsDeleted())
+				{
+					pAvatar->Unlock();
+					pAvatar = NULL;
+				}
+			}
+			uv_rwlock_rdunlock(&g_AvatarLocker);
+			return pAvatar;
+		}
+
+		bool CAvatarManager::SetAvatar(_U32 avatar_id, CAvatarData* pAvatar)
+		{
+			Map<_U32, CAvatarData*>::iterator i;
+			bool result = false;
+			uv_rwlock_wrlock(&g_AvatarLocker);
+			i = g_AvatarMap.find(avatar_id);
+			if(i==g_AvatarMap.end())
+			{
+				g_AvatarMap[avatar_id] = pAvatar;
+				result = true;
+			}
+			else
+			{
+				if(i->second->IsDeleted())
+				{
+					i->second = pAvatar;
+					result = true;
+				}
+			}
+			uv_rwlock_wrunlock(&g_AvatarLocker);
+			return result;
+		}
+
 		CAvatarData::CAvatarData(_U32 avatar_id)
 		{
 			m_AvatarID = avatar_id;
+			A_MUTEX_INIT(&m_Mutex);
+			m_bDeleted = false;
 		}
 
 		CAvatarData::~CAvatarData()
 		{
+			A_MUTEX_DESTROY(&m_Mutex);
 		}
 
 		bool CAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty)
@@ -260,6 +288,41 @@ namespace Zion
 			JsonRPC_Send(res, ("[0, {" + ret + "}]").c_str());
 		}
 
+		void CAvatarData::Lock()
+		{
+			A_MUTEX_LOCK(&m_Mutex);
+		}
+
+		void CAvatarData::Unlock()
+		{
+			A_MUTEX_UNLOCK(&m_Mutex);
+		}
+		
+		void CAvatarData::Delete()
+		{
+			_U32 avatar_id = m_AvatarID;
+			CAvatarData* pAvatar = this;
+			ZION_ASSERT(!m_bDeleted);
+			m_bDeleted = true;
+			A_MUTEX_UNLOCK(&m_Mutex);
+
+			Map<_U32, CAvatarData*>::iterator i;
+			uv_rwlock_wrlock(&g_Manager.g_AvatarLocker);
+			i = g_Manager.g_AvatarMap.find(avatar_id);
+			if(i!=g_Manager.g_AvatarMap.end() && i->second==pAvatar)
+			{
+				g_Manager.g_AvatarMap.erase(i);
+			}
+			uv_rwlock_wrunlock(&g_Manager.g_AvatarLocker);
+
+			delete pAvatar;
+		}
+
+		bool CAvatarData::IsDeleted()
+		{
+			return m_bDeleted;
+		}
+
 		void RPCIMPL_LoginUser(const JSONRPC_RESPONSE* res, const char* token)
 		{
 			IDBApi* db = AllocDataBase();
@@ -375,32 +438,38 @@ namespace Zion
 			if(!pAvatar)
 			{
 				pAvatar = ZION_NEW CAvatarData(avatar_id);
+				pAvatar->Lock();
 				if(!pAvatar->Load() || !g_Manager.SetAvatar(avatar_id, pAvatar))
 				{
+					pAvatar->Unlock();
 					ZION_DELETE pAvatar;
 					JsonRPC_Send(res, "[-1]");
 					return;
 				}
 			}
 			pAvatar->Send(res);
+			pAvatar->Unlock();
 		}
 		
 		void RPCIMPL_SaveAvatar(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
-			if(!pAvatar)
+			if(pAvatar)
 			{
 				JsonRPC_Send(res, "[-1]");
 				return;
 			}
 
-			if(!pAvatar->Save())
+			if(pAvatar->Save())
 			{
-				JsonRPC_Send(res, "[-1]");
-				return;
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[0]");
 			}
-
-			JsonRPC_Send(res, "[0]");
+			else
+			{
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[-1]");
+			}
 		}
 
 		void RPCIMPL_ClearAvatar(const JSONRPC_RESPONSE* res, _U32 avatar_id)
@@ -412,13 +481,16 @@ namespace Zion
 				return;
 			}
 
-			if(!pAvatar->Save())
+			if(pAvatar->Save())
 			{
-				JsonRPC_Send(res, "[-1]");
-				return;
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[0]");
 			}
-
-			JsonRPC_Send(res, "[0]");
+			else
+			{
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[-1]");
+			}
 		}
 
 		void RPCIMPL_KeepAlive(const JSONRPC_RESPONSE* res, _U32 avatar_id)
@@ -429,72 +501,94 @@ namespace Zion
 		void RPCIMPL_CreateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
-			if(pAvatar)
+			if(!pAvatar)
 			{
-				if(pAvatar->CreateObject(_uuid, type, data, false, true))
-				{
-					JsonRPC_Send(res, "[0]");
-					return;
-				}
+				JsonRPC_Send(res, "[-1]");
+				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+
+			if(pAvatar->CreateObject(_uuid, type, data, false, true))
+			{
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[0]");
+			}
+			else
+			{
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[-1]");
+			}
 		}
 
 		void RPCIMPL_UpdateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid, const char* data)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
-			if(pAvatar)
+			if(!pAvatar)
 			{
-				if(pAvatar->UpdateObject(_uuid, data))
-				{
-					JsonRPC_Send(res, "[0]");
-					return;
-				}
+				JsonRPC_Send(res, "[-1]");
+				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+
+			if(pAvatar->UpdateObject(_uuid, data))
+			{
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[0]");
+			}
+			else
+			{
+				pAvatar->Unlock();
+				JsonRPC_Send(res, "[-1]");
+			}
 		}
 
 		void RPCIMPL_DeleteObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID* _uuids, _U32 count)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
-			if(pAvatar)
+			if(!pAvatar)
 			{
-				for(_U32 l=0; l<count; l++)
-				{
-					pAvatar->DeleteObject(_uuids[l]);
-				}
-				JsonRPC_Send(res, "[0]");
+				JsonRPC_Send(res, "[-1]");
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+
+			for(_U32 l=0; l<count; l++)
+			{
+				pAvatar->DeleteObject(_uuids[l]);
+			}
+
+			pAvatar->Unlock();
+			JsonRPC_Send(res, "[0]");
 		}
 
 		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
-			if(pAvatar)
+			if(!pAvatar)
 			{
-				if(!pAvatar->ExistObject(_uuid))
+				JsonRPC_Send(res, "[-1]");
+				return;
+			}
+
+			if(!pAvatar->ExistObject(_uuid))
+			{
+				IDBApi* db = AllocDataBase();
+				if(db)
 				{
-					IDBApi* db = AllocDataBase();
-					if(db)
+					if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
 					{
-						if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
+						CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
+						if(pObject)
 						{
-							CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
-							if(pObject)
-							{
-								char suuid[100];
-								AUuidToString(_uuid, suuid);
-								JsonRPC_Send(res, StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
-								FreeDatabase(db);
-								return;
-							}
+							char suuid[100];
+							AUuidToString(_uuid, suuid);
+							JsonRPC_Send(res, StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
+							pAvatar->Unlock();
+							FreeDatabase(db);
+							return;
 						}
-						FreeDatabase(db);
 					}
+					FreeDatabase(db);
 				}
 			}
+			pAvatar->Unlock();
 			JsonRPC_Send(res, "[-1]");
 		}
 

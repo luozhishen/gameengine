@@ -2,6 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
+var os = require('os');
 
 if(!String.prototype.trim) {
 	String.prototype.trim = function () {
@@ -249,8 +250,8 @@ SolutionFile.prototype.getProject = function (name) {
 function AppBuilder (solution) {
 	this.files_data = {};
 	this.solution = solution;
-	this.setPlatform('Win32');
-	this.setConfiguration('Win32');
+	this.setPlatform(os.platform());
+	this.setConfiguration('debug');
 	this.jobs = [];
 }
 
@@ -270,7 +271,7 @@ AppBuilder.prototype.getFileTime = function (filename) {
 }
 
 AppBuilder.prototype.setPlatform = function (platform) {
-	if(platform=='Win32' || platform=='Win64') {
+	if(platform=='win32') {
 		this.obj_ext = '.obj';
 		this.exe_ext = '.exe';
 		this.dll_ext = '.dll';
@@ -298,7 +299,7 @@ AppBuilder.prototype.setPlatform = function (platform) {
 }
 
 AppBuilder.prototype.setConfiguration = function (config) {
-	if(config=='Debug') {
+	if(config=='debug') {
 		this.output_dir = path.resolve("./", "../..") + "/Binaries/Debug/";
 		this.object_dir = path.resolve("./", "..") + "/Intermediate/Debug/";
 		this.cc_flag = '-g';
@@ -308,7 +309,7 @@ AppBuilder.prototype.setConfiguration = function (config) {
 		this.config = config;
 		return;
 	}
-	if(config=='Release') {
+	if(config=='release') {
 		this.output_dir = path.resolve("./", "../..") + "/Binaries/Release/";
 		this.object_dir = path.resolve("./", "..") + "/Intermediate/Release/";
 		this.cc_flag = '-O2';
@@ -454,7 +455,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 
 		autoMakeDir(dst_path);
 
-		console.log('echo compile '+proj.src_files[i]);
+		console.log('echo compile', proj.src_files[i], '[', this.platform, this.config, ']');
 		var cpp_flag = ' ';
 		var cc_exe = this.cc_exe;
 		if(src_path.substring(src_path.length-2)!='.c') {
@@ -478,7 +479,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		if(!this.needUpdate(objs, lib_path+this.lib_ext)) {
 			return;
 		}
-		console.log('echo link library ' + proj.name);
+		console.log('echo link library', proj.name, '[', this.platform, this.config, ']');
 		console.log(this.sl_exe.format(this.object_dir, proj.name+this.lib_ext, objs_str));
 	} else {
 		var exe_path = this.output_dir + proj.name;
@@ -495,7 +496,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		}
 		dep_lib += " -ldl -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -lstdc++"
 
-		console.log('echo link execute ' + proj.name);
+		console.log('echo link execute', proj.name, '[', this.platform, this.config, ']');
 		console.log(this.ld_exe.format(objs_str, exe_path+this.exe_ext, dep_lib));
 	}
 
@@ -594,8 +595,6 @@ var solution = new SolutionFile();
 solution.load(process.argv[2]);
 
 var builder = new AppBuilder(solution);
-builder.setConfiguration('Debug');
-builder.setPlatform('linux');
 
 var do_task;
 var tasks = [];
@@ -628,10 +627,10 @@ for(var i=4; i<process.argv.length; i++) {
 		tasks.push(process.argv[i]);
 	} else {
 		switch(process.argv[i].substring(0, pos)) {
-		case 'Config':
+		case 'config':
 			builder.setConfiguration(process.argv[i].substring(pos+1));
 			break;
-		case 'Platform':
+		case 'platform':
 			builder.setPlatform(process.argv[i].substring(pos+1));
 			break;
 		}

@@ -100,7 +100,7 @@ namespace Zion
 	struct RPC_SERVER {
 		HCONNECT hConn;
 		_S32 state;
-		SOCK_ADDR sain;
+		ASOCK_ADDR sain;
 		A_MUTEX lock;
 		_U32 curlen;
 		RPC_PACKET packet;
@@ -435,7 +435,7 @@ namespace Zion
 		HTCPEP hep;
 		A_MUTEX maplock;
 		Zion::Map<HCONNECT, RPC_CLIENT*> conns;
-		SOCK_ADDR sockaddr;
+		ASOCK_ADDR sockaddr;
 
 		bool Add(HCONNECT hConn, RPC_CLIENT* pclt) {
 			bool res = true;
@@ -582,7 +582,7 @@ namespace Zion
 
 	_U32 GetRPCClientAddr(HCLIENT hClient)
 	{
-		SOCK_ADDR sain;
+		ASOCK_ADDR sain;
 		ZION_VERIFY(GetPeerAddr(((RPC_CLIENT*)hClient)->hConn, sain));
 		return sain.ip;
 	}
@@ -613,7 +613,7 @@ namespace Zion
 
 	HSERVER GetRPCServer(const _STR ep)
 	{
-		SOCK_ADDR sa;
+		ASOCK_ADDR sa;
 		if(!sock_str2addr(ep, &sa)) return NULL;
 		return GetRPCServer(sa.ip, sa.port);
 	}

@@ -60,7 +60,7 @@ namespace Zion
 		A_MUTEX_DESTROY(&m_mtxLock);
 	}
 
-	bool CAsyncIOConnection::Connect(const SOCK_ADDR& sa)
+	bool CAsyncIOConnection::Connect(const ASOCK_ADDR& sa)
 	{
 		bool bRet;
 

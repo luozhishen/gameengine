@@ -1,4 +1,3 @@
-#if 0
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +30,7 @@
 #define MSG_NOSIGNAL				0
 #endif
 
-static int setreuseaddr(SOCK_HANDLE fd);
+static int setreuseaddr(ASOCK_HANDLE fd);
 
 void sock_init()
 {
@@ -48,7 +47,7 @@ void sock_final()
 #endif
 }
 
-char* sock_addr2str(const SOCK_ADDR* addr, char* str)
+char* sock_addr2str(const ASOCK_ADDR* addr, char* str)
 {
 	sprintf(str, "%d.%d.%d.%d:%d",
 		addr->ip&0xff,
@@ -59,7 +58,7 @@ char* sock_addr2str(const SOCK_ADDR* addr, char* str)
 	return str;
 }
 
-SOCK_ADDR* sock_str2addr(const char* str, SOCK_ADDR* addr)
+ASOCK_ADDR* sock_str2addr(const char* str, ASOCK_ADDR* addr)
 {
 	char ip_str[30], *port_str, * flag_str;
 
@@ -77,14 +76,14 @@ SOCK_ADDR* sock_str2addr(const char* str, SOCK_ADDR* addr)
 	return(addr->ip==INADDR_NONE?NULL:addr);
 }
 
-void sock_addr(SOCK_ADDR* addr, unsigned int ip, unsigned short port)
+void sock_addr(ASOCK_ADDR* addr, unsigned int ip, unsigned short port)
 {
 	memset(addr, 0, sizeof(*addr));
 	addr->ip	= ip;
 	addr->port	= port;
 }
 
-int sock_nonblock(SOCK_HANDLE fd)
+int sock_nonblock(ASOCK_HANDLE fd)
 {
 #ifndef WIN32
 	int flags;
@@ -96,7 +95,7 @@ int sock_nonblock(SOCK_HANDLE fd)
 #endif
 }
 
-void sock_default_tcp_option(SOCK_TCP_OPTION* option)
+void sock_default_tcp_option(ASOCK_TCP_OPTION* option)
 {
 	option->recvbuf		= -1;
 	option->sndbuf		= -1;
@@ -104,14 +103,14 @@ void sock_default_tcp_option(SOCK_TCP_OPTION* option)
 	option->linger		= -1;
 }
 
-void sock_default_udp_option(SOCK_UDP_OPTION* option)
+void sock_default_udp_option(ASOCK_UDP_OPTION* option)
 {
 	option->recvbuf		= -1;
 	option->sndbuf		= -1;
 	option->broadcast	= -1;
 }
 
-int sock_set_tcp_option(SOCK_HANDLE handle, const SOCK_TCP_OPTION* option)
+int sock_set_tcp_option(ASOCK_HANDLE handle, const ASOCK_TCP_OPTION* option)
 {
 	if(option->recvbuf!=-1) {
 		setsockopt(handle, SOL_SOCKET, SO_RCVBUF, (const char *)&option->recvbuf, sizeof(option->recvbuf));
@@ -131,7 +130,7 @@ int sock_set_tcp_option(SOCK_HANDLE handle, const SOCK_TCP_OPTION* option)
 	return 0;
 }
 
-int sock_set_udp_option(SOCK_HANDLE handle, const SOCK_UDP_OPTION* option)
+int sock_set_udp_option(ASOCK_HANDLE handle, const ASOCK_UDP_OPTION* option)
 {
 	if(option->recvbuf!=-1) {
 		setsockopt(handle, SOL_SOCKET, SO_RCVBUF, (const char *)&option->recvbuf, sizeof(option->recvbuf));
@@ -145,14 +144,14 @@ int sock_set_udp_option(SOCK_HANDLE handle, const SOCK_UDP_OPTION* option)
 	return 0;
 }
 
-int sock_wait_read(SOCK_HANDLE handle, int timeout)
+int sock_wait_read(ASOCK_HANDLE handle, int timeout)
 {
 #ifdef _WIN32
 	int ret;
 	struct fd_set fds;
 	FD_ZERO(&fds);
 	FD_SET((SOCKET)handle, &fds);
-	if(timeout==SOCK_INFINITE) {
+	if(timeout==ASOCK_INFINITE) {
 		ret = select(0, &fds, NULL, NULL, NULL);
 	} else {
 		struct timeval tv;
@@ -168,20 +167,20 @@ int sock_wait_read(SOCK_HANDLE handle, int timeout)
 	ufds.fd = handle;
 	ufds.events = POLLIN;
 	ufds.revents = 0;
-	ret = poll(&ufds, 1, timeout==SOCK_INFINITE?-1:timeout);
+	ret = poll(&ufds, 1, timeout==ASOCK_INFINITE?-1:timeout);
 	if(ret==-1) return -1;
 	return ufds.revents?1:0;
 #endif
 }
 
-int sock_wait_write(SOCK_HANDLE handle, int timeout)
+int sock_wait_write(ASOCK_HANDLE handle, int timeout)
 {
 #ifdef _WIN32
 	int ret;
 	struct fd_set fds;
 	FD_ZERO(&fds);
 	FD_SET((SOCKET)handle, &fds);
-	if(timeout==SOCK_INFINITE) {
+	if(timeout==ASOCK_INFINITE) {
 		ret = select(0, NULL, &fds, NULL, NULL);
 	} else {
 		struct timeval tv;
@@ -203,14 +202,14 @@ int sock_wait_write(SOCK_HANDLE handle, int timeout)
 #endif
 }
 
-int sock_wait_error(SOCK_HANDLE handle, int timeout)
+int sock_wait_error(ASOCK_HANDLE handle, int timeout)
 {
 #ifdef _WIN32
 	int ret;
 	struct fd_set fds;
 	FD_ZERO(&fds);
 	FD_SET((SOCKET)handle, &fds);
-	if(timeout==SOCK_INFINITE) {
+	if(timeout==ASOCK_INFINITE) {
 		ret = select(0, NULL, NULL, &fds, NULL);
 	} else {
 		struct timeval tv;
@@ -232,36 +231,36 @@ int sock_wait_error(SOCK_HANDLE handle, int timeout)
 #endif
 }
 
-SOCK_HANDLE sock_bind(SOCK_ADDR* addr, int flags)
+ASOCK_HANDLE sock_bind(ASOCK_ADDR* addr, int flags)
 {
 	struct sockaddr_in sa;
-	SOCK_HANDLE sock;
+	ASOCK_HANDLE sock;
 	socklen_t sa_len;
 
 	sa.sin_family       = AF_INET;
 	sa.sin_addr.s_addr  = addr->ip;
 	sa.sin_port         = htons(addr->port);
 
-	if((sock=(SOCK_HANDLE)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))==-1)
-		return(SOCK_INVALID_HANDLE);
-	if(flags&SOCK_REUSEADDR && setreuseaddr(sock)!=0) {
+	if((sock=(ASOCK_HANDLE)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))==-1)
+		return(ASOCK_INVALID_HANDLE);
+	if(flags&ASOCK_REUSEADDR && setreuseaddr(sock)!=0) {
 		closesocket(sock);
-		return(SOCK_INVALID_HANDLE);
+		return(ASOCK_INVALID_HANDLE);
 	}
 	if(bind(sock, (struct sockaddr*)&sa, sizeof(sa))!=0) {
 		closesocket(sock);
-		return(SOCK_INVALID_HANDLE);
+		return(ASOCK_INVALID_HANDLE);
 	}
 	if(listen(sock, SOMAXCONN)!=0) {
 		closesocket(sock);
-		return(SOCK_INVALID_HANDLE);
+		return(ASOCK_INVALID_HANDLE);
 	}
 	sa_len = sizeof(sa);
 	if(getsockname(sock, (struct sockaddr*)&sa, &sa_len)!=0) {
 		closesocket(sock);
-		return(SOCK_INVALID_HANDLE);
+		return(ASOCK_INVALID_HANDLE);
 	}
-	if(flags&SOCK_NONBLOCK) {
+	if(flags&ASOCK_NONBLOCK) {
 		sock_nonblock(sock);
 	}
 
@@ -271,22 +270,22 @@ SOCK_HANDLE sock_bind(SOCK_ADDR* addr, int flags)
 	return sock;
 }
 
-int sock_unbind(SOCK_HANDLE fd)
+int sock_unbind(ASOCK_HANDLE fd)
 {
 	closesocket(fd);
 	return 0;
 }
 
-SOCK_HANDLE sock_accept(SOCK_HANDLE fd, SOCK_ADDR* addr)
+ASOCK_HANDLE sock_accept(ASOCK_HANDLE fd, ASOCK_ADDR* addr)
 {
-	SOCK_HANDLE sock;
+	ASOCK_HANDLE sock;
 	struct sockaddr_in sa;
 	socklen_t sa_len;
 	for(;;) {
 		sa_len = sizeof(sa);
-		sock = (SOCK_HANDLE)accept(fd, (struct sockaddr*)&sa, &sa_len);
+		sock = (ASOCK_HANDLE)accept(fd, (struct sockaddr*)&sa, &sa_len);
 		if(sock!=-1) break;
-		if(sock==-1 && WSAGetLastError()!=WSAEINTR) return SOCK_INVALID_HANDLE;
+		if(sock==-1 && WSAGetLastError()!=WSAEINTR) return ASOCK_INVALID_HANDLE;
 	}
 	if(addr!=NULL) {
 		addr->ip	= sa.sin_addr.s_addr;
@@ -295,40 +294,40 @@ SOCK_HANDLE sock_accept(SOCK_HANDLE fd, SOCK_ADDR* addr)
 	return sock;
 }
 
-SOCK_HANDLE sock_connect(const SOCK_ADDR* addr, int flags)
+ASOCK_HANDLE sock_connect(const ASOCK_ADDR* addr, int flags)
 {
 	struct sockaddr_in sa;
-	SOCK_HANDLE sock;
+	ASOCK_HANDLE sock;
 
 	sa.sin_family       = AF_INET;
 	sa.sin_addr.s_addr  = addr->ip;
 	sa.sin_port         = htons(addr->port);
 
-	if((sock=(SOCK_HANDLE)socket(PF_INET, SOCK_STREAM, IPPROTO_TCP))==-1)
-		return(SOCK_INVALID_HANDLE);
-	if(flags&SOCK_NONBLOCK)
+	if((sock=(ASOCK_HANDLE)socket(PF_INET, SOCK_STREAM, IPPROTO_TCP))==-1)
+		return(ASOCK_INVALID_HANDLE);
+	if(flags&ASOCK_NONBLOCK)
 		sock_nonblock(sock);
 	if(connect(sock, (struct sockaddr*)&sa, sizeof(sa))!=0) {
-		if((flags&SOCK_NONBLOCK)==0 || WSAGetLastError()!=WSAEWOULDBLOCK) {
+		if((flags&ASOCK_NONBLOCK)==0 || WSAGetLastError()!=WSAEWOULDBLOCK) {
 			closesocket(sock);
-			return(SOCK_INVALID_HANDLE);
+			return(ASOCK_INVALID_HANDLE);
 		}
 	}
 
     return(sock);
 }
 
-int sock_disconnect(SOCK_HANDLE fd)
+int sock_disconnect(ASOCK_HANDLE fd)
 {
 	return shutdown(fd, SD_BOTH)==-1?WSAGetLastError():0;
 }
 
-void sock_close(SOCK_HANDLE fd)
+void sock_close(ASOCK_HANDLE fd)
 {
 	closesocket(fd);
 }
 
-int sock_peername(SOCK_HANDLE fd, SOCK_ADDR* addr)
+int sock_peername(ASOCK_HANDLE fd, ASOCK_ADDR* addr)
 {
 	struct sockaddr_in sa;
 	socklen_t sa_len;
@@ -342,7 +341,7 @@ int sock_peername(SOCK_HANDLE fd, SOCK_ADDR* addr)
 	return 0;
 }
 
-int sock_sockname(SOCK_HANDLE fd, SOCK_ADDR* addr)
+int sock_sockname(ASOCK_HANDLE fd, ASOCK_ADDR* addr)
 {
 	struct sockaddr_in sa;
 	socklen_t sa_len;
@@ -356,7 +355,7 @@ int sock_sockname(SOCK_HANDLE fd, SOCK_ADDR* addr)
 	return 0;
 }
 
-int sock_read(SOCK_HANDLE fd, void* buf, int buf_len)
+int sock_read(ASOCK_HANDLE fd, void* buf, int buf_len)
 {
 	int ret;
 
@@ -371,7 +370,7 @@ int sock_read(SOCK_HANDLE fd, void* buf, int buf_len)
 	}
 }
 
-int sock_write(SOCK_HANDLE fd, const void* buf, int buf_len)
+int sock_write(ASOCK_HANDLE fd, const void* buf, int buf_len)
 {
 	int ret;
 
@@ -386,7 +385,7 @@ int sock_write(SOCK_HANDLE fd, const void* buf, int buf_len)
 	}
 }
 
-int sock_readbuf(SOCK_HANDLE fd, void* buf, int buf_len)
+int sock_readbuf(ASOCK_HANDLE fd, void* buf, int buf_len)
 {
 	int ret, size;
 
@@ -400,7 +399,7 @@ int sock_readbuf(SOCK_HANDLE fd, void* buf, int buf_len)
 	return 0;
 }
 
-int sock_writebuf(SOCK_HANDLE fd, const void* buf, int buf_len)
+int sock_writebuf(ASOCK_HANDLE fd, const void* buf, int buf_len)
 {
 	int ret, size;
 
@@ -414,7 +413,7 @@ int sock_writebuf(SOCK_HANDLE fd, const void* buf, int buf_len)
 	return 0;
 }
 
-int sock_readline(SOCK_HANDLE fd, char* buf, int buf_len)
+int sock_readline(ASOCK_HANDLE fd, char* buf, int buf_len)
 {
 	int rlen, ret;
 
@@ -436,7 +435,7 @@ int sock_readline(SOCK_HANDLE fd, char* buf, int buf_len)
 	}
 }
 
-int sock_writeline(SOCK_HANDLE fd, const char* buf)
+int sock_writeline(ASOCK_HANDLE fd, const char* buf)
 {
 	int ret;
 	ret = sock_writebuf(fd, buf, (int)strlen(buf));
@@ -445,17 +444,17 @@ int sock_writeline(SOCK_HANDLE fd, const char* buf)
 	return ret;
 }
 
-SOCK_HANDLE sock_dgram_bind(SOCK_ADDR* ep, int broadcast)
+ASOCK_HANDLE sock_dgram_bind(ASOCK_ADDR* ep, int broadcast)
 {
 	struct sockaddr_in sa;
 	socklen_t sa_len;
-	SOCK_HANDLE sock;
+	ASOCK_HANDLE sock;
 
 	sa.sin_family		= AF_INET;
 	sa.sin_addr.s_addr	= ep->ip;
 	sa.sin_port			= htons(ep->port);
 
-	if((sock=(SOCK_HANDLE)socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1) return(-1);
+	if((sock=(ASOCK_HANDLE)socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1) return(-1);
 	if(bind(sock, (struct sockaddr*)&sa, sizeof(sa))!=0) { closesocket(sock); return(-1); }
 	if(setsockopt(sock, SOL_SOCKET, SO_BROADCAST, (const char*)&broadcast, sizeof(broadcast))!=0) { closesocket(sock); return(-1); }
 	sa_len = sizeof(sa);
@@ -467,14 +466,14 @@ SOCK_HANDLE sock_dgram_bind(SOCK_ADDR* ep, int broadcast)
 	return(sock);
 }
 
-int sock_dgram_unbind(SOCK_HANDLE handle)
+int sock_dgram_unbind(ASOCK_HANDLE handle)
 {
 	shutdown(handle, SD_BOTH);
 	closesocket(handle);
 	return(0);
 }
 
-int sock_dgram_send(SOCK_HANDLE handle, const SOCK_ADDR* addr, const char* buf, int len)
+int sock_dgram_send(ASOCK_HANDLE handle, const ASOCK_ADDR* addr, const char* buf, int len)
 {
 	struct sockaddr_in sa;
 	int ret;
@@ -494,7 +493,7 @@ int sock_dgram_send(SOCK_HANDLE handle, const SOCK_ADDR* addr, const char* buf, 
 	}
 }
 
-int sock_dgram_recv(SOCK_HANDLE handle, SOCK_ADDR* addr, char* buf, int len)
+int sock_dgram_recv(ASOCK_HANDLE handle, ASOCK_ADDR* addr, char* buf, int len)
 {
 	struct sockaddr_in sa;
 	socklen_t sa_len;
@@ -514,7 +513,7 @@ int sock_dgram_recv(SOCK_HANDLE handle, SOCK_ADDR* addr, char* buf, int len)
 	}
 }
 
-int setreuseaddr(SOCK_HANDLE fd)
+int setreuseaddr(ASOCK_HANDLE fd)
 {
 #ifndef WIN32
 	int opt = 1;
@@ -524,5 +523,3 @@ int setreuseaddr(SOCK_HANDLE fd)
 	return setsockopt(fd,SOL_SOCKET,SO_REUSEADDR,(char *)&val,sizeof(val))==0?0:WSAGetLastError();
 #endif
 }
-
-#endif

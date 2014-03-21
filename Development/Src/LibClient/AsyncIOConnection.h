@@ -14,7 +14,7 @@ namespace Zion
 		CAsyncIOConnection(CClient* pClient, _U32 recvsize);
 		virtual ~CAsyncIOConnection();
 
-		virtual bool Connect(const SOCK_ADDR& sa);
+		virtual bool Connect(const ASOCK_ADDR& sa);
 		virtual void Disconnect();
 		virtual void SendData(_U32 len, const _U8* data, bool bPending);
 

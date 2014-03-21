@@ -42,14 +42,14 @@ namespace Zion
 		bool BindUID(_U32 uid, _U64 lndx);
 		bool Unbind(_U32 uid, _U64 lndx);
 
-		bool GetSession(_U32 uid, SOCK_ADDR& sa);
+		bool GetSession(_U32 uid, ASOCK_ADDR& sa);
 		void UpdateWorkLoadInfo(const WORKLOAD_INFO* info_list, _U32 count);
 		void Tick();
 
 	private:
 		HSERVER m_hDefaultCluster;
 		SESSION_WORKLOADS m_WorkLoads;
-		SOCK_ADDR m_saEndPoint;
+		ASOCK_ADDR m_saEndPoint;
 		HIOPOOL m_hPool;
 		HTCPEP m_hEp;
 		_U32 m_nConnCount;

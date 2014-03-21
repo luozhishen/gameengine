@@ -10,7 +10,7 @@ namespace Zion
 
 	CNonblockConnection::CNonblockConnection(CClient* pClient, _U32 recvsize) : CClientConnection(pClient, recvsize)
 	{
-		m_hSocket = SOCK_INVALID_HANDLE;
+		m_hSocket = ASOCK_INVALID_HANDLE;
 	}
 
 	CNonblockConnection::~CNonblockConnection()
@@ -19,7 +19,7 @@ namespace Zion
 
 	void CNonblockConnection::Tick()
 	{
-		if(m_hSocket==SOCK_INVALID_HANDLE) return;
+		if(m_hSocket==ASOCK_INVALID_HANDLE) return;
 
 		if(m_bConnecting)
 		{
@@ -76,13 +76,13 @@ namespace Zion
 		}
 	}
 
-	bool CNonblockConnection::Connect(const SOCK_ADDR& sa)
+	bool CNonblockConnection::Connect(const ASOCK_ADDR& sa)
 	{
-		ZION_ASSERT(m_hSocket==SOCK_INVALID_HANDLE);
-		if(m_hSocket!=SOCK_INVALID_HANDLE) return false;
+		ZION_ASSERT(m_hSocket==ASOCK_INVALID_HANDLE);
+		if(m_hSocket!=ASOCK_INVALID_HANDLE) return false;
 		Clear();
-		m_hSocket = sock_connect(&sa, SOCK_NONBLOCK);
-		if(m_hSocket==SOCK_INVALID_HANDLE) return false;
+		m_hSocket = sock_connect(&sa, ASOCK_NONBLOCK);
+		if(m_hSocket==ASOCK_INVALID_HANDLE) return false;
 		m_bNeedDisconnect = false;
 		m_bConnecting = true;
 		return true;
@@ -90,7 +90,7 @@ namespace Zion
 
 	void CNonblockConnection::Disconnect()
 	{
-		if(m_hSocket==SOCK_INVALID_HANDLE) return;
+		if(m_hSocket==ASOCK_INVALID_HANDLE) return;
 		if(m_bConnecting) return;
 		m_bNeedDisconnect = true;
 	}
@@ -112,10 +112,10 @@ namespace Zion
 		}
 		m_nSendLen = 0;
 
-		if(m_hSocket!=SOCK_INVALID_HANDLE)
+		if(m_hSocket!=ASOCK_INVALID_HANDLE)
 		{
 			sock_close(m_hSocket);
-			m_hSocket = SOCK_INVALID_HANDLE;
+			m_hSocket = ASOCK_INVALID_HANDLE;
 		}
 	}
 

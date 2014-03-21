@@ -15,7 +15,7 @@ public:
 #pragma warning(disable:4324)
 
 typedef struct _A_MEM_ENTRY {
-    ATOM_SLIST_ENTRY entry;
+    A_SLIST_ENTRY entry;
 	_U32 ndx;
 } A_MEM_ENTRY;
 

@@ -25,7 +25,7 @@ namespace Zion
 
 		void ProcessPacket(_U32 len, const _U8* data);
 
-		virtual bool Connect(const SOCK_ADDR& sa) = 0;
+		virtual bool Connect(const ASOCK_ADDR& sa) = 0;
 		virtual void Disconnect() = 0;
 		virtual void SendData(_U32 len, const _U8* data, bool bPending=false) = 0;
 
@@ -34,7 +34,7 @@ namespace Zion
 		_U32 m_nRecvBuffLen;
 		_U32 m_nRecvBuffSize;
 		bool m_bNeedRedirect;
-		SOCK_ADDR m_saRedirectAddr;
+		ASOCK_ADDR m_saRedirectAddr;
 		_U8 m_LoginData[1024];
 		_U16 m_nLoginDataSize;
 	};

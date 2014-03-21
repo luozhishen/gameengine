@@ -36,7 +36,7 @@ namespace Zion
 
 	private:
 		HSERVER m_hDefaultCluster;
-		SOCK_ADDR m_saEndPoint;
+		ASOCK_ADDR m_saEndPoint;
 		HIOPOOL m_hPool;
 		HTCPEP m_hEp;
 		_U32 m_nConnCount;

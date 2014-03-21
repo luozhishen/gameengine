@@ -28,7 +28,7 @@ namespace Zion
 		m_hPool = NULL;
 	}
 
-	void CConnectionServer::SetEP(const SOCK_ADDR& sa)
+	void CConnectionServer::SetEP(const ASOCK_ADDR& sa)
 	{
 		m_saAddr = sa;
 	}

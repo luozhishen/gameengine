@@ -108,7 +108,7 @@ namespace Zion
 
 	void CNodeServer::Tick()
 	{
-		SOCK_ADDR& sockInfo = GetServerApp()->GetRPCAddrPort();
+		ASOCK_ADDR& sockInfo = GetServerApp()->GetRPCAddrPort();
 		WORKLOAD_INFO info;
 		info.ip = sockInfo.ip;
 		info.port = sockInfo.port;

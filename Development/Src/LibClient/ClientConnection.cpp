@@ -26,7 +26,7 @@ namespace Zion
 
 	bool CClientConnection::Login(const char* pUrl, const CClientLoginMethod* pMethod)
 	{
-		SOCK_ADDR sa;
+		ASOCK_ADDR sa;
 		if(!sock_str2addr(pUrl, &sa))
 		{
 			m_nErrCode = CClient::ERRCODE_UNKOWN;
@@ -175,14 +175,14 @@ namespace Zion
 				GetClient()->GetClientApp()->QueueLoginDone(GetClient());
 				break;
 			case 0x1: // redirect
-				if(len<sizeof(code)+sizeof(SOCK_ADDR))
+				if(len<sizeof(code)+sizeof(ASOCK_ADDR))
 				{
 					SetErrorCode(CClient::ERRCODE_UNKOWN);
 				}
 				else
 				{
-					m_saRedirectAddr = *((const SOCK_ADDR*)(data+sizeof(code)));
-					m_nLoginDataSize = (_U16)len - sizeof(code) - sizeof(SOCK_ADDR) + sizeof(_U16);
+					m_saRedirectAddr = *((const ASOCK_ADDR*)(data+sizeof(code)));
+					m_nLoginDataSize = (_U16)len - sizeof(code) - sizeof(ASOCK_ADDR) + sizeof(_U16);
 					if(m_nLoginDataSize>sizeof(m_LoginData))
 					{
 						SetErrorCode(CClient::ERRCODE_UNKOWN);
@@ -190,7 +190,7 @@ namespace Zion
 					else
 					{
 						*((_U16*)m_LoginData) = (_U16)m_nLoginDataSize - sizeof(_U16);
-						memcpy(m_LoginData+sizeof(_U16), data+sizeof(code)+sizeof(SOCK_ADDR), (size_t)m_nLoginDataSize);
+						memcpy(m_LoginData+sizeof(_U16), data+sizeof(code)+sizeof(ASOCK_ADDR), (size_t)m_nLoginDataSize);
 						m_bNeedRedirect = true;
 					}
 				}

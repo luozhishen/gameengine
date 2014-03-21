@@ -56,7 +56,7 @@ namespace Zion
 		return 0;
 	}
 
-	HTCPEP NewEP(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key, _U32 count)
+	HTCPEP NewEP(const ASOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key, _U32 count)
 	{
 		return NULL;
 	}
@@ -92,7 +92,7 @@ namespace Zion
 	{
 	}
 
-	bool GetEpAddr(HTCPEP hep, SOCK_ADDR& sa)
+	bool GetEpAddr(HTCPEP hep, ASOCK_ADDR& sa)
 	{
 		return false;
 	}
@@ -107,7 +107,7 @@ namespace Zion
 		return NULL;
 	}
 
-	bool Connect(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key)
+	bool Connect(const ASOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, void* key)
 	{
 		return false;
 	}
@@ -161,12 +161,12 @@ namespace Zion
 	{
 	}
 
-	bool GetSelfAddr(HCONNECT hConn, SOCK_ADDR& sa)
+	bool GetSelfAddr(HCONNECT hConn, ASOCK_ADDR& sa)
 	{
 		return false;
 	}
 
-	bool GetPeerAddr(HCONNECT hConn, SOCK_ADDR& sa)
+	bool GetPeerAddr(HCONNECT hConn, ASOCK_ADDR& sa)
 	{
 		return false;
 	}
@@ -181,7 +181,7 @@ namespace Zion
 		return NULL;
 	}
 
-	HUDPEP NewEP(const SOCK_ADDR& sa, PFN_ON_DATAGRAM on, HIOPOOL hpool, HWORKERS hworkers, void* key)
+	HUDPEP NewEP(const ASOCK_ADDR& sa, PFN_ON_DATAGRAM on, HIOPOOL hpool, HWORKERS hworkers, void* key)
 	{
 		return NULL;
 	}
@@ -198,7 +198,7 @@ namespace Zion
 	{
 	}
 
-	void Send(HUDPEP hep, const SOCK_ADDR& sa, _U32 len, _U8* data)
+	void Send(HUDPEP hep, const ASOCK_ADDR& sa, _U32 len, _U8* data)
 	{
 	}
 
@@ -216,7 +216,7 @@ namespace Zion
 	{
 	}
 
-	bool GetEpAddr(HUDPEP hep, SOCK_ADDR& sa)
+	bool GetEpAddr(HUDPEP hep, ASOCK_ADDR& sa)
 	{
 		return false;
 	}

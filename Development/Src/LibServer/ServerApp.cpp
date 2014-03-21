@@ -78,13 +78,13 @@ namespace Zion
 		sock_str2addr(str, &m_saListen);
 	}
 
-	SOCK_ADDR& CServerApp::GetListenAddrPort()
+	ASOCK_ADDR& CServerApp::GetListenAddrPort()
 	{
 		ZION_ASSERT(m_saListen.ip&&m_saListen.port);
 		return m_saListen;
 	}
 
-	SOCK_ADDR& CServerApp::GetRPCAddrPort()
+	ASOCK_ADDR& CServerApp::GetRPCAddrPort()
 	{
 		return m_saRPC;
 	}
@@ -104,7 +104,7 @@ namespace Zion
 		sock_str2addr(str, &m_saCluster);
 	}
 
-	SOCK_ADDR& CServerApp::GetClusterRpcEP()
+	ASOCK_ADDR& CServerApp::GetClusterRpcEP()
 	{
 		return m_saCluster;
 	}

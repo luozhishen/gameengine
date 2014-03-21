@@ -83,7 +83,7 @@ namespace Zion
 	{
 		if(!CServerBase::Start()) return false;
 
-		SOCK_ADDR& cluster = GetServerApp()->GetClusterRpcEP();
+		ASOCK_ADDR& cluster = GetServerApp()->GetClusterRpcEP();
 		m_hDefaultCluster = GetRPCServer(cluster.ip, cluster.port);
 
 		ASOCKIO_HANDLER handler =
@@ -200,7 +200,7 @@ namespace Zion
 		return m_mapUID.Unbind(uid, lndx);
 	}
 		
-	bool CLoginServer::GetSession(_U32 uid, SOCK_ADDR& sa)
+	bool CLoginServer::GetSession(_U32 uid, ASOCK_ADDR& sa)
 	{
 		if(m_WorkLoads.empty()) 
 			return false;
@@ -308,7 +308,7 @@ namespace Zion
 		SetUID(nUID, "");
 
 		//return session add and new token
-		SOCK_ADDR sa;
+		ASOCK_ADDR sa;
 		if(!m_pServer->GetSession(nUID, sa))
 		{
 			KickUser();

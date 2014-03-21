@@ -12,7 +12,7 @@ namespace Zion
 
 		virtual void Tick();
 
-		virtual bool Connect(const SOCK_ADDR& sa);
+		virtual bool Connect(const ASOCK_ADDR& sa);
 		virtual void Disconnect();
 		virtual void SendData(_U32 len, const _U8* data, bool bPending);
 
@@ -20,7 +20,7 @@ namespace Zion
 
 	private:
 		bool m_bNeedDisconnect, m_bConnecting;
-		SOCK_HANDLE m_hSocket;
+		ASOCK_HANDLE m_hSocket;
 		List<std::pair<_U8*, _U32> > m_SendQueue;
 		_U32 m_nSendLen;
 	};

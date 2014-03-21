@@ -41,22 +41,22 @@ namespace Zion
 
 		void Run();
 		void SetListenAddrPort(const _STR str);
-		SOCK_ADDR& GetListenAddrPort();
-		SOCK_ADDR& GetRPCAddrPort();
+		ASOCK_ADDR& GetListenAddrPort();
+		ASOCK_ADDR& GetRPCAddrPort();
 
 		void SetRPCAddrPort(_U32 ip, _U16 port);
 		void SetRPCAddrPort(const _STR str);
 		void SetClusterRpcEP(const _STR str);
-		SOCK_ADDR& GetClusterRpcEP();
+		ASOCK_ADDR& GetClusterRpcEP();
 
 		virtual void InitApp();
 		virtual void FiniApp();
 
 	private:
 		HWORKERS m_hIOWorkers;
-		SOCK_ADDR m_saRPC;		//rpc binding addr and port of server self
-		SOCK_ADDR m_saListen; //server listen addr and port
-		SOCK_ADDR m_saCluster; //cluster port only for server who communicate with cluster
+		ASOCK_ADDR m_saRPC;		//rpc binding addr and port of server self
+		ASOCK_ADDR m_saListen; //server listen addr and port
+		ASOCK_ADDR m_saCluster; //cluster port only for server who communicate with cluster
 	};
 
 }

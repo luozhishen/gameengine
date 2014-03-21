@@ -75,7 +75,7 @@ namespace Zion
 		if(!CServerBase::Start()) return false;
 		
 		//m_hDefaultCluster = GetRPCServer("192.168.0.15:1982");
-		SOCK_ADDR& cluster = GetServerApp()->GetClusterRpcEP();
+		ASOCK_ADDR& cluster = GetServerApp()->GetClusterRpcEP();
 		m_hDefaultCluster = GetRPCServer(cluster.ip, cluster.port);
 
 		ASOCKIO_HANDLER handler =

@@ -489,7 +489,7 @@ namespace Zion
 						break;
 					case SIOP_RECVFROM:
 						udpep = (AIO_UDP_END_POINT*)key;
-						SOCK_ADDR sa;
+						ASOCK_ADDR sa;
 						sock_addr(&sa, udpep->sainSrc.sin_addr.S_un.S_addr, ntohs(udpep->sainSrc.sin_port));
 						udpep->Recv();
 						if(nob) {
@@ -834,7 +834,7 @@ namespace Zion
 		((AIO_CONNECTION*)hConn)->key = key;
 	}
 
-	bool GetSelfAddr(HCONNECT hConn, SOCK_ADDR& sa)
+	bool GetSelfAddr(HCONNECT hConn, ASOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -844,7 +844,7 @@ namespace Zion
 		return true;
 	}
 
-	bool GetPeerAddr(HCONNECT hConn, SOCK_ADDR& sa)
+	bool GetPeerAddr(HCONNECT hConn, ASOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -854,7 +854,7 @@ namespace Zion
 		return true;
 	}
 
-	bool GetEpAddr(HTCPEP hep, SOCK_ADDR& sa)
+	bool GetEpAddr(HTCPEP hep, ASOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -864,7 +864,7 @@ namespace Zion
 		return true;
 	}
 
-	bool GetEpAddr(HUDPEP hep, SOCK_ADDR& sa)
+	bool GetEpAddr(HUDPEP hep, ASOCK_ADDR& sa)
 	{
 		SOCKADDR_IN addr;
 		int len = sizeof(addr);
@@ -874,7 +874,7 @@ namespace Zion
 		return true;
 	}
 
-	HTCPEP NewEP(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key, _U32 count)
+	HTCPEP NewEP(const ASOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key, _U32 count)
 	{
 		AIO_TCP_END_POINT* ep = (AIO_TCP_END_POINT*)ZION_ALIGN_ALLOC(sizeof(AIO_TCP_END_POINT));
 		if(ep) {
@@ -891,7 +891,7 @@ namespace Zion
 		return NULL;
 	}
 
-	HUDPEP NewEP(const SOCK_ADDR& sa, PFN_ON_DATAGRAM pfn, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
+	HUDPEP NewEP(const ASOCK_ADDR& sa, PFN_ON_DATAGRAM pfn, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
 	{
 		AIO_UDP_END_POINT* ep = (AIO_UDP_END_POINT*)ZION_ALIGN_ALLOC(sizeof(AIO_UDP_END_POINT));
 		if(ep) {
@@ -950,7 +950,7 @@ namespace Zion
 		return(((AIO_UDP_END_POINT*)hep)->running ? true : false);
 	}
 
-	bool Connect(const SOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
+	bool Connect(const ASOCK_ADDR& sa, ASOCKIO_HANDLER& handler, HIOPOOL hpool, HWORKERS hworkers, PVOID key)
 	{
 		AIO_CONNECTION* conn = NewConn(handler, (AIO_BUFFER_POOL*)hpool, (AIO_WORKERS*)hworkers, NULL);
 		if(conn) {

@@ -12,7 +12,7 @@ namespace Zion
 		CConnectionServer(CServerApp* pServerApp);
 		virtual ~CConnectionServer();
 
-		void SetEP(const SOCK_ADDR& sa);
+		void SetEP(const ASOCK_ADDR& sa);
 
 		virtual bool Start();
 		virtual void Stop();
@@ -21,7 +21,7 @@ namespace Zion
 		virtual bool OnConnected(HCONNECT hConn);
 
 	private:
-		SOCK_ADDR m_saAddr;
+		ASOCK_ADDR m_saAddr;
 		HIOPOOL m_hPool;
 		HTCPEP m_hEp;
 	};

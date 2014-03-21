@@ -5,10 +5,47 @@
 #include <mysql.h>
 #include <time.h>
 
+#define MY(x)		( CMysqlString(m_mysql, x).data )
+
 namespace Zion
 {
 	namespace DataCache
 	{
+
+		class CMysqlString
+		{
+		public:
+			CMysqlString(MYSQL*	_mysql, const char* val);
+			CMysqlString(MYSQL*	_mysql, const String& val);
+			void Allocate(MYSQL* _mysql, const char* val);
+			~CMysqlString();
+			char* data;
+		};
+
+		CMysqlString::CMysqlString(MYSQL* mysql, const char* val)
+		{
+			data = NULL;
+			Allocate(mysql, val);
+		}
+
+		CMysqlString::CMysqlString(MYSQL* mysql, const String& val)
+		{
+			data = NULL;
+			Allocate(mysql, val.c_str());
+		}
+
+		void CMysqlString::Allocate(MYSQL* mysql, const char* val)
+		{
+			if(data) ZION_FREE(data);
+			_U32 len = (_U32)strlen(val);
+			data = (char*)ZION_ALLOC(len*2+1);;
+			mysql_real_escape_string(mysql, data, val, (unsigned long)len);
+		}
+
+		CMysqlString::~CMysqlString()
+		{
+			if(data) ZION_FREE(data);
+		}
 
 		class CMysqlDBApi : public IDBApi
 		{
@@ -110,7 +147,7 @@ namespace Zion
 
 		_U32 CMysqlDBApi::LoginUser(const char* token, const char* ip, const char* dv_type, const char* os_type, const char* dv_id)
 		{
-			String sql = StringFormat("SELECT user_id, state, UNIX_TIMESTAMP(freeze_duetime) FROM user_table WHERE token='%s'", token);
+			String sql = StringFormat("SELECT user_id, state, UNIX_TIMESTAMP(freeze_duetime) FROM user_table WHERE token='%s'", MY(token));
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 			{
 				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
@@ -137,7 +174,7 @@ namespace Zion
 
 			if(user_id==(_U32)-1)
 			{
-				sql = StringFormat("INSERT INTO user_table(token, state, freeze_duetime) VALUES('%s', 0, 0)", token);
+				sql = StringFormat("INSERT INTO user_table(token, state, freeze_duetime) VALUES('%s', 0, 0)", MY(token));
 				if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 				{
 					printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
@@ -150,7 +187,7 @@ namespace Zion
 				return (_U32)-1;
 			}
 
-			sql = StringFormat("INSERT INTO login_history_table(user_id, ip, dv_type, os_type, dv_id, create_ts) VALUES(%u, '%s', '%s', '%s', '%s', CURRENT_TIMESTAMP)", user_id, ip, dv_type, os_type, dv_id);
+			sql = StringFormat("INSERT INTO login_history_table(user_id, ip, dv_type, os_type, dv_id, create_ts) VALUES(%u, '%s', '%s', '%s', '%s', CURRENT_TIMESTAMP)", user_id, MY(ip), MY(dv_type), MY(os_type), MY(dv_id));
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 			{
 				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
@@ -163,7 +200,7 @@ namespace Zion
 		_U32 CMysqlDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
 		{
 			String sql = StringFormat("INSERT INTO avatar_table(user_id, server_id, avatar_name, avatar_desc) VALUES(%u, %u, '%s', '%s')",
-				user_id, server_id, avatar_name, avatar_desc);
+				user_id, server_id, MY(avatar_name), MY(avatar_desc));
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 			{
 				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
@@ -282,7 +319,7 @@ namespace Zion
 		{
 			char suuid[100];
 			AUuidToString(_uuid, suuid);
-			String sql = StringFormat("INSERT INTO avatar_object_table values(%u, '%s', '%s', '%s')", -1, suuid, type, data);
+			String sql = StringFormat("INSERT INTO avatar_object_table values(%u, '%s', '%s', '%s')", -1, suuid, MY(type), MY(data));
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 			{
 				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));

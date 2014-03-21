@@ -97,7 +97,7 @@ namespace Zion
 			printf("init database\n");
 			if(!InitDatabase())
 			{
-				ZION_FATAL("");
+				ZION_FATAL("FAILED InitDatabase");
 			}
 
 			// step 3: start rpc server

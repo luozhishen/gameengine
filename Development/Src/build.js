@@ -204,8 +204,7 @@ ProjectFile.prototype.load = function (filename) {
 		var name = lines[i].substring(pos+1);
 		pos = name.indexOf('"');
 		if(pos<0) throw "wwwwww";
-		name = name.substring(0, pos);
-
+		name = name.substring(0, pos).replace(/\\/g, "/");
 		files.push(name);
 	}
 }
@@ -252,6 +251,7 @@ function AppBuilder (solution) {
 	this.solution = solution;
 	this.setPlatform('Win32');
 	this.setConfiguration('Win32');
+	this.jobs = [];
 }
 
 AppBuilder.prototype.getFileTime = function (filename) {
@@ -290,7 +290,7 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.cd_exe = 'clang -M {1} {0} -c -o {2}';
 		this.cc_exe = 'clang {1} {0} -c -o {2}';
 		this.ld_exe = 'ld {2} {0} -o {1}';
-		this.sl_exe = 'ar crv {0}lib{1} {2}';
+		this.sl_exe = 'ar rcs {0}lib{1} {2}';
 		this.dl_exe = '';
 		this.platform = platform;
 		return;
@@ -400,6 +400,21 @@ AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
 }
 
 AppBuilder.prototype.buildBIN = function (proj) {
+	if(this.jobs.indexOf(proj.name)>=0) return;
+	this.jobs.push(proj.name);
+
+	if(proj.name!='DDLGen' && proj.name!='RPCGen') {
+		var dep_proj;
+		dep_proj = this.solution.getProject('DDLGen');
+		if(dep_proj) {
+			this.buildBIN(dep_proj);
+		}
+		dep_proj = this.solution.getProject('RPCGen');
+		if(dep_proj) {
+			this.buildBIN(dep_proj);
+		}
+	}
+
 	for(var i=0; i<proj.deps.length; i++) {
 		var dep_proj = this.solution.getProject(proj.deps[i]);
 		if(!dep_proj) {
@@ -445,7 +460,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 			cpp_flag = ' -std=c++0x ';
 		}
 		console.log(this.cc_exe.format(src_path, inc_cmd + cpp_flag + this.cc_flag, dst_path+this.obj_ext));
-		console.log(this.cd_exe.format(src_path, inc_cmd + cpp_flag + '-M ' + this.cc_flag, dst_path+'.d'));
+		// console.log(this.cd_exe.format(src_path, inc_cmd + cpp_flag + '-M ' + this.cc_flag, dst_path+'.d'));
 	}
 
 	var objs_str = objs.join(' ');
@@ -469,12 +484,11 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		}
 		console.log('echo link execute ' + proj.name);
 
-		var dep_lib = "";
+		var dep_lib = "-L" + this.object_dir;
 		for(var i=0; i<proj.deps.length; i++) {
-			if(dep_lib!="") dep_lib += " ";
-			dep_lib += "-l " + this.object_dir + proj.deps[i] + ".a";
+			dep_lib += " -l" + proj.deps[i];
 		}
-		dep_lib += " -l dl -l pthread"
+		dep_lib += " -ldl -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -lstdc++"
 
 		console.log(this.ld_exe.format(objs_str, exe_path+this.exe_ext, dep_lib));
 	}

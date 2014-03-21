@@ -1,5 +1,3 @@
-#if 1
-
 #include "ZionBase.h"
 
 #include <json/config.h>
@@ -16,5 +14,3 @@
 #include <json_reader.cpp>
 #include <json_value.cpp>
 #include <json_writer.cpp>
-
-#endif

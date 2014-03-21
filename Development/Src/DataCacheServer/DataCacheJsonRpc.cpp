@@ -2,7 +2,7 @@
 #include <ZionCommon.h>
 #include <JsonRPC.h>
 #include "DataCacheServer.h"
-#include "DataCacheJsonRPC.h"
+#include "DataCacheJsonRpc.h"
 #include "DataCacheRpcImpl.h"
 
 namespace Zion

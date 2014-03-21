@@ -14,6 +14,7 @@ typedef double					_F64;
 typedef char*					_STR;
 
 #include <assert.h>
+#include <stdlib.h>
 extern void zion_set_fatal(bool msgbox);
 extern void zion_fatal(const char* fmt, ...);
 

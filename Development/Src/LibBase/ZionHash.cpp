@@ -3,6 +3,9 @@
 #include "ZionHash.h"
 #include "ZionUtils.h"
 
+#include <stdio.h>
+#include <string.h>
+
 namespace Zion
 {
 

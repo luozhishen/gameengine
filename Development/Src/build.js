@@ -250,6 +250,9 @@ SolutionFile.prototype.getProject = function (name) {
 function AppBuilder (solution) {
 	this.files_data = {};
 	this.solution = solution;
+	this.platform = 'Win32';
+	this.config = 'Debug';
+	this.setPlatform('Win32');
 }
 
 AppBuilder.prototype.getFileTime = function (filename) {
@@ -278,6 +281,9 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.ln_exe = 'cl {0} /Fe{1}';
 		this.sl_exe = 'echo {0} {1}';
 		this.dl_exe = '';
+		this.platform = platform;
+		this.setConfiguration(this.config);
+		return;
 	} else {
 		this.obj_ext = '.o';
 		this.exe_ext = '';
@@ -288,6 +294,9 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.ln_exe = 'clang {0} -o {1}';
 		this.sl_exe = 'ar crv {0} {1}';
 		this.dl_exe = '';
+		this.platform = platform;
+		this.setConfiguration(this.config);
+		return;
 	}
 }
 
@@ -299,6 +308,8 @@ AppBuilder.prototype.setConfiguration = function (config) {
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
+		this.config = config;
+		this.setPlatform(this.platform);
 		return;
 	}
 	if(config=='Release') {
@@ -308,6 +319,8 @@ AppBuilder.prototype.setConfiguration = function (config) {
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
+		this.config = config;
+		this.setPlatform(this.platform);
 		return;
 	}
 }
@@ -423,8 +436,12 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		autoMakeDir(dst_path);
 
 		console.log('echo compile '+proj.src_files[i]);
-		console.log(this.cc_exe.format(src_path, inc_cmd + ' ' + this.cc_flag, dst_path+this.obj_ext));
-		console.log(this.cd_exe.format(src_path, inc_cmd + ' -M ' + this.cc_flag, dst_path+'.d'));
+		var cpp_flag = ' ';
+		if(this.cc_exe.substring(0,3)!='cl ' && src_path.substring(src_path.length-2)!='.c') {
+			cpp_flag = ' -std=c++0x ';
+		}
+		console.log(this.cc_exe.format(src_path, inc_cmd + cpp_flag + this.cc_flag, dst_path+this.obj_ext));
+		console.log(this.cd_exe.format(src_path, inc_cmd + cpp_flag + '-M ' + this.cc_flag, dst_path+'.d'));
 	}
 
 	var objs_str = objs.join(' ');
@@ -540,7 +557,7 @@ solution.load(process.argv[2]);
 
 var builder = new AppBuilder(solution);
 builder.setConfiguration('Debug');
-builder.setPlatform('Win32');
+builder.setPlatform('linux');
 
 var do_task;
 var tasks = [];

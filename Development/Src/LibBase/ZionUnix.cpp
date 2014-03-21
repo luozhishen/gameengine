@@ -1,5 +1,7 @@
 #ifndef	_WIN32
 
+#include "ZionDefines.h"
+
 void zion_set_fatal(bool msgbox)
 {
 }

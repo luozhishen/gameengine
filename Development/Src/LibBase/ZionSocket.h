@@ -1,3 +1,4 @@
+#if 0
 #ifndef __ZION_SOCKET__
 #define __ZION_SOCKET__
 
@@ -6,6 +7,10 @@ extern "C" {
 #endif
 
 typedef int		SOCK_HANDLE;
+
+#ifdef SOCK_NONBLOCK
+#undef SOCK_NONBLOCK
+#endif
 
 #define SOCK_READ			(1<<1)
 #define SOCK_WRITE			(1<<2)
@@ -82,4 +87,5 @@ int sock_dgram_recv(SOCK_HANDLE handle, SOCK_ADDR* addr, char* buf, int buf_len)
 }
 #endif
 
+#endif
 #endif

@@ -6,10 +6,11 @@
 #include <sys/stat.h>
 #include <stdarg.h>
 #include <errno.h>
-const char* __argv[] = {NULL, NULL, NULL};
+const char* __argv[] = {""};
 #endif
 
 #include "ZionBase.h"
+#include <stdio.h>
 
 namespace Zion
 {

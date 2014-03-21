@@ -3,7 +3,7 @@
 #include "DataCacheDBApiSqlite.h"
 #include "DataCacheServer.h"
 
-#include "sqlite\sqlite3.h"
+#include "sqlite/sqlite3.h"
 #include <time.h>
 
 namespace Zion
@@ -74,8 +74,6 @@ namespace Zion
 			sqlite3_stmt* m_sqlite_query;
 			int m_sqlite_query_avatar_id;
 			int m_sqlite_query_object_uuid;
-
-			CRITICAL_SECTION g_GlobalLocker;
 		};
 
 		static const char* sqls[] = {
@@ -137,7 +135,6 @@ namespace Zion
 
 		CSqliteDBApi::CSqliteDBApi(const char* dbfile)
 		{
-			InitializeCriticalSection(&g_GlobalLocker);
 			sqlite3_os_init();
 			sqlite3_initialize();
 			m_sqlite_path = dbfile;
@@ -163,7 +160,6 @@ namespace Zion
 
 			sqlite3_shutdown();
 			sqlite3_os_end();
-			DeleteCriticalSection(&g_GlobalLocker);
 		}
 
 		bool CSqliteDBApi::Check()
@@ -613,7 +609,7 @@ namespace Zion
 
 				if(!AUuidFromString((const char*)sqlite3_column_text(m_sqlite_load, 0), uuid))
 				{
-					printf("invalid uuid %d", (const char*)sqlite3_column_text(m_sqlite_load, 0));
+					printf("invalid uuid %s", (const char*)sqlite3_column_text(m_sqlite_load, 0));
 					return false;
 				}
 

@@ -518,7 +518,7 @@ namespace Zion
 		memcpy(host, ep, pos-ep);
 		host[pos-ep] = '\0';
 		uv_ip4_addr(host, atoi(pos+1), &ip4);
-		if(ip4.sin_addr.S_un.S_addr==INADDR_NONE)
+		if(*((_U32*)&ip4.sin_addr)==INADDR_NONE)
 		{
 			uv_ip6_addr(host, atoi(pos+1), &ip6);
 		}
@@ -969,7 +969,7 @@ namespace Zion
 		memcpy(host, ep, pos-ep);
 		host[pos-ep] = '\0';
 		uv_ip4_addr(host, atoi(pos+1), &ip4);
-		if(ip4.sin_addr.S_un.S_addr==0)
+		if(*((_U32*)&ip4.sin_addr)==INADDR_NONE)
 		{
 			uv_ip6_addr(host, atoi(pos+1), &ip6);
 		}

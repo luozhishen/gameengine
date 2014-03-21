@@ -4,7 +4,6 @@
 #include "DataCacheDBApiMysql.h"
 #include "DataCacheServer.h"
 
-#include "sqlite\sqlite3.h"
 #include <time.h>
 #include <uv.h>
 

@@ -119,7 +119,7 @@ namespace DDLDataObject
 		template<typename T>
 		bool SetObj(const char* name, _U32 index, const T& val) const
 		{
-			return SetObjPtr(name, index, DDLReflect::SetStruct<T>(), &val);
+			return SetObjPtr(name, index, DDLReflect::GetStruct<T>(), &val);
 		}
 
 	private:

@@ -165,9 +165,9 @@ ProjectFile.prototype.load = function (filename) {
 
 		pos = lines[i].indexOf('<ProjectReference Include="');
 		if(pos>0) {
-			pos = lines[i].indexOf('>');
-			var name = lines[i].substring(pos+1);
-			name = name.substring(0, name.indexOf('"'));
+			name = lines[i];
+			name = name.substring(name.lastIndexOf('\\')+1);
+			name = name.substring(0, name.indexOf('.vcxproj'));
 			this.deps.push(name);
 			continue;
 		}
@@ -250,9 +250,8 @@ SolutionFile.prototype.getProject = function (name) {
 function AppBuilder (solution) {
 	this.files_data = {};
 	this.solution = solution;
-	this.platform = 'Win32';
-	this.config = 'Debug';
 	this.setPlatform('Win32');
+	this.setConfiguration('Win32');
 }
 
 AppBuilder.prototype.getFileTime = function (filename) {
@@ -278,11 +277,10 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.lib_ext = '.lib';
 		this.cd_exe = 'echo cl {1} {0} /c /Fo{2}';
 		this.cc_exe = 'cl {1} {0} /c /Fo{2}';
-		this.ln_exe = 'cl {0} /Fe{1}';
+		this.ld_exe = 'cl {2} {0} /Fe{1}';
 		this.sl_exe = 'echo {0} {1}';
 		this.dl_exe = '';
 		this.platform = platform;
-		this.setConfiguration(this.config);
 		return;
 	} else {
 		this.obj_ext = '.o';
@@ -291,36 +289,33 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.lib_ext = '.a';
 		this.cd_exe = 'clang -M {1} {0} -c -o {2}';
 		this.cc_exe = 'clang {1} {0} -c -o {2}';
-		this.ln_exe = 'clang {0} -o {1}';
-		this.sl_exe = 'ar crv {0} {1}';
+		this.ld_exe = 'ld {2} {0} -o {1}';
+		this.sl_exe = 'ar crv {0}lib{1} {2}';
 		this.dl_exe = '';
 		this.platform = platform;
-		this.setConfiguration(this.config);
 		return;
 	}
 }
 
 AppBuilder.prototype.setConfiguration = function (config) {
 	if(config=='Debug') {
-		this.output_dir = "../../Binaries/Debug/";
-		this.object_dir = "../Intermediate/Debug/";
+		this.output_dir = path.resolve("./", "../..") + "/Binaries/Debug/";
+		this.object_dir = path.resolve("./", "..") + "/Intermediate/Debug/";
 		this.cc_flag = '-g';
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
 		this.config = config;
-		this.setPlatform(this.platform);
 		return;
 	}
 	if(config=='Release') {
-		this.output_dir = "../../Binaries/Release/";
-		this.object_dir = "../Intermediate/Release/";
+		this.output_dir = path.resolve("./", "../..") + "/Binaries/Release/";
+		this.object_dir = path.resolve("./", "..") + "/Intermediate/Release/";
 		this.cc_flag = '-O2';
 		this.ln_flag = '';
 		this.sl_flag = '';
 		this.dl_flag = '';
 		this.config = config;
-		this.setPlatform(this.platform);
 		return;
 	}
 }
@@ -405,6 +400,15 @@ AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
 }
 
 AppBuilder.prototype.buildBIN = function (proj) {
+	for(var i=0; i<proj.deps.length; i++) {
+		var dep_proj = this.solution.getProject(proj.deps[i]);
+		if(!dep_proj) {
+			console.log('project '+project_name+' not found!');
+			process.exit();
+		}
+		this.buildBIN(dep_proj);
+	}
+
 	var inc_cmd = '';
 	for(var i=0; i<proj.inc_dir.length; i++) {
 		if(i>0) inc_cmd += ' ';
@@ -454,7 +458,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 			return;
 		}
 		console.log('echo link library ' + proj.name);
-		console.log(this.sl_exe.format(lib_path+this.lib_ext, objs_str));
+		console.log(this.sl_exe.format(this.object_dir, proj.name+this.lib_ext, objs_str));
 	} else {
 		var exe_path = this.output_dir + proj.name;
 		exe_path = exe_path.replace(/\\/g, "/");
@@ -464,7 +468,15 @@ AppBuilder.prototype.buildBIN = function (proj) {
 			return;
 		}
 		console.log('echo link execute ' + proj.name);
-		console.log(this.ln_exe.format(objs_str, exe_path+this.exe_ext));
+
+		var dep_lib = "";
+		for(var i=0; i<proj.deps.length; i++) {
+			if(dep_lib!="") dep_lib += " ";
+			dep_lib += "-l " + this.object_dir + proj.deps[i] + ".a";
+		}
+		dep_lib += " -l dl -l pthread"
+
+		console.log(this.ld_exe.format(objs_str, exe_path+this.exe_ext, dep_lib));
 	}
 }
 

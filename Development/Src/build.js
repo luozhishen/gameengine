@@ -288,7 +288,7 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.dll_ext = '.so';
 		this.lib_ext = '.a';
 		this.cd_exe = 'clang -M {1} {0} -c -o {2}';
-		this.cc_exe = 'clang {1} {0} -c -o {2}';
+		this.cc_exe = 'clang++ {1} {0} -c -o {2}';
 		this.ld_exe = 'ld {2} {0} -o {1}';
 		this.sl_exe = 'ar rcs {0}lib{1} {2}';
 		this.dl_exe = '';
@@ -456,10 +456,16 @@ AppBuilder.prototype.buildBIN = function (proj) {
 
 		console.log('echo compile '+proj.src_files[i]);
 		var cpp_flag = ' ';
-		if(this.cc_exe.substring(0,3)!='cl ' && src_path.substring(src_path.length-2)!='.c') {
-			cpp_flag = ' -std=c++0x ';
+		var cc_exe = this.cc_exe;
+		if(src_path.substring(src_path.length-2)!='.c') {
+			if(this.cc_exe.substring(0,3)!='cl ') {
+				cpp_flag = ' -std=c++0x ';
+			}
+		} else {
+			cc_exe = cc_exe.replace(/clang\+\+/, "clang");
+			cc_exe = cc_exe.replace(/g\+\+/, "gcc");
 		}
-		console.log(this.cc_exe.format(src_path, inc_cmd + cpp_flag + this.cc_flag, dst_path+this.obj_ext));
+		console.log(cc_exe.format(src_path, inc_cmd + cpp_flag + this.cc_flag, dst_path+this.obj_ext));
 		// console.log(this.cd_exe.format(src_path, inc_cmd + cpp_flag + '-M ' + this.cc_flag, dst_path+'.d'));
 	}
 
@@ -482,7 +488,6 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		if(!this.needUpdate(objs, exe_path+this.exe_ext)) {
 			return;
 		}
-		console.log('echo link execute ' + proj.name);
 
 		var dep_lib = "-L" + this.object_dir;
 		for(var i=0; i<proj.deps.length; i++) {
@@ -490,8 +495,11 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		}
 		dep_lib += " -ldl -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -lstdc++"
 
+		console.log('echo link execute ' + proj.name);
 		console.log(this.ld_exe.format(objs_str, exe_path+this.exe_ext, dep_lib));
 	}
+
+	console.log('');
 }
 
 AppBuilder.prototype.build = function (project_name) {
@@ -511,6 +519,10 @@ AppBuilder.prototype.clean = function (project_name) {
 	if(!proj) {
 		console.log('project '+project_name+' not found!');
 		process.exit();
+	}
+
+	for(var i=0; i<proj.deps.length; i++) {
+		this.clean(proj.deps[i]);
 	}
 
 	for(var i=0; i<proj.rpc_files.length; i++) {
@@ -601,8 +613,8 @@ case 'clean':
 	break;
 case 'rebuild':
 	do_task = function(project_name) {
-		builder.build(project_name);
 		builder.clean(project_name);
+		builder.build(project_name);
 	};
 	break;
 default:

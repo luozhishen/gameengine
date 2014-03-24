@@ -81,7 +81,7 @@ namespace Zion
 			Map<_U32, CAvatarData*>::iterator i;
 			uv_rwlock_rdlock(&g_AvatarLocker);
 			i = g_AvatarMap.find(avatar_id);
-			if(i!=g_AvatarMap.end() && !pAvatar->IsDeleted())
+			if(i!=g_AvatarMap.end() && !i->second->IsDeleted())
 			{
 				pAvatar = i->second;
 				pAvatar->Lock();

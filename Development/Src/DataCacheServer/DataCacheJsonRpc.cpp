@@ -158,24 +158,27 @@ namespace Zion
 		void JsonRPC_CreateObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
+			Json::Value _version;
 			Json::Value _suuid;
 			Json::Value _type;
 			Json::Value _data;
 			for(;;)
 			{
-				if(args.size()!=4) break;
+				if(args.size()!=5) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				_suuid = args.get((Json::Value::UInt)1, Json::nullValue);
+				_version = args.get((Json::Value::UInt)1, Json::nullValue);
+				if(!_version.isUInt()) break;
+				_suuid = args.get((Json::Value::UInt)2, Json::nullValue);
 				if(!_suuid.isString()) break;
-				_type = args.get((Json::Value::UInt)2, Json::nullValue);
+				_type = args.get((Json::Value::UInt)3, Json::nullValue);
 				if(!_type.isString()) break;
-				_data = args.get((Json::Value::UInt)3, Json::nullValue);
+				_data = args.get((Json::Value::UInt)4, Json::nullValue);
 				if(!_data.isString()) break;
 
 				A_UUID _uuid;
 				if(!AUuidFromString(_suuid.asCString(), _uuid)) break;
-				RPCIMPL_CreateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _type.asCString(), _data.asCString());
+				RPCIMPL_CreateObject(res, (_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), _uuid, _type.asCString(), _data.asCString());
 				return;
 			}
 			JsonRPC_Send(res, "[-1]");
@@ -184,21 +187,24 @@ namespace Zion
 		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
+			Json::Value _version;
 			Json::Value _suuid;
 			Json::Value _data;
 			for(;;)
 			{
-				if(args.size()!=3) break;
+				if(args.size()!=4) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				_suuid = args.get((Json::Value::UInt)1, Json::nullValue);
+				_version = args.get((Json::Value::UInt)1, Json::nullValue);
+				if(!_version.isUInt()) break;
+				_suuid = args.get((Json::Value::UInt)2, Json::nullValue);
 				if(!_suuid.isString()) break;
-				_data = args.get((Json::Value::UInt)2, Json::nullValue);
+				_data = args.get((Json::Value::UInt)3, Json::nullValue);
 				if(!_data.isString()) break;
 
 				A_UUID _uuid;
 				if(!AUuidFromString(_suuid.asCString(), _uuid)) break;
-				RPCIMPL_UpdateObject(res, (_U32)_avatar_id.asUInt(), _uuid, _data.asCString());
+				RPCIMPL_UpdateObject(res, (_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), _uuid, _data.asCString());
 				return;
 			}
 			JsonRPC_Send(res, "[-1]");
@@ -207,13 +213,16 @@ namespace Zion
 		void JsonRPC_DeleteObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
 		{
 			Json::Value _avatar_id;
+			Json::Value _version;
 			Json::Value _suuid;
 			for(;;)
 			{
-				if(args.size()!=2) break;
+				if(args.size()!=3) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				_suuid = args.get((Json::Value::UInt)1, Json::nullValue);
+				_version = args.get((Json::Value::UInt)1, Json::nullValue);
+				if(!_version.isUInt()) break;
+				_suuid = args.get((Json::Value::UInt)2, Json::nullValue);
 				if(!_suuid.isArray()) break;
 				Array<A_UUID> _uuids;
 				_uuids.resize(_suuid.size());
@@ -226,7 +235,7 @@ namespace Zion
 				}
 				if(i!=(_U32)_uuids.size()) break;
 				Json::FastWriter writer;
-				RPCIMPL_DeleteObject(res, (_U32)_avatar_id.asUInt(), &_uuids[0], (_U32)_uuids.size());
+				RPCIMPL_DeleteObject(res, (_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), &_uuids[0], (_U32)_uuids.size());
 				return;
 			}
 			JsonRPC_Send(res, "[-1]");

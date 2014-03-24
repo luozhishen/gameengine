@@ -40,9 +40,10 @@ namespace Zion
 			bool UpdateObject(const A_UUID& _uuid, const char* data);
 			bool DeleteObject(const A_UUID& _uuid);
 			bool ExistObject(const A_UUID& _uuid);
-			OBJECT_DATA* GetObject(const A_UUID& _uuid);
+			const OBJECT_DATA* GetObject(const A_UUID& _uuid);
 
 			bool IsDirty();
+			_U32 GetVersion();
 			_U32 GetAvatarID() { return m_AvatarID; }
 
 			bool Load();
@@ -59,6 +60,7 @@ namespace Zion
 			bool m_bDeleted;
 
 			_U32 m_AvatarID;
+			_U32 m_Version;
 			Map<A_UUID, OBJECT_DATA> m_Objects;
 			Set<A_UUID> m_DelList;
 		};
@@ -123,6 +125,7 @@ namespace Zion
 			m_AvatarID = avatar_id;
 			A_MUTEX_INIT(&m_Mutex);
 			m_bDeleted = false;
+			m_Version = 0;
 		}
 
 		CAvatarData::~CAvatarData()
@@ -140,6 +143,7 @@ namespace Zion
 
 			OBJECT_DATA od = { _uuid, type, data, is_dirty, is_new };
 			m_Objects[_uuid] = od;
+			m_Version += 1;
 			return true;
 		}
 
@@ -154,6 +158,7 @@ namespace Zion
 
 			i->second._data = data;
 			i->second._dirty = true;
+			m_Version += 1;
 			return true;
 		}
 
@@ -167,6 +172,7 @@ namespace Zion
 			}
 			if(!i->second._is_new) m_DelList.insert(_uuid);
 			m_Objects.erase(i);
+			m_Version += 1;
 			return true;
 		}
 
@@ -175,7 +181,7 @@ namespace Zion
 			return m_Objects.find(_uuid)!=m_Objects.end() || m_DelList.find(_uuid)!=m_DelList.end();
 		}
 
-		CAvatarData::OBJECT_DATA* CAvatarData::GetObject(const A_UUID& _uuid)
+		const CAvatarData::OBJECT_DATA* CAvatarData::GetObject(const A_UUID& _uuid)
 		{
 			Map<A_UUID, OBJECT_DATA>::iterator i = m_Objects.find(_uuid);
 			if(i==m_Objects.end()) return NULL;
@@ -192,6 +198,11 @@ namespace Zion
 				if(i->second._dirty || i->second._is_new) return true;
 			}
 			return false;
+		}
+
+		_U32 CAvatarData::GetVersion()
+		{
+			return m_Version;
 		}
 
 		static bool db_load_callback(void* userptr, const A_UUID& _uuid, const char* type, const char* data)
@@ -285,7 +296,7 @@ namespace Zion
 				ret += StringFormat("\"%s:%s\":", suuid, i->second._type.c_str());
 				ret += i->second._data;
 			}
-			JsonRPC_Send(res, ("[0, {" + ret + "}]").c_str());
+			JsonRPC_Send(res, (StringFormat("[0, %u, %u, {", m_AvatarID, m_Version) + ret + "}]").c_str());
 		}
 
 		void CAvatarData::Lock()
@@ -495,13 +506,24 @@ namespace Zion
 
 		void RPCIMPL_KeepAlive(const JSONRPC_RESPONSE* res, _U32 avatar_id)
 		{
-			JsonRPC_Send(res, "[0]");
+			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			if(!pAvatar)
+			{
+				JsonRPC_Send(res, "[-1]");
+				return;
+			}
+			JsonRPC_Send(res, StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());;
 		}
 
-		void RPCIMPL_CreateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data)
+		void RPCIMPL_CreateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* type, const char* data)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
 			if(!pAvatar)
+			{
+				JsonRPC_Send(res, "[-1]");
+				return;
+			}
+			if(pAvatar->GetVersion()!=version && version!=(_U32)-1)
 			{
 				JsonRPC_Send(res, "[-1]");
 				return;
@@ -510,7 +532,7 @@ namespace Zion
 			if(pAvatar->CreateObject(_uuid, type, data, false, true))
 			{
 				pAvatar->Unlock();
-				JsonRPC_Send(res, "[0]");
+				JsonRPC_Send(res, StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
 			}
 			else
 			{
@@ -519,10 +541,15 @@ namespace Zion
 			}
 		}
 
-		void RPCIMPL_UpdateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid, const char* data)
+		void RPCIMPL_UpdateObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* data)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
 			if(!pAvatar)
+			{
+				JsonRPC_Send(res, "[-1]");
+				return;
+			}
+			if(pAvatar->GetVersion()!=version && version!=(_U32)-1)
 			{
 				JsonRPC_Send(res, "[-1]");
 				return;
@@ -531,7 +558,7 @@ namespace Zion
 			if(pAvatar->UpdateObject(_uuid, data))
 			{
 				pAvatar->Unlock();
-				JsonRPC_Send(res, "[0]");
+				JsonRPC_Send(res, StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
 			}
 			else
 			{
@@ -540,10 +567,15 @@ namespace Zion
 			}
 		}
 
-		void RPCIMPL_DeleteObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID* _uuids, _U32 count)
+		void RPCIMPL_DeleteObject(const JSONRPC_RESPONSE* res, _U32 avatar_id, _U32 version, const A_UUID* _uuids, _U32 count)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
 			if(!pAvatar)
+			{
+				JsonRPC_Send(res, "[-1]");
+				return;
+			}
+			if(pAvatar->GetVersion()!=version && version!=(_U32)-1)
 			{
 				JsonRPC_Send(res, "[-1]");
 				return;
@@ -555,7 +587,7 @@ namespace Zion
 			}
 
 			pAvatar->Unlock();
-			JsonRPC_Send(res, "[0]");
+			JsonRPC_Send(res, StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
 		}
 
 		void RPCIMPL_LoadObjectFromDB(const JSONRPC_RESPONSE* res, _U32 avatar_id, const A_UUID& _uuid)
@@ -574,12 +606,12 @@ namespace Zion
 				{
 					if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
 					{
-						CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
+						const CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
 						if(pObject)
 						{
 							char suuid[100];
 							AUuidToString(_uuid, suuid);
-							JsonRPC_Send(res, StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
+							JsonRPC_Send(res, StringFormat("[0, %u, \"%s\", \"%s\", \"%s\"]", pAvatar->GetVersion(), suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
 							pAvatar->Unlock();
 							FreeDatabase(db);
 							return;

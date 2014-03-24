@@ -289,8 +289,8 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.dll_ext = '.so';
 		this.lib_ext = '.a';
 		this.cd_exe = 'clang -M {1} {0} -c -o {2}';
-		this.cc_exe = 'clang++ {1} {0} -c -o {2}';
-		this.ld_exe = 'ld {2} {0} -o {1}';
+		this.cc_exe = 'clang++ -D_LINUX {1} {0} -c -o {2}';
+		this.ld_exe = 'clang++ -static {0} {2} -o {1}';
 		this.sl_exe = 'ar rcs {0}lib{1} {2}';
 		this.dl_exe = '';
 		this.platform = platform;
@@ -403,7 +403,7 @@ AppBuilder.prototype.needUpdate = function (src_files, gen_files) {
 AppBuilder.prototype.buildBIN = function (proj) {
 	if(this.jobs.indexOf(proj.name)>=0) return;
 	this.jobs.push(proj.name);
-
+/*
 	if(proj.name!='DDLGen' && proj.name!='RPCGen') {
 		var dep_proj;
 		dep_proj = this.solution.getProject('DDLGen');
@@ -415,7 +415,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 			this.buildBIN(dep_proj);
 		}
 	}
-
+*/
 	for(var i=0; i<proj.deps.length; i++) {
 		var dep_proj = this.solution.getProject(proj.deps[i]);
 		if(!dep_proj) {
@@ -494,7 +494,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		for(var i=0; i<proj.deps.length; i++) {
 			dep_lib += " -l" + proj.deps[i];
 		}
-		dep_lib += " -ldl -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -lstdc++"
+		dep_lib += " -ldl -pthread -lmysqlclient_r -luuid -lrt -lz ";
 
 		console.log('echo link execute', proj.name, '[', this.platform, this.config, ']');
 		console.log(this.ld_exe.format(objs_str, exe_path+this.exe_ext, dep_lib));
@@ -545,7 +545,7 @@ AppBuilder.prototype.clean = function (project_name) {
 			fs.unlinkSync(rpc_gen+'.s.h');
 		}
 	}
-
+/*
 	for(var i=0; i<proj.ddl_files.length; i++) {
 		var ddl_path = proj.path + proj.ddl_files[i];
 		ddl_path = ddl_path.replace(/\\/g, "/");
@@ -558,7 +558,7 @@ AppBuilder.prototype.clean = function (project_name) {
 			fs.unlinkSync(ddl_gen+'.cpp');
 		}
 	}
-
+*/
 	for(var i=0; i<proj.src_files.length; i++) {
 		var dst_path = proj.src_files[i];
 		dst_path = dst_path.replace(/\\/g, "/");

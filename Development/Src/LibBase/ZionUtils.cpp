@@ -93,7 +93,7 @@ namespace Zion
 				if(res>=0 && res<sizeof(path))
 				{
 					path[res] = '\0';
-					*(strrchr(path, '\\')+1) = '\0';
+					*(strrchr(path, '/')+1) = '\0';
 				}
 				else
 #endif

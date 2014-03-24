@@ -1,7 +1,7 @@
 #include "ZionBase.h"
 
 #define ZION_MEMPOOL_MIN_NDX	5
-#define ZION_MEMPOOL_MAX_NDX	24
+#define ZION_MEMPOOL_MAX_NDX	25
 
 class ZionMempoolInit
 {
@@ -40,7 +40,7 @@ void* zion_malloc(size_t size)
 	if(!entry)
 	{
 		entry = (A_MEM_ENTRY*)malloc(MEM_ENTRY_SIZE+((size_t)1<<ndx));
-		entry->ndx = ndx;
+		entry->ndx = ndx - ZION_MEMPOOL_MIN_NDX;
 	}
 	return (char*)entry + MEM_ENTRY_SIZE;
 }

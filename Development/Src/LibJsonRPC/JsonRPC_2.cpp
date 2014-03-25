@@ -36,13 +36,14 @@ namespace JsonRPC2
 	struct _CONNECTION
 	{
 		uv_tcp_t socket; 
+		uv_connect_t connect;
 
 		_U32 index;
-		CJsonRPCServer* server;
-
-		CJsonRPCClient* client;
-		Zion::Map<_U32, JSON_CALLBACK_PROC> callbacks;
-		Zion::List<SENDBUF*> sendbufs;
+		union
+		{
+			CJsonRPCServer* server;
+			CJsonRPCClient* client;
+		};
 
 		_U32 send_count;
 		SENDBUF* sendbuf;
@@ -53,7 +54,6 @@ namespace JsonRPC2
 		bool (*on_data)(CONNECTION* conn, _U32 seq, const char* data, _U32 len);
 	};
 
-	static void conn_connecct(uv_stream_t* server, int status);
 	static void conn_before_read(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf);
 	static void conn_after_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf);
 	static void conn_after_write(uv_write_t* req, int status);
@@ -63,31 +63,10 @@ namespace JsonRPC2
 
 	static void server_accept(uv_stream_t* server, int status);
 	static bool server_ondata(CONNECTION* conn, _U32 seq, const char* data, _U32 len);
-	static bool client_ondata(CONNECTION* conn, _U32 seq, const char* data, _U32 len);
 	static void server_disconnect(CONNECTION* conn);
+	static void client_connect(uv_connect_t* req, int status);
+	static bool client_ondata(CONNECTION* conn, _U32 seq, const char* data, _U32 len);
 	static void client_disconnect(CONNECTION* conn);
-
-	void conn_connecct(uv_stream_t* stream, int status)
-	{
-		CONNECTION* conn = (CONNECTION*)stream->data;
-
-		if(status==0)
-		{
-			if(uv_read_start((uv_stream_t*)&conn->socket, conn_before_read, conn_after_read)==0)
-			{
-				return;
-			}
-			else
-			{
-				ZION_ASSERT(0);
-			}
-		}
-		else
-		{
-			ZION_ASSERT(0);
-		}
-		conn_close((uv_handle_t*)&conn->socket);
-	}
 
 	void conn_before_read(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
 	{
@@ -154,7 +133,7 @@ namespace JsonRPC2
 	{
 		CONNECTION* conn = ((CONNECTION*)handle->data);
 		if(conn->sendbuf) ZION_FREE(conn->sendbuf);
-		if(conn->server)
+		if(conn->index!=(_U32)-1)
 		{
 			server_disconnect(conn);
 		}
@@ -162,7 +141,6 @@ namespace JsonRPC2
 		{
 			client_disconnect(conn);
 		}
-		conn->~CONNECTION();
 		ZION_FREE(conn);
 	}
 
@@ -251,9 +229,40 @@ namespace JsonRPC2
 	public:
 		CJsonRPCClient(struct sockaddr& _sa)
 		{
-			sa = _sa;
+			m_sa = _sa;
+			m_seq = 1980;
 		}
-		struct sockaddr sa;
+		bool Connect()
+		{
+			CONNECTION* conn = (CONNECTION*)ZION_ALLOC(sizeof(CONNECTION)+RECVBUF_SIZE);
+			conn = new(conn) CONNECTION();
+			conn->server = NULL;
+			conn->client = this;
+			conn->send_count = 0;
+			conn->sendbuf = NULL;
+			conn->on_data = client_ondata;
+			conn->socket.data = conn;
+			conn->connect.data = conn;
+			if(uv_tcp_init(uv_default_loop(), &conn->socket))
+			{
+				conn->~CONNECTION();
+				ZION_FREE(conn);
+				return false;
+			}
+			if(uv_tcp_connect(&conn->connect, &conn->socket, &m_sa, client_connect))
+			{
+				conn->~CONNECTION();
+				ZION_FREE(conn);
+				return false;
+			}
+			m_conn = conn;
+			return true;
+		}
+		CONNECTION* m_conn;
+		struct sockaddr m_sa;
+		_U32 m_seq;
+		Zion::Map<_U32, JSON_CALLBACK_PROC> callbacks;
+		Zion::List<SENDBUF*> sendbufs;
 	};
 	class CJsonRPCClientManager
 	{
@@ -274,7 +283,6 @@ namespace JsonRPC2
 	void server_accept(uv_stream_t* server, int status)
 	{
 		CONNECTION* conn = (CONNECTION*)ZION_ALLOC(sizeof(CONNECTION)+RECVBUF_SIZE);
-		conn = new(conn) CONNECTION;
 		conn->socket.data = conn;
 		conn->send_count = 0;
 		conn->sendbuf = NULL;
@@ -289,21 +297,18 @@ namespace JsonRPC2
 		if(uv_tcp_init(uv_default_loop(), &conn->socket))
 		{
 			ZION_ASSERT(!"uv_tcp_init failed");
-			conn->~CONNECTION();
 			ZION_FREE(conn);
 			return;
 		}
 		if(uv_accept(server, (uv_stream_t*)&conn->socket))
 		{
 			ZION_ASSERT(!"uv_accept failed");
-			conn->~CONNECTION();
 			ZION_FREE(conn);
 			return;
 		}
 		if(uv_read_start((uv_stream_t*)&conn->socket, conn_before_read, conn_after_read))
 		{
 			ZION_ASSERT(!"uv_read_start failed");
-			conn->~CONNECTION();
 			ZION_FREE(conn);
 			return;
 		}
@@ -339,6 +344,26 @@ namespace JsonRPC2
 		return true;
 	}
 
+	void client_connect(uv_connect_t* req, int status)
+	{
+		CONNECTION* conn = (CONNECTION*)req->data;
+
+		if(status==0)
+		{
+			if(uv_read_start((uv_stream_t*)&conn->socket, conn_before_read, conn_after_read)==0)
+			{
+				return;
+			}
+			else
+			{
+				ZION_ASSERT(0);
+			}
+		}
+		conn->client->m_conn = NULL;
+		conn->~CONNECTION();
+		ZION_FREE(conn);
+	}
+
 	bool client_ondata(CONNECTION* conn, _U32 seq, const char* data, _U32 len)
 	{
 		Zion::Map<_U32, JSON_CALLBACK_PROC>::iterator i;
@@ -369,16 +394,17 @@ namespace JsonRPC2
 	void client_disconnect(CONNECTION* conn)
 	{
 		Zion::Map<_U32, JSON_CALLBACK_PROC>::iterator i;
-		for(i=conn->callbacks.begin(); i!=conn->callbacks.end(); i++)
+		CJsonRPCClient* client = conn->client;
+		for(i=client->callbacks.begin(); i!=client->callbacks.end(); i++)
 		{
 			i->second(NULL);
 		}
-		conn->callbacks.clear();
+		client->callbacks.clear();
 		
-		while(!conn->sendbufs.empty())
+		while(!client->sendbufs.empty())
 		{
-			ZION_FREE(conn->sendbufs.front());
-			conn->sendbufs.pop_front();
+			ZION_FREE(client->sendbufs.front());
+			client->sendbufs.pop_front();
 		}
 	}
 
@@ -497,13 +523,22 @@ namespace JsonRPC2
 	{
 	}
 
-	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args)
+	bool JsonRPC_Send(CJsonRPCClient* client, const char* method, const char* args, JSON_CALLBACK_PROC proc)
 	{
-		return true;
-	}
+		if(!client->m_conn)
+		{
+			if(!client->Connect()) return false;
+		}
 
-	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc)
-	{
+		CONNECTION* conn = client->m_conn;
+		_U32 seq;
+		do
+		{
+		} while(conn->callbacks.
+		seq = pClient->m_seq++;
+		while(p
+		conn->send
+		pClient->m_conn
 		return true;
 	}
 

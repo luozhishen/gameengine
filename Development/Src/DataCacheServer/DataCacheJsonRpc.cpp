@@ -10,12 +10,12 @@ namespace Zion
 	namespace DataCache
 	{
 
-		void JsonRPC_Echo(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_Echo(const Json::Value& args)
 		{
-			JsonRPC_Send(res, "[0]");
+			JsonRPC_Send("[0]");
 		}
 
-		void JsonRPC_LoginUser(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_LoginUser(const Json::Value& args)
 		{
 			Json::Value _token;
 			for(;;)
@@ -25,13 +25,13 @@ namespace Zion
 				_token = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_token.isString()) break;
 
-				RPCIMPL_LoginUser(res, _token.asCString());
+				RPCIMPL_LoginUser(_token.asCString());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_CreateAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_CreateAvatar(const Json::Value& args)
 		{
 			Json::Value _user_id;
 			Json::Value _server_id;
@@ -56,7 +56,7 @@ namespace Zion
 				_avatar_objs = args.get((Json::Value::UInt)4, Json::nullValue);
 				if(!_avatar_objs.isObject()) break;
 
-				RPCIMPL_CreateAvatar(res,
+				RPCIMPL_CreateAvatar(
 					(_U32)_user_id.asUInt(),
 					(_U32)_server_id.asUInt(),
 					_avatar_name.asCString(),
@@ -65,10 +65,10 @@ namespace Zion
 					);
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_DeleteAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_DeleteAvatar(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -76,13 +76,13 @@ namespace Zion
 				if(args.size()!=1) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				RPCIMPL_DeleteAvatar(res, (_U32)_avatar_id.asUInt());
+				RPCIMPL_DeleteAvatar((_U32)_avatar_id.asUInt());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_GetAvatarList(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_GetAvatarList(const Json::Value& args)
 		{
 			Json::Value _user_id;
 			Json::Value _server_id;
@@ -93,13 +93,13 @@ namespace Zion
 				if(!_user_id.isUInt()) break;
 				_server_id = args.get((Json::Value::UInt)1, Json::nullValue);
 				if(!_server_id.isUInt()) break;
-				RPCIMPL_GetAvatarList(res, (_U32)_user_id.asUInt(), (_U32)_server_id.asUInt());
+				RPCIMPL_GetAvatarList((_U32)_user_id.asUInt(), (_U32)_server_id.asUInt());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_GetAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_GetAvatar(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -107,13 +107,13 @@ namespace Zion
 				if(args.size()!=1) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				RPCIMPL_GetAvatar(res, (_U32)_avatar_id.asUInt());
+				RPCIMPL_GetAvatar((_U32)_avatar_id.asUInt());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_SaveAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_SaveAvatar(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -121,13 +121,13 @@ namespace Zion
 				if(args.size()!=1) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				RPCIMPL_SaveAvatar(res, (_U32)_avatar_id.asUInt());
+				RPCIMPL_SaveAvatar((_U32)_avatar_id.asUInt());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_ClearAvatar(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_ClearAvatar(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -135,13 +135,13 @@ namespace Zion
 				if(args.size()!=1) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				RPCIMPL_ClearAvatar(res, (_U32)_avatar_id.asUInt());
+				RPCIMPL_ClearAvatar((_U32)_avatar_id.asUInt());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_KeepAlive(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_KeepAlive(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			for(;;)
@@ -149,13 +149,13 @@ namespace Zion
 				if(args.size()!=1) break;
 				_avatar_id = args.get((Json::Value::UInt)0, Json::nullValue);
 				if(!_avatar_id.isUInt()) break;
-				RPCIMPL_KeepAlive(res, (_U32)_avatar_id.asUInt());
+				RPCIMPL_KeepAlive((_U32)_avatar_id.asUInt());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_CreateObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_CreateObject(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value _version;
@@ -178,13 +178,13 @@ namespace Zion
 
 				A_UUID _uuid;
 				if(!AUuidFromString(_suuid.asCString(), _uuid)) break;
-				RPCIMPL_CreateObject(res, (_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), _uuid, _type.asCString(), _data.asCString());
+				RPCIMPL_CreateObject((_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), _uuid, _type.asCString(), _data.asCString());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_UpdateObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_UpdateObject(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value _version;
@@ -204,13 +204,13 @@ namespace Zion
 
 				A_UUID _uuid;
 				if(!AUuidFromString(_suuid.asCString(), _uuid)) break;
-				RPCIMPL_UpdateObject(res, (_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), _uuid, _data.asCString());
+				RPCIMPL_UpdateObject((_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), _uuid, _data.asCString());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_DeleteObject(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_DeleteObject(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value _version;
@@ -235,13 +235,13 @@ namespace Zion
 				}
 				if(i!=(_U32)_uuids.size()) break;
 				Json::FastWriter writer;
-				RPCIMPL_DeleteObject(res, (_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), &_uuids[0], (_U32)_uuids.size());
+				RPCIMPL_DeleteObject((_U32)_avatar_id.asUInt(), (_U32)_version.asUInt(), &_uuids[0], (_U32)_uuids.size());
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_loadObjectFromDB(const JSONRPC_RESPONSE* res, const Json::Value& args)
+		void JsonRPC_loadObjectFromDB(const Json::Value& args)
 		{
 			Json::Value _avatar_id;
 			Json::Value juuid;
@@ -254,10 +254,10 @@ namespace Zion
 				if(!juuid.isString()) break;
 				A_UUID _uuid;
 				if(!AUuidFromString(juuid.asCString(), _uuid)) break;
-				RPCIMPL_LoadObjectFromDB(res, (_U32)_avatar_id.asUInt(), _uuid);
+				RPCIMPL_LoadObjectFromDB((_U32)_avatar_id.asUInt(), _uuid);
 				return;
 			}
-			JsonRPC_Send(res, "[-1]");
+			JsonRPC_Send("[-1]");
 		}
 
 	}

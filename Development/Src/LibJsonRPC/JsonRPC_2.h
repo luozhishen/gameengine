@@ -35,8 +35,7 @@ namespace JsonRPC2
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep);
 	void JsonRPC_StopClients();
-	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args);
-	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc);
+	bool JsonRPC_Send(CJsonRPCClient* client, const char* method, const char* args, JSON_CALLBACK_PROC proc);
 
 }
 

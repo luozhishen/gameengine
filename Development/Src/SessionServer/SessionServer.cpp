@@ -60,24 +60,23 @@ namespace Zion
 			printf("\n");
 
 			// step 2: start rpc server
-			CJsonRPCServer* pServer = JsonRPC_Create(CONFIG_SINGLETHREAD);
-			JsonRPC_Bind(pServer, "echo",				JsonRPC_Echo);
-			JsonRPC_Bind(pServer, "loginUser",			JsonRpc_LoginUser);
-			JsonRPC_Bind(pServer, "logoutUser",			JsonRpc_LogoutUser);
-			JsonRPC_Bind(pServer, "lockUser",			JsonRpc_LockUser);
-			JsonRPC_Bind(pServer, "unlockUser",			JsonRpc_UnlockUser);
-			JsonRPC_Bind(pServer, "bindAvatar",			JsonRpc_BindAvatar);
-			JsonRPC_Bind(pServer, "unbindAvatar",		JsonRpc_UnbindAvatar);
-			JsonRPC_Bind(pServer, "sendToUserID",		JsonRpc_SendToUserID);
-			JsonRPC_Bind(pServer, "sendToAvatarID",		JsonRpc_SendToAvatarID);
-			JsonRPC_Bind(pServer, "sendToAvatarName",	JsonRpc_SendToAvatarName);
-			JsonRPC_Bind(pServer, "joinDomain",			JsonRpc_JoinDomain);
-			JsonRPC_Bind(pServer, "leaveDomain",		JsonRpc_LeaveDomain);
-			JsonRPC_Bind(pServer, "sendToDomain",		JsonRpc_SendToDomain);
-			JsonRPC_Bind(pServer, "waitForMessage",		JsonRpc_WaitForMessage);
-			JsonRPC_Bind(pServer, "GetMessage",			JsonRpc_GetMessage);
+			JsonRPC_Bind("echo",				JsonRPC_Echo);
+			JsonRPC_Bind("loginUser",			JsonRpc_LoginUser);
+			JsonRPC_Bind("logoutUser",			JsonRpc_LogoutUser);
+			JsonRPC_Bind("lockUser",			JsonRpc_LockUser);
+			JsonRPC_Bind("unlockUser",			JsonRpc_UnlockUser);
+			JsonRPC_Bind("bindAvatar",			JsonRpc_BindAvatar);
+			JsonRPC_Bind("unbindAvatar",		JsonRpc_UnbindAvatar);
+			JsonRPC_Bind("sendToUserID",		JsonRpc_SendToUserID);
+			JsonRPC_Bind("sendToAvatarID",		JsonRpc_SendToAvatarID);
+			JsonRPC_Bind("sendToAvatarName",	JsonRpc_SendToAvatarName);
+			JsonRPC_Bind("joinDomain",			JsonRpc_JoinDomain);
+			JsonRPC_Bind("leaveDomain",		JsonRpc_LeaveDomain);
+			JsonRPC_Bind("sendToDomain",		JsonRpc_SendToDomain);
+			JsonRPC_Bind("waitForMessage",		JsonRpc_WaitForMessage);
+			JsonRPC_Bind("GetMessage",			JsonRpc_GetMessage);
 			printf("start JsonRpc Server...\n");
-			if(!JsonRPC_Start(pServer, CONFIG_RPCEP.c_str()))
+			if(!JsonRPC_Start(CONFIG_RPCEP.c_str()))
 			{
 				ZION_FATAL("start jsonrpc failed");
 			}
@@ -88,8 +87,7 @@ namespace Zion
 
 			// step 4: stop rpc server
 			printf("stoping JsonRpc server\n");
-			JsonRPC_Stop(pServer);
-			JsonRPC_Destory(pServer);
+			JsonRPC_Stop();
 
 			// step 5: process exit
 			printf("exit.\n");

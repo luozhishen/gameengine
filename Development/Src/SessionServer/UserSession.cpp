@@ -288,10 +288,12 @@ namespace Zion
 			return 0;
 		}
 
+		/*
 		bool CUserSession::WaitMsg(const JSONRPC_RESPONSE* res)
 		{
 			return true;
 		}
+		*/
 
 		CManager::CManager()
 		{

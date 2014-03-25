@@ -101,21 +101,20 @@ namespace Zion
 			}
 
 			// step 3: start rpc server
-			CJsonRPCServer* pServer = JsonRPC_Create(CONFIG_SINGLETHREAD);
-			JsonRPC_Bind(pServer, "echo",			JsonRPC_Echo);
-			JsonRPC_Bind(pServer, "loginUser",		JsonRPC_LoginUser);
-			JsonRPC_Bind(pServer, "createAvatar",	JsonRPC_CreateAvatar);
-			JsonRPC_Bind(pServer, "deleteAvatar",	JsonRPC_DeleteAvatar);
-			JsonRPC_Bind(pServer, "listAvatar",		JsonRPC_GetAvatarList);
-			JsonRPC_Bind(pServer, "getAvatar",		JsonRPC_GetAvatar);
-			JsonRPC_Bind(pServer, "saveAvatar",		JsonRPC_SaveAvatar);
-			JsonRPC_Bind(pServer, "clearAvatar",	JsonRPC_ClearAvatar);
-			JsonRPC_Bind(pServer, "keepAlive",		JsonRPC_KeepAlive);
-			JsonRPC_Bind(pServer, "createObject",	JsonRPC_CreateObject);
-			JsonRPC_Bind(pServer, "updateObject",	JsonRPC_UpdateObject);
-			JsonRPC_Bind(pServer, "deleteObject",	JsonRPC_DeleteObject);
+			JsonRPC_Bind("echo",			JsonRPC_Echo);
+			JsonRPC_Bind("loginUser",		JsonRPC_LoginUser);
+			JsonRPC_Bind("createAvatar",	JsonRPC_CreateAvatar);
+			JsonRPC_Bind("deleteAvatar",	JsonRPC_DeleteAvatar);
+			JsonRPC_Bind("listAvatar",		JsonRPC_GetAvatarList);
+			JsonRPC_Bind("getAvatar",		JsonRPC_GetAvatar);
+			JsonRPC_Bind("saveAvatar",		JsonRPC_SaveAvatar);
+			JsonRPC_Bind("clearAvatar",	JsonRPC_ClearAvatar);
+			JsonRPC_Bind("keepAlive",		JsonRPC_KeepAlive);
+			JsonRPC_Bind("createObject",	JsonRPC_CreateObject);
+			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);
+			JsonRPC_Bind("deleteObject",	JsonRPC_DeleteObject);
 			printf("start JsonRpc Server...\n");
-			if(!JsonRPC_Start(pServer, CONFIG_RPCEP.c_str()))
+			if(!JsonRPC_Start(CONFIG_RPCEP.c_str()))
 			{
 				ZION_FATAL("start jsonrpc failed");
 			}
@@ -126,8 +125,7 @@ namespace Zion
 
 			// step 5: stop rpc server
 			printf("stoping JsonRpc server\n");
-			JsonRPC_Stop(pServer);
-			JsonRPC_Destory(pServer);
+			JsonRPC_Stop();
 
 			// step 6: wait all cache data flush to database
 			printf("flash all data to database\n");

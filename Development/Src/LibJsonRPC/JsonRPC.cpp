@@ -5,9 +5,11 @@
 
 #include "uv.h"
 
+#ifdef _WIN32
 #pragma comment(lib, "ws2_32")
 #pragma comment(lib, "IPHLPAPI.lib")
 #pragma comment(lib, "psapi.lib")
+#endif
 
 #define STATE_CONNECTING		((_U32)0x01)
 #define STATE_READING			((_U32)0x02)
@@ -35,6 +37,12 @@ namespace Zion
 		String				args;
 	};
 
+	typedef struct
+	{
+		uv_write_t req;
+		uv_buf_t buf;
+	} write_req_t;
+	const _U32 SENDBUF_SIZE = 10*1024;
 
 	class CJsonRPCConnection
 	{
@@ -62,7 +70,11 @@ namespace Zion
 		uv_stream_t* m_stream;
 		uv_shutdown_t m_shutdown;
 
-		char m_RecvBuf[1024];
+		_U32 m_send_count;
+		write_req_t* m_sendbuf;
+		_U32 m_sendbuf_len;
+
+		char m_RecvBuf[1000*1024];
 		_U32 m_RecvLen;
 
 		_U32 m_PacketLen;
@@ -175,8 +187,6 @@ namespace Zion
 		uv_thread_t m_uv_thread;
 	};
 
-//	static CJsonRPCServer g_JsonRPCServer;
-
 	CJsonRPCServer* JsonRPC_Create(bool bSingleThread)
 	{
 		return ZION_NEW CJsonRPCServer(bSingleThread);
@@ -262,17 +272,14 @@ namespace Zion
 	CJsonRPCConnection::CJsonRPCConnection()
 	{
 		m_state = 0;
+		m_send_count = 0;
+		m_sendbuf = NULL;
+		m_sendbuf_len = 0;
 	}
 
 	CJsonRPCConnection::~CJsonRPCConnection()
 	{
 	}
-
-	typedef struct
-	{
-		uv_write_t req;
-		uv_buf_t buf;
-	} write_req_t;
 
 	bool CJsonRPCConnection::Send(_U32 seq, const char* method, const char* data)
 	{

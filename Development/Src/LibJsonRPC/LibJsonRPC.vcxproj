@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JsonRPC.cpp" />
+    <ClCompile Include="JsonRPC_2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JsonRPC.h" />
+    <ClInclude Include="JsonRPC_2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3E65F4AC-19E1-479B-ACAB-F929B699EBB9}</ProjectGuid>

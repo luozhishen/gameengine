@@ -12,19 +12,22 @@ struct _SENDBUF
 	uv_buf_t buf;
 	CONNECTION* conn;
 	_U32 len;
-	_U8 data[2000*1024];
+	_U8 data[1];
 };
 
 struct _CONNECTION
 {
 	uv_tcp_t socket;
 
-	bool sending;
+	_U32 send_count;
 	SENDBUF* sendbuf;
 
 	_U32 recv_len;
-	_U8 recv_buf[2000*1024];
+	_U8 recv_buf[1];
 };
+
+#define JSONRPC_SENDBUF_SIZE		(10*1024)
+#define JSONRPC_RECVBUF_SIZE		(1*1024*1024)
 
 static void server_accept(uv_stream_t* server, int status);
 static void client_connecct(uv_stream_t* server, int status);
@@ -32,13 +35,14 @@ static void client_before_read(uv_handle_t* handle, size_t suggested_size, uv_bu
 static void client_after_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf);
 static void client_after_write(uv_write_t* req, int status);
 static void client_close(uv_handle_t* handle);
-static void client_send(CONNECTION* conn, void* data, _U32 len);
+static bool client_send(CONNECTION* conn, void* data, _U32 len);
+static void client_rawsend(CONNECTION* conn, SENDBUF* buf);
 
 void server_accept(uv_stream_t* server, int status)
 {
-	CONNECTION* conn = (CONNECTION*)ZION_ALLOC(sizeof(CONNECTION));
+	CONNECTION* conn = (CONNECTION*)ZION_ALLOC(sizeof(CONNECTION)+JSONRPC_RECVBUF_SIZE);
 	conn->socket.data = conn;
-	conn->sending = false;
+	conn->send_count = 0;
 	conn->sendbuf = NULL;
 	conn->recv_len = 0;
 	if(uv_tcp_init(uv_default_loop(), &conn->socket))
@@ -81,6 +85,7 @@ void client_after_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
 	if(nread<=0)
 	{
 		uv_close((uv_handle_t*)stream, client_close);
+		return;
 	}
 	conn->recv_len += (_U32)nread;
 
@@ -97,6 +102,7 @@ void client_after_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
 		client_send(conn, &pkg_seq, sizeof(pkg_seq));
 		client_send(conn, out_txt, out_len);
 		len -= 8 + pkg_len;
+		data += 8 + pkg_len;
 	}
 
 	if(len==0)
@@ -115,58 +121,90 @@ void client_after_write(uv_write_t* req, int status)
 {
 	CONNECTION* conn = ((SENDBUF*)req)->conn;
 	ZION_FREE(req);
-	ZION_ASSERT(conn->sending);
-	if(conn->sendbuf)
+	ZION_ASSERT(conn->send_count>0);
+	conn->send_count -= 1;
+	if(uv_is_writable((uv_stream_t*)&conn->socket) && conn->sendbuf && conn->send_count==0)
 	{
 		SENDBUF* sendbuf = conn->sendbuf;
 		conn->sendbuf = NULL;
-		sendbuf->buf = uv_buf_init((char*)sendbuf->data, sendbuf->len);
-		if(uv_write(&sendbuf->req, (uv_stream_t*)&conn->socket, &sendbuf->buf, 1, client_after_write))
-		{
-			ZION_FREE(sendbuf);
-			conn->sending = false;
-			return;
-		}
-	}
-	else
-	{
-		conn->sending = false;
+		client_rawsend(conn, sendbuf);
 	}
 }
 
 void client_close(uv_handle_t* handle)
 {
-	ZION_FREE(handle);
+	CONNECTION* conn = ((CONNECTION*)handle->data);
+	if(conn->sendbuf) ZION_FREE(conn->sendbuf);
+	ZION_FREE(conn);
 }
 
-void client_send(CONNECTION* conn, void* data, _U32 len)
+bool client_send(CONNECTION* conn, void* data, _U32 len)
 {
-	SENDBUF* sendbuf = conn->sendbuf;
-	if(!sendbuf)
+	if(!uv_is_writable((uv_stream_t*)&conn->socket))
 	{
-		sendbuf = (SENDBUF*)ZION_ALLOC(sizeof(SENDBUF));
-		sendbuf->len = 0;
-		sendbuf->conn = conn;
+		return false;
+	}
+
+	SENDBUF* sendbuf = conn->sendbuf;
+	while(len>0)
+	{
+		if(!sendbuf)
+		{
+			sendbuf = (SENDBUF*)ZION_ALLOC(sizeof(SENDBUF)+JSONRPC_SENDBUF_SIZE);
+			sendbuf->len = 0;
+		}
+
+		if(sendbuf->len+len<JSONRPC_SENDBUF_SIZE)
+		{
+			memcpy(sendbuf->data+sendbuf->len, data, len);
+			sendbuf->len += len;
+			break;
+		}
+		else
+		{
+			_U32 sendlen = JSONRPC_SENDBUF_SIZE - sendbuf->len;
+			memcpy(sendbuf->data+sendbuf->len, data, sendlen);
+			sendbuf->len += sendlen;
+			client_rawsend(conn, sendbuf);
+			sendbuf = NULL;
+			data = (char*)data + sendlen;
+			len -= sendlen;
+		}
+	}
+
+	if(sendbuf && conn->send_count==0)
+	{
+		client_rawsend(conn, sendbuf);
+		conn->sendbuf = NULL;
+	}
+	else
+	{
 		conn->sendbuf = sendbuf;
 	}
 
-	ZION_ASSERT(sendbuf->len+len<sizeof(sendbuf->data));
+	return true;
+}
 
-	memcpy(sendbuf->data+sendbuf->len, data, len);
-	sendbuf->len += len;
-	if(!conn->sending)
+void client_rawsend(CONNECTION* conn, SENDBUF* buf)
+{
+	buf->conn = conn;
+	buf->buf = uv_buf_init((char*)buf->data, buf->len);
+	if(uv_write(&buf->req, (uv_stream_t*)&conn->socket, &buf->buf, 1, client_after_write))
 	{
-		conn->sendbuf = NULL;
-		sendbuf->buf = uv_buf_init((char*)sendbuf->data, sendbuf->len);
-		if(uv_write(&sendbuf->req, (uv_stream_t*)&conn->socket, &sendbuf->buf, 1, client_after_write))
-		{
-			ZION_FREE(sendbuf);
-			conn->sending = false;
-			return;
-		}
-		conn->sending = true;
+		ZION_FATAL("uv_write failed");
+		ZION_FREE(buf);
+	}
+	else
+	{
+		conn->send_count += 1;
 	}
 }
+
+/*
+uv_signal_t sig;
+    uv_signal_init(loop, &sig);
+    uv_signal_start(&sig, signal_handler, SIGINT);
+*/
 
 int main(int argc, char* argv[])
 {

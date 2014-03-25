@@ -19,11 +19,14 @@
 namespace Zion
 {
 
-	typedef struct
+	class CJsonRPCConnection;
+
+	typedef struct _SENDBUF
 	{
 		uv_write_t req;
 		uv_buf_t buf;
-	} write_req_t;
+		CJsonRPCConnection* conn;
+	} SENDBUF;
 
 	class CJsonRPCConnection
 	{
@@ -52,7 +55,7 @@ namespace Zion
 		uv_shutdown_t m_shutdown;
 
 		_U32 m_send_count;
-		write_req_t* m_sendbuf;
+		SENDBUF* m_sendbuf;
 		_U32 m_sendbuf_len;
 
 		char m_RecvBuf[RECVBUF_SIZE];
@@ -219,6 +222,11 @@ namespace Zion
 
 	CJsonRPCConnection::~CJsonRPCConnection()
 	{
+		if(m_sendbuf)
+		{
+			ZION_FREE(m_sendbuf);
+			m_sendbuf = NULL;
+		}
 	}
 
 	bool CJsonRPCConnection::Send(_U32 seq, const char* method, const char* data)
@@ -229,12 +237,12 @@ namespace Zion
 		}
 
 		_U32 data_len;
-		write_req_t* req;
+		SENDBUF* req;
 		if(method)
 		{
 			_U32 method_len = strlen(method);
 			data_len = strlen(data);
-			req = (write_req_t*)ZION_ALLOC(sizeof(write_req_t) + 8 + method_len + 1 + data_len);
+			req = (SENDBUF*)ZION_ALLOC(sizeof(SENDBUF) + 8 + method_len + 1 + data_len);
 			if(!req) return false;
 
 			memcpy((char*)(req+1) + 8, method, method_len);
@@ -245,7 +253,7 @@ namespace Zion
 		else
 		{
 			data_len = strlen(data);
-			req = (write_req_t*)ZION_ALLOC(sizeof(write_req_t) + 8 + data_len);
+			req = (SENDBUF*)ZION_ALLOC(sizeof(SENDBUF) + 8 + data_len);
 			if(!req) return false;
 
 			memcpy((char*)(req+1) + 8, data, data_len);

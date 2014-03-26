@@ -23,6 +23,7 @@
     <ClCompile Include="ConfusedNumberDDL.cpp" />
     <ClCompile Include="DDLDataObject.cpp" />
     <ClCompile Include="DDLStub.cpp" />
+    <ClCompile Include="FastJson.cpp" />
     <ClCompile Include="ZionBase.cpp" />
     <ClCompile Include="ZionHash.cpp" />
     <ClCompile Include="ZionLog.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="ConfusedNumber.h" />
     <ClInclude Include="ConfusedNumberDDL.h" />
     <ClInclude Include="DDLDataObject.h" />
+    <ClInclude Include="FastJson.h" />
     <ClInclude Include="ZionBase.h" />
     <ClInclude Include="ZionDefines.h" />
     <ClInclude Include="ZionHash.h" />

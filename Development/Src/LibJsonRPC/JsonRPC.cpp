@@ -38,6 +38,8 @@ namespace Zion
 		virtual void OnData(_U32 seq, const char* data, _U32 len) = 0;
 
 		bool Send(_U32 seq, const char* method, const char* data);
+		bool Send(const void* data, _U32 len, bool delay);
+		bool Send(SENDBUF* sendbuf, _U32 len);
 		void Shutdown();
 
 		static void OnConnect(uv_stream_t* stream, int status);
@@ -235,43 +237,83 @@ namespace Zion
 		{
 			return false;
 		}
-
-		_U32 data_len;
-		SENDBUF* req;
 		if(method)
 		{
 			_U32 method_len = strlen(method);
-			data_len = strlen(data);
-			req = (SENDBUF*)ZION_ALLOC(sizeof(SENDBUF) + 8 + method_len + 1 + data_len);
-			if(!req) return false;
-
-			memcpy((char*)(req+1) + 8, method, method_len);
-			memcpy((char*)(req+1) + 8 + method_len, ":", 1);
-			memcpy((char*)(req+1) + 8 + method_len + 1, data, data_len);
-			data_len += method_len + 1;
+			_U32 data_len = strlen(data);
+			_U32 len = method_len + 1 + data_len;
+			if(!Send(&len, sizeof(len), true)) return false;
+			if(!Send(&seq, sizeof(seq), true)) return false;
+			if(!Send(method, method_len, true)) return false;
+			if(!Send(":", 1, true)) return false;
+			if(!Send(data, data_len, false)) return false;
 		}
 		else
 		{
-			data_len = strlen(data);
-			req = (SENDBUF*)ZION_ALLOC(sizeof(SENDBUF) + 8 + data_len);
-			if(!req) return false;
+			_U32 data_len = strlen(data);
+			if(!Send(&data_len, sizeof(data_len), true)) return false;
+			if(!Send(&seq, sizeof(seq), true)) return false;
+			if(!Send(data, data_len, false)) return false;
+		}
+		return true;
+	}
 
-			memcpy((char*)(req+1) + 8, data, data_len);
+	bool CJsonRPCConnection::Send(const void* data, _U32 len, bool delay)
+	{
+		SENDBUF* sendbuf = m_sendbuf;
+		while(len>0)
+		{
+			if(!sendbuf)
+			{
+				sendbuf = (SENDBUF*)ZION_ALLOC(sizeof(SENDBUF)+SENDBUF_SIZE);
+				m_sendbuf_len = 0;
+			}
+
+			if(m_sendbuf_len+len<SENDBUF_SIZE)
+			{
+				memcpy((char*)(sendbuf+1)+m_sendbuf_len, data, len);
+				m_sendbuf_len += len;
+				break;
+			}
+			else
+			{
+				_U32 sendlen = SENDBUF_SIZE - m_sendbuf_len;
+				memcpy((char*)(sendbuf+1) + m_sendbuf_len, data, sendlen);
+				m_sendbuf_len += sendlen;
+				Send(sendbuf, m_sendbuf_len);
+				sendbuf = NULL;
+				data = (char*)data + sendlen;
+				len -= sendlen;
+			}
 		}
 
-		*((_U32*)(req+1) + 0) = data_len;
-		*((_U32*)(req+1) + 1) = seq;
-
-		req->buf = uv_buf_init((char*)(req+1), 8 + data_len);
-		if(uv_write(&req->req, m_stream, &req->buf, 1, &CJsonRPCConnection::OnAfterWrite))
+		if(sendbuf && m_send_count==0 && !delay)
 		{
-			ZION_FREE(req);
-			return false;
+			Send(sendbuf, m_sendbuf_len);
+			m_sendbuf = NULL;
 		}
 		else
 		{
-			return true;
+			m_sendbuf = sendbuf;
 		}
+
+		return true;
+	}
+
+	bool CJsonRPCConnection::Send(SENDBUF* sendbuf, _U32 len)
+	{
+		sendbuf->conn = this;
+		sendbuf->buf = uv_buf_init((char*)(sendbuf+1), len);
+		if(uv_write(&sendbuf->req, m_stream, &sendbuf->buf, 1, &CJsonRPCConnection::OnAfterWrite))
+		{
+			ZION_FATAL("uv_write failed");
+			ZION_FREE(sendbuf);
+		}
+		else
+		{
+			m_send_count += 1;
+		}
+		return true;
 	}
 
 	void CJsonRPCConnection::Shutdown()
@@ -335,7 +377,15 @@ namespace Zion
 			_U32 pkg_len = *((_U32*)data + 0);
 			_U32 pkg_seq = *((_U32*)data + 1);
 			if(data_len<pkg_len+8) break;
-			pConn->OnData(pkg_seq, data, pkg_len);
+#if 0
+			char* ret = "[0]";
+			_U32 ret_len = 3;
+			pConn->Send(&ret_len, sizeof(ret_len), true);
+			pConn->Send(&pkg_seq, sizeof(pkg_seq), true);
+			pConn->Send(ret, ret_len, false);
+#else
+			pConn->OnData(pkg_seq, data+8, pkg_len);
+#endif
 			data += pkg_len + 8;
 			data_len -= pkg_len + 8;
 		}
@@ -353,7 +403,16 @@ namespace Zion
 
 	void CJsonRPCConnection::OnAfterWrite(uv_write_t* req, int status)
 	{
+		CJsonRPCConnection* conn = ((SENDBUF*)req)->conn;
 		ZION_FREE(req);
+		ZION_ASSERT(conn->m_send_count>0);
+		conn->m_send_count -= 1;
+		if(uv_is_writable((uv_stream_t*)&conn->m_stream) && conn->m_sendbuf && conn->m_send_count==0)
+		{
+			SENDBUF* sendbuf = conn->m_sendbuf;
+			conn->m_sendbuf = NULL;
+			conn->Send(sendbuf, conn->m_sendbuf_len);
+		}
 	}
 
 	void CJsonRPCConnection::OnShutdown(uv_shutdown_t* req, int status)
@@ -502,11 +561,12 @@ namespace Zion
 
 		Json::Reader reader;
 		Json::Value json;
-		if(!reader.parse(data, data+len-1, json) || !json.isArray())
+		if(!reader.parse(data, data+len, json) || !json.isArray())
 		{
 			ZION_ASSERT(!"invalid data format");
 			return;
 		}
+
 		m_pCurConn = pConn;
 		m_CurSeq = seq;
 		i->second(json);
@@ -815,16 +875,17 @@ namespace Zion
 	{
 		m_is_stop = false;
 		uv_mutex_init(&m_Mutex);
-		m_uv_loop = uv_loop_new();
-		uv_thread_create(&m_uv_thread, &CJsonRPCClientManager::ThreadProc, NULL);
+		m_uv_loop = uv_default_loop();
+//		m_uv_loop = uv_loop_new();
+//		uv_thread_create(&m_uv_thread, &CJsonRPCClientManager::ThreadProc, NULL);
 	}
 
 	CJsonRPCClientManager::~CJsonRPCClientManager()
 	{
 		m_is_stop = true;
-		uv_stop(m_uv_loop);
-		uv_thread_join(&m_uv_thread);
-		uv_loop_delete(m_uv_loop);
+//		uv_stop(m_uv_loop);
+//		uv_thread_join(&m_uv_thread);
+//		uv_loop_delete(m_uv_loop);
 		uv_mutex_destroy(&m_Mutex);
 	}
 

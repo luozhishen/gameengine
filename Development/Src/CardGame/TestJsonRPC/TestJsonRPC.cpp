@@ -1,3 +1,52 @@
+#include <ZionBase.h>
+#include <JsonRPC.h>
+#include <uv.h>
+#include <stdio.h>
+
+static _U32 completed_count = 0;
+static _U32 error_count = 0;
+static Zion::CJsonRPCClient* client;
+static _U32 seq = 0;
+
+void timer_callback(uv_timer_t* handle, int status)
+{
+	static _U32 last_completed = 0;
+	printf("%8u %15u %15u %15u\n", seq++, completed_count-last_completed, error_count, completed_count+error_count);
+	last_completed = completed_count;
+}
+
+void jsonrpc_callback(const Json::Value* val)
+{
+	if(val)
+	{
+		completed_count += 1;
+	}
+	else
+	{
+		error_count += 1;
+	}
+	Zion::JsonRPC_Send(client, "echo", "[0]", jsonrpc_callback);
+}
+
+int main(int argc, char* argv[])
+{
+	if(argc!=2) return -1;
+	client = Zion::JsonRPC_GetClient(argv[1]);
+	uv_timer_t timer;
+	uv_timer_init(uv_default_loop(), &timer);
+	uv_timer_start(&timer, timer_callback, 1000, 1000);
+
+	for(_U32 i=0; i<100000; i++)
+	{
+		Zion::JsonRPC_Send(client, "echo", "[0]", jsonrpc_callback);
+	}
+
+	uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+
+	return 0;
+}
+
+#if 0
 #include <ZionDefines.h>
 #include <uv.h>
 
@@ -75,7 +124,7 @@ void client_before_read(uv_handle_t* handle, size_t suggested_size, uv_buf_t* bu
 {
 	CONNECTION* conn = (CONNECTION*)handle;
 	buf->base = (char*)(conn->recv_buf + conn->recv_len);
-	buf->len = sizeof(conn->recv_buf) - conn->recv_len;
+	buf->len = JSONRPC_RECVBUF_SIZE - conn->recv_len;
 
 }
 
@@ -233,7 +282,7 @@ int main(int argc, char* argv[])
 	uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 	return 0;
 }
-
+#endif
 /*
 #include <ZionBase.h>
 #include <JsonRPC.h>

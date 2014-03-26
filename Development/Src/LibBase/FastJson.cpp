@@ -251,102 +251,149 @@ namespace Zion
 		{
 			m_begin = begin;
 			m_end = end;
-			m_current = begin;
-			if(!ParseElement(root)) return false;
-			m_current = Skip(m_current);
-			return m_current==end;
+			const char* cur = ParseElement(m_begin, root);
+			if(!cur) return false;
+			cur = Skip(cur);
+			return cur==NULL;
 		}
 
 	protected:
 		const char* Skip(const char* cur)
 		{
-			for(; cur<m_end; cur++)
+			if(cur)
 			{
-				switch(*cur)
+				for(; cur<m_end; cur++)
 				{
-				case '\n':	break;
-				case ' ':	break;
-				case '\t':	break;
-				default: return cur;
+					switch(*cur)
+					{
+					case '\n':	break;
+					case ' ':	break;
+					case '\t':	break;
+					default: return cur;
+					}
 				}
 			}
+			return NULL;
+		}
+
+		const char* ParseElement(const char* start, JsonValue& value)
+		{
+			const char* cur = Skip(start);
+			if(cur==NULL) return NULL;
+			if(*cur=='"') return ParseString(cur, value);
+			if(*cur=='[') return ParseArray(cur, value);
+			if(*cur=='{') return ParseObject(cur, value);
+			return ParseNumber(cur, value);
+		}
+
+		const char* ParseNumber(const char* start, JsonValue& value)
+		{
+			start = Skip(start);
+			if(!start) return false;
+			const char* cur = start;
+			
 			return cur;
 		}
 
-		bool ParseElement(JsonValue& value)
+		const char* ParseString(const char* start, JsonValue& value)
 		{
-			if(ParseNumber(value)) return true;
-			if(ParseString(value)) return true;
-			if(ParseObject(value)) return true;
-			if(ParseArray(value)) return true;
-			return false;
-		}
-
-		bool ParseNumber(JsonValue& value)
-		{
-			return true;
-		}
-
-		bool ParseString(JsonValue& value)
-		{
-			m_current = Skip(m_current);
-			if(*m_current!='"') return false;
-			const char* start = (++m_current);
-			for(; m_current<m_end; m_current++)
+			start = Skip(start);
+			if(!start || *start!='"') return NULL;
+			const char* cur = start + 1;
+			while(*cur!='"')
 			{
-				if(*m_current=='"')
-				{
-					String val;
-					val.append(start, m_current-start);
-					m_current += 1;
-					return true;
-				}
+				if((++cur)==m_end) return NULL;
 			}
-			return false;
+			value.SetType(JsonValue::TYPE_STR);
+			value.m_str.clear();
+			value.m_str.append(start+1, cur-start-1);
+			return cur + 1;
 		}
 
-		bool ParseArray(JsonValue& value)
+		const char* ParseArray(const char* start, JsonValue& value)
 		{
-			m_current = Skip(m_current);
-			if(*m_current!='[') return false;
-			const char* cur = m_current + 1;
+			ZION_ASSERT(*start=='[');
+			const char* cur = Skip(start + 1);
+			if(!cur) return NULL;
+			value.SetType(JsonValue::TYPE_ARRAY);
+			value.m_array.clear();
+			if(*cur==']') return cur + 1;
 
-			value = JsonValue(JsonValue::TYPE_ARRAY);
-
-			Skip();
-			if(*cur!=']')
+			for(;;)
 			{
+				value.m_array.push_back(JsonValue());
+				JsonValue& val = value.m_array[value.m_array.size()-1];
+				cur = ParseElement(cur, val);
+				if(!cur) return false;
+
+				cur = Skip(cur);
+				if(!cur) return NULL;
+				if(*cur!=',')
+				{
+					if(*cur==']') break;
+					return false;
+				}
+				cur += 1;
+			}
+			return cur + 1;
+		}
+
+		const char* ParseObject(const char* start, JsonValue& value)
+		{
+			ZION_ASSERT(*start=='{');
+			const char* cur = Skip(start + 1);
+			if(!cur) return NULL;
+			value.SetType(JsonValue::TYPE_OBJECT);
+			value.m_object.clear();
+			if(*cur=='}') return cur + 1;
+			for(;;)
+			{
+				const char* name_start = cur;
 				for(;;)
 				{
-
-					JsonValue val;
-					if(!ParseElement(val)) return false;
-
-					cur = Skip(cur);
-					if(*cur!=',')
+					if(*cur<'a' || *cur>'z')
 					{
-						if(*cur==']') break;
-						return false;
+						if(*cur<'A' || *cur>'Z')
+						{
+							if(*cur<'0' || *cur>'9')
+							{
+								if(*cur!='_')
+								{
+									break;
+								}
+							}
+						}
 					}
-					cur += 1;
-				}
-			}
-			m_current = cur + 1;
-			return true;
-		}
 
-		bool ParseObject(JsonValue& value)
-		{
-			m_current = Skip(m_current);
-			if(*m_current!='{') return false;
-			m_current += 1;
-			return true;
+					cur += 1;
+					if(cur==m_end)
+						return NULL;
+				}
+				if(name_start==cur) return NULL;
+				String name;
+				name.append(name_start, cur-name_start);
+
+				cur = Skip(cur);
+				if(!cur || *cur!=':') return NULL;
+				
+				JsonValue& node = value.m_object[name];
+				cur = ParseElement(cur+1, node);
+				if(!cur) return NULL;
+
+				cur = Skip(cur);
+				if(!cur)
+					return NULL;
+				if(*cur=='}')
+					break;
+				if(*cur!=',')
+					return NULL;
+			}
+			return cur+1;
 		}
 
 	private:
 		const char* m_begin;
 		const char* m_end;
-		const char* m_current;
 	};
 
 	bool JsonValue::Parse(const char* begin, const char* end, JsonValue& root)

@@ -4,8 +4,11 @@
 namespace Zion
 {
 
+	class JsonReader;
+
 	class JsonValue
 	{
+		friend 	class JsonReader;
 	public:
 		static bool Parse(const char* begin, const char* end, JsonValue& root);
 

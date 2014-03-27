@@ -1,6 +1,8 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <JsonRPC.h>
+#include <uv.h>
+
 #include "SessionServer.h"
 #include "SessionJsonRpc.h"
 
@@ -43,6 +45,12 @@ namespace Zion
 			return true;
 		}
 
+		static uv_signal_t sig_exit;
+		static void sig_exit_cb(uv_signal_t* handle, int signum)
+		{
+			uv_signal_stop(&sig_exit);
+		}
+
 		int Main(int argc, char* argv[])
 		{
 			// step 1: parse command line
@@ -83,7 +91,9 @@ namespace Zion
 
 			// step 3: wait process terminiate signal
 			printf("server running...\n");
-			getchar();
+			uv_signal_init(uv_default_loop(), &sig_exit);
+			uv_signal_start(&sig_exit, sig_exit_cb, SIGINT);
+			uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 
 			// step 4: stop rpc server
 			printf("stoping JsonRpc server\n");

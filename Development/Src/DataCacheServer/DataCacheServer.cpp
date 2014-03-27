@@ -5,6 +5,7 @@
 #include "DataCacheJsonRpc.h"
 #include "DataCacheRpcImpl.h"
 #include "DataCacheDBApi.h"
+#include <uv.h>
 
 #include <stdio.h>
 
@@ -72,6 +73,25 @@ namespace Zion
 			return true;
 		}
 
+		static void sig_exit_cb(uv_signal_t* handle, int signum)
+		{
+			uv_stop(uv_default_loop());
+		}
+
+		extern _U32 _GetAvatar_Count;
+		extern _U32 _GetAvatar_Error;
+		static void timer_cb(uv_timer_t* handle, int status)
+		{
+			static _U32 _last_count = 0;
+			static _U32 _last_error = 0;
+			_U32 count = _GetAvatar_Count - _last_count;
+			_U32 error = _GetAvatar_Error - _last_error;
+			printf("%12u, %12u\n", count, error);
+			_last_count += count;
+			_last_error += error;
+		}
+
+
 		int Main(int argc, char* argv[])
 		{
 			// step 1: parse command line
@@ -121,7 +141,13 @@ namespace Zion
 
 			// step 4: wait process terminiate signal
 			printf("server running...\n");
-			getchar();
+			uv_signal_t sig_exit;
+			uv_signal_init(uv_default_loop(), &sig_exit);
+			uv_signal_start(&sig_exit, sig_exit_cb, SIGINT);
+			uv_timer_t echo_timer;
+			uv_timer_init(uv_default_loop(), &echo_timer);
+			uv_timer_start(&echo_timer, timer_cb, 1000, 1000);
+			uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 
 			// step 5: stop rpc server
 			printf("stoping JsonRpc server\n");

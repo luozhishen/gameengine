@@ -442,6 +442,8 @@ namespace Zion
 			return;
 		}
 
+		_U32 _GetAvatar_Count = 0;
+		_U32 _GetAvatar_Error = 0;
 		void RPCIMPL_GetAvatar(_U32 avatar_id)
 		{
 			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
@@ -454,11 +456,13 @@ namespace Zion
 					pAvatar->Unlock();
 					ZION_DELETE pAvatar;
 					JsonRPC_Send("[-1]");
+					_GetAvatar_Count += 1;
 					return;
 				}
 			}
 			pAvatar->Send();
 			pAvatar->Unlock();
+			_GetAvatar_Error += 1;
 		}
 		
 		void RPCIMPL_SaveAvatar(_U32 avatar_id)

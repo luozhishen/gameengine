@@ -2,7 +2,7 @@
 #include <ZionSTL.h>
 #include <json/jsoncpp.h>
 #include "JsonRPC.h"
-
+#include <FastJson.h>
 #include "uv.h"
 
 #ifdef _WIN32
@@ -559,6 +559,7 @@ namespace Zion
 			return;
 		}
 
+		/*
 		Json::Reader reader;
 		Json::Value json;
 		if(!reader.parse(data, data+len, json) || !json.isArray())
@@ -566,10 +567,19 @@ namespace Zion
 			ZION_ASSERT(!"invalid data format");
 			return;
 		}
+		*/
+
+		JsonValue json;
+		if(!JsonValue::Parse(data, data+len, json))
+		{
+			ZION_ASSERT(!"invalid data format");
+			return;
+		}
 
 		m_pCurConn = pConn;
 		m_CurSeq = seq;
-		i->second(json);
+		i->second(NULL);
+//		i->second(json);
 		ZION_ASSERT(!m_pCurConn);
 	}
 

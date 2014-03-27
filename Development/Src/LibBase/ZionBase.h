@@ -14,6 +14,7 @@
 #include "DDLStub.h"
 #include "DDLDataObject.h"
 #include "sigslot.h"
+#include "FastJson.h"
 
 namespace Zion
 {

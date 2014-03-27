@@ -14,7 +14,7 @@ namespace Zion
 
 		enum TYPE
 		{
-			TYPE_NONE,
+			TYPE_NULL,
 			TYPE_STR,
 			TYPE_U32,
 			TYPE_S32,
@@ -25,10 +25,12 @@ namespace Zion
 		JsonValue();
 		JsonValue(const JsonValue& val);
 		JsonValue(TYPE typ);
+		~JsonValue();
 
 		TYPE GetType();
 		void SetType(TYPE type);
 
+		bool IsNull() const;
 		bool IsSTR() const;
 		bool IsU32() const;
 		bool IsS32() const;
@@ -63,12 +65,14 @@ namespace Zion
 		
 	private:
 		TYPE	m_type;
-		String	m_str;
-		_U32	m_u32;
-		_S32	m_s32;
-		_F32	m_f32;
-		Map<String, JsonValue>	m_object;
-		Array<JsonValue>		m_array;
+		union {
+			String*					m_str;
+			_U32					m_u32;
+			_S32					m_s32;
+			_F32					m_f32;
+			Map<String, JsonValue>*	m_object;
+			Array<JsonValue>*		m_array;
+		};
 	};
 
 

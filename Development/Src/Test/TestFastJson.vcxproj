@@ -19,23 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LibBase\LibBase.vcxproj">
+    <ClCompile Include="TestFastJson.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibBase\LibBase.vcxproj">
       <Project>{73a3a0da-85db-4571-9381-686cd246e80b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\LibJsonRPC\LibJsonRPC.vcxproj">
-      <Project>{3e65f4ac-19e1-479b-acab-f929b699ebb9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LibUV\LibUV.vcxproj">
+    <ProjectReference Include="..\LibUV\LibUV.vcxproj">
       <Project>{6c67909c-c749-4ae0-9f49-64b5d60b7d4c}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="TestJsonRPC.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{178A1E13-6D70-4E26-AB6D-57285371B2E3}</ProjectGuid>
+    <ProjectGuid>{6521A773-44C6-4A1D-9704-19C173665F04}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>TestJsonRPC</RootNamespace>
+    <RootNamespace>TestFastJson</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,8 +73,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\..\Zion.props" />
-    <Import Project="..\CardGame.props" />
+    <Import Project="..\Zion.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />

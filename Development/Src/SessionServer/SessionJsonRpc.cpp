@@ -9,252 +9,252 @@ namespace Zion
 	namespace Session
 	{
 
-		void JsonRPC_Echo(const Json::Value& args)
+		void JsonRPC_Echo(const JsonValue& args)
 		{
 			JsonRPC_Send("[0]");
 		}
 
-		void JsonRpc_LoginUser(const Json::Value& args)
+		void JsonRpc_LoginUser(const JsonValue& args)
 		// void RPCIMPL_LoginUser(_U32 user_id);
 		{
 			for(;;)
 			{
-				if(args.size()!=1) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				RPCIMPL_LoginUser((_U32)user_id.asUInt());
+				if(args.GetSize()!=1) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				RPCIMPL_LoginUser(user_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_LogoutUser(const Json::Value& args)
+		void JsonRpc_LogoutUser(const JsonValue& args)
 		// void RPCIMPL_LogoutUser(_U32 user_id, _U32 user_seq);
 		{
 			for(;;)
 			{
-				if(args.size()!=2) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				RPCIMPL_LogoutUser((_U32)user_id.asUInt(), (_U32)user_seq.asUInt());
+				if(args.GetSize()!=2) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				RPCIMPL_LogoutUser((_U32)user_id.AsU32(), (_U32)user_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_LockUser(const Json::Value& args)
+		void JsonRpc_LockUser(const JsonValue& args)
 		// void RPCIMPL_LockUser(_U32 user_id, _U32 user_seq, _U32 req_seq)
 		{
 			for(;;)
 			{
-				if(args.size()!=3) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				Json::Value req_seq = args.get((Json::UInt)2, Json::nullValue);
-				if(!req_seq.isUInt()) break;
-				RPCIMPL_LockUser((_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)req_seq.asUInt());
+				if(args.GetSize()!=3) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& req_seq = args.Get((_U32)2);
+				if(!req_seq.IsU32()) break;
+				RPCIMPL_LockUser((_U32)user_id.AsU32(), (_U32)user_seq.AsU32(), (_U32)req_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_UnlockUser(const Json::Value& args)
+		void JsonRpc_UnlockUser(const JsonValue& args)
 		// void RPCIMPL_UnlockUser(_U32 user_id, _U32 user_seq, const char* last_response, const char* session_data)
 		{
 			for(;;)
 			{
-				if(args.size()!=4) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				Json::Value last_response = args.get((Json::UInt)2, Json::nullValue);
-				if(!last_response.isString()) break;
-				Json::Value session_data = args.get((Json::UInt)3, Json::nullValue);
-				if(!user_seq.isString()) break;
-				RPCIMPL_UnlockUser((_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), last_response.asCString(),user_seq.asCString());
+				if(args.GetSize()!=4) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& last_response = args.Get((_U32)2);
+				if(!last_response.IsSTR()) break;
+				const JsonValue& session_data = args.Get((_U32)3);
+				if(!user_seq.IsSTR()) break;
+				RPCIMPL_UnlockUser((_U32)user_id.AsU32(), (_U32)user_seq.AsU32(), last_response.AsCSTR(),user_seq.AsCSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_BindAvatar(const Json::Value& args)
+		void JsonRpc_BindAvatar(const JsonValue& args)
 		// void RPCIMPL_BindAvatar(_U32 user_id, _U32 user_seq, _U32 avatar_id, const char* avatar_name);
 		{
 			for(;;)
 			{
-				if(args.size()!=5) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				Json::Value server_id = args.get((Json::UInt)2, Json::nullValue);
-				if(!server_id.isUInt()) break;
-				Json::Value avatar_id = args.get((Json::UInt)3, Json::nullValue);
-				if(!avatar_id.isUInt()) break;
-				Json::Value avatar_name = args.get((Json::UInt)4, Json::nullValue);
-				if(!avatar_name.isString()) break;
-				RPCIMPL_BindAvatar((_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)server_id.asUInt(), (_U32)avatar_id.asUInt(), avatar_name.asCString());
+				if(args.GetSize()!=5) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& server_id = args.Get((_U32)2);
+				if(!server_id.IsU32()) break;
+				const JsonValue& avatar_id = args.Get((_U32)3);
+				if(!avatar_id.IsU32()) break;
+				const JsonValue& avatar_name = args.Get((_U32)4);
+				if(!avatar_name.IsSTR()) break;
+				RPCIMPL_BindAvatar((_U32)user_id.AsU32(), (_U32)user_seq.AsU32(), (_U32)server_id.AsU32(), (_U32)avatar_id.AsU32(), avatar_name.AsCSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_UnbindAvatar(const Json::Value& args)
+		void JsonRpc_UnbindAvatar(const JsonValue& args)
 		// void RPCIMPL_UnbindAvatar(_U32 user_id, _U32 user_seq);
 		{
 			for(;;)
 			{
-				if(args.size()!=2) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				RPCIMPL_UnbindAvatar((_U32)user_id.asUInt(), (_U32)user_seq.asUInt());
+				if(args.GetSize()!=2) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				RPCIMPL_UnbindAvatar((_U32)user_id.AsU32(), (_U32)user_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_SendToUserID(const Json::Value& args)
+		void JsonRpc_SendToUserID(const JsonValue& args)
 		// void RPCIMPL_SendToUserID(_U32 user_id, const char* msg);
 		{
 			for(;;)
 			{
-				if(args.size()!=2) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value msg = args.get((Json::UInt)1, Json::nullValue);
-				if(!msg.isString()) break;
-				RPCIMPL_SendToUserID((_U32)user_id.asUInt(), msg.asCString());
+				if(args.GetSize()!=2) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& msg = args.Get((_U32)1);
+				if(!msg.IsSTR()) break;
+				RPCIMPL_SendToUserID((_U32)user_id.AsU32(), msg.AsCSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_SendToAvatarID(const Json::Value& args)
+		void JsonRpc_SendToAvatarID(const JsonValue& args)
 		// void RPCIMPL_SendToAvatarID(_U32 avatar_id, const char* msg);
 		{
 			for(;;)
 			{
-				if(args.size()!=3) break;
-				Json::Value server_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!server_id.isUInt()) break;
-				Json::Value avatar_id = args.get((Json::UInt)1, Json::nullValue);
-				if(!avatar_id.isUInt()) break;
-				Json::Value msg = args.get((Json::UInt)2, Json::nullValue);
-				if(!msg.isString()) break;
-				RPCIMPL_SendToAvatarID((_U32)server_id.asUInt(), (_U32)avatar_id.asUInt(), msg.asCString());
+				if(args.GetSize()!=3) break;
+				const JsonValue& server_id = args.Get((_U32)0);
+				if(!server_id.IsU32()) break;
+				const JsonValue& avatar_id = args.Get((_U32)1);
+				if(!avatar_id.IsU32()) break;
+				const JsonValue& msg = args.Get((_U32)2);
+				if(!msg.IsSTR()) break;
+				RPCIMPL_SendToAvatarID((_U32)server_id.AsU32(), (_U32)avatar_id.AsU32(), msg.AsCSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_SendToAvatarName(const Json::Value& args)
+		void JsonRpc_SendToAvatarName(const JsonValue& args)
 		// void RPCIMPL_SendToAvatarName(const char* avatar_name, const char* msg);
 		{
 			for(;;)
 			{
-				if(args.size()!=3) break;
-				Json::Value server_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!server_id.isUInt()) break;
-				Json::Value avatar_name = args.get((Json::UInt)1, Json::nullValue);
-				if(!avatar_name.isString()) break;
-				Json::Value msg = args.get((Json::UInt)2, Json::nullValue);
-				if(!msg.isString()) break;
-				RPCIMPL_SendToAvatarName((_U32)server_id.asUInt(), avatar_name.asCString(), msg.asCString());
+				if(args.GetSize()!=3) break;
+				const JsonValue& server_id = args.Get((_U32)0);
+				if(!server_id.IsU32()) break;
+				const JsonValue& avatar_name = args.Get((_U32)1);
+				if(!avatar_name.IsSTR()) break;
+				const JsonValue& msg = args.Get((_U32)2);
+				if(!msg.IsSTR()) break;
+				RPCIMPL_SendToAvatarName((_U32)server_id.AsU32(), avatar_name.AsCSTR(), msg.AsCSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_JoinDomain(const Json::Value& args)
+		void JsonRpc_JoinDomain(const JsonValue& args)
 		// void RPCIMPL_JoinDomain(_U32 user_id, _U32 user_seq, _U32 domain_id);
 		{
 			for(;;)
 			{
-				if(args.size()!=3) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				Json::Value domain_id = args.get((Json::UInt)2, Json::nullValue);
-				if(!domain_id.isUInt()) break;
-				RPCIMPL_JoinDomain((_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)domain_id.asUInt());
+				if(args.GetSize()!=3) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& domain_id = args.Get((_U32)2);
+				if(!domain_id.IsU32()) break;
+				RPCIMPL_JoinDomain((_U32)user_id.AsU32(), (_U32)user_seq.AsU32(), (_U32)domain_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_LeaveDomain(const Json::Value& args)
+		void JsonRpc_LeaveDomain(const JsonValue& args)
 		// void RPCIMPL_LeaveDomain(_U32 user_id, _U32 user_seq, _U32 domain_id);
 		{
 			for(;;)
 			{
-				if(args.size()!=3) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				Json::Value domain_id = args.get((Json::UInt)2, Json::nullValue);
-				if(!domain_id.isUInt()) break;
-				RPCIMPL_LeaveDomain((_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)domain_id.asUInt());
+				if(args.GetSize()!=3) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& domain_id = args.Get((_U32)2);
+				if(!domain_id.IsU32()) break;
+				RPCIMPL_LeaveDomain((_U32)user_id.AsU32(), (_U32)user_seq.AsU32(), (_U32)domain_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_SendToDomain(const Json::Value& args)
+		void JsonRpc_SendToDomain(const JsonValue& args)
 		// void RPCIMPL_SendToDomain(_U32 domain_id, const char* msg);
 		{
 			for(;;)
 			{
-				if(args.size()!=2) break;
-				Json::Value domain_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!domain_id.isUInt()) break;
-				Json::Value msg = args.get((Json::UInt)1, Json::nullValue);
-				if(!msg.isString()) break;
-				RPCIMPL_SendToDomain((_U32)domain_id.asUInt(), msg.asCString());
+				if(args.GetSize()!=2) break;
+				const JsonValue& domain_id = args.Get((_U32)0);
+				if(!domain_id.IsU32()) break;
+				const JsonValue& msg = args.Get((_U32)1);
+				if(!msg.IsSTR()) break;
+				RPCIMPL_SendToDomain((_U32)domain_id.AsU32(), msg.AsCSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_WaitForMessage(const Json::Value& args)
+		void JsonRpc_WaitForMessage(const JsonValue& args)
 		// void RPCIMPL_WaitForMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
 		{
 			for(;;)
 			{
-				if(args.size()!=3) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				Json::Value msg_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!msg_seq.isUInt()) break;
-				RPCIMPL_WaitForMessage((_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)msg_seq.asUInt());
+				if(args.GetSize()!=3) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& msg_seq = args.Get((_U32)1);
+				if(!msg_seq.IsU32()) break;
+				RPCIMPL_WaitForMessage((_U32)user_id.AsU32(), (_U32)user_seq.AsU32(), (_U32)msg_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_GetMessage(const Json::Value& args)
+		void JsonRpc_GetMessage(const JsonValue& args)
 		// void RPCIMPL_GetMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
 		{
 			for(;;)
 			{
-				if(args.size()!=3) break;
-				Json::Value user_id = args.get((Json::UInt)0, Json::nullValue);
-				if(!user_id.isUInt()) break;
-				Json::Value user_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!user_seq.isUInt()) break;
-				Json::Value msg_seq = args.get((Json::UInt)1, Json::nullValue);
-				if(!msg_seq.isUInt()) break;
-				RPCIMPL_GetMessage((_U32)user_id.asUInt(), (_U32)user_seq.asUInt(), (_U32)msg_seq.asUInt());
+				if(args.GetSize()!=3) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)1);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& msg_seq = args.Get((_U32)1);
+				if(!msg_seq.IsU32()) break;
+				RPCIMPL_GetMessage((_U32)user_id.AsU32(), (_U32)user_seq.AsU32(), (_U32)msg_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");

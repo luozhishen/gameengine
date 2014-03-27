@@ -15,7 +15,7 @@ void timer_callback(uv_timer_t* handle, int status)
 	last_completed = completed_count;
 }
 
-void jsonrpc_callback(const Json::Value* val)
+void jsonrpc_callback(const Zion::JsonValue* val)
 {
 	if(val)
 	{

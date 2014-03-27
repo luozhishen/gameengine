@@ -407,7 +407,7 @@ namespace Zion
 		ZION_FREE(req);
 		ZION_ASSERT(conn->m_send_count>0);
 		conn->m_send_count -= 1;
-		if(uv_is_writable((uv_stream_t*)&conn->m_stream) && conn->m_sendbuf && conn->m_send_count==0)
+		if(conn->m_sendbuf && conn->m_send_count==0)
 		{
 			SENDBUF* sendbuf = conn->m_sendbuf;
 			conn->m_sendbuf = NULL;
@@ -559,27 +559,23 @@ namespace Zion
 			return;
 		}
 
-		/*
-		Json::Reader reader;
-		Json::Value json;
-		if(!reader.parse(data, data+len, json) || !json.isArray())
-		{
-			ZION_ASSERT(!"invalid data format");
-			return;
-		}
-		*/
-
 		JsonValue json;
 		if(!JsonValue::Parse(data, data+len, json))
 		{
+			String txt;
+			txt.append(data, len);
+			printf("invalid json : %s\n", txt.c_str());
 			ZION_ASSERT(!"invalid data format");
 			return;
 		}
 
 		m_pCurConn = pConn;
 		m_CurSeq = seq;
-		i->second(NULL);
-//		i->second(json);
+		i->second(json);
+		if(m_pCurConn)
+		{
+			printf("has no res\n");
+		}
 		ZION_ASSERT(!m_pCurConn);
 	}
 
@@ -775,9 +771,8 @@ namespace Zion
 
 		if(it->second.proc)
 		{
-			Json::Reader reader;
-			Json::Value json;
-			if(reader.parse(data, data+strlen(data), json))
+			JsonValue json;
+			if(JsonValue::Parse(data, data+strlen(data), json))
 			{
 				it->second.proc(&json);
 			}

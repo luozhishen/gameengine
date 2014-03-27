@@ -39,6 +39,7 @@ namespace Zion
 		bool IsArray() const;
 
 		const String& AsSTR() const;
+		const char* AsCSTR() const;
 		const _U32 AsU32() const;
 		const _S32 AsS32() const;
 		const _F32 AsF32() const;

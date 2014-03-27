@@ -119,6 +119,18 @@ namespace Zion
 		}
 	}
 
+	const char* JsonValue::AsCSTR() const
+	{
+		if(m_type==TYPE_STR)
+		{
+			return m_str->c_str();
+		}
+		else
+		{
+			return g_NullString.c_str();
+		}
+	}
+
 	const _U32 JsonValue::AsU32() const
 	{
 		switch(m_type)
@@ -186,7 +198,7 @@ namespace Zion
 
 	const JsonValue& JsonValue::Get(_U32 index) const
 	{
-		if(m_type!=TYPE_ARRAY || index>(_U32)m_array->size()) return g_NullValue;
+		if(m_type!=TYPE_ARRAY || index>=(_U32)m_array->size()) return g_NullValue;
 		return (*m_array)[index];
 	}
 

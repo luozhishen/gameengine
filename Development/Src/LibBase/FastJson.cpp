@@ -21,18 +21,19 @@ namespace Zion
 		SetType(val.m_type);
 		switch(m_type)
 		{
-		case TYPE_STR:		*m_str = *val.m_str; break;
-		case TYPE_U32:		m_u32 = val.m_u32; break;
-		case TYPE_S32:		m_s32 = val.m_s32; break;
-		case TYPE_F32:		m_f32 = val.m_f32; break;
-		case TYPE_OBJECT:	*m_object = *val.m_object; break;
-		case TYPE_ARRAY:	*m_array = *val.m_array; break;
+		case TYPE_STR:		*m_str = *val.m_str;		break;
+		case TYPE_U32:		m_u32 = val.m_u32;			break;
+		case TYPE_S32:		m_s32 = val.m_s32;			break;
+		case TYPE_F32:		m_f32 = val.m_f32;			break;
+		case TYPE_OBJECT:	*m_object = *val.m_object;	break;
+		case TYPE_ARRAY:	*m_array = *val.m_array;	break;
 		}
 	}
 
 	JsonValue::JsonValue(TYPE type)
 	{
-		m_type = type;
+		m_type = TYPE_NULL;
+		SetType(m_type);
 	}
 
 	JsonValue::~JsonValue()

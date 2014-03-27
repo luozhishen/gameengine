@@ -25,7 +25,7 @@ namespace Zion
 		};
 		JsonValue();
 		JsonValue(const JsonValue& val);
-		JsonValue(TYPE typ);
+		JsonValue(TYPE type);
 		~JsonValue();
 
 		TYPE GetType();

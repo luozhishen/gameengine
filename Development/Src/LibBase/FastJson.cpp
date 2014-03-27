@@ -422,7 +422,7 @@ namespace Zion
 			_F64 flt_val = 0.0f;
 			_F64 flt_rat = 1.0f;
 			start = cur + 1;
-			while(*start>'0' && *start<'9' && start!=m_end)
+			while(*start>='0' && *start<='9' && start!=m_end)
 			{
 				flt_rat /= 10.0f;
 				flt_val += (*start - '0') * flt_rat;
@@ -534,6 +534,8 @@ namespace Zion
 					break;
 				if(*cur!=',')
 					return NULL;
+				cur += 1;
+				if(cur==m_end) return NULL;
 			}
 			return cur+1;
 		}

@@ -15,6 +15,7 @@ namespace Zion
 		enum TYPE
 		{
 			TYPE_NULL,
+			TYPE_BOOL,
 			TYPE_STR,
 			TYPE_U32,
 			TYPE_S32,
@@ -31,6 +32,7 @@ namespace Zion
 		void SetType(TYPE type);
 
 		bool IsNull() const;
+		bool IsBool() const;
 		bool IsSTR() const;
 		bool IsU32() const;
 		bool IsS32() const;
@@ -38,6 +40,7 @@ namespace Zion
 		bool IsObject() const;
 		bool IsArray() const;
 
+		bool AsBool() const;
 		const String& AsSTR() const;
 		const char* AsCSTR() const;
 		const _U32 AsU32() const;
@@ -54,6 +57,7 @@ namespace Zion
 		bool HasMember(const _STR name) const;
 		bool HasMember(const String& name) const;
 
+		void Set(bool val);
 		void Set(const _STR val);
 		void Set(const String& val);
 		void Set(const _U32 val);
@@ -67,6 +71,7 @@ namespace Zion
 	private:
 		TYPE	m_type;
 		union {
+			bool					m_bool;
 			String*					m_str;
 			_U32					m_u32;
 			_S32					m_s32;

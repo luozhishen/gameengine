@@ -77,6 +77,11 @@ namespace Zion
 		return m_type==TYPE_NULL;
 	}
 
+	bool JsonValue::IsBool() const
+	{
+		return m_type==TYPE_BOOL;
+	}
+
 	bool JsonValue::IsSTR() const
 	{
 		return m_type==TYPE_STR;
@@ -105,6 +110,12 @@ namespace Zion
 	bool JsonValue::IsArray() const
 	{
 		return m_type==TYPE_ARRAY;
+	}
+
+	bool JsonValue::AsBool() const
+	{
+		if(m_type!=TYPE_BOOL) return false;
+		return m_bool;
 	}
 
 	const String& JsonValue::AsSTR() const
@@ -239,6 +250,12 @@ namespace Zion
 		return true;
 	}
 
+	void JsonValue::Set(bool val)
+	{
+		SetType(TYPE_BOOL);
+		m_bool = val;
+	}
+
 	void JsonValue::Set(const _STR val)
 	{
 		SetType(TYPE_STR);
@@ -325,10 +342,41 @@ namespace Zion
 		{
 			const char* cur = Skip(start);
 			if(cur==NULL) return NULL;
-			if(*cur=='"') return ParseString(cur, value);
-			if(*cur=='[') return ParseArray(cur, value);
-			if(*cur=='{') return ParseObject(cur, value);
-			return ParseNumber(cur, value);
+			switch(*cur)
+			{
+			case '"': return ParseString(cur, value);
+			case '[': return ParseArray(cur, value);
+			case '{': return ParseObject(cur, value);
+			case 't':
+				if(m_end-cur<4) return NULL;
+				if(memcmp(cur, "true", 4)!=0) return NULL;
+				value.Set(true);
+				return cur + 4;
+			case 'f':
+				if(m_end-cur<5) return NULL;
+				if(memcmp(cur, "false", 5)!=0) return NULL;
+				value.Set(true);
+				return cur + 5;
+			case 'n':
+				if(m_end-cur<4) return NULL;
+				if(memcmp(cur, "null", 4)!=0) return NULL;
+				value.SetType(JsonValue::TYPE_NULL);
+				return cur + 4;
+			case '+':
+			case '-':
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				return ParseNumber(cur, value);
+			}
+			return NULL;
 		}
 
 		const char* ParseNumber(const char* start, JsonValue& value)

@@ -12,22 +12,29 @@ namespace Zion
 	class CJsonRPCServer;
 	class CJsonRPCClient;
 
-	/*
-	struct JSONRPC_RESPONSE;
-	typedef struct JSONRPC_RESPONSE JSONRPC_RESPONSE;
+	typedef struct _JSONRPC_RESPONSE_ID
+	{
+		_U32 conn;
+		_U32 seq;
+	} JSONRPC_RESPONSE_ID;
 
-	typedef void(JSON_RESPONSE_PROC)(cosnt JSONRPC_RESPONSE& res, const Json::Value& data);
+	/*
+	struct JSONRPC_RESPONSE_ID;
+	typedef struct JSONRPC_RESPONSE_ID JSONRPC_RESPONSE_ID;
+
+	typedef void(JSON_RESPONSE_PROC)(const Json::Value& data);
 	typedef void(JSON_CALLBACK_PROC)(bool error, const char* args);
 	*/
 	typedef std::function<void(const JsonValue&)>	JSON_RESPONSE_PROC;
 	typedef std::function<void(const JsonValue*)>	JSON_CALLBACK_PROC;
 
 	void JsonRPC_Bind(const char* method, JSON_RESPONSE_PROC proc);
-	bool JsonRPC_Start(const char* ep);
+	bool JsonRPC_Start(const char* ep, bool singlethread);
 	void JsonRPC_Stop();
 
 	bool JsonRPC_Send(const char* args);
-//	void JsonRPC_SetPending(const JSONRPC_RESPONSE* res);
+	bool JsonRPC_SetPending(JSONRPC_RESPONSE_ID& res);
+	bool JsonRPC_Send(const JSONRPC_RESPONSE_ID& res, const char* args);
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep);
 	void JsonRPC_StopClients();

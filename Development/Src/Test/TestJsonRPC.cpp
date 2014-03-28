@@ -1,3 +1,4 @@
+
 #include <ZionBase.h>
 #include <JsonRPC.h>
 #include <uv.h>
@@ -7,6 +8,8 @@ static _U32 completed_count = 0;
 static _U32 error_count = 0;
 static Zion::CJsonRPCClient* client;
 static _U32 seq = 0;
+static const char* method = "echo";
+static const char* args = "[0]";
 
 void timer_callback(uv_timer_t* handle, int status)
 {
@@ -25,12 +28,18 @@ void jsonrpc_callback(const Zion::JsonValue* val)
 	{
 		error_count += 1;
 	}
-	Zion::JsonRPC_Send(client, "echo", "[0]", jsonrpc_callback);
+	Zion::JsonRPC_Send(client, method, args, jsonrpc_callback);
 }
 
 int main(int argc, char* argv[])
 {
-	if(argc!=2) return -1;
+	if(argc<2 || argc==3) return -1;
+	if(argc>=4)
+	{
+		method = argv[2];
+		args = argv[3];
+	}
+
 	client = Zion::JsonRPC_GetClient(argv[1]);
 	uv_timer_t timer;
 	uv_timer_init(uv_default_loop(), &timer);
@@ -38,7 +47,7 @@ int main(int argc, char* argv[])
 
 	for(_U32 i=0; i<100000; i++)
 	{
-		Zion::JsonRPC_Send(client, "echo", "[0]", jsonrpc_callback);
+		Zion::JsonRPC_Send(client, method, args, jsonrpc_callback);
 	}
 
 	uv_run(uv_default_loop(), UV_RUN_DEFAULT);

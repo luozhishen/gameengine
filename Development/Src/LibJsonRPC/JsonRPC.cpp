@@ -19,6 +19,23 @@
 namespace Zion
 {
 
+	typedef struct _JSONRPC_RESPONSE_DATA
+	{
+		JSONRPC_RESPONSE_ID id;
+		String val;
+	} JSONRPC_RESPONSE_DATA;
+
+	typedef struct _JSONRPC_CALL
+	{
+		uv_work_t work;
+		JSONRPC_RESPONSE_ID id;
+		String res;
+		String method;
+		char* args;
+		_U32 args_size;
+		List<JSONRPC_RESPONSE_DATA> other_res;
+	} JSONRPC_CALL;
+
 	class CJsonRPCConnection;
 
 	typedef struct _SENDBUF
@@ -87,12 +104,17 @@ namespace Zion
 
 		void Bind(const char* method, JSON_RESPONSE_PROC proc);
 
-		bool Start(const char* ep);
+		bool Start(const char* ep, bool singlethread);
 		void Stop();
+		bool IsSingleThread();
+
 		bool Send(const char* data);
+		bool SetPending(JSONRPC_RESPONSE_ID& res);
 		bool Send(_U32 conn, _U32 seq, const char* data);
 
-		void Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data, _U32 len);
+		bool Call(const String& method, const char* data, _U32 len);
+		void Call(CJsonRPCServerConnection* pConn, _U32 seq, const String& method, const char* data, _U32 len);
+		void Call(const JSONRPC_CALL& data);
 		void Detach(_U32 id, CJsonRPCServerConnection* pConn);
 
 		static void OnConnect(uv_stream_t* server, int status);
@@ -104,6 +126,8 @@ namespace Zion
 		CJsonRPCServerConnection* m_pCurConn;
 		_U32 m_CurSeq;
 
+		bool m_bSingleThread;
+
 		Map<String, JSON_RESPONSE_PROC> m_Methods;
 		_U32 m_ClientSeq;
 		Map<_U32, CJsonRPCServerConnection*> m_Clients;
@@ -111,6 +135,8 @@ namespace Zion
 		uv_thread_t m_uv_thread;
 		uv_async_t m_uv_quit;
 		uv_tcp_t m_server;
+
+		uv_key_t m_res_key;
 	};
 
 	struct JSON_RPCCALL
@@ -171,28 +197,59 @@ namespace Zion
 
 	static CJsonRPCServer g_server;
 
+	static void jsonrpc_work_cb(uv_work_t* req)
+	{
+		JSONRPC_CALL& c = *((JSONRPC_CALL*)req);
+		g_server.Call(c);
+	}
+
+	static void jsonrpc_after_work_cb(uv_work_t* req, int status)
+	{
+		JSONRPC_CALL& c = *((JSONRPC_CALL*)req);
+		if(!c.res.empty())
+		{
+			g_server.Send(c.id.conn, c.id.seq, c.res.c_str());
+		}
+
+		List<JSONRPC_RESPONSE_DATA>& datas = ((JSONRPC_CALL*)req)->other_res;
+		List<JSONRPC_RESPONSE_DATA>::iterator i;
+		for(i=datas.begin(); i!=datas.end(); i++)
+		{
+			g_server.Send((*i).id.conn, (*i).id.seq, (*i).val.c_str());
+		}
+		((JSONRPC_CALL*)req)->~JSONRPC_CALL();
+		ZION_FREE(req);
+	}
+
+
 	void JsonRPC_Bind(const char* method, JSON_RESPONSE_PROC proc)
 	{
 		g_server.Bind(method, proc);
 	}
 
-	bool JsonRPC_Start(const char* ep)
+	bool JsonRPC_Start(const char* ep, bool singlethread)
 	{
-		return g_server.Start(ep);
+		return g_server.Start(ep, singlethread);
 	}
 
 	void JsonRPC_Stop()
 	{
 		g_server.Stop();
 	}
-	/*
-	void JsonRPC_SetPending(const JSONRPC_RESPONSE* res)
-	{
-	}
-	*/
+
 	bool JsonRPC_Send(const char* args)
 	{
 		return g_server.Send(args);
+	}
+
+	bool JsonRPC_SetPending(JSONRPC_RESPONSE_ID& res)
+	{
+		return g_server.SetPending(res);
+	}
+
+	bool JsonRPC_Send(const JSONRPC_RESPONSE_ID& res, const char* args)
+	{
+		return g_server.Send(res.conn, res.seq, args);
 	}
 
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep)
@@ -461,10 +518,12 @@ namespace Zion
 	{
 		m_ClientSeq = 0;
 		m_pCurConn = NULL;
-	}
+		uv_key_create(&m_res_key);
+}
 
 	CJsonRPCServer::~CJsonRPCServer()
 	{
+		uv_key_delete(&m_res_key);
 	}
 
 	void CJsonRPCServer::Bind(const char* method, JSON_RESPONSE_PROC proc)
@@ -473,8 +532,10 @@ namespace Zion
 		m_Methods[method] = proc;
 	}
 
-	bool CJsonRPCServer::Start(const char* ep)
+	bool CJsonRPCServer::Start(const char* ep, bool singlethread)
 	{
+		m_bSingleThread = singlethread;
+
 		const char* pos = strchr(ep, ':');
 		if(!pos) return NULL;
 
@@ -532,12 +593,50 @@ namespace Zion
 		uv_thread_join(&m_uv_thread);
 		uv_loop_delete(m_uv_loop);
 	}
+	
+	bool CJsonRPCServer::IsSingleThread()
+	{
+		return m_bSingleThread;
+	}
 
 	bool CJsonRPCServer::Send(const char* data)
 	{
-		if(!m_pCurConn) return false;
-		m_pCurConn->Send(m_CurSeq, NULL, data);
-		m_pCurConn = NULL;
+		if(m_bSingleThread)
+		{
+			ZION_ASSERT(m_pCurConn);
+			if(!m_pCurConn) return false;
+			m_pCurConn->Send(m_CurSeq, NULL, data);
+			m_pCurConn = NULL;
+		}
+		else
+		{
+			JSONRPC_CALL* c = (JSONRPC_CALL*)uv_key_get(&m_res_key);
+			ZION_ASSERT(c);
+			if(!c) return false;
+			c->res = data;
+			uv_key_set(&m_res_key, NULL);
+		}
+		return true;
+	}
+	
+	bool CJsonRPCServer::SetPending(JSONRPC_RESPONSE_ID& res)
+	{
+		if(m_bSingleThread)
+		{
+			ZION_ASSERT(m_pCurConn);
+			if(!m_pCurConn) return false;
+			res.conn = m_pCurConn->GetID();
+			res.seq = m_CurSeq;
+			m_pCurConn = NULL;
+		}
+		else
+		{
+			JSONRPC_CALL* c = (JSONRPC_CALL*)uv_key_get(&m_res_key);
+			ZION_ASSERT(c);
+			if(!c) return false;
+			res = c->id;
+			uv_key_set(&m_res_key, NULL);
+		}
 		return true;
 	}
 
@@ -549,34 +648,61 @@ namespace Zion
 		return i->second->Send(seq, NULL, data);
 	}
 
-	void CJsonRPCServer::Call(CJsonRPCServerConnection* pConn, _U32 seq, const char* method, const char* data, _U32 len)
+	bool CJsonRPCServer::Call(const String& method, const char* data, _U32 len)
 	{
 		Map<String, JSON_RESPONSE_PROC>::iterator i;
 		i = m_Methods.find(method);
 		if(i==m_Methods.end())
 		{
 			ZION_ASSERT(!"method not found");
-			return;
+			return false;
 		}
 
 		JsonValue json;
 		if(!JsonValue::Parse(data, data+len, json))
 		{
-			String txt;
-			txt.append(data, len);
-			printf("invalid json : %s\n", txt.c_str());
 			ZION_ASSERT(!"invalid data format");
-			return;
+			return false;
 		}
 
-		m_pCurConn = pConn;
-		m_CurSeq = seq;
 		i->second(json);
-		if(m_pCurConn)
+		return true;
+	}
+	void CJsonRPCServer::Call(CJsonRPCServerConnection* pConn, _U32 seq, const String& method, const char* data, _U32 len)
+	{
+		if(m_bSingleThread)
 		{
-			printf("has no res\n");
+			m_pCurConn = pConn;
+			m_CurSeq = seq;
+			if(Call(method, data, len))
+			{
+				ZION_ASSERT(m_pCurConn==NULL);
+			}
 		}
-		ZION_ASSERT(!m_pCurConn);
+		else
+		{
+			JSONRPC_CALL* c = new (ZION_ALLOC(sizeof(JSONRPC_CALL)+len)) JSONRPC_CALL();
+			c->id.conn = pConn->GetID();
+			c->id.seq = seq;
+			c->method = method;
+			c->args = (char*)(c+1);
+			memcpy(c->args, data, len);
+			c->args_size = len;
+			if(uv_queue_work(m_uv_loop, &c->work, jsonrpc_work_cb, jsonrpc_after_work_cb))
+			{
+				c->~JSONRPC_CALL();
+				ZION_FREE(c);
+			}
+		}
+	}
+
+	void CJsonRPCServer::Call(const JSONRPC_CALL& data)
+	{
+		uv_key_set(&m_res_key, (void*)&data);
+		if(Call(data.method, data.args, data.args_size))
+		{
+			ZION_ASSERT(uv_key_get(&m_res_key)==NULL);
+		}
 	}
 
 	void CJsonRPCServer::Detach(_U32 id, CJsonRPCServerConnection* pConn)
@@ -651,7 +777,6 @@ namespace Zion
 		}
 
 		m_state = STATE_CONNECTING;
-		m_connect.data = this;
 
 		if(uv_tcp_init(CJsonRPCClientManager::Get().m_uv_loop, &m_socket))
 		{
@@ -660,6 +785,8 @@ namespace Zion
 			return false;
 		}
 
+		m_connect.data = this;
+		m_socket.data = this;
 		if(uv_tcp_connect(&m_connect, &m_socket, &m_sa, &CJsonRPCClient::OnConnect))
 		{
 			m_state = 0;
@@ -772,7 +899,7 @@ namespace Zion
 		if(it->second.proc)
 		{
 			JsonValue json;
-			if(JsonValue::Parse(data, data+strlen(data), json))
+			if(JsonValue::Parse(data, data+len, json))
 			{
 				it->second.proc(&json);
 			}

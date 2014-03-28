@@ -1,25 +1,17 @@
 #include <ZionBase.h>
 #include <JsonRPC.h>
+#include <uv.h>
 #include "DataCacheRpcImpl.h"
 #include "DataCacheDBApi.h"
-#include <uv.h>
+#include "ObjectManager.h"
 
 namespace Zion
 {
 	namespace DataCache
 	{
 
+
 		class CAvatarData;
-		class CAvatarManager
-		{
-		public:
-			CAvatarManager();
-			~CAvatarManager();
-			CAvatarData* GetAvatar(_U32 avatar_id);
-			bool SetAvatar(_U32 avatar_id, CAvatarData* pAvatar);
-			Map<_U32, CAvatarData*> g_AvatarMap;
-			uv_rwlock_t g_AvatarLocker;
-		};
 
 		class CAvatarData
 		{
@@ -42,6 +34,9 @@ namespace Zion
 			bool ExistObject(const A_UUID& _uuid);
 			const OBJECT_DATA* GetObject(const A_UUID& _uuid);
 
+			_U32 GetIndex();
+			void SetIndex(_U32 index);
+
 			bool IsDirty();
 			_U32 GetVersion();
 			_U32 GetAvatarID() { return m_AvatarID; }
@@ -50,87 +45,74 @@ namespace Zion
 			bool Save();
 			void Send();
 
-			void Lock();
-			void Unlock();
-			void Delete();
-			bool IsDeleted();
-
 		private:
-			A_MUTEX m_Mutex;
-			bool m_bDeleted;
-
+			_U32 m_Index;
 			_U32 m_AvatarID;
 			_U32 m_Version;
 			Map<A_UUID, OBJECT_DATA> m_Objects;
 			Set<A_UUID> m_DelList;
 		};
 
-		static CAvatarManager g_Manager;
+		static TObjectManager<CAvatarData, 100*10000> g_avatar_manager;
+		static TObjectMap<_U32> g_avatar_id_map;
 
-		CAvatarManager::CAvatarManager()
+		static _U32 InsertAvatar(CAvatarData* data)
 		{
-			uv_rwlock_init(&g_AvatarLocker);
-		}
-
-		CAvatarManager::~CAvatarManager()
-		{
-			uv_rwlock_destroy(&g_AvatarLocker);
-		}
-
-		CAvatarData* CAvatarManager::GetAvatar(_U32 avatar_id)
-		{
-			CAvatarData* pAvatar = NULL;
-			Map<_U32, CAvatarData*>::iterator i;
-			uv_rwlock_rdlock(&g_AvatarLocker);
-			i = g_AvatarMap.find(avatar_id);
-			if(i!=g_AvatarMap.end() && !i->second->IsDeleted())
+			_U32 index = g_avatar_manager.Insert(data);
+			if(index==(_U32)-1) return (_U32)-1;
+			_U32 avatar_id = data->GetAvatarID();
+			if(!g_avatar_id_map.Insert(avatar_id, index))
 			{
-				pAvatar = i->second;
-				pAvatar->Lock();
-				if(pAvatar->IsDeleted())
-				{
-					pAvatar->Unlock();
-					pAvatar = NULL;
-				}
-			}
-			uv_rwlock_rdunlock(&g_AvatarLocker);
-			return pAvatar;
-		}
-
-		bool CAvatarManager::SetAvatar(_U32 avatar_id, CAvatarData* pAvatar)
-		{
-			Map<_U32, CAvatarData*>::iterator i;
-			bool result = false;
-			uv_rwlock_wrlock(&g_AvatarLocker);
-			i = g_AvatarMap.find(avatar_id);
-			if(i==g_AvatarMap.end())
-			{
-				g_AvatarMap[avatar_id] = pAvatar;
-				result = true;
+				g_avatar_manager.Remove(index, data);
+				return (_U32)-1;
 			}
 			else
 			{
-				if(i->second->IsDeleted())
-				{
-					i->second = pAvatar;
-					result = true;
-				}
+				data->SetIndex(index);
 			}
-			uv_rwlock_wrunlock(&g_AvatarLocker);
-			return result;
+			return index;
+		}
+
+		static bool RemoveAvatar(CAvatarData* data)
+		{
+			bool ret;
+			_U32 avatar_id = data->GetAvatarID();
+			ret = g_avatar_id_map.Remove(avatar_id, data->GetIndex());
+			ZION_ASSERT(ret);
+			if(ret)
+			{
+				ret = g_avatar_manager.Remove(data->GetIndex(), data);
+				ZION_ASSERT(ret);
+			}
+			return ret;
+		}
+
+		static CAvatarData* LockAvatar(_U32 avatar_id)
+		{
+			_U32 index = g_avatar_id_map.Get(avatar_id);
+			if(index==(_U32)-1) return NULL;
+			CAvatarData* data = g_avatar_manager.Lock(index);
+			if(data->GetAvatarID()!=avatar_id)
+			{
+				g_avatar_manager.Unlock(index);
+				return NULL;
+			}
+			return data;
+		}
+
+		void UnlockAvatar(CAvatarData* data)
+		{
+			g_avatar_manager.Unlock(data->GetIndex());
 		}
 
 		CAvatarData::CAvatarData(_U32 avatar_id)
 		{
 			m_AvatarID = avatar_id;
-			A_MUTEX_INIT(&m_Mutex);
-			m_bDeleted = false;
 			m_Version = 0;
 		}
 
 		CAvatarData::~CAvatarData()
 		{
-			A_MUTEX_DESTROY(&m_Mutex);
 		}
 
 		bool CAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty)
@@ -188,6 +170,16 @@ namespace Zion
 			return &i->second;
 		}
 
+		_U32 CAvatarData::GetIndex()
+		{
+			return m_Index;
+		}
+
+		void CAvatarData::SetIndex(_U32 index)
+		{
+			m_Index = index;
+		}
+
 		bool CAvatarData::IsDirty()
 		{
 			if(!m_DelList.empty()) return true;
@@ -213,6 +205,7 @@ namespace Zion
 
 		bool CAvatarData::Load()
 		{
+#if 0
 			IDBApi* db = AllocDataBase();
 			if(db)
 			{
@@ -230,6 +223,14 @@ namespace Zion
 				FreeDatabase(db);
 			}
 			return false;
+#else
+			A_UUID _uuid;
+			AUuidGenerate(_uuid);
+			char suuid[100];
+			AUuidToString(_uuid, suuid);
+			CreateObject(_uuid, "OBJECT", "{\"name\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}", false, false);
+			return true;
+#endif
 		}
 
 		bool CAvatarData::Save()
@@ -297,41 +298,6 @@ namespace Zion
 				ret += i->second._data;
 			}
 			JsonRPC_Send((StringFormat("[0, %u, %u, {", m_AvatarID, m_Version) + ret + "}]").c_str());
-		}
-
-		void CAvatarData::Lock()
-		{
-			A_MUTEX_LOCK(&m_Mutex);
-		}
-
-		void CAvatarData::Unlock()
-		{
-			A_MUTEX_UNLOCK(&m_Mutex);
-		}
-		
-		void CAvatarData::Delete()
-		{
-			_U32 avatar_id = m_AvatarID;
-			CAvatarData* pAvatar = this;
-			ZION_ASSERT(!m_bDeleted);
-			m_bDeleted = true;
-			A_MUTEX_UNLOCK(&m_Mutex);
-
-			Map<_U32, CAvatarData*>::iterator i;
-			uv_rwlock_wrlock(&g_Manager.g_AvatarLocker);
-			i = g_Manager.g_AvatarMap.find(avatar_id);
-			if(i!=g_Manager.g_AvatarMap.end() && i->second==pAvatar)
-			{
-				g_Manager.g_AvatarMap.erase(i);
-			}
-			uv_rwlock_wrunlock(&g_Manager.g_AvatarLocker);
-
-			delete pAvatar;
-		}
-
-		bool CAvatarData::IsDeleted()
-		{
-			return m_bDeleted;
 		}
 
 		void RPCIMPL_LoginUser(const char* token)
@@ -446,28 +412,26 @@ namespace Zion
 		_U32 _GetAvatar_Error = 0;
 		void RPCIMPL_GetAvatar(_U32 avatar_id)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
 			{
 				pAvatar = ZION_NEW CAvatarData(avatar_id);
-				pAvatar->Lock();
-				if(!pAvatar->Load() || !g_Manager.SetAvatar(avatar_id, pAvatar))
+				if(!pAvatar->Load() || !InsertAvatar(pAvatar))
 				{
-					pAvatar->Unlock();
 					ZION_DELETE pAvatar;
 					JsonRPC_Send("[-1]");
-					_GetAvatar_Count += 1;
+					_GetAvatar_Error += 1;
 					return;
 				}
 			}
 			pAvatar->Send();
-			pAvatar->Unlock();
-			_GetAvatar_Error += 1;
+			UnlockAvatar(pAvatar);
+			_GetAvatar_Count += 1;
 		}
 		
 		void RPCIMPL_SaveAvatar(_U32 avatar_id)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(pAvatar)
 			{
 				JsonRPC_Send("[-1]");
@@ -476,19 +440,18 @@ namespace Zion
 
 			if(pAvatar->Save())
 			{
-				pAvatar->Unlock();
 				JsonRPC_Send("[0]");
 			}
 			else
 			{
-				pAvatar->Unlock();
 				JsonRPC_Send("[-1]");
 			}
+			UnlockAvatar(pAvatar);
 		}
 
 		void RPCIMPL_ClearAvatar(_U32 avatar_id)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
 			{
 				JsonRPC_Send("[-1]");
@@ -497,105 +460,94 @@ namespace Zion
 
 			if(pAvatar->Save())
 			{
-				pAvatar->Unlock();
 				JsonRPC_Send("[0]");
 			}
 			else
 			{
-				pAvatar->Unlock();
 				JsonRPC_Send("[-1]");
 			}
+			UnlockAvatar(pAvatar);
 		}
 
 		void RPCIMPL_KeepAlive(_U32 avatar_id)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
 			{
 				JsonRPC_Send("[-1]");
 				return;
 			}
 			JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());;
+			UnlockAvatar(pAvatar);
 		}
 
 		void RPCIMPL_CreateObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* type, const char* data)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
 			{
 				JsonRPC_Send("[-1]");
 				return;
 			}
-			if(pAvatar->GetVersion()!=version && version!=(_U32)-1)
+			if(pAvatar->GetVersion()==version)
 			{
-				JsonRPC_Send("[-1]");
-				return;
+				if(pAvatar->CreateObject(_uuid, type, data, false, true))
+				{
+					UnlockAvatar(pAvatar);
+					JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+					return;
+				}
 			}
-
-			if(pAvatar->CreateObject(_uuid, type, data, false, true))
-			{
-				pAvatar->Unlock();
-				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
-			}
-			else
-			{
-				pAvatar->Unlock();
-				JsonRPC_Send("[-1]");
-			}
+			UnlockAvatar(pAvatar);
+			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_UpdateObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* data)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
 			{
 				JsonRPC_Send("[-1]");
 				return;
 			}
-			if(pAvatar->GetVersion()!=version && version!=(_U32)-1)
+			if(pAvatar->GetVersion()==version)
 			{
-				JsonRPC_Send("[-1]");
-				return;
+				if(pAvatar->UpdateObject(_uuid, data))
+				{
+					UnlockAvatar(pAvatar);
+					JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+					return;
+				}
 			}
-
-			if(pAvatar->UpdateObject(_uuid, data))
-			{
-				pAvatar->Unlock();
-				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
-			}
-			else
-			{
-				pAvatar->Unlock();
-				JsonRPC_Send("[-1]");
-			}
+			UnlockAvatar(pAvatar);
+			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_DeleteObject(_U32 avatar_id, _U32 version, const A_UUID* _uuids, _U32 count)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
 			{
 				JsonRPC_Send("[-1]");
 				return;
 			}
-			if(pAvatar->GetVersion()!=version && version!=(_U32)-1)
+			if(pAvatar->GetVersion()==version)
 			{
-				JsonRPC_Send("[-1]");
+				for(_U32 l=0; l<count; l++)
+				{
+					pAvatar->DeleteObject(_uuids[l]);
+				}
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
 				return;
 			}
-
-			for(_U32 l=0; l<count; l++)
-			{
-				pAvatar->DeleteObject(_uuids[l]);
-			}
-
-			pAvatar->Unlock();
-			JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+			UnlockAvatar(pAvatar);
+			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_LoadObjectFromDB(_U32 avatar_id, const A_UUID& _uuid)
 		{
-			CAvatarData* pAvatar = g_Manager.GetAvatar(avatar_id);
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
 			{
 				JsonRPC_Send("[-1]");
@@ -615,7 +567,7 @@ namespace Zion
 							char suuid[100];
 							AUuidToString(_uuid, suuid);
 							JsonRPC_Send(StringFormat("[0, %u, \"%s\", \"%s\", \"%s\"]", pAvatar->GetVersion(), suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
-							pAvatar->Unlock();
+							UnlockAvatar(pAvatar);
 							FreeDatabase(db);
 							return;
 						}
@@ -623,19 +575,19 @@ namespace Zion
 					FreeDatabase(db);
 				}
 			}
-			pAvatar->Unlock();
+			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_FlushAllData()
 		{
-			Map<_U32, CAvatarData*>::iterator i;
-			for(i=g_Manager.g_AvatarMap.begin(); i!=g_Manager.g_AvatarMap.end(); i++)
+			for(_U32 i=0; i<g_avatar_manager.GetCount(); i++)
 			{
-				if(!i->second->Save())
-				{
-					printf("save avatar(%u) failed", i->second->GetAvatarID());
-				}
+				CAvatarData* data = g_avatar_manager.Lock(i);
+				if(!data) continue;
+
+				RemoveAvatar(data);
+				ZION_DELETE data;
 			}
 		}
 

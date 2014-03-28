@@ -84,7 +84,7 @@ namespace Zion
 			JsonRPC_Bind("waitForMessage",		JsonRpc_WaitForMessage);
 			JsonRPC_Bind("GetMessage",			JsonRpc_GetMessage);
 			printf("start JsonRpc Server...\n");
-			if(!JsonRPC_Start(CONFIG_RPCEP.c_str()))
+			if(!JsonRPC_Start(CONFIG_RPCEP.c_str(), CONFIG_SINGLETHREAD))
 			{
 				ZION_FATAL("start jsonrpc failed");
 			}

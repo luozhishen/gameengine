@@ -33,6 +33,8 @@ extern void zion_fatal(const char* fmt, ...);
 extern void* zion_malloc(size_t size);
 extern void zion_free(void* mem);
 
+#include <stdio.h>
+
 #ifdef _WIN32
 	#define _CRTDBG_MAP_ALLOC
 	#include <stdlib.h>
@@ -95,7 +97,7 @@ extern void zion_free(void* mem);
 	typedef struct ATOM_SLIST_HEADER	{ ATOM_SLIST_ENTRY* First; long Count;}	ATOM_SLIST_HEADER;
 
 	void atom_slist_init(ATOM_SLIST_HEADER* header);
-	ATOM_SLIST_ENTRY* atom_slist_pop(ATOM_SLIST_HEADER* head);
+	ATOM_SLIST_ENTRY* atom_slist_pop(ATOM_SLIST_HEADER* head, const char* fn, int line);
 	ATOM_SLIST_ENTRY* atom_slist_push(ATOM_SLIST_HEADER* head, ATOM_SLIST_ENTRY* ListEntry);
 	ATOM_SLIST_ENTRY* atom_slist_flush(ATOM_SLIST_HEADER* head);
 
@@ -116,7 +118,7 @@ extern void zion_free(void* mem);
 	#define A_SLIST_ENTRY			ATOM_SLIST_ENTRY
 	#define A_SLIST_INIT			atom_slist_init
 	#define A_SLIST_PUSH			atom_slist_push
-	#define A_SLIST_POP				atom_slist_pop
+	#define A_SLIST_POP(h)		atom_slist_pop(h, __FILE__, __LINE__)
 #endif
 
 #ifdef _WIN32

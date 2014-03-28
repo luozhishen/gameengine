@@ -1,8 +1,6 @@
 #ifndef	__ZION_OBJECT_MANAGER__
 #define	__ZION_OBJECT_MANAGER__
 
-#include <pshpack8.h>
-
 namespace Zion
 {
 
@@ -112,9 +110,10 @@ namespace Zion
 			return index!=(_U32)-1;
 		}
 
-		bool Remove(const KEY& key, _U32 index)
+		bool Remove(const KEY& key, _U32 index);
+/*
 		{
-			Map<KEY, _U32>::iterator i;
+			Zion::Map<_U32, _U32>::iterator i;
 			uv_rwlock_wrlock(&m_locker);
 			i = m_map.find(key);
 			if(i==m_map.end() || i->second!=index)
@@ -128,8 +127,9 @@ namespace Zion
 			uv_rwlock_wrunlock(&m_locker);
 			return index!=(_U32)-1;
 		}
-
-		_U32 Get(const KEY& key)
+*/
+		_U32 Get(const KEY& key);
+/*
 		{
 			_U32 index = -1;
 			Map<KEY, _U32>::iterator i;
@@ -139,14 +139,74 @@ namespace Zion
 			uv_rwlock_rdunlock(&m_locker);
 			return index;
 		}
+*/
 
 	private:
 		uv_rwlock_t m_locker;
 		Map<KEY, _U32> m_map;
 	};
 
+	template<>
+	bool TObjectMap<String>::Remove(const String& key, _U32 index)
+	{
+		Map<String, _U32>::iterator i;
+		uv_rwlock_wrlock(&m_locker);
+		i = m_map.find(key);
+		if(i==m_map.end() || i->second!=index)
+		{
+			index = (_U32)-1;
+		}
+		else
+		{
+			m_map.erase(i);
+		}
+		uv_rwlock_wrunlock(&m_locker);
+		return index!=(_U32)-1;
+	}
+
+	template<>
+	_U32 TObjectMap<String>::Get(const String& key)
+	{
+		_U32 index = -1;
+		Map<String, _U32>::iterator i;
+		uv_rwlock_rdlock(&m_locker);
+		i = m_map.find(key);
+		if(i!=m_map.end()) index = i->second;
+		uv_rwlock_rdunlock(&m_locker);
+		return index;
+	}
+
+	template<>
+	bool TObjectMap<_U32>::Remove(const _U32& key, _U32 index)
+	{
+		Map<_U32, _U32>::iterator i;
+		uv_rwlock_wrlock(&m_locker);
+		i = m_map.find(key);
+		if(i==m_map.end() || i->second!=index)
+		{
+			index = (_U32)-1;
+		}
+		else
+		{
+			m_map.erase(i);
+		}
+		uv_rwlock_wrunlock(&m_locker);
+		return index!=(_U32)-1;
+	}
+
+	template<>
+	_U32 TObjectMap<_U32>::Get(const _U32& key)
+	{
+		_U32 index = -1;
+		Map<_U32, _U32>::iterator i;
+		uv_rwlock_rdlock(&m_locker);
+		i = m_map.find(key);
+		if(i!=m_map.end()) index = i->second;
+		uv_rwlock_rdunlock(&m_locker);
+		return index;
+	}
+
 }
 
-#include <poppack.h>
-
 #endif
+

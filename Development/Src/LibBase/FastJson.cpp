@@ -27,6 +27,7 @@ namespace Zion
 		case TYPE_F32:		m_f32 = val.m_f32;			break;
 		case TYPE_OBJECT:	*m_object = *val.m_object;	break;
 		case TYPE_ARRAY:	*m_array = *val.m_array;	break;
+		default: break;
 		}
 	}
 
@@ -55,6 +56,7 @@ namespace Zion
 			case TYPE_OBJECT: m_object->clear(); break;
 			case TYPE_ARRAY: m_array->clear(); break;
 			case TYPE_STR: m_str->clear(); break;
+			default: break;
 			};
 			return;
 		}
@@ -63,6 +65,7 @@ namespace Zion
 		case TYPE_OBJECT: m_object->~Map<String, JsonValue>(); ZION_FREE(m_object); break;
 		case TYPE_ARRAY: m_array->~Array<JsonValue>(); ZION_FREE(m_array); break;
 		case TYPE_STR: m_str->~String(); ZION_FREE(m_str); break;
+		default: break;
 		};
 		m_type = type;
 		switch(m_type)
@@ -70,6 +73,7 @@ namespace Zion
 		case TYPE_OBJECT: m_object = new (ZION_ALLOC(sizeof(Map<String, JsonValue>))) Map<String, JsonValue>(); break;
 		case TYPE_ARRAY: m_array = new (ZION_ALLOC(sizeof(Array<JsonValue>))) Array<JsonValue>(); break;
 		case TYPE_STR: m_str = new (ZION_ALLOC(sizeof(String))) String(); break;
+		default: break;
 		};
 	}
 	
@@ -493,14 +497,14 @@ namespace Zion
 				value.m_array->push_back(JsonValue());
 				JsonValue& val = (*value.m_array)[value.m_array->size()-1];
 				cur = ParseElement(cur, val);
-				if(!cur) return false;
+				if(!cur) return NULL;
 
 				cur = Skip(cur);
 				if(!cur) return NULL;
 				if(*cur!=',')
 				{
 					if(*cur==']') break;
-					return false;
+					return NULL;
 				}
 				cur += 1;
 			}
@@ -614,7 +618,7 @@ namespace Zion
 						} 
 						else if (cp <= 0xFFFF) 
 						{
-							char str[2];
+							char str[3];
 							str[2] = (char)(0x80 | (0x3f & cp));
 							str[1] = 0x80 | (char)((0x3f & (cp >> 6)));
 							str[0] = 0xE0 | (char)((0xf & (cp >> 12)));

@@ -12,7 +12,7 @@
 #endif
 
 #define STATE_CONNECTING		((_U32)0x01)
-#define STATE_READING			((_U32)0x02)
+#define STATE_CONNECTED			((_U32)0x02)
 #define STATE_SHUTDOWNING		((_U32)0x04)
 #define STATE_SHUTDOWN			((_U32)0x08)
 
@@ -290,10 +290,11 @@ namespace Zion
 
 	bool CJsonRPCConnection::Send(_U32 seq, const char* method, const char* data)
 	{
-		if(m_state&(STATE_SHUTDOWNING|STATE_SHUTDOWN))
+		if(m_state!=STATE_CONNECTED)
 		{
 			return false;
 		}
+
 		if(method)
 		{
 			_U32 method_len = strlen(method);
@@ -375,34 +376,28 @@ namespace Zion
 
 	void CJsonRPCConnection::Shutdown()
 	{
-		if((m_state&STATE_SHUTDOWNING)==0)
-		{
-			m_state |= STATE_SHUTDOWNING;
-			m_shutdown.data = this;
-			if(uv_shutdown(&m_shutdown, m_stream, &CJsonRPCConnection::OnShutdown))
-			{
-				ZION_ASSERT(0);
-				m_state |= STATE_SHUTDOWN;
-			}
-		}
+		if(m_state!=STATE_CONNECTED) return;
 
-		if(m_state==(STATE_SHUTDOWNING|STATE_SHUTDOWN))
+		m_state = STATE_SHUTDOWNING;
+		m_shutdown.data = this;
+		if(uv_shutdown(&m_shutdown, m_stream, &CJsonRPCConnection::OnShutdown))
 		{
-			uv_close((uv_handle_t*)m_stream, &CJsonRPCConnection::OnClose);
+			ZION_ASSERT(0);
+			m_state = STATE_SHUTDOWN;
 		}
+		uv_close((uv_handle_t*)m_stream, &CJsonRPCConnection::OnClose);
 	}
 
 	void CJsonRPCConnection::OnConnect(uv_stream_t* stream, int status)
 	{
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)stream->data;
 
-		pConn->m_state = STATE_READING;
+		pConn->m_state = STATE_CONNECTED;
 		pConn->m_stream = stream;
 		pConn->m_RecvLen = 0;
 
 		if(uv_read_start(stream, &CJsonRPCConnection::OnBeforRead, &CJsonRPCConnection::OnAfterRead))
 		{
-			pConn->m_state &= ~STATE_READING;
 			pConn->Shutdown();
 			ZION_ASSERT(0);
 		}
@@ -421,7 +416,6 @@ namespace Zion
 
 		if(nread<0)
 		{
-			pConn->m_state &= ~STATE_READING;
 			pConn->Shutdown();
 			return;
 		}
@@ -475,10 +469,7 @@ namespace Zion
 	void CJsonRPCConnection::OnShutdown(uv_shutdown_t* req, int status)
 	{
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)req->data;
-
-		pConn->m_state |= STATE_SHUTDOWN;
-
-		pConn->Shutdown();
+		pConn->m_state = STATE_SHUTDOWN;
 	}
 
 	void CJsonRPCConnection::OnClose(uv_handle_t* handle)
@@ -799,71 +790,55 @@ namespace Zion
 
 	bool CJsonRPCClient::Send(const char* method, const char* data)
 	{
-		if(m_state&(STATE_SHUTDOWN|STATE_SHUTDOWNING))
-		{
-			return false;
-		}
-
-		if(m_state==0)
-		{
-			if(!Connect()) return false;
-		}
-
-		if(m_state&STATE_CONNECTING)
+		if(m_state!=STATE_CONNECTED)
 		{
 			struct JSON_RPCCALL call;
 			call.method = method;
 			call.data = data;
-
 			while(m_Requests.find(m_seq)!=m_Requests.end())
 			{
 				m_seq++;
 			}
-
 			m_Requests[m_seq++] = call;
+
+			if(m_state==0 && !Connect())
+			{
+				ZION_ASSERT(0);
+				return false;
+			}
+
 			return true;
 		}
 
-		ZION_ASSERT(m_state&STATE_READING);
 		return CJsonRPCConnection::Send(0, method, data);
 	}
 
 	bool CJsonRPCClient::Send(const char* method, const char* data, JSON_CALLBACK_PROC proc)
 	{
-		if(m_state&(STATE_SHUTDOWN|STATE_SHUTDOWNING))
-		{
-			return false;
-		}
-
-		if(m_state==0)
-		{
-			if(!Connect()) return false;
-		}
-
 		while(m_Requests.find(m_seq)!=m_Requests.end())
 		{
 			m_seq++;
 		}
-
-		if(m_state&STATE_CONNECTING)
-		{
-			struct JSON_RPCCALL call;
-			call.method = method;
-			call.data = data;
-			call.proc = proc;
-			m_Requests[m_seq++] = call;
-			return true;
-		}
-
-		ZION_ASSERT(m_state&STATE_READING);
-
 		struct JSON_RPCCALL call;
 		call.method = method;
 		call.data = data;
 		call.proc = proc;
 		m_Requests[m_seq++] = call;
 
-		if(!CJsonRPCConnection::Send(m_seq, method, data))
+		if(m_state!=STATE_CONNECTED)
+		{
+			if(m_state==0)
+			{
+				if(!Connect())
+				{
+					ZION_ASSERT(0);
+					return false;
+				}
+			}
+			return true;
+		}
+
+		if(!CJsonRPCConnection::Send(m_seq-1, method, data))
 		{
 			m_Requests.erase(m_seq-1);
 			return false;
@@ -874,14 +849,22 @@ namespace Zion
 
 	void CJsonRPCClient::OnDisconnect()
 	{
-		while(!m_Requests.empty())
+		Map<_U32, JSON_RPCCALL> Requests = m_Requests;
+		m_Requests.clear();
+
+		while(!Requests.empty())
 		{
-			struct JSON_RPCCALL& call = m_Requests.begin()->second;
+			struct JSON_RPCCALL& call = Requests.begin()->second;
 			if(call.proc)
 			{
 				call.proc(NULL);
 			}
-			m_Requests.erase(m_Requests.begin());
+			Requests.erase(Requests.begin());
+		}
+		m_state = 0;
+		if(!Connect())
+		{
+			ZION_ASSERT(0);
 		}
 	}
 
@@ -917,17 +900,13 @@ namespace Zion
 
 		if(status!=0)
 		{
-			pClient->m_state = 0;
+			pClient->OnDisconnect();
 			return;
 		}
 
 		req->handle->data = pClient;
 		CJsonRPCConnection::OnConnect(req->handle, status);
-
-		if((pClient->m_state&STATE_READING)==0)
-		{
-			return;
-		}
+		if(pClient->m_state!=STATE_CONNECTED) return;
 
 		Map<_U32, JSON_RPCCALL>::iterator it, it2;
 
@@ -944,7 +923,7 @@ namespace Zion
 			}
 			else
 			{
-				((CJsonRPCConnection*)pClient)->Send(1, it->second.method.c_str(), it->second.data.c_str());
+				((CJsonRPCConnection*)pClient)->Send(0, it->second.method.c_str(), it->second.data.c_str());
 			}
 			it2 = it++;
 			pClient->m_Requests.erase(it2);

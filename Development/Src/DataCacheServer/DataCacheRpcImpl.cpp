@@ -205,7 +205,6 @@ namespace Zion
 
 		bool CAvatarData::Load()
 		{
-#if 0
 			IDBApi* db = AllocDataBase();
 			if(db)
 			{
@@ -223,14 +222,6 @@ namespace Zion
 				FreeDatabase(db);
 			}
 			return false;
-#else
-			A_UUID _uuid;
-			AUuidGenerate(_uuid);
-			char suuid[100];
-			AUuidToString(_uuid, suuid);
-			CreateObject(_uuid, "OBJECT", "{\"name\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}", false, false);
-			return true;
-#endif
 		}
 
 		bool CAvatarData::Save()

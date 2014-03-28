@@ -57,15 +57,19 @@ namespace Zion
 			virtual bool Connect();
 			virtual bool Disconnect();
 
-			virtual _U32 LoginUser(const char* token, const char* ip, const char* dv_type, const char* os_type, const char* dv_id);
+			virtual bool BeginTranscation();
+			virtual bool RollbackTransaction();
+			virtual bool CommitTransaction();
+
 			virtual _U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc);
 			virtual bool DeleteAvatar(_U32 avatar_id);
-			virtual bool GetAvatarList(_U32 user_id, _U32 server_id, bool (*callback)(void*, _U32, _U32, const char*, const char*), void* userptr);
 			virtual bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
 			virtual bool UpdateAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* data);
 			virtual bool DeleteAvatarObject(_U32 avatar_id, const A_UUID* _uuids, _U32 count);
 			virtual bool QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
+			virtual bool LockTask(_U32 avatar_id, _U32 task_id);
+			virtual bool MarkTask(_U32 avatar_id, _U32 task_id);
 
 		private:
 			String	m_host;
@@ -145,56 +149,19 @@ namespace Zion
 			return true;
 		}
 
-		_U32 CMysqlDBApi::LoginUser(const char* token, const char* ip, const char* dv_type, const char* os_type, const char* dv_id)
+		bool CMysqlDBApi::BeginTranscation()
 		{
-			String sql = StringFormat("SELECT user_id, state, UNIX_TIMESTAMP(freeze_duetime) FROM user_table WHERE token='%s'", MY(token));
-			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
-			{
-				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return (_U32)-1;
-			}
-			MYSQL_RES *result = mysql_store_result(m_mysql);
-			if(!result)
-			{
-				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return (_U32)-1;
-			}
-			ZION_ASSERT(mysql_num_fields(result)==3);
-			MYSQL_ROW row;
-			_U32 user_id = (_U32)-1;
-			bool disable = false;
-			while((row=mysql_fetch_row(result))!=NULL)
-			{
-				user_id = (_U32)atoi(row[0]);
-				int state = (_U32)atoi(row[1]);
-				time_t freeze = (time_t)atoi(row[2]);
-				disable = (state!=0 || freeze>=time(NULL));
-			}
-			mysql_free_result(result);
+			return true;
+		}
 
-			if(user_id==(_U32)-1)
-			{
-				sql = StringFormat("INSERT INTO user_table(token, state, freeze_duetime) VALUES('%s', 0, 0)", MY(token));
-				if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
-				{
-					printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-					return (_U32)-1;
-				}
-				user_id = (_U32)mysql_insert_id(m_mysql);
-			}
-			else if(disable)
-			{
-				return (_U32)-1;
-			}
+		bool CMysqlDBApi::RollbackTransaction()
+		{
+			return true;
+		}
 
-			sql = StringFormat("INSERT INTO login_history_table(user_id, ip, dv_type, os_type, dv_id, create_ts) VALUES(%u, '%s', '%s', '%s', '%s', CURRENT_TIMESTAMP)", user_id, MY(ip), MY(dv_type), MY(os_type), MY(dv_id));
-			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
-			{
-				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return (_U32)-1;
-			}
-
-			return user_id;
+		bool CMysqlDBApi::CommitTransaction()
+		{
+			return true;
 		}
 
 		_U32 CMysqlDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
@@ -221,40 +188,6 @@ namespace Zion
 			{
 				return true;
 			}
-		}
-
-		bool CMysqlDBApi::GetAvatarList(_U32 user_id, _U32 server_id, bool (*callback)(void*, _U32, _U32, const char*, const char*), void* userptr)
-		{
-			String sql = StringFormat("SELECT avatar_id, state, freeze_duetime, avatar_name, avatar_desc FROM avatar_table WHERE user_id=%u AND server_id=%u AND state!=1", user_id, server_id);
-			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
-			{
-				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return false;
-			}
-			MYSQL_RES *result = mysql_store_result(m_mysql);
-			if(!result)
-			{
-				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
-				return false;
-			}
-			ZION_ASSERT(mysql_num_fields(result)==5);
-			MYSQL_ROW row;
-			while((row=mysql_fetch_row(result))!=NULL)
-			{
-				_U32 avatar_id = (_U32)atoi(row[0]);
-				int state = (_U32)atoi(row[1]);
-				time_t freeze = (time_t)atoi(row[2]);
-				bool disable = (state!=0 || freeze>=time(NULL));
-				if(state==0 && freeze>time(NULL)) state = 2;
-				if(!callback(userptr, avatar_id, state, row[3], row[4]))
-				{
-					mysql_free_result(result);
-					return false;
-				}
-
-			}
-			mysql_free_result(result);
-			return true;
 		}
 
 		bool CMysqlDBApi::LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr)
@@ -387,6 +320,16 @@ namespace Zion
 			}
 			mysql_free_result(result);
 			return count==1;
+		}
+
+		bool CMysqlDBApi::LockTask(_U32 avatar_id, _U32 task_id)
+		{
+			return true;
+		}
+
+		bool CMysqlDBApi::MarkTask(_U32 avatar_id, _U32 task_id)
+		{
+			return true;
 		}
 
 	}

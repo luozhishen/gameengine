@@ -300,24 +300,6 @@ namespace Zion
 			JsonRPC_Send((StringFormat("[0, %u, %u, {", m_AvatarID, m_Version) + ret + "}]").c_str());
 		}
 
-		void RPCIMPL_LoginUser(const char* token)
-		{
-			IDBApi* db = AllocDataBase();
-			if(db)
-			{
-				_U32 user_id = db->LoginUser(token, "ip", "dv_type", "os_type", "dv_id");
-				if(user_id!=(_U32)-1)
-				{
-					FreeDatabase(db);
-					JsonRPC_Send(StringFormat("[0,%u]", user_id).c_str());
-					return;
-				}
-				FreeDatabase(db);
-			}
-			JsonRPC_Send("[-1]");
-			return;
-		}
-
 		void RPCIMPL_CreateAvatar(
 				_U32 user_id,
 				_U32 server_id,
@@ -365,40 +347,6 @@ namespace Zion
 				if(db->DeleteAvatar(avatar_id))
 				{
 					JsonRPC_Send("[0]");
-					FreeDatabase(db);
-					return;
-				}
-				FreeDatabase(db);
-			}
-			JsonRPC_Send("[-1]");
-			return;
-		}
-
-		static bool GetAvatarListCallback(void* userptr, _U32 avatar_id, _U32 state, const char* avatar_name, const char* avatar_desc)
-		{
-			String& val = *((String*)userptr);
-			if(!val.empty()) val += ",";
-			val += '{';
-			val += StringFormat("\"%s\":%u", "avatar_id", avatar_id);
-			val += ",";
-			val += StringFormat("\"%s\":%u", "state", state);
-			val += ",";
-			val += StringFormat("\"%s\":\"%s\"", "avatar_name", avatar_name);
-			val += ",";
-			val += StringFormat("\"%s\":\"%s\"", "avatar_desc", avatar_desc);
-			val += '}';
-			return true;
-		}
-
-		void RPCIMPL_GetAvatarList(_U32 user_id, _U32 server_id)
-		{
-			IDBApi* db = AllocDataBase();
-			if(db)
-			{
-				String val;
-				if(db->GetAvatarList(user_id, server_id, GetAvatarListCallback, &val))
-				{
-					JsonRPC_Send(StringFormat("[0,[%s]]", val.c_str()).c_str());
 					FreeDatabase(db);
 					return;
 				}
@@ -577,6 +525,109 @@ namespace Zion
 			}
 			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
+		}
+
+		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks)
+		{
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
+			if(!pAvatar)
+			{
+				JsonRPC_Send("[-1]");
+				return;
+			}
+
+			if(pAvatar->GetVersion()!=version)
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[-1]");
+				return;
+			}
+
+			IDBApi* db = AllocDataBase();
+			if(!db)
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[-1]");
+				return;
+			}
+
+			if(!db->BeginTranscation())
+			{
+				UnlockAvatar(pAvatar);
+				FreeDatabase(db);
+				JsonRPC_Send("[-1]");
+				return;
+			}
+
+			for(;;)
+			{
+				_U32 i;
+				for(i=0; i<(_U32)tasks.size(); i++)
+				{
+					bool is_error = true;
+					switch(tasks[i]._task_type)
+					{
+					case TASK_TYPE_CREATE:
+						if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+						break;
+					case TASK_TYPE_DELETE:
+					case TASK_TYPE_UPDATE:
+						if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+						break;
+					case TASK_TYPE_ACTION:
+						if(db->LockTask(avatar_id, tasks[i]._task_id)) is_error = false;
+						break;
+					}
+					if(is_error) break;
+				}
+				if(i!=(_U32)tasks.size()) break;
+
+				for(i=0; i<(_U32)tasks.size(); i++)
+				{
+					switch(tasks[i]._task_type)
+					{
+					case TASK_TYPE_CREATE:
+						pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true, true);
+						break;
+					case TASK_TYPE_DELETE:
+						pAvatar->DeleteObject(tasks[i]._obj_uuid);
+						break;
+					case TASK_TYPE_UPDATE:
+						pAvatar->UpdateObject(tasks[i]._obj_uuid, tasks[i]._obj_data.c_str());
+						break;
+					case TASK_TYPE_ACTION:
+						// do something
+						db->MarkTask(avatar_id, tasks[i]._task_id);
+						break;
+					}
+				}
+
+				pAvatar->Save();
+				if(db->CommitTransaction())
+				{
+					// clear dirty
+				}
+				else
+				{
+					// ???
+				}
+				version = pAvatar->GetVersion();
+				UnlockAvatar(pAvatar);
+				FreeDatabase(db);
+				JsonRPC_Send(StringFormat("[0,%u]", version).c_str());
+				return;
+			}
+			UnlockAvatar(pAvatar);
+			db->RollbackTransaction();
+			FreeDatabase(db);
+			JsonRPC_Send("[-1]");
+		}
+
+		void RPCIMPL_Init()
+		{
+			g_avatar_manager.GetCount();
+			_U32 avatar_id = (_U32)-1;
+			g_avatar_id_map.Get(avatar_id);
 		}
 
 		void RPCIMPL_FlushAllData()

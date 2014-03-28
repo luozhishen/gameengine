@@ -15,21 +15,6 @@ namespace Zion
 			JsonRPC_Send("[0]");
 		}
 
-		void JsonRPC_LoginUser(const JsonValue& args)
-		{
-			for(;;)
-			{
-				if(args.GetSize()!=1) break;
-
-				const JsonValue& _token = args.Get((_U32)0);
-				if(!_token.IsSTR()) break;
-
-				RPCIMPL_LoginUser(_token.AsCSTR());
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
 		void JsonRPC_CreateAvatar(const JsonValue& args)
 		{
 			Array<A_UUID> uuids;
@@ -70,21 +55,6 @@ namespace Zion
 				const JsonValue& _avatar_id = args.Get((_U32)0);
 				if(!_avatar_id.IsU32()) break;
 				RPCIMPL_DeleteAvatar((_U32)_avatar_id.AsU32());
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
-		void JsonRPC_GetAvatarList(const JsonValue& args)
-		{
-			for(;;)
-			{
-				if(args.GetSize()!=2) break;
-				const JsonValue& _user_id = args.Get((_U32)0);
-				if(!_user_id.IsU32()) break;
-				const JsonValue& _server_id = args.Get((_U32)1);
-				if(!_server_id.IsU32()) break;
-				RPCIMPL_GetAvatarList((_U32)_user_id.AsU32(), (_U32)_server_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -229,6 +199,84 @@ namespace Zion
 				if(!AUuidFromString(juuid.AsCSTR(), _uuid)) break;
 				RPCIMPL_LoadObjectFromDB((_U32)_avatar_id.AsU32(), _uuid);
 				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
+		void JsonRPC_ExecuteBatch(const JsonValue& args)
+		{
+			for(;;)
+			{
+				if(args.GetSize()!=3) break;
+				const JsonValue& _avatar_id = args.Get((_U32)0);
+				if(!_avatar_id.IsU32()) break;
+				const JsonValue& _version = args.Get((_U32)1);
+				if(!_version.IsU32()) break;
+				const JsonValue& _tasks = args.Get((_U32)2);
+				if(!_tasks.IsArray()) break;
+				Array<TASK> _array;
+				Set<A_UUID> _uuids;
+				_U32 i;
+				for(i=0; i<_tasks.GetSize(); i++)
+				{
+					const JsonValue& node = _tasks.Get(i);
+					if(!node.IsObject()) break;
+					const JsonValue& _tasktype = node.Get("task_type");
+					if(!_tasktype.IsSTR()) break;
+					TASK task;
+					if(_tasktype.AsSTR()=="create")
+					{
+						task._task_type = TASK_TYPE_CREATE;
+						const JsonValue& _obj_uuid = node.Get("obj_uuid");
+						if(!_obj_uuid.IsSTR()) break;
+						if(!AUuidFromString(_obj_uuid.AsCSTR(), task._obj_uuid)) break;
+						const JsonValue& _obj_type = node.Get("obj_type");
+						if(!_obj_type.IsSTR()) break;
+						task._obj_type = _obj_type.AsSTR();
+						const JsonValue& _obj_data = node.Get("obj_data");
+						if(!_obj_data.IsSTR()) break;
+						task._obj_data = _obj_data.AsSTR();
+						if(_uuids.find(task._obj_uuid)!=_uuids.end()) break;
+						_uuids.insert(task._obj_uuid);
+					}
+					else if(_tasktype.AsSTR()=="update")
+					{
+						task._task_type = TASK_TYPE_UPDATE;
+						const JsonValue& _obj_uuid = node.Get("obj_uuid");
+						if(!_obj_uuid.IsSTR()) break;
+						if(!AUuidFromString(_obj_uuid.AsCSTR(), task._obj_uuid)) break;
+						const JsonValue& _obj_data = node.Get("obj_data");
+						if(!_obj_data.IsSTR()) break;
+						task._obj_data = _obj_data.AsSTR();
+						if(_uuids.find(task._obj_uuid)!=_uuids.end()) break;
+						_uuids.insert(task._obj_uuid);
+					} 
+					else if(_tasktype.AsSTR()=="delete")
+					{
+						task._task_type = TASK_TYPE_DELETE;
+						const JsonValue& _obj_uuid = node.Get("obj_uuid");
+						if(!_obj_uuid.IsSTR()) break;
+						if(!AUuidFromString(_obj_uuid.AsCSTR(), task._obj_uuid)) break;
+						if(_uuids.find(task._obj_uuid)!=_uuids.end()) break;
+						_uuids.insert(task._obj_uuid);
+					}
+					else if(_tasktype.AsSTR()=="task")
+					{
+						task._task_type = TASK_TYPE_DELETE;
+						const JsonValue& _task_id = node.Get("task_id");
+						if(!_task_id.IsU32()) break;
+						task._task_id = _task_id.AsU32();
+					}
+					else
+					{
+						break;
+					}
+				}
+				if(i==_tasks.GetSize())
+				{
+					RPCIMPL_ExecuteBatch(_avatar_id.AsU32(), _version.AsU32(), _array);
+					return;
+				}
 			}
 			JsonRPC_Send("[-1]");
 		}

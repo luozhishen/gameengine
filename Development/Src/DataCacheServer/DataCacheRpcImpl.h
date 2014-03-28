@@ -6,8 +6,23 @@ namespace Zion
 	namespace DataCache
 	{
 
-		void RPCIMPL_LoginUser(const char* token);
-		// return errcode, user_id
+		enum TASK_TYPE
+		{
+			TASK_TYPE_CREATE,
+			TASK_TYPE_DELETE,
+			TASK_TYPE_UPDATE,
+			TASK_TYPE_ACTION,
+		};
+
+		typedef struct _TASK
+		{
+			TASK_TYPE _task_type;
+			A_UUID _obj_uuid;
+			String _obj_type;
+			String _obj_data;
+			_U32 _task_id;
+		} TASK;
+
 		void RPCIMPL_CreateAvatar(
 				_U32 user_id,
 				_U32 server_id,
@@ -19,9 +34,6 @@ namespace Zion
 		// return errcode, avatar_id
 		void RPCIMPL_DeleteAvatar(_U32 avatar_id);
 		// return errcode
-		void RPCIMPL_GetAvatarList(_U32 user_id, _U32 server_id);
-		// return errcode, avatars[]
-
 		void RPCIMPL_GetAvatar(_U32 avatar_id);
 		// return errcode, avatar_id, version, avatar_objects[]
 		void RPCIMPL_SaveAvatar(_U32 avatar_id);
@@ -38,7 +50,10 @@ namespace Zion
 		// return errcode, version
 		void RPCIMPL_LoadObjectFromDB(_U32 avatar_id, const A_UUID& _uuid);
 		// return errcode, version, uuid, type, data
+		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks);
+		// return errcode, version
 
+		void RPCIMPL_Init();
 		void RPCIMPL_FlushAllData();
 
 	}

@@ -7,10 +7,8 @@ namespace Zion
 	{
 
 		void JsonRPC_Echo(const JsonValue& args);
-		void JsonRPC_LoginUser(const JsonValue& args);
 		void JsonRPC_CreateAvatar(const JsonValue& args);
 		void JsonRPC_DeleteAvatar(const JsonValue& args);
-		void JsonRPC_GetAvatarList(const JsonValue& args);
 		void JsonRPC_GetAvatar(const JsonValue& args);
 		void JsonRPC_SaveAvatar(const JsonValue& args);
 		void JsonRPC_ClearAvatar(const JsonValue& args);
@@ -19,6 +17,7 @@ namespace Zion
 		void JsonRPC_UpdateObject(const JsonValue& args);
 		void JsonRPC_DeleteObject(const JsonValue& args);
 		void JsonRPC_LoadObjectFromDB(const JsonValue& args);
+		void JsonRPC_ExecuteBatch(const JsonValue& args);
 
 	}
 }

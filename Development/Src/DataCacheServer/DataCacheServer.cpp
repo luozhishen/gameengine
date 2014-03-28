@@ -122,10 +122,8 @@ namespace Zion
 
 			// step 3: start rpc server
 			JsonRPC_Bind("echo",			JsonRPC_Echo);
-			JsonRPC_Bind("loginUser",		JsonRPC_LoginUser);
 			JsonRPC_Bind("createAvatar",	JsonRPC_CreateAvatar);
 			JsonRPC_Bind("deleteAvatar",	JsonRPC_DeleteAvatar);
-			JsonRPC_Bind("listAvatar",		JsonRPC_GetAvatarList);
 			JsonRPC_Bind("getAvatar",		JsonRPC_GetAvatar);
 			JsonRPC_Bind("saveAvatar",		JsonRPC_SaveAvatar);
 			JsonRPC_Bind("clearAvatar",	JsonRPC_ClearAvatar);
@@ -133,6 +131,7 @@ namespace Zion
 			JsonRPC_Bind("createObject",	JsonRPC_CreateObject);
 			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);
 			JsonRPC_Bind("deleteObject",	JsonRPC_DeleteObject);
+			JsonRPC_Bind("executeBatch",	JsonRPC_ExecuteBatch);
 			printf("start JsonRpc Server...\n");
 			if(!JsonRPC_Start(CONFIG_RPCEP.c_str(), CONFIG_SINGLETHREAD))
 			{

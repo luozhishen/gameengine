@@ -1,5 +1,6 @@
 #include <ZionBase.h>
 #include "DataCacheDBApi.h"
+#include "DataCacheDBApiFake.h"
 #include "DataCacheDBApiSqlite.h"
 #include "DataCacheDBApiMysql.h"
 #include "DataCacheServer.h"
@@ -16,6 +17,7 @@ namespace Zion
 		static uv_mutex_t g_ConnsMutex;
 		static uv_cond_t g_ConnsCond;
 		_U32 current_count = 0;
+		static bool g_bFake = false;
 		static bool g_bSqlite = false;
 		static bool g_bMysql = false;
 		static String g_SqliteFile;
@@ -27,6 +29,11 @@ namespace Zion
 
 		static IDBApi* NewDatabase()
 		{
+			if(g_bFake)
+			{
+				return CreateFakeDatabase();
+			}
+
 			if(g_bSqlite)
 			{
 				return CreateSqliteDatabase(g_SqliteFile.c_str());
@@ -42,42 +49,49 @@ namespace Zion
 
 		bool InitDatabase()
 		{
-			size_t offset = CONFIG_DATABASE.find_first_of(':');
-			if(offset<1) return false;
-			String type = CONFIG_DATABASE.substr(0, offset);
-			if(type=="sqlite")
+			if(CONFIG_DATABASE=="fake")
 			{
-				g_bSqlite = true;
-				g_SqliteFile = CONFIG_DATABASE.substr(offset+1);
+				g_bFake = true;
 			}
 			else
 			{
-				Map<String, String> values;
-				Array<String> pairs;
-				StringSplit(CONFIG_DATABASE.substr(offset+1), ';', pairs);
-				for(_U32 i=0; i<(_U32)pairs.size(); i++)
+				size_t offset = CONFIG_DATABASE.find_first_of(':');
+				if(offset<1) return false;
+				String type = CONFIG_DATABASE.substr(0, offset);
+				if(type=="sqlite")
 				{
-					offset = pairs[i].find_first_of('=');
-					if(offset<1) return false;
-					values[pairs[i].substr(0, offset)] = pairs[i].substr(offset+1);
-				}
-				if(type=="mysql")
-				{
-					g_bMysql = true;
-					if(values.find("host")==values.end()) return false;
-					if(values.find("port")==values.end()) return false;
-					if(values.find("username")==values.end()) return false;
-					if(values.find("password")==values.end()) return false;
-					if(values.find("database")==values.end()) return false;
-					g_MysqlHost		= values["host"];
-					g_MysqlPort		= (_U32)atoi(values["port"].c_str());
-					g_MysqlUserName	= values["username"];
-					g_MysqlPassword	= values["password"];
-					g_MysqlDatabase	= values["database"];
+					g_bSqlite = true;
+					g_SqliteFile = CONFIG_DATABASE.substr(offset+1);
 				}
 				else
 				{
-					return false;
+					Map<String, String> values;
+					Array<String> pairs;
+					StringSplit(CONFIG_DATABASE.substr(offset+1), ';', pairs);
+					for(_U32 i=0; i<(_U32)pairs.size(); i++)
+					{
+						offset = pairs[i].find_first_of('=');
+						if(offset<1) return false;
+						values[pairs[i].substr(0, offset)] = pairs[i].substr(offset+1);
+					}
+					if(type=="mysql")
+					{
+						g_bMysql = true;
+						if(values.find("host")==values.end()) return false;
+						if(values.find("port")==values.end()) return false;
+						if(values.find("username")==values.end()) return false;
+						if(values.find("password")==values.end()) return false;
+						if(values.find("database")==values.end()) return false;
+						g_MysqlHost		= values["host"];
+						g_MysqlPort		= (_U32)atoi(values["port"].c_str());
+						g_MysqlUserName	= values["username"];
+						g_MysqlPassword	= values["password"];
+						g_MysqlDatabase	= values["database"];
+					}
+					else
+					{
+						return false;
+					}
 				}
 			}
 

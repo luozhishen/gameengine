@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataCacheDBApiFake.cpp" />
     <ClCompile Include="DataCacheDBApiSqlite.cpp" />
     <ClCompile Include="DataCacheServer.cpp" />
     <ClCompile Include="DataCacheDBApi.cpp" />
@@ -28,6 +29,7 @@
     <ClCompile Include="sqlite\SqliteLib.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataCacheDBApiFake.h" />
     <ClInclude Include="DataCacheDBApiSqlite.h" />
     <ClInclude Include="DataCacheServer.h" />
     <ClInclude Include="DataCacheDBApi.h" />

@@ -73,6 +73,26 @@ namespace Zion
 		};
 
 		static const char* sqls[] = {
+			"CREATE TABLE user_table (\n"
+			"	user_id			INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+			"	token			TEXT NOT NULL,\n"
+			"	state			INTEGER NOT NULL,\n"
+			"	freeze_duetime	INTEGER NOT NULL\n"
+			")",
+
+			"CREATE UNIQUE INDEX user_table_token_index ON user_table(token)",
+
+			"CREATE TABLE login_history_table ("
+			"	user_id			INTEGER NOT NULL,"
+			"	ip				TEXT NOT NULL,"
+			"	dv_type			TEXT NOT NULL,"
+			"	os_type			TEXT NOT NULL,"
+			"	dv_id			TEXT NOT NULL,"
+			"	create_ts		INTEGER NOT NULL"
+			")",
+
+			"CREATE INDEX login_history_table_user_id_index ON login_history_table(user_id)",
+
 			"CREATE TABLE avatar_table (\n"
 			"	avatar_id	INTEGER PRIMARY KEY AUTOINCREMENT,\n"
 			"	user_id		INTEGER,\n"
@@ -171,7 +191,7 @@ namespace Zion
 			}
 
 			int table_count = -1;
-			if(SQLITE_OK!=sqlite3_exec(m_sqlite, "SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='avatar_table' OR name='avatar_object_table' OR name='user_table' OR name='login_history_table')", sqlite_callback, &table_count, NULL))
+			if(SQLITE_OK!=sqlite3_exec(m_sqlite, "SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='avatar_table' OR name='avatar_object_table' OR name='user_table' OR name='login_history_table' OR name='task_table')", sqlite_callback, &table_count, NULL))
 			{
 				printf("error in sqlite3_exec(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
@@ -188,7 +208,7 @@ namespace Zion
 					}
 				}
 			}
-			else if(table_count!=4)
+			else if(table_count!=5)
 			{
 				printf("error");
 				return false;
@@ -260,7 +280,7 @@ namespace Zion
 			m_sqlite_query_avatar_id = sqlite3_bind_parameter_index(m_sqlite_remove, ":avatar_id");
 			m_sqlite_query_object_uuid = sqlite3_bind_parameter_index(m_sqlite_remove, ":object_uuid");
 
-			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT state FROM task_table WHERE task_id=:task_id AND avatar_id=:avatar_id FOR UPDATE", -1, &m_sqlite_lock_task, NULL))
+			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT state FROM task_table WHERE task_id=:task_id AND avatar_id=:avatar_id", -1, &m_sqlite_lock_task, NULL))
 			{
 				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;

@@ -41,3 +41,11 @@ CREATE TABLE avatar_object_table (
   object_data text NOT NULL COMMENT '对象数据',
   PRIMARY KEY (avatar_id, object_uuid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 任务表
+CREATE TABLE task_table (
+  task_id int(11) NOT NULL AUTO_INCREMENT COMMENT 'TaskID',
+  avatar_id int(11) NOT NULL COMMENT '角色ID',
+  state int(11) NOT NULL COMMENT '状态 0未处理 1已处理',
+  PRIMARY KEY (task_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

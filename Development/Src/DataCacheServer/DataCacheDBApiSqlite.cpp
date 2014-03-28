@@ -65,6 +65,11 @@ namespace Zion
 			sqlite3_stmt* m_sqlite_query;
 			int m_sqlite_query_avatar_id;
 			int m_sqlite_query_object_uuid;
+			sqlite3_stmt* m_sqlite_lock_task;
+			int m_sqlite_lock_task_id;
+			int m_sqlite_lock_avatar_id;
+			sqlite3_stmt* m_sqlite_mark_task;
+			int m_sqlite_mark_task_id;
 		};
 
 		static const char* sqls[] = {
@@ -90,6 +95,13 @@ namespace Zion
 			")",
 
 			"CREATE UNIQUE INDEX avatar_object_table_index ON avatar_object_table(avatar_id, object_uuid)",
+
+			"CREATE TABLE task_table (\n"
+			"	task_id			INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+			"	avatar_id		INTEGER,\n"
+			"	state			INTEGER\n"
+			")",
+
 			NULL
 		};
 
@@ -118,6 +130,9 @@ namespace Zion
 			m_sqlite_update = NULL;
 			m_sqlite_remove = NULL;
 			m_sqlite_query = NULL;
+			m_sqlite_lock_task = NULL;
+			m_sqlite_mark_task = NULL;
+
 			m_sqlite = NULL;
 		}
 
@@ -139,6 +154,8 @@ namespace Zion
 			if(!m_sqlite_update)	return false;
 			if(!m_sqlite_remove)	return false;
 			if(!m_sqlite_query)		return false;
+			if(!m_sqlite_lock_task)	return false;
+			if(!m_sqlite_mark_task)	return false;
 			if(!m_sqlite)			return false;
 			return true;
 		}
@@ -227,7 +244,7 @@ namespace Zion
 			m_sqlite_update_object_uuid = sqlite3_bind_parameter_index(m_sqlite_update, ":object_uuid");
 			m_sqlite_update_object_data = sqlite3_bind_parameter_index(m_sqlite_update, ":object_data");
 
-			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "DELETE FROM avatar_object_table WHERE avatar_id=:avatar_id and object_uuid=:object_uuid", -1, &m_sqlite_remove, NULL))
+			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "DELETE FROM avatar_object_table WHERE avatar_id=:avatar_id AND object_uuid=:object_uuid", -1, &m_sqlite_remove, NULL))
 			{
 				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
@@ -235,13 +252,28 @@ namespace Zion
 			m_sqlite_remove_avatar_id = sqlite3_bind_parameter_index(m_sqlite_remove, ":avatar_id");
 			m_sqlite_remove_object_uuid = sqlite3_bind_parameter_index(m_sqlite_remove, ":object_uuid");
 
-			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id and object_uuid=:object_uuid", -1, &m_sqlite_query, NULL))
+			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id AND object_uuid=:object_uuid", -1, &m_sqlite_query, NULL))
 			{
 				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_query_avatar_id = sqlite3_bind_parameter_index(m_sqlite_remove, ":avatar_id");
 			m_sqlite_query_object_uuid = sqlite3_bind_parameter_index(m_sqlite_remove, ":object_uuid");
+
+			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT state FROM task_table WHERE task_id=:task_id AND avatar_id=:avatar_id FOR UPDATE", -1, &m_sqlite_lock_task, NULL))
+			{
+				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
+			m_sqlite_lock_task_id = sqlite3_bind_parameter_index(m_sqlite_lock_task, ":task_id");
+			m_sqlite_lock_avatar_id = sqlite3_bind_parameter_index(m_sqlite_lock_task, ":avatar_id");
+
+			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "UPDATE task_table SET state=1 WHERE task_id=:task_id", -1, &m_sqlite_mark_task, NULL))
+			{
+				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
+			m_sqlite_mark_task_id = sqlite3_bind_parameter_index(m_sqlite_mark_task, ":task_id");
 
 			return true;
 		}
@@ -256,23 +288,25 @@ namespace Zion
 			if(m_sqlite_update)		{	sqlite3_finalize(m_sqlite_update);	m_sqlite_update = NULL;		}
 			if(m_sqlite_remove)		{	sqlite3_finalize(m_sqlite_remove);	m_sqlite_remove = NULL;		}
 			if(m_sqlite_query)		{	sqlite3_finalize(m_sqlite_query);	m_sqlite_query = NULL;		}
+			if(m_sqlite_lock_task)	{	sqlite3_finalize(m_sqlite_lock_task);	m_sqlite_lock_task = NULL;		}
+			if(m_sqlite_mark_task)	{	sqlite3_finalize(m_sqlite_mark_task);	m_sqlite_mark_task = NULL;		}
 			if(m_sqlite)			{	sqlite3_close(m_sqlite);			m_sqlite = NULL;			}
 			return true;
 		}
 
 		bool CSqliteDBApi::BeginTranscation()
 		{
-			return true;
+			return sqlite3_exec(m_sqlite, "BEGIN TRANSACTION;", NULL, NULL, NULL)==SQLITE_OK;
 		}
 
 		bool CSqliteDBApi::RollbackTransaction()
 		{
-			return true;
+			return sqlite3_exec(m_sqlite, "COMMIT;", NULL, NULL, NULL)==SQLITE_OK;
 		}
 
 		bool CSqliteDBApi::CommitTransaction()
 		{
-			return true;
+			return sqlite3_exec(m_sqlite, "ROLLBACK;", NULL, NULL, NULL)==SQLITE_OK;
 		}
 
 		_U32 CSqliteDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
@@ -579,11 +613,65 @@ namespace Zion
 
 		bool CSqliteDBApi::LockTask(_U32 avatar_id, _U32 task_id)
 		{
-			return true;
+			if(SQLITE_OK!=sqlite3_reset(m_sqlite_lock_task))
+			{
+				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
+
+			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_lock_task, m_sqlite_lock_task_id, (int)avatar_id))
+			{
+				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
+
+			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_lock_task, m_sqlite_lock_avatar_id, (int)task_id))
+			{
+				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
+
+			bool is_error = true;
+			while(1)
+			{
+				int ret = sqlite3_step(m_sqlite_lock_task);
+				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
+				if(ret!=SQLITE_ROW)
+				{
+					printf("error in sqlite3_step(m_sqlite_check, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					return false;
+				}
+
+				if(sqlite3_column_int(m_sqlite_lock_task, 0)==0)
+				{
+					is_error = false;
+				}
+			}
+
+			return !is_error;
 		}
 
 		bool CSqliteDBApi::MarkTask(_U32 avatar_id, _U32 task_id)
 		{
+			if(SQLITE_OK!=sqlite3_reset(m_sqlite_mark_task))
+			{
+				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
+
+			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_mark_task, m_sqlite_mark_task_id, (int)task_id))
+			{
+				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
+
+			int ret;
+			ret = sqlite3_step(m_sqlite_mark_task);
+			if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
+			{
+				printf("error in sqlite3_step(m_sqlite_mark_task, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				return false;
+			}
 			return true;
 		}
 

@@ -151,17 +151,17 @@ namespace Zion
 
 		bool CMysqlDBApi::BeginTranscation()
 		{
-			return true;
+			return mysql_real_query(m_mysql, "Begin ;", NULL)==0;
 		}
 
 		bool CMysqlDBApi::RollbackTransaction()
 		{
-			return true;
+			return mysql_real_query(m_mysql, "Commit ;", NULL)==0;
 		}
 
 		bool CMysqlDBApi::CommitTransaction()
 		{
-			return true;
+			return mysql_real_query(m_mysql, "Rollback ;", NULL)==0;
 		}
 
 		_U32 CMysqlDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
@@ -324,12 +324,41 @@ namespace Zion
 
 		bool CMysqlDBApi::LockTask(_U32 avatar_id, _U32 task_id)
 		{
-			return true;
+			String sql = StringFormat("SELECT state FROM task_table WHERE avatar_id=%u AND task_id=%u", avatar_id, task_id);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			MYSQL_RES *result = mysql_store_result(m_mysql);
+			if(!result)
+			{
+				printf("error in mysql_store_result(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			ZION_ASSERT(mysql_num_fields(result)==1);
+			MYSQL_ROW row;
+			bool is_error = true;
+			while((row=mysql_fetch_row(result))!=NULL)
+			{
+				if(atoi(row[0])==0) is_error = false;
+			}
+			mysql_free_result(result);
+			return !is_error;
 		}
 
 		bool CMysqlDBApi::MarkTask(_U32 avatar_id, _U32 task_id)
 		{
-			return true;
+			String sql = StringFormat("UPDATE task_table SET state=1 WHERE task_id=%u", task_id);
+			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
+			{
+				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 
 	}

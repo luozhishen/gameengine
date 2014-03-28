@@ -34,3 +34,9 @@ CREATE TABLE avatar_object_table (
 CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_name);
 CREATE INDEX avatar_table_user_index ON avatar_table(user_id, server_id);
 CREATE UNIQUE INDEX avatar_object_table_index ON avatar_object_table(avatar_id, object_uuid);
+
+CREATE TABLE task_table (
+	task_id			INTEGER PRIMARY KEY AUTOINCREMENT,
+	avatar_id		INTEGER,
+	state			INTEGER
+);

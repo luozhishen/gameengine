@@ -40,6 +40,38 @@ private:
 	Zion::String _args;
 };
 
+class CTestAutoAvatar
+{
+public:
+	CTestAutoAvatar();
+	~CTestAutoAvatar();
+
+	void Start()
+	{
+	}
+
+	void OnGetAvatar(const Zion::JsonValue* json)
+	{
+	}
+
+	void OnCreateAvatar(const Zion::JsonValue* json)
+	{
+	}
+
+	void OnCreateObject(const Zion::JsonValue* json)
+	{
+	}
+
+	void OnDeleteObject(const Zion::JsonValue* json)
+	{
+	}
+
+	void OnExecuteBatch(const Zion::JsonValue* json)
+	{
+	}
+
+};
+
 void timer_callback(uv_timer_t* handle, int status)
 {
 	static _U32 last_completed = 0;

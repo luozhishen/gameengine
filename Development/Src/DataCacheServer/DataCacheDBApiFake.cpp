@@ -30,7 +30,7 @@ namespace Zion
 			virtual bool DeleteAvatarObject(_U32 avatar_id, const A_UUID* _uuids, _U32 count);
 			virtual bool QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool LockTask(_U32 avatar_id, _U32 task_id);
-			virtual bool MarkTask(_U32 avatar_id, _U32 task_id);
+			virtual bool DeleteTask(_U32 avatar_id, _U32 task_id);
 		};
 
 		IDBApi* CreateFakeDatabase()
@@ -123,7 +123,7 @@ namespace Zion
 			return true;
 		}
 
-		bool CFakeDBApi::MarkTask(_U32 avatar_id, _U32 task_id)
+		bool CFakeDBApi::DeleteTask(_U32 avatar_id, _U32 task_id)
 		{
 			return true;
 		}

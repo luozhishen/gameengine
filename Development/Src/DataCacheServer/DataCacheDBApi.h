@@ -27,7 +27,7 @@ namespace Zion
 			virtual bool DeleteAvatarObject(_U32 avatar_id, const A_UUID* _uuids, _U32 count) = 0;
 			virtual bool QueryAvatarObject(_U32 avatar_id, const A_UUID& _uuid, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr) = 0;
 			virtual bool LockTask(_U32 avatar_id, _U32 task_id) = 0;
-			virtual bool MarkTask(_U32 avatar_id, _U32 task_id) = 0;
+			virtual bool DeleteTask(_U32 avatar_id, _U32 task_id) = 0;
 		};
 
 		bool InitDatabase();

@@ -558,14 +558,14 @@ namespace Zion
 					bool is_error = true;
 					switch(tasks[i]._task_type)
 					{
-					case TASK_TYPE_CREATE:
+					case TASK_CREATE_OBJECT:
 						if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
 						break;
-					case TASK_TYPE_DELETE:
-					case TASK_TYPE_UPDATE:
+					case TASK_DELETE_OBJECT:
+					case TASK_UPDATE_OBJECT:
 						if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
 						break;
-					case TASK_TYPE_ACTION:
+					case TASK_DELETE_TASK:
 						if(db->LockTask(avatar_id, tasks[i]._task_id)) is_error = false;
 						break;
 					}
@@ -577,18 +577,18 @@ namespace Zion
 				{
 					switch(tasks[i]._task_type)
 					{
-					case TASK_TYPE_CREATE:
+					case TASK_CREATE_OBJECT:
 						pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true, true);
 						break;
-					case TASK_TYPE_DELETE:
+					case TASK_DELETE_OBJECT:
 						pAvatar->DeleteObject(tasks[i]._obj_uuid);
 						break;
-					case TASK_TYPE_UPDATE:
+					case TASK_UPDATE_OBJECT:
 						pAvatar->UpdateObject(tasks[i]._obj_uuid, tasks[i]._obj_data.c_str());
 						break;
-					case TASK_TYPE_ACTION:
+					case TASK_DELETE_TASK:
 						// do something
-						db->MarkTask(avatar_id, tasks[i]._task_id);
+						db->DeleteTask(avatar_id, tasks[i]._task_id);
 						break;
 					}
 				}

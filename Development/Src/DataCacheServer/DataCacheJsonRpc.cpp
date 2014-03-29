@@ -224,9 +224,9 @@ namespace Zion
 					const JsonValue& _tasktype = node.Get("task_type");
 					if(!_tasktype.IsSTR()) break;
 					TASK task;
-					if(_tasktype.AsSTR()=="create")
+					if(_tasktype.AsSTR()=="createObject")
 					{
-						task._task_type = TASK_TYPE_CREATE;
+						task._task_type = TASK_CREATE_OBJECT;
 						const JsonValue& _obj_uuid = node.Get("obj_uuid");
 						if(!_obj_uuid.IsSTR()) break;
 						if(!AUuidFromString(_obj_uuid.AsCSTR(), task._obj_uuid)) break;
@@ -239,9 +239,9 @@ namespace Zion
 						if(_uuids.find(task._obj_uuid)!=_uuids.end()) break;
 						_uuids.insert(task._obj_uuid);
 					}
-					else if(_tasktype.AsSTR()=="update")
+					else if(_tasktype.AsSTR()=="updateObject")
 					{
-						task._task_type = TASK_TYPE_UPDATE;
+						task._task_type = TASK_UPDATE_OBJECT;
 						const JsonValue& _obj_uuid = node.Get("obj_uuid");
 						if(!_obj_uuid.IsSTR()) break;
 						if(!AUuidFromString(_obj_uuid.AsCSTR(), task._obj_uuid)) break;
@@ -251,18 +251,18 @@ namespace Zion
 						if(_uuids.find(task._obj_uuid)!=_uuids.end()) break;
 						_uuids.insert(task._obj_uuid);
 					} 
-					else if(_tasktype.AsSTR()=="delete")
+					else if(_tasktype.AsSTR()=="deleteObject")
 					{
-						task._task_type = TASK_TYPE_DELETE;
+						task._task_type = TASK_DELETE_OBJECT;
 						const JsonValue& _obj_uuid = node.Get("obj_uuid");
 						if(!_obj_uuid.IsSTR()) break;
 						if(!AUuidFromString(_obj_uuid.AsCSTR(), task._obj_uuid)) break;
 						if(_uuids.find(task._obj_uuid)!=_uuids.end()) break;
 						_uuids.insert(task._obj_uuid);
 					}
-					else if(_tasktype.AsSTR()=="task")
+					else if(_tasktype.AsSTR()=="deleteTask")
 					{
-						task._task_type = TASK_TYPE_DELETE;
+						task._task_type = TASK_DELETE_TASK;
 						const JsonValue& _task_id = node.Get("task_id");
 						if(!_task_id.IsU32()) break;
 						task._task_id = _task_id.AsU32();

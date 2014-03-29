@@ -360,32 +360,31 @@ namespace Zion
 
 	bool CJsonRPCConnection::Send(SENDBUF* sendbuf, _U32 len)
 	{
+		if(m_state!=STATE_CONNECTED) return false;
+
 		sendbuf->conn = this;
 		sendbuf->buf = uv_buf_init((char*)(sendbuf+1), len);
+		m_send_count += 1;
 		if(uv_write(&sendbuf->req, m_stream, &sendbuf->buf, 1, &CJsonRPCConnection::OnAfterWrite))
 		{
 			ZION_FATAL("uv_write failed");
 			ZION_FREE(sendbuf);
-		}
-		else
-		{
-			m_send_count += 1;
+			m_send_count -= 1;
 		}
 		return true;
 	}
 
 	void CJsonRPCConnection::Shutdown()
 	{
-		if(m_state!=STATE_CONNECTED) return;
-
-		m_state = STATE_SHUTDOWNING;
-		m_shutdown.data = this;
-		if(uv_shutdown(&m_shutdown, m_stream, &CJsonRPCConnection::OnShutdown))
+		if(m_state==STATE_CONNECTED)
 		{
-			ZION_ASSERT(0);
-			m_state = STATE_SHUTDOWN;
+			m_state = STATE_SHUTDOWNING;
+			m_shutdown.data = this;
+			if(uv_shutdown(&m_shutdown, m_stream, &CJsonRPCConnection::OnShutdown))
+			{
+				ZION_ASSERT(0);
+			}
 		}
-		uv_close((uv_handle_t*)m_stream, &CJsonRPCConnection::OnClose);
 	}
 
 	void CJsonRPCConnection::OnConnect(uv_stream_t* stream, int status)
@@ -416,7 +415,8 @@ namespace Zion
 
 		if(nread<0)
 		{
-			pConn->Shutdown();
+			pConn->m_state = STATE_SHUTDOWN;
+			uv_close((uv_handle_t*)pConn->m_stream, &CJsonRPCConnection::OnClose);
 			return;
 		}
 
@@ -458,6 +458,8 @@ namespace Zion
 		ZION_FREE(req);
 		ZION_ASSERT(conn->m_send_count>0);
 		conn->m_send_count -= 1;
+		if(conn->m_state!=STATE_CONNECTED) return;
+
 		if(conn->m_sendbuf && conn->m_send_count==0)
 		{
 			SENDBUF* sendbuf = conn->m_sendbuf;
@@ -469,7 +471,7 @@ namespace Zion
 	void CJsonRPCConnection::OnShutdown(uv_shutdown_t* req, int status)
 	{
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)req->data;
-		pConn->m_state = STATE_SHUTDOWN;
+//		pConn->Shutdown();
 	}
 
 	void CJsonRPCConnection::OnClose(uv_handle_t* handle)

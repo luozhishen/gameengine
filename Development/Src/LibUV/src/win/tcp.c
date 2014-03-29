@@ -863,6 +863,8 @@ void uv_process_tcp_read_req(uv_loop_t* loop, uv_tcp_t* handle,
       handle->read_cb((uv_stream_t*)handle,
                       uv_translate_sys_error(err),
                       &buf);
+	  if(handle->reqs_pending==0)
+		  return;
     }
   } else {
     if (!(handle->flags & UV_HANDLE_ZERO_READ)) {

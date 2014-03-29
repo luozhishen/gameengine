@@ -428,15 +428,7 @@ namespace Zion
 			_U32 pkg_len = *((_U32*)data + 0);
 			_U32 pkg_seq = *((_U32*)data + 1);
 			if(data_len<pkg_len+8) break;
-#if 0
-			char* ret = "[0]";
-			_U32 ret_len = 3;
-			pConn->Send(&ret_len, sizeof(ret_len), true);
-			pConn->Send(&pkg_seq, sizeof(pkg_seq), true);
-			pConn->Send(ret, ret_len, false);
-#else
 			pConn->OnData(pkg_seq, data+8, pkg_len);
-#endif
 			data += pkg_len + 8;
 			data_len -= pkg_len + 8;
 		}

@@ -17,6 +17,8 @@ namespace Zion
 		_U32 conn;
 		_U32 seq;
 	} JSONRPC_RESPONSE_ID;
+	void SetInvalidResponseID(JSONRPC_RESPONSE_ID& id);
+	bool IsValidResponseID(const JSONRPC_RESPONSE_ID& id);
 
 	/*
 	struct JSONRPC_RESPONSE_ID;

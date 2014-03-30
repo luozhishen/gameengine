@@ -183,6 +183,8 @@ namespace Zion
 		static CJsonRPCClient* GetClient(const char* ep);
 		static void ThreadProc(void *arg);
 
+		void DisconnectAll();
+
 	private:
 		CJsonRPCClientManager();
 		~CJsonRPCClientManager();
@@ -221,6 +223,16 @@ namespace Zion
 		ZION_FREE(req);
 	}
 
+	void SetInvalidResponseID(JSONRPC_RESPONSE_ID& id)
+	{
+		id.conn = (_U32)-1;
+		id.seq = (_U32)-1;
+	}
+
+	bool IsValidResponseID(const JSONRPC_RESPONSE_ID& id)
+	{
+		return !(id.conn==(_U32)-1 && id.seq==(_U32)-1);
+	}
 
 	void JsonRPC_Bind(const char* method, JSON_RESPONSE_PROC proc)
 	{
@@ -755,6 +767,11 @@ namespace Zion
 
 	bool CJsonRPCClient::Connect()
 	{
+		if(CJsonRPCClientManager::Get().m_is_stop)
+		{
+			return false;
+		}
+
 		if(m_state!=0)
 		{
 			ZION_ASSERT(0);
@@ -987,11 +1004,20 @@ namespace Zion
 
 	CJsonRPCClientManager::~CJsonRPCClientManager()
 	{
-		m_is_stop = true;
 //		uv_stop(m_uv_loop);
 //		uv_thread_join(&m_uv_thread);
 //		uv_loop_delete(m_uv_loop);
 		uv_mutex_destroy(&m_Mutex);
+	}
+
+	void CJsonRPCClientManager::DisconnectAll()
+	{
+		m_is_stop = true;
+		Map<String, CJsonRPCClient*>::iterator i;
+		for(i=m_Clients.begin(); i!=m_Clients.end(); i++)
+		{
+			i->second->Shutdown();
+		}
 	}
 
 }

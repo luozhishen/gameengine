@@ -13,12 +13,11 @@ namespace Zion
 			m_pData->count += 1;
 		}
 
-		CMessage::CMessage(const char* pMsg)
+		CMessage::CMessage(const String& msg)
 		{
-			_U32 len = (_U32)strlen(pMsg);
-			m_pData = (MESSAGE_DATA*)ZION_ALLOC(sizeof(MESSAGE_DATA)+len);
+			m_pData = (MESSAGE_DATA*)ZION_ALLOC(sizeof(MESSAGE_DATA)+(_U32)msg.size());
 			m_pData->count = 1;
-			memcpy(m_pData->msg, pMsg, (size_t)len+1);
+			memcpy(m_pData->msg, msg.c_str(), msg.size()+1);
 		}
 
 		CMessage::~CMessage()
@@ -46,7 +45,7 @@ namespace Zion
 			return m_nDomainID;
 		}
 
-		bool CDomain::SendMsg(const char* msg)
+		bool CDomain::SendMsg(const String& msg)
 		{
 			if(m_Users.size()>0)
 			{
@@ -62,16 +61,24 @@ namespace Zion
 
 		CUserSession::CUserSession(CManager* pManager, _U32 nUserID)
 		{
-			m_nUserID = nUserID;
 			m_pManager = pManager;
+
+			m_nUserID = nUserID;
 			m_nUserSeq = (_U32)-1;
-			m_bLocked = false;
-			m_nServerID = (_U32)-1;
-			m_nAvatarID = (_U32)-1;
-			m_nReqSeq = 0;
-			m_LastResponse = "[]";
-			m_nMsgSeq = 0;
+			m_nServerID = -1;
+			m_nAvatarID = -1;
+			//m_AvatarName;
+			//m_Domains;
+
+			m_nMsgSeq = (_U32)-1;
 			m_LastMsg = "[]";
+			//m_Msgs;
+			SetInvalidResponseID(m_PendingID);
+
+			m_nReqSeq = (_U32)-1;
+			//m_LastResponse;
+			m_bLocked = false;
+			//m_SessionData;
 		}
 
 		CUserSession::~CUserSession()
@@ -156,7 +163,7 @@ namespace Zion
 			return true;
 		}
 		
-		bool CUserSession::Unlock(const char* last_response, const char* session_data)
+		bool CUserSession::Unlock(const char* last_response, const String& session_data)
 		{
 			if(!m_bLocked) return false;
 			m_nReqSeq += 1;
@@ -165,12 +172,12 @@ namespace Zion
 			return true;
 		}
 
-		bool CUserSession::BindAvatar(_U32 server_id, _U32 avatar_id, const char* avatar_name)
+		bool CUserSession::BindAvatar(_U32 server_id, _U32 avatar_id, const String& avatar_name)
 		{
 			if(m_nAvatarID!=(_U32)-1) return false;
 
 			_U64 id = (((_U64)server_id)<<32) | ((_U64)avatar_id);
-			String name = StringFormat("%u:%s", server_id, avatar_name);
+			String name = StringFormat("%u:%s", server_id, avatar_name.c_str());
 
 			Map<String, CUserSession*>::iterator n;
 			n = m_pManager->m_AvatarNames.find(name);
@@ -250,7 +257,7 @@ namespace Zion
 			return true;
 		}
 
-		bool CUserSession::SendMsg(const char* msg)
+		bool CUserSession::SendMsg(const String& msg)
 		{
 			CMessage OutMsg(msg);
 			SendMsg(OutMsg);
@@ -288,12 +295,10 @@ namespace Zion
 			return 0;
 		}
 
-		/*
-		bool CUserSession::WaitMsg(const JSONRPC_RESPONSE* res)
+		bool CUserSession::WaitMsg(const JSONRPC_RESPONSE_ID& res)
 		{
 			return true;
 		}
-		*/
 
 		CManager::CManager()
 		{
@@ -338,9 +343,9 @@ namespace Zion
 
 		}
 
-		CUserSession* CManager::GetAvatar(_U32 server_id, const char* avatar_name)
+		CUserSession* CManager::GetAvatar(_U32 server_id, const String& avatar_name)
 		{
-			String name = StringFormat("%u:%s", server_id, avatar_name);
+			String name = StringFormat("%u:%s", server_id, avatar_name.c_str());
 			Map<String, CUserSession*>::iterator i;
 			i = m_AvatarNames.find(name);
 			if(i==m_AvatarNames.end()) return NULL;

@@ -16,7 +16,7 @@ namespace Zion
 		{
 		public:
 			CMessage(const CMessage& val);
-			CMessage(const char* pMsg);
+			CMessage(const String& msg);
 			~CMessage();
 
 		private:
@@ -36,7 +36,7 @@ namespace Zion
 
 			_U32 GetDomainID();
 
-			bool SendMsg(const char* msg);
+			bool SendMsg(const String& msg);
 
 		private:
 			CManager* m_pManager;
@@ -63,33 +63,37 @@ namespace Zion
 			bool Logout();
 			bool IsLocked();
 			bool Lock();
-			bool Unlock(const char* last_response, const char* session_data);
-			bool BindAvatar(_U32 server_id, _U32 avatar_id, const char* avatar_name);
+			bool Unlock(const char* last_response, const String& session_data);
+			bool BindAvatar(_U32 server_id, _U32 avatar_id, const String& avatar_name);
 			bool UnbindAvatar();
 			bool JoinDomain(_U32 domain_id);
 			bool LeaveDomain(_U32 domain_id);
 
-			bool SendMsg(const char* msg);
+			bool SendMsg(const String& msg);
 			bool SendMsg(CMessage& OutMsg);
 			_U32 GetMsgSeq();
 			_U32 GetMsg(_U32 nMsgSeq, String& out);
-			//bool WaitMsg(const JSONRPC_RESPONSE* res);
+			bool WaitMsg(const JSONRPC_RESPONSE_ID& res);
 
 		private:
 			CManager* m_pManager;
+
 			_U32 m_nUserID;
 			_U32 m_nUserSeq;
-			bool m_bLocked;
 			_U32 m_nServerID;
 			_U32 m_nAvatarID;
 			String m_AvatarName;
-			List<CMessage> m_Msgs;
 			Map<_U32, CDomain*> m_Domains;
-			_U32 m_nReqSeq;
-			String m_LastResponse;
-			String m_SessionData;
+
 			_U32 m_nMsgSeq;
 			String m_LastMsg;
+			List<CMessage> m_Msgs;
+			JSONRPC_RESPONSE_ID m_PendingID;
+
+			_U32 m_nReqSeq;
+			String m_LastResponse;
+			bool m_bLocked;
+			String m_SessionData;
 		};
 
 		class CManager
@@ -103,7 +107,7 @@ namespace Zion
 			CUserSession* GetUser(_U32 nUserID);
 			CUserSession* GetUser(_U32 nUserID, _U32 nUserSeq);
 			CUserSession* GetAvatar(_U32 server_id, _U32 avatar_id);
-			CUserSession* GetAvatar(_U32 server_id, const char* avatar_name);
+			CUserSession* GetAvatar(_U32 server_id, const String& avatar_name);
 			CUserSession* Login(_U32 nUserID);
 			bool Logout(_U32 nUserID, _U32 nUserSeq);
 

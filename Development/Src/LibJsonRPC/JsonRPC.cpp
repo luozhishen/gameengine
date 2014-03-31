@@ -1030,7 +1030,7 @@ namespace Zion
 		Map<String, CJsonRPCClient*>::iterator i;
 		for(i=Get().m_Clients.begin(); i!=Get().m_Clients.end(); i++)
 		{
-			if(i->second.m_state==0)
+			if(i->second->GetState()==0)
 			{
 				i->second->Connect();
 			}

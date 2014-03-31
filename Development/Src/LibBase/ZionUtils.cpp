@@ -99,7 +99,10 @@ namespace Zion
 #endif
 				{
 					char curpath[400];
-					ZION_VERIFY(getcwd(curpath, sizeof(curpath)));
+					if(!getcwd(curpath, sizeof(curpath)))
+					{
+						ZION_ASSERT(0);
+					}
 					char exepath[300];
 					strcpy(exepath, __argv[0]);
 					char* pos1 = strrchr(exepath, '\\');
@@ -112,9 +115,18 @@ namespace Zion
 					else
 					{
 						*pos1 = '\0';
-						chdir(exepath);
-						ZION_VERIFY(getcwd(path, sizeof(path)));
-						chdir(curpath);
+						if(chdir(exepath)!=0)
+						{
+							ZION_ASSERT(0);
+						}
+						if(!getcwd(path, sizeof(path)))
+						{
+							ZION_ASSERT(0);
+						}
+						if(chdir(curpath)!=0)
+						{
+							ZION_ASSERT(0);
+						}
 					}
 				}
 			}

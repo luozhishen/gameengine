@@ -196,6 +196,7 @@ namespace Zion
 		uv_mutex_t m_Mutex;
 		Map<String, CJsonRPCClient*> m_Clients;
 		uv_loop_t* m_uv_loop;
+		uv_timer_t m_uv_timer;
 		bool m_is_stop;
 		uv_thread_t m_uv_thread;
 	};
@@ -998,11 +999,18 @@ namespace Zion
 		}
 	}
 
+	static void on_client_timer(uv_timer_t* handle, int status)
+	{
+		CJsonRPCClientManager::Reconnect();
+	}
+
 	CJsonRPCClientManager::CJsonRPCClientManager()
 	{
 		m_is_stop = false;
 		uv_mutex_init(&m_Mutex);
 		m_uv_loop = uv_default_loop();
+		uv_timer_init(uv_default_loop(), &m_uv_timer);
+		uv_timer_start(&m_uv_timer, on_client_timer, 1000, 1000);
 //		m_uv_loop = uv_loop_new();
 //		uv_thread_create(&m_uv_thread, &CJsonRPCClientManager::ThreadProc, NULL);
 	}
@@ -1018,6 +1026,7 @@ namespace Zion
 	void CJsonRPCClientManager::DisconnectAll()
 	{
 		Get().m_is_stop = true;
+		uv_timer_stop(&Get().m_uv_timer);
 		Map<String, CJsonRPCClient*>::iterator i;
 		for(i=Get().m_Clients.begin(); i!=Get().m_Clients.end(); i++)
 		{

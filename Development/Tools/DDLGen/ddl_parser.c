@@ -6,6 +6,8 @@
 #endif
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+
 #include "ddl_parser.h"
 #include "ddl_codegen.h"
 
@@ -325,18 +327,26 @@ char* split_filename(const char* filename, char* path, char* name)
 	cptr = strrchr(filename, '/');
 	if(cptr>split) split = cptr;
 
-	getcwd(curdir, sizeof(curdir));
+	if(!getcwd(curdir, sizeof(curdir))) {
+		assert(0);
+	}
 	if(split) {
 		strcpy(path, filename);
 		path[split-filename] = '\0';
-		chdir(path);
-		getcwd(path, sizeof(curdir));
+		if(chdir(path)!=0) {
+			assert(0);
+		}
+		if(!getcwd(path, sizeof(curdir))) {
+			assert(0);
+		}
 		strcpy(name, split+1);
 	} else {
 		strcpy(path, curdir);
 		strcpy(name, filename);
 	}
-	chdir(curdir);
+	if(chdir(curdir)!=0) {
+		assert(0);
+	}
 
 	buf = NULL;
 	fp = fopen(filename, "rt");
@@ -384,13 +394,17 @@ int parse(const char* path, const char* name, const char* buf)
 	const char* tbuf;
 	char curpath[300];
 
-	getcwd(curpath, sizeof(curpath));
+	if(!getcwd(curpath, sizeof(curpath))) {
+		assert(0);
+	}
 
 	strcpy(_stacks[_stacks_count].path, path);
 	strcpy(_stacks[_stacks_count].name, name);
 	_stacks[_stacks_count].buf = buf;
 	_stacks_count++;
-	chdir(path);
+	if(chdir(path)!=0) {
+		assert(0);
+	}
 	for(;;) {
 		buf = escape_blank(buf);
 		if(*buf=='\0') { break; }
@@ -412,12 +426,16 @@ int parse(const char* path, const char* name, const char* buf)
 
 		// set error unknown
 		set_error("unknown word", buf);
-		chdir(curpath);
+		if(chdir(curpath)!=0) {
+			assert(0);
+		}
 		return 0;
 	}
 	_stacks_count--;
 
-	chdir(curpath);
+	if(chdir(curpath)!=0) {
+		assert(0);
+	}
 	return 1;
 }
 

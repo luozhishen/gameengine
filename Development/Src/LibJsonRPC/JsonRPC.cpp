@@ -1,9 +1,9 @@
 #include <ZionDefines.h>
 #include <ZionSTL.h>
-#include <json/jsoncpp.h>
-#include "JsonRPC.h"
 #include <FastJson.h>
-#include "uv.h"
+#include <uv.h>
+#include "JsonRPC.h"
+#include "string.h"
 
 #ifdef _WIN32
 #pragma comment(lib, "ws2_32")
@@ -50,6 +50,8 @@ namespace Zion
 	public:
 		CJsonRPCConnection();
 		~CJsonRPCConnection();
+
+		_U32 GetState();
 
 		virtual void OnDisconnect() = 0;
 		virtual void OnData(_U32 seq, const char* data, _U32 len) = 0;
@@ -183,7 +185,8 @@ namespace Zion
 		static CJsonRPCClient* GetClient(const char* ep);
 		static void ThreadProc(void *arg);
 
-		void DisconnectAll();
+		static void DisconnectAll();
+		static void Reconnect();
 
 	private:
 		CJsonRPCClientManager();
@@ -298,6 +301,11 @@ namespace Zion
 			ZION_FREE(m_sendbuf);
 			m_sendbuf = NULL;
 		}
+	}
+
+	_U32 CJsonRPCConnection::GetState()
+	{
+		return m_state;
 	}
 
 	bool CJsonRPCConnection::Send(_U32 seq, const char* method, const char* data)
@@ -427,7 +435,7 @@ namespace Zion
 
 		if(nread<0)
 		{
-			pConn->m_state = STATE_SHUTDOWN;
+			pConn->m_state = STATE_SHUTDOWNING;
 			uv_close((uv_handle_t*)pConn->m_stream, &CJsonRPCConnection::OnClose);
 			return;
 		}
@@ -482,6 +490,7 @@ namespace Zion
 	{
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)handle->data;
 		pConn->m_stream = NULL;
+		pConn->m_state = STATE_SHUTDOWN;
 		pConn->OnDisconnect();
 	}
 	
@@ -873,10 +882,6 @@ namespace Zion
 			Requests.erase(Requests.begin());
 		}
 		m_state = 0;
-		if(!Connect())
-		{
-			ZION_ASSERT(0);
-		}
 	}
 
 	void CJsonRPCClient::OnData(_U32 seq, const char* data, _U32 len)
@@ -1012,11 +1017,23 @@ namespace Zion
 
 	void CJsonRPCClientManager::DisconnectAll()
 	{
-		m_is_stop = true;
+		Get().m_is_stop = true;
 		Map<String, CJsonRPCClient*>::iterator i;
-		for(i=m_Clients.begin(); i!=m_Clients.end(); i++)
+		for(i=Get().m_Clients.begin(); i!=Get().m_Clients.end(); i++)
 		{
 			i->second->Shutdown();
+		}
+	}
+
+	void CJsonRPCClientManager::Reconnect()
+	{
+		Map<String, CJsonRPCClient*>::iterator i;
+		for(i=Get().m_Clients.begin(); i!=Get().m_Clients.end(); i++)
+		{
+			if(i->second.m_state==0)
+			{
+				i->second->Connect();
+			}
 		}
 	}
 

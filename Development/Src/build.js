@@ -630,7 +630,20 @@ default:
 for(var i=4; i<process.argv.length; i++) {
 	var pos = process.argv[i].indexOf('=');
 	if(pos<0) {
-		tasks.push(process.argv[i]);
+		if(process.argv[i]=='all')
+		{
+			tasks.push('DDLGen');
+			tasks.push('RpcGen');
+			tasks.push('SqliteShell');
+			tasks.push('DataCacheServer');
+			tasks.push('SessionServer');
+			tasks.push('TestDataCacheServer');
+			tasks.push('TestFastJson');
+			tasks.push('TestJsonRPC');
+			tasks.push('TestLibUV');
+		} else {
+			tasks.push(process.argv[i]);
+		}
 	} else {
 		switch(process.argv[i].substring(0, pos)) {
 		case 'config':

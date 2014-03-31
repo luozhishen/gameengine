@@ -1,7 +1,7 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <JsonRPC.h>
-#include "SessionJsonRPC.h"
+#include "SessionJsonRpc.h"
 #include "SessionRpcImpl.h"
 
 namespace Zion

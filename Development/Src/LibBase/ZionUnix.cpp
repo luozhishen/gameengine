@@ -28,7 +28,7 @@ _U32 atom_unix_dec(_U32 volatile* mem)
 {
 	_U32 prev;
 
-    asm volatile ("lock; decl %0; setnz %1"
+    asm volatile ("lock; decl %0"
 				: "=m" (*mem), "=qm" (prev)
 				: "m" (*mem)
 				: "memory");

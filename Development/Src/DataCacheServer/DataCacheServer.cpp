@@ -134,6 +134,9 @@ namespace Zion
 			JsonRPC_Bind("deleteObject",	JsonRPC_DeleteObject);
 			JsonRPC_Bind("executeBatch",	JsonRPC_ExecuteBatch);
 			printf("start JsonRpc Server...\n");
+#ifndef _WIN32
+			signal(SIGPIPE, SIG_IGN);
+#endif
 			if(!JsonRPC_Start(CONFIG_RPCEP.c_str(), CONFIG_SINGLETHREAD))
 			{
 				ZION_FATAL("start jsonrpc failed");

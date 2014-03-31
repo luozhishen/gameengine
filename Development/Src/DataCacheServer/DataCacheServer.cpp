@@ -121,6 +121,7 @@ namespace Zion
 			}
 
 			// step 3: start rpc server
+			RPCIMPL_Init();
 			JsonRPC_Bind("echo",			JsonRPC_Echo);
 			JsonRPC_Bind("createAvatar",	JsonRPC_CreateAvatar);
 			JsonRPC_Bind("deleteAvatar",	JsonRPC_DeleteAvatar);

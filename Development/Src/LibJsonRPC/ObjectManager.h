@@ -13,7 +13,13 @@ namespace Zion
 			_mutexs = (A_MUTEX*)malloc(sizeof(A_MUTEX)*COUNT);
 			_objects = (T**)malloc(sizeof(T*)*COUNT);
 			_entrys = (A_SLIST_ENTRY*)malloc(sizeof(A_SLIST_ENTRY)*COUNT);
-			_freelist = (A_SLIST_HEADER*)ZION_ALLOC(sizeof(*_freelist));
+			_freelist = (A_SLIST_HEADER*)malloc(sizeof(*_freelist));
+
+			memset(_mutexs, 0, sizeof(A_MUTEX)*COUNT);
+			memset(_objects, 0, sizeof(T*)*COUNT);
+			memset(_entrys, 0, sizeof(A_SLIST_ENTRY)*COUNT);
+			memset(_freelist, 0, sizeof(*_freelist));
+
 			A_SLIST_INIT(_freelist);
 			for(_U32 i=0; i<COUNT; i++)
 			{
@@ -27,7 +33,7 @@ namespace Zion
 			free(_mutexs);
 			free(_objects);
 			free(_entrys);
-			ZION_FREE(_freelist);
+			free(_freelist);
 		}
 
 		_U32 Insert(T* object)

@@ -223,7 +223,7 @@ namespace Zion
 		return (_U32)m_array->size();
 	}
 
-	const JsonValue& JsonValue::Get(const _STR name) const
+	const JsonValue& JsonValue::Get(const char* name) const
 	{
 		if(m_type!=TYPE_OBJECT) return g_NullValue;
 		Map<String, JsonValue>::const_iterator i;
@@ -241,7 +241,7 @@ namespace Zion
 		return i->second;
 	}
 
-	bool JsonValue::HasMember(const _STR name) const
+	bool JsonValue::HasMember(const char* name) const
 	{
 		if(m_type!=TYPE_OBJECT) return false;
 		if(m_object->find(name)==m_object->end()) return false;
@@ -261,7 +261,7 @@ namespace Zion
 		m_bool = val;
 	}
 
-	void JsonValue::Set(const _STR val)
+	void JsonValue::Set(const char* val)
 	{
 		SetType(TYPE_STR);
 		*m_str = val;

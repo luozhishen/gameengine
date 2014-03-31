@@ -52,13 +52,13 @@ namespace Zion
 		const JsonValue& Get(_U32 index) const;
 		_U32 GetSize() const;
 
-		const JsonValue& Get(const _STR name) const;
+		const JsonValue& Get(const char* name) const;
 		const JsonValue& Get(const String& name) const;
-		bool HasMember(const _STR name) const;
+		bool HasMember(const char* name) const;
 		bool HasMember(const String& name) const;
 
 		void Set(bool val);
-		void Set(const _STR val);
+		void Set(const char* val);
 		void Set(const String& val);
 		void Set(const _U32 val);
 		void Set(const _S32 val);

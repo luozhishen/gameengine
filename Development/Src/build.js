@@ -498,7 +498,7 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		for(var i=0; i<proj.deps.length; i++) {
 			dep_lib += " -l" + proj.deps[i];
 		}
-		dep_lib = " -ldl -pthread -lmysqlclient -luuid -lrt -lz ";
+		dep_lib = " -ldl -pthread -lmysqlclient -luuid -lrt ";
 
 		console.log('echo link execute', proj.name, '[', this.platform, this.config, ']');
 		console.log(this.ld_exe.format(proj.objs_str + ' ' + dep_objs.join(' ') + ' ', exe_path+this.exe_ext, dep_lib));

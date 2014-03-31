@@ -67,8 +67,6 @@ ATOM_SLIST_ENTRY* atom_slist_pop(ATOM_SLIST_HEADER* head, const char* fn, int li
 {
 	ATOM_SLIST_ENTRY* val;
 
-	printf("%s:%d\n", fn, line);
-
 	#ifndef __x86_64__
 	asm volatile( "push     %%ebx\n\t"
 							"mov                  %1, %%edi\n\t"

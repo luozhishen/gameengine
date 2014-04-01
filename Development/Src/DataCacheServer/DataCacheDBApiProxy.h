@@ -7,6 +7,7 @@ namespace Zion
 	{
 
 		IDBApi* CreateProxyDatabase(IDBApi* db);
+		IDBApi* CreateProxyDatabase(const char* filename);
 
 	}
 }

@@ -19,7 +19,10 @@ namespace Zion
 		_U32	CONFIG_DATABASE_COUNT_INIT = 10;
 		String	CONFIG_RPCEP("0.0.0.0:1980");
 		bool CONFIG_SINGLETHREAD = true;
-		bool CONFIG_ENABLE_REPLAYLOG = false;
+		bool CONFIG_ENABLE_DB_REPLAYLOG = false;
+		bool CONFIG_ENABLE_RPC_REPLAYLOG = false;
+		static FILE* _db_logfile = NULL;
+		static FILE* _rpc_logfile = NULL;
 
 		static bool ParseArgs(int argc, char* argv[])
 		{
@@ -57,6 +60,26 @@ namespace Zion
 				{
 					CONFIG_SINGLETHREAD = true;
 					if(value=="false") CONFIG_SINGLETHREAD = false;
+					continue;
+				}
+				if(name=="-db_replaylog")
+				{
+					_db_logfile = fopen(value.c_str(), "wt");
+					if(!_db_logfile)
+					{
+						ZION_FATAL("open %s failed\n", value.c_str());
+					}
+					CONFIG_ENABLE_DB_REPLAYLOG = true;
+					continue;
+				}
+				if(name=="-rpc_replaylog")
+				{
+					_rpc_logfile = fopen(value.c_str(), "wt");
+					if(!_rpc_logfile)
+					{
+						ZION_FATAL("open %s failed\n", value.c_str());
+					}
+					CONFIG_ENABLE_RPC_REPLAYLOG = true;
 					continue;
 				}
 
@@ -167,15 +190,29 @@ namespace Zion
 
 			// step 8: process exit
 			printf("exit.\n");
+			if(!_db_logfile)
+			{
+				fclose(_db_logfile);
+			}
+			if(!_rpc_logfile)
+			{
+				fclose(_rpc_logfile);
+			}
 			return 0;
 		}
 
 		void WriteRPCLog(const char* method, const JsonValue& args)
 		{
+			String json;
+			args.Stringify(json);
+			fprintf(_db_logfile, "%s %s\n", method, json.c_str());
 		}
 
 		void WriteDBLog(const char* method, const JsonValue& args)
 		{
+			String json;
+			args.Stringify(json);
+			fprintf(_rpc_logfile, "%s %s\n", method, json.c_str());
 		}
 
 	}

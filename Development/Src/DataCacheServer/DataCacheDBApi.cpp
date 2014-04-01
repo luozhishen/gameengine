@@ -21,6 +21,8 @@ namespace Zion
 		static bool g_bFake = false;
 		static bool g_bSqlite = false;
 		static bool g_bMysql = false;
+		static bool g_bReplay = false;
+		static String g_ReplayFilename;
 		static String g_SqliteFile;
 		static String g_MysqlHost;
 		static _U32 g_MysqlPort;
@@ -37,6 +39,11 @@ namespace Zion
 				db = CreateFakeDatabase();
 			}
 
+			if(g_bReplay)
+			{
+				db = CreateProxyDatabase(g_ReplayFilename.c_str());
+			}
+
 			if(g_bSqlite)
 			{
 				db = CreateSqliteDatabase(g_SqliteFile.c_str());
@@ -47,7 +54,7 @@ namespace Zion
 				db = CreateMysqlDatabase(g_MysqlHost.c_str(), g_MysqlPort, g_MysqlUserName.c_str(), g_MysqlPassword.c_str(), g_MysqlDatabase.c_str());
 			}
 
-			if(db && CONFIG_ENABLE_REPLAYLOG)
+			if(db && CONFIG_ENABLE_DB_REPLAYLOG)
 			{
 				db = CreateProxyDatabase(db);
 			}
@@ -70,6 +77,11 @@ namespace Zion
 				{
 					g_bSqlite = true;
 					g_SqliteFile = CONFIG_DATABASE.substr(offset+1);
+				}
+				else if(type=="replay")
+				{
+					g_bReplay = true;
+					g_ReplayFilename = CONFIG_DATABASE.substr(offset+1);
 				}
 				else
 				{

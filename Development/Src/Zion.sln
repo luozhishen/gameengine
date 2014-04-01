@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibBase", "LibBase\LibBase.vcxproj", "{73A3A0DA-85DB-4571-9381-686CD246E80B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibClient", "LibClient\LibClient.vcxproj", "{50D67152-761F-4BE9-8EA8-958CFAF1029A}"
@@ -77,6 +77,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestDataCacheServer", "Test\TestDataCacheServer.vcxproj", "{CFD66ADA-CFF3-4E82-BFBC-073A9B716A4E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestLibUV", "Test\TestLibUV.vcxproj", "{34C22C44-5E48-40C9-8141-7D1D5A3E54E6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSList", "Test\TestSList.vcxproj", "{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -317,6 +319,14 @@ Global
 		{34C22C44-5E48-40C9-8141-7D1D5A3E54E6}.Release|Win32.Build.0 = Release|Win32
 		{34C22C44-5E48-40C9-8141-7D1D5A3E54E6}.Release|x64.ActiveCfg = Release|x64
 		{34C22C44-5E48-40C9-8141-7D1D5A3E54E6}.Release|x64.Build.0 = Release|x64
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Debug|Win32.Build.0 = Debug|Win32
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Debug|x64.ActiveCfg = Debug|x64
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Debug|x64.Build.0 = Debug|x64
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Release|Win32.ActiveCfg = Release|Win32
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Release|Win32.Build.0 = Release|Win32
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Release|x64.ActiveCfg = Release|x64
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -351,5 +361,6 @@ Global
 		{178A1E13-6D70-4E26-AB6D-57285371B2E3} = {DE194D25-3358-466F-978D-B0EDD7E2EAF7}
 		{CFD66ADA-CFF3-4E82-BFBC-073A9B716A4E} = {DE194D25-3358-466F-978D-B0EDD7E2EAF7}
 		{34C22C44-5E48-40C9-8141-7D1D5A3E54E6} = {DE194D25-3358-466F-978D-B0EDD7E2EAF7}
+		{06AA6409-5CD7-4B9D-A2F4-D0A1E0837FC3} = {DE194D25-3358-466F-978D-B0EDD7E2EAF7}
 	EndGlobalSection
 EndGlobal

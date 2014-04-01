@@ -6,6 +6,7 @@
 
 int main(int argc, char* argv[])
 {
+#ifndef _WIN32
 	A_SLIST_HEADER* header = (A_SLIST_HEADER*)malloc(sizeof(A_SLIST_HEADER));
 
 	A_SLIST_ENTRY x;
@@ -21,6 +22,7 @@ int main(int argc, char* argv[])
 	A_SLIST_INIT(header);
 	A_SLIST_PUSH(header, entry);
 	ZION_ASSERT(entry==A_SLIST_POP(header));
+#endif
 	return 0;
 }
 

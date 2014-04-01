@@ -93,6 +93,17 @@ namespace Zion
 					}
 					continue;
 				}
+				if(name=="-pid")
+				{
+					FILE* fp = fopen(value.c_str(), "wt");
+					if(!fp)
+					{
+						ZION_FATAL("open %s failed\n", value.c_str());
+					}
+					fprintf(fp, "%d", getpid());
+					fclose(fp);
+					continue;
+				}
 
 				return false;
 			}

@@ -23,6 +23,8 @@ namespace Zion
 		bool CONFIG_ENABLE_RPC_REPLAYLOG = false;
 		static FILE* _db_logfile = NULL;
 		static FILE* _rpc_logfile = NULL;
+		static FILE* _rpc_replay = NULL;
+		static void ReplayRpc();
 
 		static bool ParseArgs(int argc, char* argv[])
 		{
@@ -82,6 +84,15 @@ namespace Zion
 					CONFIG_ENABLE_RPC_REPLAYLOG = true;
 					continue;
 				}
+				if(name=="-rpc_replay")
+				{
+					_rpc_replay = fopen(value.c_str(), "wt");
+					if(!_rpc_replay)
+					{
+						ZION_FATAL("open %s failed\n", value.c_str());
+					}
+					continue;
+				}
 
 				return false;
 			}
@@ -92,6 +103,15 @@ namespace Zion
 			{
 				CONFIG_DATABASE_COUNT_INIT = 1;
 				CONFIG_DATABASE_COUNT_MAX = 1;
+			}
+
+			if(CONFIG_ENABLE_DB_REPLAYLOG || CONFIG_ENABLE_RPC_REPLAYLOG || _rpc_replay)
+			{
+				if(!CONFIG_SINGLETHREAD)
+				{
+					printf("must SINGLETHREAD mode\n");
+					CONFIG_SINGLETHREAD = true;
+				}
 			}
 
 			return true;
@@ -151,34 +171,45 @@ namespace Zion
 			JsonRPC_Bind("deleteAvatar",	JsonRPC_DeleteAvatar);
 			JsonRPC_Bind("getAvatar",		JsonRPC_GetAvatar);
 			JsonRPC_Bind("saveAvatar",		JsonRPC_SaveAvatar);
-			JsonRPC_Bind("clearAvatar",	JsonRPC_ClearAvatar);
+			JsonRPC_Bind("clearAvatar",		JsonRPC_ClearAvatar);
 			JsonRPC_Bind("keepAlive",		JsonRPC_KeepAlive);
 			JsonRPC_Bind("createObject",	JsonRPC_CreateObject);
 			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);
 			JsonRPC_Bind("deleteObject",	JsonRPC_DeleteObject);
+			JsonRPC_Bind("loadObject",		JsonRPC_LoadObjectFromDB);
 			JsonRPC_Bind("executeBatch",	JsonRPC_ExecuteBatch);
 			printf("start JsonRpc Server...\n");
 #ifndef _WIN32
 			signal(SIGPIPE, SIG_IGN);
 #endif
-			if(!JsonRPC_Start(CONFIG_RPCEP.c_str(), CONFIG_SINGLETHREAD))
+			if(!_rpc_replay && !JsonRPC_Start(CONFIG_RPCEP.c_str(), CONFIG_SINGLETHREAD))
 			{
 				ZION_FATAL("start jsonrpc failed");
 			}
 
 			// step 4: wait process terminiate signal
-			printf("server running...\n");
-			uv_signal_t sig_exit;
-			uv_signal_init(uv_default_loop(), &sig_exit);
-			uv_signal_start(&sig_exit, sig_exit_cb, SIGINT);
-			uv_timer_t echo_timer;
-			uv_timer_init(uv_default_loop(), &echo_timer);
-			uv_timer_start(&echo_timer, timer_cb, 1000, 1000);
-			uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+			if(!_rpc_replay)
+			{
+				printf("server running...\n");
+				uv_signal_t sig_exit;
+				uv_signal_init(uv_default_loop(), &sig_exit);
+				uv_signal_start(&sig_exit, sig_exit_cb, SIGINT);
+				uv_timer_t echo_timer;
+				uv_timer_init(uv_default_loop(), &echo_timer);
+				uv_timer_start(&echo_timer, timer_cb, 1000, 1000);
+				uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+			}
+			else
+			{
+				ReplayRpc();
+			}
 
 			// step 5: stop rpc server
 			printf("stoping JsonRpc server\n");
-			JsonRPC_Stop();
+			if(!_rpc_replay)
+			{
+				JsonRPC_Stop();
+			}
 
 			// step 6: wait all cache data flush to database
 			printf("flash all data to database\n");
@@ -198,6 +229,10 @@ namespace Zion
 			{
 				fclose(_rpc_logfile);
 			}
+			if(!_rpc_replay)
+			{
+				fclose(_rpc_replay);
+			}
 			return 0;
 		}
 
@@ -213,6 +248,37 @@ namespace Zion
 			String json;
 			args.Stringify(json);
 			fprintf(_rpc_logfile, "%s %s\n", method, json.c_str());
+		}
+
+		void ReplayRpc()
+		{
+			static char buf[100000];
+			_U32 lineno = 0;
+			while(!feof(_rpc_replay))
+			{
+				buf[0] = '\0';
+				if(!fgets(buf, sizeof(buf), _rpc_replay)) ZION_FATAL("read file error : line %u", lineno);
+				if(buf[0]=='\0') continue;
+				lineno += 1;
+
+				char* pos = strchr(buf, ' ');
+				if(!pos) ZION_FATAL("invalid line : line %u", lineno);
+				String method;
+				method.append(buf, pos-buf);
+				JsonValue json;
+				if(!json.Parse(pos+1, pos+strlen(pos+1))) ZION_FATAL("invalid json : line %u", lineno);
+
+				if(method=="CreateAvatar") JsonRPC_CreateAvatar(json);
+				else if(method=="CreateAvatar") JsonRPC_DeleteAvatar(json);
+				else if(method=="GetAvatar") JsonRPC_GetAvatar(json);
+				else if(method=="SaveAvatar") JsonRPC_SaveAvatar(json);
+				else if(method=="KeepAlive") JsonRPC_KeepAlive(json);
+				else if(method=="UpdateObject") JsonRPC_UpdateObject(json);
+				else if(method=="DeleteObject") JsonRPC_DeleteObject(json);
+				else if(method=="LoadObjectFromDB") JsonRPC_LoadObjectFromDB(json);
+				else if(method=="ExecuteBatch") JsonRPC_ExecuteBatch(json);
+				else ZION_FATAL("invalid method : line %u", lineno);
+			}
 		}
 
 	}

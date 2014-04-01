@@ -213,7 +213,7 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_loadObjectFromDB(const JsonValue& args)
+		void JsonRPC_LoadObjectFromDB(const JsonValue& args)
 		{
 			if(CONFIG_ENABLE_RPC_REPLAYLOG)
 				WriteRPCLog("LoadObjectFromDB", args);

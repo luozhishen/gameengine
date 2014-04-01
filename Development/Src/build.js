@@ -289,8 +289,8 @@ AppBuilder.prototype.setPlatform = function (platform) {
 		this.dll_ext = '.so';
 		this.lib_ext = '.a';
 		this.cd_exe = 'clang -M {1} {0} -c -o {2}';
-		this.cc_exe = 'g++ -D_LINUX {1} {0} -c -o {2}';
-		this.ld_exe = 'g++ {0} {2} -o {1}';
+		this.cc_exe = 'clang++ -D_LINUX {1} {0} -c -o {2}';
+		this.ld_exe = 'clang++ {0} {2} -o {1}';
 		this.sl_exe = 'ar rcs {0}lib{1} {2}';
 		this.dl_exe = '';
 		this.platform = platform;
@@ -464,11 +464,16 @@ AppBuilder.prototype.buildBIN = function (proj) {
 		var cc_exe = this.cc_exe;
 		if(src_path.substring(src_path.length-2)!='.c') {
 			if(this.cc_exe.substring(0,3)!='cl ') {
-				cpp_flag = ' -std=c++0x -fpermissive '
+				cpp_flag = ' -std=c++0x ';// -fpermissive '
 			}
 		} else {
 			cc_exe = cc_exe.replace(/clang\+\+/, "clang");
 			cc_exe = cc_exe.replace(/g\+\+/, "gcc");
+		}
+		if(proj.src_files[i]=='ZionUnix.cpp')
+		{
+			cc_exe = cc_exe.replace(/clang\+\+/, "g++");
+			console.log("echo temp fix clang compile missing code for ZionUnix.cpp");
 		}
 		console.log(cc_exe.format(src_path, inc_cmd + cpp_flag + this.cc_flag, dst_path+this.obj_ext));
 		// console.log(this.cd_exe.format(src_path, inc_cmd + cpp_flag + '-M ' + this.cc_flag, dst_path+'.d'));

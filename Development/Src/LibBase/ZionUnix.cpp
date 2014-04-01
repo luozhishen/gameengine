@@ -63,7 +63,7 @@ void atom_slist_init(ATOM_SLIST_HEADER* header)
 	header->Count = 0;
 }
 
-ATOM_SLIST_ENTRY* atom_slist_pop(ATOM_SLIST_HEADER* head, const char* fn, int line)
+ATOM_SLIST_ENTRY* atom_slist_pop(ATOM_SLIST_HEADER* head)
 {
 	ATOM_SLIST_ENTRY* val;
 

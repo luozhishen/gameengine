@@ -65,8 +65,8 @@ namespace Zion
 
 			m_nUserID = nUserID;
 			m_nUserSeq = (_U32)-1;
-			m_nServerID = -1;
-			m_nAvatarID = -1;
+			m_nServerID = (_U32)-1;
+			m_nAvatarID = (_U32)-1;
 			//m_AvatarName;
 			//m_Domains;
 

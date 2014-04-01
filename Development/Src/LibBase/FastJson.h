@@ -10,7 +10,6 @@ namespace Zion
 	{
 		friend 	class JsonReader;
 	public:
-		static bool Parse(const char* begin, const char* end, JsonValue& root);
 
 		enum TYPE
 		{
@@ -26,7 +25,17 @@ namespace Zion
 		JsonValue();
 		JsonValue(const JsonValue& val);
 		JsonValue(TYPE type);
+		JsonValue(bool val);
+		JsonValue(const char* val);
+		JsonValue(const String& val);
+		JsonValue(_U32 val);
+		JsonValue(_S32 val);
+		JsonValue(_F32 val);
 		~JsonValue();
+
+		bool Parse(const char* begin, const char* end);
+		void Stringify(String& json) const;
+		void Stringify(OutputStringStream& sstream) const;
 
 		TYPE GetType();
 		void SetType(TYPE type);
@@ -60,9 +69,9 @@ namespace Zion
 		void Set(bool val);
 		void Set(const char* val);
 		void Set(const String& val);
-		void Set(const _U32 val);
-		void Set(const _S32 val);
-		void Set(const _F32 val);
+		void Set(_U32 val);
+		void Set(_S32 val);
+		void Set(_F32 val);
 
 		void Append(const JsonValue& val);
 		void Append(const _STR name, const JsonValue& val);

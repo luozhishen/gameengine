@@ -19,6 +19,7 @@ namespace Zion
 		_U32	CONFIG_DATABASE_COUNT_INIT = 10;
 		String	CONFIG_RPCEP("0.0.0.0:1980");
 		bool CONFIG_SINGLETHREAD = true;
+		bool CONFIG_ENABLE_REPLAYLOG = false;
 
 		static bool ParseArgs(int argc, char* argv[])
 		{
@@ -167,6 +168,14 @@ namespace Zion
 			// step 8: process exit
 			printf("exit.\n");
 			return 0;
+		}
+
+		void WriteRPCLog(const char* method, const JsonValue& args)
+		{
+		}
+
+		void WriteDBLog(const char* method, const JsonValue& args)
+		{
 		}
 
 	}

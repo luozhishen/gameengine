@@ -3,6 +3,7 @@
 #include "DataCacheDBApiFake.h"
 #include "DataCacheDBApiSqlite.h"
 #include "DataCacheDBApiMysql.h"
+#include "DataCacheDBApiProxy.h"
 #include "DataCacheServer.h"
 
 #include <time.h>
@@ -29,19 +30,26 @@ namespace Zion
 
 		static IDBApi* NewDatabase()
 		{
+			IDBApi* db = NULL;
+
 			if(g_bFake)
 			{
-				return CreateFakeDatabase();
+				db = CreateFakeDatabase();
 			}
 
 			if(g_bSqlite)
 			{
-				return CreateSqliteDatabase(g_SqliteFile.c_str());
+				db = CreateSqliteDatabase(g_SqliteFile.c_str());
 			}
 
 			if(g_bMysql)
 			{
-				return CreateMysqlDatabase(g_MysqlHost.c_str(), g_MysqlPort, g_MysqlUserName.c_str(), g_MysqlPassword.c_str(), g_MysqlDatabase.c_str());
+				db = CreateMysqlDatabase(g_MysqlHost.c_str(), g_MysqlPort, g_MysqlUserName.c_str(), g_MysqlPassword.c_str(), g_MysqlDatabase.c_str());
+			}
+
+			if(db && CONFIG_ENABLE_REPLAYLOG)
+			{
+				db = CreateProxyDatabase(db);
 			}
 
 			return NULL;

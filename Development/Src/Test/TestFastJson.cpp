@@ -22,6 +22,10 @@ static const char* test_cases[] =
 
 int main(int argc, char* argv[])
 {
+	Zion::JsonValue o;
+	Zion::String vv;
+	o.Stringify(vv);
+
 	for(_U32 i=0; i<sizeof(test_cases)/sizeof(test_cases[0]); i++)
 	{
 		uint64_t start, end;
@@ -31,7 +35,7 @@ int main(int argc, char* argv[])
 		for(_U32 t=0; t<RUN_TIMES; t++)
 		{
 			Zion::JsonValue node;
-			if(!Zion::JsonValue::Parse(test_cases[i], NULL, node))
+			if(!node.Parse(test_cases[i], NULL))
 			{
 				printf("ERROR F, %s\n", test_cases[i]);
 				break;

@@ -17,6 +17,9 @@ namespace Zion
 
 		void JsonRPC_CreateAvatar(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("CreateAvatar", args);
+
 			Array<A_UUID> uuids;
 			Array<String> types;
 			Array<String> datas;
@@ -49,6 +52,9 @@ namespace Zion
 
 		void JsonRPC_DeleteAvatar(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("DeleteAvatar", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=1) break;
@@ -62,6 +68,9 @@ namespace Zion
 
 		void JsonRPC_GetAvatar(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("GetAvatar", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=1) break;
@@ -75,6 +84,9 @@ namespace Zion
 
 		void JsonRPC_SaveAvatar(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("SaveAvatar", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=1) break;
@@ -88,6 +100,9 @@ namespace Zion
 
 		void JsonRPC_ClearAvatar(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("ClearAvatar", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=1) break;
@@ -101,6 +116,9 @@ namespace Zion
 
 		void JsonRPC_KeepAlive(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("KeepAlive", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=1) break;
@@ -114,6 +132,9 @@ namespace Zion
 
 		void JsonRPC_CreateObject(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("CreateObject", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=5) break;
@@ -138,6 +159,9 @@ namespace Zion
 
 		void JsonRPC_UpdateObject(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("UpdateObject", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=4) break;
@@ -160,6 +184,9 @@ namespace Zion
 
 		void JsonRPC_DeleteObject(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("DeleteObject", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=3) break;
@@ -188,6 +215,9 @@ namespace Zion
 
 		void JsonRPC_loadObjectFromDB(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("LoadObjectFromDB", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=2) break;
@@ -205,6 +235,9 @@ namespace Zion
 
 		void JsonRPC_ExecuteBatch(const JsonValue& args)
 		{
+			if(CONFIG_ENABLE_REPLAYLOG)
+				WriteRPCLog("ExecuteBatch", args);
+
 			for(;;)
 			{
 				if(args.GetSize()!=3) break;

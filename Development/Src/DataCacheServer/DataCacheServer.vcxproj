@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataCacheDBApiFake.cpp" />
+    <ClCompile Include="DataCacheDBApiProxy.cpp" />
     <ClCompile Include="DataCacheDBApiSqlite.cpp" />
     <ClCompile Include="DataCacheServer.cpp" />
     <ClCompile Include="DataCacheDBApi.cpp" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataCacheDBApiFake.h" />
+    <ClInclude Include="DataCacheDBApiProxy.h" />
     <ClInclude Include="DataCacheDBApiSqlite.h" />
     <ClInclude Include="DataCacheServer.h" />
     <ClInclude Include="DataCacheDBApi.h" />

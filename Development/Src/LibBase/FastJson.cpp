@@ -5,310 +5,6 @@
 namespace Zion
 {
 
-	static String g_NullString;
-	static Array<JsonValue> g_NullArray;
-	static Map<String, JsonValue> g_NullObject;
-	static JsonValue g_NullValue;
-
-	JsonValue::JsonValue()
-	{
-		m_type = TYPE_NULL;
-	}
-
-	JsonValue::JsonValue(const JsonValue& val)
-	{
-		m_type = TYPE_NULL;
-		SetType(val.m_type);
-		switch(m_type)
-		{
-		case TYPE_STR:		*m_str = *val.m_str;		break;
-		case TYPE_U32:		m_u32 = val.m_u32;			break;
-		case TYPE_S32:		m_s32 = val.m_s32;			break;
-		case TYPE_F32:		m_f32 = val.m_f32;			break;
-		case TYPE_OBJECT:	*m_object = *val.m_object;	break;
-		case TYPE_ARRAY:	*m_array = *val.m_array;	break;
-		default: break;
-		}
-	}
-
-	JsonValue::JsonValue(TYPE type)
-	{
-		m_type = TYPE_NULL;
-		SetType(m_type);
-	}
-
-	JsonValue::~JsonValue()
-	{
-		SetType(TYPE_NULL);
-	}
-
-	JsonValue::TYPE JsonValue::GetType()
-	{
-		return m_type;
-	}
-
-	void JsonValue::SetType(TYPE type)
-	{
-		if(type==m_type)
-		{
-			switch(m_type)
-			{
-			case TYPE_OBJECT: m_object->clear(); break;
-			case TYPE_ARRAY: m_array->clear(); break;
-			case TYPE_STR: m_str->clear(); break;
-			default: break;
-			};
-			return;
-		}
-		switch(m_type)
-		{
-		case TYPE_OBJECT: m_object->~Map<String, JsonValue>(); ZION_FREE(m_object); break;
-		case TYPE_ARRAY: m_array->~Array<JsonValue>(); ZION_FREE(m_array); break;
-		case TYPE_STR: m_str->~String(); ZION_FREE(m_str); break;
-		default: break;
-		};
-		m_type = type;
-		switch(m_type)
-		{
-		case TYPE_OBJECT: m_object = new (ZION_ALLOC(sizeof(Map<String, JsonValue>))) Map<String, JsonValue>(); break;
-		case TYPE_ARRAY: m_array = new (ZION_ALLOC(sizeof(Array<JsonValue>))) Array<JsonValue>(); break;
-		case TYPE_STR: m_str = new (ZION_ALLOC(sizeof(String))) String(); break;
-		default: break;
-		};
-	}
-	
-	bool JsonValue::IsNull() const
-	{
-		return m_type==TYPE_NULL;
-	}
-
-	bool JsonValue::IsBool() const
-	{
-		return m_type==TYPE_BOOL;
-	}
-
-	bool JsonValue::IsSTR() const
-	{
-		return m_type==TYPE_STR;
-	}
-
-	bool JsonValue::IsU32() const
-	{
-		return m_type==TYPE_U32 || (m_type==TYPE_F32 && m_s32>=0);
-	}
-
-	bool JsonValue::IsS32() const
-	{
-		return m_type==TYPE_S32 || (m_type==TYPE_U32 && (m_u32&0x80000000)!=0);
-	}
-
-	bool JsonValue::IsF32() const
-	{
-		return m_type==TYPE_F32 || m_type==TYPE_U32 || m_type==TYPE_S32;
-	}
-
-	bool JsonValue::IsObject() const
-	{
-		return m_type==TYPE_OBJECT;
-	}
-
-	bool JsonValue::IsArray() const
-	{
-		return m_type==TYPE_ARRAY;
-	}
-
-	bool JsonValue::AsBool() const
-	{
-		if(m_type!=TYPE_BOOL) return false;
-		return m_bool;
-	}
-
-	const String& JsonValue::AsSTR() const
-	{
-		if(m_type==TYPE_STR)
-		{
-			return *m_str;
-		}
-		else
-		{
-			return g_NullString;
-		}
-	}
-
-	const char* JsonValue::AsCSTR() const
-	{
-		if(m_type==TYPE_STR)
-		{
-			return m_str->c_str();
-		}
-		else
-		{
-			return g_NullString.c_str();
-		}
-	}
-
-	const _U32 JsonValue::AsU32() const
-	{
-		switch(m_type)
-		{
-		case TYPE_U32:
-			return m_u32;
-		case TYPE_S32:
-			return (_U32)m_s32;
-		default:
-			return 0;
-		}
-	}
-
-	const _S32 JsonValue::AsS32() const
-	{
-		switch(m_type)
-		{
-		case TYPE_U32:
-			return (_S32)m_u32;
-		case TYPE_S32:
-			return m_s32;
-		default:
-			return 0;
-		}
-	}
-
-	const _F32 JsonValue::AsF32() const
-	{
-		switch(m_type)
-		{
-		case TYPE_U32:
-			return (_F32)m_u32;
-		case TYPE_S32:
-			return (_F32)m_s32;
-		case TYPE_F32:
-			return m_f32;
-		default:
-			return 0;
-		}
-	}
-
-	const Map<String, JsonValue>& JsonValue::AsObject() const
-	{
-		if(m_type==TYPE_OBJECT)
-		{
-			return *m_object;
-		}
-		else
-		{
-			return g_NullObject;
-		}
-	}
-
-	const Array<JsonValue>& JsonValue::AsArray() const
-	{
-		if(m_type==TYPE_ARRAY)
-		{
-			return *m_array;
-		}
-		else
-		{
-			return g_NullArray;
-		}
-	}
-
-	const JsonValue& JsonValue::Get(_U32 index) const
-	{
-		if(m_type!=TYPE_ARRAY || index>=(_U32)m_array->size()) return g_NullValue;
-		return (*m_array)[index];
-	}
-
-	_U32 JsonValue::GetSize() const
-	{
-		return (_U32)m_array->size();
-	}
-
-	const JsonValue& JsonValue::Get(const char* name) const
-	{
-		if(m_type!=TYPE_OBJECT) return g_NullValue;
-		Map<String, JsonValue>::const_iterator i;
-		i = m_object->find((char*)name);
-		if(i==m_object->end()) return g_NullValue;
-		return i->second;
-	}
-
-	const JsonValue& JsonValue::Get(const String& name) const
-	{
-		if(m_type!=TYPE_OBJECT) return g_NullValue;
-		Map<String, JsonValue>::const_iterator i;
-		i = m_object->find(name);
-		if(i==m_object->end()) return g_NullValue;
-		return i->second;
-	}
-
-	bool JsonValue::HasMember(const char* name) const
-	{
-		if(m_type!=TYPE_OBJECT) return false;
-		if(m_object->find(name)==m_object->end()) return false;
-		return true;
-	}
-
-	bool JsonValue::HasMember(const String& name) const
-	{
-		if(m_type!=TYPE_OBJECT) return false;
-		if(m_object->find(name)==m_object->end()) return false;
-		return true;
-	}
-
-	void JsonValue::Set(bool val)
-	{
-		SetType(TYPE_BOOL);
-		m_bool = val;
-	}
-
-	void JsonValue::Set(const char* val)
-	{
-		SetType(TYPE_STR);
-		*m_str = val;
-	}
-
-	void JsonValue::Set(const String& val)
-	{
-		SetType(TYPE_STR);
-		*m_str = val;
-	}
-
-	void JsonValue::Set(const _U32 val)
-	{
-		SetType(TYPE_U32);
-		m_u32 = val;
-	}
-
-	void JsonValue::Set(const _S32 val)
-	{
-		SetType(TYPE_S32);
-		m_s32 = val;
-	}
-
-	void JsonValue::Set(const _F32 val)
-	{
-		SetType(TYPE_F32);
-		m_f32 = val;
-	}
-
-	void JsonValue::Append(const JsonValue& val)
-	{
-		if(m_type!=TYPE_ARRAY) return;
-		m_array->push_back(val);
-	}
-
-	void JsonValue::Append(const _STR name, const JsonValue& val)
-	{
-		if(m_type!=TYPE_OBJECT) return;
-		(*m_object)[name] = val;
-	}
-
-	void JsonValue::Append(const String& name, const JsonValue& val)
-	{
-		if(m_type!=TYPE_OBJECT) return;
-		(*m_object)[name] = val;
-	}
-
 	class JsonReader
 	{
 	public:
@@ -640,11 +336,461 @@ namespace Zion
 		const char* m_end;
 	};
 
-	bool JsonValue::Parse(const char* begin, const char* end, JsonValue& root)
+	static String g_NullString;
+	static Array<JsonValue> g_NullArray;
+	static Map<String, JsonValue> g_NullObject;
+	static JsonValue g_NullValue;
+
+	JsonValue::JsonValue()
+	{
+		m_type = TYPE_NULL;
+	}
+
+	JsonValue::JsonValue(const JsonValue& val)
+	{
+		m_type = TYPE_NULL;
+		SetType(val.m_type);
+		switch(m_type)
+		{
+		case TYPE_STR:		*m_str = *val.m_str;		break;
+		case TYPE_U32:		m_u32 = val.m_u32;			break;
+		case TYPE_S32:		m_s32 = val.m_s32;			break;
+		case TYPE_F32:		m_f32 = val.m_f32;			break;
+		case TYPE_OBJECT:	*m_object = *val.m_object;	break;
+		case TYPE_ARRAY:	*m_array = *val.m_array;	break;
+		default: break;
+		}
+	}
+
+	JsonValue::JsonValue(TYPE type)
+	{
+		m_type = TYPE_NULL;
+		SetType(m_type);
+	}
+
+	JsonValue::JsonValue(bool val)
+	{
+		m_type = TYPE_BOOL;
+		m_bool = val;
+	}
+
+	JsonValue::JsonValue(const char* val)
+	{
+		m_type = TYPE_STR;
+		m_str = ZION_NEW String();
+		*m_str = val;
+	}
+
+	JsonValue::JsonValue(const String& val)
+	{
+		m_type = TYPE_STR;
+		m_str = ZION_NEW String();
+		*m_str = val;
+	}
+
+	JsonValue::JsonValue(_U32 val)
+	{
+		m_type = TYPE_U32;
+		m_u32 = val;
+	}
+
+	JsonValue::JsonValue(_S32 val)
+	{
+		m_type = TYPE_S32;
+		m_s32 = val;
+	}
+
+	JsonValue::JsonValue(_F32 val)
+	{
+		m_type = TYPE_F32;
+		m_f32 = val;
+	}
+
+	JsonValue::~JsonValue()
+	{
+		SetType(TYPE_NULL);
+	}
+
+	bool JsonValue::Parse(const char* begin, const char* end)
 	{
 		if(!end) end = begin + strlen(begin);
 		JsonReader reader;
-		return reader.Parse(begin, end, root);
+		return reader.Parse(begin, end, *this);
+	}
+
+	void JsonValue::Stringify(String& json) const
+	{
+		OutputStringStream sstream;
+		Stringify(sstream);
+		json = sstream.str();
+	}
+
+	static void StringifyString(OutputStringStream& sstream, const String& str)
+	{
+		sstream<<"\"";
+
+		String::const_iterator iter = str.begin();
+		while (iter != str.end())
+		{
+			char chr = *iter;
+
+			if (chr == '"' || chr == '\\' || chr == '/')
+			{
+				sstream << '\\' << chr;
+			}
+			else if (chr == '\b')
+			{
+				sstream << "\\b";
+			}
+			else if (chr == '\f')
+			{
+				sstream<<"\\f";
+			}
+			else if (chr == '\n')
+			{
+				sstream<<"\\n";
+			}
+			else if (chr == '\r')
+			{
+				sstream<<"\\r";
+			}
+			else if (chr == '\t')
+			{
+				sstream<<"\\t";
+			}
+			else if (chr < ' ')
+			{
+				sstream<<"\\u";
+				for (int i = 0; i < 4; i++)
+				{
+					int value = (chr >> 12) & 0xf;
+					if (value >= 0 && value <= 9)
+						sstream<<(wchar_t)('0' + value);
+					else if (value >= 10 && value <= 15)
+						sstream<<(wchar_t)('A' + (value - 10));
+					chr <<= 4;
+				}
+			}
+			else
+			{
+				sstream<<chr;
+			}
+
+			iter++;
+		}
+
+		sstream<<"\"";
+	}
+
+	void JsonValue::Stringify(OutputStringStream& sstream) const
+	{
+		switch(m_type)
+		{
+		case TYPE_NULL: sstream << "null"; break;
+		case TYPE_BOOL: sstream << m_bool?"true":"false"; break;
+		case TYPE_U32: sstream << m_u32; break;
+		case TYPE_S32: sstream << m_s32; break;
+		case TYPE_F32: sstream << m_f32; break;
+		case TYPE_STR: StringifyString(sstream, *m_str); break;
+		case TYPE_OBJECT:
+			{
+				Map<String, JsonValue>::const_iterator i;
+				sstream<<"{";
+				i=m_object->begin();
+				for(;;)
+				{
+					StringifyString(sstream, i->first);
+					sstream<<":";
+					i->second.Stringify(sstream);
+
+					if((++i)==m_object->end()) break;
+					sstream<<",";
+				}
+				sstream<<"}";
+			}
+			break;
+		case TYPE_ARRAY:
+			{
+				Array<JsonValue>::const_iterator i;
+				sstream<<"[";
+				i=m_array->begin();
+				for(;;)
+				{
+					(*i).Stringify(sstream);
+					if((++i)==m_array->end()) break;
+					sstream<<",";
+				}
+				sstream<<"]";
+			}
+			break;
+		}
+	}
+
+	JsonValue::TYPE JsonValue::GetType()
+	{
+		return m_type;
+	}
+
+	void JsonValue::SetType(TYPE type)
+	{
+		if(type==m_type)
+		{
+			switch(m_type)
+			{
+			case TYPE_OBJECT: m_object->clear(); break;
+			case TYPE_ARRAY: m_array->clear(); break;
+			case TYPE_STR: m_str->clear(); break;
+			default: break;
+			};
+			return;
+		}
+		switch(m_type)
+		{
+		case TYPE_OBJECT: m_object->~Map<String, JsonValue>(); ZION_FREE(m_object); break;
+		case TYPE_ARRAY: m_array->~Array<JsonValue>(); ZION_FREE(m_array); break;
+		case TYPE_STR: m_str->~String(); ZION_FREE(m_str); break;
+		default: break;
+		};
+		m_type = type;
+		switch(m_type)
+		{
+		case TYPE_OBJECT: m_object = new (ZION_ALLOC(sizeof(Map<String, JsonValue>))) Map<String, JsonValue>(); break;
+		case TYPE_ARRAY: m_array = new (ZION_ALLOC(sizeof(Array<JsonValue>))) Array<JsonValue>(); break;
+		case TYPE_STR: m_str = new (ZION_ALLOC(sizeof(String))) String(); break;
+		default: break;
+		};
+	}
+	
+	bool JsonValue::IsNull() const
+	{
+		return m_type==TYPE_NULL;
+	}
+
+	bool JsonValue::IsBool() const
+	{
+		return m_type==TYPE_BOOL;
+	}
+
+	bool JsonValue::IsSTR() const
+	{
+		return m_type==TYPE_STR;
+	}
+
+	bool JsonValue::IsU32() const
+	{
+		return m_type==TYPE_U32 || (m_type==TYPE_F32 && m_s32>=0);
+	}
+
+	bool JsonValue::IsS32() const
+	{
+		return m_type==TYPE_S32 || (m_type==TYPE_U32 && (m_u32&0x80000000)!=0);
+	}
+
+	bool JsonValue::IsF32() const
+	{
+		return m_type==TYPE_F32 || m_type==TYPE_U32 || m_type==TYPE_S32;
+	}
+
+	bool JsonValue::IsObject() const
+	{
+		return m_type==TYPE_OBJECT;
+	}
+
+	bool JsonValue::IsArray() const
+	{
+		return m_type==TYPE_ARRAY;
+	}
+
+	bool JsonValue::AsBool() const
+	{
+		if(m_type!=TYPE_BOOL) return false;
+		return m_bool;
+	}
+
+	const String& JsonValue::AsSTR() const
+	{
+		if(m_type==TYPE_STR)
+		{
+			return *m_str;
+		}
+		else
+		{
+			return g_NullString;
+		}
+	}
+
+	const char* JsonValue::AsCSTR() const
+	{
+		if(m_type==TYPE_STR)
+		{
+			return m_str->c_str();
+		}
+		else
+		{
+			return g_NullString.c_str();
+		}
+	}
+
+	const _U32 JsonValue::AsU32() const
+	{
+		switch(m_type)
+		{
+		case TYPE_U32:
+			return m_u32;
+		case TYPE_S32:
+			return (_U32)m_s32;
+		default:
+			return 0;
+		}
+	}
+
+	const _S32 JsonValue::AsS32() const
+	{
+		switch(m_type)
+		{
+		case TYPE_U32:
+			return (_S32)m_u32;
+		case TYPE_S32:
+			return m_s32;
+		default:
+			return 0;
+		}
+	}
+
+	const _F32 JsonValue::AsF32() const
+	{
+		switch(m_type)
+		{
+		case TYPE_U32:
+			return (_F32)m_u32;
+		case TYPE_S32:
+			return (_F32)m_s32;
+		case TYPE_F32:
+			return m_f32;
+		default:
+			return 0;
+		}
+	}
+
+	const Map<String, JsonValue>& JsonValue::AsObject() const
+	{
+		if(m_type==TYPE_OBJECT)
+		{
+			return *m_object;
+		}
+		else
+		{
+			return g_NullObject;
+		}
+	}
+
+	const Array<JsonValue>& JsonValue::AsArray() const
+	{
+		if(m_type==TYPE_ARRAY)
+		{
+			return *m_array;
+		}
+		else
+		{
+			return g_NullArray;
+		}
+	}
+
+	const JsonValue& JsonValue::Get(_U32 index) const
+	{
+		if(m_type!=TYPE_ARRAY || index>=(_U32)m_array->size()) return g_NullValue;
+		return (*m_array)[index];
+	}
+
+	_U32 JsonValue::GetSize() const
+	{
+		return (_U32)m_array->size();
+	}
+
+	const JsonValue& JsonValue::Get(const char* name) const
+	{
+		if(m_type!=TYPE_OBJECT) return g_NullValue;
+		Map<String, JsonValue>::const_iterator i;
+		i = m_object->find((char*)name);
+		if(i==m_object->end()) return g_NullValue;
+		return i->second;
+	}
+
+	const JsonValue& JsonValue::Get(const String& name) const
+	{
+		if(m_type!=TYPE_OBJECT) return g_NullValue;
+		Map<String, JsonValue>::const_iterator i;
+		i = m_object->find(name);
+		if(i==m_object->end()) return g_NullValue;
+		return i->second;
+	}
+
+	bool JsonValue::HasMember(const char* name) const
+	{
+		if(m_type!=TYPE_OBJECT) return false;
+		if(m_object->find(name)==m_object->end()) return false;
+		return true;
+	}
+
+	bool JsonValue::HasMember(const String& name) const
+	{
+		if(m_type!=TYPE_OBJECT) return false;
+		if(m_object->find(name)==m_object->end()) return false;
+		return true;
+	}
+
+	void JsonValue::Set(bool val)
+	{
+		SetType(TYPE_BOOL);
+		m_bool = val;
+	}
+
+	void JsonValue::Set(const char* val)
+	{
+		SetType(TYPE_STR);
+		*m_str = val;
+	}
+
+	void JsonValue::Set(const String& val)
+	{
+		SetType(TYPE_STR);
+		*m_str = val;
+	}
+
+	void JsonValue::Set(const _U32 val)
+	{
+		SetType(TYPE_U32);
+		m_u32 = val;
+	}
+
+	void JsonValue::Set(const _S32 val)
+	{
+		SetType(TYPE_S32);
+		m_s32 = val;
+	}
+
+	void JsonValue::Set(const _F32 val)
+	{
+		SetType(TYPE_F32);
+		m_f32 = val;
+	}
+
+	void JsonValue::Append(const JsonValue& val)
+	{
+		if(m_type!=TYPE_ARRAY) return;
+		m_array->push_back(val);
+	}
+
+	void JsonValue::Append(const _STR name, const JsonValue& val)
+	{
+		if(m_type!=TYPE_OBJECT) return;
+		(*m_object)[name] = val;
+	}
+
+	void JsonValue::Append(const String& name, const JsonValue& val)
+	{
+		if(m_type!=TYPE_OBJECT) return;
+		(*m_object)[name] = val;
 	}
 
 }

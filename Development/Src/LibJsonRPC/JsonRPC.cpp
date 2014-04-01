@@ -666,7 +666,7 @@ namespace Zion
 		}
 
 		JsonValue json;
-		if(!JsonValue::Parse(data, data+len, json))
+		if(!json.Parse(data, data+len))
 		{
 			ZION_ASSERT(!"invalid data format");
 			return false;
@@ -899,7 +899,7 @@ namespace Zion
 		if(it->second.proc)
 		{
 			JsonValue json;
-			if(JsonValue::Parse(data, data+len, json))
+			if(json.Parse(data, data+len))
 			{
 				it->second.proc(&json);
 			}

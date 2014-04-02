@@ -207,46 +207,44 @@ namespace Zion
 		}
 
 		void RPCIMPL_WaitForMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq)
-		// return errcode, msg_seq, msg[]
+		// return errcode, msg[]
 		{
 			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
 			if(session)
 			{
-				if(msg_seq==session->GetMsgSeq())
+				if(session->GetMsg(msg_seq))
 				{
-					String out;
-					_U32 next_seq = session->GetMsg(msg_seq, out);
-					JsonRPC_Send(StringFormat("[0,%u,%s]", next_seq, out.c_str()).c_str());
+					JsonRPC_Send(session->GetLastMsg().c_str());
 					CUserSession::Unlock(session);
 					return;
 				}
-				if(msg_seq==session->GetMsgSeq()+1)
+
+				if(session->GetMsgSeq()+1==msg_seq)
 				{
-					/*
-					if(session->WaitMsg(res))
+					JSONRPC_RESPONSE_ID res;
+					if(JsonRPC_SetPending(res))
 					{
+						session->WaitMsg(res);
+						CUserSession::Unlock(session);
 						return;
 					}
-					*/
-					CUserSession::Unlock(session);
-					return;
 				}
-				CUserSession::Unlock(session);
 			}
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_GetMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq)
-		// return errcode, msg_seq, msg[]
+		// return errcode, msg[]
 		{
 			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
 			if(session)
 			{
-				String out;
-				_U32 next_seq = session->GetMsg(msg_seq, out);
-				JsonRPC_Send(StringFormat("[0,%u,%s]", next_seq, out.c_str()).c_str());
-				CUserSession::Unlock(session);
-				return;
+				if(session->GetMsg(msg_seq))
+				{
+					JsonRPC_Send(session->GetLastMsg().c_str());
+					CUserSession::Unlock(session);
+					return;
+				}
 			}
 			JsonRPC_Send("[-1]");
 		}

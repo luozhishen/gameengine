@@ -9,6 +9,7 @@ namespace Zion
 		struct MESSAGE_DATA
 		{
 			_U32 count;
+			_U32 size;
 			char msg[1];
 		};
 
@@ -18,6 +19,9 @@ namespace Zion
 			CMessage(const CMessage& val);
 			CMessage(const String& msg);
 			~CMessage();
+
+			_U32 GetSize();
+			const char* GetMsg();
 
 		private:
 			MESSAGE_DATA* m_pData;
@@ -86,8 +90,10 @@ namespace Zion
 			bool SendMsg(const String& msg);
 			bool SendMsg(CMessage& OutMsg);
 			_U32 GetMsgSeq();
-			_U32 GetMsg(_U32 nMsgSeq, String& out);
-			bool WaitMsg(const JSONRPC_RESPONSE_ID& res);
+			bool GetMsg(_U32 nMsgSeq);
+			void WaitMsg(const JSONRPC_RESPONSE_ID& res);
+			const String& GetLastMsg();
+			void CombineMsg();
 
 		private:
 			_U32 m_nIndex;
@@ -99,8 +105,9 @@ namespace Zion
 			Set<_U32> m_Domains;
 
 			_U32 m_nMsgSeq;
-			String m_LastMsg;
+			A_MUTEX m_MsgLocker;
 			List<CMessage> m_Msgs;
+			String m_LastMsg;
 			JSONRPC_RESPONSE_ID m_PendingID;
 
 			_U32 m_nReqSeq;

@@ -18,6 +18,7 @@ namespace Zion
 		CMessage::CMessage(const String& msg)
 		{
 			m_pData = (MESSAGE_DATA*)ZION_ALLOC(sizeof(MESSAGE_DATA)+(_U32)msg.size());
+			m_pData->size = (_U32)msg.size();
 			m_pData->count = 1;
 			memcpy(m_pData->msg, msg.c_str(), msg.size()+1);
 		}
@@ -30,6 +31,16 @@ namespace Zion
 				ZION_FREE(m_pData);
 				m_pData = NULL;
 			}
+		}
+
+		_U32 CMessage::GetSize()
+		{
+			return m_pData->size;
+		}
+
+		const char* CMessage::GetMsg()
+		{
+			return m_pData->msg;
 		}
 
 		static TObjectManager<CDomain, 100*10000> g_domain_manager;
@@ -70,7 +81,11 @@ namespace Zion
 		void CDomain::Unlock(CDomain* domain)
 		{
 			_U32 index = domain->GetIndex();
-			// if(empty()) delete it;
+			if(domain->m_Users.empty())
+			{
+				g_domain_id_map.Remove(domain->m_nDomainID, index);
+				ZION_DELETE domain;
+			}
 			g_domain_manager.Unlock(index);
 		}
 
@@ -227,6 +242,7 @@ namespace Zion
 			m_nMsgSeq = (_U32)-1;
 			m_LastMsg = "[]";
 			//m_Msgs;
+			A_MUTEX_INIT(&m_MsgLocker);
 			SetInvalidResponseID(m_PendingID);
 
 			m_nReqSeq = (_U32)-1;
@@ -237,6 +253,7 @@ namespace Zion
 
 		CUserSession::~CUserSession()
 		{
+			A_MUTEX_DESTROY(&m_MsgLocker);
 		}
 
 		void CUserSession::SetIndex(_U32 index)
@@ -263,7 +280,7 @@ namespace Zion
 			m_nReqSeq = 0;
 			m_LastResponse = "[]";
 			m_nMsgSeq = 0;
-			m_LastMsg = "[]";
+			m_LastMsg = "[0,[]]";
 		}
 
 		_U32 CUserSession::GetUserID()
@@ -406,7 +423,15 @@ namespace Zion
 		
 		bool CUserSession::SendMsg(CMessage& OutMsg)
 		{
+			A_MUTEX_LOCK(&m_MsgLocker);
 			m_Msgs.push_back(OutMsg);
+			if(IsValidResponseID(m_PendingID))
+			{
+				CombineMsg();
+				JsonRPC_Send(m_PendingID, m_LastMsg.c_str());
+				SetInvalidResponseID(m_PendingID);
+			}
+			A_MUTEX_UNLOCK(&m_MsgLocker);
 			return true;
 		}
 
@@ -415,29 +440,71 @@ namespace Zion
 			return m_nMsgSeq;
 		}
 
-		_U32 CUserSession::GetMsg(_U32 nMsgSeq, String& out)
+		bool CUserSession::GetMsg(_U32 nMsgSeq)
 		{
 			if(m_nMsgSeq==nMsgSeq)
 			{
-				out = m_LastMsg;
-				return m_nMsgSeq + 1;
+				return true;
 			}
-			if(m_nMsgSeq+1==nMsgSeq)
+			if(m_nMsgSeq+1!=nMsgSeq)
 			{
-				if(m_Msgs.empty())
-				{
-					out = "[]";
-					return nMsgSeq;
-				}
-				m_nMsgSeq = nMsgSeq;
-				return nMsgSeq + 1;
+				return false;
 			}
-			return 0;
+
+			A_MUTEX_LOCK(&m_MsgLocker);
+			if(!m_Msgs.empty())
+			{
+				CombineMsg();
+			}
+			A_MUTEX_UNLOCK(&m_MsgLocker);
+
+			return m_nMsgSeq==nMsgSeq;
 		}
 
-		bool CUserSession::WaitMsg(const JSONRPC_RESPONSE_ID& res)
+		void CUserSession::WaitMsg(const JSONRPC_RESPONSE_ID& res)
 		{
-			return true;
+			A_MUTEX_LOCK(&m_MsgLocker);
+			if(IsValidResponseID(m_PendingID))
+			{
+				JsonRPC_Send(m_PendingID, "[-1]");
+				SetInvalidResponseID(m_PendingID);
+			}
+			m_PendingID = res;
+			A_MUTEX_UNLOCK(&m_MsgLocker);
+		}
+
+		const String& CUserSession::GetLastMsg()
+		{
+			return m_LastMsg;
+		}
+
+		void CUserSession::CombineMsg()
+		{
+			_U32 size;
+			List<CMessage>::iterator i;
+			size = 4;
+			for(i=m_Msgs.begin(); i!=m_Msgs.end(); i++)
+			{
+				size += (*i).GetSize();
+			}
+			size += (_U32)m_Msgs.size() - 1 + 2;
+			m_LastMsg.clear();
+			m_LastMsg.resize(size+2);
+			m_LastMsg.replace(0, 4, "[0,[");
+			size = 4;
+			for(i=m_Msgs.begin(); i!=m_Msgs.end(); i++)
+			{
+				if(i==m_Msgs.begin())
+				{
+					m_LastMsg.replace(size, 1, ",");
+					size += 1;
+				}
+				m_LastMsg.replace(size, (*i).GetSize(), (*i).GetMsg());
+				size += (*i).GetSize();
+			}
+			m_LastMsg.replace(size, 2, "]]");
+			m_Msgs.clear();
+			m_nMsgSeq += 1;
 		}
 
 	}

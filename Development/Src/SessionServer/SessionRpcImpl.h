@@ -38,9 +38,9 @@ namespace Zion
 		// return errcode
 
 		void RPCIMPL_WaitForMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
-		// return errcode, next_seq, msg[]
+		// return errcode, msg[]
 		void RPCIMPL_GetMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
-		// return errcode, next_seq, msg[]
+		// return errcode, msg[]
 
 	}
 }

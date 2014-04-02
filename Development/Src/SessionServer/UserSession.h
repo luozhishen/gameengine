@@ -82,6 +82,7 @@ namespace Zion
 			bool IsLocked();
 			bool Lock();
 			bool Unlock(const char* last_response, const String& session_data);
+			void SetServer(_U32 server_id);
 			bool BindAvatar(_U32 server_id, _U32 avatar_id, const String& avatar_name);
 			bool UnbindAvatar();
 			bool JoinDomain(_U32 domain_id);

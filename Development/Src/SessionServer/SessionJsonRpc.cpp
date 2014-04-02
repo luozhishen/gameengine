@@ -96,6 +96,52 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
+		void JsonRpc_GetServerInfo(const JsonValue& args)
+		// void RPCIMPL_GetServerInfo()
+		{
+			for(;;)
+			{
+				if(args.GetSize()!=0) break;
+				RPCIMPL_GetServerInfo();
+				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
+		void JsonRpc_EnterServer(const JsonValue& args)
+		// void RPCIMPL_EnterServer(_U32 user_id, _U32 user_seq, _U32 server_id)
+		{
+			for(;;)
+			{
+				if(args.GetSize()!=3) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)0);
+				if(!user_seq.IsU32()) break;
+				const JsonValue& server_id = args.Get((_U32)0);
+				if(!server_id.IsU32()) break;
+				RPCIMPL_EnterServer(user_id.AsU32(), user_seq.AsU32(), server_id.AsU32());
+				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
+		void JsonRpc_LeaveServer(const JsonValue& args)
+		// void RPCIMPL_LeaveServer(_U32 user_id, _U32 user_seq)
+		{
+			for(;;)
+			{
+				if(args.GetSize()!=2) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				const JsonValue& user_seq = args.Get((_U32)0);
+				if(!user_seq.IsU32()) break;
+				RPCIMPL_LeaveServer(user_id.AsU32(), user_seq.AsU32());
+				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
 		void JsonRpc_BindAvatar(const JsonValue& args)
 		// void RPCIMPL_BindAvatar(_U32 user_id, _U32 user_seq, _U32 avatar_id, const char* avatar_name);
 		{
@@ -123,12 +169,14 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=2) break;
+				if(args.GetSize()!=3) break;
 				const JsonValue& user_id = args.Get((_U32)0);
 				if(!user_id.IsU32()) break;
 				const JsonValue& user_seq = args.Get((_U32)1);
 				if(!user_seq.IsU32()) break;
-				RPCIMPL_UnbindAvatar(user_id.AsU32(), user_seq.AsU32());
+				const JsonValue& server_id = args.Get((_U32)1);
+				if(!server_id.IsU32()) break;
+				RPCIMPL_UnbindAvatar(user_id.AsU32(), user_seq.AsU32(), server_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");

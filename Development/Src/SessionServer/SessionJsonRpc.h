@@ -12,6 +12,9 @@ namespace Zion
 		void JsonRpc_KickUser(const JsonValue& args);
 		void JsonRpc_GetSession(const JsonValue& args);
 		void JsonRpc_SetSession(const JsonValue& args);
+		void JsonRpc_GetServerInfo(const JsonValue& args);
+		void JsonRpc_EnterServer(const JsonValue& args);
+		void JsonRpc_LeaveServer(const JsonValue& args);
 		void JsonRpc_BindAvatar(const JsonValue& args);
 		void JsonRpc_UnbindAvatar(const JsonValue& args);
 		void JsonRpc_SendToUserID(const JsonValue& args);

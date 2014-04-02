@@ -8,6 +8,77 @@ namespace Zion
 {
 	namespace Session
 	{
+		
+		class CServerManager
+		{
+		public:
+			CServerManager()
+			{
+				A_MUTEX_INIT(&m_Locker);
+			}
+			~CServerManager()
+			{
+				A_MUTEX_DESTROY(&m_Locker);
+			}
+
+			void Change(_U32 New, _U32 Old)
+			{
+				Map<_U32, _U32>::iterator i;
+				A_MUTEX_LOCK(&m_Locker);
+				if(New!=(_U32)-1)
+				{
+					i = m_Servers.find(New);
+					if(i==m_Servers.end())
+					{
+						m_Servers[New] = 1;
+					}
+					else
+					{
+						i->second += 1;
+					}
+				}
+				if(Old!=(_U32)-1)
+				{
+					i = m_Servers.find(New);
+					if(i!=m_Servers.end())
+					{
+						ZION_ASSERT(i->second>0);
+						if(i->second>0)
+						{
+							i->second -= 1;
+						}
+					}
+				}
+				A_MUTEX_UNLOCK(&m_Locker);
+			}
+
+			void Send()
+			{
+
+				OutputStringStream stream;
+				Map<_U32, _U32>::iterator i;
+				_U32 count = 0;
+				A_MUTEX_LOCK(&m_Locker);
+				for(i=m_Servers.begin(); i!=m_Servers.end(); i++)
+				{
+					if(i==m_Servers.begin())
+					{
+						stream << ",";
+					}
+					stream << "\"" << i->first << "\":" << i->second;
+					count += i->second;
+				}
+				A_MUTEX_UNLOCK(&m_Locker);
+
+				String out = StringFormat("[0, %u, [%s]", count, stream.str().c_str());
+				JsonRPC_Send(out.c_str());
+			}
+
+		private:
+			A_MUTEX m_Locker;
+			Map<_U32, _U32> m_Servers;
+		};
+		static CServerManager g_ServerManager;
 
 		CMessage::CMessage(const CMessage& val)
 		{
@@ -344,6 +415,15 @@ namespace Zion
 			return true;
 		}
 
+		void CUserSession::SetServer(_U32 server_id)
+		{
+			if(m_nServerID!=server_id)
+			{
+				g_ServerManager.Change(server_id, m_nServerID);
+				m_nServerID = server_id;
+			}
+		}
+
 		bool CUserSession::BindAvatar(_U32 server_id, _U32 avatar_id, const String& avatar_name)
 		{
 			if(m_nAvatarID!=(_U32)-1) return false;
@@ -355,7 +435,7 @@ namespace Zion
 			{
 				if(g_session_avatar_id_map.Insert(id, m_nIndex))
 				{
-					m_nServerID = server_id;
+					SetServer(server_id);
 					m_nAvatarID = avatar_id;
 					m_AvatarName = avatar_name;
 					return true;
@@ -506,6 +586,13 @@ namespace Zion
 			m_Msgs.clear();
 			m_nMsgSeq += 1;
 		}
+
+		void RPCIMPL_GetServerInfo()
+		// return errcode, count, server_list[]
+		{
+			g_ServerManager.Send();
+		}
+
 
 	}
 }

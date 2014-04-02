@@ -578,7 +578,7 @@ namespace Zion
 
 	bool JsonValue::IsU32() const
 	{
-		return m_type==TYPE_U32 || (m_type==TYPE_F32 && m_s32>=0);
+		return m_type==TYPE_U32 || (m_type==TYPE_F32 && m_s32>=-1);
 	}
 
 	bool JsonValue::IsS32() const

@@ -81,6 +81,18 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
+		void RPCIMPL_EnterServer(_U32 user_id, _U32 user_seq, _U32 server_id)
+		// return errcode
+		{
+			JsonRPC_Send("[-1]");
+		}
+
+		void RPCIMPL_LeaveServer(_U32 user_id, _U32 user_seq)
+		// return errcode
+		{
+			JsonRPC_Send("[-1]");
+		}
+
 		void RPCIMPL_BindAvatar(_U32 user_id, _U32 user_seq, _U32 server_id, _U32 avatar_id, const String& avatar_name)
 		// return errcode
 		{
@@ -96,7 +108,7 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void RPCIMPL_UnbindAvatar(_U32 user_id, _U32 user_seq)
+		void RPCIMPL_UnbindAvatar(_U32 user_id, _U32 user_seq, _U32 server_id)
 		// return errcode
 		{
 			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
@@ -104,6 +116,7 @@ namespace Zion
 			{
 				if(session->UnbindAvatar())
 				{
+					session->SetServer(server_id);
 					JsonRPC_Send("[0]");
 					return;
 				}

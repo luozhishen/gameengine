@@ -98,22 +98,6 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_ClearAvatar(const JsonValue& args)
-		{
-			if(CONFIG_ENABLE_RPC_REPLAYLOG)
-				WriteRPCLog("ClearAvatar", args);
-
-			for(;;)
-			{
-				if(args.GetSize()!=1) break;
-				const JsonValue& _avatar_id = args.Get((_U32)0);
-				if(!_avatar_id.IsU32()) break;
-				RPCIMPL_ClearAvatar((_U32)_avatar_id.AsU32());
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
 		void JsonRPC_KeepAlive(const JsonValue& args)
 		{
 			if(CONFIG_ENABLE_RPC_REPLAYLOG)

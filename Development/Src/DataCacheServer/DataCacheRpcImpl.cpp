@@ -388,26 +388,6 @@ namespace Zion
 			UnlockAvatar(pAvatar);
 		}
 
-		void RPCIMPL_ClearAvatar(_U32 avatar_id)
-		{
-			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(!pAvatar)
-			{
-				JsonRPC_Send("[-1]");
-				return;
-			}
-
-			if(pAvatar->Save())
-			{
-				JsonRPC_Send("[0]");
-			}
-			else
-			{
-				JsonRPC_Send("[-1]");
-			}
-			UnlockAvatar(pAvatar);
-		}
-
 		void RPCIMPL_KeepAlive(_U32 avatar_id)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);

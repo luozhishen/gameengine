@@ -38,8 +38,6 @@ namespace Zion
 		// return errcode, avatar_id, version, avatar_objects[]
 		void RPCIMPL_SaveAvatar(_U32 avatar_id);
 		// return errcode
-		void RPCIMPL_ClearAvatar(_U32 avatar_id);
-		// return errcode
 		void RPCIMPL_KeepAlive(_U32 avatar_id);
 		// return errcode, version
 		void RPCIMPL_CreateObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* type, const char* data);

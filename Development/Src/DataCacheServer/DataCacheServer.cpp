@@ -182,7 +182,6 @@ namespace Zion
 			JsonRPC_Bind("deleteAvatar",	JsonRPC_DeleteAvatar);
 			JsonRPC_Bind("getAvatar",		JsonRPC_GetAvatar);
 			JsonRPC_Bind("saveAvatar",		JsonRPC_SaveAvatar);
-			JsonRPC_Bind("clearAvatar",		JsonRPC_ClearAvatar);
 			JsonRPC_Bind("keepAlive",		JsonRPC_KeepAlive);
 			JsonRPC_Bind("createObject",	JsonRPC_CreateObject);
 			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);

@@ -84,12 +84,28 @@ namespace Zion
 		void RPCIMPL_EnterServer(_U32 user_id, _U32 user_seq, _U32 server_id)
 		// return errcode
 		{
+			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
+			if(session)
+			{
+				session->SetServer(server_id);
+				CUserSession::Unlock(session);
+				JsonRPC_Send("[0]");
+				return;
+			}
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_LeaveServer(_U32 user_id, _U32 user_seq)
 		// return errcode
 		{
+			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
+			if(session)
+			{
+				session->SetServer((_U32)-1);
+				CUserSession::Unlock(session);
+				JsonRPC_Send("[0]");
+				return;
+			}
 			JsonRPC_Send("[-1]");
 		}
 

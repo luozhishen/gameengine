@@ -437,6 +437,7 @@ namespace Zion
 				{
 					SetServer(server_id);
 					m_nAvatarID = avatar_id;
+					m_nAvatarServerID = m_nServerID;
 					m_AvatarName = avatar_name;
 					return true;
 				}
@@ -459,7 +460,7 @@ namespace Zion
 
 			if(!m_AvatarName.empty())
 			{
-				String name = StringFormat("%u:%s", m_nServerID, m_AvatarName.c_str());
+				String name = StringFormat("%u:%s", m_nAvatarServerID, m_AvatarName.c_str());
 				g_session_avatar_name_map.Remove(name, m_nIndex);
 				m_AvatarName.clear();
 			}

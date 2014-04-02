@@ -102,6 +102,7 @@ namespace Zion
 			_U32 m_nUserSeq;
 			_U32 m_nServerID;
 			_U32 m_nAvatarID;
+			_U32 m_nAvatarServerID;
 			String m_AvatarName;
 			Set<_U32> m_Domains;
 

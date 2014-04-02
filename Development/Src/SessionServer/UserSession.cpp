@@ -1,5 +1,7 @@
 #include <ZionBase.h>
 #include <JsonRPC.h>
+#include <uv.h>
+#include <ObjectManager.h>
 #include "UserSession.h"
 
 namespace Zion
@@ -30,14 +32,66 @@ namespace Zion
 			}
 		}
 
-		CDomain::CDomain(CManager* pManager, _U32 nDomainID)
+		static TObjectManager<CDomain, 100*10000> g_domain_manager;
+		static TObjectMap<_U32> g_domain_id_map;
+
+		CDomain* CDomain::Lock(_U32 nDomainID, bool alloc)
+		{
+			CDomain* domain;
+
+			for(;;)
+			{
+				_U32 index = g_domain_id_map.Get(nDomainID);
+				if(index==(_U32)-1)
+				{
+					if(!alloc) return NULL;
+
+					domain = ZION_NEW CDomain(nDomainID);
+					index = g_domain_manager.Insert(domain);
+					if(index==(_U32)-1)
+					{
+						ZION_DELETE domain;
+						return NULL;
+					}
+					if(g_domain_id_map.Insert(nDomainID, index)) break;
+					g_domain_manager.Remove(index, domain);
+					ZION_DELETE domain;
+					continue;
+				}
+				domain = g_domain_manager.Lock(index);
+				if(!domain) continue;
+				if(domain->GetDomainID()==nDomainID) break;
+				g_domain_manager.Unlock(index);
+			}
+
+			return domain;
+		}
+		
+		void CDomain::Unlock(CDomain* domain)
+		{
+			_U32 index = domain->GetIndex();
+			// if(empty()) delete it;
+			g_domain_manager.Unlock(index);
+		}
+
+		CDomain::CDomain(_U32 nDomainID)
 		{
 			m_nDomainID = nDomainID;
-			m_pManager = pManager;
+			m_nIndex = (_U32)-1;
 		}
 
 		CDomain::~CDomain()
 		{
+		}
+
+		void CDomain::SetIndex(_U32 index)
+		{
+			m_nIndex = index;
+		}
+
+		_U32 CDomain::GetIndex()
+		{
+			return m_nIndex;
 		}
 
 		_U32 CDomain::GetDomainID()
@@ -59,10 +113,110 @@ namespace Zion
 			return true;
 		}
 
-		CUserSession::CUserSession(CManager* pManager, _U32 nUserID)
-		{
-			m_pManager = pManager;
+		static TObjectManager<CUserSession, 100*10000> g_session_manager;
+		static TObjectMap<_U32> g_session_user_id_map;
+		static TObjectMap<_U64> g_session_avatar_id_map;
+		static TObjectMap<String> g_session_avatar_name_map;
 
+		CUserSession* CUserSession::LockByUser(_U32 nUserID)
+		{
+			_U32 index = g_session_user_id_map.Get(nUserID);
+			if(index==(_U32)-1) return NULL;
+			CUserSession* session = g_session_manager.Lock(index);
+			if(!session) return NULL;
+			if(session->GetUserID()==nUserID) return session;
+			if(session->GetUserID()==nUserID && session->GetUserSeq()) return session;
+			g_session_manager.Unlock(index);
+			return NULL;
+		}
+
+		CUserSession* CUserSession::LockByUser(_U32 nUserID, _U32 nUserSeq)
+		{
+			_U32 index = g_session_user_id_map.Get(nUserID);
+			if(index==(_U32)-1) return NULL;
+			CUserSession* session = g_session_manager.Lock(index);
+			if(!session) return NULL;
+			if(session->GetUserID()==nUserID && session->GetUserSeq()==nUserSeq) return session;
+			g_session_manager.Unlock(index);
+			return NULL;
+		}
+
+		CUserSession* CUserSession::LockByAvatar(_U32 server_id, _U32 avatar_id)
+		{
+			_U64 id = (((_U64)server_id)<<32) | ((_U64)avatar_id);
+			_U32 index = g_session_avatar_id_map.Get(id);
+			if(index==(_U32)-1) return NULL;
+			CUserSession* session = g_session_manager.Lock(index);
+			if(!session) return NULL;
+			if(session->m_nServerID==server_id && session->m_nAvatarID==avatar_id) return session;
+			g_session_manager.Unlock(index);
+			return NULL;
+		}
+		CUserSession* CUserSession::LockByAvatar(_U32 server_id, const String& avatar_name)
+		{
+			String name = StringFormat("%u:%s", server_id, avatar_name.c_str());
+			_U32 index = g_session_avatar_name_map.Get(name);
+			if(index==(_U32)-1) return NULL;
+			CUserSession* session = g_session_manager.Lock(index);
+			if(!session) return NULL;
+			if(session->m_nServerID==server_id && session->m_AvatarName==avatar_name) return session;
+			g_session_manager.Unlock(index);
+			return NULL;
+		}
+
+		void CUserSession::Unlock(CUserSession* session)
+		{
+			g_session_manager.Unlock(session->m_nIndex);
+		}
+
+		CUserSession* CUserSession::Login(_U32 nUserID)
+		{
+			CUserSession* session;
+			for(;;)
+			{
+				_U32 index = g_session_user_id_map.Get(nUserID);
+				if(index==(_U32)-1)
+				{
+					session = ZION_NEW CUserSession(nUserID);
+					index = g_session_manager.Insert(session);
+					if(index==(_U32)-1)
+					{
+						ZION_DELETE session;
+						return NULL;
+					}
+					if(g_session_user_id_map.Insert(nUserID, index))
+					{
+						session->SetIndex(index);
+						break;
+					}
+					g_session_manager.Remove(index, session);
+					ZION_DELETE session;
+					continue;
+				}
+				session = g_session_manager.Lock(index);
+				if(!session) continue;
+				if(session->GetUserID()==nUserID) break;
+				g_session_manager.Unlock(index);
+			}
+
+			// if(inprocess) return NULL;
+			session->Reset();
+			return session;
+		}
+
+		bool CUserSession::Logout(_U32 nUserID, _U32 nUserSeq)
+		{
+			CUserSession* session = LockByUser(nUserID, nUserSeq);
+			if(!session) return false;
+			session->Reset();
+			g_session_manager.Remove(nUserID, session);
+			g_session_user_id_map.Remove(session->m_nUserID, session->m_nIndex);
+			ZION_DELETE session;
+			return true;
+		}
+
+		CUserSession::CUserSession(_U32 nUserID)
+		{
 			m_nUserID = nUserID;
 			m_nUserSeq = (_U32)-1;
 			m_nServerID = (_U32)-1;
@@ -83,6 +237,33 @@ namespace Zion
 
 		CUserSession::~CUserSession()
 		{
+		}
+
+		void CUserSession::SetIndex(_U32 index)
+		{
+			m_nIndex = index;
+		}
+
+		_U32 CUserSession::GetIndex()
+		{
+			return m_nIndex;
+		}
+
+		void CUserSession::Reset()
+		{
+			if(m_nAvatarID!=(_U32)-1)
+			{
+				UnbindAvatar();
+			}
+			while(!m_Domains.empty())
+			{
+				LeaveDomain(*m_Domains.begin());
+			}
+			m_Msgs.clear();
+			m_nReqSeq = 0;
+			m_LastResponse = "[]";
+			m_nMsgSeq = 0;
+			m_LastMsg = "[]";
 		}
 
 		_U32 CUserSession::GetUserID()
@@ -125,32 +306,6 @@ namespace Zion
 			return m_AvatarName;
 		}
 
-		CDomain* CUserSession::GetDomain(_U32 nDomainID)
-		{
-			Map<_U32, CDomain*>::iterator i;
-			i = m_Domains.find(nDomainID);
-			if(i==m_Domains.end()) return NULL;
-			return i->second;
-		}
-
-		bool CUserSession::Logout()
-		{
-			if(m_nAvatarID!=(_U32)-1)
-			{
-				UnbindAvatar();
-			}
-			while(!m_Domains.empty())
-			{
-				LeaveDomain(m_Domains.begin()->first);
-			}
-			m_Msgs.clear();
-			m_nReqSeq = 0;
-			m_LastResponse = "[]";
-			m_nMsgSeq = 0;
-			m_LastMsg = "[]";
-			return true;
-		}
-
 		bool CUserSession::IsLocked()
 		{
 			return m_bLocked;
@@ -179,81 +334,66 @@ namespace Zion
 			_U64 id = (((_U64)server_id)<<32) | ((_U64)avatar_id);
 			String name = StringFormat("%u:%s", server_id, avatar_name.c_str());
 
-			Map<String, CUserSession*>::iterator n;
-			n = m_pManager->m_AvatarNames.find(name);
-			if(n!=m_pManager->m_AvatarNames.end()) return false;
+			if(g_session_avatar_name_map.Insert(name, m_nIndex))
+			{
+				if(g_session_avatar_id_map.Insert(id, m_nIndex))
+				{
+					m_nServerID = server_id;
+					m_nAvatarID = avatar_id;
+					m_AvatarName = avatar_name;
+					return true;
+				}
+				g_session_avatar_name_map.Remove(name, m_nIndex);
+			}
 
-			Map<_U64, CUserSession*>::iterator i;
-			i = m_pManager->m_AvatarIDs.find(id);
-			if(i!=m_pManager->m_AvatarIDs.end()) return false;
-
-			m_pManager->m_AvatarIDs[id] = this;
-			m_pManager->m_AvatarNames[name] = this;
-			m_nServerID = server_id;
-			m_nAvatarID = avatar_id;
-			m_AvatarName = avatar_name;
-			return true;
+			return false;
 		}
 
 		bool CUserSession::UnbindAvatar()
 		{
 			if(m_nAvatarID==(_U32)-1) return false;
 
-			_U64 id = (((_U64)m_nServerID)<<32) | ((_U64)m_nAvatarID);
-			String name = StringFormat("%u:%s", m_nServerID, m_AvatarName.c_str());
+			if(m_nAvatarID!=(_U32)-1)
+			{
+				_U64 id = (((_U64)m_nServerID)<<32) | ((_U64)m_nAvatarID);
+				g_session_avatar_id_map.Remove(id, m_nIndex);
+				m_nAvatarID = (_U32)-1;
+			}
 
-			Map<String, CUserSession*>::iterator n;
-			n = m_pManager->m_AvatarNames.find(name);
-			if(n==m_pManager->m_AvatarNames.end()) return false;
+			if(!m_AvatarName.empty())
+			{
+				String name = StringFormat("%u:%s", m_nServerID, m_AvatarName.c_str());
+				g_session_avatar_name_map.Remove(name, m_nIndex);
+				m_AvatarName.clear();
+			}
 
-			Map<_U64, CUserSession*>::iterator i;
-			i = m_pManager->m_AvatarIDs.find(id);
-			if(i==m_pManager->m_AvatarIDs.end()) return false;
-
-			m_pManager->m_AvatarIDs.erase(i);
-			m_pManager->m_AvatarNames.erase(n);
-			m_nServerID = (_U32)-1;
-			m_nAvatarID = (_U32)-1;
-			m_AvatarName = "";
 			return true;
 		}
 
 		bool CUserSession::JoinDomain(_U32 domain_id)
 		{
-			Map<_U32, CDomain*>::iterator i;
-			i = m_Domains.find(domain_id);
-			if(i!=m_Domains.end()) return false;
-			CDomain* domain;
-			i = m_pManager->m_Domains.find(domain_id);
-			if(i!=m_Domains.end())
-			{
-				domain = i->second;
-			}
-			else
-			{
-				domain = ZION_NEW CDomain(m_pManager, domain_id);
-				m_pManager->m_Domains[domain_id] = domain;
-			}
+			CDomain* domain = CDomain::Lock(domain_id, true);
+			if(!domain) return false;
 			domain->m_Users[m_nUserID] = this;
-			m_Domains[domain_id] = domain;
+			m_Domains.insert(domain_id);
+			CDomain::Unlock(domain);
 			return true;
 		}
 
 		bool CUserSession::LeaveDomain(_U32 domain_id)
 		{
-			Map<_U32, CDomain*>::iterator i;
-			i = m_Domains.find(domain_id);
-			if(i==m_Domains.end()) return false;
+			CDomain* domain = CDomain::Lock(domain_id, false);
+			if(!domain) return false;
 
-			CDomain* domain = i->second;
-			m_Domains.erase(i);
-
-			domain->m_Users.erase(m_nUserID);
-			if(domain->m_Users.empty())
+			Map<_U32, CUserSession*>::iterator i;
+			i = domain->m_Users.find(m_nUserID);
+			if(i!=domain->m_Users.end())
 			{
-				m_pManager->m_Domains.erase(domain_id);
-				ZION_DELETE domain;
+				domain->m_Users.erase(i);
 			}
+
+			CDomain::Unlock(domain);
+			m_Domains.erase(domain_id);
 			return true;
 		}
 
@@ -298,93 +438,6 @@ namespace Zion
 		bool CUserSession::WaitMsg(const JSONRPC_RESPONSE_ID& res)
 		{
 			return true;
-		}
-
-		CManager::CManager()
-		{
-		}
-
-		CManager::~CManager()
-		{
-		}
-
-		CDomain* CManager::GetDomain(_U32 nDomainID)
-		{
-			Map<_U32, CDomain*>::iterator i;
-			i = m_Domains.find(nDomainID);
-			if(i==m_Domains.end()) return NULL;
-			return i->second;
-		}
-
-		CUserSession* CManager::GetUser(_U32 nUserID)
-		{
-			Map<_U32, CUserSession*>::iterator i;
-			i = m_Users.find(nUserID);
-			if(i==m_Users.end()) return NULL;
-			return i->second;
-		}
-
-		CUserSession* CManager::GetUser(_U32 nUserID, _U32 nUserSeq)
-		{
-			Map<_U32, CUserSession*>::iterator i;
-			i = m_Users.find(nUserID);
-			if(i==m_Users.end()) return NULL;
-			if(i->second->GetUserSeq()!=nUserSeq) return NULL;
-			return i->second;
-		}
-
-		CUserSession* CManager::GetAvatar(_U32 server_id, _U32 avatar_id)
-		{
-			_U64 id = (((_U64)server_id)<<32) | ((_U64)avatar_id);
-			Map<_U64, CUserSession*>::iterator i;
-			i = m_AvatarIDs.find(id);
-			if(i==m_AvatarIDs.end()) return NULL;
-			return i->second;
-
-		}
-
-		CUserSession* CManager::GetAvatar(_U32 server_id, const String& avatar_name)
-		{
-			String name = StringFormat("%u:%s", server_id, avatar_name.c_str());
-			Map<String, CUserSession*>::iterator i;
-			i = m_AvatarNames.find(name);
-			if(i==m_AvatarNames.end()) return NULL;
-			return i->second;
-		}
-
-		CUserSession* CManager::Login(_U32 nUserID)
-		{
-			Map<_U32, CUserSession*>::iterator i;
-			i = m_Users.find(nUserID);
-			CUserSession* session;
-			if(i==m_Users.end())
-			{
-				session = ZION_NEW CUserSession(this, nUserID);
-				m_Users[nUserID] = session;
-			}
-			else
-			{
-				session = i->second;
-				if(session->IsLocked() || !session->Logout())
-				{
-					return NULL;
-				}
-			}
-			return session;
-		}
-
-		bool CManager::Logout(_U32 nUserID, _U32 nUserSeq)
-		{
-			Map<_U32, CUserSession*>::iterator i;
-			i = m_Users.find(nUserID);
-			if(i==m_Users.end()) return false;
-			CUserSession* session = i->second;
-			if(session->GetUserSeq()!=nUserSeq) return false;
-			if(!session->Logout()) return false;
-			m_Users.erase(i);
-			ZION_DELETE session;
-			return true;
-
 		}
 
 	}

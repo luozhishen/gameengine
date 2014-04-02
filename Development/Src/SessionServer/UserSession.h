@@ -25,21 +25,25 @@ namespace Zion
 
 		class CDomain;
 		class CUserSession;
-		class CManager;
 
 		class CDomain
 		{
 			friend class CUserSession;
 		public:
-			CDomain(CManager* pManager, _U32 nDomainID);
+			static CDomain* Lock(_U32 domain_id, bool alloc);
+			static void Unlock(CDomain* domain);
+
+			CDomain(_U32 nDomainID);
 			~CDomain();
 
-			_U32 GetDomainID();
+			void SetIndex(_U32 index);
+			_U32 GetIndex();
 
+			_U32 GetDomainID();
 			bool SendMsg(const String& msg);
 
 		private:
-			CManager* m_pManager;
+			_U32 m_nIndex;
 			_U32 m_nDomainID;
 			Map<_U32, CUserSession*> m_Users;
 		};
@@ -47,8 +51,20 @@ namespace Zion
 		class CUserSession
 		{
 		public:
-			CUserSession(CManager* pManager, _U32 nUserID);
+			static CUserSession* LockByUser(_U32 nUserID);
+			static CUserSession* LockByUser(_U32 nUserID, _U32 nUserSeq);
+			static CUserSession* LockByAvatar(_U32 server_id, _U32 avatar_id);
+			static CUserSession* LockByAvatar(_U32 server_id, const String& avatar_name);
+			static void Unlock(CUserSession* session);
+			static CUserSession* Login(_U32 nUserID);
+			static bool Logout(_U32 nUserID, _U32 nUserSeq);
+
+			CUserSession(_U32 nUserID);
 			~CUserSession();
+
+			void SetIndex(_U32 index);
+			_U32 GetIndex();
+			void Reset();
 
 			_U32 GetUserID();
 			_U32 GetUserSeq();
@@ -58,9 +74,7 @@ namespace Zion
 			_U32 GetServerID();
 			_U32 GetAvatarID();
 			const String& GetAvatarName();
-			CDomain* GetDomain(_U32 nDomainID);
 
-			bool Logout();
 			bool IsLocked();
 			bool Lock();
 			bool Unlock(const char* last_response, const String& session_data);
@@ -76,14 +90,13 @@ namespace Zion
 			bool WaitMsg(const JSONRPC_RESPONSE_ID& res);
 
 		private:
-			CManager* m_pManager;
-
+			_U32 m_nIndex;
 			_U32 m_nUserID;
 			_U32 m_nUserSeq;
 			_U32 m_nServerID;
 			_U32 m_nAvatarID;
 			String m_AvatarName;
-			Map<_U32, CDomain*> m_Domains;
+			Set<_U32> m_Domains;
 
 			_U32 m_nMsgSeq;
 			String m_LastMsg;
@@ -96,27 +109,6 @@ namespace Zion
 			String m_SessionData;
 		};
 
-		class CManager
-		{
-			friend class CUserSession;
-		public:
-			CManager();
-			~CManager();
-
-			CDomain* GetDomain(_U32 nDomainID);
-			CUserSession* GetUser(_U32 nUserID);
-			CUserSession* GetUser(_U32 nUserID, _U32 nUserSeq);
-			CUserSession* GetAvatar(_U32 server_id, _U32 avatar_id);
-			CUserSession* GetAvatar(_U32 server_id, const String& avatar_name);
-			CUserSession* Login(_U32 nUserID);
-			bool Logout(_U32 nUserID, _U32 nUserSeq);
-
-		protected:
-			Map<_U32, CDomain*> m_Domains;
-			Map<_U32, CUserSession*> m_Users;
-			Map<_U64, CUserSession*> m_AvatarIDs;
-			Map<String, CUserSession*> m_AvatarNames;
-		};
 	}
 }
 

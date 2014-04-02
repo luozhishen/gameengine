@@ -160,6 +160,10 @@ namespace Zion
 	bool TObjectMap<_U32>::Remove(const _U32& key, _U32 index);
 	template<>
 	_U32 TObjectMap<_U32>::Get(const _U32& key);
+	template<>
+	bool TObjectMap<_U64>::Remove(const _U64& key, _U32 index);
+	template<>
+	_U32 TObjectMap<_U64>::Get(const _U64& key);
 
 }
 

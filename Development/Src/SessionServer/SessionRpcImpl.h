@@ -10,10 +10,12 @@ namespace Zion
 		// return errcode, _U32 user_seq
 		void RPCIMPL_LogoutUser(_U32 user_id, _U32 user_seq);
 		// return errcode
+		void RPCIMPL_KickUser(_U32 user_id);
+		// return errcode
 
-		void RPCIMPL_GetSession(_U32 user_id, _U32 user_seq, _U32 req_seq);
+		void RPCIMPL_GetSession(_U32 user_id, _U32 user_seq, _U32 req_seq, bool with_lock);
 		// return errcode, server_id, avatar_id, last_response, session_data
-		void RPCIMPL_SetSession(_U32 user_id, _U32 user_seq, _U32 req_seq, const String& session_data);
+		void RPCIMPL_SetSession(_U32 user_id, _U32 user_seq, _U32 req_seq, const String& session_data, bool free_lock);
 		// return errcode
 
 		void RPCIMPL_BindAvatar(_U32 user_id, _U32 user_seq, _U32 server_id, _U32 avatar_id, const String& avatar_name);

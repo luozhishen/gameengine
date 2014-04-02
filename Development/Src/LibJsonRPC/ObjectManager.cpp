@@ -67,4 +67,34 @@ namespace Zion
 		return index;
 	}
 
+	template<>
+	bool TObjectMap<_U64>::Remove(const _U64& key, _U32 index)
+	{
+		Map<_U64, _U32>::iterator i;
+		uv_rwlock_wrlock(&m_locker);
+		i = m_map.find(key);
+		if(i==m_map.end() || i->second!=index)
+		{
+			index = (_U32)-1;
+		}
+		else
+		{
+			m_map.erase(i);
+		}
+		uv_rwlock_wrunlock(&m_locker);
+		return index!=(_U32)-1;
+	}
+
+	template<>
+	_U32 TObjectMap<_U64>::Get(const _U64& key)
+	{
+		_U32 index = -1;
+		Map<_U64, _U32>::iterator i;
+		uv_rwlock_rdlock(&m_locker);
+		i = m_map.find(key);
+		if(i!=m_map.end()) index = i->second;
+		uv_rwlock_rdunlock(&m_locker);
+		return index;
+	}
+
 }

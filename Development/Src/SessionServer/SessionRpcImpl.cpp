@@ -70,13 +70,10 @@ namespace Zion
 			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
 			if(session)
 			{
-				/*
-				if(session->Unlock(last_response, session_data))
-				{
-					JsonRPC_Send("[0]");
-					return;
-				}
-				*/
+				ZION_ASSERT(0);
+				CUserSession::Unlock(session);
+				JsonRPC_Send("[0]");
+				return;
 			}
 			JsonRPC_Send("[-1]");
 		}

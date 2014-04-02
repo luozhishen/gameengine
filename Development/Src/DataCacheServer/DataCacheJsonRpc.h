@@ -15,7 +15,7 @@ namespace Zion
 		void JsonRPC_CreateObject(const JsonValue& args);
 		void JsonRPC_UpdateObject(const JsonValue& args);
 		void JsonRPC_DeleteObject(const JsonValue& args);
-		void JsonRPC_LoadObjectFromDB(const JsonValue& args);
+		void JsonRPC_LoadObject(const JsonValue& args);
 		void JsonRPC_ExecuteBatch(const JsonValue& args);
 
 	}

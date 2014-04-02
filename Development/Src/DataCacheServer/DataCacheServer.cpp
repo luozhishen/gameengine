@@ -186,7 +186,7 @@ namespace Zion
 			JsonRPC_Bind("createObject",	JsonRPC_CreateObject);
 			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);
 			JsonRPC_Bind("deleteObject",	JsonRPC_DeleteObject);
-			JsonRPC_Bind("loadObject",		JsonRPC_LoadObjectFromDB);
+			JsonRPC_Bind("loadObject",		JsonRPC_LoadObject);
 			JsonRPC_Bind("executeBatch",	JsonRPC_ExecuteBatch);
 			printf("start JsonRpc Server...\n");
 #ifndef _WIN32
@@ -285,7 +285,7 @@ namespace Zion
 				else if(method=="KeepAlive") JsonRPC_KeepAlive(json);
 				else if(method=="UpdateObject") JsonRPC_UpdateObject(json);
 				else if(method=="DeleteObject") JsonRPC_DeleteObject(json);
-				else if(method=="LoadObjectFromDB") JsonRPC_LoadObjectFromDB(json);
+				else if(method=="LoadObject") JsonRPC_LoadObject(json);
 				else if(method=="ExecuteBatch") JsonRPC_ExecuteBatch(json);
 				else ZION_FATAL("invalid method : line %u", lineno);
 			}

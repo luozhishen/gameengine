@@ -46,8 +46,8 @@ namespace Zion
 		// return errcode, version
 		void RPCIMPL_DeleteObject(_U32 avatar_id, _U32 version, const A_UUID* _uuids, _U32 count);
 		// return errcode, version
-		void RPCIMPL_LoadObjectFromDB(_U32 avatar_id, const A_UUID& _uuid);
-		// return errcode, version, uuid, type, data
+		void RPCIMPL_LoadObject(_U32 avatar_id, const A_UUID& _uuid);
+		// return errcode, uuid, type, data
 		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks);
 		// return errcode, version
 

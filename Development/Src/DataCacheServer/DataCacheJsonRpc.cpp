@@ -197,10 +197,10 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_LoadObjectFromDB(const JsonValue& args)
+		void JsonRPC_LoadObject(const JsonValue& args)
 		{
 			if(CONFIG_ENABLE_RPC_REPLAYLOG)
-				WriteRPCLog("LoadObjectFromDB", args);
+				WriteRPCLog("LoadObject", args);
 
 			for(;;)
 			{
@@ -211,7 +211,7 @@ namespace Zion
 				if(!juuid.IsSTR()) break;
 				A_UUID _uuid;
 				if(!AUuidFromString(juuid.AsCSTR(), _uuid)) break;
-				RPCIMPL_LoadObjectFromDB((_U32)_avatar_id.AsU32(), _uuid);
+				RPCIMPL_LoadObject((_U32)_avatar_id.AsU32(), _uuid);
 				return;
 			}
 			JsonRPC_Send("[-1]");

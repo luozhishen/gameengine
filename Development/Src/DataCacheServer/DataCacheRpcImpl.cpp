@@ -464,7 +464,7 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void RPCIMPL_LoadObjectFromDB(_U32 avatar_id, const A_UUID& _uuid)
+		void RPCIMPL_LoadObject(_U32 avatar_id, const A_UUID& _uuid)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
@@ -485,7 +485,7 @@ namespace Zion
 						{
 							char suuid[100];
 							AUuidToString(_uuid, suuid);
-							JsonRPC_Send(StringFormat("[0, %u, \"%s\", \"%s\", \"%s\"]", pAvatar->GetVersion(), suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
+							JsonRPC_Send(StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
 							UnlockAvatar(pAvatar);
 							FreeDatabase(db);
 							return;

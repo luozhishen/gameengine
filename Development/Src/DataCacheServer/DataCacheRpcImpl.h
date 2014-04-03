@@ -6,6 +6,8 @@ namespace Zion
 	namespace DataCache
 	{
 
+		const _U32 MAX_AVATAR =  100*10000;
+
 		enum TASK_TYPE
 		{
 			TASK_CREATE_OBJECT,
@@ -51,6 +53,7 @@ namespace Zion
 		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks);
 		// return errcode, version
 
+		void RPCIMPL_GetChangeList(Set<_U32>& list);
 		void RPCIMPL_Init();
 		void RPCIMPL_FlushAllData();
 

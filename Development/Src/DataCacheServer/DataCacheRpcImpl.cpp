@@ -10,7 +10,6 @@ namespace Zion
 	namespace DataCache
 	{
 
-
 		class CAvatarData;
 
 		class CAvatarData
@@ -42,7 +41,7 @@ namespace Zion
 			_U32 GetAvatarID() { return m_AvatarID; }
 
 			bool Load();
-			bool Save();
+			bool Save(IDBApi* rdb=NULL);
 			void Send();
 
 		private:
@@ -53,24 +52,59 @@ namespace Zion
 			Set<A_UUID> m_DelList;
 		};
 
-		static TObjectManager<CAvatarData, 100*10000> g_avatar_manager;
+/*
+		class CAvatarUpdateList
+		{
+		public:
+			CAvatarUpdateList()
+			{
+				A_MUTEX_INIT(&m_locker);
+			}
+
+			~CAvatarUpdateList()
+			{
+				A_MUTEX_DESTROY(&m_locker);
+			}
+
+			void Set(_U32 avatar_id)
+			{
+				A_MUTEX_LOCK(&m_locker);
+				m_list.insert(avatar_id);
+				A_MUTEX_UNLOCK(&m_locker);
+			}
+
+			void Get(Zion::Set<_U32>& list)
+			{
+				A_MUTEX_LOCK(&m_locker);
+				list = m_list;
+				m_list.clear();
+				A_MUTEX_UNLOCK(&m_locker);
+			}
+
+		private:
+			A_MUTEX m_locker;
+			Zion::Set<_U32>& m_list;
+		};
+*/
+
+		static TObjectManager<CAvatarData, MAX_AVATAR> g_avatar_manager;
 		static TObjectMap<_U32> g_avatar_id_map;
+//		static CAvatarUpdateList g_avatar_update;
 
 		static _U32 InsertAvatar(CAvatarData* data)
 		{
 			_U32 index = g_avatar_manager.Insert(data);
-			if(index==(_U32)-1) return (_U32)-1;
-			_U32 avatar_id = data->GetAvatarID();
-			if(!g_avatar_id_map.Insert(avatar_id, index))
+			if(index!=(_U32)-1)
 			{
+				_U32 avatar_id = data->GetAvatarID();
+				if(g_avatar_id_map.Insert(avatar_id, index))
+				{
+					data->SetIndex(index);
+					return index;
+				}
 				g_avatar_manager.Remove(index, data);
-				return (_U32)-1;
 			}
-			else
-			{
-				data->SetIndex(index);
-			}
-			return index;
+			return (_U32)-1;
 		}
 
 		static bool RemoveAvatar(CAvatarData* data)
@@ -224,9 +258,9 @@ namespace Zion
 			return false;
 		}
 
-		bool CAvatarData::Save()
+		bool CAvatarData::Save(IDBApi* rdb)
 		{
-			IDBApi* db = AllocDataBase();
+			IDBApi* db = rdb?rdb:AllocDataBase();
 			while(db)
 			{
 				Set<A_UUID>::iterator i1;
@@ -267,7 +301,7 @@ namespace Zion
 				FreeDatabase(db);
 				return true;
 			}
-			if(db)
+			if(db && !rdb)
 			{
 				FreeDatabase(db);
 			}
@@ -320,6 +354,7 @@ namespace Zion
 						{
 							JsonRPC_Send(StringFormat("[0,%u]", avatar_id).c_str());
 							FreeDatabase(db);
+							// g_avatar_update.Set(avatar_id);
 							return;
 						}
 					}
@@ -332,16 +367,26 @@ namespace Zion
 
 		void RPCIMPL_DeleteAvatar(_U32 avatar_id)
 		{
-			IDBApi* db = AllocDataBase();
-			if(db)
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
+			if(!pAvatar)
 			{
-				if(db->DeleteAvatar(avatar_id))
+				IDBApi* db = AllocDataBase();
+				if(db)
 				{
-					JsonRPC_Send("[0]");
+					if(!pAvatar->IsDirty() || pAvatar->Save(db))
+					{
+						if(db->DeleteAvatar(avatar_id))
+						{
+							RemoveAvatar(pAvatar);
+							FreeDatabase(db);
+							JsonRPC_Send("[0]");
+							// g_avatar_update.Set(avatar_id);
+							return;
+						}
+					}
 					FreeDatabase(db);
-					return;
 				}
-				FreeDatabase(db);
+				UnlockAvatar(pAvatar);
 			}
 			JsonRPC_Send("[-1]");
 			return;
@@ -360,6 +405,7 @@ namespace Zion
 					ZION_DELETE pAvatar;
 					JsonRPC_Send("[-1]");
 					_GetAvatar_Error += 1;
+					// g_avatar_update.Set(avatar_id);
 					return;
 				}
 			}
@@ -373,225 +419,200 @@ namespace Zion
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(pAvatar)
 			{
-				JsonRPC_Send("[-1]");
-				return;
+				if(pAvatar->Save())
+				{
+					UnlockAvatar(pAvatar);
+					JsonRPC_Send("[0]");
+					// g_avatar_update.Set(avatar_id);
+					return;
+				}
+				UnlockAvatar(pAvatar);
 			}
-
-			if(pAvatar->Save())
-			{
-				JsonRPC_Send("[0]");
-			}
-			else
-			{
-				JsonRPC_Send("[-1]");
-			}
-			UnlockAvatar(pAvatar);
+			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_KeepAlive(_U32 avatar_id)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(!pAvatar)
+			if(pAvatar)
 			{
-				JsonRPC_Send("[-1]");
+				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());;
+				UnlockAvatar(pAvatar);
 				return;
 			}
-			JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());;
-			UnlockAvatar(pAvatar);
+			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_CreateObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* type, const char* data)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(!pAvatar)
+			if(pAvatar)
 			{
-				JsonRPC_Send("[-1]");
-				return;
-			}
-			if(pAvatar->GetVersion()==version)
-			{
-				if(pAvatar->CreateObject(_uuid, type, data, false, true))
+				if(pAvatar->GetVersion()==version)
 				{
-					UnlockAvatar(pAvatar);
-					JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
-					return;
+					if(pAvatar->CreateObject(_uuid, type, data, false, true))
+					{
+						JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+						UnlockAvatar(pAvatar);
+						return;
+					}
 				}
+				UnlockAvatar(pAvatar);
 			}
-			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_UpdateObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* data)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(!pAvatar)
+			if(pAvatar)
 			{
-				JsonRPC_Send("[-1]");
-				return;
-			}
-			if(pAvatar->GetVersion()==version)
-			{
-				if(pAvatar->UpdateObject(_uuid, data))
+				if(pAvatar->GetVersion()==version)
 				{
-					UnlockAvatar(pAvatar);
-					JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
-					return;
+					if(pAvatar->UpdateObject(_uuid, data))
+					{
+						UnlockAvatar(pAvatar);
+						JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+						return;
+					}
 				}
+				UnlockAvatar(pAvatar);
 			}
-			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_DeleteObject(_U32 avatar_id, _U32 version, const A_UUID* _uuids, _U32 count)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(!pAvatar)
+			if(pAvatar)
 			{
-				JsonRPC_Send("[-1]");
-				return;
-			}
-			if(pAvatar->GetVersion()==version)
-			{
-				for(_U32 l=0; l<count; l++)
+				if(pAvatar->GetVersion()==version)
 				{
-					pAvatar->DeleteObject(_uuids[l]);
+					for(_U32 l=0; l<count; l++)
+					{
+						pAvatar->DeleteObject(_uuids[l]);
+					}
+					JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+					UnlockAvatar(pAvatar);
+					return;
 				}
 				UnlockAvatar(pAvatar);
-				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
-				return;
 			}
-			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_LoadObject(_U32 avatar_id, const A_UUID& _uuid)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(!pAvatar)
+			if(pAvatar)
 			{
-				JsonRPC_Send("[-1]");
-				return;
-			}
-
-			if(!pAvatar->ExistObject(_uuid))
-			{
-				IDBApi* db = AllocDataBase();
-				if(db)
+				if(!pAvatar->ExistObject(_uuid))
 				{
-					if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
+					IDBApi* db = AllocDataBase();
+					if(db)
 					{
-						const CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
-						if(pObject)
+						if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
 						{
-							char suuid[100];
-							AUuidToString(_uuid, suuid);
-							JsonRPC_Send(StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
-							UnlockAvatar(pAvatar);
-							FreeDatabase(db);
-							return;
+							const CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
+							if(pObject)
+							{
+								FreeDatabase(db);
+								char suuid[100];
+								AUuidToString(_uuid, suuid);
+								JsonRPC_Send(StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
+								UnlockAvatar(pAvatar);
+								return;
+							}
 						}
+						FreeDatabase(db);
 					}
-					FreeDatabase(db);
 				}
+				UnlockAvatar(pAvatar);
 			}
-			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(!pAvatar)
+			if(pAvatar)
 			{
-				JsonRPC_Send("[-1]");
-				return;
-			}
-
-			if(pAvatar->GetVersion()!=version)
-			{
-				UnlockAvatar(pAvatar);
-				JsonRPC_Send("[-1]");
-				return;
-			}
-
-			IDBApi* db = AllocDataBase();
-			if(!db)
-			{
-				UnlockAvatar(pAvatar);
-				JsonRPC_Send("[-1]");
-				return;
-			}
-
-			if(!db->BeginTranscation())
-			{
-				UnlockAvatar(pAvatar);
-				FreeDatabase(db);
-				JsonRPC_Send("[-1]");
-				return;
-			}
-
-			for(;;)
-			{
-				_U32 i;
-				for(i=0; i<(_U32)tasks.size(); i++)
+				if(pAvatar->GetVersion()==version)
 				{
-					bool is_error = true;
-					switch(tasks[i]._task_type)
+					IDBApi* db = AllocDataBase();
+					if(db)
 					{
-					case TASK_CREATE_OBJECT:
-						if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
-						break;
-					case TASK_DELETE_OBJECT:
-					case TASK_UPDATE_OBJECT:
-						if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
-						break;
-					case TASK_DELETE_TASK:
-						if(db->LockTask(avatar_id, tasks[i]._task_id)) is_error = false;
-						break;
-					}
-					if(is_error) break;
-				}
-				if(i!=(_U32)tasks.size()) break;
+						if(db->BeginTranscation())
+						{
+							for(;;)
+							{
+								_U32 i;
+								for(i=0; i<(_U32)tasks.size(); i++)
+								{
+									bool is_error = true;
+									switch(tasks[i]._task_type)
+									{
+									case TASK_CREATE_OBJECT:
+										if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+										break;
+									case TASK_DELETE_OBJECT:
+									case TASK_UPDATE_OBJECT:
+										if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+										break;
+									case TASK_DELETE_TASK:
+										if(db->LockTask(avatar_id, tasks[i]._task_id)) is_error = false;
+										break;
+									}
+									if(is_error) break;
+								}
+								if(i!=(_U32)tasks.size()) break;
 
-				for(i=0; i<(_U32)tasks.size(); i++)
-				{
-					switch(tasks[i]._task_type)
-					{
-					case TASK_CREATE_OBJECT:
-						pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true, true);
-						break;
-					case TASK_DELETE_OBJECT:
-						pAvatar->DeleteObject(tasks[i]._obj_uuid);
-						break;
-					case TASK_UPDATE_OBJECT:
-						pAvatar->UpdateObject(tasks[i]._obj_uuid, tasks[i]._obj_data.c_str());
-						break;
-					case TASK_DELETE_TASK:
-						// do something
-						db->DeleteTask(avatar_id, tasks[i]._task_id);
-						break;
+								for(i=0; i<(_U32)tasks.size(); i++)
+								{
+									bool no_error = false;
+									switch(tasks[i]._task_type)
+									{
+									case TASK_CREATE_OBJECT:
+										no_error = pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true, true);
+										break;
+									case TASK_DELETE_OBJECT:
+										no_error = pAvatar->DeleteObject(tasks[i]._obj_uuid);
+										break;
+									case TASK_UPDATE_OBJECT:
+										no_error = pAvatar->UpdateObject(tasks[i]._obj_uuid, tasks[i]._obj_data.c_str());
+										break;
+									case TASK_DELETE_TASK:
+										no_error = db->DeleteTask(avatar_id, tasks[i]._task_id);
+										break;
+									}
+									if(!no_error) break;
+								}
+								if(i!=(_U32)tasks.size()) break;
+
+								if(pAvatar->Save(db))
+								{
+									if(db->CommitTransaction())
+									{
+										version = pAvatar->GetVersion();
+										UnlockAvatar(pAvatar);
+										FreeDatabase(db);
+										JsonRPC_Send(StringFormat("[0,%u]", version).c_str());
+										return;
+									}
+								}
+							}
+							db->RollbackTransaction();
+						}
+						FreeDatabase(db);
 					}
 				}
-
-				pAvatar->Save();
-				if(db->CommitTransaction())
-				{
-					// clear dirty
-				}
-				else
-				{
-					// ???
-				}
-				version = pAvatar->GetVersion();
 				UnlockAvatar(pAvatar);
-				FreeDatabase(db);
-				JsonRPC_Send(StringFormat("[0,%u]", version).c_str());
-				return;
 			}
-			UnlockAvatar(pAvatar);
-			db->RollbackTransaction();
-			FreeDatabase(db);
 			JsonRPC_Send("[-1]");
+		}
+
+		void RPCIMPL_GetChangeList(Set<_U32>& list)
+		{
 		}
 
 		void RPCIMPL_Init()

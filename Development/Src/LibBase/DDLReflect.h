@@ -1,7 +1,7 @@
 #ifndef __DDL_REFLECT_INCLUDE__
 #define __DDL_REFLECT_INCLUDE__
 
-#include <json/jsoncpp.h>
+#include "jsoncpp/include/json/jsoncpp.h"
 
 namespace DDLReflect
 {

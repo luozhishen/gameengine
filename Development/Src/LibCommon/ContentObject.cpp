@@ -4,8 +4,6 @@
 
 #include <map>
 #include <string>
-#include <json/reader.h>
-#include <json/writer.h>
 #include <fstream>
 #include "des64.h"
 

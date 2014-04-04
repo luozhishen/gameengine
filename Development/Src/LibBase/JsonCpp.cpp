@@ -1,16 +1,19 @@
 #include "ZionBase.h"
 
-#include <json/config.h>
-#include <json/jsoncpp.h>
-#include <json/autolink.h>
-#include <json/value.h>
-#include <json/reader.h>
-#include <json/writer.h>
-#include <json/features.h>
-#include <json/forwards.h>
+#pragma warning(disable:4127)
+#pragma warning(disable:4167)
+
+#include "jsoncpp/include/json/config.h"
+#include "jsoncpp/include/json/jsoncpp.h"
+#include "jsoncpp/include/json/autolink.h"
+#include "jsoncpp/include/json/value.h"
+#include "jsoncpp/include/json/reader.h"
+#include "jsoncpp/include/json/writer.h"
+#include "jsoncpp/include/json/features.h"
+#include "jsoncpp/include/json/forwards.h"
 
 #define JSON_ASSERT_MESSAGE( condition, message ) assert( condition )
 
-#include <json_reader.cpp>
-#include <json_value.cpp>
-#include <json_writer.cpp>
+#include "jsoncpp/src/lib_json/json_reader.cpp"
+#include "jsoncpp/src/lib_json/json_value.cpp"
+#include "jsoncpp/src/lib_json/json_writer.cpp"

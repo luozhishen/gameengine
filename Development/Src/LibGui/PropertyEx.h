@@ -14,7 +14,7 @@ public:
 	{
 		m_data = data;
 		m_finfo = finfo;
-		SetClientData((ClientDataType)m_finfo);
+		SetClientData((void*)m_finfo);
 	}
 
 	virtual ~CPropertyEx()

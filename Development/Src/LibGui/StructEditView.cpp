@@ -179,7 +179,7 @@ void CStructEditView::InitPropGrid(const DDLReflect::STRUCT_INFO* info, const vo
 	name.Printf(wxT("{%s}"), wxString::FromUTF8(info->name));
 	wxPGProperty* prop = ZION_NEW wxPropertyCategory(name);
 	prop->ChangeFlag(wxPG_PROP_READONLY, true);
-	wxPGId prop_id = m_pPropGrid->Append(prop);
+	wxPGProperty* prop_id = m_pPropGrid->Append(prop);
 
 	for(_U32 i = 0; i < info->fcount; ++i)
 	{
@@ -195,7 +195,7 @@ void CStructEditView::InitPropGrid(const DDLReflect::STRUCT_INFO* info, const vo
 	}
 }
 
-void CStructEditView::CreateStruct(wxPGId id, const wxString& name, const DDLReflect::STRUCT_INFO* info, void* data)
+void CStructEditView::CreateStruct(wxPGProperty* id, const wxString& name, const DDLReflect::STRUCT_INFO* info, void* data)
 {
 	if(info->parent) CreateStruct(id, name, info->parent, data);
 
@@ -213,7 +213,7 @@ void CStructEditView::CreateStruct(wxPGId id, const wxString& name, const DDLRef
 	}
 }
 
-void CStructEditView::CreateArray(wxPGId id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data)
+void CStructEditView::CreateArray(wxPGProperty* id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data)
 {
 	ZION_ASSERT(finfo->type|DDLReflect::TYPE_ARRAY);
 
@@ -221,7 +221,7 @@ void CStructEditView::CreateArray(wxPGId id, const wxString& name, const DDLRefl
 	wxString label(finfo->name, wxMBConvUTF8());
 	wxArrayProperty* prop = ZION_NEW wxArrayProperty(label+wxString::Format(wxT("[%d]"), finfo->alen), name, finfo, data);//wxPG_LABEL, wxString::Format(wxT("array %d"), count));
 	prop->ChangeFlag(wxPG_PROP_COLLAPSED, true);
-	wxPGId prog_id = m_pPropGrid->AppendIn(id, prop);
+	wxPGProperty* prog_id = m_pPropGrid->AppendIn(id, prop);
 	for(_U32 i=0; i<(_U32)finfo->alen; i++)
 	{
 		wxPGProperty* item;
@@ -231,7 +231,7 @@ void CStructEditView::CreateArray(wxPGId id, const wxString& name, const DDLRefl
 	}
 }
 
-wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data, _U32 index)
+wxPGProperty* CStructEditView::CreateProperty(wxPGProperty* id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data, _U32 index)
 {
 	wxString strLabel;
 	wxPGProperty* prop = NULL;
@@ -245,7 +245,7 @@ wxPGProperty* CStructEditView::CreateProperty(wxPGId id, const wxString& name, c
 		strLabel = wxString::FromUTF8(finfo->name);
 	}
 
-	wxPGId prog_id = 0;
+	wxPGProperty* prog_id = 0;
 	bool has_subitem = false;
 	switch(finfo->type&DDLReflect::TYPE_MASK)
 	{

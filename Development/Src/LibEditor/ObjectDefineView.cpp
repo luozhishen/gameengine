@@ -163,7 +163,7 @@ void AddStruct(wxPropertyGrid* pGrid, const DDLReflect::STRUCT_INFO* info)
 	name.Printf(wxT("{%s}"), wxString::FromUTF8(info->name));
 	wxPGProperty* prop = ZION_NEW wxPropertyCategory(name);
 	prop->ChangeFlag(wxPG_PROP_READONLY, true);
-	wxPGId prop_id = pGrid->Append(prop);
+	wxPGProperty* prop_id = pGrid->Append(prop);
 	for(_U16 i=0; i<info->fcount; i++)
 	{
 		Zion::String type;

@@ -23,9 +23,9 @@ public:
 
 private:
 	void InitPropGrid(const DDLReflect::STRUCT_INFO* info, const void* data);
-	void CreateStruct(wxPGId id, const wxString& name, const DDLReflect::STRUCT_INFO* info, void* data);
-	void CreateArray(wxPGId id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data);
-	wxPGProperty* CreateProperty(wxPGId id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data, _U32 index=-1);
+	void CreateStruct(wxPGProperty* id, const wxString& name, const DDLReflect::STRUCT_INFO* info, void* data);
+	void CreateArray(wxPGProperty* id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data);
+	wxPGProperty* CreateProperty(wxPGProperty* id, const wxString& name, const DDLReflect::FIELD_INFO* finfo, void* data, _U32 index=-1);
 
 private:
 	wxPropertyGrid* m_pPropGrid;

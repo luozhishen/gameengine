@@ -27,7 +27,6 @@ void* zion_malloc(size_t size)
 	if(size>(1<<ZION_MEMPOOL_MAX_NDX))
 	{
 		ZION_FATAL("memory size to larger");
-		return NULL;
 	}
 
 	_U32 ndx;

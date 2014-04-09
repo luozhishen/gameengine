@@ -65,7 +65,7 @@ namespace Zion
 			bool _cook;
 			bool _dirty;
 		};
-		static Map<String, CContentGroup> g_content_group_map;
+
 		// content object type
 		struct STRUCT_INTERNAL_INFO
 		{
@@ -76,9 +76,7 @@ namespace Zion
 			Map<String, A_CONTENT_OBJECT*>	key_map;
 			CContentGroup*					group;
 		};
-		const _U16 g_typeid_base = 0x1000;
-		Map<String, _U16>		g_typemap;
-		Array<STRUCT_INTERNAL_INFO>	g_typearray;
+
 		// content object
 		class CContentObjectManager
 		{
@@ -101,7 +99,12 @@ namespace Zion
 			}
 			Map<A_UUID, CContentObject*> m_object_map;
 		};
-		static CContentObjectManager g_objct_manager;
+
+		const _U16 g_typeid_base = 0x1000;
+		static Map<String, _U16>			g_typemap;
+		static Array<STRUCT_INTERNAL_INFO>	g_typearray;
+		static Map<String, CContentGroup>	g_content_group_map;
+		static CContentObjectManager		g_objct_manager;
 		static bool LoadContentFromJsonFile(const char* filename, bool ignore);
 
 		IContentGroup* CreateContentGroup(const char* name, const char* file, bool cook)

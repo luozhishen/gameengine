@@ -17,6 +17,8 @@ namespace Zion
 		// return errcode, server_id, avatar_id, last_response, session_data
 		void RPCIMPL_SetSession(_U32 user_id, _U32 user_seq, _U32 req_seq, const String& session_data, bool free_lock);
 		// return errcode
+		void RPCIMPL_GetSessionInfo(_U32 user_id);
+		// return error, session_info {xxx=xxxx,xxx=xxxx}
 
 		void RPCIMPL_GetServerInfo();
 		// return errcode, count, server_list[]

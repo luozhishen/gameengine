@@ -78,6 +78,20 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
+		void RPCIMPL_GetSessionInfo(_U32 user_id)
+		// return error, session_info {xxx=xxxx,xxx=xxxx}
+		{
+			CUserSession* session = CUserSession::LockByUser(user_id);
+			if(session)
+			{
+				ZION_ASSERT(0);
+				CUserSession::Unlock(session);
+				JsonRPC_Send("[0]");
+				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
 		void RPCIMPL_EnterServer(_U32 user_id, _U32 user_seq, _U32 server_id)
 		// return errcode
 		{

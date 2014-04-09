@@ -96,6 +96,20 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
+		void JsonRpc_GetSessionInfo(const JsonValue& args)
+		// void RPCIMPL_GetSessionInfo(_U32 user_id)
+		{
+			for(;;)
+			{
+				if(args.GetSize()!=4) break;
+				const JsonValue& user_id = args.Get((_U32)0);
+				if(!user_id.IsU32()) break;
+				RPCIMPL_GetSessionInfo(user_id.AsU32());
+				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
 		void JsonRpc_GetServerInfo(const JsonValue& args)
 		// void RPCIMPL_GetServerInfo()
 		{

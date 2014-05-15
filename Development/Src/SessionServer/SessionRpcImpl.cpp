@@ -50,13 +50,13 @@ namespace Zion
 			{
 				if(req_seq==session->GetReqSeq())
 				{
-					JsonRPC_Send(StringFormat("[0,%u,%u,\"%s\",\"\"]", session->GetServerID(), session->GetAvatarID(), session->GetLastResponse().c_str()).c_str());
+					JsonRPC_Send(StringFormat("[0,%u,%u]", session->GetServerID(), session->GetAvatarID()).c_str());
 					CUserSession::Unlock(session);
 					return;
 				}
 				if(req_seq==session->GetReqSeq()+1 && session->Lock())
 				{
-					JsonRPC_Send(StringFormat("[0,%u,%u,\"\",\"%s\"]", session->GetServerID(), session->GetAvatarID(), session->GetSessionData().c_str()).c_str());
+					JsonRPC_Send(StringFormat("[0,%u,%u]", session->GetServerID(), session->GetAvatarID()).c_str());
 					CUserSession::Unlock(session);
 					return;
 				}

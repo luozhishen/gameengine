@@ -349,7 +349,6 @@ namespace Zion
 			}
 			m_Msgs.clear();
 			m_nReqSeq = 0;
-			m_LastResponse = "[]";
 			m_nMsgSeq = 0;
 			m_LastMsg = "[0,[]]";
 		}
@@ -367,16 +366,6 @@ namespace Zion
 		_U32 CUserSession::GetReqSeq()
 		{
 			return m_nReqSeq;
-		}
-
-		const String& CUserSession::GetLastResponse()
-		{
-			return m_LastResponse;
-		}
-		
-		const String& CUserSession::GetSessionData()
-		{
-			return m_SessionData;
 		}
 
 		_U32 CUserSession::GetServerID()
@@ -406,12 +395,10 @@ namespace Zion
 			return true;
 		}
 		
-		bool CUserSession::Unlock(const char* last_response, const String& session_data)
+		bool CUserSession::Unlock()
 		{
 			if(!m_bLocked) return false;
 			m_nReqSeq += 1;
-			m_LastResponse = last_response;
-			m_SessionData = session_data;
 			return true;
 		}
 

@@ -11,10 +11,10 @@ return		errcode
 
 function	lockUser
 arguments	user_id, user_seq, req_seq
-return		errcode, server_id, avatar_id, last_response, session_data
+return		errcode, server_id, avatar_id
 
 function	unlockUser
-arguments	user_id, user_seq, last_response, session_data
+arguments	user_id, user_seq
 return		errcode
 
 function	bindAvatar

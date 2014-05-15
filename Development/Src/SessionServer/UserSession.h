@@ -73,15 +73,13 @@ namespace Zion
 			_U32 GetUserID();
 			_U32 GetUserSeq();
 			_U32 GetReqSeq();
-			const String& GetLastResponse();
-			const String& GetSessionData();
 			_U32 GetServerID();
 			_U32 GetAvatarID();
 			const String& GetAvatarName();
 
 			bool IsLocked();
 			bool Lock();
-			bool Unlock(const char* last_response, const String& session_data);
+			bool Unlock();
 			void SetServer(_U32 server_id);
 			bool BindAvatar(_U32 server_id, _U32 avatar_id, const String& avatar_name);
 			bool UnbindAvatar();
@@ -113,9 +111,7 @@ namespace Zion
 			JSONRPC_RESPONSE_ID m_PendingID;
 
 			_U32 m_nReqSeq;
-			String m_LastResponse;
 			bool m_bLocked;
-			String m_SessionData;
 		};
 
 	}

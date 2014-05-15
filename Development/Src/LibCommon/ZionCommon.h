@@ -14,15 +14,15 @@ namespace Zion
 	void SetHomeDirectory(const char* path);
 
 	_U16 RegisterClientStub(const DDLReflect::CLASS_INFO* pClassInfo);
-	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo, _U32 nodeid=-1);
+	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo);
 
 	_U16 GetClientStubID(const DDLReflect::CLASS_INFO* pClassInfo);
 	_U16 GetServerStubID(const DDLReflect::CLASS_INFO* pClassInfo);
 
 	bool GetClientStub(_U16 id, const DDLReflect::CLASS_INFO*& pClassInfo);
 	bool GetClientStub(const char* name, const DDLReflect::CLASS_INFO*& pClassInfo);
-	bool GetServerStub(_U16 id, const DDLReflect::CLASS_INFO*& pClassInfo, _U32* nodeid=NULL);
-	bool GetServerStub(const char* name, const DDLReflect::CLASS_INFO*& pClassInfo, _U32* nodeid=NULL);
+	bool GetServerStub(_U16 id, const DDLReflect::CLASS_INFO*& pClassInfo);
+	bool GetServerStub(const char* name, const DDLReflect::CLASS_INFO*& pClassInfo);
 
 	bool GetServerFunctionStub(_U16 iid, _U16 fid, const DDLReflect::CLASS_INFO*& cls);
 	bool GetServerFunctionStub(const char* name, const DDLReflect::CLASS_INFO*& cls, _U16& fid);
@@ -42,12 +42,12 @@ namespace Zion
 		return RegisterClientStub(pClassInfo);
 	}
 	template<typename T>
-	_U16 RegisterServerStub(_U32 nodeid)
+	_U16 RegisterServerStub()
 	{
 		const DDLReflect::CLASS_INFO* pClassInfo = DDLReflect::GetClass<T>();
 		ZION_ASSERT(pClassInfo);
 		if(!pClassInfo) return (_U16)-1;
-		return RegisterServerStub(pClassInfo, nodeid);
+		return RegisterServerStub(pClassInfo);
 	}
 
 	template<typename T>

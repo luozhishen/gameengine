@@ -82,183 +82,7 @@ class A_LIVE_OBJECT
 	}
 };
 
-function DATASYNC_JSON_C2S_Dispatcher($fname, $_array, $_this)
-{
-	if($fname=='DS_CreateObject')
-	{
-		if(count($_array)!=2) return false;
-		if(!is_string($_array[0])) return false;
-		$__type = $_array[0];
-		if(!is_string($_array[1])) return false;
-		$__data = $_array[1];
-		$_this->DS_CreateObject($__type, $__data);
-		return true;
-	}
-	if($fname=='DS_UpdateObject')
-	{
-		if(count($_array)!=2) return false;
-		if(!is_string($_array[0])) return false;
-		$___uuid = $_array[0];
-		if(!is_string($_array[1])) return false;
-		$__data = $_array[1];
-		$_this->DS_UpdateObject($___uuid, $__data);
-		return true;
-	}
-	if($fname=='DS_DeleteObject')
-	{
-		if(count($_array)!=2) return false;
-		if(!is_array($_array[0])) return false;
-		$___uuid = array();
-		$_earray = $_array[0];
-		for($__i=0; $__i<count($_earray); $__i++)
-		{
-			if(!is_string($_earray[$__i])) return false;
-			$___uuid[$__i] = $_earray[$__i];
-		}
-		if(!is_int($_array[1])) return false;
-		if($_array[1]<0 || $_array[1]>4294967295) return false;
-		$__count = $_array[1];
-		$_this->DS_DeleteObject($___uuid, $__count);
-		return true;
-	}
-	return false;
-}
-
-class DATASYNC_JSON_S2C
-{
-	public function DS_SyncOpen($flag)
-	{
-		$__result = '';
-		if(!is_int($flag)) return false;
-		if($flag<0 || $flag>4294967295) return false;
-		$__result += $flag;
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SyncOpen","args":['.$__result.']}');
-		return true;
-	}
-	public function DS_SyncReady()
-	{
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SyncReady","args":[]}');
-		return true;
-	}
-	public function DS_SyncClose()
-	{
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SyncClose","args":[]}');
-		return true;
-	}
-	public function DS_CreateObjectDone($_uuid)
-	{
-		$__result = '';
-		if(!is_string($_uuid)) return false;
-		$__result += '"'.$_uuid.'"';
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_CreateObjectDone","args":['.$__result.']}');
-		return true;
-	}
-	public function DS_CreateObject($type, $json)
-	{
-		$__result = '';
-		if(!is_string($type)) return false;
-		$__result += '"'.$type.'"';
-		$__result += ','
-		if(!is_string($json)) return false;
-		$__result += '"'.$json.'"';
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_CreateObject","args":['.$__result.']}');
-		return true;
-	}
-	public function DS_UpdateObject($_uuid, $json)
-	{
-		$__result = '';
-		if(!is_string($_uuid)) return false;
-		$__result += '"'.$_uuid.'"';
-		$__result += ','
-		if(!is_string($json)) return false;
-		$__result += '"'.$json.'"';
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","args":['.$__result.']}');
-		return true;
-	}
-	public function DS_DeleteObject($_uuid, $count)
-	{
-		$__result = '';
-		if(!is_array($_uuid)) return false;
-		$__result += '[';
-		for($__i=0; $__i<count($_uuid); $__i++)
-		{
-			if($__i>0) $__result += ',';
-			if(!is_string($_uuid[$__i])) return false;
-			$__result += '"'.$_uuid[$__i].'"';
-		}
-		$__result += ']';
-		$__result += ','
-		if(!is_int($count)) return false;
-		if($count<0 || $count>4294967295) return false;
-		$__result += $count;
-		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_DeleteObject","args":['.$__result.']}');
-		return true;
-	}
-}
-
-class CARD_AVATAR_OPERATOR extends A_CONTENT_OBJECT
-{
-	public $v1; // int
-	public $v2; // int
-	public $v3; // float
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->v1 = 0;
-		$this->v2 = 0;
-		$this->v3 = 0.0;
-	}
-	public function ToStringInternal()
-	{
-		$__result = parent::ToStringInternal();
-		if($__result!='') $__result = $__result.',';
-		// v1
-		if(!is_int($this->v1)) return '';
-		if($this->v1<0 || $this->v1>4294967295) return false;
-		$__result = $__result.'"v1":'.$this->v1;
-		// v2
-		if(!is_int($this->v2)) return '';
-		$__result = $__result.',"v2":'.$this->v2;
-		// v3
-		if(!is_numeric($this->v3)) return '';
-		$__result = $__result.',"v3":'.$this->v3;
-		return $__result;
-	}
-	public function ToString()
-	{
-		return '{'.$this->ToStringInternal().'}';
-	}
-	public function ToArray($_array=array())
-	{
-		$_array = parent::ToArray($_array);
-		// v1
-		$_array['v1'] = $this->v1;
-		// v2
-		$_array['v2'] = $this->v2;
-		// v3
-		$_array['v3'] = $this->v3;
-		return $_array;
-	}
-	public function FromArray($_array)
-	{
-		if(!is_array($_array)) return false;
-		if(!parent::FromArray($_array)) return false;
-		// v1
-		if(!is_int($_array['v1'])) return false;
-		if($_array['v1']<0 || $_array['v1']>4294967295) return false;
-		$this->v1 = $_array['v1'];
-		// v2
-		if(!is_int($_array['v2'])) return false;
-		$this->v2 = $_array['v2'];
-		// v3
-		if(!is_numeric($_array['v3'])) return false;
-		$this->v3 = $_array['v3'];
-		return true;
-	}
-};
-
-class CARD_AVATAR_DESC extends A_LIVE_OBJECT
+class CG_AVATAR_DESC extends A_LIVE_OBJECT
 {
 	public $avatar_id; // int
 	public $avatar_name; // string
@@ -310,14 +134,16 @@ class CARD_AVATAR_DESC extends A_LIVE_OBJECT
 	}
 };
 
-class CARD_AVATAR extends A_LIVE_OBJECT
+class CG_AVATAR extends A_LIVE_OBJECT
 {
 	public $avatar_name; // string
+	public $money; // float
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->avatar_name = '';
+		$this->money = 0.0;
 	}
 	public function ToStringInternal()
 	{
@@ -326,6 +152,9 @@ class CARD_AVATAR extends A_LIVE_OBJECT
 		// avatar_name
 		if(!is_string($this->avatar_name)) return '';
 		$__result = $__result.'"avatar_name":"'.$this->avatar_name.'"';
+		// money
+		if(!is_numeric($this->money)) return '';
+		$__result = $__result.',"money":'.$this->money;
 		return $__result;
 	}
 	public function ToString()
@@ -337,6 +166,8 @@ class CARD_AVATAR extends A_LIVE_OBJECT
 		$_array = parent::ToArray($_array);
 		// avatar_name
 		$_array['avatar_name'] = $this->avatar_name;
+		// money
+		$_array['money'] = $this->money;
 		return $_array;
 	}
 	public function FromArray($_array)
@@ -346,31 +177,41 @@ class CARD_AVATAR extends A_LIVE_OBJECT
 		// avatar_name
 		if(!is_string($_array['avatar_name'])) return false;
 		$this->avatar_name = $_array['avatar_name'];
+		// money
+		if(!is_numeric($_array['money'])) return false;
+		$this->money = $_array['money'];
 		return true;
 	}
 };
 
-class CARD_AVATAR_OWNOBJ extends A_LIVE_OBJECT
+class CG_CARD extends A_LIVE_OBJECT
 {
-	public $obj_name; // string
-	public $obj_value; // float
+	public $content_uuid; // string
+	public $win_count; // int
+	public $lost_count; // int
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->obj_name = '';
-		$this->obj_value = 0.0;
+		$this->content_uuid = '';
+		$this->win_count = 0;
+		$this->lost_count = 0;
 	}
 	public function ToStringInternal()
 	{
 		$__result = parent::ToStringInternal();
 		if($__result!='') $__result = $__result.',';
-		// obj_name
-		if(!is_string($this->obj_name)) return '';
-		$__result = $__result.'"obj_name":"'.$this->obj_name.'"';
-		// obj_value
-		if(!is_numeric($this->obj_value)) return '';
-		$__result = $__result.',"obj_value":'.$this->obj_value;
+		// content_uuid
+		if(!is_string($this->content_uuid)) return '';
+		$__result = $__result.'"content_uuid":"'.$this->content_uuid.'"';
+		// win_count
+		if(!is_int($this->win_count)) return '';
+		if($this->win_count<0 || $this->win_count>4294967295) return false;
+		$__result = $__result.',"win_count":'.$this->win_count;
+		// lost_count
+		if(!is_int($this->lost_count)) return '';
+		if($this->lost_count<0 || $this->lost_count>4294967295) return false;
+		$__result = $__result.',"lost_count":'.$this->lost_count;
 		return $__result;
 	}
 	public function ToString()
@@ -380,67 +221,146 @@ class CARD_AVATAR_OWNOBJ extends A_LIVE_OBJECT
 	public function ToArray($_array=array())
 	{
 		$_array = parent::ToArray($_array);
-		// obj_name
-		$_array['obj_name'] = $this->obj_name;
-		// obj_value
-		$_array['obj_value'] = $this->obj_value;
+		// content_uuid
+		$_array['content_uuid'] = $this->content_uuid;
+		// win_count
+		$_array['win_count'] = $this->win_count;
+		// lost_count
+		$_array['lost_count'] = $this->lost_count;
 		return $_array;
 	}
 	public function FromArray($_array)
 	{
 		if(!is_array($_array)) return false;
 		if(!parent::FromArray($_array)) return false;
-		// obj_name
-		if(!is_string($_array['obj_name'])) return false;
-		$this->obj_name = $_array['obj_name'];
-		// obj_value
-		if(!is_numeric($_array['obj_value'])) return false;
-		$this->obj_value = $_array['obj_value'];
+		// content_uuid
+		if(!is_string($_array['content_uuid'])) return false;
+		$this->content_uuid = $_array['content_uuid'];
+		// win_count
+		if(!is_int($_array['win_count'])) return false;
+		if($_array['win_count']<0 || $_array['win_count']>4294967295) return false;
+		$this->win_count = $_array['win_count'];
+		// lost_count
+		if(!is_int($_array['lost_count'])) return false;
+		if($_array['lost_count']<0 || $_array['lost_count']>4294967295) return false;
+		$this->lost_count = $_array['lost_count'];
 		return true;
 	}
 };
 
-function DATASYNC_JSON_C2S_Dispatcher($fname, $_array, $_this)
+class CG_SHOPITEM extends A_CONTENT_OBJECT
 {
-	if($fname=='DS_CreateObject')
+	public $shopitem_id; // string
+	public $price; // int
+	public $content_uuid; // string
+
+	public function __construct()
 	{
-		if(count($_array)!=2) return false;
-		if(!is_string($_array[0])) return false;
-		$__type = $_array[0];
-		if(!is_string($_array[1])) return false;
-		$__data = $_array[1];
-		$_this->DS_CreateObject($__type, $__data);
+		parent::__construct();
+		$this->shopitem_id = '';
+		$this->price = 0;
+		$this->content_uuid = '';
+	}
+	public function ToStringInternal()
+	{
+		$__result = parent::ToStringInternal();
+		if($__result!='') $__result = $__result.',';
+		// shopitem_id
+		if(!is_string($this->shopitem_id)) return '';
+		$__result = $__result.'"shopitem_id":"'.$this->shopitem_id.'"';
+		// price
+		if(!is_int($this->price)) return '';
+		if($this->price<0 || $this->price>4294967295) return false;
+		$__result = $__result.',"price":'.$this->price;
+		// content_uuid
+		if(!is_string($this->content_uuid)) return '';
+		$__result = $__result.',"content_uuid":"'.$this->content_uuid.'"';
+		return $__result;
+	}
+	public function ToString()
+	{
+		return '{'.$this->ToStringInternal().'}';
+	}
+	public function ToArray($_array=array())
+	{
+		$_array = parent::ToArray($_array);
+		// shopitem_id
+		$_array['shopitem_id'] = $this->shopitem_id;
+		// price
+		$_array['price'] = $this->price;
+		// content_uuid
+		$_array['content_uuid'] = $this->content_uuid;
+		return $_array;
+	}
+	public function FromArray($_array)
+	{
+		if(!is_array($_array)) return false;
+		if(!parent::FromArray($_array)) return false;
+		// shopitem_id
+		if(!is_string($_array['shopitem_id'])) return false;
+		$this->shopitem_id = $_array['shopitem_id'];
+		// price
+		if(!is_int($_array['price'])) return false;
+		if($_array['price']<0 || $_array['price']>4294967295) return false;
+		$this->price = $_array['price'];
+		// content_uuid
+		if(!is_string($_array['content_uuid'])) return false;
+		$this->content_uuid = $_array['content_uuid'];
 		return true;
 	}
-	if($fname=='DS_UpdateObject')
+};
+
+class CG_CARD_CONFIG extends A_CONTENT_OBJECT
+{
+	public $disp_name; // string
+	public $point; // int
+
+	public function __construct()
 	{
-		if(count($_array)!=2) return false;
-		if(!is_string($_array[0])) return false;
-		$___uuid = $_array[0];
-		if(!is_string($_array[1])) return false;
-		$__data = $_array[1];
-		$_this->DS_UpdateObject($___uuid, $__data);
+		parent::__construct();
+		$this->disp_name = '';
+		$this->point = 0;
+	}
+	public function ToStringInternal()
+	{
+		$__result = parent::ToStringInternal();
+		if($__result!='') $__result = $__result.',';
+		// disp_name
+		if(!is_string($this->disp_name)) return '';
+		$__result = $__result.'"disp_name":"'.$this->disp_name.'"';
+		// point
+		if(!is_int($this->point)) return '';
+		if($this->point<0 || $this->point>4294967295) return false;
+		$__result = $__result.',"point":'.$this->point;
+		return $__result;
+	}
+	public function ToString()
+	{
+		return '{'.$this->ToStringInternal().'}';
+	}
+	public function ToArray($_array=array())
+	{
+		$_array = parent::ToArray($_array);
+		// disp_name
+		$_array['disp_name'] = $this->disp_name;
+		// point
+		$_array['point'] = $this->point;
+		return $_array;
+	}
+	public function FromArray($_array)
+	{
+		if(!is_array($_array)) return false;
+		if(!parent::FromArray($_array)) return false;
+		// disp_name
+		if(!is_string($_array['disp_name'])) return false;
+		$this->disp_name = $_array['disp_name'];
+		// point
+		if(!is_int($_array['point'])) return false;
+		if($_array['point']<0 || $_array['point']>4294967295) return false;
+		$this->point = $_array['point'];
 		return true;
 	}
-	if($fname=='DS_DeleteObject')
-	{
-		if(count($_array)!=2) return false;
-		if(!is_array($_array[0])) return false;
-		$___uuid = array();
-		$_earray = $_array[0];
-		for($__i=0; $__i<count($_earray); $__i++)
-		{
-			if(!is_string($_earray[$__i])) return false;
-			$___uuid[$__i] = $_earray[$__i];
-		}
-		if(!is_int($_array[1])) return false;
-		if($_array[1]<0 || $_array[1]>4294967295) return false;
-		$__count = $_array[1];
-		$_this->DS_DeleteObject($___uuid, $__count);
-		return true;
-	}
-	return false;
-}
+};
 
 class DATASYNC_JSON_S2C
 {
@@ -514,7 +434,7 @@ class DATASYNC_JSON_S2C
 	}
 }
 
-function CARDGAME_C2S_Dispatcher($fname, $_array, $_this)
+function CGSERVER_BASE_Dispatcher($fname, $_array, $_this)
 {
 	if($fname=='Ping')
 	{
@@ -566,11 +486,51 @@ function CARDGAME_C2S_Dispatcher($fname, $_array, $_this)
 	return false;
 }
 
-class CARDGAME_S2C
+function CGSERVER_GAME_Dispatcher($fname, $_array, $_this)
+{
+	if($fname=='Buy')
+	{
+		if(count($_array)!=1) return false;
+		if(!is_string($_array[0])) return false;
+		$__shopitem_id = $_array[0];
+		$_this->Buy($__shopitem_id);
+		return true;
+	}
+	if($fname=='Discard')
+	{
+		if(count($_array)!=1) return false;
+		if(!is_string($_array[0])) return false;
+		$__uuid = $_array[0];
+		$_this->Discard($__uuid);
+		return true;
+	}
+	if($fname=='Beg')
+	{
+		if(count($_array)!=1) return false;
+		if(!is_int($_array[0])) return false;
+		if($_array[0]<0 || $_array[0]>4294967295) return false;
+		$__money = $_array[0];
+		$_this->Beg($__money);
+		return true;
+	}
+	if($fname=='Gamble')
+	{
+		if(count($_array)!=2) return false;
+		if(!is_string($_array[0])) return false;
+		$__card = $_array[0];
+		if(!is_int($_array[1])) return false;
+		$__mode = $_array[1];
+		$_this->Gamble($__card, $__mode);
+		return true;
+	}
+	return false;
+}
+
+class CGCALLBACK_BASE
 {
 	public function Pong()
 	{
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.Pong","args":[]}');
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.Pong","args":[]}');
 		return true;
 	}
 	public function GetAvatarListCallback($errcode, $arr, $count)
@@ -592,7 +552,7 @@ class CARDGAME_S2C
 		if(!is_int($count)) return false;
 		if($count<0 || $count>4294967295) return false;
 		$__result += $count;
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.GetAvatarListCallback","args":['.$__result.']}');
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.GetAvatarListCallback","args":['.$__result.']}');
 		return true;
 	}
 	public function CreateAvatarCallback($errcode)
@@ -601,7 +561,7 @@ class CARDGAME_S2C
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
 		$__result += $errcode;
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.CreateAvatarCallback","args":['.$__result.']}');
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.CreateAvatarCallback","args":['.$__result.']}');
 		return true;
 	}
 	public function EnterGameCallback($errcode)
@@ -610,7 +570,7 @@ class CARDGAME_S2C
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
 		$__result += $errcode;
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.EnterGameCallback","args":['.$__result.']}');
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.EnterGameCallback","args":['.$__result.']}');
 		return true;
 	}
 	public function LeaveGameCallback($errcode)
@@ -619,7 +579,34 @@ class CARDGAME_S2C
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
 		$__result += $errcode;
-		ZionSession::Get()->Send('{"method":"CARDGAME_S2C.LeaveGameCallback","args":['.$__result.']}');
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.LeaveGameCallback","args":['.$__result.']}');
+		return true;
+	}
+}
+
+class CGCALLBACK_GAME
+{
+	public function Ready()
+	{
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_GAME.Ready","args":[]}');
+		return true;
+	}
+	public function BegResult($money)
+	{
+		$__result = '';
+		if(!is_int($money)) return false;
+		if($money<0 || $money>4294967295) return false;
+		$__result += $money;
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_GAME.BegResult","args":['.$__result.']}');
+		return true;
+	}
+	public function GambleResult($point)
+	{
+		$__result = '';
+		if(!is_int($point)) return false;
+		if($point<0 || $point>4294967295) return false;
+		$__result += $point;
+		ZionSession::Get()->Send('{"method":"CGCALLBACK_GAME.GambleResult","args":['.$__result.']}');
 		return true;
 	}
 }

@@ -14,29 +14,7 @@
 
 #include "../../LibCommon/DataSyncDDL.h"
 
-struct CARD_AVATAR_OPERATOR : A_CONTENT_OBJECT
-{
-	A_CONFUSED_U32 v1;
-	A_CONFUSED_S32 v2;
-	A_CONFUSED_F32 v3;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<CARD_AVATAR_OPERATOR>(CARD_AVATAR_OPERATOR& Value);
-	template<>
-	bool BufferWriter::Write<CARD_AVATAR_OPERATOR>(const CARD_AVATAR_OPERATOR& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<CARD_AVATAR_OPERATOR>();
-	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OPERATOR_info;
-}
-
-struct CARD_AVATAR_DESC : A_LIVE_OBJECT
+struct CG_AVATAR_DESC : A_LIVE_OBJECT
 {
 	_U32 avatar_id;
 	DDL::String<100> avatar_name;
@@ -45,83 +23,144 @@ struct CARD_AVATAR_DESC : A_LIVE_OBJECT
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<CARD_AVATAR_DESC>(CARD_AVATAR_DESC& Value);
+	bool BufferReader::Read<CG_AVATAR_DESC>(CG_AVATAR_DESC& Value);
 	template<>
-	bool BufferWriter::Write<CARD_AVATAR_DESC>(const CARD_AVATAR_DESC& Value);
+	bool BufferWriter::Write<CG_AVATAR_DESC>(const CG_AVATAR_DESC& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<CARD_AVATAR_DESC>();
-	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_DESC_info;
+	const STRUCT_INFO* GetStruct<CG_AVATAR_DESC>();
+	extern STRUCT_INFO _rfl_struct_CG_AVATAR_DESC_info;
 }
 
-struct CARD_AVATAR : A_LIVE_OBJECT
+struct CG_AVATAR : A_LIVE_OBJECT
 {
 	DDL::String<100> avatar_name;
+	A_CONFUSED_F32 money;
 };
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<CARD_AVATAR>(CARD_AVATAR& Value);
+	bool BufferReader::Read<CG_AVATAR>(CG_AVATAR& Value);
 	template<>
-	bool BufferWriter::Write<CARD_AVATAR>(const CARD_AVATAR& Value);
+	bool BufferWriter::Write<CG_AVATAR>(const CG_AVATAR& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<CARD_AVATAR>();
-	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_info;
+	const STRUCT_INFO* GetStruct<CG_AVATAR>();
+	extern STRUCT_INFO _rfl_struct_CG_AVATAR_info;
 }
 
-struct CARD_AVATAR_OWNOBJ : A_LIVE_OBJECT
+struct CG_CARD : A_LIVE_OBJECT
 {
-	DDL::String<100> obj_name;
-	A_CONFUSED_F32 obj_value;
+	A_UUID content_uuid;
+	_U32 win_count;
+	_U32 lost_count;
 };
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<CARD_AVATAR_OWNOBJ>(CARD_AVATAR_OWNOBJ& Value);
+	bool BufferReader::Read<CG_CARD>(CG_CARD& Value);
 	template<>
-	bool BufferWriter::Write<CARD_AVATAR_OWNOBJ>(const CARD_AVATAR_OWNOBJ& Value);
+	bool BufferWriter::Write<CG_CARD>(const CG_CARD& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<CARD_AVATAR_OWNOBJ>();
-	extern STRUCT_INFO _rfl_struct_CARD_AVATAR_OWNOBJ_info;
+	const STRUCT_INFO* GetStruct<CG_CARD>();
+	extern STRUCT_INFO _rfl_struct_CG_CARD_info;
 }
 
-class CARDGAME_C2S;
+struct CG_SHOPITEM : A_CONTENT_OBJECT
+{
+	DDL::String<100> shopitem_id;
+	_U32 price;
+	A_UUID content_uuid;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<CG_SHOPITEM>(CG_SHOPITEM& Value);
+	template<>
+	bool BufferWriter::Write<CG_SHOPITEM>(const CG_SHOPITEM& Value);
+}
 
 namespace DDLReflect
 {
 	template<>
-	const CLASS_INFO* GetClass<CARDGAME_C2S>();
+	const STRUCT_INFO* GetStruct<CG_SHOPITEM>();
+	extern STRUCT_INFO _rfl_struct_CG_SHOPITEM_info;
 }
 
-class CARDGAME_S2C;
+struct CG_CARD_CONFIG : A_CONTENT_OBJECT
+{
+	DDL::String<100> disp_name;
+	_U32 point;
+};
+
+namespace DDL
+{
+	template<>
+	bool BufferReader::Read<CG_CARD_CONFIG>(CG_CARD_CONFIG& Value);
+	template<>
+	bool BufferWriter::Write<CG_CARD_CONFIG>(const CG_CARD_CONFIG& Value);
+}
 
 namespace DDLReflect
 {
 	template<>
-	const CLASS_INFO* GetClass<CARDGAME_S2C>();
+	const STRUCT_INFO* GetStruct<CG_CARD_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_CG_CARD_CONFIG_info;
+}
+
+class CGSERVER_BASE;
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<CGSERVER_BASE>();
+}
+
+class CGCALLBACK_BASE;
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<CGCALLBACK_BASE>();
+}
+
+class CGSERVER_GAME;
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<CGSERVER_GAME>();
+}
+
+class CGCALLBACK_GAME;
+
+namespace DDLReflect
+{
+	template<>
+	const CLASS_INFO* GetClass<CGCALLBACK_GAME>();
 }
 
 namespace DDLProxy
 {
 
 	template<_U32 BUF_SIZE>
-	class CARDGAME_C2S : public DDLProxy<BUF_SIZE>
+	class CGSERVER_BASE : public DDLProxy<BUF_SIZE>
 	{
 	public:
-		CARDGAME_C2S(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::CARDGAME_C2S>())
+		CGSERVER_BASE(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::CGSERVER_BASE>())
 		{
 		}
 
@@ -190,15 +229,78 @@ namespace DDLProxy
 
 }
 
+namespace DDLProxy
+{
+
+	template<_U32 BUF_SIZE>
+	class CGSERVER_GAME : public DDLProxy<BUF_SIZE>
+	{
+	public:
+		CGSERVER_GAME(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::CGSERVER_GAME>())
+		{
+		}
+
+		bool Buy(const char* shopitem_id)
+		{
+			_Buf.Reset();
+
+			_U32 __length;
+			// <string> <shopitem_id> <> <>
+			__length = DDL::StringLength(shopitem_id);
+			if(!_Buf.Write(__length)) return false;
+			if(!_Buf.WriteData(shopitem_id, (unsigned int)sizeof(shopitem_id[0])*__length)) return false;
+
+			// send
+			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
+		}
+
+		bool Discard(const A_UUID& uuid)
+		{
+			_Buf.Reset();
+
+			// <A_UUID> <uuid> <> <>
+			if(!_Buf.Write(uuid)) return false;
+
+			// send
+			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
+		}
+
+		bool Beg(_U32 money)
+		{
+			_Buf.Reset();
+
+			// <_U32> <money> <> <>
+			if(!_Buf.Write(money)) return false;
+
+			// send
+			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
+		}
+
+		bool Gamble(const A_UUID& card, _S32 mode)
+		{
+			_Buf.Reset();
+
+			// <A_UUID> <card> <> <>
+			if(!_Buf.Write(card)) return false;
+			// <_S32> <mode> <> <>
+			if(!_Buf.Write(mode)) return false;
+
+			// send
+			return GetClient()->SendData(this->GetClassID(), 3, _Buf.GetSize(), _Buf.GetBuf());
+		}
+	};
+
+}
+
 namespace DDLSigSlot
 {
 
-	class CARDGAME_S2C : public DDLStub::IStub
+	class CGCALLBACK_BASE : public DDLStub::IStub
 	{
 	public:
 		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
 		{
-			return DDLReflect::GetClass<::CARDGAME_S2C>();
+			return DDLReflect::GetClass<::CGCALLBACK_BASE>();
 		}
 		
 		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
@@ -213,14 +315,14 @@ namespace DDLSigSlot
 			{
 				_U32 __length;
 				_U32 _prefix_errcode;
-				CARD_AVATAR_DESC* _prefix_arr;
+				CG_AVATAR_DESC* _prefix_arr;
 				_U32 _prefix_count;
 
 				// <_U32> <errcode> <> <>;
 				if(!Buf.Read(_prefix_errcode)) return false;
-				// <CARD_AVATAR_DESC> <arr> <> <100>;
+				// <CG_AVATAR_DESC> <arr> <> <count>;
 				if(!Buf.Read(__length)) return false;
-				_prefix_arr = (CARD_AVATAR_DESC*)alloca(sizeof(_prefix_arr[0])*__length);
+				_prefix_arr = (CG_AVATAR_DESC*)alloca(sizeof(_prefix_arr[0])*__length);
 				if(!_prefix_arr) return false;
 				if(!Buf.ReadPointer(_prefix_arr, __length)) return false;
 				// <_U32> <count> <> <>;
@@ -267,7 +369,7 @@ namespace DDLSigSlot
 		}
 
 		sigslot::signal0<> _Pong;
-		sigslot::signal3<_U32, CARD_AVATAR_DESC*, _U32> _GetAvatarListCallback;
+		sigslot::signal3<_U32, CG_AVATAR_DESC*, _U32> _GetAvatarListCallback;
 		sigslot::signal1<_U32> _CreateAvatarCallback;
 		sigslot::signal1<_U32> _EnterGameCallback;
 		sigslot::signal1<_U32> _LeaveGameCallback;
@@ -275,132 +377,53 @@ namespace DDLSigSlot
 
 }
 
-class CARDGAME_OP;
-
-namespace DDLReflect
-{
-	template<>
-	const CLASS_INFO* GetClass<CARDGAME_OP>();
-}
-
-namespace DDLStub
+namespace DDLSigSlot
 {
 
-	template<typename CLASS>
-	class CARDGAME_OP : public DDLStub<CLASS>
+	class CGCALLBACK_GAME : public DDLStub::IStub
 	{
 	public:
-		CARDGAME_OP(CLASS* Class) : DDLStub<CLASS>(Class)
-		{
-		}
-
 		virtual const DDLReflect::CLASS_INFO* GetClassInfo()
 		{
-			return DDLReflect::GetClass<::CARDGAME_OP>();
+			return DDLReflect::GetClass<::CGCALLBACK_GAME>();
 		}
 		
 		virtual bool Dispatcher(_U16 fid, DDL::BufferReader& Buf)
 		{
 			if(fid==0)
 			{
-				_U32 __length;
-				char* _prefix_name;
-				_S32 _prefix_value;
-
-				// <string> <name> <> <>;
-				if(!Buf.Read(__length)) return false;
-				_prefix_name = (char*)alloca(sizeof(_prefix_name[0])*(__length+1));
-				if(!_prefix_name) return false;
-				if(!Buf.ReadBuffer(_prefix_name, (unsigned int)sizeof(_prefix_name[0])*__length)) return false;
-				_prefix_name[__length] = '\0';
-				// <_S32> <value> <> <>;
-				if(!Buf.Read(_prefix_value)) return false;
-
 				// call implement
-				DDLStub<CLASS>::GetClass()->AddOwnObj(_prefix_name, _prefix_value);
+				_Ready();
 				return true;
 			}
 			if(fid==1)
 			{
-				A_UUID _prefix__uuid;
+				_U32 _prefix_money;
 
-				// <A_UUID> <_uuid> <> <>;
-				if(!Buf.Read(_prefix__uuid)) return false;
+				// <_U32> <money> <> <>;
+				if(!Buf.Read(_prefix_money)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->DelOwnObj(_prefix__uuid);
+				_BegResult(_prefix_money);
 				return true;
 			}
 			if(fid==2)
 			{
-				A_UUID _prefix__uuid;
-				_S32 _prefix_value;
+				_U32 _prefix_point;
 
-				// <A_UUID> <_uuid> <> <>;
-				if(!Buf.Read(_prefix__uuid)) return false;
-				// <_S32> <value> <> <>;
-				if(!Buf.Read(_prefix_value)) return false;
+				// <_U32> <point> <> <>;
+				if(!Buf.Read(_prefix_point)) return false;
 
 				// call implement
-				DDLStub<CLASS>::GetClass()->AddOwnObjValue(_prefix__uuid, _prefix_value);
+				_GambleResult(_prefix_point);
 				return true;
 			}
 			return false;
 		}
-	};
 
-}
-
-namespace DDLProxy
-{
-
-	template<_U32 BUF_SIZE>
-	class CARDGAME_OP : public DDLProxy<BUF_SIZE>
-	{
-	public:
-		CARDGAME_OP(IClient* Client) : DDLProxy<BUF_SIZE>(Client, DDLReflect::GetClassID<typename ::CARDGAME_OP>())
-		{
-		}
-
-		bool AddOwnObj(const char* name, _S32 value)
-		{
-			_Buf.Reset();
-
-			_U32 __length;
-			// <string> <name> <> <>
-			__length = DDL::StringLength(name);
-			if(!_Buf.Write(__length)) return false;
-			if(!_Buf.WriteData(name, (unsigned int)sizeof(name[0])*__length)) return false;
-			// <_S32> <value> <> <>
-			if(!_Buf.Write(value)) return false;
-
-			// send
-			return GetClient()->SendData(this->GetClassID(), 0, _Buf.GetSize(), _Buf.GetBuf());
-		}
-
-		bool DelOwnObj(const A_UUID& _uuid)
-		{
-			_Buf.Reset();
-
-			// <A_UUID> <_uuid> <> <>
-			if(!_Buf.Write(_uuid)) return false;
-
-			// send
-			return GetClient()->SendData(this->GetClassID(), 1, _Buf.GetSize(), _Buf.GetBuf());
-		}
-
-		bool AddOwnObjValue(const A_UUID& _uuid, _S32 value)
-		{
-			_Buf.Reset();
-
-			// <A_UUID> <_uuid> <> <>
-			if(!_Buf.Write(_uuid)) return false;
-			// <_S32> <value> <> <>
-			if(!_Buf.Write(value)) return false;
-
-			// send
-			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
-		}
+		sigslot::signal0<> _Ready;
+		sigslot::signal1<_U32> _BegResult;
+		sigslot::signal1<_U32> _GambleResult;
 	};
 
 }

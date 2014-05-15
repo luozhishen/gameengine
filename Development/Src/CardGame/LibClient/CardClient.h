@@ -12,8 +12,10 @@ namespace Zion
 		CCardClient(CClientApp* pClientApp, _U32 recvsize=6*1024);
 		virtual ~CCardClient();
 
-		DDLProxy::CARDGAME_C2S<1024> c2s;
-		DDLSigSlot::CARDGAME_S2C s2c;
+		DDLProxy::CGSERVER_BASE<1024> c2s_base;
+		DDLProxy::CGSERVER_GAME<1024> c2s_game;
+		DDLSigSlot::CGCALLBACK_BASE s2c_base;
+		DDLSigSlot::CGCALLBACK_GAME s2c_game;
 	};
 
 }

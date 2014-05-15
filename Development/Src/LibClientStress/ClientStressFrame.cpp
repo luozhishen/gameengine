@@ -171,6 +171,9 @@ void CClientStressFrame::InitToolBar()
 	wxBitmap bmpAddCase;
 	wxBitmap bmpStressView;
 	wxBitmap bmpScriptRun;
+
+	wxLogLevel LogLevel = wxLog::GetLogLevel();
+	wxLog::SetLogLevel(0);
 	bmpAddOne.LoadFile(wxT("../wxRes/ClientStress/AddOne.png"),			wxBITMAP_TYPE_PNG);
 	bmpAddFive.LoadFile(wxT("../wxRes/ClientStress/AddFive.png"),		wxBITMAP_TYPE_PNG);
 	bmpAddTen.LoadFile(wxT("../wxRes/ClientStress/AddTen.png"),			wxBITMAP_TYPE_PNG);
@@ -181,6 +184,7 @@ void CClientStressFrame::InitToolBar()
 	bmpAddCase.LoadFile(wxT("../wxRes/ClientStress/AddCase.png"),		wxBITMAP_TYPE_PNG);
 	bmpStressView.LoadFile(wxT("../wxRes/ClientStress/StressView.png"),	wxBITMAP_TYPE_PNG);
 	bmpScriptRun.LoadFile(wxT("../wxRes/ClientStress/Run.png"),			wxBITMAP_TYPE_PNG);
+	wxLog::SetLogLevel(LogLevel);
 
 	wxToolBar* pToolBar;
 	pToolBar = wxFrame::CreateToolBar();//wxTB_FLAT|wxTB_TOP, wxID_ANY);

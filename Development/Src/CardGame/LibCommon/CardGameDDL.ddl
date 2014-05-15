@@ -3,36 +3,39 @@ include "../../LibBase/ConfusedNumberDDL.ddl"
 include "../../LibCommon/CommonDDL.ddl"
 include "../../LibCommon/DataSyncDDL.ddl"
 
-task[GEN_PHP_STUB(DATASYNC_JSON_C2S)];
-task[GEN_PHP_PROXY(DATASYNC_JSON_S2C)];
-task[GEN_JS_STUB(DATASYNC_JSON_C2S)];
-task[GEN_JS_PROXY(DATASYNC_JSON_S2C)];
-
-struct CARD_AVATAR_OPERATOR : A_CONTENT_OBJECT
+struct CG_AVATAR_DESC : A_LIVE_OBJECT
 {
-	A_CONFUSED_U32 v1;
-	A_CONFUSED_S32 v2;
-	A_CONFUSED_F32 v3;
+	_U32			avatar_id;
+	string<100>		avatar_name;
 };
 
-struct CARD_AVATAR_DESC : A_LIVE_OBJECT
+struct CG_AVATAR : A_LIVE_OBJECT
 {
-	_U32		avatar_id;
-	string<100>	avatar_name;
+	string<100>		avatar_name;
+	A_CONFUSED_F32	money;
 };
 
-struct CARD_AVATAR : A_LIVE_OBJECT
+struct CG_CARD : A_LIVE_OBJECT
 {
-	string<100>	avatar_name;
+	A_UUID			content_uuid;
+	_U32			win_count;
+	_U32			lost_count;
 };
 
-struct CARD_AVATAR_OWNOBJ : A_LIVE_OBJECT
+struct CG_SHOPITEM : A_CONTENT_OBJECT
 {
-	string<100>		obj_name;
-	A_CONFUSED_F32	obj_value;
+	string<100>		shopitem_id;
+	_U32			price;
+	A_UUID			content_uuid;
 };
 
-class CARDGAME_C2S
+struct CG_CARD_CONFIG : A_CONTENT_OBJECT
+{
+	string<100>		disp_name;
+	_U32			point;
+};
+
+class CGSERVER_BASE
 {
 	Ping();
 
@@ -43,32 +46,40 @@ class CARDGAME_C2S
 	LeaveGame();
 };
 
-class CARDGAME_S2C
+class CGCALLBACK_BASE
 {
 	Pong();
 
-	GetAvatarListCallback(_U32 errcode, CARD_AVATAR_DESC arr[100], _U32 count);
+	GetAvatarListCallback(_U32 errcode, CG_AVATAR_DESC arr[count], _U32 count);
 	CreateAvatarCallback(_U32 errcode);
 	EnterGameCallback(_U32 errcode);
 	LeaveGameCallback(_U32 errcode);
 };
 
-task[GEN_CLASS_PROXY(CARDGAME_C2S)];
-task[GEN_CLASS_SIGSLOT(CARDGAME_S2C)];
-
-class CARDGAME_OP
+class CGSERVER_GAME
 {
-	AddOwnObj(string name, _S32 value);
-	DelOwnObj(A_UUID _uuid);
-	AddOwnObjValue(A_UUID _uuid, _S32 value);
+	Buy(string shopitem_id);
+	Discard(A_UUID uuid);
+
+	Beg(_U32 money);
+	Gamble(A_UUID card, _S32 mode);
 };
 
-task[GEN_CLASS_STUB(CARDGAME_OP)];
-task[GEN_CLASS_PROXY(CARDGAME_OP)];
+class CGCALLBACK_GAME
+{
+	Ready();
 
-task[GEN_PHP_STUB(DATASYNC_JSON_C2S)];
+	BegResult(_U32 money);
+	GambleResult(_U32 point);
+};
+
+task[GEN_CLASS_PROXY(CGSERVER_BASE)];
+task[GEN_CLASS_PROXY(CGSERVER_GAME)];
+task[GEN_CLASS_SIGSLOT(CGCALLBACK_BASE)];
+task[GEN_CLASS_SIGSLOT(CGCALLBACK_GAME)];
+
 task[GEN_PHP_PROXY(DATASYNC_JSON_S2C)];
-task[GEN_PHP_STUB(CARDGAME_C2S)];
-task[GEN_PHP_PROXY(CARDGAME_S2C)];
-task[GEN_JS_STUB(CARDGAME_C2S)];
-task[GEN_JS_PROXY(CARDGAME_S2C)];
+task[GEN_PHP_STUB(CGSERVER_BASE)];
+task[GEN_PHP_STUB(CGSERVER_GAME)];
+task[GEN_PHP_PROXY(CGCALLBACK_BASE)];
+task[GEN_PHP_PROXY(CGCALLBACK_GAME)];

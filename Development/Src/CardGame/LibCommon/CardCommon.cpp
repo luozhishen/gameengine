@@ -15,9 +15,10 @@ namespace Zion
 	{
 		Zion::Engine::InitDDLStub();
 
-		RegisterClientStub<CARDGAME_S2C>();
-		RegisterServerStub<CARDGAME_C2S>(0);
-		RegisterServerStub<CARDGAME_OP>(0);
+		RegisterClientStub<CGSERVER_BASE>();
+		RegisterClientStub<CGSERVER_GAME>();
+		RegisterServerStub<CGCALLBACK_BASE>();
+		RegisterServerStub<CGCALLBACK_GAME>();
 	}
 
 	void InitContentObjects()
@@ -27,16 +28,16 @@ namespace Zion
 		ContentObject::IContentGroup* pContentGroup;
 		
 		pContentGroup = ContentObject::CreateContentGroup("Card", "card.json", true);
-		pContentGroup->Register(DDLReflect::GetStruct<CARD_AVATAR_OPERATOR>(), true, "uuid");
+		pContentGroup->Register(DDLReflect::GetStruct<CG_SHOPITEM>(), true, "shopitem_id");
+		pContentGroup->Register(DDLReflect::GetStruct<CG_CARD_CONFIG>(), true, "uuid");
 	}
 
 	void InitLiveObjects()
 	{
 		Zion::Engine::InitLiveObjects();
 
-		Zion::LiveObject::Register(DDLReflect::GetStruct<CARD_AVATAR_DESC>());
-		Zion::LiveObject::Register(DDLReflect::GetStruct<CARD_AVATAR>());
-		Zion::LiveObject::Register(DDLReflect::GetStruct<CARD_AVATAR_OWNOBJ>());
+		Zion::LiveObject::Register(DDLReflect::GetStruct<CG_AVATAR>());
+		Zion::LiveObject::Register(DDLReflect::GetStruct<CG_CARD>());
 	}
 
 };

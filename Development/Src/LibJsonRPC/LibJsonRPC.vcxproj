@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FastCGIServer.cpp" />
     <ClCompile Include="JsonRPC.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FastCGIServer.h" />
     <ClInclude Include="JsonRPC.h" />
     <ClInclude Include="ObjectManager.h" />
   </ItemGroup>

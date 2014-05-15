@@ -30,7 +30,6 @@ namespace Zion
 		const DDLReflect::CLASS_INFO* classinfo;
 		bool is_client_stub;
 		bool is_server_stub;
-		_U32 nodeid;
 	}  _global_stubs[256];
 	static _U16 _global_stub_count = 0;
 
@@ -47,26 +46,23 @@ namespace Zion
 		_global_stubs[_global_stub_count].classinfo = pClassInfo;
 		_global_stubs[_global_stub_count].is_client_stub = true;
 		_global_stubs[_global_stub_count].is_server_stub = false;
-		_global_stubs[_global_stub_count].nodeid = (_U32)-1;
 		*((_U16*)&pClassInfo->iid) = _global_stub_count;
 		return _global_stub_count++;
 	}
 
-	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo, _U32 nodeid)
+	_U16 RegisterServerStub(const DDLReflect::CLASS_INFO* pClassInfo)
 	{
 		for(_U16 i=0; i<_global_stub_count; i++)
 		{
 			if(_global_stubs[i].classinfo==pClassInfo)
 			{
 				_global_stubs[i].is_server_stub = true;
-				_global_stubs[i].nodeid = nodeid;
 				return i;
 			}
 		}
 		_global_stubs[_global_stub_count].classinfo = pClassInfo;
 		_global_stubs[_global_stub_count].is_client_stub = false;
 		_global_stubs[_global_stub_count].is_server_stub = true;
-		_global_stubs[_global_stub_count].nodeid = nodeid;
 		*((_U16*)&pClassInfo->iid) = _global_stub_count;
 		return _global_stub_count++;
 	}
@@ -109,23 +105,21 @@ namespace Zion
 		return false;
 	}
 
-	bool GetServerStub(_U16 id, const DDLReflect::CLASS_INFO*& pClassInfo, _U32* nodeid)
+	bool GetServerStub(_U16 id, const DDLReflect::CLASS_INFO*& pClassInfo)
 	{
 		if(id>=_global_stub_count) return false;
 		if(!_global_stubs[id].is_server_stub) return false;
 		pClassInfo = _global_stubs[id].classinfo;
-		if(nodeid) *nodeid = _global_stubs[id].nodeid;
 		return true;
 	}
 
-	bool GetServerStub(const char* name, const DDLReflect::CLASS_INFO*& pClassInfo, _U32* nodeid)
+	bool GetServerStub(const char* name, const DDLReflect::CLASS_INFO*& pClassInfo)
 	{
 		for(_U16 i=0; i<_global_stub_count; i++)
 		{
 			if(!_global_stubs[i].is_server_stub) continue;
 			if(strcmp(_global_stubs[i].classinfo->name, name)!=0) continue;
 			pClassInfo = _global_stubs[i].classinfo;
-			if(nodeid) *nodeid = _global_stubs[i].nodeid;
 			return true;
 		}
 		return false;
@@ -219,8 +213,8 @@ namespace Zion
 		{
 			RegisterClientStub<DATASYNC_BINARY_S2C>();
 			RegisterClientStub<DATASYNC_JSON_S2C>();
-			RegisterServerStub<DATASYNC_BINARY_C2S>(0);
-			RegisterServerStub<DATASYNC_JSON_C2S>(0);
+			RegisterServerStub<DATASYNC_BINARY_C2S>();
+			RegisterServerStub<DATASYNC_JSON_C2S>();
 		}
 
 		void InitContentObjects()

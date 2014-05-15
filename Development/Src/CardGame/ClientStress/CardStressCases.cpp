@@ -25,7 +25,7 @@ namespace Zion
 		{
 			if(GetClient()->GetState()==CClient::STATE_LOGINED)
 			{
-				GetClient()->c2s.Ping();
+				GetClient()->c2s_base.Ping();
 			}
 		}
 		

@@ -3,9 +3,11 @@
   <ItemGroup>
     <ClCompile Include="JsonRPC.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="FastCGIServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JsonRPC.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="FastCGIServer.h" />
   </ItemGroup>
 </Project>

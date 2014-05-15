@@ -15,10 +15,10 @@ namespace Zion
 	{
 		Zion::Engine::InitDDLStub();
 
-		RegisterClientStub<CGSERVER_BASE>();
-		RegisterClientStub<CGSERVER_GAME>();
-		RegisterServerStub<CGCALLBACK_BASE>();
-		RegisterServerStub<CGCALLBACK_GAME>();
+		RegisterClientStub<CGCALLBACK_BASE>();
+		RegisterClientStub<CGCALLBACK_GAME>();
+		RegisterServerStub<CGSERVER_BASE>();
+		RegisterServerStub<CGSERVER_GAME>();
 	}
 
 	void InitContentObjects()

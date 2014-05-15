@@ -191,7 +191,7 @@ namespace DDLProxy
 			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
-		bool CreateAvatar(const char* avatar_name, _U32 type)
+		bool CreateAvatar(const char* avatar_name)
 		{
 			_Buf.Reset();
 
@@ -200,8 +200,6 @@ namespace DDLProxy
 			__length = DDL::StringLength(avatar_name);
 			if(!_Buf.Write(__length)) return false;
 			if(!_Buf.WriteData(avatar_name, (unsigned int)sizeof(avatar_name[0])*__length)) return false;
-			// <_U32> <type> <> <>
-			if(!_Buf.Write(type)) return false;
 
 			// send
 			return GetClient()->SendData(this->GetClassID(), 3, _Buf.GetSize(), _Buf.GetBuf());

@@ -459,13 +459,10 @@ function CGSERVER_BASE_Dispatcher($fname, $_array, $_this)
 	}
 	if($fname=='CreateAvatar')
 	{
-		if(count($_array)!=2) return false;
+		if(count($_array)!=1) return false;
 		if(!is_string($_array[0])) return false;
 		$__avatar_name = $_array[0];
-		if(!is_int($_array[1])) return false;
-		if($_array[1]<0 || $_array[1]>4294967295) return false;
-		$__type = $_array[1];
-		$_this->CreateAvatar($__avatar_name, $__type);
+		$_this->CreateAvatar($__avatar_name);
 		return true;
 	}
 	if($fname=='EnterGame')

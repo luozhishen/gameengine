@@ -251,7 +251,6 @@ namespace DDLReflect
 		// 2 GetAvatarList
 		// 3 CreateAvatar
 		{TYPE_STRING, "avatar_name", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_U32, "type", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 4 EnterGame
 		{TYPE_U32, "avatar_id", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 5 LeaveGame
@@ -261,9 +260,9 @@ namespace DDLReflect
 		{"Ping", 0, _class_CGSERVER_BASE_fieldinfos+0},
 		{"SelectServer", 1, _class_CGSERVER_BASE_fieldinfos+0},
 		{"GetAvatarList", 0, _class_CGSERVER_BASE_fieldinfos+1},
-		{"CreateAvatar", 2, _class_CGSERVER_BASE_fieldinfos+1},
-		{"EnterGame", 1, _class_CGSERVER_BASE_fieldinfos+3},
-		{"LeaveGame", 0, _class_CGSERVER_BASE_fieldinfos+4},
+		{"CreateAvatar", 1, _class_CGSERVER_BASE_fieldinfos+1},
+		{"EnterGame", 1, _class_CGSERVER_BASE_fieldinfos+2},
+		{"LeaveGame", 0, _class_CGSERVER_BASE_fieldinfos+3},
 	};
 	static CLASS_INFO _class_CGSERVER_BASE_info = { 0, "CGSERVER_BASE", 6, _class_CGSERVER_BASE_funcinfos };
 	template<>

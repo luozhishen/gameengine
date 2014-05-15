@@ -41,7 +41,7 @@ class CGSERVER_BASE
 
 	SelectServer(_U32 server_id);
 	GetAvatarList();
-	CreateAvatar(string avatar_name, _U32 type);
+	CreateAvatar(string avatar_name);
 	EnterGame(_U32 avatar_id);
 	LeaveGame();
 };

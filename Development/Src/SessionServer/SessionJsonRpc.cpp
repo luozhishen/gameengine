@@ -47,12 +47,10 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=2) break;
-				const JsonValue& user_id = args.Get((_U32)0);
-				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
-				RPCIMPL_LogoutUser(user_id.AsU32(), user_seq.AsU32());
+				if(args.GetSize()!=1) break;
+				const JsonValue& session_key = args.Get((_U32)0);
+				if(!session_key.IsSTR()) break;
+				RPCIMPL_LogoutUser(session_key.AsSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -73,36 +71,32 @@ namespace Zion
 		}
 
 		void JsonRpc_LockSession(const JsonValue& args)
-		// void RPCIMPL_LockSession(_U32 user_id, _U32 user_seq, _U32 req_seq)
+		// void RPCIMPL_LockSession(const String& session_key, _U32 req_seq)
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=3) break;
-				const JsonValue& user_id = args.Get((_U32)0);
-				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
-				const JsonValue& req_seq = args.Get((_U32)2);
+				if(args.GetSize()!=2) break;
+				const JsonValue& session_key = args.Get((_U32)0);
+				if(!session_key.IsSTR()) break;
+				const JsonValue& req_seq = args.Get((_U32)1);
 				if(!req_seq.IsU32()) break;
-				RPCIMPL_LockSession(user_id.AsU32(), user_seq.AsU32(), req_seq.AsU32());
+				RPCIMPL_LockSession(session_key.AsSTR(), req_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
 		void JsonRpc_UnlockSession(const JsonValue& args)
-		// void RPCIMPL_UnlockSession(_U32 user_id, _U32 user_seq, _U32 request_seq)
+		// void RPCIMPL_UnlockSession(const String& session_key, _U32 request_seq)
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=3) break;
-				const JsonValue& user_id = args.Get((_U32)0);
-				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
-				const JsonValue& req_seq = args.Get((_U32)2);
+				if(args.GetSize()!=2) break;
+				const JsonValue& session_key = args.Get((_U32)0);
+				if(!session_key.IsSTR()) break;
+				const JsonValue& req_seq = args.Get((_U32)1);
 				if(!req_seq.IsU32()) break;
-				RPCIMPL_UnlockSession(user_id.AsU32(), user_seq.AsU32(), req_seq.AsU32());
+				RPCIMPL_UnlockSession(session_key.AsSTR(), req_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -123,7 +117,7 @@ namespace Zion
 		}
 
 		void JsonRpc_BindAvatar(const JsonValue& args)
-		// void RPCIMPL_BindAvatar(_U32 user_id, _U32 user_seq, _U32 avatar_id, const char* avatar_name);
+		// void RPCIMPL_BindAvatar(_U32 user_id, _U32 avatar_id, const char* avatar_name);
 		{
 			for(;;)
 			{
@@ -143,7 +137,7 @@ namespace Zion
 		}
 
 		void JsonRpc_UnbindAvatar(const JsonValue& args)
-		// void RPCIMPL_UnbindAvatar(_U32 user_id, _U32 user_seq);
+		// void RPCIMPL_UnbindAvatar(_U32 user_id);
 		{
 			for(;;)
 			{
@@ -305,36 +299,32 @@ namespace Zion
 		}
 
 		void JsonRpc_WaitForMessage(const JsonValue& args)
-		// void RPCIMPL_WaitForMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
+		// void RPCIMPL_WaitForMessage(const String& session_key, _U32 msg_seq);
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=3) break;
-				const JsonValue& user_id = args.Get((_U32)0);
-				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
+				if(args.GetSize()!=2) break;
+				const JsonValue& session_key = args.Get((_U32)0);
+				if(!session_key.IsSTR()) break;
 				const JsonValue& msg_seq = args.Get((_U32)1);
 				if(!msg_seq.IsU32()) break;
-				RPCIMPL_WaitForMessage(user_id.AsU32(), user_seq.AsU32(), msg_seq.AsU32());
+				RPCIMPL_WaitForMessage(session_key.AsSTR(), msg_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
 		void JsonRpc_GetMessage(const JsonValue& args)
-		// void RPCIMPL_GetMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
+		// void RPCIMPL_GetMessage(const String& session_key, _U32 msg_seq);
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=3) break;
-				const JsonValue& user_id = args.Get((_U32)0);
-				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
+				if(args.GetSize()!=2) break;
+				const JsonValue& session_key = args.Get((_U32)0);
+				if(!session_key.IsSTR()) break;
 				const JsonValue& msg_seq = args.Get((_U32)1);
 				if(!msg_seq.IsU32()) break;
-				RPCIMPL_GetMessage(user_id.AsU32(), user_seq.AsU32(), msg_seq.AsU32());
+				RPCIMPL_GetMessage(session_key.AsSTR(), msg_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");

@@ -3,6 +3,7 @@
 #include <uv.h>
 #include <ObjectManager.h>
 #include "UserSession.h"
+#include <time.h>
 
 namespace Zion
 {
@@ -209,9 +210,10 @@ namespace Zion
 		}
 
 		static TObjectManager<CUserSession, 100*10000> g_session_manager;
-		static TObjectMap<_U32> g_session_user_id_map;
-		static TObjectMap<_U64> g_session_avatar_id_map;
-		static TObjectMap<String> g_session_avatar_name_map;
+		static TObjectMap<_U32>		g_session_user_id_map;
+		static TObjectMap<String>	g_session_key_map;
+		static TObjectMap<_U64>		g_session_avatar_id_map;
+		static TObjectMap<String>	g_session_avatar_name_map;
 
 		CUserSession* CUserSession::LockByUser(_U32 nUserID)
 		{
@@ -220,41 +222,40 @@ namespace Zion
 			CUserSession* session = g_session_manager.Lock(index);
 			if(!session) return NULL;
 			if(session->GetUserID()==nUserID) return session;
-			if(session->GetUserID()==nUserID && session->GetUserSeq()) return session;
 			g_session_manager.Unlock(index);
 			return NULL;
 		}
 
-		CUserSession* CUserSession::LockByUser(_U32 nUserID, _U32 nUserSeq)
+		CUserSession* CUserSession::LockByUser(const String& session_key)
 		{
-			_U32 index = g_session_user_id_map.Get(nUserID);
+			_U32 index = g_session_key_map.Get(session_key);
 			if(index==(_U32)-1) return NULL;
 			CUserSession* session = g_session_manager.Lock(index);
 			if(!session) return NULL;
-			if(session->GetUserID()==nUserID && session->GetUserSeq()==nUserSeq) return session;
+			if(session->GetSessionKey()==session_key) return session;
 			g_session_manager.Unlock(index);
 			return NULL;
 		}
 
-		CUserSession* CUserSession::LockByAvatar(_U32 server_id, _U32 avatar_id)
+		CUserSession* CUserSession::LockByAvatar(_U32 scope_id, _U32 avatar_id)
 		{
-			_U64 id = (((_U64)server_id)<<32) | ((_U64)avatar_id);
+			_U64 id = (((_U64)scope_id)<<32) | ((_U64)avatar_id);
 			_U32 index = g_session_avatar_id_map.Get(id);
 			if(index==(_U32)-1) return NULL;
 			CUserSession* session = g_session_manager.Lock(index);
 			if(!session) return NULL;
-			if(session->m_nServerID==server_id && session->m_nAvatarID==avatar_id) return session;
+			if(session->m_nAvatarScopeID==scope_id && session->m_nAvatarID==avatar_id) return session;
 			g_session_manager.Unlock(index);
 			return NULL;
 		}
-		CUserSession* CUserSession::LockByAvatar(_U32 server_id, const String& avatar_name)
+		CUserSession* CUserSession::LockByAvatar(_U32 scope_id, const String& avatar_name)
 		{
-			String name = StringFormat("%u:%s", server_id, avatar_name.c_str());
+			String name = StringFormat("%u:%s", scope_id, avatar_name.c_str());
 			_U32 index = g_session_avatar_name_map.Get(name);
 			if(index==(_U32)-1) return NULL;
 			CUserSession* session = g_session_manager.Lock(index);
 			if(!session) return NULL;
-			if(session->m_nServerID==server_id && session->m_AvatarName==avatar_name) return session;
+			if(session->m_nAvatarScopeID==scope_id && session->m_AvatarName==avatar_name) return session;
 			g_session_manager.Unlock(index);
 			return NULL;
 		}
@@ -281,8 +282,12 @@ namespace Zion
 					}
 					if(g_session_user_id_map.Insert(nUserID, index))
 					{
-						session->SetIndex(index);
-						break;
+						if(g_session_key_map.Insert(session->GetSessionKey(), index))
+						{
+							session->SetIndex(index);
+							break;
+						}
+						g_session_user_id_map.Remove(nUserID, index);
 					}
 					g_session_manager.Remove(index, session);
 					ZION_DELETE session;
@@ -299,22 +304,25 @@ namespace Zion
 			return session;
 		}
 
-		bool CUserSession::Logout(_U32 nUserID, _U32 nUserSeq)
+		bool CUserSession::Logout(const String& session_key)
 		{
-			CUserSession* session = LockByUser(nUserID, nUserSeq);
+			CUserSession* session = LockByUser(session_key);
 			if(!session) return false;
+			_U32 user_id = session->GetUserID();
+			_U32 index = session->GetIndex();
 			session->Reset();
-			g_session_manager.Remove(nUserID, session);
-			g_session_user_id_map.Remove(session->m_nUserID, session->m_nIndex);
+			g_session_manager.Remove(user_id, session);
+			g_session_user_id_map.Remove(user_id, index);
+			g_session_key_map.Remove(session_key, index);
 			ZION_DELETE session;
 			return true;
 		}
 
+		static _U32 global_user_seq = 0x1980;
 		CUserSession::CUserSession(_U32 nUserID)
 		{
 			m_nUserID = nUserID;
-			m_nUserSeq = (_U32)-1;
-			m_nServerID = (_U32)-1;
+			m_SessionKey = StringFormat("%u$$seq", nUserID, (global_user_seq++) + rand());
 			m_nAvatarID = (_U32)-1;
 			//m_AvatarName;
 			//m_Domains;
@@ -326,9 +334,8 @@ namespace Zion
 			SetInvalidResponseID(m_PendingID);
 
 			m_nReqSeq = (_U32)-1;
-			//m_LastResponse;
 			m_bLocked = false;
-			//m_SessionData;
+			m_LockedTime = 0;
 		}
 
 		CUserSession::~CUserSession()
@@ -367,9 +374,9 @@ namespace Zion
 			return m_nUserID;
 		}
 
-		_U32 CUserSession::GetUserSeq()
+		const String& CUserSession::GetSessionKey()
 		{
-			return m_nUserSeq;
+			return m_SessionKey;
 		}
 
 		_U32 CUserSession::GetReqSeq()
@@ -377,9 +384,9 @@ namespace Zion
 			return m_nReqSeq;
 		}
 
-		_U32 CUserSession::GetServerID()
+		_U32 CUserSession::GetAvatarScope()
 		{
-			return m_nServerID;
+			return m_nAvatarScopeID;
 		}
 
 		_U32 CUserSession::GetAvatarID()
@@ -401,6 +408,7 @@ namespace Zion
 		{
 			if(m_bLocked) return false;
 			m_bLocked = true;
+			m_LockedTime = time(NULL);
 			return true;
 		}
 		
@@ -409,15 +417,6 @@ namespace Zion
 			if(!m_bLocked) return false;
 			m_nReqSeq += 1;
 			return true;
-		}
-
-		void CUserSession::SetServer(_U32 server_id)
-		{
-			if(m_nServerID!=server_id)
-			{
-				g_ServerManager.Change(server_id, m_nServerID);
-				m_nServerID = server_id;
-			}
 		}
 
 		bool CUserSession::BindAvatar(_U32 scope_id, _U32 avatar_id, const String& avatar_name)
@@ -444,11 +443,9 @@ namespace Zion
 
 		bool CUserSession::UnbindAvatar()
 		{
-			if(m_nAvatarID==(_U32)-1) return false;
-
 			if(m_nAvatarID!=(_U32)-1)
 			{
-				_U64 id = (((_U64)m_nServerID)<<32) | ((_U64)m_nAvatarID);
+				_U64 id = (((_U64)m_nAvatarScopeID)<<32) | ((_U64)m_nAvatarID);
 				g_session_avatar_id_map.Remove(id, m_nIndex);
 				m_nAvatarID = (_U32)-1;
 			}

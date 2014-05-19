@@ -59,12 +59,12 @@ namespace Zion
 		{
 		public:
 			static CUserSession* LockByUser(_U32 nUserID);
-			static CUserSession* LockByUser(_U32 nUserID, _U32 nUserSeq);
-			static CUserSession* LockByAvatar(_U32 server_id, _U32 avatar_id);
-			static CUserSession* LockByAvatar(_U32 server_id, const String& avatar_name);
+			static CUserSession* LockByUser(const String& session_key);
+			static CUserSession* LockByAvatar(_U32 scope_id, _U32 avatar_id);
+			static CUserSession* LockByAvatar(_U32 scope_id, const String& avatar_name);
 			static void Unlock(CUserSession* session);
 			static CUserSession* Login(_U32 nUserID);
-			static bool Logout(_U32 nUserID, _U32 nUserSeq);
+			static bool Logout(const String& session_key);
 
 			CUserSession(_U32 nUserID);
 			~CUserSession();
@@ -74,17 +74,16 @@ namespace Zion
 			void Reset();
 
 			_U32 GetUserID();
-			_U32 GetUserSeq();
+			const String& GetSessionKey();
 			_U32 GetReqSeq();
-			_U32 GetServerID();
+			_U32 GetAvatarScope();
 			_U32 GetAvatarID();
 			const String& GetAvatarName();
 
 			bool IsLocked();
 			bool Lock();
 			bool Unlock();
-			void SetServer(_U32 server_id);
-			bool BindAvatar(_U32 server_id, _U32 avatar_id, const String& avatar_name);
+			bool BindAvatar(_U32 scope_id, _U32 avatar_id, const String& avatar_name);
 			bool UnbindAvatar();
 			bool JoinDomain(_U32 domain_id);
 			bool LeaveDomain(_U32 domain_id);
@@ -100,8 +99,7 @@ namespace Zion
 		private:
 			_U32 m_nIndex;
 			_U32 m_nUserID;
-			_U32 m_nUserSeq;
-			_U32 m_nServerID;
+			String m_SessionKey;
 			_U32 m_nAvatarID;
 			_U32 m_nAvatarScopeID;
 			String m_AvatarName;
@@ -115,6 +113,7 @@ namespace Zion
 
 			_U32 m_nReqSeq;
 			bool m_bLocked;
+			time_t m_LockedTime;
 		};
 
 	}

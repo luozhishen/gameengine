@@ -8,14 +8,14 @@ namespace Zion
 
 		void RPCIMPL_LoginUser(_U32 user_id);
 		// return errcode, _U32 user_seq
-		void RPCIMPL_LogoutUser(_U32 user_id, _U32 user_seq);
+		void RPCIMPL_LogoutUser(const String& session_key);
 		// return errcode
 		void RPCIMPL_KickUser(_U32 user_id);
 		// return errcode
 
-		void RPCIMPL_LockSession(_U32 user_id, _U32 user_seq, _U32 req_seq);
+		void RPCIMPL_LockSession(const String& session_key, _U32 req_seq);
 		// return errcode, server_id, avatar_id, request_seq
-		void RPCIMPL_UnlockSession(_U32 user_id, _U32 user_seq, _U32 req_seq);
+		void RPCIMPL_UnlockSession(const String& session_key, _U32 req_seq);
 		// return errcode
 		void RPCIMPL_GetSessionInfo(_U32 user_id);
 		// return error, session_info {xxx=xxxx,xxx=xxxx}
@@ -43,9 +43,9 @@ namespace Zion
 		void RPCIMPL_GetDomainMemberCount(_U32 domain_id);
 		// return errcode, count
 
-		void RPCIMPL_WaitForMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
+		void RPCIMPL_WaitForMessage(const String& session_key, _U32 msg_seq);
 		// return errcode, msg[]
-		void RPCIMPL_GetMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq);
+		void RPCIMPL_GetMessage(const String& session_key, _U32 msg_seq);
 		// return errcode, msg[]
 
 	}

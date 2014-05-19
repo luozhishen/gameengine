@@ -9,7 +9,7 @@ namespace Zion
 	{
 
 		void RPCIMPL_LoginUser(_U32 user_id)
-		// return errcode, _U32 user_seq
+		// return errcode, _U32 session_key
 		{
 			CUserSession* session = CUserSession::Login(user_id);
 			if(session)
@@ -42,8 +42,8 @@ namespace Zion
 			JsonRPC_Send("[0]");
 		}
 
-		void RPCIMPL_GetSession(_U32 user_id, _U32 user_seq, _U32 req_seq, bool with_lock)
-		// return errcode, server_id, avatar_id, last_response, session_data
+		void RPCIMPL_LockSession(_U32 user_id, _U32 user_seq, _U32 req_seq)
+		// return errcode, server_id, avatar_id, req_seq
 		{
 			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
 			if(session)
@@ -64,7 +64,7 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void RPCIMPL_SetSession(_U32 user_id, _U32 user_seq, _U32 req_seq, const String& session_data, bool free_lock)
+		void RPCIMPL_UnlockSession(_U32 user_id, _U32 user_seq, _U32 req_seq)
 		// return errcode
 		{
 			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
@@ -92,38 +92,10 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void RPCIMPL_EnterServer(_U32 user_id, _U32 user_seq, _U32 server_id)
+		void RPCIMPL_BindAvatar(_U32 user_id, _U32 server_id, _U32 avatar_id, const String& avatar_name)
 		// return errcode
 		{
-			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
-			if(session)
-			{
-				session->SetServer(server_id);
-				CUserSession::Unlock(session);
-				JsonRPC_Send("[0]");
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
-		void RPCIMPL_LeaveServer(_U32 user_id, _U32 user_seq)
-		// return errcode
-		{
-			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
-			if(session)
-			{
-				session->SetServer((_U32)-1);
-				CUserSession::Unlock(session);
-				JsonRPC_Send("[0]");
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
-		void RPCIMPL_BindAvatar(_U32 user_id, _U32 user_seq, _U32 server_id, _U32 avatar_id, const String& avatar_name)
-		// return errcode
-		{
-			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
+			CUserSession* session = CUserSession::LockByUser(user_id);
 			if(session)
 			{
 				if(session->BindAvatar(server_id, avatar_id, avatar_name))
@@ -135,15 +107,14 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void RPCIMPL_UnbindAvatar(_U32 user_id, _U32 user_seq, _U32 server_id)
+		void RPCIMPL_UnbindAvatar(_U32 user_id)
 		// return errcode
 		{
-			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
+			CUserSession* session = CUserSession::LockByUser(user_id);
 			if(!session)
 			{
 				if(session->UnbindAvatar())
 				{
-					session->SetServer(server_id);
 					JsonRPC_Send("[0]");
 					return;
 				}
@@ -199,10 +170,10 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void RPCIMPL_JoinDomain(_U32 user_id, _U32 user_seq, _U32 domain_id)
+		void RPCIMPL_JoinDomain(_U32 user_id, _U32 domain_id)
 		// return errcode
 		{
-			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
+			CUserSession* session = CUserSession::LockByUser(user_id);
 			if(session)
 			{
 				if(session->JoinDomain(domain_id))
@@ -214,10 +185,10 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void RPCIMPL_LeaveDomain(_U32 user_id, _U32 user_seq, _U32 domain_id)
+		void RPCIMPL_LeaveDomain(_U32 user_id, _U32 domain_id)
 		// return errcode
 		{
-			CUserSession* session = CUserSession::LockByUser(user_id, user_seq);
+			CUserSession* session = CUserSession::LockByUser(user_id);
 			if(session)
 			{
 				if(session->LeaveDomain(domain_id))
@@ -244,6 +215,33 @@ namespace Zion
 				CDomain::Unlock(domain);
 			}
 			JsonRPC_Send("[-1]");
+		}
+
+		void RPCIMPL_GetDomainMemberList(_U32 domain_id)
+		// return errcode
+		{
+			CDomain* domain = CDomain::Lock(domain_id, false);
+			if(domain)
+			{
+				domain->SendMemberList();
+				CDomain::Unlock(domain);
+				return;
+			}
+			JsonRPC_Send("[0, []]");
+		}
+
+		void RPCIMPL_GetDomainMemberCount(_U32 domain_id)
+		// return errcode, count
+		{
+			CDomain* domain = CDomain::Lock(domain_id, false);
+			if(domain)
+			{
+				_U32 count = domain->GetMemberCount();
+				CDomain::Unlock(domain);
+				JsonRPC_Send(StringFormat("[0,%u]", count).c_str());
+				return;
+			}
+			JsonRPC_Send("[0, 0]");
 		}
 
 		void RPCIMPL_WaitForMessage(_U32 user_id, _U32 user_seq, _U32 msg_seq)

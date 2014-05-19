@@ -1,0 +1,58 @@
+
+Session JsonRpc Api:
+
+function	loginUser
+arguments	user_id
+return		errcode, _U32 user_seq
+
+function	logoutUser
+arguments	user_id, user_seq
+return		errcode
+
+function	lockUser
+arguments	user_id, user_seq, req_seq
+return		errcode, server_id, avatar_id
+
+function	unlockUser
+arguments	user_id, user_seq
+return		errcode
+
+function	bindAvatar
+arguments	user_id, user_seq, server_id, avatar_id, avatar_name
+return		errcode
+
+function	unbindAvatar
+arguments	user_id, user_seq
+return		errcode
+
+function	sendToUserID
+arguments	user_id, msg
+return		errcode
+
+fucntion	sendToAvatarID
+arguments	server_id, avatar_id, msg
+return		errcode
+
+function	sendToAvatarName
+arguments	server_id, avatar_name, msg
+return		errcode
+
+function	joinDomain
+arguments	user_id, user_seq, domain_id
+return		errcode
+
+function	leaveDomain
+arguments	user_id, user_seq, domain_id
+return		errcode
+
+function	sendToDomain
+arguments	domain_id, msg
+return		errcode
+
+function	waitForMessage
+arguments	user_id, user_seq, msg_seq
+return		errcode, next_seq, msg[]
+
+function	getMessage
+arguments	user_id, user_seq, msg_seq
+return		errcode, next_seq, msg[]

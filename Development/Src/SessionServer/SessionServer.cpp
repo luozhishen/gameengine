@@ -71,8 +71,8 @@ namespace Zion
 			JsonRPC_Bind("echo",				JsonRPC_Echo);
 			JsonRPC_Bind("loginUser",			JsonRpc_LoginUser);
 			JsonRPC_Bind("logoutUser",			JsonRpc_LogoutUser);
-			JsonRPC_Bind("getSession",			JsonRpc_GetSession);
-			JsonRPC_Bind("setSession",			JsonRpc_SetSession);
+			JsonRPC_Bind("lockSession",			JsonRpc_LockSession);
+			JsonRPC_Bind("unlockSession",		JsonRpc_UnlockSession);
 			JsonRPC_Bind("getSessionInfo",		JsonRpc_GetSessionInfo);
 			JsonRPC_Bind("bindAvatar",			JsonRpc_BindAvatar);
 			JsonRPC_Bind("unbindAvatar",		JsonRpc_UnbindAvatar);
@@ -80,8 +80,10 @@ namespace Zion
 			JsonRPC_Bind("sendToAvatarID",		JsonRpc_SendToAvatarID);
 			JsonRPC_Bind("sendToAvatarName",	JsonRpc_SendToAvatarName);
 			JsonRPC_Bind("joinDomain",			JsonRpc_JoinDomain);
-			JsonRPC_Bind("leaveDomain",		JsonRpc_LeaveDomain);
+			JsonRPC_Bind("leaveDomain",			JsonRpc_LeaveDomain);
 			JsonRPC_Bind("sendToDomain",		JsonRpc_SendToDomain);
+			JsonRPC_Bind("domainMemberList",	JsonRpc_GetDomainMemberList);
+			JsonRPC_Bind("domainMemberCount",	JsonRpc_GetDomainMemberCount);
 			JsonRPC_Bind("waitForMessage",		JsonRpc_WaitForMessage);
 			JsonRPC_Bind("GetMessage",			JsonRpc_GetMessage);
 			printf("start JsonRpc Server...\n");

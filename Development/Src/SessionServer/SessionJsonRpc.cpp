@@ -9,6 +9,20 @@ namespace Zion
 	namespace Session
 	{
 
+		bool make_domain_id(_U32 domain_level, _U32 domain_id, _U32& real_id)
+		{
+			if(domain_level<30)
+			{
+				_U32 max = (1 << (32 - domain_level -1));
+				if(domain_id<max)
+				{
+					real_id = (((_U32)-1) << (32 - domain_level)) | domain_id;
+					return true;
+				}
+			}
+			return false;
+		}
+
 		void JsonRPC_Echo(const JsonValue& args)
 		{
 			JsonRPC_Send("[0]");
@@ -58,8 +72,8 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_GetSession(const JsonValue& args)
-		// void RPCIMPL_GetSession(_U32 user_id, _U32 user_seq, _U32 req_seq)
+		void JsonRpc_LockSession(const JsonValue& args)
+		// void RPCIMPL_LockSession(_U32 user_id, _U32 user_seq, _U32 req_seq)
 		{
 			for(;;)
 			{
@@ -70,27 +84,25 @@ namespace Zion
 				if(!user_seq.IsU32()) break;
 				const JsonValue& req_seq = args.Get((_U32)2);
 				if(!req_seq.IsU32()) break;
-				RPCIMPL_GetSession(user_id.AsU32(), user_seq.AsU32(), req_seq.AsU32(), true);
+				RPCIMPL_LockSession(user_id.AsU32(), user_seq.AsU32(), req_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_SetSession(const JsonValue& args)
-		// void RPCIMPL_SetSession(_U32 user_id, _U32 user_seq, const char* last_response, const char* session_data)
+		void JsonRpc_UnlockSession(const JsonValue& args)
+		// void RPCIMPL_UnlockSession(_U32 user_id, _U32 user_seq, _U32 request_seq)
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=4) break;
+				if(args.GetSize()!=3) break;
 				const JsonValue& user_id = args.Get((_U32)0);
 				if(!user_id.IsU32()) break;
 				const JsonValue& user_seq = args.Get((_U32)1);
 				if(!user_seq.IsU32()) break;
 				const JsonValue& req_seq = args.Get((_U32)2);
 				if(!req_seq.IsU32()) break;
-				const JsonValue& session_data = args.Get((_U32)3);
-				if(!user_seq.IsSTR()) break;
-				RPCIMPL_SetSession(user_id.AsU32(), user_seq.AsU32(), req_seq.AsU32(),user_seq.AsSTR(), true);
+				RPCIMPL_UnlockSession(user_id.AsU32(), user_seq.AsU32(), req_seq.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -110,69 +122,21 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRpc_GetServerInfo(const JsonValue& args)
-		// void RPCIMPL_GetServerInfo()
-		{
-			for(;;)
-			{
-				if(args.GetSize()!=0) break;
-				RPCIMPL_GetServerInfo();
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
-		void JsonRpc_EnterServer(const JsonValue& args)
-		// void RPCIMPL_EnterServer(_U32 user_id, _U32 user_seq, _U32 server_id)
-		{
-			for(;;)
-			{
-				if(args.GetSize()!=3) break;
-				const JsonValue& user_id = args.Get((_U32)0);
-				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)0);
-				if(!user_seq.IsU32()) break;
-				const JsonValue& server_id = args.Get((_U32)0);
-				if(!server_id.IsU32()) break;
-				RPCIMPL_EnterServer(user_id.AsU32(), user_seq.AsU32(), server_id.AsU32());
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
-		void JsonRpc_LeaveServer(const JsonValue& args)
-		// void RPCIMPL_LeaveServer(_U32 user_id, _U32 user_seq)
-		{
-			for(;;)
-			{
-				if(args.GetSize()!=2) break;
-				const JsonValue& user_id = args.Get((_U32)0);
-				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)0);
-				if(!user_seq.IsU32()) break;
-				RPCIMPL_LeaveServer(user_id.AsU32(), user_seq.AsU32());
-				return;
-			}
-			JsonRPC_Send("[-1]");
-		}
-
 		void JsonRpc_BindAvatar(const JsonValue& args)
 		// void RPCIMPL_BindAvatar(_U32 user_id, _U32 user_seq, _U32 avatar_id, const char* avatar_name);
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=5) break;
+				if(args.GetSize()!=4) break;
 				const JsonValue& user_id = args.Get((_U32)0);
 				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
-				const JsonValue& server_id = args.Get((_U32)2);
+				const JsonValue& server_id = args.Get((_U32)1);
 				if(!server_id.IsU32()) break;
-				const JsonValue& avatar_id = args.Get((_U32)3);
+				const JsonValue& avatar_id = args.Get((_U32)2);
 				if(!avatar_id.IsU32()) break;
-				const JsonValue& avatar_name = args.Get((_U32)4);
+				const JsonValue& avatar_name = args.Get((_U32)3);
 				if(!avatar_name.IsSTR()) break;
-				RPCIMPL_BindAvatar(user_id.AsU32(), user_seq.AsU32(), server_id.AsU32(), avatar_id.AsU32(), avatar_name.AsSTR());
+				RPCIMPL_BindAvatar(user_id.AsU32(), server_id.AsU32(), avatar_id.AsU32(), avatar_name.AsSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -183,14 +147,10 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=3) break;
+				if(args.GetSize()!=1) break;
 				const JsonValue& user_id = args.Get((_U32)0);
 				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
-				const JsonValue& server_id = args.Get((_U32)1);
-				if(!server_id.IsU32()) break;
-				RPCIMPL_UnbindAvatar(user_id.AsU32(), user_seq.AsU32(), server_id.AsU32());
+				RPCIMPL_UnbindAvatar(user_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -253,14 +213,16 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=3) break;
+				if(args.GetSize()!=4) break;
 				const JsonValue& user_id = args.Get((_U32)0);
 				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
+				const JsonValue& domain_lv = args.Get((_U32)1);
+				if(!domain_lv.IsU32()) break;
 				const JsonValue& domain_id = args.Get((_U32)2);
 				if(!domain_id.IsU32()) break;
-				RPCIMPL_JoinDomain(user_id.AsU32(), user_seq.AsU32(), domain_id.AsU32());
+				_U32 real_id;
+				if(!make_domain_id(domain_lv.AsU32(), domain_id.AsU32(), real_id)) break;
+				RPCIMPL_JoinDomain(user_id.AsU32(), real_id);
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -274,11 +236,13 @@ namespace Zion
 				if(args.GetSize()!=3) break;
 				const JsonValue& user_id = args.Get((_U32)0);
 				if(!user_id.IsU32()) break;
-				const JsonValue& user_seq = args.Get((_U32)1);
-				if(!user_seq.IsU32()) break;
+				const JsonValue& domain_lv = args.Get((_U32)1);
+				if(!domain_lv.IsU32()) break;
 				const JsonValue& domain_id = args.Get((_U32)2);
 				if(!domain_id.IsU32()) break;
-				RPCIMPL_LeaveDomain(user_id.AsU32(), user_seq.AsU32(), domain_id.AsU32());
+				_U32 real_id;
+				if(!make_domain_id(domain_lv.AsU32(), domain_id.AsU32(), real_id)) break;
+				RPCIMPL_LeaveDomain(user_id.AsU32(), real_id);
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -289,12 +253,52 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=2) break;
-				const JsonValue& domain_id = args.Get((_U32)0);
+				if(args.GetSize()!=3) break;
+				const JsonValue& domain_lv = args.Get((_U32)0);
+				if(!domain_lv.IsU32()) break;
+				const JsonValue& domain_id = args.Get((_U32)1);
 				if(!domain_id.IsU32()) break;
-				const JsonValue& msg = args.Get((_U32)1);
+				const JsonValue& msg = args.Get((_U32)2);
 				if(!msg.IsSTR()) break;
-				RPCIMPL_SendToDomain(domain_id.AsU32(), msg.AsSTR());
+				_U32 real_id;
+				if(!make_domain_id(domain_lv.AsU32(), domain_id.AsU32(), real_id)) break;
+				RPCIMPL_SendToDomain(real_id, msg.AsSTR());
+				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
+		void JsonRpc_GetDomainMemberList(const JsonValue& args)
+		// void RPCIMPL_GetDomainMemberList(_U32 domain_level, _U32 domain_id);
+		{
+			for(;;)
+			{
+				if(args.GetSize()!=2) break;
+				const JsonValue& domain_lv = args.Get((_U32)0);
+				if(!domain_lv.IsU32()) break;
+				const JsonValue& domain_id = args.Get((_U32)1);
+				if(!domain_id.IsU32()) break;
+				_U32 real_id;
+				if(!make_domain_id(domain_lv.AsU32(), domain_id.AsU32(), real_id)) break;
+				RPCIMPL_GetDomainMemberList(real_id);
+				return;
+			}
+			JsonRPC_Send("[-1]");
+		}
+
+		void JsonRpc_GetDomainMemberCount(const JsonValue& args)
+		// void RPCIMPL_GetDomainMemberCount(_U32 domain_level, _U32 domain_id);
+		{
+			for(;;)
+			{
+				if(args.GetSize()!=2) break;
+				const JsonValue& domain_lv = args.Get((_U32)0);
+				if(!domain_lv.IsU32()) break;
+				const JsonValue& domain_id = args.Get((_U32)1);
+				if(!domain_id.IsU32()) break;
+				_U32 real_id;
+				if(!make_domain_id(domain_lv.AsU32(), domain_id.AsU32(), real_id)) break;
+				RPCIMPL_GetDomainMemberCount(real_id);
 				return;
 			}
 			JsonRPC_Send("[-1]");

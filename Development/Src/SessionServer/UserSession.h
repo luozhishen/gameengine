@@ -44,7 +44,10 @@ namespace Zion
 			_U32 GetIndex();
 
 			_U32 GetDomainID();
+			_U32 GetMemberCount();
+
 			bool SendMsg(const String& msg);
+			void SendMemberList();
 
 		private:
 			_U32 m_nIndex;
@@ -100,7 +103,7 @@ namespace Zion
 			_U32 m_nUserSeq;
 			_U32 m_nServerID;
 			_U32 m_nAvatarID;
-			_U32 m_nAvatarServerID;
+			_U32 m_nAvatarScopeID;
 			String m_AvatarName;
 			Set<_U32> m_Domains;
 

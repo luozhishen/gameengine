@@ -70,7 +70,7 @@ namespace Zion
 				}
 				A_MUTEX_UNLOCK(&m_Locker);
 
-				String out = StringFormat("[0, %u, [%s]", count, stream.str().c_str());
+				String out = StringFormat("[0, %u, [%s]]", count, stream.str().c_str());
 				JsonRPC_Send(out.c_str());
 			}
 
@@ -185,6 +185,11 @@ namespace Zion
 			return m_nDomainID;
 		}
 
+		_U32 CDomain::GetMemberCount()
+		{
+			return (_U32)m_Users.size();
+		}
+
 		bool CDomain::SendMsg(const String& msg)
 		{
 			if(m_Users.size()>0)
@@ -197,6 +202,10 @@ namespace Zion
 				}
 			}
 			return true;
+		}
+
+		void CDomain::SendMemberList()
+		{
 		}
 
 		static TObjectManager<CUserSession, 100*10000> g_session_manager;
@@ -411,20 +420,19 @@ namespace Zion
 			}
 		}
 
-		bool CUserSession::BindAvatar(_U32 server_id, _U32 avatar_id, const String& avatar_name)
+		bool CUserSession::BindAvatar(_U32 scope_id, _U32 avatar_id, const String& avatar_name)
 		{
 			if(m_nAvatarID!=(_U32)-1) return false;
 
-			_U64 id = (((_U64)server_id)<<32) | ((_U64)avatar_id);
-			String name = StringFormat("%u:%s", server_id, avatar_name.c_str());
+			_U64 id = (((_U64)scope_id)<<32) | ((_U64)avatar_id);
+			String name = StringFormat("%u:%s", scope_id, avatar_name.c_str());
 
 			if(g_session_avatar_name_map.Insert(name, m_nIndex))
 			{
 				if(g_session_avatar_id_map.Insert(id, m_nIndex))
 				{
-					SetServer(server_id);
 					m_nAvatarID = avatar_id;
-					m_nAvatarServerID = m_nServerID;
+					m_nAvatarScopeID = scope_id;
 					m_AvatarName = avatar_name;
 					return true;
 				}
@@ -447,7 +455,7 @@ namespace Zion
 
 			if(!m_AvatarName.empty())
 			{
-				String name = StringFormat("%u:%s", m_nAvatarServerID, m_AvatarName.c_str());
+				String name = StringFormat("%u:%s", m_nAvatarScopeID, m_AvatarName.c_str());
 				g_session_avatar_name_map.Remove(name, m_nIndex);
 				m_AvatarName.clear();
 			}

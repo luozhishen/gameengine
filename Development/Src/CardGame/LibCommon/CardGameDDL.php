@@ -396,7 +396,7 @@ class DATASYNC_JSON_S2C
 		$__result = '';
 		if(!is_string($type)) return false;
 		$__result += '"'.$type.'"';
-		$__result += ','
+		$__result += ',';
 		if(!is_string($json)) return false;
 		$__result += '"'.$json.'"';
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_CreateObject","args":['.$__result.']}');
@@ -407,7 +407,7 @@ class DATASYNC_JSON_S2C
 		$__result = '';
 		if(!is_string($_uuid)) return false;
 		$__result += '"'.$_uuid.'"';
-		$__result += ','
+		$__result += ',';
 		if(!is_string($json)) return false;
 		$__result += '"'.$json.'"';
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","args":['.$__result.']}');
@@ -425,7 +425,7 @@ class DATASYNC_JSON_S2C
 			$__result += '"'.$_uuid[$__i].'"';
 		}
 		$__result += ']';
-		$__result += ','
+		$__result += ',';
 		if(!is_int($count)) return false;
 		if($count<0 || $count>4294967295) return false;
 		$__result += $count;
@@ -536,7 +536,7 @@ class CGCALLBACK_BASE
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
 		$__result += $errcode;
-		$__result += ','
+		$__result += ',';
 		if(!is_array($arr)) return false;
 		$__result += '[';
 		for($__i=0; $__i<count($arr); $__i++)
@@ -545,7 +545,7 @@ class CGCALLBACK_BASE
 			$__result += $arr[$__i]->ToString();
 		}
 		$__result += ']';
-		$__result += ','
+		$__result += ',';
 		if(!is_int($count)) return false;
 		if($count<0 || $count>4294967295) return false;
 		$__result += $count;

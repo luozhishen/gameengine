@@ -353,7 +353,7 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 			DDL_ARG* arg = &_arg;
 			ddlgen_fixarg(&fun->args[a], &_arg);
 			if(a>0) {
-				OutP(2,	"$__result += ','\n");
+				OutP(2,	"$__result += ',';\n");
 			}
 
 			if(arg->count[0]!='\0') {

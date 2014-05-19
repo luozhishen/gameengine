@@ -44,23 +44,14 @@ namespace Zion
 		}
 
 		void RPCIMPL_LockSession(const String& session_key, _U32 req_seq)
-		// return errcode, server_id, avatar_id, req_seq
+		// return errcode, user_id, scope_id, avatar_id, request_seq
 		{
 			CUserSession* session = CUserSession::LockByUser(session_key);
 			if(session)
 			{
-				if(req_seq==session->GetReqSeq())
-				{
-					JsonRPC_Send(StringFormat("[0,%u,%u]", session->GetAvatarScope(), session->GetAvatarID()).c_str());
-					CUserSession::Unlock(session);
-					return;
-				}
-				if(req_seq==session->GetReqSeq()+1 && session->Lock())
-				{
-					JsonRPC_Send(StringFormat("[0,%u,%u]", session->GetAvatarScope(), session->GetAvatarID()).c_str());
-					CUserSession::Unlock(session);
-					return;
-				}
+				JsonRPC_Send(StringFormat("[0,%u,%u,%u,%u]", session->GetUserID(), session->GetAvatarScope(), session->GetAvatarID(), session->GetReqSeq()).c_str());
+				CUserSession::Unlock(session);
+				return;
 			}
 			JsonRPC_Send("[-1]");
 		}

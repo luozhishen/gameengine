@@ -414,7 +414,7 @@ namespace Zion
 			_GetAvatar_Count += 1;
 		}
 		
-		void RPCIMPL_SaveAvatar(_U32 avatar_id)
+		void RPCIMPL_SaveToDB(_U32 avatar_id)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(pAvatar)
@@ -446,168 +446,228 @@ namespace Zion
 		void RPCIMPL_CreateObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* type, const char* data)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(pAvatar)
+			if(!pAvatar)
 			{
-				if(pAvatar->GetVersion()==version)
-				{
-					if(pAvatar->CreateObject(_uuid, type, data, false, true))
-					{
-						JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
-						UnlockAvatar(pAvatar);
-						return;
-					}
-				}
-				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[\"NOT_EXISTED\"]");
+				return;
 			}
+
+			if(pAvatar->GetVersion()!=version)
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[\"TRY_AGAIN\"]");
+				return;
+			}
+
+			if(pAvatar->CreateObject(_uuid, type, data, false, true))
+			{
+				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+				UnlockAvatar(pAvatar);
+				return;
+			}
+
+			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_UpdateObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid, const char* data)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(pAvatar)
+			if(!pAvatar)
 			{
-				if(pAvatar->GetVersion()==version)
-				{
-					if(pAvatar->UpdateObject(_uuid, data))
-					{
-						UnlockAvatar(pAvatar);
-						JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
-						return;
-					}
-				}
-				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[\"NOT_EXISTED\"]");
+				return;
 			}
+
+			if(pAvatar->GetVersion()!=version)
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[\"TRY_AGAIN\"]");
+				return;
+			}
+
+			if(pAvatar->UpdateObject(_uuid, data))
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+				return;
+			}
+
+			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 
 		void RPCIMPL_DeleteObject(_U32 avatar_id, _U32 version, const A_UUID* _uuids, _U32 count)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(pAvatar)
+			if(!pAvatar)
 			{
-				if(pAvatar->GetVersion()==version)
+				JsonRPC_Send("[\"NOT_EXISTED\"]");
+				return;
+			}
+
+			if(pAvatar->GetVersion()!=version)
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[\"TRY_AGAIN\"]");
+				return;
+			}
+	
+			for(_U32 l=0; l<count; l++)
+			{
+				pAvatar->DeleteObject(_uuids[l]);
+			}
+
+			JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+			UnlockAvatar(pAvatar);
+			return;
+		}
+
+		void RPCIMPL_LoadObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid)
+		{
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
+			if(!pAvatar)
+			{
+				JsonRPC_Send("[\"NOT_EXISTED\"]");
+				return;
+			}
+
+			if(pAvatar->GetVersion()!=version)
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[\"TRY_AGAIN\"]");
+				return;
+			}
+
+			if(!pAvatar->ExistObject(_uuid))
+			{
+				IDBApi* db = AllocDataBase();
+				if(db)
 				{
-					for(_U32 l=0; l<count; l++)
+					if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
 					{
-						pAvatar->DeleteObject(_uuids[l]);
+						const CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
+						if(pObject)
+						{
+							FreeDatabase(db);
+							char suuid[100];
+							AUuidToString(_uuid, suuid);
+							JsonRPC_Send(StringFormat("[0, %u, \"%s\", \"%s\", \"%s\"]", pAvatar->GetVersion(), suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
+							UnlockAvatar(pAvatar);
+							return;
+						}
 					}
-					JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
+					FreeDatabase(db);
+				}
+			}
+			UnlockAvatar(pAvatar);
+			JsonRPC_Send("[-1]");
+		}
+
+		static bool ExecuteBatch_MEM(CAvatarData* pAvatar, const Array<TASK>& tasks, IDBApi* db)
+		{
+			_U32 i;
+			for(i=0; i<(_U32)tasks.size(); i++)
+			{
+				bool is_error = true;
+				switch(tasks[i]._task_type)
+				{
+				case TASK_CREATE_OBJECT:
+					if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+					break;
+				case TASK_DELETE_OBJECT:
+				case TASK_UPDATE_OBJECT:
+					if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+					break;
+				case TASK_DELETE_TASK:
+					if(db->LockTask(pAvatar->GetAvatarID(), tasks[i]._task_id)) is_error = false;
+					break;
+				}
+				if(is_error) break;
+			}
+			return i==(_U32)tasks.size();
+		}
+
+		static bool ExecuteBatch_DB(CAvatarData* pAvatar, const Array<TASK>& tasks, IDBApi* db)
+		{
+			_U32 i;
+			for(i=0; i<(_U32)tasks.size(); i++)
+			{
+				bool no_error = false;
+				switch(tasks[i]._task_type)
+				{
+				case TASK_CREATE_OBJECT:
+					no_error = pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true, true);
+					break;
+				case TASK_DELETE_OBJECT:
+					no_error = pAvatar->DeleteObject(tasks[i]._obj_uuid);
+					break;
+				case TASK_UPDATE_OBJECT:
+					no_error = pAvatar->UpdateObject(tasks[i]._obj_uuid, tasks[i]._obj_data.c_str());
+					break;
+				case TASK_DELETE_TASK:
+					no_error = db->DeleteTask(pAvatar->GetAvatarID(), tasks[i]._task_id);
+					break;
+				}
+				if(!no_error) break;
+			}
+			return i==(_U32)tasks.size();
+		}
+
+		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks, bool save)
+		{
+			CAvatarData* pAvatar = LockAvatar(avatar_id);
+			if(!pAvatar)
+			{
+				JsonRPC_Send("[\"NOT_EXISTED\"]");
+				return;
+			}
+
+			if(pAvatar->GetVersion()!=version)
+			{
+				UnlockAvatar(pAvatar);
+				JsonRPC_Send("[\"TRY_AGAIN\"]");
+				return;
+			}
+
+			if(save)
+			{
+				IDBApi* db = AllocDataBase();
+				if(db)
+				{
+					if(db->BeginTranscation())
+					{
+						for(;;)
+						{
+							if(!ExecuteBatch_MEM(pAvatar, tasks, db)) break;
+							if(!ExecuteBatch_DB(pAvatar, tasks, db)) break;
+							if(!pAvatar->Save(db)) break;
+							if(!db->CommitTransaction()) break;
+							version = pAvatar->GetVersion();
+							UnlockAvatar(pAvatar);
+							FreeDatabase(db);
+							JsonRPC_Send(StringFormat("[0,%u]", version).c_str());
+							return;
+						}
+						db->RollbackTransaction();
+					}
+					FreeDatabase(db);
+				}
+			}
+			else
+			{
+				for(;;)
+				{
+					if(!ExecuteBatch_MEM(pAvatar, tasks, NULL)) break;
+					if(!ExecuteBatch_DB(pAvatar, tasks, NULL)) break;
+					version = pAvatar->GetVersion();
 					UnlockAvatar(pAvatar);
+					JsonRPC_Send(StringFormat("[0,%u]", version).c_str());
 					return;
 				}
-				UnlockAvatar(pAvatar);
 			}
-			JsonRPC_Send("[-1]");
-		}
 
-		void RPCIMPL_LoadObject(_U32 avatar_id, const A_UUID& _uuid)
-		{
-			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(pAvatar)
-			{
-				if(!pAvatar->ExistObject(_uuid))
-				{
-					IDBApi* db = AllocDataBase();
-					if(db)
-					{
-						if(db->QueryAvatarObject(avatar_id, _uuid, db_load_callback, pAvatar))
-						{
-							const CAvatarData::OBJECT_DATA* pObject = pAvatar->GetObject(_uuid);
-							if(pObject)
-							{
-								FreeDatabase(db);
-								char suuid[100];
-								AUuidToString(_uuid, suuid);
-								JsonRPC_Send(StringFormat("[0, \"%s\", \"%s\", \"%s\"]", suuid, pObject->_type.c_str(), pObject->_data.c_str()).c_str());
-								UnlockAvatar(pAvatar);
-								return;
-							}
-						}
-						FreeDatabase(db);
-					}
-				}
-				UnlockAvatar(pAvatar);
-			}
-			JsonRPC_Send("[-1]");
-		}
-
-		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks)
-		{
-			CAvatarData* pAvatar = LockAvatar(avatar_id);
-			if(pAvatar)
-			{
-				if(pAvatar->GetVersion()==version)
-				{
-					IDBApi* db = AllocDataBase();
-					if(db)
-					{
-						if(db->BeginTranscation())
-						{
-							for(;;)
-							{
-								_U32 i;
-								for(i=0; i<(_U32)tasks.size(); i++)
-								{
-									bool is_error = true;
-									switch(tasks[i]._task_type)
-									{
-									case TASK_CREATE_OBJECT:
-										if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
-										break;
-									case TASK_DELETE_OBJECT:
-									case TASK_UPDATE_OBJECT:
-										if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
-										break;
-									case TASK_DELETE_TASK:
-										if(db->LockTask(avatar_id, tasks[i]._task_id)) is_error = false;
-										break;
-									}
-									if(is_error) break;
-								}
-								if(i!=(_U32)tasks.size()) break;
-
-								for(i=0; i<(_U32)tasks.size(); i++)
-								{
-									bool no_error = false;
-									switch(tasks[i]._task_type)
-									{
-									case TASK_CREATE_OBJECT:
-										no_error = pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true, true);
-										break;
-									case TASK_DELETE_OBJECT:
-										no_error = pAvatar->DeleteObject(tasks[i]._obj_uuid);
-										break;
-									case TASK_UPDATE_OBJECT:
-										no_error = pAvatar->UpdateObject(tasks[i]._obj_uuid, tasks[i]._obj_data.c_str());
-										break;
-									case TASK_DELETE_TASK:
-										no_error = db->DeleteTask(avatar_id, tasks[i]._task_id);
-										break;
-									}
-									if(!no_error) break;
-								}
-								if(i!=(_U32)tasks.size()) break;
-
-								if(pAvatar->Save(db))
-								{
-									if(db->CommitTransaction())
-									{
-										version = pAvatar->GetVersion();
-										UnlockAvatar(pAvatar);
-										FreeDatabase(db);
-										JsonRPC_Send(StringFormat("[0,%u]", version).c_str());
-										return;
-									}
-								}
-							}
-							db->RollbackTransaction();
-						}
-						FreeDatabase(db);
-					}
-				}
-				UnlockAvatar(pAvatar);
-			}
+			UnlockAvatar(pAvatar);
 			JsonRPC_Send("[-1]");
 		}
 

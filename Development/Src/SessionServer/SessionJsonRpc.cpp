@@ -75,12 +75,10 @@ namespace Zion
 		{
 			for(;;)
 			{
-				if(args.GetSize()!=2) break;
+				if(args.GetSize()!=1) break;
 				const JsonValue& session_key = args.Get((_U32)0);
 				if(!session_key.IsSTR()) break;
-				const JsonValue& req_seq = args.Get((_U32)1);
-				if(!req_seq.IsU32()) break;
-				RPCIMPL_LockSession(session_key.AsSTR(), req_seq.AsU32());
+				RPCIMPL_LockSession(session_key.AsSTR());
 				return;
 			}
 			JsonRPC_Send("[-1]");

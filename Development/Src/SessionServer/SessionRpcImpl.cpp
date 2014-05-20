@@ -14,8 +14,9 @@ namespace Zion
 			CUserSession* session = CUserSession::Login(user_id);
 			if(session)
 			{
-				JsonRPC_Send(StringFormat("[0,%s]", session->GetSessionKey().c_str()).c_str());
-				session->Unlock();
+				JsonRPC_Send(StringFormat("[0,\"%s\"]", session->GetSessionKey().c_str()).c_str());
+				session->Lock();
+				CUserSession::Unlock(session);
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -43,13 +44,20 @@ namespace Zion
 			JsonRPC_Send("[0]");
 		}
 
-		void RPCIMPL_LockSession(const String& session_key, _U32 req_seq)
+		void RPCIMPL_LockSession(const String& session_key)
 		// return errcode, user_id, scope_id, avatar_id, request_seq
 		{
 			CUserSession* session = CUserSession::LockByUser(session_key);
 			if(session)
 			{
-				JsonRPC_Send(StringFormat("[0,%u,%u,%u,%u]", session->GetUserID(), session->GetAvatarScope(), session->GetAvatarID(), session->GetReqSeq()).c_str());
+				if(session->Lock())
+				{
+					JsonRPC_Send(StringFormat("[0,%u,%u,%u,%u]", session->GetUserID(), session->GetAvatarScope(), session->GetAvatarID(), session->GetReqSeq()).c_str());
+				}
+				else
+				{
+					JsonRPC_Send("[\"TRY_AGAIN\"]");
+				}
 				CUserSession::Unlock(session);
 				return;
 			}
@@ -62,7 +70,7 @@ namespace Zion
 			CUserSession* session = CUserSession::LockByUser(session_key);
 			if(session)
 			{
-				ZION_ASSERT(0);
+				session->Unlock(req_seq!=0);
 				CUserSession::Unlock(session);
 				JsonRPC_Send("[0]");
 				return;

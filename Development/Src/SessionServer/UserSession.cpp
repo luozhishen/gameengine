@@ -322,7 +322,7 @@ namespace Zion
 		CUserSession::CUserSession(_U32 nUserID)
 		{
 			m_nUserID = nUserID;
-			m_SessionKey = StringFormat("%u$$seq", nUserID, (global_user_seq++) + rand());
+			m_SessionKey = StringFormat("%u$$%u", nUserID, (global_user_seq++) + rand());
 			m_nAvatarID = (_U32)-1;
 			//m_AvatarName;
 			//m_Domains;
@@ -412,16 +412,27 @@ namespace Zion
 			return true;
 		}
 		
-		bool CUserSession::Unlock()
+		bool CUserSession::Unlock(bool success)
 		{
 			if(!m_bLocked) return false;
-			m_nReqSeq += 1;
+			if(success) m_nReqSeq += 1;
+			m_bLocked = false;
 			return true;
 		}
 
 		bool CUserSession::BindAvatar(_U32 scope_id, _U32 avatar_id, const String& avatar_name)
 		{
-			if(m_nAvatarID!=(_U32)-1) return false;
+			if(m_nAvatarID!=(_U32)-1)
+			{
+				if(m_nAvatarID==avatar_id && m_nAvatarScopeID==scope_id && m_AvatarName==avatar_name)
+				{
+					return true;
+				}
+				if(!UnbindAvatar())
+				{
+					return false;
+				}
+			}
 
 			_U64 id = (((_U64)scope_id)<<32) | ((_U64)avatar_id);
 			String name = StringFormat("%u:%s", scope_id, avatar_name.c_str());
@@ -462,6 +473,11 @@ namespace Zion
 
 		bool CUserSession::JoinDomain(_U32 domain_id)
 		{
+			if(m_Domains.find(domain_id)!=m_Domains.end())
+			{
+				return true;
+			}
+
 			CDomain* domain = CDomain::Lock(domain_id, true);
 			if(!domain) return false;
 			domain->m_Users[m_nUserID] = this;
@@ -472,6 +488,11 @@ namespace Zion
 
 		bool CUserSession::LeaveDomain(_U32 domain_id)
 		{
+			if(m_Domains.find(domain_id)==m_Domains.end())
+			{
+				return true;
+			}
+
 			CDomain* domain = CDomain::Lock(domain_id, false);
 			if(!domain) return false;
 

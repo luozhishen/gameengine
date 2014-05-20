@@ -666,7 +666,7 @@ namespace Zion
 		}
 
 		JsonValue json;
-		if(!json.Parse(data, data+len))
+		if(!json.Parse(data, data+len) || !json.IsArray())
 		{
 			ZION_ASSERT(!"invalid data format");
 			return false;

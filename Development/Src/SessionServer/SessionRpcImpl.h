@@ -13,7 +13,7 @@ namespace Zion
 		void RPCIMPL_KickUser(_U32 user_id);
 		// return errcode
 
-		void RPCIMPL_LockSession(const String& session_key, _U32 req_seq);
+		void RPCIMPL_LockSession(const String& session_key);
 		// return errcode, user_id, server_id, avatar_id, request_seq
 		void RPCIMPL_UnlockSession(const String& session_key, _U32 req_seq);
 		// return errcode

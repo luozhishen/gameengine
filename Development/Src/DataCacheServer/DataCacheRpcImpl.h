@@ -38,7 +38,7 @@ namespace Zion
 		// return errcode
 		void RPCIMPL_GetAvatar(_U32 avatar_id);
 		// return errcode, avatar_id, version, avatar_objects[]
-		void RPCIMPL_SaveAvatar(_U32 avatar_id);
+		void RPCIMPL_SaveToDB(_U32 avatar_id);
 		// return errcode
 		void RPCIMPL_KeepAlive(_U32 avatar_id);
 		// return errcode, version
@@ -48,8 +48,8 @@ namespace Zion
 		// return errcode, version
 		void RPCIMPL_DeleteObject(_U32 avatar_id, _U32 version, const A_UUID* _uuids, _U32 count);
 		// return errcode, version
-		void RPCIMPL_LoadObject(_U32 avatar_id, const A_UUID& _uuid);
-		// return errcode, uuid, type, data
+		void RPCIMPL_LoadObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid);
+		// return errcode, version, uuid, type, data
 		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks);
 		// return errcode, version
 

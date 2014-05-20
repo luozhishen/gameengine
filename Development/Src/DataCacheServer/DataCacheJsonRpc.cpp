@@ -82,7 +82,7 @@ namespace Zion
 			JsonRPC_Send("[-1]");
 		}
 
-		void JsonRPC_SaveAvatar(const JsonValue& args)
+		void JsonRPC_SaveToDB(const JsonValue& args)
 		{
 			if(CONFIG_ENABLE_RPC_REPLAYLOG)
 				WriteRPCLog("SaveAvatar", args);
@@ -92,7 +92,7 @@ namespace Zion
 				if(args.GetSize()!=1) break;
 				const JsonValue& _avatar_id = args.Get((_U32)0);
 				if(!_avatar_id.IsU32()) break;
-				RPCIMPL_SaveAvatar((_U32)_avatar_id.AsU32());
+				RPCIMPL_SaveToDB((_U32)_avatar_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");
@@ -204,14 +204,16 @@ namespace Zion
 
 			for(;;)
 			{
-				if(args.GetSize()!=2) break;
+				if(args.GetSize()!=3) break;
 				const JsonValue& _avatar_id = args.Get((_U32)0);
 				if(!_avatar_id.IsU32()) break;
-				const JsonValue& juuid = args.Get((_U32)1);
+				const JsonValue& _version = args.Get((_U32)0);
+				if(!_version.IsU32()) break;
+				const JsonValue& juuid = args.Get((_U32)2);
 				if(!juuid.IsSTR()) break;
 				A_UUID _uuid;
 				if(!AUuidFromString(juuid.AsCSTR(), _uuid)) break;
-				RPCIMPL_LoadObject((_U32)_avatar_id.AsU32(), _uuid);
+				RPCIMPL_LoadObject(_avatar_id.AsU32(), _version.AsU32(), _uuid);
 				return;
 			}
 			JsonRPC_Send("[-1]");

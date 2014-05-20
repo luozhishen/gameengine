@@ -181,7 +181,7 @@ namespace Zion
 			JsonRPC_Bind("createAvatar",	JsonRPC_CreateAvatar);
 			JsonRPC_Bind("deleteAvatar",	JsonRPC_DeleteAvatar);
 			JsonRPC_Bind("getAvatar",		JsonRPC_GetAvatar);
-			JsonRPC_Bind("saveAvatar",		JsonRPC_SaveAvatar);
+			JsonRPC_Bind("saveToDB",		JsonRPC_SaveToDB);
 			JsonRPC_Bind("keepAlive",		JsonRPC_KeepAlive);
 			JsonRPC_Bind("createObject",	JsonRPC_CreateObject);
 			JsonRPC_Bind("updateObject",	JsonRPC_UpdateObject);
@@ -281,7 +281,7 @@ namespace Zion
 				if(method=="CreateAvatar") JsonRPC_CreateAvatar(json);
 				else if(method=="CreateAvatar") JsonRPC_DeleteAvatar(json);
 				else if(method=="GetAvatar") JsonRPC_GetAvatar(json);
-				else if(method=="SaveAvatar") JsonRPC_SaveAvatar(json);
+				else if(method=="SaveAvatar") JsonRPC_SaveToDB(json);
 				else if(method=="KeepAlive") JsonRPC_KeepAlive(json);
 				else if(method=="UpdateObject") JsonRPC_UpdateObject(json);
 				else if(method=="DeleteObject") JsonRPC_DeleteObject(json);

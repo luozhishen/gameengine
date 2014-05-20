@@ -1,1 +1,1 @@
-{"ConnectType":"http","ServerUrl":"http://127.0.0.1:1982/game-api/%s","UidBase":"1000"}
+{"ConnectType":"http","ServerUrl":"http://127.0.0.1/zion-web/CardGame/%s.php","UidBase":"1000"}

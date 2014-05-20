@@ -59,7 +59,7 @@ namespace Zion
 				db = CreateProxyDatabase(db);
 			}
 
-			return NULL;
+			return db;
 		}
 
 		bool InitDatabase()

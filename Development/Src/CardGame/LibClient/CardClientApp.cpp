@@ -12,7 +12,7 @@ namespace Zion
 
 	CCardClientApp::CCardClientApp(bool bThread) : CClientApp("CardGame", bThread)
 	{
-		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://127.0.0.1/game-api/%s");
+		if(!GetParam("ServerUrl")) SetParam("ServerUrl", "http://127.0.0.1/zion-web/CardGame/%s.php");
 		if(!GetParam("ConnectType")) SetParam("ConnectType", "http");
 	}
 

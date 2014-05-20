@@ -13,7 +13,7 @@ namespace Zion
 	namespace Session
 	{
 
-		String CONFIG_RPCEP("0.0.0.0:1980");
+		String CONFIG_RPCEP("0.0.0.0:1981");
 		bool CONFIG_SINGLETHREAD = false;
 
 		static bool ParseArgs(int argc, char* argv[])

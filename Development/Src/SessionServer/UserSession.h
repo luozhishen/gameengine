@@ -91,7 +91,7 @@ namespace Zion
 			bool SendMsg(const String& msg);
 			bool SendMsg(CMessage& OutMsg);
 			_U32 GetMsgSeq();
-			bool GetMsg(_U32 nMsgSeq);
+			void PullMsg();
 			void WaitMsg(const JSONRPC_RESPONSE_ID& res);
 			const String& GetLastMsg();
 			void CombineMsg();

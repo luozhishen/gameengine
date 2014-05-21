@@ -22,7 +22,7 @@ namespace Zion
 			virtual bool RollbackTransaction();
 			virtual bool CommitTransaction();
 
-			virtual _U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc);
+			virtual _U32 CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc);
 			virtual bool DeleteAvatar(_U32 avatar_id);
 			virtual bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
@@ -76,7 +76,7 @@ namespace Zion
 			return true;
 		}
 
-		_U32 CFakeDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
+		_U32 CFakeDBApi::CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc)
 		{
 			return user_id;
 		}

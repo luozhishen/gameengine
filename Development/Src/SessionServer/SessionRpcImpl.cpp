@@ -248,43 +248,76 @@ namespace Zion
 		// return errcode, msg[]
 		{
 			CUserSession* session = CUserSession::LockByUser(session_key);
-			if(session)
+			if(!session)
 			{
-				if(session->GetMsg(msg_seq))
+				JsonRPC_Send("[-1]");
+				return;
+			}
+
+			if(session->GetMsgSeq()==msg_seq)
+			{
+				JsonRPC_Send(session->GetLastMsg().c_str());
+			}
+			else if(session->GetMsgSeq()+1==msg_seq)
+			{
+				session->PullMsg();
+				if(session->GetMsgSeq()==msg_seq)
 				{
 					JsonRPC_Send(session->GetLastMsg().c_str());
-					CUserSession::Unlock(session);
-					return;
 				}
-
-				if(session->GetMsgSeq()+1==msg_seq)
+				else
 				{
 					JSONRPC_RESPONSE_ID res;
 					if(JsonRPC_SetPending(res))
 					{
 						session->WaitMsg(res);
-						CUserSession::Unlock(session);
-						return;
+					}
+					else
+					{
+						JsonRPC_Send("[-1]");
 					}
 				}
 			}
-			JsonRPC_Send("[-1]");
+			else
+			{
+				JsonRPC_Send("[-1]");
+			}
+
+			CUserSession::Unlock(session);
 		}
 
 		void RPCIMPL_GetMessage(const String& session_key, _U32 msg_seq)
 		// return errcode, msg[]
 		{
 			CUserSession* session = CUserSession::LockByUser(session_key);
-			if(session)
+			if(!session)
 			{
-				if(session->GetMsg(msg_seq))
+				JsonRPC_Send("[-1]");
+				return;
+			}
+
+			if(session->GetMsgSeq()==msg_seq)
+			{
+				JsonRPC_Send(session->GetLastMsg().c_str());
+			}
+			else if(session->GetMsgSeq()+1==msg_seq)
+			{
+				session->PullMsg();
+				if(session->GetMsgSeq()==msg_seq)
 				{
 					JsonRPC_Send(session->GetLastMsg().c_str());
-					CUserSession::Unlock(session);
-					return;
+				}
+				else
+				{
+					JsonRPC_Send("[-1]");
 				}
 			}
-			JsonRPC_Send("[-1]");
+			else
+			{
+				JsonRPC_Send("[-1]");
+			}
+
+			CUserSession::Unlock(session);
 		}
 
 	}

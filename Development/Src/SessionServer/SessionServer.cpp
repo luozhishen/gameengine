@@ -71,6 +71,7 @@ namespace Zion
 			JsonRPC_Bind("echo",				JsonRPC_Echo);
 			JsonRPC_Bind("loginUser",			JsonRpc_LoginUser);
 			JsonRPC_Bind("logoutUser",			JsonRpc_LogoutUser);
+			JsonRPC_Bind("kickUser",			JsonRpc_KickUser);
 			JsonRPC_Bind("lockSession",			JsonRpc_LockSession);
 			JsonRPC_Bind("unlockSession",		JsonRpc_UnlockSession);
 			JsonRPC_Bind("getSessionInfo",		JsonRpc_GetSessionInfo);

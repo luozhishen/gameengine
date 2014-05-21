@@ -175,14 +175,7 @@ namespace Zion
 			{
 				SetErrorCode(ret==MOERROR_AUTH_FAILED?CClient::ERRCODE_AUTH_FAILED:CClient::ERRCODE_UNKOWN);
 				m_nState = CClient::STATE_FAILED;
-				if(ret!=CClient::ERRCODE_UNKOWN)
-				{
-					CLIENT_LOG(GetClient(), "http_connection : login failed, return code = %d", ret);
-				}
-				else
-				{
-					CLIENT_LOG(GetClient(), "http_connection : %s", MORequestGetResult(m_pLoginRequest));
-				}
+				CLIENT_LOG(GetClient(), "http_connection : %s", MORequestGetResult(m_pLoginRequest));
 			}
 			else
 			{
@@ -430,10 +423,12 @@ namespace Zion
 
 	void CHttpConnection::SendRequest()
 	{
-		if(m_LastRequestString.empty()) {
+		if(m_LastRequestString.empty())
+		{
 			if(m_SendQueue.empty()) return;
 			m_LastRequestString = "";
-			while(!m_SendQueue.empty()) {
+			while(!m_SendQueue.empty())
+			{
 				if(!m_LastRequestString.empty()) m_LastRequestString += ",";
 				m_LastRequestString += m_SendQueue.front();
 				m_SendQueue.pop_front();

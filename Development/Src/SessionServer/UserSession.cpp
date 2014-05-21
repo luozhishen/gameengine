@@ -534,25 +534,14 @@ namespace Zion
 			return m_nMsgSeq;
 		}
 
-		bool CUserSession::GetMsg(_U32 nMsgSeq)
+		void CUserSession::PullMsg()
 		{
-			if(m_nMsgSeq==nMsgSeq)
-			{
-				return true;
-			}
-			if(m_nMsgSeq+1!=nMsgSeq)
-			{
-				return false;
-			}
-
 			A_MUTEX_LOCK(&m_MsgLocker);
 			if(!m_Msgs.empty())
 			{
 				CombineMsg();
 			}
 			A_MUTEX_UNLOCK(&m_MsgLocker);
-
-			return m_nMsgSeq==nMsgSeq;
 		}
 
 		void CUserSession::WaitMsg(const JSONRPC_RESPONSE_ID& res)

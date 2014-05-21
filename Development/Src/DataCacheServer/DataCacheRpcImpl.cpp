@@ -327,7 +327,7 @@ namespace Zion
 
 		void RPCIMPL_CreateAvatar(
 				_U32 user_id,
-				_U32 server_id,
+				_U32 avatar_scope,
 				const char* avatar_name,
 				const char* avatar_desc,
 				const Array<A_UUID>& uuids,
@@ -339,7 +339,7 @@ namespace Zion
 			{
 				if(uuids.size()==types.size() && uuids.size()==datas.size())
 				{
-					_U32 avatar_id = db->CreateAvatar(user_id, server_id, avatar_name, avatar_desc);
+					_U32 avatar_id = db->CreateAvatar(user_id, avatar_scope, avatar_name, avatar_desc);
 					if(avatar_id!=(_U32)-1)
 					{
 						size_t i;

@@ -23,15 +23,15 @@ CREATE INDEX login_history_table_user_index ON login_history_table(user_id);
 CREATE TABLE avatar_table (
   avatar_id int(11) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   user_id int(11) NOT NULL COMMENT '用户ID',
-  server_id int(11) NOT NULL COMMENT '角色所在服务器ID',
+  avatar_scope int(11) NOT NULL COMMENT '角色所在服务器ID',
   state int(11) DEFAULT 0 COMMENT '角色状态 0 激活 1 删除',
   freeze_duetime TIMESTAMP DEFAULT 0 COMMENT '封停到期时间',
   avatar_name varchar(100) NOT NULL COMMENT '角色名称',
   avatar_desc text NOT NULL COMMENT '角色基本信息',
   PRIMARY KEY (avatar_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(server_id, avatar_name);
-CREATE INDEX avatar_table_user_index ON avatar_table(user_id, server_id);
+CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_scope, avatar_name);
+CREATE INDEX avatar_table_user_index ON avatar_table(user_id, avatar_scope);
 
 -- 角色对象表
 CREATE TABLE avatar_object_table (

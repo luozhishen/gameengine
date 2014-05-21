@@ -61,7 +61,7 @@ namespace Zion
 			virtual bool RollbackTransaction();
 			virtual bool CommitTransaction();
 
-			virtual _U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc);
+			virtual _U32 CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc);
 			virtual bool DeleteAvatar(_U32 avatar_id);
 			virtual bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
@@ -164,10 +164,10 @@ namespace Zion
 			return mysql_real_query(m_mysql, "Rollback ;", 10)==0;
 		}
 
-		_U32 CMysqlDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
+		_U32 CMysqlDBApi::CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc)
 		{
-			String sql = StringFormat("INSERT INTO avatar_table(user_id, server_id, avatar_name, avatar_desc) VALUES(%u, %u, '%s', '%s')",
-				user_id, server_id, MY(avatar_name), MY(avatar_desc));
+			String sql = StringFormat("INSERT INTO avatar_table(user_id, avatar_scope, avatar_name, avatar_desc) VALUES(%u, %u, '%s', '%s')",
+				user_id, avatar_scope, MY(avatar_name), MY(avatar_desc));
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 			{
 				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));

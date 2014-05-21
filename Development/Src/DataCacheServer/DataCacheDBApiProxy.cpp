@@ -25,7 +25,7 @@ namespace Zion
 			virtual bool RollbackTransaction();
 			virtual bool CommitTransaction();
 
-			virtual _U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc);
+			virtual _U32 CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc);
 			virtual bool DeleteAvatar(_U32 avatar_id);
 			virtual bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
@@ -179,7 +179,7 @@ namespace Zion
 			return ret;
 		}
 
-		_U32 CProxyDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
+		_U32 CProxyDBApi::CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc)
 		{
 			if(m_fp)
 			{
@@ -187,7 +187,7 @@ namespace Zion
 				if(!Read("CreateAvatar", json)) ZION_FATAL("failed to read db log file\n");
 				return json.Get((_U32)0).AsU32();
 			}
-			_U32 ret = m_db->CreateAvatar(user_id, server_id, avatar_name, avatar_desc);
+			_U32 ret = m_db->CreateAvatar(user_id, avatar_scope, avatar_name, avatar_desc);
 			JsonValue json(JsonValue::TYPE_ARRAY);
 			json.Append(JsonValue(ret));
 			WriteDBLog("CreateAvatar", json);

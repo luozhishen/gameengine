@@ -25,7 +25,7 @@ namespace Zion
 			virtual bool RollbackTransaction();
 			virtual bool CommitTransaction();
 
-			virtual _U32 CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc);
+			virtual _U32 CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc);
 			virtual bool DeleteAvatar(_U32 avatar_id);
 			virtual bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
@@ -96,7 +96,7 @@ namespace Zion
 			"CREATE TABLE avatar_table (\n"
 			"	avatar_id	INTEGER PRIMARY KEY AUTOINCREMENT,\n"
 			"	user_id		INTEGER,\n"
-			"	server_id	INTEGER,\n"
+			"	avatar_scope	INTEGER,\n"
 			"	state		INTEGER DEFAULT 0,\n"
 			"	freeze_duetime INTEGER DEFAULT 0,\n"
 			"	avatar_name	TEXT,\n"
@@ -105,7 +105,7 @@ namespace Zion
 
 			"CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_name)",
 
-			"CREATE INDEX avatar_table_user_index ON avatar_table(user_id, server_id)",
+			"CREATE INDEX avatar_table_user_index ON avatar_table(user_id, avatar_scope)",
 
 			"CREATE TABLE avatar_object_table (\n"
 			"	avatar_id INTEGER,\n"
@@ -214,13 +214,13 @@ namespace Zion
 				return false;
 			}
 
-			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "INSERT INTO avatar_table(user_id, server_id, avatar_name, avatar_desc) VALUES(:user_id, :server_id, :avatar_name, :avatar_desc)", -1, &m_sqlite_create, NULL))
+			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "INSERT INTO avatar_table(user_id, avatar_scope, avatar_name, avatar_desc) VALUES(:user_id, :avatar_scope, :avatar_name, :avatar_desc)", -1, &m_sqlite_create, NULL))
 			{
 				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_create_user_id = sqlite3_bind_parameter_index(m_sqlite_create, ":user_id");
-			m_sqlite_create_server_id = sqlite3_bind_parameter_index(m_sqlite_create, ":server_id");
+			m_sqlite_create_server_id = sqlite3_bind_parameter_index(m_sqlite_create, ":avatar_scope");
 			m_sqlite_create_avatar_name = sqlite3_bind_parameter_index(m_sqlite_create, ":avatar_name");
 			m_sqlite_create_avatar_desc = sqlite3_bind_parameter_index(m_sqlite_create, ":avatar_desc");
 
@@ -329,7 +329,7 @@ namespace Zion
 			return sqlite3_exec(m_sqlite, "ROLLBACK;", NULL, NULL, NULL)==SQLITE_OK;
 		}
 
-		_U32 CSqliteDBApi::CreateAvatar(_U32 user_id, _U32 server_id, const char* avatar_name, const char* avatar_desc)
+		_U32 CSqliteDBApi::CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc)
 		{
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_create))
 			{
@@ -342,7 +342,7 @@ namespace Zion
 				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;
 			}
-			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_create, m_sqlite_create_server_id, (int)server_id))
+			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_create, m_sqlite_create_server_id, (int)avatar_scope))
 			{
 				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;

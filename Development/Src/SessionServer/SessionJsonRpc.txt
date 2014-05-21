@@ -1,58 +1,108 @@
 
-Session JsonRpc Api:
+Session Server JsonRpc Api:
 
 function	loginUser
 arguments	user_id
-return		errcode, _U32 user_seq
+return		errcode, session_key
+			if（success) errcode = 0, valid session_key
+			if（failed） errcode = -1
+remark		Session 登录。
 
 function	logoutUser
 arguments	user_id, user_seq
 return		errcode
+			if（success) errcode = 0
+			if（failed)  errcode = -1
+remark		Session 登出。在登出的时候自动解绑avatar和退出所有的domain
 
 function	lockUser
-arguments	user_id, user_seq, req_seq
-return		errcode, server_id, avatar_id
+arguments	session_key
+return		errcode, user_id, avatar_scope, avatar_id, request_seq
+			if(success) errcode = 0, ...
+			if(session locked) errcode = 'TRY_AGAIN'
+			if(failed)  errcode = -1 
+remark		Session 上锁，上锁成功返回Session上绑定的user_id, avatar_scope, avatar_id, request_seq
 
 function	unlockUser
-arguments	user_id, user_seq
+arguments	session_key, request_seq
 return		errcode
+			if(success) errcode = 0
+			if()
+remark		Session 解锁. request_seq>0 表示处理成功session server内部维护的request seq会加1
+
+function	getSessionInfo
+arguments	user_id
+return		errcode, session_info {xxx=xxx, xxx=xxx}
+			if(success) errcode = 0, session_info
+			if(failed)  errcode = -1
+remark		取得指定user_id的session信息
 
 function	bindAvatar
-arguments	user_id, user_seq, server_id, avatar_id, avatar_name
+arguments	user_id, avatar_scope, avatar_id, avatar_name
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		为session绑定avatar
 
 function	unbindAvatar
 arguments	user_id, user_seq
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		为Session解绑avatar
 
 function	sendToUserID
 arguments	user_id, msg
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		向指定的user_id发送消息
 
 fucntion	sendToAvatarID
-arguments	server_id, avatar_id, msg
+arguments	server_id, avatar_scope, avatar_id, msg
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		向指定的avatar_id发送消息
 
 function	sendToAvatarName
-arguments	server_id, avatar_name, msg
+arguments	server_id, avatar_scope, avatar_name, msg
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		向指定的角色名发送消息
 
 function	joinDomain
-arguments	user_id, user_seq, domain_id
+arguments	user_id, domain_id
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		加入指定的广播域
 
 function	leaveDomain
-arguments	user_id, user_seq, domain_id
+arguments	user_id, domain_id
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		离开指定的广播域
 
 function	sendToDomain
 arguments	domain_id, msg
 return		errcode
+			if(success) errcode = 0
+			if(failed)  errcode = -1
+remark		向指定广播域发送消息
 
 function	waitForMessage
 arguments	user_id, user_seq, msg_seq
-return		errcode, next_seq, msg[]
+return		errcode, msg[]
+			if(success) errcode = 0, msg[]
+			if(failed)  errcode = -1
+remark		取消息。如果没有新消息连接会被pending，直到有数据才返回
 
 function	getMessage
 arguments	user_id, user_seq, msg_seq
 return		errcode, next_seq, msg[]
+			if(success) errcode = 0, msg[]
+			if(failed)  errcode = -1
+remark		同步取消息。

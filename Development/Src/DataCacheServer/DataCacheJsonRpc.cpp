@@ -29,8 +29,8 @@ namespace Zion
 
 				const JsonValue& _user_id = args.Get((_U32)0);
 				if(!_user_id.IsU32()) break;
-				const JsonValue& _server_id = args.Get((_U32)1);
-				if(!_server_id.IsU32()) break;
+				const JsonValue& _avatar_scope = args.Get((_U32)1);
+				if(!_avatar_scope.IsU32()) break;
 				const JsonValue& _avatar_name = args.Get((_U32)2);
 				if(!_avatar_name.IsSTR()) break;
 				const JsonValue& _avatar_desc = args.Get((_U32)3);
@@ -40,7 +40,7 @@ namespace Zion
 
 				RPCIMPL_CreateAvatar(
 					(_U32)_user_id.AsU32(),
-					(_U32)_server_id.AsU32(),
+					(_U32)_avatar_scope.AsU32(),
 					_avatar_name.AsCSTR(),
 					_avatar_desc.AsCSTR(),
 					uuids, types, datas
@@ -226,13 +226,16 @@ namespace Zion
 
 			for(;;)
 			{
-				if(args.GetSize()!=3) break;
+				if(args.GetSize()!=4) break;
 				const JsonValue& _avatar_id = args.Get((_U32)0);
 				if(!_avatar_id.IsU32()) break;
 				const JsonValue& _version = args.Get((_U32)1);
 				if(!_version.IsU32()) break;
 				const JsonValue& _tasks = args.Get((_U32)2);
 				if(!_tasks.IsArray()) break;
+				const JsonValue& _save = args.Get((_U32)3);
+				if(!_save.IsBool()) break;
+
 				Array<TASK> _array;
 				Set<A_UUID> _uuids;
 				_U32 i;
@@ -281,6 +284,8 @@ namespace Zion
 					}
 					else if(_tasktype.AsSTR()=="deleteTask")
 					{
+						if(!_save.AsBool()) break;
+
 						task._task_type = TASK_DELETE_TASK;
 						const JsonValue& _task_id = node.Get("task_id");
 						if(!_task_id.IsU32()) break;
@@ -293,7 +298,7 @@ namespace Zion
 				}
 				if(i==_tasks.GetSize())
 				{
-					RPCIMPL_ExecuteBatch(_avatar_id.AsU32(), _version.AsU32(), _array);
+					RPCIMPL_ExecuteBatch(_avatar_id.AsU32(), _version.AsU32(), _array, _save.AsBool());
 					return;
 				}
 			}

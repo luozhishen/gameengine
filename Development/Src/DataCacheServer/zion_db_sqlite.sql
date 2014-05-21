@@ -19,7 +19,7 @@ CREATE INDEX login_history_table_user_id_index ON login_history_table(user_id);
 CREATE TABLE avatar_table (
 	avatar_id		INTEGER PRIMARY KEY AUTOINCREMENT,
 	user_id			INTEGER,
-	server_id		INTEGER,
+	avatar_scope		INTEGER,
 	state			INTEGER DEFAULT 0,
 	freeze_duetime	INTEGER DEFAULT 0,
 	avatar_name		TEXT,
@@ -32,7 +32,7 @@ CREATE TABLE avatar_object_table (
 	object_data		TEXT
 );
 CREATE UNIQUE INDEX avatar_table_name_index ON avatar_table(avatar_name);
-CREATE INDEX avatar_table_user_index ON avatar_table(user_id, server_id);
+CREATE INDEX avatar_table_user_index ON avatar_table(user_id, avatar_scope);
 CREATE UNIQUE INDEX avatar_object_table_index ON avatar_object_table(avatar_id, object_uuid);
 
 CREATE TABLE task_table (

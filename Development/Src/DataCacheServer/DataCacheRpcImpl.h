@@ -27,7 +27,7 @@ namespace Zion
 
 		void RPCIMPL_CreateAvatar(
 				_U32 user_id,
-				_U32 server_id,
+				_U32 avatar_scope,
 				const char* avatar_name,
 				const char* avatar_desc,
 				const Array<A_UUID>& uuids,
@@ -50,7 +50,7 @@ namespace Zion
 		// return errcode, version
 		void RPCIMPL_LoadObject(_U32 avatar_id, _U32 version, const A_UUID& _uuid);
 		// return errcode, version, uuid, type, data
-		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks);
+		void RPCIMPL_ExecuteBatch(_U32 avatar_id, _U32 version, const Array<TASK>& tasks, bool save);
 		// return errcode, version
 
 		void RPCIMPL_GetChangeList(Set<_U32>& list);

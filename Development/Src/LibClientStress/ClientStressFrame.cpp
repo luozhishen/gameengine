@@ -283,6 +283,9 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	val = val.Trim().Trim(false);
 	if(val.size()<=0) return;
 
+	const DDLReflect::CLASS_INFO* cls = NULL;
+	_U16 fid = (_U16)-1;
+
 	wxString cmd = val.BeforeFirst(wxT(' ')).Trim();
 	wxString arg = wxT("");
 	if(cmd.size()!=val.size())
@@ -290,9 +293,36 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 		arg = val.AfterFirst(wxT(' ')).Trim(false);
 	}
 
-	const DDLReflect::CLASS_INFO* cls;
-	_U16 fid;
-	if(!Zion::GetServerFunctionStub((const char*)cmd.ToUTF8(), cls, fid))
+	Zion::String cmd_utf8 = (const char*)cmd.ToUTF8();
+	if(cmd.Find(wxT('.'))>=0)
+	{
+		if(!Zion::GetServerFunctionStub(cmd_utf8.c_str(), cls, fid))
+		{
+			cls = NULL;
+		}
+	}
+	else
+	{
+		for(_U32 i=0; i<Zion::GetStubCount(); i++)
+		{
+			const DDLReflect::CLASS_INFO* info = Zion::GetServerStub(i);
+			if(!info) continue;
+
+			for(_U32 f=0; f<info->fcount; f++)
+			{
+				if(cmd_utf8==info->finfos[f].name)
+				{
+					cls = info;
+					fid = f;
+					wxString val = wxString::FromUTF8(cls->name) + wxString::FromUTF8(".") + wxString::FromUTF8(cls->finfos[fid].name) + wxString::FromUTF8(" ") + arg;
+					val = val.Trim().Trim(false);
+					break;
+				}
+			}
+		}
+	}
+
+	if(!cls)
 	{
 		wxMessageBox(wxT("unknown command"), wxT("error"));
 		return;
@@ -305,14 +335,14 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	{
 		return;
 	}
-	json = "{";
+	json = "[";
 	for(_U16 a=0; a<cls->finfos[fid].fcount; a++)
 	{
 		if(a>0)	json += ",";
 		json += Zion::StringFormat("\"%s\":", cls->finfos[fid].finfos[a].name);
 		json += args[a];
 	}
-	json += "}";
+	json += "]";
 
 	if(!ProcessJsonCommand(cls, fid, json)) return;
 
@@ -325,8 +355,8 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	{
 		wxString tmp(cmds[i].c_str(), wxMBConvUTF8());
 		m_pCmdText->AppendString(tmp);
-		m_pCmdText->SetValue(val);
 	}
+	m_pCmdText->SetValue(val);
 }
 
 static void OnHttpCallback(Zion::CHttpConnection* pHttp, Zion::CHttpConnection::STATE state)

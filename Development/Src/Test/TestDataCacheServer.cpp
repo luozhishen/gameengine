@@ -19,7 +19,7 @@ public:
 
 	void Start()
 	{
-		Zion::JsonRPC_Send(client, "getAvatar", _args.c_str(), std::bind (&CTestGetAvatar::OnReturn, this,std::placeholders::_1));
+		Zion::JsonRPC_Call(client, "getAvatar", _args.c_str(), std::bind (&CTestGetAvatar::OnReturn, this,std::placeholders::_1));
 	}
 
 	void OnReturn(const Zion::JsonValue* val)
@@ -32,7 +32,7 @@ public:
 		{
 			error_count += 1;
 		}
-		Zion::JsonRPC_Send(client, "getAvatar", _args.c_str(), std::bind (&CTestGetAvatar::OnReturn, this,std::placeholders::_1));
+		Zion::JsonRPC_Call(client, "getAvatar", _args.c_str(), std::bind (&CTestGetAvatar::OnReturn, this,std::placeholders::_1));
 	}
 
 private:

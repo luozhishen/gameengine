@@ -27,7 +27,10 @@ typedef struct ASOCK_ADDR {
 typedef struct ASOCK_TCP_OPTION {
 	int		recvbuf;
 	int		sndbuf;
-	int		keep_alive;
+	int		keepalive;
+	int		keepalive_probes;
+	int		keepalive_time;
+	int		keepalive_intvl;
 	int		linger;
 } ASOCK_TCP_OPTION;
 

@@ -24,7 +24,7 @@ void timer_callback(uv_timer_t* handle, int status)
 	retry_count = 0;
 	for(;count>0; count--)
 	{
-		if(!Zion::JsonRPC_Send(client, method, args, jsonrpc_callback))
+		if(!Zion::JsonRPC_Call(client, method, args, jsonrpc_callback))
 		{
 			retry_count += 1;
 			error_count += 1;
@@ -42,7 +42,7 @@ void jsonrpc_callback(const Zion::JsonValue* val)
 	{
 		error_count += 1;
 	}
-	if(!Zion::JsonRPC_Send(client, method, args, jsonrpc_callback))
+	if(!Zion::JsonRPC_Call(client, method, args, jsonrpc_callback))
 	{
 		retry_count += 1;
 		error_count += 1;
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 
 	for(_U32 i=0; i<1; i++)
 	{
-		Zion::JsonRPC_Send(client, method, args, jsonrpc_callback);
+		Zion::JsonRPC_Call(client, method, args, jsonrpc_callback);
 	}
 
 	uv_run(uv_default_loop(), UV_RUN_DEFAULT);

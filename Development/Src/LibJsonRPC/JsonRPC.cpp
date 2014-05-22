@@ -282,9 +282,22 @@ namespace Zion
 		return pClient->Send(method, args);
 	}
 
-	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc)
+	bool JsonRPC_Call(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc)
 	{
 		return pClient->Send(method, args, proc);
+	}
+
+	bool JsonRPC_Call(CJsonRPCClient* pClient, const char* method, const JsonValue& args, JSON_CALLBACK_PROC proc)
+	{
+		if(!args.IsArray()) return false;
+		String json;
+		args.Stringify(json);
+		return JsonRPC_Call(pClient, method, json.c_str(), proc);
+	}
+
+	bool JsonRpc_Call(CJsonRPCClient* pClient, const char* method, const JsonValue& args, JsonValue& ret)
+	{
+		return true;
 	}
 
 	CJsonRPCConnection::CJsonRPCConnection()

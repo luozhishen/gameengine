@@ -38,9 +38,12 @@ namespace Zion
 	bool JsonRPC_SetPending(JSONRPC_RESPONSE_ID& res);
 	bool JsonRPC_Send(const JSONRPC_RESPONSE_ID& res, const char* args);
 
+
 	CJsonRPCClient* JsonRPC_GetClient(const char* ep);
 	void JsonRPC_StopClients();
-	bool JsonRPC_Send(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc);
+	bool JsonRPC_Call(CJsonRPCClient* pClient, const char* method, const char* args, JSON_CALLBACK_PROC proc);
+	bool JsonRPC_Call(CJsonRPCClient* pClient, const char* method, const JsonValue& args, JSON_CALLBACK_PROC proc);
+	bool JsonRpc_Call(CJsonRPCClient* pClient, const char* method, const JsonValue& args, JsonValue& ret);
 
 }
 

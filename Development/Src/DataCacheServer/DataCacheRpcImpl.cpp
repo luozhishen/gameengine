@@ -365,7 +365,7 @@ namespace Zion
 			return;
 		}
 
-		void RPCIMPL_DeleteAvatar(_U32 avatar_id)
+		void RPCIMPL_DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id)
 		{
 			CAvatarData* pAvatar = LockAvatar(avatar_id);
 			if(!pAvatar)
@@ -375,12 +375,11 @@ namespace Zion
 				{
 					if(!pAvatar->IsDirty() || pAvatar->Save(db))
 					{
-						if(db->DeleteAvatar(avatar_id))
+						if(db->DeleteAvatar(user_id, avatar_scope, avatar_id))
 						{
 							RemoveAvatar(pAvatar);
 							FreeDatabase(db);
 							JsonRPC_Send("[0]");
-							// g_avatar_update.Set(avatar_id);
 							return;
 						}
 					}

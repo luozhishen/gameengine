@@ -34,7 +34,7 @@ namespace Zion
 				const Array<String>& types,
 				const Array<String>& datas);
 		// return errcode, avatar_id
-		void RPCIMPL_DeleteAvatar(_U32 avatar_id);
+		void RPCIMPL_DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id);
 		// return errcode
 		void RPCIMPL_GetAvatar(_U32 avatar_id);
 		// return errcode, avatar_id, version, avatar_objects[]

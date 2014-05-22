@@ -62,7 +62,7 @@ namespace Zion
 			virtual bool CommitTransaction();
 
 			virtual _U32 CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc);
-			virtual bool DeleteAvatar(_U32 avatar_id);
+			virtual bool DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id);
 			virtual bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
 			virtual bool UpdateAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* data);
@@ -176,7 +176,7 @@ namespace Zion
 			return (_U32)mysql_insert_id(m_mysql);
 		}
 
-		bool CMysqlDBApi::DeleteAvatar(_U32 avatar_id)
+		bool CMysqlDBApi::DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id)
 		{
 			String sql = StringFormat("UPDATE avatar_table SET state = 1 WHERE avatar_id=%u and state=0", avatar_id);
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)

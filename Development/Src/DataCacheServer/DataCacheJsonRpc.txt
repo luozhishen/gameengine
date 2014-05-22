@@ -2,10 +2,23 @@
 DataCache Server JsonRpc Api:
 
 function	createAvatar
-argements	avatar_id
-return		errcode
-  success	{ "uuid:type" : {obj}, ... }
-  failed	""
+argements	user_id, avatar_scope, avatar_name, avatar_desc, avatar_objs
+return		errcode, avatar_id, version
+			if(success) errcode = 0, avatar_id, version
+			if(failed)  errcode = -1
+remark		´´½¨Avatar, avatar_objs = [{'uuid':uuid, 'type':type, 'data':data}....]
+
+function	deleteAvatar
+argements	user_id, avatar_scope, avatar_id
+return		errcode, avatar_id, version
+			if(success) errcode = 0
+			if(failed£© errcode = -1
+remark		É¾³ýAvatar
+
+
+		void RPCIMPL_DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id);
+		// return errcode
+
 
 function	getAvatar
 argements	avatar_id

@@ -26,7 +26,7 @@ namespace Zion
 			virtual bool CommitTransaction();
 
 			virtual _U32 CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc);
-			virtual bool DeleteAvatar(_U32 avatar_id);
+			virtual bool DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id);
 			virtual bool LoadAvatar(_U32 avatar_id, bool (*callback)(void*, const A_UUID&, const char*, const char*), void* userptr);
 			virtual bool InsertAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* type, const char* data);
 			virtual bool UpdateAvatarObject(_U32 avatar_id, const A_UUID& _uuid, const char* data);
@@ -194,7 +194,7 @@ namespace Zion
 			return ret;
 		}
 
-		bool CProxyDBApi::DeleteAvatar(_U32 avatar_id)
+		bool CProxyDBApi::DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id)
 		{
 			if(m_fp)
 			{
@@ -202,7 +202,7 @@ namespace Zion
 				if(!Read("DeleteAvatar", json)) ZION_FATAL("failed to read db log file\n");
 				return json.Get((_U32)0).AsBool();
 			}
-			bool ret = m_db->DeleteAvatar(avatar_id);
+			bool ret = m_db->DeleteAvatar(user_id, avatar_scope, avatar_id);
 			JsonValue json(JsonValue::TYPE_ARRAY);
 			json.Append(JsonValue(ret));
 			WriteDBLog("DeleteAvatar", json);
@@ -260,7 +260,7 @@ namespace Zion
 				if(!Read("InsertAvatarObject", json)) ZION_FATAL("failed to read db log file\n");
 				return json.Get((_U32)0).AsBool();
 			}
-			bool ret = m_db->DeleteAvatar(avatar_id);
+			bool ret = m_db->InsertAvatarObject(avatar_id, _uuid, type, data);
 			JsonValue json(JsonValue::TYPE_ARRAY);
 			json.Append(JsonValue(ret));
 			WriteDBLog("InsertAvatarObject", json);
@@ -275,7 +275,7 @@ namespace Zion
 				if(!Read("UpdateAvatarObject", json)) ZION_FATAL("failed to read db log file\n");
 				return json.Get((_U32)0).AsBool();
 			}
-			bool ret = m_db->DeleteAvatar(avatar_id);
+			bool ret = m_db->UpdateAvatarObject(avatar_id, _uuid, data);
 			JsonValue json(JsonValue::TYPE_ARRAY);
 			json.Append(JsonValue(ret));
 			WriteDBLog("UpdateAvatarObject", json);
@@ -290,7 +290,7 @@ namespace Zion
 				if(!Read("DeleteAvatarObject", json)) ZION_FATAL("failed to read db log file\n");
 				return json.Get((_U32)0).AsBool();
 			}
-			bool ret = m_db->DeleteAvatar(avatar_id);
+			bool ret = m_db->DeleteAvatarObject(avatar_id, _uuids, count);
 			JsonValue json(JsonValue::TYPE_ARRAY);
 			json.Append(JsonValue(ret));
 			WriteDBLog("DeleteAvatarObject", json);

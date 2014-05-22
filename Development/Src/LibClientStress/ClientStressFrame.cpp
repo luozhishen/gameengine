@@ -296,9 +296,25 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 	Zion::String cmd_utf8 = (const char*)cmd.ToUTF8();
 	if(cmd.Find(wxT('.'))>=0)
 	{
-		if(!Zion::GetServerFunctionStub(cmd_utf8.c_str(), cls, fid))
+		Zion::String method = cmd.ToUTF8();
+		size_t pos = method.find_first_of('.');
+		Zion::String _class = method.substr(0, pos);
+		method = method.substr(pos+1);
+		for(_U32 i=0; i<Zion::GetStubCount(); i++)
 		{
-			cls = NULL;
+			const DDLReflect::CLASS_INFO* info = Zion::GetServerStub(i);
+			if(!info) continue;
+			if(stricmp(info->name, _class.c_str())!=0) continue;
+
+			for(_U32 f=0; f<info->fcount; f++)
+			{
+				if(stricmp(method.c_str(), info->finfos[f].name)==0)
+				{
+					cls = info;
+					fid = f;
+					break;
+				}
+			}
 		}
 	}
 	else
@@ -310,12 +326,10 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 
 			for(_U32 f=0; f<info->fcount; f++)
 			{
-				if(cmd_utf8==info->finfos[f].name)
+				if(stricmp(cmd_utf8.c_str(), info->finfos[f].name)==0)
 				{
 					cls = info;
 					fid = f;
-					wxString val = wxString::FromUTF8(cls->name) + wxString::FromUTF8(".") + wxString::FromUTF8(cls->finfos[fid].name) + wxString::FromUTF8(" ") + arg;
-					val = val.Trim().Trim(false);
 					break;
 				}
 			}
@@ -346,6 +360,8 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 
 	if(!ProcessJsonCommand(cls, fid, json)) return;
 
+	val = wxString::FromUTF8(cls->name) + wxString::FromUTF8(".") + wxString::FromUTF8(cls->finfos[fid].name) + wxString::FromUTF8(" ") + arg;
+	val = val.Trim().Trim(false);
 	Zion::String line = (const char*)val.ToUTF8();
 	m_pCmdHistory->AddCmd(line);
 	m_pCmdText->Clear();

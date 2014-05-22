@@ -36,7 +36,28 @@ namespace Zion
 				const JsonValue& _avatar_desc = args.Get((_U32)3);
 				if(!_avatar_desc.IsSTR()) break;
 				const JsonValue& _avatar_objs = args.Get((_U32)4);
-				if(!_avatar_objs.IsObject()) break;
+				if(!_avatar_objs.IsArray()) break;
+
+				_U32 i = 0;
+				for(i=0; i<_avatar_objs.GetSize(); i++)
+				{
+					const JsonValue& obj = _avatar_objs.Get(i);
+					if(!obj.IsObject()) break;
+					const JsonValue& uuid = obj.Get("uuid");
+					if(!uuid.IsSTR()) break;
+					const JsonValue& type = obj.Get("type");
+					if(!type.IsSTR()) break;
+					const JsonValue& data = obj.Get("data");
+					if(!data.IsSTR()) break;
+
+					A_UUID _uuid;
+					if(!AUuidFromString(uuid.AsCSTR(), _uuid)) break;
+
+					uuids.push_back(_uuid);
+					types.push_back(type.AsSTR());
+					datas.push_back(data.AsSTR());
+				}
+				if(i<_avatar_objs.GetSize()) break;
 
 				RPCIMPL_CreateAvatar(
 					(_U32)_user_id.AsU32(),
@@ -57,10 +78,14 @@ namespace Zion
 
 			for(;;)
 			{
-				if(args.GetSize()!=1) break;
-				const JsonValue& _avatar_id = args.Get((_U32)0);
+				if(args.GetSize()!=3) break;
+				const JsonValue& _user_id = args.Get((_U32)0);
+				if(!_user_id.IsU32()) break;
+				const JsonValue& _avatar_scope = args.Get((_U32)1);
+				if(!_avatar_scope.IsU32()) break;
+				const JsonValue& _avatar_id = args.Get((_U32)2);
 				if(!_avatar_id.IsU32()) break;
-				RPCIMPL_DeleteAvatar((_U32)_avatar_id.AsU32());
+				RPCIMPL_DeleteAvatar(_user_id.AsU32(), _avatar_scope.AsU32(), _avatar_id.AsU32());
 				return;
 			}
 			JsonRPC_Send("[-1]");

@@ -704,6 +704,7 @@ namespace Zion
 
 	_U32 JsonValue::GetSize() const
 	{
+		if(m_type!=TYPE_ARRAY) return 0;
 		return (_U32)m_array->size();
 	}
 

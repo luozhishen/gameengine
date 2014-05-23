@@ -15,10 +15,10 @@ class A_CONTENT_OBJECT
 		$__result = '';
 		// _uuid
 		if(!is_string($this->_uuid)) return '';
-		$__result = $__result.'"_uuid":"'.$this->_uuid.'"';
+		$__result .= '"_uuid":'.json_encode($this->_uuid).'';
 		// _name
 		if(!is_string($this->_name)) return '';
-		$__result = $__result.',"_name":"'.$this->_name.'"';
+		$__result .= ',"_name":'.json_encode($this->_name).'';
 		return $__result;
 	}
 	public function ToString()
@@ -59,7 +59,7 @@ class A_LIVE_OBJECT
 		$__result = '';
 		// _uuid
 		if(!is_string($this->_uuid)) return '';
-		$__result = $__result.'"_uuid":"'.$this->_uuid.'"';
+		$__result .= '"_uuid":'.json_encode($this->_uuid).'';
 		return $__result;
 	}
 	public function ToString()
@@ -96,14 +96,14 @@ class CG_AVATAR_DESC extends A_LIVE_OBJECT
 	public function ToStringInternal()
 	{
 		$__result = parent::ToStringInternal();
-		if($__result!='') $__result = $__result.',';
+		if($__result!='') $__result .= ',';
 		// avatar_id
 		if(!is_int($this->avatar_id)) return '';
 		if($this->avatar_id<0 || $this->avatar_id>4294967295) return false;
-		$__result = $__result.'"avatar_id":'.$this->avatar_id;
+		$__result .= '"avatar_id":'.$this->avatar_id;
 		// avatar_name
 		if(!is_string($this->avatar_name)) return '';
-		$__result = $__result.',"avatar_name":"'.$this->avatar_name.'"';
+		$__result .= ',"avatar_name":'.json_encode($this->avatar_name).'';
 		return $__result;
 	}
 	public function ToString()
@@ -148,13 +148,13 @@ class CG_AVATAR extends A_LIVE_OBJECT
 	public function ToStringInternal()
 	{
 		$__result = parent::ToStringInternal();
-		if($__result!='') $__result = $__result.',';
+		if($__result!='') $__result .= ',';
 		// avatar_name
 		if(!is_string($this->avatar_name)) return '';
-		$__result = $__result.'"avatar_name":"'.$this->avatar_name.'"';
+		$__result .= '"avatar_name":'.json_encode($this->avatar_name).'';
 		// money
 		if(!is_numeric($this->money)) return '';
-		$__result = $__result.',"money":'.$this->money;
+		$__result .= ',"money":'.$this->money;
 		return $__result;
 	}
 	public function ToString()
@@ -200,18 +200,18 @@ class CG_CARD extends A_LIVE_OBJECT
 	public function ToStringInternal()
 	{
 		$__result = parent::ToStringInternal();
-		if($__result!='') $__result = $__result.',';
+		if($__result!='') $__result .= ',';
 		// content_uuid
 		if(!is_string($this->content_uuid)) return '';
-		$__result = $__result.'"content_uuid":"'.$this->content_uuid.'"';
+		$__result .= '"content_uuid":'.json_encode($this->content_uuid).'';
 		// win_count
 		if(!is_int($this->win_count)) return '';
 		if($this->win_count<0 || $this->win_count>4294967295) return false;
-		$__result = $__result.',"win_count":'.$this->win_count;
+		$__result .= ',"win_count":'.$this->win_count;
 		// lost_count
 		if(!is_int($this->lost_count)) return '';
 		if($this->lost_count<0 || $this->lost_count>4294967295) return false;
-		$__result = $__result.',"lost_count":'.$this->lost_count;
+		$__result .= ',"lost_count":'.$this->lost_count;
 		return $__result;
 	}
 	public function ToString()
@@ -264,17 +264,17 @@ class CG_SHOPITEM extends A_CONTENT_OBJECT
 	public function ToStringInternal()
 	{
 		$__result = parent::ToStringInternal();
-		if($__result!='') $__result = $__result.',';
+		if($__result!='') $__result .= ',';
 		// shopitem_id
 		if(!is_string($this->shopitem_id)) return '';
-		$__result = $__result.'"shopitem_id":"'.$this->shopitem_id.'"';
+		$__result .= '"shopitem_id":'.json_encode($this->shopitem_id).'';
 		// price
 		if(!is_int($this->price)) return '';
 		if($this->price<0 || $this->price>4294967295) return false;
-		$__result = $__result.',"price":'.$this->price;
+		$__result .= ',"price":'.$this->price;
 		// content_uuid
 		if(!is_string($this->content_uuid)) return '';
-		$__result = $__result.',"content_uuid":"'.$this->content_uuid.'"';
+		$__result .= ',"content_uuid":'.json_encode($this->content_uuid).'';
 		return $__result;
 	}
 	public function ToString()
@@ -324,14 +324,14 @@ class CG_CARD_CONFIG extends A_CONTENT_OBJECT
 	public function ToStringInternal()
 	{
 		$__result = parent::ToStringInternal();
-		if($__result!='') $__result = $__result.',';
+		if($__result!='') $__result .= ',';
 		// disp_name
 		if(!is_string($this->disp_name)) return '';
-		$__result = $__result.'"disp_name":"'.$this->disp_name.'"';
+		$__result .= '"disp_name":'.json_encode($this->disp_name).'';
 		// point
 		if(!is_int($this->point)) return '';
 		if($this->point<0 || $this->point>4294967295) return false;
-		$__result = $__result.',"point":'.$this->point;
+		$__result .= ',"point":'.$this->point;
 		return $__result;
 	}
 	public function ToString()
@@ -369,7 +369,7 @@ class DATASYNC_JSON_S2C
 		$__result = '';
 		if(!is_int($flag)) return false;
 		if($flag<0 || $flag>4294967295) return false;
-		$__result += $flag;
+		$__result .= $flag;
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_SyncOpen","args":['.$__result.']}');
 		return true;
 	}
@@ -387,7 +387,7 @@ class DATASYNC_JSON_S2C
 	{
 		$__result = '';
 		if(!is_string($_uuid)) return false;
-		$__result += '"'.$_uuid.'"';
+		$__result .= json_encode($_uuid);
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_CreateObjectDone","args":['.$__result.']}');
 		return true;
 	}
@@ -395,10 +395,10 @@ class DATASYNC_JSON_S2C
 	{
 		$__result = '';
 		if(!is_string($type)) return false;
-		$__result += '"'.$type.'"';
-		$__result += ',';
+		$__result .= json_encode($type);
+		$__result .= ',';
 		if(!is_string($json)) return false;
-		$__result += '"'.$json.'"';
+		$__result .= json_encode($json);
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_CreateObject","args":['.$__result.']}');
 		return true;
 	}
@@ -406,10 +406,10 @@ class DATASYNC_JSON_S2C
 	{
 		$__result = '';
 		if(!is_string($_uuid)) return false;
-		$__result += '"'.$_uuid.'"';
-		$__result += ',';
+		$__result .= json_encode($_uuid);
+		$__result .= ',';
 		if(!is_string($json)) return false;
-		$__result += '"'.$json.'"';
+		$__result .= json_encode($json);
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_UpdateObject","args":['.$__result.']}');
 		return true;
 	}
@@ -417,18 +417,18 @@ class DATASYNC_JSON_S2C
 	{
 		$__result = '';
 		if(!is_array($_uuid)) return false;
-		$__result += '[';
+		$__result .= '[';
 		for($__i=0; $__i<count($_uuid); $__i++)
 		{
-			if($__i>0) $__result += ',';
+			if($__i>0) $__result .= ',';
 			if(!is_string($_uuid[$__i])) return false;
-			$__result += '"'.$_uuid[$__i].'"';
+			$__result .= json_encode($_uuid[$__i]);
 		}
-		$__result += ']';
-		$__result += ',';
+		$__result .= ']';
+		$__result .= ',';
 		if(!is_int($count)) return false;
 		if($count<0 || $count>4294967295) return false;
-		$__result += $count;
+		$__result .= $count;
 		ZionSession::Get()->Send('{"method":"DATASYNC_JSON_S2C.DS_DeleteObject","args":['.$__result.']}');
 		return true;
 	}
@@ -530,25 +530,21 @@ class CGCALLBACK_BASE
 		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.Pong","args":[]}');
 		return true;
 	}
-	public function GetAvatarListCallback($errcode, $arr, $count)
+	public function GetAvatarListCallback($arr, $count)
 	{
 		$__result = '';
-		if(!is_int($errcode)) return false;
-		if($errcode<0 || $errcode>4294967295) return false;
-		$__result += $errcode;
-		$__result += ',';
 		if(!is_array($arr)) return false;
-		$__result += '[';
+		$__result .= '[';
 		for($__i=0; $__i<count($arr); $__i++)
 		{
-			if($__i>0) $__result += ',';
-			$__result += $arr[$__i]->ToString();
+			if($__i>0) $__result .= ',';
+			$__result .= $arr[$__i]->ToString();
 		}
-		$__result += ']';
-		$__result += ',';
+		$__result .= ']';
+		$__result .= ',';
 		if(!is_int($count)) return false;
 		if($count<0 || $count>4294967295) return false;
-		$__result += $count;
+		$__result .= $count;
 		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.GetAvatarListCallback","args":['.$__result.']}');
 		return true;
 	}
@@ -557,7 +553,7 @@ class CGCALLBACK_BASE
 		$__result = '';
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
-		$__result += $errcode;
+		$__result .= $errcode;
 		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.CreateAvatarCallback","args":['.$__result.']}');
 		return true;
 	}
@@ -566,7 +562,7 @@ class CGCALLBACK_BASE
 		$__result = '';
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
-		$__result += $errcode;
+		$__result .= $errcode;
 		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.EnterGameCallback","args":['.$__result.']}');
 		return true;
 	}
@@ -575,7 +571,7 @@ class CGCALLBACK_BASE
 		$__result = '';
 		if(!is_int($errcode)) return false;
 		if($errcode<0 || $errcode>4294967295) return false;
-		$__result += $errcode;
+		$__result .= $errcode;
 		ZionSession::Get()->Send('{"method":"CGCALLBACK_BASE.LeaveGameCallback","args":['.$__result.']}');
 		return true;
 	}
@@ -593,7 +589,7 @@ class CGCALLBACK_GAME
 		$__result = '';
 		if(!is_int($money)) return false;
 		if($money<0 || $money>4294967295) return false;
-		$__result += $money;
+		$__result .= $money;
 		ZionSession::Get()->Send('{"method":"CGCALLBACK_GAME.BegResult","args":['.$__result.']}');
 		return true;
 	}
@@ -602,7 +598,7 @@ class CGCALLBACK_GAME
 		$__result = '';
 		if(!is_int($point)) return false;
 		if($point<0 || $point>4294967295) return false;
-		$__result += $point;
+		$__result .= $point;
 		ZionSession::Get()->Send('{"method":"CGCALLBACK_GAME.GambleResult","args":['.$__result.']}');
 		return true;
 	}

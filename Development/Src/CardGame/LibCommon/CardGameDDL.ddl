@@ -50,7 +50,7 @@ class CGCALLBACK_BASE
 {
 	Pong();
 
-	GetAvatarListCallback(_U32 errcode, CG_AVATAR_DESC arr[count], _U32 count);
+	GetAvatarListCallback(CG_AVATAR_DESC arr[count], _U32 count);
 	CreateAvatarCallback(_U32 errcode);
 	EnterGameCallback(_U32 errcode);
 	LeaveGameCallback(_U32 errcode);

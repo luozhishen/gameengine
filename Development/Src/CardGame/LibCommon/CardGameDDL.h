@@ -312,12 +312,9 @@ namespace DDLSigSlot
 			if(fid==1)
 			{
 				_U32 __length;
-				_U32 _prefix_errcode;
 				CG_AVATAR_DESC* _prefix_arr;
 				_U32 _prefix_count;
 
-				// <_U32> <errcode> <> <>;
-				if(!Buf.Read(_prefix_errcode)) return false;
 				// <CG_AVATAR_DESC> <arr> <> <count>;
 				if(!Buf.Read(__length)) return false;
 				_prefix_arr = (CG_AVATAR_DESC*)alloca(sizeof(_prefix_arr[0])*__length);
@@ -327,7 +324,7 @@ namespace DDLSigSlot
 				if(!Buf.Read(_prefix_count)) return false;
 
 				// call implement
-				_GetAvatarListCallback(_prefix_errcode, _prefix_arr, _prefix_count);
+				_GetAvatarListCallback(_prefix_arr, _prefix_count);
 				return true;
 			}
 			if(fid==2)
@@ -367,7 +364,7 @@ namespace DDLSigSlot
 		}
 
 		sigslot::signal0<> _Pong;
-		sigslot::signal3<_U32, CG_AVATAR_DESC*, _U32> _GetAvatarListCallback;
+		sigslot::signal2<CG_AVATAR_DESC*, _U32> _GetAvatarListCallback;
 		sigslot::signal1<_U32> _CreateAvatarCallback;
 		sigslot::signal1<_U32> _EnterGameCallback;
 		sigslot::signal1<_U32> _LeaveGameCallback;

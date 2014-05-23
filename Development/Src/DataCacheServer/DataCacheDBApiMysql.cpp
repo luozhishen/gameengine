@@ -130,10 +130,10 @@ namespace Zion
 				return false;
 			}
 			m_mysql = mysql_real_connect(m_mysql, m_host.c_str(), m_username.c_str(), m_password.c_str(), m_db.c_str(), m_port, NULL, 0);
-			ZION_ASSERT(m_mysql);
 			if(!m_mysql)
 			{
 				printf("error in mysql_real_connect(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));
+				ZION_ASSERT(0);
 				return false;
 			}
 			return true;

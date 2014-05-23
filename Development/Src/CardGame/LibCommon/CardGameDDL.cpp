@@ -278,7 +278,6 @@ namespace DDLReflect
 	{
 		// 0 Pong
 		// 1 GetAvatarListCallback
-		{TYPE_U32, "errcode", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_STRUCT|TYPE_ARRAY, "arr", 0, 0, &_rfl_struct_CG_AVATAR_DESC_info, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		{TYPE_U32, "count", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 2 CreateAvatarCallback
@@ -291,10 +290,10 @@ namespace DDLReflect
 	static FUNCTION_INFO _class_CGCALLBACK_BASE_funcinfos[] = 
 	{
 		{"Pong", 0, _class_CGCALLBACK_BASE_fieldinfos+0},
-		{"GetAvatarListCallback", 3, _class_CGCALLBACK_BASE_fieldinfos+0},
-		{"CreateAvatarCallback", 1, _class_CGCALLBACK_BASE_fieldinfos+3},
-		{"EnterGameCallback", 1, _class_CGCALLBACK_BASE_fieldinfos+4},
-		{"LeaveGameCallback", 1, _class_CGCALLBACK_BASE_fieldinfos+5},
+		{"GetAvatarListCallback", 2, _class_CGCALLBACK_BASE_fieldinfos+0},
+		{"CreateAvatarCallback", 1, _class_CGCALLBACK_BASE_fieldinfos+2},
+		{"EnterGameCallback", 1, _class_CGCALLBACK_BASE_fieldinfos+3},
+		{"LeaveGameCallback", 1, _class_CGCALLBACK_BASE_fieldinfos+4},
 	};
 	static CLASS_INFO _class_CGCALLBACK_BASE_info = { 0, "CGCALLBACK_BASE", 5, _class_CGCALLBACK_BASE_funcinfos };
 	template<>

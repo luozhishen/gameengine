@@ -93,7 +93,7 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 	if(str->parent[0]!='\0') {
 		OutP(2, "$__result = parent::ToStringInternal();\n");
 		if(str->args_count>0) {
-		OutP(2, "if($__result!='') $__result = $__result.',';\n");
+		OutP(2, "if($__result!='') $__result .= ',';\n");
 		}
 	} else {
 		OutP(2, "$__result = '';\n");
@@ -105,12 +105,12 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 		OutP(2, "// %s\n", arg->name);
 		if(arg->count[0]!='\0') {
 			OutP(2, "if(!is_array($this->%s)) return '';\n", arg->name);
-			OutP(2, "$__result = $__result.%s%s\":[';\n", a>0?"',\"":"'\"", arg->name);
+			OutP(2, "$__result .= %s%s\":[';\n", a>0?"',\"":"'\"", arg->name);
 			OutP(2, "for($__i=0; $__i<count($this->%s); $__i++)\n", arg->name);
 			OutP(2, "{\n");
-			OutP(2, "	if($__i>0) $__result = $__result.',';\n");
+			OutP(2, "	if($__i>0) $__result .= ',';\n");
 			if(is_struct(arg)) {
-				OutP(3, "$__result = $__result.$this->%s[$__i]->ToString();\n", arg->name);
+				OutP(3, "$__result .= $this->%s[$__i]->ToString();\n", arg->name);
 			} else {
 				if(strcmp(get_phptype(arg), "float")==0) {
 					OutP(3, "if(!is_numeric($this->%s[$__i])) return false;\n", arg->name);
@@ -121,17 +121,17 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 					}
 				}
 				if(strcmp(get_phptype(arg), "string")==0) {
-					OutP(3, "$__result = $__result.'\"'.$this->%s[$__i].'\"';\n", arg->name);
+					OutP(3, "$__result .= json_encode($this->%s[$__i]);\n", arg->name);
 				} else {
-					OutP(3, "$__result = $__result.$this->%s[$__i];\n", arg->name);
+					OutP(3, "$__result .= $this->%s[$__i];\n", arg->name);
 				}
 			}
 			OutP(2, "}\n");
-			OutP(2, "$__result = $__result.']';\n");
+			OutP(2, "$__result .= ']';\n");
 		} else {
 			if(is_struct(arg)) {
 				OutP(2, "if(!is_object($this->%s) || get_class($this->%s)!='%s') return '';\n", arg->name, arg->name, arg->type);
-				OutP(2, "$__result = $__result.%s\"%s\":'.$this->%s->ToString();\n", a>0?"',":"'", arg->name, arg->name);
+				OutP(2, "$__result .= %s\"%s\":'.$this->%s->ToString();\n", a>0?"',":"'", arg->name, arg->name);
 			} else {
 				if(strcmp(get_phptype(arg), "float")==0) {
 					OutP(2, "if(!is_numeric($this->%s)) return '';\n", arg->name);
@@ -142,9 +142,9 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 					}
 				}
 				if(strcmp(get_phptype(arg), "string")==0) {
-					OutP(2, "$__result = $__result.%s%s\":\"'.$this->%s.'\"';\n", a>0?"',\"":"'\"", arg->name, arg->name);
+					OutP(2, "$__result .= %s%s\":'.json_encode($this->%s).'';\n", a>0?"',\"":"'\"", arg->name, arg->name);
 				} else {
-					OutP(2, "$__result = $__result.%s%s\":'.$this->%s;\n", a>0?"',\"":"'\"", arg->name, arg->name);
+					OutP(2, "$__result .= %s%s\":'.$this->%s;\n", a>0?"',\"":"'\"", arg->name, arg->name);
 				}
 			}
 		}
@@ -353,17 +353,17 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 			DDL_ARG* arg = &_arg;
 			ddlgen_fixarg(&fun->args[a], &_arg);
 			if(a>0) {
-				OutP(2,	"$__result += ',';\n");
+				OutP(2,	"$__result .= ',';\n");
 			}
 
 			if(arg->count[0]!='\0') {
 				OutP(2, "if(!is_array($%s)) return false;\n", arg->name);
-				OutP(2, "$__result += '[';\n");
+				OutP(2, "$__result .= '[';\n");
 				OutP(2, "for($__i=0; $__i<count($%s); $__i++)\n", arg->name);
 				OutP(2, "{\n");
-				OutP(2, "	if($__i>0) $__result += ',';\n");
+				OutP(2, "	if($__i>0) $__result .= ',';\n");
 				if(is_struct(arg)) {
-					OutP(3, "$__result += $%s[$__i]->ToString();\n", arg->name);
+					OutP(3, "$__result .= $%s[$__i]->ToString();\n", arg->name);
 				} else {
 					if(strcmp(get_phptype(arg), "float")==0) {
 						OutP(3, "if(!is_numeric($%s[$__i])) return false;\n", arg->name);
@@ -374,17 +374,17 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 						}
 					}
 					if(strcmp(get_phptype(arg), "string")==0) {
-						OutP(3, "$__result += '\"'.$%s[$__i].'\"';\n", arg->name);
+						OutP(3, "$__result .= json_encode($%s[$__i]);\n", arg->name);
 					} else {
-						OutP(3, "$__result += $%s[$__i];\n", arg->name);
+						OutP(3, "$__result .= $%s[$__i];\n", arg->name);
 					}
 				}
 				OutP(2, "}\n");
-				OutP(2, "$__result += ']';\n");
+				OutP(2, "$__result .= ']';\n");
 			} else {
 				if(is_struct(arg)) {
 					OutP(2, "if(!is_object($%s) || get_class($%s)!='%s') return false;\n", arg->name, arg->name, arg->type);
-					OutP(2, "$__result += $%s->ToString();\n", arg->name);
+					OutP(2, "$__result .= $%s->ToString();\n", arg->name);
 				} else {
 					if(strcmp(get_phptype(arg), "float")==0) {
 						OutP(2, "if(!is_numeric($%s)) return false;\n", arg->name);
@@ -395,9 +395,9 @@ int ddlgen_codephp_task_class_proxy(const DDL_CLS* cls, const DDL_TASK* task)
 						}
 					}
 					if(strcmp(get_phptype(arg), "string")==0) {
-						OutP(2, "$__result += '\"'.$%s.'\"';\n", arg->name);
+						OutP(2, "$__result .= json_encode($%s);\n", arg->name);
 					} else {
-						OutP(2, "$__result += $%s;\n", arg->name);
+						OutP(2, "$__result .= $%s;\n", arg->name);
 					}
 				}
 			}

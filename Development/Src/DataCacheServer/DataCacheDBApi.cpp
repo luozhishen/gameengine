@@ -62,6 +62,14 @@ namespace Zion
 			return db;
 		}
 
+		static const char* GetParam(Map<String, String>& map, const char* name, const char* def)
+		{
+			Map<String, String>::iterator i;
+			i = map.find(name);
+			if(i==map.end()) return def;
+			return i->second.c_str();
+		}
+
 		bool InitDatabase()
 		{
 			if(CONFIG_DATABASE=="fake")
@@ -98,15 +106,12 @@ namespace Zion
 					{
 						g_bMysql = true;
 						if(values.find("host")==values.end()) return false;
-						if(values.find("port")==values.end()) return false;
-						if(values.find("username")==values.end()) return false;
-						if(values.find("password")==values.end()) return false;
 						if(values.find("database")==values.end()) return false;
 						g_MysqlHost		= values["host"];
-						g_MysqlPort		= (_U32)atoi(values["port"].c_str());
-						g_MysqlUserName	= values["username"];
-						g_MysqlPassword	= values["password"];
 						g_MysqlDatabase	= values["database"];
+						g_MysqlPort		= (_U32)atoi(GetParam(values, "port", "3306"));
+						g_MysqlUserName	= GetParam(values, "user", "root");
+						g_MysqlPassword	= GetParam(values, "password", "");
 					}
 					else
 					{

@@ -156,6 +156,7 @@ namespace Zion
 		CJsonRPCClient(struct sockaddr* sa);
 		virtual ~CJsonRPCClient();
 
+		ASOCK_HANDLE NewHandle();
 		ASOCK_HANDLE GetHandle();
 		void FreeHandle(ASOCK_HANDLE sock);
 		void CloseHandle(ASOCK_HANDLE sock);
@@ -305,46 +306,62 @@ namespace Zion
 		return JsonRPC_Call(pClient, method, json.c_str(), proc);
 	}
 
+	static bool makecall(ASOCK_HANDLE sock, const char* method, const String& args, String& ret)
+	{
+		char header[8];
+		*((_U32*)header + 0) = (_U32)args.size();
+		*((_U32*)header + 1) = 0;
+
+		if(sock_writebuf(sock, header, 8)!=0) return false;
+		if(sock_writebuf(sock, args.c_str(), (int)args.size())!=0) return false;
+		if(sock_readbuf(sock, header, 8)!=0) return false;
+		_U32 recvlen = 0, tlen = *((_U32*)header);
+		ret = "";
+		while(recvlen<tlen)
+		{
+			char buf[10000];
+			_U32 len = tlen - recvlen;
+			if(len>sizeof(buf)) len = sizeof(buf);
+			if(sock_readbuf(sock, buf, len)!=0) return false;
+			ret.append(buf, (size_t)len);
+			recvlen += len;
+		}
+		return true;
+	}
+
 	bool JsonRpc_Call(CJsonRPCClient* pClient, const char* method, const JsonValue& args, JsonValue& ret)
 	{
 		if(!args.IsArray()) return false;
-		String json;
+		String json, ret_json;
 		args.Stringify(json);
-		char header[8];
-		*((_U32*)header + 0) = (_U32)json.size();
-		*((_U32*)header + 1) = 0;
 
 		ASOCK_HANDLE sock = pClient->GetHandle();
-		if(sock==ASOCK_INVALID_HANDLE) return false;
-
-		if(sock_writebuf(sock, header, 8)==0)
+		if(sock!=ASOCK_INVALID_HANDLE)
 		{
-			if(sock_writebuf(sock, json.c_str(), (int)json.size())==0)
+			if(!makecall(sock, method, json, ret_json))
 			{
-				if(sock_readbuf(sock, header, 8)==0)
-				{
-					_U32 recvlen = 0, tlen = *((_U32*)header);
-					json = "";
-					while(recvlen<tlen)
-					{
-						char buf[10000];
-						_U32 len = tlen - recvlen;
-						if(len>sizeof(buf)) len = sizeof(buf);
-						if(sock_readbuf(sock, buf, len)!=0) break;
-						json.append(buf, (size_t)len);
-						recvlen += len;
-					}
-					if(recvlen==tlen)
-					{
-						pClient->FreeHandle(sock);
-						return true;
-					}
-				}
+				pClient->CloseHandle(sock);
+				sock = ASOCK_INVALID_HANDLE;
 			}
 		}
+		if(sock==ASOCK_INVALID_HANDLE)
+		{
+			sock = pClient->NewHandle();
+			if(sock==ASOCK_INVALID_HANDLE) return false;
+			if(!makecall(sock, method, json, ret_json))
+			{
+				pClient->CloseHandle(sock);
+				return false;
+			}
+		}
+		pClient->FreeHandle(sock);
 
-		pClient->CloseHandle(sock);
-		return false;
+		if(!ret.Parse(ret_json.c_str(), ret_json.c_str() + ret_json.size()))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	CJsonRPCConnection::CJsonRPCConnection()
@@ -848,6 +865,14 @@ namespace Zion
 		uv_mutex_destroy(&m_locker);
 	}
 
+	ASOCK_HANDLE CJsonRPCClient::NewHandle()
+	{
+		ASOCK_ADDR sa;
+		sa.ip = *((unsigned int*)&m_ip4.sin_addr);
+		sa.port = ntohs(m_ip4.sin_port);
+		return sock_connect(&sa, 0);
+	}
+
 	ASOCK_HANDLE CJsonRPCClient::GetHandle()
 	{
 		ASOCK_HANDLE sock = ASOCK_INVALID_HANDLE;
@@ -859,14 +884,6 @@ namespace Zion
 		}
 		m_socks[sock] = time(NULL);
 		uv_mutex_unlock(&m_locker);
-
-		if(sock==ASOCK_INVALID_HANDLE)
-		{
-			ASOCK_ADDR sa;
-			sa.ip = *((unsigned int*)&m_ip4.sin_addr);
-			sa.port = ntohs(m_ip4.sin_port);
-			sock = sock_connect(&sa, 0);
-		}
 		return sock;
 	}
 	

@@ -82,21 +82,19 @@ class A_LIVE_OBJECT
 	}
 };
 
-class CG_AVATAR_DESC extends A_LIVE_OBJECT
+class CG_AVATAR_DESC
 {
 	public $avatar_id; // int
 	public $avatar_name; // string
 
 	public function __construct()
 	{
-		parent::__construct();
 		$this->avatar_id = 0;
 		$this->avatar_name = '';
 	}
 	public function ToStringInternal()
 	{
-		$__result = parent::ToStringInternal();
-		if($__result!='') $__result .= ',';
+		$__result = '';
 		// avatar_id
 		if(!is_int($this->avatar_id)) return '';
 		if($this->avatar_id<0 || $this->avatar_id>4294967295) return false;
@@ -112,7 +110,6 @@ class CG_AVATAR_DESC extends A_LIVE_OBJECT
 	}
 	public function ToArray($_array=array())
 	{
-		$_array = parent::ToArray($_array);
 		// avatar_id
 		$_array['avatar_id'] = $this->avatar_id;
 		// avatar_name
@@ -122,7 +119,6 @@ class CG_AVATAR_DESC extends A_LIVE_OBJECT
 	public function FromArray($_array)
 	{
 		if(!is_array($_array)) return false;
-		if(!parent::FromArray($_array)) return false;
 		// avatar_id
 		if(!is_int($_array['avatar_id'])) return false;
 		if($_array['avatar_id']<0 || $_array['avatar_id']>4294967295) return false;

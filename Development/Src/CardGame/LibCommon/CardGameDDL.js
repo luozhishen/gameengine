@@ -33,20 +33,17 @@ A_LIVE_OBJECT.serialize = function(v) {
 exports_struct.A_LIVE_OBJECT = A_LIVE_OBJECT;
 
 function CG_AVATAR_DESC() {
-	A_LIVE_OBJECT.call(this);
 	this.__typename = 'CG_AVATAR_DESC';
 	this.avatar_id = 0;
 	this.avatar_name = '';
 	this.__proto__ = CG_AVATAR_DESC;
 }
 CG_AVATAR_DESC.serialize = function(v) {
-	if(!A_LIVE_OBJECT.serialize.call(this)) return false;
 	this.avatar_id = parseInt(v['avatar_id']);
 	if(this.avatar_id<0) return false;
 	this.avatar_name = v['avatar_name'].toString();
 	return true;
 }
-CG_AVATAR_DESC.prototype = A_LIVE_OBJECT;
 exports_struct.CG_AVATAR_DESC = CG_AVATAR_DESC;
 
 function CG_AVATAR() {

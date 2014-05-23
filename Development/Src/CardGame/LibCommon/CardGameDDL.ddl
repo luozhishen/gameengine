@@ -3,7 +3,7 @@ include "../../LibBase/ConfusedNumberDDL.ddl"
 include "../../LibCommon/CommonDDL.ddl"
 include "../../LibCommon/DataSyncDDL.ddl"
 
-struct CG_AVATAR_DESC : A_LIVE_OBJECT
+struct CG_AVATAR_DESC
 {
 	_U32			avatar_id;
 	string<100>		avatar_name;

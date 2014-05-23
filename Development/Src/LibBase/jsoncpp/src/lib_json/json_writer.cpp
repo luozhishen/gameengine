@@ -205,7 +205,6 @@ FastWriter::write( const Value &root )
 {
    document_ = "";
    writeValue( root );
-   document_ += "\n";
    return document_;
 }
 

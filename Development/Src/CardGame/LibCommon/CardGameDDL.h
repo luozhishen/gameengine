@@ -14,7 +14,7 @@
 
 #include "../../LibCommon/DataSyncDDL.h"
 
-struct CG_AVATAR_DESC : A_LIVE_OBJECT
+struct CG_AVATAR_DESC
 {
 	_U32 avatar_id;
 	DDL::String<100> avatar_name;

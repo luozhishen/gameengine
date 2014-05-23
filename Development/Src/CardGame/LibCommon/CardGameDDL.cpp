@@ -10,7 +10,6 @@ namespace DDL
 	template<>
 	bool BufferReader::Read<CG_AVATAR_DESC>(CG_AVATAR_DESC& Value)
 	{
-		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!Read<_U32>(Value.avatar_id)) return false;
 		if(!ReadString<100>(Value.avatar_name)) return false;
 		return true;
@@ -18,7 +17,6 @@ namespace DDL
 	template<>
 	bool BufferWriter::Write<CG_AVATAR_DESC>(const CG_AVATAR_DESC& Value)
 	{
-		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!Write<_U32>(Value.avatar_id)) return false;
 		if(!WriteString<100>(Value.avatar_name)) return false;
 		return true;
@@ -43,7 +41,7 @@ namespace DDLReflect
 		{TYPE_U32, "avatar_id", 0, (_U16)ZION_OFFSETOF(CG_AVATAR_DESC, avatar_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 		{TYPE_STRING, "avatar_name", 0, (_U16)ZION_OFFSETOF(CG_AVATAR_DESC, avatar_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_CG_AVATAR_DESC_info = { &_rfl_struct_A_LIVE_OBJECT_info, "CG_AVATAR_DESC", sizeof(CG_AVATAR_DESC), 2, _struct_CG_AVATAR_DESC_fieldinfo, _struct_CG_AVATAR_DESC_readproc, _struct_CG_AVATAR_DESC_writeproc };
+	STRUCT_INFO _rfl_struct_CG_AVATAR_DESC_info = { NULL, "CG_AVATAR_DESC", sizeof(CG_AVATAR_DESC), 2, _struct_CG_AVATAR_DESC_fieldinfo, _struct_CG_AVATAR_DESC_readproc, _struct_CG_AVATAR_DESC_writeproc };
 	template<>
 	const STRUCT_INFO* GetStruct<CG_AVATAR_DESC>()
 	{

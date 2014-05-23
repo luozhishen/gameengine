@@ -15,16 +15,9 @@ return		errcode, avatar_id, version
 			if(failed£© errcode = -1
 remark		É¾³ıAvatar
 
-
-		void RPCIMPL_DeleteAvatar(_U32 user_id, _U32 avatar_scope, _U32 avatar_id);
-		// return errcode
-
-
 function	getAvatar
 argements	avatar_id
-return
-  success	{ "uuid:type" : {obj}, ... }
-  failed	""
+return		errcode, avatar_id, avatar_objs [{xxx}]
 
 function	getAvatar
 argements	avatar_id

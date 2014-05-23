@@ -36,6 +36,7 @@ enum
 	ID_QUIT = wxID_HIGHEST + 1,
 	ID_ABOUT,
 	ID_DEBUG_ENABLE,
+	ID_AUTO_RETRY,
 	ID_PROTOCAL,
 	ID_DOCMD,
 	ID_CMDTEXT,
@@ -57,11 +58,13 @@ enum
 
 BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_CHECKBOX(ID_DEBUG_ENABLE,	CClientStressFrame::OnDebugEnable)
+	EVT_CHECKBOX(ID_AUTO_RETRY,		CClientStressFrame::OnAutoRetry)
 	EVT_MENU(ID_PROTOCAL,			CClientStressFrame::OnProtocal)
 	EVT_MENU(ID_QUIT,				CClientStressFrame::OnQuit)
 	EVT_MENU(ID_ABOUT,				CClientStressFrame::OnAbout)
 	EVT_BUTTON(ID_DOCMD,			CClientStressFrame::OnDoCmd)
 	EVT_TEXT_ENTER(ID_CMDTEXT,		CClientStressFrame::OnCmdEnter)
+	EVT_TEXT(ID_CMDTEXT,			CClientStressFrame::OnCmdChange)
 	EVT_MENU(ID_ADDONE,				CClientStressFrame::OnAddClient)
 	EVT_MENU(ID_ADDFIVE,			CClientStressFrame::OnAddClient)
 	EVT_MENU(ID_ADDTEN,				CClientStressFrame::OnAddClient)
@@ -205,6 +208,8 @@ void CClientStressFrame::InitToolBar()
 	pToolBar->AddTool(ID_RELOAD_TEMPLATE,wxT("Reload Stress Template"),	bmpScriptRun,	wxT("Reload stress template from json"));
 	m_pEnableXDebug = ZION_NEW wxCheckBox(pToolBar, ID_DEBUG_ENABLE, wxT("Enable XDebug"));
 	pToolBar->AddControl(m_pEnableXDebug);
+	m_pAutoRetry = ZION_NEW wxCheckBox(pToolBar, ID_AUTO_RETRY, wxT("Auto Retry"));
+	pToolBar->AddControl(m_pAutoRetry);
 
 	pToolBar->Realize();
 }
@@ -227,11 +232,13 @@ void CClientStressFrame::InitClient()
 	{
 		m_pCmdText->Append(wxString::FromUTF8(cmds[i].c_str()));
 	}
-    m_pCmdButton = ZION_NEW wxButton( pPanel, ID_DOCMD, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_pCmdButton = ZION_NEW wxButton( pPanel, ID_DOCMD, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
     pSizer2->Add(m_pCmdText, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxUP|wxDOWN, 5 );
     pSizer2->Add(m_pCmdButton, 0, wxALIGN_CENTER|wxALL, 5 );
+	m_pCmdHint = ZION_NEW wxStaticText(pPanel, wxID_ANY, wxT("please input"));
 	pSizer1->Add(m_pTabView, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
 	pSizer1->Add(pSizer2, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
+	pSizer1->Add(m_pCmdHint, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	pPanel->SetSizer(pSizer1);
 	m_pSplitter->SplitVertically(pClientTab, pPanel, 100);
 }
@@ -254,6 +261,10 @@ void CClientStressFrame::OnDebugEnable(wxCommandEvent& event)
 	}
 }
 
+void CClientStressFrame::OnAutoRetry(wxCommandEvent& event)
+{
+}
+
 void CClientStressFrame::OnProtocal(wxCommandEvent& event)
 {
 	CProtocalDialog Dialog(this);
@@ -272,6 +283,97 @@ void CClientStressFrame::OnAbout(wxCommandEvent&)
 	wxMessageBox(txt, wxT("About"), wxICON_INFORMATION|wxOK);
 }
 
+static bool _SplitCommand(const char* _line, Zion::String& cmd, Zion::String& data)
+{
+	Zion::String line = Zion::StringTrim(_line);
+	if(line.empty()) return false;
+	size_t pos = line.find_first_of(' ');
+	if(pos==std::string::npos)
+	{
+		cmd = line;
+		data = "";
+	}
+	else
+	{
+		cmd = line.substr(0, pos);
+		data = line.substr(pos+1);
+	}
+	return true;
+}
+
+static bool _GetClassInfo(const Zion::String& cmd, const DDLReflect::CLASS_INFO*& _info, _U16& _fid)
+{
+	size_t pos = cmd.find_first_of('.');
+	Zion::String _class, _method;
+	if(pos==std::string::npos)
+	{
+		_class = "";
+		_method = cmd;
+	}
+	else
+	{
+		_class = cmd.substr(0, pos);
+		_method = cmd.substr(pos+1);
+	}
+
+	for(_U32 i=0; i<Zion::GetStubCount(); i++)
+	{
+		const DDLReflect::CLASS_INFO* info = Zion::GetServerStub(i);
+		if(!info) continue;
+		if(!_class.empty() && stricmp(info->name, _class.c_str())!=0) continue;
+
+		for(_U32 f=0; f<info->fcount; f++)
+		{
+			if(stricmp(_method.c_str(), info->finfos[f].name)==0)
+			{
+				_info = info;
+				_fid = f;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+static Zion::String _GenFunctionDefine(const DDLReflect::FUNCTION_INFO* func)
+{
+	Zion::String out;
+	out = "(";
+	for(_U32 i=0; i<func->fcount; i++)
+	{
+		if(i>0) out += ", ";
+		const DDLReflect::FIELD_INFO* field = func->finfos + i;
+
+		switch(field->type&DDLReflect::TYPE_MASK)
+		{
+		case DDLReflect::TYPE_U8:		out += "_U8"; break;
+		case DDLReflect::TYPE_U16:		out += "_U16"; break;
+		case DDLReflect::TYPE_U32:		out += "_U32"; break;
+		case DDLReflect::TYPE_U64:		out += "_U64"; break;
+		case DDLReflect::TYPE_S8:		out += "_S8"; break;
+		case DDLReflect::TYPE_S16:		out += "_S16"; break;
+		case DDLReflect::TYPE_S32:		out += "_S32"; break;
+		case DDLReflect::TYPE_S64:		out += "_S64"; break;
+		case DDLReflect::TYPE_F32:		out += "_F32"; break;
+		case DDLReflect::TYPE_F64:		out += "_F64"; break;
+		case DDLReflect::TYPE_STRING:	out += "string"; break;
+		case DDLReflect::TYPE_UUID:		out += "A_UUID"; break;
+		case DDLReflect::TYPE_UUID_REF:	out += "A_UUID"; break;
+		case DDLReflect::TYPE_STRUCT:	out += field->sinfo->name; break;
+		default:						out += "unknown";
+		}
+		out += " ";
+		out += field->name;
+		if(field->type&DDLReflect::TYPE_ARRAY)
+		{
+			out += "[]";
+		}
+	}
+	out += ")";
+	return out;
+}
+
 void CClientStressFrame::OnCmdEnter(wxCommandEvent& event)
 {
 	OnDoCmd(event);
@@ -279,100 +381,69 @@ void CClientStressFrame::OnCmdEnter(wxCommandEvent& event)
 
 void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 {
-	wxString val = m_pCmdText->GetValue();
-	val = val.Trim().Trim(false);
-	if(val.size()<=0) return;
-
-	const DDLReflect::CLASS_INFO* cls = NULL;
-	_U16 fid = (_U16)-1;
-
-	wxString cmd = val.BeforeFirst(wxT(' ')).Trim();
-	wxString arg = wxT("");
-	if(cmd.size()!=val.size())
+	Zion::String cmd, data;
+	if(_SplitCommand(m_pCmdText->GetValue().ToUTF8(), cmd, data))
 	{
-		arg = val.AfterFirst(wxT(' ')).Trim(false);
-	}
-
-	Zion::String cmd_utf8 = (const char*)cmd.ToUTF8();
-	if(cmd.Find(wxT('.'))>=0)
-	{
-		Zion::String method = cmd.ToUTF8();
-		size_t pos = method.find_first_of('.');
-		Zion::String _class = method.substr(0, pos);
-		method = method.substr(pos+1);
-		for(_U32 i=0; i<Zion::GetStubCount(); i++)
+		const DDLReflect::CLASS_INFO* _info;
+		_U16 _fid;
+		if(_GetClassInfo(cmd, _info, _fid))
 		{
-			const DDLReflect::CLASS_INFO* info = Zion::GetServerStub(i);
-			if(!info) continue;
-			if(stricmp(info->name, _class.c_str())!=0) continue;
-
-			for(_U32 f=0; f<info->fcount; f++)
+			Zion::Array<Zion::String> args;
+			Zion::StringSplit(data, ' ', args);
+			if(_info->finfos[_fid].fcount==(_U16)args.size())
 			{
-				if(stricmp(method.c_str(), info->finfos[f].name)==0)
+				Zion::String json;
+				json = "[";
+				for(_U16 a=0; a<_info->finfos[_fid].fcount; a++)
 				{
-					cls = info;
-					fid = f;
-					break;
+					if(a>0)	json += ",";
+					json += args[a];
+				}
+				json += "]";
+
+				if(ProcessJsonCommand(_info, _fid, json))
+				{
+					wxString val;
+					val = wxString::FromUTF8(_info->name) + wxString::FromUTF8(".") + wxString::FromUTF8(_info->finfos[_fid].name) + wxString::FromUTF8(" ") + wxString::FromUTF8(data.c_str());
+					val = val.Trim().Trim(false);
+					Zion::String line = (const char*)val.ToUTF8();
+					m_pCmdHistory->AddCmd(line);
+					m_pCmdText->Clear();
+					int n = m_pCmdHistory->GetHistoryNum();
+					Zion::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
+					for(int i = 0; i < n; ++i)
+					{
+						wxString tmp(cmds[i].c_str(), wxMBConvUTF8());
+						m_pCmdText->AppendString(tmp);
+					}
+					m_pCmdText->SetValue(val);
+					return;
 				}
 			}
+			wxMessageBox(wxT("invalid json"), wxT("error"));
+			return;
 		}
 	}
-	else
+	wxMessageBox(wxT("unknown command"), wxT("error"));
+}
+
+void CClientStressFrame::OnCmdChange(wxCommandEvent& event)
+{
+	Zion::String cmd, data;
+	if(_SplitCommand(m_pCmdText->GetValue().ToUTF8(), cmd, data))
 	{
-		for(_U32 i=0; i<Zion::GetStubCount(); i++)
+		const DDLReflect::CLASS_INFO* _info;
+		_U16 _fid = 0;
+		if(_GetClassInfo(cmd, _info, _fid))
 		{
-			const DDLReflect::CLASS_INFO* info = Zion::GetServerStub(i);
-			if(!info) continue;
-
-			for(_U32 f=0; f<info->fcount; f++)
-			{
-				if(stricmp(cmd_utf8.c_str(), info->finfos[f].name)==0)
-				{
-					cls = info;
-					fid = f;
-					break;
-				}
-			}
+			wxString val;
+			val = wxString::FromUTF8(_info->name) + wxString::FromUTF8(".") + wxString::FromUTF8(_info->finfos[_fid].name);
+			val += wxString::FromUTF8(_GenFunctionDefine(_info->finfos+_fid).c_str());
+			m_pCmdHint->SetLabel(val);
+			return;
 		}
 	}
-
-	if(!cls)
-	{
-		wxMessageBox(wxT("unknown command"), wxT("error"));
-		return;
-	}
-
-	Zion::String json((const char*)arg.ToUTF8());
-	Zion::Array<Zion::String> args;
-	Zion::StringSplit(json, ' ', args);
-	if(cls->finfos[fid].fcount!=(_U16)args.size())
-	{
-		return;
-	}
-	json = "[";
-	for(_U16 a=0; a<cls->finfos[fid].fcount; a++)
-	{
-		if(a>0)	json += ",";
-		json += Zion::StringFormat("\"%s\":", cls->finfos[fid].finfos[a].name);
-		json += args[a];
-	}
-	json += "]";
-
-	if(!ProcessJsonCommand(cls, fid, json)) return;
-
-	val = wxString::FromUTF8(cls->name) + wxString::FromUTF8(".") + wxString::FromUTF8(cls->finfos[fid].name) + wxString::FromUTF8(" ") + arg;
-	val = val.Trim().Trim(false);
-	Zion::String line = (const char*)val.ToUTF8();
-	m_pCmdHistory->AddCmd(line);
-	m_pCmdText->Clear();
-	int n = m_pCmdHistory->GetHistoryNum();
-	Zion::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
-	for(int i = 0; i < n; ++i)
-	{
-		wxString tmp(cmds[i].c_str(), wxMBConvUTF8());
-		m_pCmdText->AppendString(tmp);
-	}
-	m_pCmdText->SetValue(val);
+	m_pCmdHint->SetLabel(wxT("please input"));
 }
 
 static void OnHttpCallback(Zion::CHttpConnection* pHttp, Zion::CHttpConnection::STATE state)
@@ -611,21 +682,14 @@ bool CClientStressFrame::ProcessJsonCommand(const DDLReflect::CLASS_INFO* classi
 	_U32 len = (_U32)sizeof(data);
 	if(!DDLReflect::Json2Call(classinfo->finfos+fid, json, len, data))
 	{
-		wxMessageBox(wxT("invalid json"), wxT("error"));
 		return false;
 	}
 
 	Zion::Array<_U32> clients;
 	GetSelectClients(clients);
-	if(clients.size()<=0)
-	{
-		wxMessageBox(wxT("no client selected"), wxT("error"));
-		return false;
-	}
 
 	Zion::Array<_U32>::iterator i;
 	Zion::CStressClient* pClient;
-
 	for(i=clients.begin(); i!=clients.end(); i++)
 	{
 		pClient = Zion::CStressManager::Get().GetClient(m_nCurrentIndex);

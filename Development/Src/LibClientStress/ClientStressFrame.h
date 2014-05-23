@@ -55,11 +55,13 @@ public:
 	void InitClient();
 
 	void OnDebugEnable(wxCommandEvent& event);
+	void OnAutoRetry(wxCommandEvent& event);
 	void OnProtocal(wxCommandEvent& event);
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
 	void OnDoCmd(wxCommandEvent& event);
 	void OnCmdEnter(wxCommandEvent& event);
+	void OnCmdChange(wxCommandEvent& event);
 	void OnAddClient(wxCommandEvent& event);
 	void OnSelectAll(wxCommandEvent& event);
 	void OnLogin(wxCommandEvent& event);
@@ -95,7 +97,9 @@ private:
 	wxListBox*				m_pClientList;
 	wxComboBox*				m_pCmdText;
 	wxButton*				m_pCmdButton;
+	wxStaticText*			m_pCmdHint;
 	wxCheckBox*				m_pEnableXDebug;
+	wxCheckBox*				m_pAutoRetry;
 	wxTimer					m_Timer;
 	
 	struct

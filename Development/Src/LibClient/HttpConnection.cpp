@@ -62,11 +62,11 @@ namespace Zion
 			ProcessQueueRequest();
 			ProcessPullRequest();
 			ProcessLogoutRequest();
+		}
 
-			if(!m_bInLogout && !m_pCurrentRequest && m_nHttpState!=STATE_PAUSE)
-			{
-				SendRequest();
-			}
+		if(m_nState==CClient::STATE_LOGINED && !m_bInLogout && !m_pCurrentRequest && m_nHttpState!=STATE_PAUSE)
+		{
+			SendRequest();
 		}
 	}
 
@@ -142,7 +142,7 @@ namespace Zion
 		root["args"] = args;
 		Json::FastWriter writer;
 		String json = writer.write(root);
-		CLIENT_LOG(GetClient(), "send request : %s", json.c_str());
+		CLIENT_LOG(GetClient(), "send : %s", json.c_str());
 		m_SendQueue.push_back(json);
 	}
 
@@ -354,6 +354,8 @@ namespace Zion
 
 	int CHttpConnection::ProcessRequest(MOREQUEST* request)
 	{
+		CLIENT_LOG(GetClient(), "recv : %s", MORequestGetResult(request));
+
 		int ret = MOClientGetResultCode(request);
 		if(ret!=MOERROR_NOERROR)
 		{
@@ -361,7 +363,6 @@ namespace Zion
 		}
 
 		const char* result = MOClientGetResultString(request);
-		CLIENT_LOG(GetClient(), "recv response: %s", result);
 		if(*result=='\0')
 		{
 			return MOERROR_NOERROR;

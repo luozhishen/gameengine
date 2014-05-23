@@ -52,7 +52,7 @@ namespace Zion
 			{
 				if(session->Lock())
 				{
-					JsonRPC_Send(StringFormat("[0,%u,%u,%u,%u]", session->GetUserID(), session->GetAvatarScope(), session->GetAvatarID(), session->GetReqSeq()).c_str());
+					JsonRPC_Send(StringFormat("[0,%u,%d,%d,%u]", session->GetUserID(), (_S32)session->GetAvatarScope(), (_S32)session->GetAvatarID(), session->GetReqSeq()).c_str());
 				}
 				else
 				{
@@ -100,6 +100,7 @@ namespace Zion
 			{
 				if(session->BindAvatar(server_id, avatar_id, avatar_name))
 				{
+					CUserSession::Unlock(session);
 					JsonRPC_Send("[0]");
 					return;
 				}
@@ -115,9 +116,11 @@ namespace Zion
 			{
 				if(session->UnbindAvatar())
 				{
+					CUserSession::Unlock(session);
 					JsonRPC_Send("[0]");
 					return;
 				}
+				CUserSession::Unlock(session);
 			}
 			JsonRPC_Send("[-1]");
 		}
@@ -131,9 +134,11 @@ namespace Zion
 				CMessage Msg(msg);
 				if(session->SendMsg(Msg))
 				{
+					CUserSession::Unlock(session);
 					JsonRPC_Send("[0]");
 					return;
 				}
+				CUserSession::Unlock(session);
 			}
 			JsonRPC_Send("[-1]");
 		}
@@ -147,9 +152,11 @@ namespace Zion
 				CMessage Msg(msg);
 				if(session->SendMsg(Msg))
 				{
+					CUserSession::Unlock(session);
 					JsonRPC_Send("[0]");
 					return;
 				}
+				CUserSession::Unlock(session);
 			}
 			JsonRPC_Send("[-1]");
 		}
@@ -163,9 +170,11 @@ namespace Zion
 				CMessage Msg(msg);
 				if(session->SendMsg(Msg))
 				{
+					CUserSession::Unlock(session);
 					JsonRPC_Send("[0]");
 					return;
 				}
+				CUserSession::Unlock(session);
 			}
 			JsonRPC_Send("[-1]");
 		}
@@ -178,9 +187,11 @@ namespace Zion
 			{
 				if(session->JoinDomain(domain_id))
 				{
+					CUserSession::Unlock(session);
 					JsonRPC_Send("[0]");
 					return;
 				}
+				CUserSession::Unlock(session);
 			}
 			JsonRPC_Send("[-1]");
 		}
@@ -193,9 +204,11 @@ namespace Zion
 			{
 				if(session->LeaveDomain(domain_id))
 				{
+					CUserSession::Unlock(session);
 					JsonRPC_Send("[0]");
 					return;
 				}
+				CUserSession::Unlock(session);
 			}
 			JsonRPC_Send("[-1]");
 		}

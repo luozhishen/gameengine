@@ -313,16 +313,19 @@ namespace Zion
 			String ret;
 			bool first = true;
 			Map<A_UUID, OBJECT_DATA>::iterator i;
+			JsonValue root(JsonValue::TYPE_ARRAY);
 			for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
 			{
 				if(!ret.empty()) ret += ",";
-
+				root.Append(JsonValue(JsonValue::TYPE_OBJECT));
+				JsonValue& node = root.Get(root.GetSize()-1);
 				char suuid[100];
 				AUuidToString(i->second._uuid, suuid);
-				ret += StringFormat("\"%s:%s\":", suuid, i->second._type.c_str());
-				ret += i->second._data;
+				node.Append("uuid", JsonValue(suuid));
+				node.Append("type", i->second._type);
+				node.Append("data", i->second._data);
 			}
-			JsonRPC_Send((StringFormat("[0, %u, %u, {", m_AvatarID, m_Version) + ret + "}]").c_str());
+			JsonRPC_Send(StringFormat("[0, %u, %u, [%s]", m_AvatarID, m_Version, root.Stringify().c_str()).c_str());
 		}
 
 		void RPCIMPL_CreateAvatar(

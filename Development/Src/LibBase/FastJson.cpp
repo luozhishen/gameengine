@@ -418,6 +418,13 @@ namespace Zion
 		return reader.Parse(begin, end, *this);
 	}
 
+	String JsonValue::Stringify() const
+	{
+		String ret;
+		Stringify(ret);
+		return ret;
+	}
+
 	void JsonValue::Stringify(String& json) const
 	{
 		OutputStringStream sstream;
@@ -694,6 +701,12 @@ namespace Zion
 		{
 			return g_NullArray;
 		}
+	}
+
+	JsonValue& JsonValue::Get(_U32 index)
+	{
+		if(m_type!=TYPE_ARRAY || index>=(_U32)m_array->size()) return g_NullValue;
+		return (*m_array)[index];
 	}
 
 	const JsonValue& JsonValue::Get(_U32 index) const

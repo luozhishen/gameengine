@@ -34,6 +34,7 @@ namespace Zion
 		~JsonValue();
 
 		bool Parse(const char* begin, const char* end);
+		String Stringify() const;
 		void Stringify(String& json) const;
 		void Stringify(OutputStringStream& sstream) const;
 
@@ -58,6 +59,7 @@ namespace Zion
 		const Map<String, JsonValue>& AsObject() const;
 		const Array<JsonValue>& AsArray() const;
 
+		JsonValue& Get(_U32 index);
 		const JsonValue& Get(_U32 index) const;
 		_U32 GetSize() const;
 

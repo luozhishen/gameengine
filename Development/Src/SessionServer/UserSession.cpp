@@ -324,6 +324,7 @@ namespace Zion
 			m_nUserID = nUserID;
 			m_SessionKey = StringFormat("%u$$%u", nUserID, (global_user_seq++) + rand());
 			m_nAvatarID = (_U32)-1;
+			m_nAvatarScopeID = (_U32)-1;
 			//m_AvatarName;
 			//m_Domains;
 

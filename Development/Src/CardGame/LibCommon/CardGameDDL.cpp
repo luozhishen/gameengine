@@ -56,7 +56,7 @@ namespace DDL
 	{
 		if(!BufferReader::Read<A_LIVE_OBJECT>(Value)) return false;
 		if(!ReadString<100>(Value.avatar_name)) return false;
-		if(!Read<A_CONFUSED_F32>(Value.money)) return false;
+		if(!Read<A_CONFUSED_U32>(Value.money)) return false;
 		return true;
 	}
 	template<>
@@ -64,7 +64,7 @@ namespace DDL
 	{
 		if(!BufferWriter::Write<A_LIVE_OBJECT>(Value)) return false;
 		if(!WriteString<100>(Value.avatar_name)) return false;
-		if(!Write<A_CONFUSED_F32>(Value.money)) return false;
+		if(!Write<A_CONFUSED_U32>(Value.money)) return false;
 		return true;
 	}
 }
@@ -85,7 +85,7 @@ namespace DDLReflect
 	static FIELD_INFO _struct_CG_AVATAR_fieldinfo[] =
 	{
 		{TYPE_STRING, "avatar_name", 0, (_U16)ZION_OFFSETOF(CG_AVATAR, avatar_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
-		{TYPE_STRUCT, "money", 0, (_U16)ZION_OFFSETOF(CG_AVATAR, money), &_rfl_struct_A_CONFUSED_F32_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_CONFUSED_F32), NULL},
+		{TYPE_STRUCT, "money", 0, (_U16)ZION_OFFSETOF(CG_AVATAR, money), &_rfl_struct_A_CONFUSED_U32_info, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(A_CONFUSED_U32), NULL},
 	};
 	STRUCT_INFO _rfl_struct_CG_AVATAR_info = { &_rfl_struct_A_LIVE_OBJECT_info, "CG_AVATAR", sizeof(CG_AVATAR), 2, _struct_CG_AVATAR_fieldinfo, _struct_CG_AVATAR_readproc, _struct_CG_AVATAR_writeproc };
 	template<>

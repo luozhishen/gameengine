@@ -38,7 +38,7 @@ namespace DDLReflect
 struct CG_AVATAR : A_LIVE_OBJECT
 {
 	DDL::String<100> avatar_name;
-	A_CONFUSED_F32 money;
+	A_CONFUSED_U32 money;
 };
 
 namespace DDL

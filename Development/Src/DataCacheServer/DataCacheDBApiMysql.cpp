@@ -252,7 +252,7 @@ namespace Zion
 		{
 			char suuid[100];
 			AUuidToString(_uuid, suuid);
-			String sql = StringFormat("INSERT INTO avatar_object_table values(%u, '%s', '%s', '%s')", -1, suuid, MY(type), MY(data));
+			String sql = StringFormat("INSERT INTO avatar_object_table values(%u, '%s', '%s', '%s')", avatar_id, suuid, MY(type), MY(data));
 			if(mysql_real_query(m_mysql, sql.c_str(), (unsigned long)sql.size())!=0)
 			{
 				printf("error in mysql_real_query(%d), %s", mysql_errno(m_mysql), mysql_error(m_mysql));

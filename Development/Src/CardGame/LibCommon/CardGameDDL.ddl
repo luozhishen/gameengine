@@ -12,7 +12,7 @@ struct CG_AVATAR_DESC
 struct CG_AVATAR : A_LIVE_OBJECT
 {
 	string<100>		avatar_name;
-	A_CONFUSED_F32	money;
+	A_CONFUSED_U32	money;
 };
 
 struct CG_CARD : A_LIVE_OBJECT

@@ -68,6 +68,7 @@ namespace Zion
 		bool HasMember(const char* name) const;
 		bool HasMember(const String& name) const;
 
+		void Set(const JsonValue& val);
 		void Set(bool val);
 		void Set(const char* val);
 		void Set(const String& val);
@@ -75,9 +76,17 @@ namespace Zion
 		void Set(_S32 val);
 		void Set(_F32 val);
 
-		void Append(const JsonValue& val);
-		void Append(const _STR name, const JsonValue& val);
-		void Append(const String& name, const JsonValue& val);
+		const JsonValue& operator=(const JsonValue& val);
+		const JsonValue& operator=(bool val);
+		const JsonValue& operator=(const char* val);
+		const JsonValue& operator=(const String& val);
+		const JsonValue& operator=(_U32 val);
+		const JsonValue& operator=(_S32 val);
+		const JsonValue& operator=(_F32 val);
+
+		JsonValue* Append(const JsonValue& val);
+		JsonValue* Append(const _STR name, const JsonValue& val);
+		JsonValue* Append(const String& name, const JsonValue& val);
 		
 	private:
 		TYPE	m_type;

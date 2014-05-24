@@ -50,13 +50,14 @@ function CG_AVATAR() {
 	A_LIVE_OBJECT.call(this);
 	this.__typename = 'CG_AVATAR';
 	this.avatar_name = '';
-	this.money = 0.0;
+	this.money = 0;
 	this.__proto__ = CG_AVATAR;
 }
 CG_AVATAR.serialize = function(v) {
 	if(!A_LIVE_OBJECT.serialize.call(this)) return false;
 	this.avatar_name = v['avatar_name'].toString();
-	this.money = parseFloat(v['money']);
+	this.money = parseInt(v['money']);
+	if(this.money<0) return false;
 	return true;
 }
 CG_AVATAR.prototype = A_LIVE_OBJECT;

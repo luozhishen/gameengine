@@ -112,7 +112,7 @@ namespace Zion
 		// return errcode
 		{
 			CUserSession* session = CUserSession::LockByUser(user_id);
-			if(!session)
+			if(session)
 			{
 				if(session->UnbindAvatar())
 				{

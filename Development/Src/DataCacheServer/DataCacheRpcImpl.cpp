@@ -244,12 +244,6 @@ namespace Zion
 			{
 				if(db->LoadAvatar(m_AvatarID, db_load_callback, this))
 				{
-					Map<A_UUID, OBJECT_DATA>::iterator i;
-					for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
-					{
-						i->second._dirty = false;
-						i->second._is_new = false;
-					}
 					FreeDatabase(db);
 					return true;
 				}
@@ -310,22 +304,18 @@ namespace Zion
 
 		void CAvatarData::Send()
 		{
-			String ret;
-			bool first = true;
 			Map<A_UUID, OBJECT_DATA>::iterator i;
 			JsonValue root(JsonValue::TYPE_ARRAY);
 			for(i=m_Objects.begin(); i!=m_Objects.end(); i++)
 			{
-				if(!ret.empty()) ret += ",";
-				root.Append(JsonValue(JsonValue::TYPE_OBJECT));
-				JsonValue& node = root.Get(root.GetSize()-1);
+				JsonValue& node = *root.Append(JsonValue(JsonValue::TYPE_OBJECT));
 				char suuid[100];
 				AUuidToString(i->second._uuid, suuid);
-				node.Append("uuid", JsonValue(suuid));
+				node.Append("uuid", suuid);
 				node.Append("type", i->second._type);
 				node.Append("data", i->second._data);
 			}
-			JsonRPC_Send(StringFormat("[0, %u, %u, [%s]", m_AvatarID, m_Version, root.Stringify().c_str()).c_str());
+			JsonRPC_Send(StringFormat("[0, %u, %u, %s]", m_AvatarID, m_Version, root.Stringify().c_str()).c_str());
 		}
 
 		void RPCIMPL_CreateAvatar(
@@ -407,7 +397,6 @@ namespace Zion
 					ZION_DELETE pAvatar;
 					JsonRPC_Send("[-1]");
 					_GetAvatar_Error += 1;
-					// g_avatar_update.Set(avatar_id);
 					return;
 				}
 			}

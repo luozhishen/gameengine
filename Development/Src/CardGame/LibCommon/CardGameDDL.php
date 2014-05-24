@@ -133,13 +133,13 @@ class CG_AVATAR_DESC
 class CG_AVATAR extends A_LIVE_OBJECT
 {
 	public $avatar_name; // string
-	public $money; // float
+	public $money; // int
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->avatar_name = '';
-		$this->money = 0.0;
+		$this->money = 0;
 	}
 	public function ToStringInternal()
 	{
@@ -149,7 +149,8 @@ class CG_AVATAR extends A_LIVE_OBJECT
 		if(!is_string($this->avatar_name)) return '';
 		$__result .= '"avatar_name":'.json_encode($this->avatar_name).'';
 		// money
-		if(!is_numeric($this->money)) return '';
+		if(!is_int($this->money)) return '';
+		if($this->money<0 || $this->money>4294967295) return false;
 		$__result .= ',"money":'.$this->money;
 		return $__result;
 	}
@@ -174,7 +175,8 @@ class CG_AVATAR extends A_LIVE_OBJECT
 		if(!is_string($_array['avatar_name'])) return false;
 		$this->avatar_name = $_array['avatar_name'];
 		// money
-		if(!is_numeric($_array['money'])) return false;
+		if(!is_int($_array['money'])) return false;
+		if($_array['money']<0 || $_array['money']>4294967295) return false;
 		$this->money = $_array['money'];
 		return true;
 	}

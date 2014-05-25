@@ -417,6 +417,7 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 						m_pCmdText->AppendString(tmp);
 					}
 					m_pCmdText->SetValue(val);
+					m_pCmdText->SelectAll();
 					return;
 				}
 			}

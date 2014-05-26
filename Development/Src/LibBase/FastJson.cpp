@@ -481,7 +481,7 @@ namespace Zion
 		switch(m_type)
 		{
 		case TYPE_NULL: sstream << "null"; break;
-		case TYPE_BOOL: sstream << m_bool?"true":"false"; break;
+		case TYPE_BOOL: sstream << (m_bool?"true":"false"); break;
 		case TYPE_U32: sstream << m_u32; break;
 		case TYPE_S32: sstream << m_s32; break;
 		case TYPE_F32: sstream << m_f32; break;
@@ -843,7 +843,7 @@ namespace Zion
 		return &(*m_array)[m_array->size()-1];
 	}
 
-	JsonValue* JsonValue::Append(const _STR name, const JsonValue& val)
+	JsonValue* JsonValue::Append(const char* name, const JsonValue& val)
 	{
 		return Append(String(name), val);
 	}

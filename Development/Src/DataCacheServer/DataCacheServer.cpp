@@ -8,6 +8,10 @@
 #include <uv.h>
 
 #include <stdio.h>
+#ifndef _WIN32
+#include <sys/types.h>
+#include <unistd.h>
+#endif
 
 namespace Zion
 {

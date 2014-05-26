@@ -85,7 +85,7 @@ namespace Zion
 		const JsonValue& operator=(_F32 val);
 
 		JsonValue* Append(const JsonValue& val);
-		JsonValue* Append(const _STR name, const JsonValue& val);
+		JsonValue* Append(const char* name, const JsonValue& val);
 		JsonValue* Append(const String& name, const JsonValue& val);
 		
 	private:

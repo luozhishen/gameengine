@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <poll.h>
 #include <errno.h>
+#include <tcp.h>
 #else
 #include <winsock2.h>
 #endif

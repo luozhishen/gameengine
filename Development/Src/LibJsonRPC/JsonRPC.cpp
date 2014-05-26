@@ -621,7 +621,7 @@ namespace Zion
 		m_bSingleThread = singlethread;
 
 		const char* pos = strchr(ep, ':');
-		if(!pos) return NULL;
+		if(!pos) return false;
 
 		union
 		{

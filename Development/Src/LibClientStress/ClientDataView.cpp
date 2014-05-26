@@ -176,7 +176,7 @@ CClientDataView::CClientDataView( CClientStressFrame* pFrame, wxWindow* pParent 
 	wxSplitterWindow* pSplitter = ZION_NEW wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
     pSplitter->SetSashGravity(0);
 
-	m_pDataList = ZION_NEW wxListCtrl(pSplitter, ID_DATALIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL);
+	m_pDataList = ZION_NEW wxListCtrl(pSplitter, ID_DATALIST, wxDefaultPosition, wxSize(wxDefaultSize.x, 200), wxLC_REPORT|wxLC_SINGLE_SEL);
 	m_pDataList->InsertColumn(0, wxT("UUID"), 0, 260);
 	m_pDataList->InsertColumn(1, wxT("Type"), 0, 150);
 	m_pDataList->InsertColumn(2, wxT("Value"), 0, wxLIST_AUTOSIZE);

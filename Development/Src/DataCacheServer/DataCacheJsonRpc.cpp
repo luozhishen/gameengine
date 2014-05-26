@@ -320,6 +320,7 @@ namespace Zion
 					{
 						break;
 					}
+					_array.push_back(task);
 				}
 				if(i==_tasks.GetSize())
 				{

@@ -46,6 +46,7 @@ public:
 	void OnObjectUpdate(_U32 nIndex, const A_UUID& _uuid);
 	void OnObjectDelete(_U32 nIndex, const A_UUID& _uuid);
 
+	void FlushObjectList();
 	void SetEditObject(const A_UUID* pUUID, const DDLReflect::STRUCT_INFO*	pType, A_LIVE_OBJECT* pData);
 	void ClearEditor();
 

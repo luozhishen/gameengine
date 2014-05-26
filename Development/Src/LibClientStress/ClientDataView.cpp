@@ -328,33 +328,17 @@ void CClientDataView::OnObjectClick(wxListEvent& event)
 	ClearEditor();
 
 	long nSelectIndex = event.GetIndex();
-	wxUIntPtr Ptr = m_pDataList->GetItemData(nSelectIndex);
-	Zion::LiveData::CObject* pObject = (Zion::LiveData::CObject*)Ptr;
-
+	A_UUID _uuid;
+	AUuidFromString(m_pDataList->GetItemText(nSelectIndex, 0).ToUTF8(), _uuid);
+	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(GetCurrentClient())->GetClient()->GetDataSync();
+	Zion::LiveData::CObject* pObject = pClient->GetObject(_uuid);
 	SetEditObject(&pObject->GetUUID("_uuid"), pObject->GetStructInfo(), (A_LIVE_OBJECT*)pObject->GetData());
 }
 
 void CClientDataView::OnSwitchTo(_U32 index)
 {
 	ClearEditor();
-	m_pDataList->DeleteAllItems();
-	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(index)->GetClient()->GetDataSync();
-	if(pClient->GetSyncFlag()==(_U32)-1) return;
-	if(!pClient->IsReady()) return;
-
-	Zion::LiveData::CObject* pObject;
-	pObject = pClient->GetAccesser().FindFirst();
-	while(pObject)
-	{
-		char suuid[100];
-		AUuidToString(pObject->GetUUID("_uuid"), suuid);
-		long id = m_pDataList->InsertItem(m_pDataList->GetItemCount(), wxString::FromUTF8(suuid));
-		m_pDataList->SetItem(id, 1, wxString::FromUTF8(pObject->GetStructInfo()->name));
-		m_pDataList->SetItem(id, 2, wxT(""));
-		m_pDataList->SetItemPtrData(id, (wxUIntPtr)pObject);
-
-		pObject = pClient->GetAccesser().FindNext(pObject);
-	}
+	FlushObjectList();
 }
 
 void CClientDataView::OnClear()
@@ -394,17 +378,50 @@ void CClientDataView::OnSyncClose(_U32 nIndex)
 
 void CClientDataView::OnObjectCreate(_U32 nIndex, const A_UUID& _uuid)
 {
-	OnSwitchTo(GetCurrentClient());
+	if(GetCurrentClient()!=nIndex) return;
+	FlushObjectList();
 }
 
 void CClientDataView::OnObjectUpdate(_U32 nIndex, const A_UUID& _uuid)
 {
-	OnSwitchTo(GetCurrentClient());
+	if(GetCurrentClient()!=nIndex) return;
+	if(m_pObjectData==NULL || memcmp(&m_ObjectUUID, &_uuid, sizeof(A_UUID))!=0) return;
+	ClearEditor();
+	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(GetCurrentClient())->GetClient()->GetDataSync();
+	Zion::LiveData::CObject* pObject = pClient->GetObject(_uuid);
+	SetEditObject(&pObject->GetUUID("_uuid"), pObject->GetStructInfo(), (A_LIVE_OBJECT*)pObject->GetData());
 }
 
 void CClientDataView::OnObjectDelete(_U32 nIndex, const A_UUID& _uuid)
 {
-	OnSwitchTo(GetCurrentClient());
+	if(GetCurrentClient()!=nIndex) return;
+	if(m_pObjectData==NULL || memcmp(&m_ObjectUUID, &_uuid, sizeof(A_UUID))!=0) return;
+	ClearEditor();
+}
+
+void CClientDataView::FlushObjectList()
+{
+	m_pDataList->DeleteAllItems();
+	Zion::CDataSyncClient* pClient = Zion::CStressManager::Get().GetClient(GetCurrentClient())->GetClient()->GetDataSync();
+	if(pClient->GetSyncFlag()==(_U32)-1) return;
+	if(!pClient->IsReady()) return;
+
+	Zion::LiveData::CObject* pObject;
+	pObject = pClient->GetAccesser().FindFirst();
+	while(pObject)
+	{
+		char suuid[100];
+		AUuidToString(pObject->GetUUID("_uuid"), suuid);
+		long id = m_pDataList->InsertItem(m_pDataList->GetItemCount(), wxString::FromUTF8(suuid));
+		if(memcmp(&pObject->GetUUID("_uuid"), &m_ObjectUUID, sizeof(A_UUID))==0 && m_pObjectData!=NULL)
+		{
+			m_pDataList->SetItemState(id, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+		}
+		m_pDataList->SetItem(id, 1, wxString::FromUTF8(pObject->GetStructInfo()->name));
+		m_pDataList->SetItem(id, 2, wxT(""));
+
+		pObject = pClient->GetAccesser().FindNext(pObject);
+	}
 }
 
 void CClientDataView::SetEditObject(const A_UUID* pUUID, const DDLReflect::STRUCT_INFO*	pType, A_LIVE_OBJECT* pData)

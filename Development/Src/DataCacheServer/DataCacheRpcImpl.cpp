@@ -564,11 +564,11 @@ namespace Zion
 				switch(tasks[i]._task_type)
 				{
 				case TASK_CREATE_OBJECT:
-					if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+					if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
 					break;
 				case TASK_DELETE_OBJECT:
 				case TASK_UPDATE_OBJECT:
-					if(!pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
+					if(pAvatar->ExistObject(tasks[i]._obj_uuid)) is_error = false;
 					break;
 				case TASK_DELETE_TASK:
 					if(db->LockTask(pAvatar->GetAvatarID(), tasks[i]._task_id)) is_error = false;

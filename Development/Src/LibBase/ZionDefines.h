@@ -40,8 +40,13 @@ extern void zion_free(void* mem);
 	#include <stdlib.h>
 	#include <crtdbg.h>
 	#include <malloc.h>
-	#define ZION_ALLOC(x)			zion_malloc(x)//malloc(x)
-	#define ZION_FREE(x)			zion_free(x)//free(x)
+#if 1
+	#define ZION_ALLOC(x)			zion_malloc(x)
+	#define ZION_FREE(x)			zion_free(x)
+#else
+	#define ZION_ALLOC(x)			malloc(x)
+	#define ZION_FREE(x)			free(x)
+#endif
 	#define ZION_ALIGN_ALLOC(x)		_aligned_malloc(x, 16)
 	#define ZION_ALIGN_FREE(x)		_aligned_free(x)
 	#ifdef _DEBUG

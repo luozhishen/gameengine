@@ -215,7 +215,7 @@ namespace Zion
 
 		LiveData::CObject* pObject = m_Accesser.Append(_info, data);
 
-		if(!m_bReady)
+		if(m_bReady)
 		{
 			_OnObjectCreate(pObject->GetUUID("_uuid"));
 		}
@@ -232,7 +232,7 @@ namespace Zion
 
 		LiveData::CObject* pObject = m_Accesser.Append(_info, data, len);
 
-		if(!m_bReady)
+		if(m_bReady)
 		{
 			_OnObjectCreate(pObject->GetUUID("_uuid"));
 		}
@@ -292,8 +292,8 @@ namespace Zion
 	{
 		for(_U32 i=0; i<count; i++)
 		{
-			_OnObjectDelete(_uuids[i]);
 			m_Accesser.Remove(_uuids[i]);
+			_OnObjectDelete(_uuids[i]);
 		}
 	}
 

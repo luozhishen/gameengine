@@ -42,7 +42,7 @@ namespace Zion
 		{
 			(void)(hint);
 			return (pointer)ZION_ALLOC((unsigned int)n*sizeof(T));
-		};
+		}
 		void deallocate(pointer p, size_type n)
 		{
 			(void)(n);

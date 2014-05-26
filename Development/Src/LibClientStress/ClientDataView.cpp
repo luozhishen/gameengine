@@ -395,6 +395,7 @@ void CClientDataView::OnObjectUpdate(_U32 nIndex, const A_UUID& _uuid)
 void CClientDataView::OnObjectDelete(_U32 nIndex, const A_UUID& _uuid)
 {
 	if(GetCurrentClient()!=nIndex) return;
+	FlushObjectList();
 	if(m_pObjectData==NULL || memcmp(&m_ObjectUUID, &_uuid, sizeof(A_UUID))!=0) return;
 	ClearEditor();
 }

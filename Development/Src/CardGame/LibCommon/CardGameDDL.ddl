@@ -62,7 +62,7 @@ class CGSERVER_GAME
 	Discard(A_UUID uuid);
 
 	Beg(_U32 money);
-	Gamble(A_UUID card, _S32 mode);
+	Gamble(A_UUID card, _U32 point);
 };
 
 class CGCALLBACK_GAME

@@ -313,7 +313,7 @@ namespace DDLReflect
 		{TYPE_U32, "money", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 		// 3 Gamble
 		{TYPE_UUID, "card", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
-		{TYPE_S32, "mode", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
+		{TYPE_U32, "point", 0, 0, NULL, (_U16)-1,(_U16) -1, 0, 0, NULL},
 	};
 	static FUNCTION_INFO _class_CGSERVER_GAME_funcinfos[] = 
 	{

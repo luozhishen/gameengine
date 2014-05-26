@@ -2,12 +2,12 @@
 
 class A_CONTENT_OBJECT
 {
-	public $_uuid; // string
+	public $_uuid; // A_UUID
 	public $_name; // string
 
 	public function __construct()
 	{
-		$this->_uuid = '';
+		$this->_uuid = '00000000-0000-0000-0000-000000000000';
 		$this->_name = '';
 	}
 	public function ToStringInternal()
@@ -48,11 +48,11 @@ class A_CONTENT_OBJECT
 
 class A_LIVE_OBJECT
 {
-	public $_uuid; // string
+	public $_uuid; // A_UUID
 
 	public function __construct()
 	{
-		$this->_uuid = '';
+		$this->_uuid = '00000000-0000-0000-0000-000000000000';
 	}
 	public function ToStringInternal()
 	{
@@ -84,7 +84,7 @@ class A_LIVE_OBJECT
 
 class CG_AVATAR_DESC
 {
-	public $avatar_id; // int
+	public $avatar_id; // _U32
 	public $avatar_name; // string
 
 	public function __construct()
@@ -133,7 +133,7 @@ class CG_AVATAR_DESC
 class CG_AVATAR extends A_LIVE_OBJECT
 {
 	public $avatar_name; // string
-	public $money; // int
+	public $money; // _U32
 
 	public function __construct()
 	{
@@ -184,14 +184,14 @@ class CG_AVATAR extends A_LIVE_OBJECT
 
 class CG_CARD extends A_LIVE_OBJECT
 {
-	public $content_uuid; // string
-	public $win_count; // int
-	public $lost_count; // int
+	public $content_uuid; // A_UUID
+	public $win_count; // _U32
+	public $lost_count; // _U32
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->content_uuid = '';
+		$this->content_uuid = '00000000-0000-0000-0000-000000000000';
 		$this->win_count = 0;
 		$this->lost_count = 0;
 	}
@@ -249,15 +249,15 @@ class CG_CARD extends A_LIVE_OBJECT
 class CG_SHOPITEM extends A_CONTENT_OBJECT
 {
 	public $shopitem_id; // string
-	public $price; // int
-	public $content_uuid; // string
+	public $price; // _U32
+	public $content_uuid; // A_UUID
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->shopitem_id = '';
 		$this->price = 0;
-		$this->content_uuid = '';
+		$this->content_uuid = '00000000-0000-0000-0000-000000000000';
 	}
 	public function ToStringInternal()
 	{
@@ -311,7 +311,7 @@ class CG_SHOPITEM extends A_CONTENT_OBJECT
 class CG_CARD_CONFIG extends A_CONTENT_OBJECT
 {
 	public $disp_name; // string
-	public $point; // int
+	public $point; // _U32
 
 	public function __construct()
 	{
@@ -514,8 +514,9 @@ function CGSERVER_GAME_Dispatcher($fname, $_array, $_this)
 		if(!is_string($_array[0])) return false;
 		$__card = $_array[0];
 		if(!is_int($_array[1])) return false;
-		$__mode = $_array[1];
-		$_this->Gamble($__card, $__mode);
+		if($_array[1]<0 || $_array[1]>4294967295) return false;
+		$__point = $_array[1];
+		$_this->Gamble($__card, $__point);
 		return true;
 	}
 	return false;

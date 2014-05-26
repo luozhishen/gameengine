@@ -274,14 +274,14 @@ namespace DDLProxy
 			return GetClient()->SendData(this->GetClassID(), 2, _Buf.GetSize(), _Buf.GetBuf());
 		}
 
-		bool Gamble(const A_UUID& card, _S32 mode)
+		bool Gamble(const A_UUID& card, _U32 point)
 		{
 			_Buf.Reset();
 
 			// <A_UUID> <card> <> <>
 			if(!_Buf.Write(card)) return false;
-			// <_S32> <mode> <> <>
-			if(!_Buf.Write(mode)) return false;
+			// <_U32> <point> <> <>
+			if(!_Buf.Write(point)) return false;
 
 			// send
 			return GetClient()->SendData(this->GetClassID(), 3, _Buf.GetSize(), _Buf.GetBuf());

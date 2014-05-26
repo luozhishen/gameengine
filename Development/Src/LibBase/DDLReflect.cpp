@@ -1013,14 +1013,14 @@ namespace DDLReflect
 
 	void* CreateObject(const STRUCT_INFO* info)
 	{
-		void* data = malloc(info->size);
+		void* data = ZION_ALLOC(info->size);
 		memset(data, 0, (size_t)info->size);
 		return data;
 	}
 
 	void DestoryObject(const STRUCT_INFO* info, void* data)
 	{
-		free(data);
+		ZION_FREE(data);
 	}
 
 	void CopyObject(const STRUCT_INFO* info, void* dst, const void* src)

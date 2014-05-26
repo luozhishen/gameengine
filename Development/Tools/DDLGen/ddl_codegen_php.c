@@ -51,7 +51,7 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 			if(is_struct(arg)) {
 				OutP(1, "public $%s; // %s;\n", arg->name, arg->type);
 			} else {
-				OutP(1, "public $%s; // %s\n", arg->name, get_phptype(arg));
+				OutP(1, "public $%s; // %s\n", arg->name, arg->type);
 			}
 		}
 	}
@@ -74,13 +74,13 @@ int ddlgen_codephp_task_struct(const DDL_STR* str, const DDL_TASK* task)
 			if(is_struct(arg)) {
 				OutP(2, "$this->%s = new %s;\n", arg->name, arg->type);
 			} else {
-				if(strcmp(get_phptype(arg), "string")==0) {
+				if(strcmp(arg->type, "A_UUID")==0) {
+					OutP(2, "$this->%s = '00000000-0000-0000-0000-000000000000';\n", arg->name);
+				} else if(strcmp(get_phptype(arg), "string")==0) {
 					OutP(2, "$this->%s = '';\n", arg->name);
-				}
-				if(strcmp(get_phptype(arg), "int")==0) {
+				} else if(strcmp(get_phptype(arg), "int")==0) {
 					OutP(2, "$this->%s = 0;\n", arg->name);
-				}
-				if(strcmp(get_phptype(arg), "float")==0) {
+				} else if(strcmp(get_phptype(arg), "float")==0) {
 					OutP(2, "$this->%s = 0.0;\n", arg->name);
 				}
 			}

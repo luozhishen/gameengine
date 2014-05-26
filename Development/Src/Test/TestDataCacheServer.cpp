@@ -72,7 +72,7 @@ public:
 
 };
 
-void timer_callback(uv_timer_t* handle, int status)
+void timer_callback(uv_timer_t* handle)
 {
 	static _U32 last_completed = 0;
 	printf("%8u %15u %15u %15u\n", seq++, completed_count-last_completed, error_count, completed_count+error_count);

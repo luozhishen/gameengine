@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <io.h>
 #include <string.h>
+#include <stdlib.h>
 
 #if defined(_MSC_VER) && _MSC_VER < 1600
 # include "stdint-msvc2008.h"
@@ -53,6 +54,7 @@ static void uv_tty_update_virtual_window(CONSOLE_SCREEN_BUFFER_INFO* info);
 
 /* Null uv_buf_t */
 extern const uv_buf_t uv_null_buf_;
+
 
 /*
  * The console virtual window.
@@ -696,7 +698,7 @@ void uv_process_tty_read_raw_req(uv_loop_t* loop, uv_tty_t* handle,
         buf.base[buf_used++] = handle->last_key[handle->last_key_offset++];
 
         /* If the buffer is full, emit it */
-        if (buf_used == buf.len) {
+        if ((size_t) buf_used == buf.len) {
           handle->read_cb((uv_stream_t*) handle, buf_used, &buf);
           buf = uv_null_buf_;
           buf_used = 0;
@@ -1115,6 +1117,14 @@ static int uv_tty_clear(uv_tty_t* handle, int dir, char entire_screen,
   return 0;
 }
 
+#define FLIP_FGBG                                                             \
+    do {                                                                      \
+      WORD fg = info.wAttributes & 0xF;                                       \
+      WORD bg = info.wAttributes & 0xF0;                                      \
+      info.wAttributes &= 0xFF00;                                             \
+      info.wAttributes |= fg << 4;                                            \
+      info.wAttributes |= bg >> 4;                                            \
+    } while (0)
 
 static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
   unsigned short argc = handle->ansi_csi_argc;
@@ -1124,6 +1134,7 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
 
   char fg_color = -1, bg_color = -1;
   char fg_bright = -1, bg_bright = -1;
+  char inverse = -1;
 
   if (argc == 0) {
     /* Reset mode */
@@ -1131,6 +1142,7 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
     bg_color = 0;
     fg_bright = 0;
     bg_bright = 0;
+    inverse = 0;
   }
 
   for (i = 0; i < argc; i++) {
@@ -1142,6 +1154,7 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
       bg_color = 0;
       fg_bright = 0;
       bg_bright = 0;
+      inverse = 0;
 
     } else if (arg == 1) {
       /* Foreground bright on */
@@ -1156,6 +1169,10 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
       /* Background bright on */
       bg_bright = 1;
 
+    } else if (arg == 7) {
+      /* Inverse: on */
+      inverse = 1;
+
     } else if (arg == 21 || arg == 22) {
       /* Foreground bright off */
       fg_bright = 0;
@@ -1163,6 +1180,10 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
     } else if (arg == 25) {
       /* Background bright off */
       bg_bright = 0;
+
+    } else if (arg == 27) {
+      /* Inverse: off */
+      inverse = 0;
 
     } else if (arg >= 30 && arg <= 37) {
       /* Set foreground color */
@@ -1196,7 +1217,7 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
   }
 
   if (fg_color == -1 && bg_color == -1 && fg_bright == -1 &&
-      bg_bright == -1) {
+      bg_bright == -1 && inverse == -1) {
     /* Nothing changed */
     return 0;
   }
@@ -1204,6 +1225,10 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
   if (!GetConsoleScreenBufferInfo(handle->handle, &info)) {
     *error = GetLastError();
     return -1;
+  }
+
+  if ((info.wAttributes & COMMON_LVB_REVERSE_VIDEO) > 0) {
+    FLIP_FGBG;
   }
 
   if (fg_color != -1) {
@@ -1234,6 +1259,18 @@ static int uv_tty_set_style(uv_tty_t* handle, DWORD* error) {
     } else {
       info.wAttributes &= ~BACKGROUND_INTENSITY;
     }
+  }
+
+  if (inverse != -1) {
+    if (inverse) {
+      info.wAttributes |= COMMON_LVB_REVERSE_VIDEO;
+    } else {
+      info.wAttributes &= ~COMMON_LVB_REVERSE_VIDEO;
+    }
+  }
+
+  if ((info.wAttributes & COMMON_LVB_REVERSE_VIDEO) > 0) {
+    FLIP_FGBG;
   }
 
   if (!SetConsoleTextAttribute(handle->handle, info.wAttributes)) {
@@ -1314,6 +1351,25 @@ static int uv_tty_restore_state(uv_tty_t* handle,
   return 0;
 }
 
+static int uv_tty_set_cursor_visibility(uv_tty_t* handle,
+                                        BOOL visible,
+                                        DWORD* error) {
+  CONSOLE_CURSOR_INFO cursor_info;
+
+  if (!GetConsoleCursorInfo(handle->handle, &cursor_info)) {
+    *error = GetLastError();
+    return -1;
+  }
+
+  cursor_info.bVisible = visible;
+
+  if (!SetConsoleCursorInfo(handle->handle, &cursor_info)) {
+    *error = GetLastError();
+    return -1;
+  }
+
+  return 0;
+}
 
 static int uv_tty_write_bufs(uv_tty_t* handle,
                              const uv_buf_t bufs[],
@@ -1525,6 +1581,13 @@ static int uv_tty_write_bufs(uv_tty_t* handle,
               continue;
             }
 
+          } else if (utf8_codepoint == '?' && !(ansi_parser_state & ANSI_IN_ARG) &&
+                     handle->ansi_csi_argc == 0) {
+            /* Ignores '?' if it is the first character after CSI[ */
+            /* This is an extension character from the VT100 codeset */
+            /* that is supported and used by most ANSI terminals today. */
+            continue;
+
           } else if (utf8_codepoint >= '@' && utf8_codepoint <= '~' &&
                      (handle->ansi_csi_argc > 0 || utf8_codepoint != '[')) {
             int x, y, d;
@@ -1626,6 +1689,24 @@ static int uv_tty_write_bufs(uv_tty_t* handle,
                 /* Restore the cursor position */
                 FLUSH_TEXT();
                 uv_tty_restore_state(handle, 0, error);
+                break;
+
+              case 'l':
+                /* Hide the cursor */
+                if (handle->ansi_csi_argc == 1 &&
+                    handle->ansi_csi_argv[0] == 25) {
+                  FLUSH_TEXT();
+                  uv_tty_set_cursor_visibility(handle, 0, error);
+                }
+                break;
+
+              case 'h':
+                /* Show the cursor */
+                if (handle->ansi_csi_argc == 1 &&
+                    handle->ansi_csi_argv[0] == 25) {
+                  FLUSH_TEXT();
+                  uv_tty_set_cursor_visibility(handle, 1, error);
+                }
                 break;
             }
 
@@ -1813,7 +1894,7 @@ void uv_tty_close(uv_tty_t* handle) {
 
 
 void uv_tty_endgame(uv_loop_t* loop, uv_tty_t* handle) {
-  if (!(handle->flags && UV_HANDLE_TTY_READABLE) &&
+  if (!(handle->flags & UV_HANDLE_TTY_READABLE) &&
       handle->shutdown_req != NULL &&
       handle->write_reqs_pending == 0) {
     UNREGISTER_HANDLE_REQ(loop, handle, handle->shutdown_req);
@@ -1865,7 +1946,7 @@ void uv_process_tty_connect_req(uv_loop_t* loop, uv_tty_t* handle,
 }
 
 
-void uv_tty_reset_mode(void) {
+int uv_tty_reset_mode(void) {
   /* Not necessary to do anything. */
-  ;
+  return 0;
 }

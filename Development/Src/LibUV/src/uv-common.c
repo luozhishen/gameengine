@@ -35,7 +35,7 @@
 #include <stdlib.h> /* malloc */
 #include <string.h> /* memset */
 
-#if defined(UV_PLATFORM_HAS_IP6_LINK_LOCAL_ADDRESS) && !defined(_WIN32)
+#if !defined(_WIN32)
 # include <net/if.h> /* if_nametoindex */
 #endif
 
@@ -65,40 +65,6 @@ size_t uv_req_size(uv_req_type type) {
 }
 
 #undef XX
-
-size_t uv_strlcpy(char* dst, const char* src, size_t size) {
-  size_t n;
-
-  if (size == 0)
-    return 0;
-
-  for (n = 0; n < (size - 1) && *src != '\0'; n++)
-    *dst++ = *src++;
-
-  *dst = '\0';
-
-  return n;
-}
-
-
-size_t uv_strlcat(char* dst, const char* src, size_t size) {
-  size_t n;
-
-  if (size == 0)
-    return 0;
-
-  for (n = 0; n < size && *dst != '\0'; n++, dst++);
-
-  if (n == size)
-    return n;
-
-  while (n < (size - 1) && *src != '\0')
-    n++, *dst++ = *src++;
-
-  *dst = '\0';
-
-  return n;
-}
 
 
 uv_buf_t uv_buf_init(char* base, unsigned int len) {
@@ -136,24 +102,19 @@ int uv_ip4_addr(const char* ip, int port, struct sockaddr_in* addr) {
   memset(addr, 0, sizeof(*addr));
   addr->sin_family = AF_INET;
   addr->sin_port = htons(port);
-  /* TODO(bnoordhuis) Don't use inet_addr(), no good way to detect errors. */
-  addr->sin_addr.s_addr = inet_addr(ip);
-  return 0;
+  return uv_inet_pton(AF_INET, ip, &(addr->sin_addr.s_addr));
 }
 
 
 int uv_ip6_addr(const char* ip, int port, struct sockaddr_in6* addr) {
-#if defined(UV_PLATFORM_HAS_IP6_LINK_LOCAL_ADDRESS)
   char address_part[40];
   size_t address_part_size;
   const char* zone_index;
-#endif
 
   memset(addr, 0, sizeof(*addr));
   addr->sin6_family = AF_INET6;
   addr->sin6_port = htons(port);
 
-#if defined(UV_PLATFORM_HAS_IP6_LINK_LOCAL_ADDRESS)
   zone_index = strchr(ip, '%');
   if (zone_index != NULL) {
     address_part_size = zone_index - ip;
@@ -172,26 +133,24 @@ int uv_ip6_addr(const char* ip, int port, struct sockaddr_in6* addr) {
     addr->sin6_scope_id = if_nametoindex(zone_index);
 #endif
   }
-#endif
 
-  /* TODO(bnoordhuis) Return an error when the address is bad. */
-  uv_inet_pton(AF_INET6, ip, &addr->sin6_addr);
-
-  return 0;
+  return uv_inet_pton(AF_INET6, ip, &addr->sin6_addr);
 }
 
 
-int uv_ip4_name(struct sockaddr_in* src, char* dst, size_t size) {
+int uv_ip4_name(const struct sockaddr_in* src, char* dst, size_t size) {
   return uv_inet_ntop(AF_INET, &src->sin_addr, dst, size);
 }
 
 
-int uv_ip6_name(struct sockaddr_in6* src, char* dst, size_t size) {
+int uv_ip6_name(const struct sockaddr_in6* src, char* dst, size_t size) {
   return uv_inet_ntop(AF_INET6, &src->sin6_addr, dst, size);
 }
 
 
-int uv_tcp_bind(uv_tcp_t* handle, const struct sockaddr* addr) {
+int uv_tcp_bind(uv_tcp_t* handle,
+                const struct sockaddr* addr,
+                unsigned int flags) {
   unsigned int addrlen;
 
   if (handle->type != UV_TCP)
@@ -204,7 +163,7 @@ int uv_tcp_bind(uv_tcp_t* handle, const struct sockaddr* addr) {
   else
     return UV_EINVAL;
 
-  return uv__tcp_bind(handle, addr, addrlen);
+  return uv__tcp_bind(handle, addr, addrlen, flags);
 }
 
 
@@ -421,7 +380,7 @@ void uv_stop(uv_loop_t* loop) {
 }
 
 
-uint64_t uv_now(uv_loop_t* loop) {
+uint64_t uv_now(const uv_loop_t* loop) {
   return loop->time;
 }
 
@@ -437,6 +396,9 @@ int uv__getaddrinfo_translate_error(int sys_err) {
 #endif
 #if defined(EAI_BADFLAGS)
   case EAI_BADFLAGS: return UV_EAI_BADFLAGS;
+#endif
+#if defined(EAI_BADHINTS)
+  case EAI_BADHINTS: return UV_EAI_BADHINTS;
 #endif
 #if defined(EAI_CANCELED)
   case EAI_CANCELED: return UV_EAI_CANCELED;
@@ -458,6 +420,12 @@ int uv__getaddrinfo_translate_error(int sys_err) {
   case EAI_NONAME: return UV_EAI_NONAME;
 # endif
 #endif
+#if defined(EAI_OVERFLOW)
+  case EAI_OVERFLOW: return UV_EAI_OVERFLOW;
+#endif
+#if defined(EAI_PROTOCOL)
+  case EAI_PROTOCOL: return UV_EAI_PROTOCOL;
+#endif
 #if defined(EAI_SERVICE)
   case EAI_SERVICE: return UV_EAI_SERVICE;
 #endif
@@ -471,4 +439,24 @@ int uv__getaddrinfo_translate_error(int sys_err) {
   assert(!"unknown EAI_* error code");
   abort();
   return 0;  /* Pacify compiler. */
+}
+
+int uv_fs_event_getpath(uv_fs_event_t* handle, char* buf, size_t* len) {
+  size_t required_len;
+
+  if (!uv__is_active(handle)) {
+    *len = 0;
+    return UV_EINVAL;
+  }
+
+  required_len = strlen(handle->path) + 1;
+  if (required_len > *len) {
+    *len = required_len;
+    return UV_ENOBUFS;
+  }
+
+  memcpy(buf, handle->path, required_len);
+  *len = required_len;
+
+  return 0;
 }

@@ -191,7 +191,7 @@ static int uv__work_cancel(uv_loop_t* loop, uv_req_t* req, struct uv__work* w) {
 }
 
 
-void uv__work_done(uv_async_t* handle, int status) {
+void uv__work_done(uv_async_t* handle) {
   struct uv__work* w;
   uv_loop_t* loop;
   QUEUE* q;
@@ -267,6 +267,10 @@ int uv_cancel(uv_req_t* req) {
   case UV_GETADDRINFO:
     loop =  ((uv_getaddrinfo_t*) req)->loop;
     wreq = &((uv_getaddrinfo_t*) req)->work_req;
+    break;
+  case UV_GETNAMEINFO:
+    loop = ((uv_getnameinfo_t*) req)->loop;
+    wreq = &((uv_getnameinfo_t*) req)->work_req;
     break;
   case UV_WORK:
     loop =  ((uv_work_t*) req)->loop;

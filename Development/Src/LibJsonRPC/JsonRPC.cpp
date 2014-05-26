@@ -124,7 +124,7 @@ namespace Zion
 		static void OnConnect(uv_stream_t* server, int status);
 		static void OnClose(uv_handle_t* server);
 		static void ThreadProc(void*);
-		static void QuitEvent(uv_async_t* handle, int status);
+		static void QuitEvent(uv_async_t* handle);
 
 	private:
 		CJsonRPCServerConnection* m_pCurConn;
@@ -652,7 +652,7 @@ namespace Zion
 		}
 		m_server.data = this;
 
-		if(uv_tcp_bind(&m_server, &sa))
+		if(uv_tcp_bind(&m_server, &sa, 0))
 		{
 			ZION_ASSERT(!"uv_tcp_bind failed");
 			uv_loop_delete(m_uv_loop);
@@ -665,14 +665,13 @@ namespace Zion
 			uv_loop_delete(m_uv_loop);
 			return false;
 		}
-
+		uv_async_init(m_uv_loop, &m_uv_quit, CJsonRPCServer::QuitEvent);
 		uv_thread_create(&m_uv_thread, &CJsonRPCServer::ThreadProc, this);
 		return true;
 	}
 
 	void CJsonRPCServer::Stop()
 	{
-		uv_async_init(m_uv_loop, &m_uv_quit, CJsonRPCServer::QuitEvent);
 		uv_async_send(&m_uv_quit);
 		uv_thread_join(&m_uv_thread);
 		uv_loop_delete(m_uv_loop);
@@ -836,12 +835,18 @@ namespace Zion
 		uv_run(pServer->m_uv_loop, UV_RUN_DEFAULT);
 	}
 
-	void CJsonRPCServer::QuitEvent(uv_async_t* handle, int status)
+	void CJsonRPCServer::QuitEvent(uv_async_t* handle)
 	{
 		uv_close((uv_handle_t*)handle, NULL);
 
 		CJsonRPCServer* pServer = (CJsonRPCServer*)((char*)handle - ZION_OFFSETOF(CJsonRPCServer, m_uv_quit));
 		uv_close((uv_handle_t*)&pServer->m_server, &CJsonRPCServer::OnClose);
+
+		Map<_U32, CJsonRPCServerConnection*>::iterator i;
+		for(i=pServer->m_Clients.begin(); i!=pServer->m_Clients.end(); i++)
+		{
+			i->second->Shutdown();
+		}
 	}
 
 	CJsonRPCClient::CJsonRPCClient(struct sockaddr* sa)
@@ -1123,7 +1128,7 @@ namespace Zion
 		}
 	}
 
-	static void on_client_timer(uv_timer_t* handle, int status)
+	static void on_client_timer(uv_timer_t* handle)
 	{
 		CJsonRPCClientManager::Reconnect();
 	}

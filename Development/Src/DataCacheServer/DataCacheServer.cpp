@@ -135,7 +135,7 @@ namespace Zion
 
 		extern _U32 _GetAvatar_Count;
 		extern _U32 _GetAvatar_Error;
-		static void timer_cb(uv_timer_t* handle, int status)
+		static void timer_cb(uv_timer_t* handle)
 		{
 			static _U32 _last_count = 0;
 			static _U32 _last_error = 0;

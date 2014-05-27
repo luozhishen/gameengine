@@ -14,11 +14,7 @@ namespace Zion
 			STATE_RETRY,
 		};
 
-#ifdef ZION_DISABLE_STL_FUNCTION
-		typedef void(*STATE_CALLBACK)(CHttpConnection*, STATE)>;
-#else
-		typedef std::tr1::function<void(CHttpConnection*, STATE)> STATE_CALLBACK;
-#endif
+		typedef std::tr1::function<void(CHttpConnection*, STATE, int errcode)> STATE_CALLBACK;
 
 		CHttpConnection(CClient* pClient);
 		virtual ~CHttpConnection();

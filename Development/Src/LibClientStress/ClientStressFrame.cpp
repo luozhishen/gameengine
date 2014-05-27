@@ -19,8 +19,8 @@
 #include <StressCase.h>
 #include <StressManager.h>
 #include <StressLoader.h>
-#include <StructEditView.h>
 #include <HttpConnection.h>
+#include <StructEditView.h>
 
 #include "ClientStressFrame.h"
 #include "ClientStressApp.h"
@@ -447,15 +447,6 @@ void CClientStressFrame::OnCmdChange(wxCommandEvent& event)
 	m_pCmdHint->SetLabel(wxT("please input"));
 }
 
-static void OnHttpCallback(Zion::CHttpConnection* pHttp, Zion::CHttpConnection::STATE state)
-{
-	if(state==Zion::CHttpConnection::STATE_PAUSE)
-	{
-		wxMessageBox(wxT("Http return failed"));
-		pHttp->Retry();
-	}
-}
-
 void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 {
 	int count = 1;
@@ -484,7 +475,7 @@ void CClientStressFrame::OnAddClient(wxCommandEvent& event)
 		if(pClient->GetClient()->GetClientConnectionType()=="http")
 		{
 			Zion::CHttpConnection* pHttp = (Zion::CHttpConnection*)(pClient->GetClient()->GetClientConnection());
-			pHttp->SetStateCallback(&OnHttpCallback);
+			pHttp->SetStateCallback(std::bind(&CClientStressFrame::NotifyHttpState, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		}
 	}
 }
@@ -674,6 +665,18 @@ void CClientStressFrame::NotifyClientAddCase(_U32 index, Zion::CStressCase* pCas
 	for(int v=0; v<m_nViewCount; v++)
 	{
 		m_pViews[v]->OnNewCase(index, pCase);
+	}
+}
+
+void CClientStressFrame::NotifyHttpState(Zion::CHttpConnection* http, Zion::CHttpConnection::STATE state, int errcode)
+{
+	if(state==Zion::CHttpConnection::STATE_PAUSE)
+	{
+		(http->GetClient()->GetLogCallback())("----pause----");
+	}
+	else
+	{
+		(http->GetClient()->GetLogCallback())("----resume----");
 	}
 }
 

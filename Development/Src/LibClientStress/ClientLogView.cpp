@@ -10,6 +10,8 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <ZionClient.h>
+#include <mosdk.h>
+#include <HttpConnection.h>
 
 #include <StressClient.h>
 #include <StressLoader.h>
@@ -23,11 +25,13 @@ enum
 	ID_CTRL_AUTO,
 	ID_CTRL_CLEAR,
 	ID_CTRL_FLUSH,
+	ID_CTRL_RETRY,
 };
 
 BEGIN_EVENT_TABLE(CClientLogView, CStressFrameView)
 	EVT_CHECKBOX(ID_CTRL_ENABLE, CClientLogView::OnClickEnable)
 	EVT_BUTTON(ID_CTRL_CLEAR, CClientLogView::OnClickClear)
+	EVT_BUTTON(ID_CTRL_RETRY, CClientLogView::OnClickRetry)
 END_EVENT_TABLE()
 
 CClientLogView::CClientLogView(CClientStressFrame* pFrame, wxWindow* pParent) : CStressFrameView(pFrame, pParent, wxT("Client Log"))
@@ -41,6 +45,8 @@ CClientLogView::CClientLogView(CClientStressFrame* pFrame, wxWindow* pParent) : 
 	pSizer1->Add(ZION_NEW wxButton(this, ID_CTRL_CLEAR, wxT("Clear")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 	pSizer1->AddSpacer(5);
 	pSizer1->Add(ZION_NEW wxButton(this, ID_CTRL_FLUSH, wxT("Flush")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	pSizer1->Add(ZION_NEW wxButton(this, ID_CTRL_RETRY, wxT("Retry")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
 	m_pLog = ZION_NEW wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 	pSizer2->Add(pSizer1, 0, wxGROW|wxALIGN_CENTER_VERTICAL);
 	pSizer2->Add(m_pLog, 1, wxGROW|wxALIGN_CENTER_VERTICAL);
@@ -62,6 +68,17 @@ void CClientLogView::OnClickClear(wxCommandEvent& event)
 	if(GetCurrentClient()==-1) return;
 	m_pLog->SetValue(wxT(""));
 	m_Clients[GetCurrentClient()].Clear();
+}
+
+void CClientLogView::OnClickRetry(wxCommandEvent& event)
+{
+	Zion::CStressClient* pClient = GetFrame()->GetStressClient(GetCurrentClient());
+	if(!pClient) return;
+	if(pClient->GetClient()->GetClientConnectionType()=="http")
+	{
+		Zion::CHttpConnection* pHttp = (Zion::CHttpConnection*)(pClient->GetClient()->GetClientConnection());
+		pHttp->Retry();
+	}
 }
 
 void CClientLogView::Append(_U32 index, const char* msg)

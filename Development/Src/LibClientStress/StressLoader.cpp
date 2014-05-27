@@ -8,6 +8,14 @@
 
 #include <ZionBase.h>
 #include <ZionClientApp.h>
+#include <mosdk.h>
+#include <ZionClient.h>
+#include <ZionClientApp.h>
+#include <StressClient.h>
+#include <StressCase.h>
+#include <StressManager.h>
+#include <StressLoader.h>
+#include <HttpConnection.h>
 
 #include "StressLoader.h"
 #include "StressManager.h"

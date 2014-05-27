@@ -193,7 +193,7 @@ int MOClientGetResultCode(MOREQUEST* request)
 	if(pos-result-6>=sizeof(code)) return MOERROR_UNKNOWN;
 	memcpy(code, result+6, pos-result-6);
 	code[pos-result-6] = '\0';
-	return MOError(code);
+	return MOErrorCode(code);
 }
 
 const char* MOClientGetResultString(MOREQUEST* request)

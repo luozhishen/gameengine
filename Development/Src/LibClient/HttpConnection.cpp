@@ -294,7 +294,7 @@ namespace Zion
 				if(m_StateCallback)
 				{
 					m_nHttpState = STATE_PAUSE;
-					m_StateCallback(this, m_nHttpState);
+					m_StateCallback(this, m_nHttpState, MOERROR_NETWORK);
 				}
 				return;
 			}
@@ -308,7 +308,7 @@ namespace Zion
 				if(m_nHttpState==STATE_RETRY)
 				{
 					m_nHttpState = STATE_RUNNING;
-					m_StateCallback(this, m_nHttpState);
+					m_StateCallback(this, m_nHttpState, 0);
 				}
 			}
 			MORequestDestory(m_pCurrentRequest);
@@ -357,26 +357,37 @@ namespace Zion
 		CLIENT_LOG(GetClient(), "recv : %s", MORequestGetResult(request));
 
 		int ret = MOClientGetResultCode(request);
-		if(ret!=MOERROR_NOERROR)
+		if(ret==MOERROR_NOERROR)
 		{
-			return ret;
+			const char* result = MOClientGetResultString(request);
+			if(*result=='\0')
+			{
+				return MOERROR_NOERROR;
+			}
+
+			Json::Value root;
+			Json::Reader reader;
+			if(reader.parse(result, result + strlen(result), root) || !root.isArray())
+			{
+				return ProcessRequest(root);
+			}
+			else
+			{
+				CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
+				ret = MOERROR_INVALID_DATA;
+			}
 		}
 
-		const char* result = MOClientGetResultString(request);
-		if(*result=='\0')
+		if(ret!=MOERROR_TRY_AGAIN)
 		{
-			return MOERROR_NOERROR;
+			if(m_StateCallback)
+			{
+				m_nHttpState = STATE_PAUSE;
+				m_StateCallback(this, m_nHttpState, ret);
+			}
 		}
 
-		Json::Value root;
-		Json::Reader reader;
-		if(!reader.parse(result, result + strlen(result), root) || !root.isArray())
-		{
-			CLIENT_LOG(GetClient(), "http_connection : invalid json, %s", result);
-			return MOERROR_UNKNOWN;
-		}
-
-		return ProcessRequest(root);
+		return ret;
 	}
 
 	int CHttpConnection::ProcessRequest(Json::Value& _array)

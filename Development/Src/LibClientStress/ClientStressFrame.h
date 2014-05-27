@@ -85,6 +85,7 @@ public:
 
 	void NotifyClientAdd(_U32 index);
 	void NotifyClientAddCase(_U32 index, Zion::CStressCase* pCase);
+	void NotifyHttpState(Zion::CHttpConnection* http, Zion::CHttpConnection::STATE state, int errcode);
 
 protected:
 	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Zion::String& json);

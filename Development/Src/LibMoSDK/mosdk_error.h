@@ -1,8 +1,6 @@
 #ifndef __MOSDK_ERROR_INCLUDE__
 #define __MOSDK_ERROR_INCLUDE__
 
-#define MOERROR_PENDING						-2
-#define MOERROR_NETWORK						-1
 #define MOERROR_NOERROR						0
 #define MOERROR_UNKNOWN						1
 #define MOERROR_INVALID_PARAMETER			2
@@ -14,7 +12,11 @@
 #define MOERROR_NOT_EXISTED					8
 #define MOERROR_UNDEFINE_METHOD				9
 #define MOERROR_TRY_AGAIN					10
+#define MOERROR_INVALID_DATA				11
+#define MOERROR_NETWORK						12
+#define MOERROR_PENDING						13
 
-int MOError(const char* str);
+int MOErrorCode(const char* str);
+const char * MOErrorString(int code);
 
 #endif // __MOSDK_ERROR_INCLUDE__

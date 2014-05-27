@@ -51,6 +51,7 @@ public:
 
 	void OnClickEnable(wxCommandEvent& event);
 	void OnClickClear(wxCommandEvent& event);
+	void OnClickRetry(wxCommandEvent& event);
 	void Append(_U32 index, const char* msg);
 
 	virtual void OnSwitchTo(_U32 index);

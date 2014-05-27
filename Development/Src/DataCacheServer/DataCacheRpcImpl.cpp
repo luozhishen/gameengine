@@ -27,7 +27,7 @@ namespace Zion
 			CAvatarData(_U32 avatar_id);
 			~CAvatarData();
 
-			bool CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty);
+			bool CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new);
 			bool UpdateObject(const A_UUID& _uuid, const char* data);
 			bool DeleteObject(const A_UUID& _uuid);
 			bool ExistObject(const A_UUID& _uuid);
@@ -149,7 +149,7 @@ namespace Zion
 		{
 		}
 
-		bool CAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new, bool is_dirty)
+		bool CAvatarData::CreateObject(const A_UUID& _uuid, const char* type, const char* data, bool is_new)
 		{
 			if(m_Objects.find(_uuid)!=m_Objects.end())
 			{
@@ -157,7 +157,7 @@ namespace Zion
 				return false;
 			}
 
-			OBJECT_DATA od = { _uuid, type, data, is_dirty, is_new };
+			OBJECT_DATA od = { _uuid, type, data, false, is_new };
 			m_Objects[_uuid] = od;
 			m_Version += 1;
 			return true;
@@ -233,7 +233,7 @@ namespace Zion
 
 		static bool db_load_callback(void* userptr, const A_UUID& _uuid, const char* type, const char* data)
 		{
-			((CAvatarData*)userptr)->CreateObject(_uuid, type, data, false, false);
+			((CAvatarData*)userptr)->CreateObject(_uuid, type, data, false);
 			return true;
 		}
 
@@ -292,13 +292,10 @@ namespace Zion
 					}
 				}
 				
-				FreeDatabase(db);
+				if(!rdb) FreeDatabase(db);
 				return true;
 			}
-			if(db && !rdb)
-			{
-				FreeDatabase(db);
-			}
+			if(!rdb) FreeDatabase(db);
 			return false;
 		}
 
@@ -450,7 +447,7 @@ namespace Zion
 				return;
 			}
 
-			if(pAvatar->CreateObject(_uuid, type, data, false, true))
+			if(pAvatar->CreateObject(_uuid, type, data, true))
 			{
 				JsonRPC_Send(StringFormat("[0,%u]", pAvatar->GetVersion()).c_str());
 				UnlockAvatar(pAvatar);
@@ -588,7 +585,7 @@ namespace Zion
 				switch(tasks[i]._task_type)
 				{
 				case TASK_CREATE_OBJECT:
-					no_error = pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true, true);
+					no_error = pAvatar->CreateObject(tasks[i]._obj_uuid, tasks[i]._obj_type.c_str(), tasks[i]._obj_data.c_str(), true);
 					break;
 				case TASK_DELETE_OBJECT:
 					no_error = pAvatar->DeleteObject(tasks[i]._obj_uuid);
@@ -679,7 +676,10 @@ namespace Zion
 			{
 				CAvatarData* data = g_avatar_manager.Lock(i);
 				if(!data) continue;
-
+				if(data->IsDirty())
+				{
+					data->Save();
+				}
 				RemoveAvatar(data);
 				ZION_DELETE data;
 			}

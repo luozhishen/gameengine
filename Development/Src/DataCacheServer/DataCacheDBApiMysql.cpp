@@ -156,12 +156,12 @@ namespace Zion
 
 		bool CMysqlDBApi::RollbackTransaction()
 		{
-			return mysql_real_query(m_mysql, "Commit ;", 8)==0;
+			return mysql_real_query(m_mysql, "Rollback ;", 10)==0;
 		}
 
 		bool CMysqlDBApi::CommitTransaction()
 		{
-			return mysql_real_query(m_mysql, "Rollback ;", 10)==0;
+			return mysql_real_query(m_mysql, "Commit ;", 8)==0;
 		}
 
 		_U32 CMysqlDBApi::CreateAvatar(_U32 user_id, _U32 avatar_scope, const char* avatar_name, const char* avatar_desc)

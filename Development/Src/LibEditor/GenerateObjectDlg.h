@@ -10,7 +10,6 @@ public:
 	CGenerateObjectDlg();
 	virtual ~CGenerateObjectDlg();
 
-	void InitCombox();
 	wxString GetName();
 	wxString GetType();
 

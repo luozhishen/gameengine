@@ -354,8 +354,6 @@ namespace Zion
 
 	int CHttpConnection::ProcessRequest(MOREQUEST* request)
 	{
-		CLIENT_LOG(GetClient(), "recv : %s", MORequestGetResult(request));
-
 		int ret = MOClientGetResultCode(request);
 		if(ret==MOERROR_NOERROR)
 		{
@@ -387,6 +385,8 @@ namespace Zion
 			}
 		}
 
+		CLIENT_LOG(GetClient(), "recv : %s", MORequestGetResult(request));
+		CLIENT_LOG(GetClient(), "error = %s", MOErrorString(ret));
 		return ret;
 	}
 

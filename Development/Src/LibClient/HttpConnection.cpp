@@ -404,7 +404,7 @@ namespace Zion
 			{
 				Json::FastWriter writer;
 				String json = writer.write(elm);
-				CLIENT_LOG(GetClient(), "http_connection : invalid data");
+				CLIENT_LOG(GetClient(), "ProcessRequest : invalid data : %s", json.c_str());
 				break;
 			}
 
@@ -412,7 +412,7 @@ namespace Zion
 			_U16 fid;
 			if(!GetClientFunctionStub(elm["method"].asCString(), cls, fid))
 			{
-				CLIENT_LOG(GetClient(), "http_connection : invalid method name");
+				CLIENT_LOG(GetClient(), "ProcessRequest : invalid method name : %s", elm["method"].asCString());
 				break;
 			}
 
@@ -421,8 +421,8 @@ namespace Zion
 			if(!DDLReflect::Json2Call(&cls->finfos[fid], elm["args"], len, data))
 			{
 				Json::FastWriter writer;
-				String json = writer.write(elm["args"]);
-				CLIENT_LOG(GetClient(), "http_connection : invalid method data");
+				String json = writer.write(elm);
+				CLIENT_LOG(GetClient(), "ProcessRequest : invalid method data : %s", json.c_str());
 				ZION_FREE(data);
 				break;
 			}

@@ -235,17 +235,20 @@ namespace Zion
 
 			// step 8: process exit
 			printf("exit.\n");
-			if(!_db_logfile)
+			if(_db_logfile)
 			{
 				fclose(_db_logfile);
+				_db_logfile = NULL;
 			}
-			if(!_rpc_logfile)
+			if(_rpc_logfile)
 			{
 				fclose(_rpc_logfile);
+				_rpc_logfile = NULL;
 			}
-			if(!_rpc_replay)
+			if(_rpc_replay)
 			{
 				fclose(_rpc_replay);
+				_rpc_replay = NULL;
 			}
 			return 0;
 		}

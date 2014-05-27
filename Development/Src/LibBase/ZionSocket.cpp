@@ -100,11 +100,6 @@ void sock_default_tcp_option(ASOCK_TCP_OPTION* option)
 {
 	option->recvbuf				= -1;
 	option->sndbuf				= -1;
-	option->keepalive			= -1;
-	option->keepalive_probes	= -1;
-	option->keepalive_time		= -1;
-	option->keepalive_intvl		= -1;
-	option->linger				= -1;
 }
 
 void sock_default_udp_option(ASOCK_UDP_OPTION* option)
@@ -141,46 +136,6 @@ int sock_set_tcp_option(ASOCK_HANDLE handle, const ASOCK_TCP_OPTION* option)
 	if(option->sndbuf!=-1) {
 		setsockopt(handle, SOL_SOCKET, SO_SNDBUF, (const char *)&option->sndbuf, sizeof(option->sndbuf));
 	}
-#ifndef _WIN32
-	if(option->keepalive!=-1) {
-		setsockopt(handle, SOL_SOCKET, SO_KEEPALIVE, (const char *)&option->keepalive, sizeof(option->keepalive));
-	}
-	if(option->keepalive_probes!=-1) {
-		setsockopt(handle, SOL_TCP, TCP_KEEPCNT, (const char *)&option->keepalive_probes, sizeof(option->keepalive_probes));
-	}
-	if(option->keepalive_time!=-1) {
-		setsockopt(handle, SOL_TCP, TCP_KEEPIDLE, (const char *)&option->keepalive_time, sizeof(option->keepalive_time));
-	}
-	if(option->keepalive_intvl!=-1) {
-		setsockopt(handle, SOL_TCP, TCP_KEEPINTVL, (const char *)&option->keepalive_intvl, sizeof(option->keepalive_intvl));
-	}
-#else
-	struct tcp_keepalive alive;
-	DWORD dwBytesRet;
-	WSAIoctl(handle, SIO_KEEPALIVE_VALS, NULL, 0, &alive, sizeof(alive), &dwBytesRet, NULL, NULL);
-	if(option->keepalive!=-1) {
-		alive.onoff = (option->keepalive==0?0:1);
-	}
-/*
-	if(option->keepalive_probes!=-1) {
-		setsockopt(handle, SOL_TCP, TCP_KEEPCNT, (const char *)&option->keepalive_probes, sizeof(option->keepalive_probes));
-	}
-*/
-	if(option->keepalive_time!=-1) {
-		alive.keepalivetime = option->keepalive_time;
-	}
-	if(option->keepalive_intvl!=-1) {
-		alive.keepalivetime = option->keepalive_intvl;
-	}
-	WSAIoctl(handle, SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
-#endif
-
-/*	if(option->linger!=-1) {
-		LINGER linger;
-		linger.l_onoff = 1;
-		linger.l_linger = option->linger;
-		setsockopt(handle, SOL_SOCKET, SO_LINGER, (const char *)&linger, sizeof(linger));
-	}*/
 	return 0;
 }
 

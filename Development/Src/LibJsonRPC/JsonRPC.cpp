@@ -16,7 +16,8 @@
 #define STATE_CONNECTING		((_U32)0x01)
 #define STATE_CONNECTED			((_U32)0x02)
 #define STATE_SHUTDOWNING		((_U32)0x04)
-#define STATE_SHUTDOWN			((_U32)0x08)
+#define STATE_CLOSEING			((_U32)0x08)
+#define STATE_CLOSED			((_U32)0x10)
 
 namespace Zion
 {
@@ -482,6 +483,7 @@ namespace Zion
 			{
 				ZION_ASSERT(0);
 			}
+
 		}
 	}
 
@@ -513,8 +515,11 @@ namespace Zion
 
 		if(nread<0)
 		{
-			pConn->m_state = STATE_SHUTDOWNING;
-			uv_close((uv_handle_t*)pConn->m_stream, &CJsonRPCConnection::OnClose);
+			if(pConn->m_state==STATE_CONNECTED)
+			{
+				pConn->m_state = STATE_CLOSEING;
+				uv_close((uv_handle_t*)pConn->m_stream, &CJsonRPCConnection::OnClose);
+			}
 			return;
 		}
 
@@ -561,14 +566,18 @@ namespace Zion
 	void CJsonRPCConnection::OnShutdown(uv_shutdown_t* req, int status)
 	{
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)req->data;
-//		pConn->Shutdown();
+		if(pConn->m_state==STATE_SHUTDOWNING)
+		{
+			pConn->m_state = STATE_CLOSEING;
+			uv_close((uv_handle_t*)pConn->m_stream, &CJsonRPCConnection::OnClose);
+		}
 	}
 
 	void CJsonRPCConnection::OnClose(uv_handle_t* handle)
 	{
 		CJsonRPCConnection* pConn = (CJsonRPCConnection*)handle->data;
 		pConn->m_stream = NULL;
-		pConn->m_state = STATE_SHUTDOWN;
+		pConn->m_state = STATE_CLOSED;
 		pConn->OnDisconnect();
 	}
 	

@@ -10,6 +10,8 @@
 #include <ZionCommon.h>
 #include <ZionClient.h>
 #include <ZionClientApp.h>
+#include <mosdk.h>
+#include <HttpConnection.h>
 
 #include <StressClient.h>
 #include <StressLoader.h>

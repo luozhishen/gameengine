@@ -25,7 +25,6 @@
     <ClCompile Include="ClientLogView.cpp" />
     <ClCompile Include="ClientStressApp.cpp" />
     <ClCompile Include="ClientStressFrame.cpp" />
-    <ClCompile Include="CmdHistory.cpp" />
     <ClCompile Include="ProtocalDlg.cpp" />
     <ClCompile Include="ServerParamDlg.cpp" />
     <ClCompile Include="StressCase.cpp" />
@@ -43,7 +42,6 @@
     <ClInclude Include="ClientLogView.h" />
     <ClInclude Include="ClientStressApp.h" />
     <ClInclude Include="ClientStressFrame.h" />
-    <ClInclude Include="CmdHistory.h" />
     <ClInclude Include="ProtocalDlg.h" />
     <ClInclude Include="ServerParamDlg.h" />
     <ClInclude Include="StressCase.h" />

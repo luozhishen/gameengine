@@ -12,13 +12,13 @@
 
 #include <ZionBase.h>
 #include <ZionCommon.h>
-#include <mosdk.h>
 #include <ZionClient.h>
 #include <ZionClientApp.h>
 #include <StressClient.h>
 #include <StressCase.h>
 #include <StressManager.h>
 #include <StressLoader.h>
+#include <mosdk.h>
 #include <HttpConnection.h>
 #include <StructEditView.h>
 
@@ -29,14 +29,11 @@
 #include "StressViewDlg.h"
 #include "ServerParamDlg.h"
 
-#include "CmdHistory.h"
-
 enum
 {
 	ID_QUIT = wxID_HIGHEST + 1,
 	ID_ABOUT,
 	ID_DEBUG_ENABLE,
-	ID_AUTO_RETRY,
 	ID_PROTOCAL,
 	ID_DOCMD,
 	ID_CMDTEXT,
@@ -58,7 +55,6 @@ enum
 
 BEGIN_EVENT_TABLE(CClientStressFrame, wxFrame)
 	EVT_CHECKBOX(ID_DEBUG_ENABLE,	CClientStressFrame::OnDebugEnable)
-	EVT_CHECKBOX(ID_AUTO_RETRY,		CClientStressFrame::OnAutoRetry)
 	EVT_MENU(ID_PROTOCAL,			CClientStressFrame::OnProtocal)
 	EVT_MENU(ID_QUIT,				CClientStressFrame::OnQuit)
 	EVT_MENU(ID_ABOUT,				CClientStressFrame::OnAbout)
@@ -94,8 +90,6 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 	m_nViewCount = 0;
 	m_Timer.SetOwner(this, ID_TIMER);
 
-	m_pCmdHistory = ZION_NEW Zion::CmdHistory(Zion::GetHomeDirectory());
-
 	// create client
 	InitClient();
 	
@@ -127,10 +121,14 @@ CClientStressFrame::CClientStressFrame() : wxFrame(NULL, wxID_ANY, wxT("Client S
 
 	MOEnableDebug(false);
 	m_Timer.Start(100);
+
+	LoadCmdHistory();
 }
 
 CClientStressFrame::~CClientStressFrame()
 {
+	SaveCmdHistory();
+
 	Zion::CStressManager::Get().DisconnectAll();
 
 	wxConfigBase *pConfig = wxConfigBase::Get();
@@ -142,12 +140,6 @@ CClientStressFrame::~CClientStressFrame()
 		pConfig->Write(wxT("w"), (long)m_FrameData.w);
 		pConfig->Write(wxT("h"), (long)m_FrameData.h);
 		pConfig->Write(wxT("m"), (long)m_FrameData.m);
-	}
-
-	if(m_pCmdHistory)
-	{
-		delete m_pCmdHistory;
-		m_pCmdHistory = NULL;
 	}
 }
 
@@ -208,8 +200,6 @@ void CClientStressFrame::InitToolBar()
 	pToolBar->AddTool(ID_RELOAD_TEMPLATE,wxT("Reload Stress Template"),	bmpScriptRun,	wxT("Reload stress template from json"));
 	m_pEnableXDebug = ZION_NEW wxCheckBox(pToolBar, ID_DEBUG_ENABLE, wxT("Enable XDebug"));
 	pToolBar->AddControl(m_pEnableXDebug);
-	m_pAutoRetry = ZION_NEW wxCheckBox(pToolBar, ID_AUTO_RETRY, wxT("Auto Retry"));
-	pToolBar->AddControl(m_pAutoRetry);
 
 	pToolBar->Realize();
 }
@@ -226,12 +216,6 @@ void CClientStressFrame::InitClient()
 	m_pTabView = ZION_NEW wxNotebook(pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
 	wxBoxSizer* pSizer2 = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	m_pCmdText = ZION_NEW wxComboBox( pPanel, ID_CMDTEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER|wxCB_DROPDOWN|wxCB_SORT);
-	int n = m_pCmdHistory->GetHistoryNum();
-	Zion::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
-	for(int i = 0; i < n; ++i)
-	{
-		m_pCmdText->Append(wxString::FromUTF8(cmds[i].c_str()));
-	}
 	m_pCmdButton = ZION_NEW wxButton( pPanel, ID_DOCMD, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
     pSizer2->Add(m_pCmdText, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxUP|wxDOWN, 5 );
     pSizer2->Add(m_pCmdButton, 0, wxALIGN_CENTER|wxALL, 5 );
@@ -259,10 +243,6 @@ void CClientStressFrame::OnDebugEnable(wxCommandEvent& event)
 	{
 		MOEnableDebug(false);
 	}
-}
-
-void CClientStressFrame::OnAutoRetry(wxCommandEvent& event)
-{
 }
 
 void CClientStressFrame::OnProtocal(wxCommandEvent& event)
@@ -406,15 +386,9 @@ void CClientStressFrame::OnDoCmd(wxCommandEvent& event)
 					wxString val;
 					val = wxString::FromUTF8(_info->name) + wxString::FromUTF8(".") + wxString::FromUTF8(_info->finfos[_fid].name) + wxString::FromUTF8(" ") + wxString::FromUTF8(data.c_str());
 					val = val.Trim().Trim(false);
-					Zion::String line = (const char*)val.ToUTF8();
-					m_pCmdHistory->AddCmd(line);
-					m_pCmdText->Clear();
-					int n = m_pCmdHistory->GetHistoryNum();
-					Zion::CmdHistory::CMD_SET& cmds = m_pCmdHistory->GetHistorySet();
-					for(int i = 0; i < n; ++i)
+					if(AddCmdHistory(val))
 					{
-						wxString tmp(cmds[i].c_str(), wxMBConvUTF8());
-						m_pCmdText->AppendString(tmp);
+						FlushCmdHistory();
 					}
 					m_pCmdText->SetValue(val);
 					m_pCmdText->SelectAll();
@@ -725,4 +699,60 @@ bool CClientStressFrame::LoadStressTemplate()
 	}
 
 	return true;
+}
+
+#include <fstream>
+
+void CClientStressFrame::LoadCmdHistory()
+{
+	Zion::String path = Zion::StringFormat("%s%s", Zion::GetHomeDirectory(), "/Config/StressHistory.txt");
+	std::ifstream ifs;
+	ifs.open(path.c_str(), std::ios_base::app|std::ios_base::in);
+	if(ifs.is_open())
+	{
+
+		Zion::String line;
+		while(getline(ifs, line))
+		{
+			line = Zion::StringTrim(line);
+			if(line.empty()) continue;
+			m_CmdHistory.push_back(wxString::FromUTF8(line.c_str()));
+		}
+		ifs.close();
+	}
+}
+
+void CClientStressFrame::SaveCmdHistory()
+{
+	Zion::String path = Zion::StringFormat("%s%s", Zion::GetHomeDirectory(), "/Config/StressHistory.txt");
+	std::ofstream ofs;
+	ofs.open(path.c_str(), std::ios_base::out|std::ios_base::trunc);
+	if(ofs.is_open())
+	{
+		for(size_t i=0; i<m_CmdHistory.size(); i++)
+		{
+			ofs<<m_CmdHistory[i].ToUTF8()<<"\n";
+		}
+		ofs.close();
+	}
+}
+
+bool CClientStressFrame::AddCmdHistory(const wxString& cmd)
+{
+	for(size_t i=0; i<m_CmdHistory.size(); i++)
+	{
+		if(m_CmdHistory[i]==cmd) return false;
+	}
+	m_CmdHistory.push_back(cmd);
+	return true;
+}
+
+void CClientStressFrame::FlushCmdHistory()
+{
+	m_pCmdText->Clear();
+	for(size_t i=m_CmdHistory.size(); i>0; i--)
+	{
+		m_pCmdText->Append(m_CmdHistory[i-1]);
+	}
+	SaveCmdHistory();
 }

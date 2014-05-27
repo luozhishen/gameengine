@@ -6,7 +6,6 @@ namespace Zion
 	class CStressClient;
 	class CStressManager;
 	class CStressCase;
-	class CmdHistory;
 }
 
 class CClientStressFrame;
@@ -55,7 +54,6 @@ public:
 	void InitClient();
 
 	void OnDebugEnable(wxCommandEvent& event);
-	void OnAutoRetry(wxCommandEvent& event);
 	void OnProtocal(wxCommandEvent& event);
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
@@ -91,6 +89,11 @@ protected:
 	bool ProcessJsonCommand(const DDLReflect::CLASS_INFO* classinfo, _U16 fid, const Zion::String& json);
 	bool LoadStressTemplate();
 
+	void LoadCmdHistory();
+	void SaveCmdHistory();
+	bool AddCmdHistory(const wxString& cmd);
+	void FlushCmdHistory();
+
 private:
 	wxComboBox*				m_pCase;
 	wxNotebook*				m_pTabView;
@@ -100,7 +103,6 @@ private:
 	wxButton*				m_pCmdButton;
 	wxStaticText*			m_pCmdHint;
 	wxCheckBox*				m_pEnableXDebug;
-	wxCheckBox*				m_pAutoRetry;
 	wxTimer					m_Timer;
 	
 	struct
@@ -110,11 +112,9 @@ private:
 
 	CStressFrameView*		m_pViews[100];
 	int						m_nViewCount;
-
 	_U32					m_nCurrentIndex;
-
-	Zion::CmdHistory*		m_pCmdHistory;
 	Zion::CStressLoader		m_StressLoader;
+	Zion::Array<wxString>	m_CmdHistory;
 };
 
 #endif

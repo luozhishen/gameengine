@@ -49,8 +49,9 @@ public:
 	CClientLogView(CClientStressFrame* pFrame, wxWindow* pParent);
 	virtual ~CClientLogView();
 
-	void OnClickEnable(wxCommandEvent& event);
+	void OnClickLockScreen(wxCommandEvent& event);
 	void OnClickClear(wxCommandEvent& event);
+	void OnClickFlush(wxCommandEvent& event);
 	void OnClickRetry(wxCommandEvent& event);
 	void Append(_U32 index, const char* msg);
 
@@ -65,8 +66,7 @@ public:
 	void OnLogMessage(_U32 index, const char* msg);
 
 private:
-	wxCheckBox*			m_pEnable;
-	wxCheckBox*			m_pAutoReflush;
+	wxCheckBox*			m_pLockScreen;
 	wxTextCtrl*			m_pLog;
 	Zion::Map<_U32, CClientLogItem> m_Clients;
 };

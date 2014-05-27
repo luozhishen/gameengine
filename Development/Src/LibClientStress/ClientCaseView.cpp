@@ -11,6 +11,8 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
 #include <ZionClient.h>
+#include <mosdk.h>
+#include <HttpConnection.h>
 
 #include <wx/listctrl.h>
 #include <wx/wxchar.h>

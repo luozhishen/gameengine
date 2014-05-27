@@ -14,10 +14,9 @@ namespace Zion
 			CLogin();
 			virtual ~CLogin();
 
-			virtual void OnTick();
-
 			virtual void OnAttach();
 			virtual void OnDetach();
+			virtual void OnTick();
 
 			void OnLoginFailed();
 			void OnLoginDone();

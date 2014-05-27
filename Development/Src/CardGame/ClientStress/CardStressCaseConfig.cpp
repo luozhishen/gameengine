@@ -8,19 +8,17 @@
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<STRESSCASE_ECHO_CONFIG>(STRESSCASE_ECHO_CONFIG& Value)
+	bool BufferReader::Read<STRESSCASE_ENTERGAME_CONFIG>(STRESSCASE_ENTERGAME_CONFIG& Value)
 	{
-		if(!Read<_U32>(Value.reset_time)) return false;
-		if(!Read<_U32>(Value.retry_time)) return false;
-		if(!Read<_U32>(Value.disconnect_time)) return false;
+		if(!Read<_U32>(Value.server_id)) return false;
+		if(!ReadString<100>(Value.avatar_name)) return false;
 		return true;
 	}
 	template<>
-	bool BufferWriter::Write<STRESSCASE_ECHO_CONFIG>(const STRESSCASE_ECHO_CONFIG& Value)
+	bool BufferWriter::Write<STRESSCASE_ENTERGAME_CONFIG>(const STRESSCASE_ENTERGAME_CONFIG& Value)
 	{
-		if(!Write<_U32>(Value.reset_time)) return false;
-		if(!Write<_U32>(Value.retry_time)) return false;
-		if(!Write<_U32>(Value.disconnect_time)) return false;
+		if(!Write<_U32>(Value.server_id)) return false;
+		if(!WriteString<100>(Value.avatar_name)) return false;
 		return true;
 	}
 }
@@ -28,44 +26,43 @@ namespace DDL
 namespace DDLReflect
 {
 
-	static bool _struct_STRESSCASE_ECHO_CONFIG_readproc(DDL::BufferReader& buf, void* data)
+	static bool _struct_STRESSCASE_ENTERGAME_CONFIG_readproc(DDL::BufferReader& buf, void* data)
 	{
-		return buf.Read<STRESSCASE_ECHO_CONFIG>(*((STRESSCASE_ECHO_CONFIG*)data));
+		return buf.Read<STRESSCASE_ENTERGAME_CONFIG>(*((STRESSCASE_ENTERGAME_CONFIG*)data));
 	}
 
-	static bool _struct_STRESSCASE_ECHO_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
+	static bool _struct_STRESSCASE_ENTERGAME_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
 	{
-		return buf.Write<STRESSCASE_ECHO_CONFIG>(*((const STRESSCASE_ECHO_CONFIG*)data));
+		return buf.Write<STRESSCASE_ENTERGAME_CONFIG>(*((const STRESSCASE_ENTERGAME_CONFIG*)data));
 	}
 
-	static FIELD_INFO _struct_STRESSCASE_ECHO_CONFIG_fieldinfo[] =
+	static FIELD_INFO _struct_STRESSCASE_ENTERGAME_CONFIG_fieldinfo[] =
 	{
-		{TYPE_U32, "reset_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ECHO_CONFIG, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "retry_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ECHO_CONFIG, retry_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "disconnect_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ECHO_CONFIG, disconnect_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "server_id", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ENTERGAME_CONFIG, server_id), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_STRING, "avatar_name", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ENTERGAME_CONFIG, avatar_name), NULL, (_U16)100, (_U16)-1, (_U16)0, (_U16)sizeof(DDL::String<100>), NULL},
 	};
-	STRUCT_INFO _rfl_struct_STRESSCASE_ECHO_CONFIG_info = { NULL, "STRESSCASE_ECHO_CONFIG", sizeof(STRESSCASE_ECHO_CONFIG), 3, _struct_STRESSCASE_ECHO_CONFIG_fieldinfo, _struct_STRESSCASE_ECHO_CONFIG_readproc, _struct_STRESSCASE_ECHO_CONFIG_writeproc };
+	STRUCT_INFO _rfl_struct_STRESSCASE_ENTERGAME_CONFIG_info = { NULL, "STRESSCASE_ENTERGAME_CONFIG", sizeof(STRESSCASE_ENTERGAME_CONFIG), 2, _struct_STRESSCASE_ENTERGAME_CONFIG_fieldinfo, _struct_STRESSCASE_ENTERGAME_CONFIG_readproc, _struct_STRESSCASE_ENTERGAME_CONFIG_writeproc };
 	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ECHO_CONFIG>()
+	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERGAME_CONFIG>()
 	{
-		return &_rfl_struct_STRESSCASE_ECHO_CONFIG_info;
+		return &_rfl_struct_STRESSCASE_ENTERGAME_CONFIG_info;
 	}
 }
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<STRESSCASE_ECHO_STATUS>(STRESSCASE_ECHO_STATUS& Value)
+	bool BufferReader::Read<STRESSCASE_ENTERGAME_STATUS>(STRESSCASE_ENTERGAME_STATUS& Value)
 	{
 		if(!Read<_U32>(Value.failed_times)) return false;
-		if(!Read<_U32>(Value.sucess_time)) return false;
+		if(!Read<_U32>(Value.sucess_times)) return false;
 		return true;
 	}
 	template<>
-	bool BufferWriter::Write<STRESSCASE_ECHO_STATUS>(const STRESSCASE_ECHO_STATUS& Value)
+	bool BufferWriter::Write<STRESSCASE_ENTERGAME_STATUS>(const STRESSCASE_ENTERGAME_STATUS& Value)
 	{
 		if(!Write<_U32>(Value.failed_times)) return false;
-		if(!Write<_U32>(Value.sucess_time)) return false;
+		if(!Write<_U32>(Value.sucess_times)) return false;
 		return true;
 	}
 }
@@ -73,108 +70,26 @@ namespace DDL
 namespace DDLReflect
 {
 
-	static bool _struct_STRESSCASE_ECHO_STATUS_readproc(DDL::BufferReader& buf, void* data)
+	static bool _struct_STRESSCASE_ENTERGAME_STATUS_readproc(DDL::BufferReader& buf, void* data)
 	{
-		return buf.Read<STRESSCASE_ECHO_STATUS>(*((STRESSCASE_ECHO_STATUS*)data));
+		return buf.Read<STRESSCASE_ENTERGAME_STATUS>(*((STRESSCASE_ENTERGAME_STATUS*)data));
 	}
 
-	static bool _struct_STRESSCASE_ECHO_STATUS_writeproc(DDL::BufferWriter& buf, const void* data)
+	static bool _struct_STRESSCASE_ENTERGAME_STATUS_writeproc(DDL::BufferWriter& buf, const void* data)
 	{
-		return buf.Write<STRESSCASE_ECHO_STATUS>(*((const STRESSCASE_ECHO_STATUS*)data));
+		return buf.Write<STRESSCASE_ENTERGAME_STATUS>(*((const STRESSCASE_ENTERGAME_STATUS*)data));
 	}
 
-	static FIELD_INFO _struct_STRESSCASE_ECHO_STATUS_fieldinfo[] =
+	static FIELD_INFO _struct_STRESSCASE_ENTERGAME_STATUS_fieldinfo[] =
 	{
-		{TYPE_U32, "failed_times", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ECHO_STATUS, failed_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-		{TYPE_U32, "sucess_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ECHO_STATUS, sucess_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "failed_times", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ENTERGAME_STATUS, failed_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
+		{TYPE_U32, "sucess_times", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ENTERGAME_STATUS, sucess_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
 	};
-	STRUCT_INFO _rfl_struct_STRESSCASE_ECHO_STATUS_info = { NULL, "STRESSCASE_ECHO_STATUS", sizeof(STRESSCASE_ECHO_STATUS), 2, _struct_STRESSCASE_ECHO_STATUS_fieldinfo, _struct_STRESSCASE_ECHO_STATUS_readproc, _struct_STRESSCASE_ECHO_STATUS_writeproc };
+	STRUCT_INFO _rfl_struct_STRESSCASE_ENTERGAME_STATUS_info = { NULL, "STRESSCASE_ENTERGAME_STATUS", sizeof(STRESSCASE_ENTERGAME_STATUS), 2, _struct_STRESSCASE_ENTERGAME_STATUS_fieldinfo, _struct_STRESSCASE_ENTERGAME_STATUS_readproc, _struct_STRESSCASE_ENTERGAME_STATUS_writeproc };
 	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ECHO_STATUS>()
+	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERGAME_STATUS>()
 	{
-		return &_rfl_struct_STRESSCASE_ECHO_STATUS_info;
-	}
-}
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<STRESSCASE_ENTERSERVER_CONFIG>(STRESSCASE_ENTERSERVER_CONFIG& Value)
-	{
-		if(!Read<_U32>(Value.reset_time)) return false;
-		return true;
-	}
-	template<>
-	bool BufferWriter::Write<STRESSCASE_ENTERSERVER_CONFIG>(const STRESSCASE_ENTERSERVER_CONFIG& Value)
-	{
-		if(!Write<_U32>(Value.reset_time)) return false;
-		return true;
-	}
-}
-
-namespace DDLReflect
-{
-
-	static bool _struct_STRESSCASE_ENTERSERVER_CONFIG_readproc(DDL::BufferReader& buf, void* data)
-	{
-		return buf.Read<STRESSCASE_ENTERSERVER_CONFIG>(*((STRESSCASE_ENTERSERVER_CONFIG*)data));
-	}
-
-	static bool _struct_STRESSCASE_ENTERSERVER_CONFIG_writeproc(DDL::BufferWriter& buf, const void* data)
-	{
-		return buf.Write<STRESSCASE_ENTERSERVER_CONFIG>(*((const STRESSCASE_ENTERSERVER_CONFIG*)data));
-	}
-
-	static FIELD_INFO _struct_STRESSCASE_ENTERSERVER_CONFIG_fieldinfo[] =
-	{
-		{TYPE_U32, "reset_time", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ENTERSERVER_CONFIG, reset_time), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-	};
-	STRUCT_INFO _rfl_struct_STRESSCASE_ENTERSERVER_CONFIG_info = { NULL, "STRESSCASE_ENTERSERVER_CONFIG", sizeof(STRESSCASE_ENTERSERVER_CONFIG), 1, _struct_STRESSCASE_ENTERSERVER_CONFIG_fieldinfo, _struct_STRESSCASE_ENTERSERVER_CONFIG_readproc, _struct_STRESSCASE_ENTERSERVER_CONFIG_writeproc };
-	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERSERVER_CONFIG>()
-	{
-		return &_rfl_struct_STRESSCASE_ENTERSERVER_CONFIG_info;
-	}
-}
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<STRESSCASE_ENTERSERVER_STATUS>(STRESSCASE_ENTERSERVER_STATUS& Value)
-	{
-		if(!Read<_U32>(Value.failed_times)) return false;
-		return true;
-	}
-	template<>
-	bool BufferWriter::Write<STRESSCASE_ENTERSERVER_STATUS>(const STRESSCASE_ENTERSERVER_STATUS& Value)
-	{
-		if(!Write<_U32>(Value.failed_times)) return false;
-		return true;
-	}
-}
-
-namespace DDLReflect
-{
-
-	static bool _struct_STRESSCASE_ENTERSERVER_STATUS_readproc(DDL::BufferReader& buf, void* data)
-	{
-		return buf.Read<STRESSCASE_ENTERSERVER_STATUS>(*((STRESSCASE_ENTERSERVER_STATUS*)data));
-	}
-
-	static bool _struct_STRESSCASE_ENTERSERVER_STATUS_writeproc(DDL::BufferWriter& buf, const void* data)
-	{
-		return buf.Write<STRESSCASE_ENTERSERVER_STATUS>(*((const STRESSCASE_ENTERSERVER_STATUS*)data));
-	}
-
-	static FIELD_INFO _struct_STRESSCASE_ENTERSERVER_STATUS_fieldinfo[] =
-	{
-		{TYPE_U32, "failed_times", 0, (_U16)ZION_OFFSETOF(STRESSCASE_ENTERSERVER_STATUS, failed_times), NULL, (_U16)-1, (_U16)-1, (_U16)0, (_U16)sizeof(_U32), NULL},
-	};
-	STRUCT_INFO _rfl_struct_STRESSCASE_ENTERSERVER_STATUS_info = { NULL, "STRESSCASE_ENTERSERVER_STATUS", sizeof(STRESSCASE_ENTERSERVER_STATUS), 1, _struct_STRESSCASE_ENTERSERVER_STATUS_fieldinfo, _struct_STRESSCASE_ENTERSERVER_STATUS_readproc, _struct_STRESSCASE_ENTERSERVER_STATUS_writeproc };
-	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERSERVER_STATUS>()
-	{
-		return &_rfl_struct_STRESSCASE_ENTERSERVER_STATUS_info;
+		return &_rfl_struct_STRESSCASE_ENTERGAME_STATUS_info;
 	}
 }
 

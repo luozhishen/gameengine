@@ -314,7 +314,7 @@ void CStressViewDlg::OnClientSelected(wxTreeEvent& event)
 			{
 				if(scase->GetConfigType())
 				{
-					m_pConfig->Set(scase->GetConfigType(), (void*)scase->GetConfig());
+					m_pConfig->Set(scase->GetConfigType(), (void*)scase->GetConfigData());
 				}
 				else
 				{

@@ -8,87 +8,46 @@
 #pragma pack(push)
 #pragma pack(4)
 
-struct STRESSCASE_ECHO_CONFIG
+struct STRESSCASE_ENTERGAME_CONFIG
 {
-	_U32 reset_time;
-	_U32 retry_time;
-	_U32 disconnect_time;
+	_U32 server_id;
+	DDL::String<100> avatar_name;
 };
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<STRESSCASE_ECHO_CONFIG>(STRESSCASE_ECHO_CONFIG& Value);
+	bool BufferReader::Read<STRESSCASE_ENTERGAME_CONFIG>(STRESSCASE_ENTERGAME_CONFIG& Value);
 	template<>
-	bool BufferWriter::Write<STRESSCASE_ECHO_CONFIG>(const STRESSCASE_ECHO_CONFIG& Value);
+	bool BufferWriter::Write<STRESSCASE_ENTERGAME_CONFIG>(const STRESSCASE_ENTERGAME_CONFIG& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ECHO_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_STRESSCASE_ECHO_CONFIG_info;
+	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERGAME_CONFIG>();
+	extern STRUCT_INFO _rfl_struct_STRESSCASE_ENTERGAME_CONFIG_info;
 }
 
-struct STRESSCASE_ECHO_STATUS
+struct STRESSCASE_ENTERGAME_STATUS
 {
 	_U32 failed_times;
-	_U32 sucess_time;
+	_U32 sucess_times;
 };
 
 namespace DDL
 {
 	template<>
-	bool BufferReader::Read<STRESSCASE_ECHO_STATUS>(STRESSCASE_ECHO_STATUS& Value);
+	bool BufferReader::Read<STRESSCASE_ENTERGAME_STATUS>(STRESSCASE_ENTERGAME_STATUS& Value);
 	template<>
-	bool BufferWriter::Write<STRESSCASE_ECHO_STATUS>(const STRESSCASE_ECHO_STATUS& Value);
+	bool BufferWriter::Write<STRESSCASE_ENTERGAME_STATUS>(const STRESSCASE_ENTERGAME_STATUS& Value);
 }
 
 namespace DDLReflect
 {
 	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ECHO_STATUS>();
-	extern STRUCT_INFO _rfl_struct_STRESSCASE_ECHO_STATUS_info;
-}
-
-struct STRESSCASE_ENTERSERVER_CONFIG
-{
-	_U32 reset_time;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<STRESSCASE_ENTERSERVER_CONFIG>(STRESSCASE_ENTERSERVER_CONFIG& Value);
-	template<>
-	bool BufferWriter::Write<STRESSCASE_ENTERSERVER_CONFIG>(const STRESSCASE_ENTERSERVER_CONFIG& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERSERVER_CONFIG>();
-	extern STRUCT_INFO _rfl_struct_STRESSCASE_ENTERSERVER_CONFIG_info;
-}
-
-struct STRESSCASE_ENTERSERVER_STATUS
-{
-	_U32 failed_times;
-};
-
-namespace DDL
-{
-	template<>
-	bool BufferReader::Read<STRESSCASE_ENTERSERVER_STATUS>(STRESSCASE_ENTERSERVER_STATUS& Value);
-	template<>
-	bool BufferWriter::Write<STRESSCASE_ENTERSERVER_STATUS>(const STRESSCASE_ENTERSERVER_STATUS& Value);
-}
-
-namespace DDLReflect
-{
-	template<>
-	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERSERVER_STATUS>();
-	extern STRUCT_INFO _rfl_struct_STRESSCASE_ENTERSERVER_STATUS_info;
+	const STRUCT_INFO* GetStruct<STRESSCASE_ENTERGAME_STATUS>();
+	extern STRUCT_INFO _rfl_struct_STRESSCASE_ENTERGAME_STATUS_info;
 }
 
 

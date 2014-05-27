@@ -171,7 +171,7 @@ namespace Zion
 		i = m_mapCases.find(name);
 		if(i==m_mapCases.end()) return false;
 		if(i->second->GetConfigType()==NULL) return false;
-		memcpy(data, i->second->GetConfig(), (size_t)size);
+		memcpy(data, i->second->GetConfigData(), (size_t)size);
 		return true;
 	}
 	

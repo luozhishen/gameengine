@@ -15,10 +15,9 @@
 #include <StressCase.h>
 #include <StressCases.h>
 
-#include "CardStressCases.h"
-
 #include "CardCommon.h"
 #include "CardClientApp.h"
+#include "CardStressCases.h"
 
 class CCardClientStressApp : public CClientStressApp
 {
@@ -39,14 +38,12 @@ public:
 	virtual void InitCase()
 	{
 		Zion::CStressManager::Get().RegisterCase(&m_CaseLogin);
-		Zion::CStressManager::Get().RegisterCase(&m_CaseEcho);
-		Zion::CStressManager::Get().RegisterCase(&m_CaseEnterServer);
+		Zion::CStressManager::Get().RegisterCase(&m_CaseEnterGame);
 	}
 
 	Zion::CCardClientApp m_App;
 	Zion::StressCases::CLogin m_CaseLogin;
-	Zion::StressCases::CEcho m_CaseEcho;
-	Zion::StressCases::CEnterServer m_CaseEnterServer;
+	Zion::StressCases::CEnterGame m_CaseEnterGame;
 };
 
 IMPLEMENT_APP(CCardClientStressApp)

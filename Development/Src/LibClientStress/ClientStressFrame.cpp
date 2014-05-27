@@ -183,7 +183,7 @@ void CClientStressFrame::InitToolBar()
 
 	wxToolBar* pToolBar;
 	pToolBar = wxFrame::CreateToolBar();//wxTB_FLAT|wxTB_TOP, wxID_ANY);
-	m_pCase = ZION_NEW wxComboBox(pToolBar, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
+	m_pCase = ZION_NEW wxComboBox(pToolBar, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(200, wxDefaultSize.y), 0, NULL, wxCB_DROPDOWN|wxCB_READONLY);
 	pToolBar->AddControl(m_pCase);
 	pToolBar->AddTool(ID_ADDONE,		wxT("Add 1"),		bmpAddOne,		wxT("Add 1 Client"));
 	pToolBar->AddTool(ID_ADDFIVE,		wxT("Add 5"),		bmpAddFive,		wxT("Add 5 Client"));
@@ -504,7 +504,7 @@ void CClientStressFrame::OnAddCase(wxCommandEvent& event)
 		if(!pClient) continue;
 		Zion::CStressCase* pCase = pClient->NewStressCase(dlg.GetCaseName().c_str());
 		if(!pCase) continue;
-		if(dlg.GetCaseData()) pCase->SetConfig(dlg.GetCaseData(), dlg.GetCaseType()->size);
+		if(dlg.GetCaseData()) pCase->SetConfigData(dlg.GetCaseData(), dlg.GetCaseType()->size);
 		NotifyClientAddCase(pClient->GetIndex(), pCase);
 	}
 }

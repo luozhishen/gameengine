@@ -29,26 +29,20 @@ namespace Zion
 			}
 		};
 
-
-		class CEcho : public TCardStressCase<STRESSCASE_ECHO_CONFIG, STRESSCASE_ECHO_STATUS>
+		class CEnterGame : public TCardStressCase<STRESSCASE_ENTERGAME_CONFIG, STRESSCASE_ENTERGAME_STATUS>
 		{
 		public:
-			CEcho();
-			virtual ~CEcho();
+			CEnterGame();
+			virtual ~CEnterGame();
 
+			virtual void OnAttach();
+			virtual void OnDetach();
 			virtual void OnTick();
 
-		protected:
-			virtual CStressCase* Create();
-		};
-
-		class CEnterServer : public TCardStressCase<STRESSCASE_ENTERSERVER_CONFIG, STRESSCASE_ENTERSERVER_STATUS>
-		{
-		public:
-			CEnterServer();
-			virtual ~CEnterServer();
-
-			virtual void OnTick();
+			void OnLoginDone();
+			void OnGetAvatarListCallback(const CG_AVATAR_DESC* desc, _U32 count);
+			void OnCreateAvatarCallback(_U32 errcode);
+			void OnEnterGameCallback(_U32 errcode);
 
 		protected:
 			virtual CStressCase* Create();

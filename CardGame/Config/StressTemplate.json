@@ -1,16 +1,24 @@
 {
-	"a" :
+	"AUTO_LOGIN" :
 	{
 		"Login" :
 		{
-			"reset_time" : "0"
-		},
-		"Echo" :
-		{
+			"reset_time" : "-1",
+			"retry_time" : "0"
 		}
 	},
-	"b" :
+	"AUTO_ENTERGAME" :
 	{
+		"Login" :
+		{
+			"reset_time" : "-1",
+			"retry_time" : "0"
+		},
+		"EnterGame" :
+		{
+			"server_id" : "1",
+			"avatar_name" : ""
+		}
 	}
 }
 

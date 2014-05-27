@@ -78,7 +78,7 @@ namespace Zion
 			{
 				CStressCase* _case = client->NewStressCase(i->first.c_str());
 				const DDLReflect::STRUCT_INFO* info = _case->GetConfigType();
-				if(info) _case->SetConfig(i->second, info->size);
+				if(info) _case->SetConfigData(i->second, info->size);
 			}
 			return client;
 		}

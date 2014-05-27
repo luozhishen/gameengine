@@ -459,7 +459,11 @@ int ddlgen_code_task_class_stub_sigslot(const DDL_CLS* cls, const DDL_TASK* task
 		OutH(2, "sigslot::signal%d<", cls->funs[f].args_count);
 		for(a=0; a<cls->funs[f].args_count; a++) {
 			if(a>0) OutH(0, ", ");
-			OutH(0, "%s", get_ctype(&cls->funs[f].args[a], 1));
+			if(cls->funs[f].args[a].count[0]=='\0') {
+				OutH(0, "%s", get_ctype(&cls->funs[f].args[a], 1));
+			} else {
+				OutH(0, "const %s", get_ctype(&cls->funs[f].args[a], 1));
+			}
 		}
 		OutH(0, "> _%s;\n", cls->funs[f].name);
 	}

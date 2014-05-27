@@ -364,7 +364,7 @@ namespace DDLSigSlot
 		}
 
 		sigslot::signal0<> _Pong;
-		sigslot::signal2<CG_AVATAR_DESC*, _U32> _GetAvatarListCallback;
+		sigslot::signal2<const CG_AVATAR_DESC*, _U32> _GetAvatarListCallback;
 		sigslot::signal1<_U32> _CreateAvatarCallback;
 		sigslot::signal1<_U32> _EnterGameCallback;
 		sigslot::signal1<_U32> _LeaveGameCallback;

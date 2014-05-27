@@ -137,7 +137,7 @@ void CClientCaseView::SelectCase(const char* name)
 
 	if(m_pCurrentCase->GetConfigType())
 	{
-		m_pConfig->Set(m_pCurrentCase->GetConfigType(), (void*)m_pCurrentCase->GetConfig());
+		m_pConfig->Set(m_pCurrentCase->GetConfigType(), (void*)m_pCurrentCase->GetConfigData());
 	}
 
 	if(m_pCurrentCase->GetStatusType())

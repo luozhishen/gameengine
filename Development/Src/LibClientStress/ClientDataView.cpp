@@ -362,6 +362,7 @@ void CClientDataView::OnNewCase(_U32 index, Zion::CStressCase* pCase)
 
 void CClientDataView::OnSyncOpen(_U32 nIndex)
 {
+	if(GetCurrentClient()!=nIndex) return;
 	OnSwitchTo(GetCurrentClient());
 	m_pDeleteButton->Enable(false);
 	m_pNewButton->Enable(true);
@@ -371,6 +372,7 @@ void CClientDataView::OnSyncOpen(_U32 nIndex)
 
 void CClientDataView::OnSyncClose(_U32 nIndex)
 {
+	if(GetCurrentClient()!=nIndex) return;
 	OnSwitchTo(GetCurrentClient());
 	m_pDeleteButton->Enable(false);
 	m_pNewButton->Enable(false);

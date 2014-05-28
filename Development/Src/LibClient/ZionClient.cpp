@@ -122,7 +122,7 @@ namespace Zion
 #ifdef _WIN32
 		char comname[100];
 		DWORD len = sizeof(comname);
-		GetComputerName(comname, &len);
+		GetComputerNameA(comname, &len);
 		sprintf(token, "@%d@%s", id+atoi(uid_base), comname);
 #else
 		sprintf(token, "@%d@XXXX", id+atoi(uid_base));

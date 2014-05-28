@@ -177,7 +177,7 @@ namespace Zion
 				}
 				for(size_t i=0; i<vkeys.size(); i++)
 				{
-					if(vkeys[i]=="uuid")
+					if(vkeys[i]=="_uuid")
 					{
 						if(vkeys.size()!=1)
 						{

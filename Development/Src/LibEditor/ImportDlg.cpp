@@ -20,7 +20,6 @@
 
 #include "ImportDlg.h"
 #include "ExcelImportor.h"
-#include "OLEAutoExcelWrapper.h"
 
 enum
 {
@@ -37,16 +36,13 @@ END_EVENT_TABLE()
 
 CImportDlg::CImportDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Import Excel"), wxDefaultPosition, wxSize(400, 400), wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-	m_pImportor = new CContentExcelImportor();
-	m_pExcel = new COLEAutoExcelWrapper();
-
+	m_pImportor = ZION_NEW CContentExcelImportor();
 	InitClient();
 }
 
 CImportDlg::~CImportDlg()
 {
-	delete m_pImportor;
-	delete m_pExcel;
+	ZION_DELETE m_pImportor;
 }
 
 bool CImportDlg::LoadTemplateDefine(const char* filename)
@@ -137,23 +133,16 @@ void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)
 {
 	m_checkList->Clear();
 
-	Zion::String strFilePath = (const char*)m_pFilePicker->GetPath().ToUTF8();
-	if(!m_pExcel->Open(strFilePath, false))
+	Zion::Array<Zion::String> sheets;
+	if(!m_pImportor->GetSheetNames(m_pFilePicker->GetPath().ToUTF8(), sheets))
 	{
 		wxMessageBox(wxT("Failed to open excel file"), wxT("Error"));
 		return;
 	}
 
-	Zion::Array<Zion::String> vSheets;
-	if(!m_pExcel->GetExcelSheets(vSheets))
+	for(unsigned int i = 0; i<sheets.size(); ++i)
 	{
-		wxMessageBox(wxT("Failed to read excel file"), wxT("Error"));
-		return;
-	}
-
-	for(unsigned int i = 0; i < vSheets.size(); ++i)
-	{
-		wxString val = wxString::FromUTF8(vSheets[i].c_str());
+		wxString val = wxString::FromUTF8(sheets[i].c_str());
 		m_checkList->InsertItems(1, &val, i);
 	}
 }
@@ -215,41 +204,27 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
-	Zion::Array<Zion::String> sheets;
-	if(!GetSelectSheets(sheets) || sheets.empty())
+	if(m_checkList->GetCount()==0)
 	{
-		wxMessageBox(wxT("no sheet selected!"));
+		wxMessageBox(wxT("no Sheet load!!!"));
 		return false;
 	}
 
-	m_pImportor->Begin();
-
-	if(m_pClearData->GetValue())
+	m_pImportor->ClearTasks();
+	bool bClear = m_pClearData->GetValue();
+	for(unsigned int i=0; i < m_checkList->GetCount(); ++i)
 	{
-		m_pImportor->ClearData((const char*)strType.ToUTF8());
+		if(!m_checkList->IsChecked(i)) continue;
+		m_pImportor->AddTask(strType.c_str(), m_pFilePicker->GetFileName().GetFullPath().ToUTF8(), m_checkList->GetString(i).ToUTF8(), bClear);
+		bClear = false;
 	}
 
-	size_t i;
-	for(i=0; i<sheets.size(); i++)
+	if(!m_pImportor->RunTasks())
 	{
-		if(!m_pExcel->SetActiveSheet(sheets[i]))
-		{
-			wxMessageBox(wxString::Format(wxT("error in SetActiveSheet(%s)"), wxString::FromUTF8(sheets[i].c_str()).c_str()), wxT("Error"));
-			break;
-		}
-
-		if(!m_pImportor->ImportSheet((const char*)strType.ToUTF8(), m_pExcel))
-		{
-			wxMessageBox(wxString::FromUTF8(m_pImportor->GetErrorInfo()), wxT("Error"));
-			break;
-		}
-	}
-
-	m_pImportor->End();
-	if(i!=sheets.size())
-	{
+		wxMessageBox(wxString::FromUTF8(m_pImportor->GetErrorInfo()), wxT("Error"));
 		Zion::ContentObject::LoadContent(NULL, true);
 	}
 
+	wxMessageBox(wxT("done."));
 	return true;
 }

@@ -46,6 +46,20 @@ void CContentExcelImportor::GetTemplateList(Zion::Array<Zion::String>& list)
 	}
 }
 
+bool CContentExcelImportor::GetSheetNames(const char* filename, Zion::Array<Zion::String>& sheets)
+{
+	COLEAutoExcelWrapper* xls = ZION_NEW COLEAutoExcelWrapper();
+	if(xls->Open(filename, false))
+	{
+		if(xls->GetExcelSheets(sheets))
+		{
+			return true;
+		}
+		xls->Quit();
+	}
+	return false;
+}
+
 void CContentExcelImportor::ClearTemplateDefine()
 {
 	Zion::Map<Zion::String, EXCEL_ENUM*>::iterator i1;
@@ -249,6 +263,55 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 	return true;
 }
 
+void CContentExcelImportor::AddTask(const char* tmpl, const char* filename, const char* sheetname, bool clear)
+{
+	TASK_INFO info;
+	info.tmpl = tmpl;
+	info.filename = filename;
+	info.sheetname = sheetname;
+	info.clear = clear;
+	m_Tasks.push_back(info);
+}
+
+void CContentExcelImportor::ClearTasks()
+{
+	m_Tasks.clear();
+}
+
+bool CContentExcelImportor::RunTasks()
+{
+	m_pXlsFile = NULL;
+	m_DeleteList.clear();
+
+	for(size_t i=0; i<m_Tasks.size(); i++)
+	{
+		if(!ImportSheet(m_Tasks[i].tmpl.c_str(), m_Tasks[i].filename.c_str(), m_Tasks[i].sheetname.c_str(), m_Tasks[i].clear))
+		{
+			if(m_pXlsFile)
+			{
+				m_pXlsFile->Quit();
+				ZION_DELETE m_pXlsFile;
+			}
+			return false;
+		}
+	}
+
+	Zion::Set<A_UUID>::iterator it;
+	for(it=m_DeleteList.begin(); it!=m_DeleteList.end(); it++)
+	{
+		Zion::ContentObject::DeleteObject(*it);
+	}
+
+	if(m_pXlsFile)
+	{
+		m_pXlsFile->Save();
+		m_pXlsFile->Quit();
+		ZION_DELETE m_pXlsFile;
+	}
+
+	return true;
+}
+
 Zion::String GetColumnName(unsigned int col)
 {
 	if(col>=26)
@@ -273,19 +336,35 @@ Zion::String GetCellName(unsigned int col, unsigned int row)
 	}
 }
 
-void CContentExcelImportor::Begin()
-{
-	m_DeleteList.clear();
-}
-
-bool CContentExcelImportor::ClearData(const char* _tmpl)
+bool CContentExcelImportor::ImportSheet(const char* _tmpl, const char* filename, const char* sheetname, bool clear)
 {
 	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end())
 	{
+		m_errmsg = Zion::StringFormat("template [%s] not found", _tmpl);
+		return false;
+	}
+
+	if(m_pXlsFile==NULL || m_XlsFileName!=filename)
+	{
+		ZION_DELETE m_pXlsFile;
+		m_pXlsFile = NULL;
+
+		m_pXlsFile = new COLEAutoExcelWrapper();
+		if(!m_pXlsFile)
+		{
+			m_errmsg = Zion::StringFormat("can't open xls file. %s", filename);
+			return false;
+		}
+	}
+
+	if(!m_pXlsFile->SetActiveSheet(sheetname))
+	{
+		m_errmsg = Zion::StringFormat("can't open sheet %s in file %s", sheetname, filename);
 		return false;
 	}
 
 	EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
+
 	const A_CONTENT_OBJECT* it = Zion::ContentObject::FindFirst(tmpl.info, true);
 	while(it)
 	{
@@ -296,20 +375,8 @@ bool CContentExcelImportor::ClearData(const char* _tmpl)
 		it = Zion::ContentObject::FindNext(tmpl.info, true, it);
 	}
 
-	return true;
-}
 
-bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper* excel)
-{
-	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end())
-	{
-		m_errmsg = Zion::StringFormat("template [%s] not found", _tmpl);
-		return false;
-	}
-
-	EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
 	Zion::String sUUID;
-	Zion::Set<A_UUID> oldobjs;
 
 	Zion::Map<Zion::String, EXCEL_FIELDINFO*> field_map;
 	if(tmpl.title_line==0)
@@ -325,7 +392,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		for(unsigned int col=0; col<200; col++)
 		{
 			Zion::String ColName;
-			if(!excel->GetCellValue(GetCellName(col, tmpl.title_line-1), ColName))
+			if(!m_pXlsFile->GetCellValue(GetCellName(col, tmpl.title_line-1), ColName))
 			{
 				m_errmsg = "error in GetCellValue";
 				return false;
@@ -340,7 +407,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 
 			field_map[GetColumnName(col)] = &tmpl.m_fields[ColName];
 
-			if(tmpl.m_fields[ColName].field=="uuid")
+			if(tmpl.m_fields[ColName].field=="_uuid")
 			{
 				sUUID = GetColumnName(col);
 			}
@@ -364,25 +431,31 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		for(i=field_map.begin(); i!=field_map.end(); i++)
 		{
 			Zion::String val;
-			if(!excel->GetCellValue(Zion::StringFormat("%s%d", i->first.c_str(), row), val))
+
+			// get cell data
+			if(!m_pXlsFile->GetCellValue(Zion::StringFormat("%s%d", i->first.c_str(), row), val))
 			{
 				m_errmsg = "error in GetCellValue";
 				return false;
 			}
 
+			// if(all colum is empty) then exit
 			if(!val.empty()) bExit = false;
 
+			// use default value
 			if(val.empty() && !i->second->defval.empty())
 			{
 				val = i->second->defval;
 			}
 
+			// check not empty
 			if(val.empty() && i->second->notempty)
 			{
 				m_errmsg = Zion::StringFormat("value cannot empty %s", Zion::StringFormat("%s%d", i->first.c_str(), row).c_str());
 				return false;
 			}
 
+			// process enum value
 			if(i->second->_enum)
 			{
 				if(i->second->_enum->find(val)!=i->second->_enum->end())
@@ -406,7 +479,6 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			{
 				val_map[i->second->field] = val;
 			}
-
 		}
 		if(bError) return false;
 		if(bExit) break;
@@ -418,13 +490,11 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			return false;
 		}
 
+		// fill object data
 		Zion::Map<Zion::String, Zion::String>::iterator i1;
 		for(i1=val_map.begin(); i1!=val_map.end(); i1++)
 		{
-			if(i1->first=="uuid" && i1->second.empty())
-			{
-			}
-			else
+			if(!i1->second.empty())
 			{
 				if(!DDLReflect::StructParamFromString(tmpl.info, i1->first.c_str(), obj, i1->second.c_str()))
 				{
@@ -435,6 +505,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			}
 		}
 
+		// make content object primary key
 		Zion::String pkey;
 		if(!Zion::ContentObject::GenContentObjectUniqueId(type_id, obj, pkey))
 		{
@@ -456,7 +527,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 			old_obj = Zion::ContentObject::Modify(old_obj->_uuid, tmpl.info);
 			ZION_ASSERT(old_obj);
 			obj->_uuid = old_obj->_uuid;
-			if(oldobjs.find(obj->_uuid)!=oldobjs.end()) oldobjs.erase(obj->_uuid);
+			if(m_DeleteList.find(obj->_uuid)!=m_DeleteList.end()) m_DeleteList.erase(obj->_uuid);
 		}
 		else
 		{
@@ -468,7 +539,7 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 				Zion::String range = Zion::StringFormat("%s%d", sUUID.c_str(), row);
 				char suuid[60];
 				AUuidToString(old_obj->_uuid, suuid);
-				if(!excel->SetCellValue(range, Zion::String(suuid)))
+				if(!m_pXlsFile->SetCellValue(range, Zion::String(suuid)))
 				{
 					m_errmsg = "error in SetCellValue";
 					DDLReflect::DestoryObject(tmpl.info, obj);
@@ -482,13 +553,4 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 	}
 
 	return true;
-}
-
-void CContentExcelImportor::End()
-{
-	Zion::Set<A_UUID>::iterator it;
-	for(it=m_DeleteList.begin(); it!=m_DeleteList.end(); it++)
-	{
-		Zion::ContentObject::DeleteObject(*it);
-	}
 }

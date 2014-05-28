@@ -4,7 +4,6 @@
 class wxFilePickerCtrl;
 class wxFileDirPickerEvent;
 class CContentExcelImportor;
-class COLEAutoExcelWrapper;
 
 class CImportDlg : public wxDialog
 {
@@ -31,11 +30,7 @@ public:
 	wxCheckBox* m_pClearData;
 	wxCheckListBox* m_checkList;
 	wxCheckBox* m_checkBoxSelAll;
-	wxButton* m_btnOK;
 	CContentExcelImportor* m_pImportor;
-	COLEAutoExcelWrapper* m_pExcel;
-
-
 };
 
 #endif //_IMPORT_DLG_H__

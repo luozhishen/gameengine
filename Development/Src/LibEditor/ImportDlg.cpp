@@ -222,6 +222,13 @@ bool CImportDlg::ProcessImport()
 		return false;
 	}
 
+	m_pImportor->Begin();
+
+	if(m_pClearData->GetValue())
+	{
+		m_pImportor->ClearData((const char*)strType.ToUTF8());
+	}
+
 	size_t i;
 	for(i=0; i<sheets.size(); i++)
 	{
@@ -237,6 +244,8 @@ bool CImportDlg::ProcessImport()
 			break;
 		}
 	}
+
+	m_pImportor->End();
 	if(i!=sheets.size())
 	{
 		Zion::ContentObject::LoadContent(NULL, true);

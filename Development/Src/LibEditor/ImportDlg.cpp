@@ -98,16 +98,11 @@ void CImportDlg::InitClient()
 	pLineSizer->Add(m_pFilePicker, 1, wxLEFT|wxRIGHT, 5);
 	pMainSizer->Add(pLineSizer, 0, wxEXPAND | wxLEFT|wxRIGHT, 5);
 
-	// clear data & exact match
+	// clear data
 	pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
 	pLineSizer->AddSpacer(70);
 	m_pClearData = ZION_NEW wxCheckBox(this, wxID_ANY, wxT("Clear Data"));
 	pLineSizer->Add(m_pClearData, 0, wxLEFT|wxRIGHT, 5);
-	pMainSizer->Add(pLineSizer, 0, wxLEFT|wxRIGHT, 5);
-	pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
-	pLineSizer->AddSpacer(70);
-	m_pExactMatch = ZION_NEW wxCheckBox(this, wxID_ANY, wxT("Exact Match"));
-	pLineSizer->Add(m_pExactMatch, 0, wxLEFT|wxRIGHT, 5);
 	pMainSizer->Add(pLineSizer, 0, wxLEFT|wxRIGHT, 5);
 
 	// sheet list

@@ -278,17 +278,25 @@ void CContentExcelImportor::Begin()
 	m_DeleteList.clear();
 }
 
-void CContentExcelImportor::ClearData(const DDLReflect::STRUCT_INFO* info, bool bExactMatch)
+bool CContentExcelImportor::ClearData(const char* _tmpl)
 {
-	const A_CONTENT_OBJECT* it = Zion::ContentObject::FindFirst(info, bExactMatch);
+	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end())
+	{
+		return false;
+	}
+
+	EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
+	const A_CONTENT_OBJECT* it = Zion::ContentObject::FindFirst(tmpl.info, true);
 	while(it)
 	{
 		if(m_DeleteList.find(it->_uuid)==m_DeleteList.end())
 		{
 			m_DeleteList.insert(it->_uuid);
 		}
-		it = Zion::ContentObject::FindNext(info, bExactMatch, it);
+		it = Zion::ContentObject::FindNext(tmpl.info, true, it);
 	}
+
+	return true;
 }
 
 bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper* excel)

@@ -23,7 +23,7 @@ public:
 	bool LoadTemplateDefine(const char* filename);
 
 	void Begin();
-	void ClearData(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
+	bool ClearData(const char* _tmpl);
 	bool ImportSheet(const char* tmpl, COLEAutoExcelWrapper* excel);
 	void End();
 

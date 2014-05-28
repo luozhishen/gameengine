@@ -23,7 +23,6 @@ struct EXCEL_TEMPLATE
 	const DDLReflect::STRUCT_INFO* info;
 	unsigned int title_line;
 	unsigned int start_line;
-	bool clear_data;
 	Zion::Map<Zion::String, EXCEL_FIELDINFO> m_fields;
 };
 
@@ -128,18 +127,12 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 		Json::Value jtmpl = tmpls.get(names[t], Json::Value());
 		if(!jtmpl.isObject()) return false;
 		Json::Value type = jtmpl.get("type", Json::Value());
-		Json::Value clear = jtmpl.get("clear", Json::Value());
 		Json::Value titleline = jtmpl.get("title", Json::Value());
 		Json::Value startline = jtmpl.get("start", Json::Value());
 		Json::Value fields = jtmpl.get("fields", Json::Value());
 		if(!type.isString())
 		{
 			m_errmsg = Zion::StringFormat("template [%s] type invalid value", names[t].c_str());
-			return false;
-		}
-		if(!clear.isBool())
-		{
-			m_errmsg = Zion::StringFormat("template [%s] clear invalid value", names[t].c_str());
 			return false;
 		}
 		if(!titleline.isInt() || titleline.asInt()<0)
@@ -175,7 +168,6 @@ bool CContentExcelImportor::LoadTemplateDefine(const char* filename)
 		EXCEL_TEMPLATE& tmpl = *m_tmpl_map[names[t]];
 		tmpl.name = names[t];
 		tmpl.info = Zion::ContentObject::GetType(type.asCString());
-		tmpl.clear_data = clear.asBool();
 		tmpl.title_line = titleline.asUInt();
 		tmpl.start_line = startline.asUInt();
 
@@ -281,6 +273,24 @@ Zion::String GetCellName(unsigned int col, unsigned int row)
 	}
 }
 
+void CContentExcelImportor::Begin()
+{
+	m_DeleteList.clear();
+}
+
+void CContentExcelImportor::ClearData(const DDLReflect::STRUCT_INFO* info, bool bExactMatch)
+{
+	const A_CONTENT_OBJECT* it = Zion::ContentObject::FindFirst(info, bExactMatch);
+	while(it)
+	{
+		if(m_DeleteList.find(it->_uuid)==m_DeleteList.end())
+		{
+			m_DeleteList.insert(it->_uuid);
+		}
+		it = Zion::ContentObject::FindNext(info, bExactMatch, it);
+	}
+}
+
 bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper* excel)
 {
 	if(m_tmpl_map.find(_tmpl)==m_tmpl_map.end())
@@ -292,16 +302,6 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 	EXCEL_TEMPLATE& tmpl = *m_tmpl_map[_tmpl];
 	Zion::String sUUID;
 	Zion::Set<A_UUID> oldobjs;
-
-	if(tmpl.clear_data)
-	{
-		const A_CONTENT_OBJECT* it = Zion::ContentObject::FindFirst(tmpl.info, true);
-		while(it)
-		{
-			oldobjs.insert(it->_uuid);
-			it = Zion::ContentObject::FindNext(tmpl.info, true, it);
-		}
-	}
 
 	Zion::Map<Zion::String, EXCEL_FIELDINFO*> field_map;
 	if(tmpl.title_line==0)
@@ -473,11 +473,14 @@ bool CContentExcelImportor::ImportSheet(const char* _tmpl, COLEAutoExcelWrapper*
 		DDLReflect::DestoryObject(tmpl.info, obj);
 	}
 
+	return true;
+}
+
+void CContentExcelImportor::End()
+{
 	Zion::Set<A_UUID>::iterator it;
-	for(it=oldobjs.begin(); it!=oldobjs.end(); it++)
+	for(it=m_DeleteList.begin(); it!=m_DeleteList.end(); it++)
 	{
 		Zion::ContentObject::DeleteObject(*it);
 	}
-
-	return true;
 }

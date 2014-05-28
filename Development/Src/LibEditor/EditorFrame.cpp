@@ -27,6 +27,7 @@ enum
 	ID_COOK_SAVE,
 	ID_COOK_LOAD,
 	ID_IMPORT,
+	ID_BATCH_IMPORT,
 	ID_GEN_DESKEY,
 	ID_BUILD_INDEX,
 	ID_ABOUT,
@@ -42,6 +43,7 @@ BEGIN_EVENT_TABLE(CEditorFrame, wxFrame)
 	EVT_MENU(ID_COOK_SAVE,		CEditorFrame::OnToolMenu)
 	EVT_MENU(ID_COOK_LOAD,		CEditorFrame::OnToolMenu)
 	EVT_MENU(ID_IMPORT,			CEditorFrame::OnToolMenu)
+	EVT_MENU(ID_BATCH_IMPORT,	CEditorFrame::OnToolMenu)
 	EVT_MENU(ID_GEN_DESKEY,		CEditorFrame::OnToolMenu)
 	EVT_MENU(ID_BUILD_INDEX,	CEditorFrame::OnToolMenu)
 
@@ -109,6 +111,7 @@ void CEditorFrame::InitMenu()
 	GetMenuBar()->GetMenu(1)->AppendSeparator();
 
 	GetMenuBar()->GetMenu(1)->Append(ID_IMPORT, wxT("&Import From Excel...\tAlt-I"), wxT("Import from excel"));
+	GetMenuBar()->GetMenu(1)->Append(ID_BATCH_IMPORT, wxT("&Batch Import...\tAlt-I"), wxT("Batch Import from excel"));
 	GetMenuBar()->GetMenu(1)->Append(ID_GEN_DESKEY, wxT("&Generate DESKEY..."), wxT("Generate DESKEY"));
 	GetMenuBar()->GetMenu(1)->Append(ID_BUILD_INDEX, wxT("&Build Index"), wxT("Build index for Content Object"));
 
@@ -213,6 +216,17 @@ void CEditorFrame::OnToolMenu(wxCommandEvent& event)
 		}
 		break;
 	case ID_IMPORT:
+		if(m_pContentDataView->CheckModify(true))
+		{
+			CImportDlg dlg(this);
+			Zion::String path = Zion::StringFormat("%s%s", Zion::GetHomeDirectory(), "Config/ContentTemplate.json");
+			if(dlg.LoadTemplateDefine(path.c_str()))
+			{
+				dlg.ShowModal();
+			}
+		}
+		break;
+	case ID_BATCH_IMPORT:
 		if(m_pContentDataView->CheckModify(true))
 		{
 			CImportDlg dlg(this);

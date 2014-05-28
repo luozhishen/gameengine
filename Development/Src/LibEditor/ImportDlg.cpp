@@ -59,6 +59,11 @@ bool CImportDlg::LoadTemplateDefine(const char* filename)
 
 	Zion::Array<Zion::String> list;
 	m_pImportor->GetTemplateList(list);
+	if(list.empty())
+	{
+		wxMessageBox(wxT("template not found"), wxT("Error"));
+		return false;
+	}
 
 	for(size_t i=0; i<list.size(); i++)
 	{
@@ -71,83 +76,66 @@ bool CImportDlg::LoadTemplateDefine(const char* filename)
 
 void CImportDlg::InitClient()
 {
-	SetSizeHints( wxDefaultSize, wxDefaultSize );
+	wxBoxSizer* pMainSizer = ZION_NEW wxBoxSizer(wxVERTICAL);
 
-	wxBoxSizer* m_mainSizer;
-	m_mainSizer = ZION_NEW wxBoxSizer( wxVERTICAL );
+	// type line
+	wxBoxSizer* pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pLineSizer->Add(
+		ZION_NEW wxStaticText(this, wxID_ANY, wxT("Type"), wxDefaultPosition, wxSize(60,-1), 0),
+		0, wxLEFT|wxRIGHT, 5);
+	m_cbType = ZION_NEW wxComboBox(this, ID_COMBO, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	pLineSizer->Add(
+		m_cbType,
+		1, wxLEFT|wxRIGHT, 5);
+	pMainSizer->Add(pLineSizer, 0, wxEXPAND | wxALL, 5);
 
-	wxPanel* panel1 = ZION_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer1;
-	bSizer1 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
+	// execel file
+	pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pLineSizer->Add(
+		ZION_NEW wxStaticText(this, wxID_ANY, wxT("Execl File"),
+		wxDefaultPosition, wxSize(60,-1), 0), 0, wxLEFT|wxRIGHT, 5);
+	m_pFilePicker = ZION_NEW wxFilePickerCtrl(this, ID_FILEPICER, wxEmptyString, wxT("Select a Excel File"), wxT("excel files (*.xlsx) | *.xlsx"), wxDefaultPosition, wxDefaultSize);
+	pLineSizer->Add(m_pFilePicker, 1, wxLEFT|wxRIGHT, 5);
+	pMainSizer->Add(pLineSizer, 0, wxEXPAND | wxLEFT|wxRIGHT, 5);
 
-	wxStaticText* staticTextType = ZION_NEW wxStaticText( panel1, wxID_ANY, wxT("Type"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	staticTextType->Wrap( -1 );
-	staticTextType->SetMinSize( wxSize( 50,-1 ) );
+	// clear data & exact match
+	pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pLineSizer->AddSpacer(70);
+	m_pClearData = ZION_NEW wxCheckBox(this, wxID_ANY, wxT("Clear Data"));
+	pLineSizer->Add(m_pClearData, 0, wxLEFT|wxRIGHT, 5);
+	pMainSizer->Add(pLineSizer, 0, wxLEFT|wxRIGHT, 5);
+	pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pLineSizer->AddSpacer(70);
+	m_pExactMatch = ZION_NEW wxCheckBox(this, wxID_ANY, wxT("Exact Match"));
+	pLineSizer->Add(m_pExactMatch, 0, wxLEFT|wxRIGHT, 5);
+	pMainSizer->Add(pLineSizer, 0, wxLEFT|wxRIGHT, 5);
 
-	bSizer1->Add( staticTextType, 0, wxALL, 5 );
-
-	m_cbType = ZION_NEW wxComboBox( panel1, ID_COMBO, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
-	bSizer1->Add( m_cbType, 1, wxALL, 5 );
-
-	panel1->SetSizer( bSizer1 );
-	panel1->Layout();
-	bSizer1->Fit( panel1 );
-	m_mainSizer->Add( panel1, 0, wxEXPAND | wxALL, 5 );
-
-	wxPanel* panel2 = ZION_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer2;
-	bSizer2 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
-
-	wxStaticText* staticTextPath = ZION_NEW wxStaticText( panel2, wxID_ANY, wxT("ExcelFile"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	staticTextPath->Wrap( -1 );
-	staticTextPath->SetMinSize( wxSize( 50,-1 ) );
-
-	bSizer2->Add( staticTextPath, 0, wxALL, 5 );
-
-	m_pFilePicker = ZION_NEW wxFilePickerCtrl( panel2, ID_FILEPICER, wxEmptyString, wxT("Select a Excel File"), wxT("excel files (*.xlsx) | *.xlsx"), wxDefaultPosition, wxDefaultSize );
-	bSizer2->Add( m_pFilePicker, 1, wxALL, 5 );
-
-	panel2->SetSizer( bSizer2 );
-	panel2->Layout();
-	bSizer2->Fit( panel2 );
-	m_mainSizer->Add( panel2, 0, wxEXPAND | wxALL, 5 );
-
-	wxPanel* panel3 = ZION_NEW wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer3;
-	bSizer3 = ZION_NEW wxBoxSizer( wxHORIZONTAL );
-
-	wxStaticText* staticTextSheet = ZION_NEW wxStaticText( panel3, wxID_ANY, wxT("Sheet"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	staticTextSheet->Wrap( -1 );
-	staticTextSheet->SetMinSize( wxSize( 50,-1 ) );
-
-	bSizer3->Add( staticTextSheet, 0, wxALL, 5 );
-
-	wxBoxSizer* bSizer6;
-	bSizer6 = ZION_NEW wxBoxSizer( wxVERTICAL );
-
+	// sheet list
+	pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pLineSizer->Add(ZION_NEW wxStaticText(this, wxID_ANY, wxT("Sheet"), wxDefaultPosition, wxSize(60,-1), 0), 0, wxLEFT|wxRIGHT, 5);
 	wxArrayString m_checkListChoices;
-	m_checkList = ZION_NEW wxCheckListBox( panel3, ID_CHECKLIST, wxDefaultPosition, wxDefaultSize, m_checkListChoices, wxLB_MULTIPLE );
+	m_checkList = ZION_NEW wxCheckListBox(this, ID_CHECKLIST, wxDefaultPosition, wxSize(wxDefaultSize.x, 200), m_checkListChoices, wxLB_MULTIPLE);
+	pLineSizer->Add(m_checkList, 1, wxLEFT|wxRIGHT, 5);
+	pMainSizer->Add(pLineSizer, 0, wxEXPAND | wxALL, 5);
 
-	bSizer6->Add( m_checkList, 1, wxALL|wxEXPAND, 5 );
+	// select all
+	pLineSizer = ZION_NEW wxBoxSizer(wxHORIZONTAL);
+	pLineSizer->AddSpacer(70);
+	m_checkBoxSelAll = ZION_NEW wxCheckBox(this, ID_CHECKBOX_SELECT_ALL, wxT("Select All Sheet"), wxDefaultPosition, wxDefaultSize, 0);
+	pLineSizer->Add(m_checkBoxSelAll, 0, wxLEFT|wxRIGHT, 5);
+	pMainSizer->Add(pLineSizer, 0, wxLEFT|wxRIGHT, 5);
 
-	m_checkBoxSelAll = ZION_NEW wxCheckBox( panel3, ID_CHECKBOX_SELECT_ALL, wxT("Select All Sheet"), wxDefaultPosition, wxDefaultSize, 0 );
+	// static line
+	pMainSizer->Add(
+		ZION_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL),
+		0, wxEXPAND | wxALL, 5 );
 
-	bSizer6->Add( m_checkBoxSelAll, 0, wxALL, 5 );
+	// botton
+	pMainSizer->Add(
+		ZION_NEW wxButton( this, wxID_OK, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0),
+		0, wxLEFT|wxRIGHT|wxALIGN_RIGHT, 10);
 
-	bSizer3->Add( bSizer6, 1, wxEXPAND, 5 );
-	
-	panel3->SetSizer( bSizer3 );
-	panel3->Layout();
-	bSizer3->Fit( panel3 );
-	m_mainSizer->Add( panel3, 1, wxEXPAND | wxALL, 5 );
-
-	wxStaticLine *m_staticline1 = ZION_NEW wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	m_mainSizer->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
-
-	m_btnOK = ZION_NEW wxButton( this, wxID_OK, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_mainSizer->Add( m_btnOK, 0, wxALL|wxALIGN_RIGHT, 5 );
-	SetSizer( m_mainSizer );
-	Layout();
+	SetSizer(pMainSizer);
 }
 
 void CImportDlg::OnFilePicker(wxFileDirPickerEvent& event)

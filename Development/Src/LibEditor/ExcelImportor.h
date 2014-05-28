@@ -22,12 +22,17 @@ public:
 	void ClearTemplateDefine();
 	bool LoadTemplateDefine(const char* filename);
 
+	void Begin();
+	void ClearData(const DDLReflect::STRUCT_INFO* info, bool bExactMatch);
 	bool ImportSheet(const char* tmpl, COLEAutoExcelWrapper* excel);
+	void End();
 
 private:
 	Zion::Map<Zion::String, EXCEL_ENUM*>		m_enum_map;
 	Zion::Map<Zion::String, EXCEL_TEMPLATE*>	m_tmpl_map;
 	Zion::String m_errmsg;
+
+	Zion::Set<A_UUID>							m_DeleteList;
 };
 
 #endif	// _EXCEL_IMPORTOR_H__

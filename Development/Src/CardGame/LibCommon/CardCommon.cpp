@@ -29,7 +29,7 @@ namespace Zion
 		
 		pContentGroup = ContentObject::CreateContentGroup("Card", "card.json", true);
 		pContentGroup->Register(DDLReflect::GetStruct<CG_SHOPITEM>(), true, "shopitem_id");
-		pContentGroup->Register(DDLReflect::GetStruct<CG_CARD_CONFIG>(), true, "uuid");
+		pContentGroup->Register(DDLReflect::GetStruct<CG_CARD_CONFIG>(), true, "_uuid");
 	}
 
 	void InitLiveObjects()

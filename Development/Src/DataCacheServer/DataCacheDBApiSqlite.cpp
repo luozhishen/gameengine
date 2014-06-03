@@ -186,14 +186,14 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_open(m_sqlite_path.c_str(), &m_sqlite))
 			{
-				printf("error in sqlite3_open(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_open(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			int table_count = -1;
 			if(SQLITE_OK!=sqlite3_exec(m_sqlite, "SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='avatar_table' OR name='avatar_object_table' OR name='user_table' OR name='login_history_table' OR name='task_table')", sqlite_callback, &table_count, NULL))
 			{
-				printf("error in sqlite3_exec(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_exec(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			if(table_count==0)
@@ -203,7 +203,7 @@ namespace Zion
 				{
 					if(SQLITE_OK!=sqlite3_exec(m_sqlite, sqls[i], NULL, NULL, NULL))
 					{
-						printf("error in sqlite3_exec(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+						printf("error in sqlite3_exec(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 						return false;
 					}
 				}
@@ -216,7 +216,7 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "INSERT INTO avatar_table(user_id, avatar_scope, avatar_name, avatar_desc) VALUES(:user_id, :avatar_scope, :avatar_name, :avatar_desc)", -1, &m_sqlite_create, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_create_user_id = sqlite3_bind_parameter_index(m_sqlite_create, ":user_id");
@@ -226,28 +226,28 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "UPDATE avatar_table SET state = 1 WHERE avatar_id=:avatar_id and state=0", -1, &m_sqlite_delete, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_delete_avatar_id = sqlite3_bind_parameter_index(m_sqlite_delete, ":avatar_id");
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT state, freeze_duetime, avatar_name FROM avatar_table WHERE avatar_id=:avatar_id", -1, &m_sqlite_check, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_check_avatar_id = sqlite3_bind_parameter_index(m_sqlite_check, ":avatar_id");
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT object_uuid, object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id", -1, &m_sqlite_load, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_load_avatar_id = sqlite3_bind_parameter_index(m_sqlite_load, ":avatar_id");
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "INSERT INTO avatar_object_table values(:avatar_id, :object_uuid, :object_type, :object_data)", -1, &m_sqlite_insert, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_insert_avatar_id = sqlite3_bind_parameter_index(m_sqlite_insert, ":avatar_id");
@@ -257,7 +257,7 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "UPDATE avatar_object_table SET object_data=:object_data WHERE avatar_id=:avatar_id and object_uuid=:object_uuid", -1, &m_sqlite_update, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_update_avatar_id = sqlite3_bind_parameter_index(m_sqlite_update, ":avatar_id");
@@ -266,7 +266,7 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "DELETE FROM avatar_object_table WHERE avatar_id=:avatar_id AND object_uuid=:object_uuid", -1, &m_sqlite_remove, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_remove_avatar_id = sqlite3_bind_parameter_index(m_sqlite_remove, ":avatar_id");
@@ -274,7 +274,7 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT object_type, object_data FROM avatar_object_table WHERE avatar_id=:avatar_id AND object_uuid=:object_uuid", -1, &m_sqlite_query, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_query_avatar_id = sqlite3_bind_parameter_index(m_sqlite_remove, ":avatar_id");
@@ -282,7 +282,7 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "SELECT state FROM task_table WHERE task_id=:task_id AND avatar_id=:avatar_id", -1, &m_sqlite_lock_task, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_lock_task_id = sqlite3_bind_parameter_index(m_sqlite_lock_task, ":task_id");
@@ -290,7 +290,7 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_prepare(m_sqlite, "UPDATE task_table SET state=1 WHERE task_id=:task_id", -1, &m_sqlite_mark_task, NULL))
 			{
-				printf("error in sqlite3_prepare(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_prepare(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			m_sqlite_mark_task_id = sqlite3_bind_parameter_index(m_sqlite_mark_task, ":task_id");
@@ -333,28 +333,28 @@ namespace Zion
 		{
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_create))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_create, m_sqlite_create_user_id, (int)user_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;
 			}
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_create, m_sqlite_create_server_id, (int)avatar_scope))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_create, m_sqlite_create_avatar_name, avatar_name, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_create, m_sqlite_create_avatar_desc, avatar_desc, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;
 			}
 
@@ -362,7 +362,7 @@ namespace Zion
 			ret = sqlite3_step(m_sqlite_create);
 			if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
 			{
-				printf("error in sqlite3_step(m_sqlite_create, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_step(m_sqlite_create, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return (_U32)-1;
 			}
 
@@ -373,13 +373,13 @@ namespace Zion
 		{
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_delete))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_delete, m_sqlite_load_avatar_id, (int)avatar_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -387,7 +387,7 @@ namespace Zion
 			ret = sqlite3_step(m_sqlite_delete);
 			if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
 			{
-				printf("error in sqlite3_step(m_sqlite_delete, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_step(m_sqlite_delete, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			return true;
@@ -397,13 +397,13 @@ namespace Zion
 		{
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_check))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_check, m_sqlite_check_avatar_id, (int)avatar_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -415,7 +415,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(m_sqlite_check, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_step(m_sqlite_check, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 
@@ -436,13 +436,13 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_load))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_load, m_sqlite_load_avatar_id, (int)avatar_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -454,7 +454,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(m_sqlite_load, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_step(m_sqlite_load, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 
@@ -480,34 +480,34 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_insert))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_insert, m_sqlite_insert_avatar_id, (int)avatar_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_insert, m_sqlite_insert_object_uuid, suuid, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_insert, m_sqlite_insert_object_type, type, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_insert, m_sqlite_insert_object_data, data, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_DONE!=sqlite3_step(m_sqlite_insert))
 			{
-				printf("error in sqlite3_step(m_sqlite_insert, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_step(m_sqlite_insert, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -521,29 +521,29 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_update))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_update, m_sqlite_update_avatar_id, (int)avatar_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_update, m_sqlite_update_object_uuid, suuid, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_update, m_sqlite_update_object_data, data, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_DONE!=sqlite3_step(m_sqlite_update))
 			{
-				printf("error in sqlite3_step(m_sqlite_update, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_step(m_sqlite_update, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -559,24 +559,24 @@ namespace Zion
 
 				if(SQLITE_OK!=sqlite3_reset(m_sqlite_remove))
 				{
-					printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 
 				if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_remove, m_sqlite_remove_avatar_id, (int)avatar_id))
 				{
-					printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 				if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_remove, m_sqlite_remove_object_uuid, suuid, -1, NULL))
 				{
-					printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 
 				if(SQLITE_DONE!=sqlite3_step(m_sqlite_remove))
 				{
-					printf("error in sqlite3_step(m_sqlite_remove, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_step(m_sqlite_remove, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 			}
@@ -590,18 +590,18 @@ namespace Zion
 
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_query))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_query, m_sqlite_query_avatar_id, (int)avatar_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			if(SQLITE_OK!=sqlite3_bind_text(m_sqlite_query, m_sqlite_query_object_uuid, suuid, -1, NULL))
 			{
-				printf("error in sqlite3_bind_text(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_text(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -612,7 +612,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(m_sqlite_query, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_step(m_sqlite_query, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 
@@ -635,19 +635,19 @@ namespace Zion
 		{
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_lock_task))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_lock_task, m_sqlite_lock_task_id, (int)avatar_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_lock_task, m_sqlite_lock_avatar_id, (int)task_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -658,7 +658,7 @@ namespace Zion
 				if(ret==SQLITE_OK || ret==SQLITE_DONE) break;
 				if(ret!=SQLITE_ROW)
 				{
-					printf("error in sqlite3_step(m_sqlite_check, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+					printf("error in sqlite3_step(m_sqlite_check, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 					return false;
 				}
 
@@ -675,13 +675,13 @@ namespace Zion
 		{
 			if(SQLITE_OK!=sqlite3_reset(m_sqlite_mark_task))
 			{
-				printf("error in sqlite3_reset(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_reset(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
 			if(SQLITE_OK!=sqlite3_bind_int(m_sqlite_mark_task, m_sqlite_mark_task_id, (int)task_id))
 			{
-				printf("error in sqlite3_bind_int(%d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_bind_int(%d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 
@@ -689,7 +689,7 @@ namespace Zion
 			ret = sqlite3_step(m_sqlite_mark_task);
 			if(ret!=SQLITE_OK && ret!=SQLITE_DONE)
 			{
-				printf("error in sqlite3_step(m_sqlite_mark_task, %d), %s", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
+				printf("error in sqlite3_step(m_sqlite_mark_task, %d), %s\n", sqlite3_errcode(m_sqlite), sqlite3_errmsg(m_sqlite));
 				return false;
 			}
 			return true;

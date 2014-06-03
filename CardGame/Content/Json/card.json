@@ -2,5 +2,8 @@
 	"head":"json",
 	"body":
 	[
+		{
+			"type":"CG_CARD_CONFIG",
+			"data":{"_name":"asdf","_uuid":"fa902986-8216-432b-b9e0-48ac1113fa8e","disp_name":"","point":0}		}
 	]
 }

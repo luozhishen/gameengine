@@ -86,7 +86,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <BuildLog />
-    <BuildLog />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

@@ -3,9 +3,6 @@
 
 #include "Patcher.h"
 
-static bool DeleteDir(const char* dir);
-static bool DeleteFile(const char* file);
-
 namespace JPatch
 {
 

@@ -10,11 +10,14 @@
 namespace Zion
 {
 
-	class CDataSyncClient : public CClientComponent, public sigslot::has_slots<>
+	class CDataSyncClient : public CClientComponent, public sigslot::has_slots<>, public IGameObjectContainer
 	{
 	public:
 		CDataSyncClient(CClient* pClient);
 		~CDataSyncClient();
+
+		virtual bool GetGameObject(const A_UUID& _uuid, const DDLReflect::STRUCT_INFO*& pType, const A_LIVE_OBJECT*& pData);
+		bool GetGameObject(CGameObject& Object, const A_UUID& _uuid);
 
 		A_LIVE_OBJECT* CreateObject(const DDLReflect::STRUCT_INFO* pInfo);
 		bool RemoveObject(const A_UUID& _uuid);

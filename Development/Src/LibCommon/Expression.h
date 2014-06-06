@@ -13,43 +13,83 @@ namespace Zion
 		class BaseNode
 		{
 		public:
-			virtual void GetValue(VM* vm, JsonValue& value) = 0;
-			virtual String GetString() = 0;
+			BaseNode(_U32 level);
+			virtual ~BaseNode();
 
-			void SetParent(Node* pParent, _U32 Index);
+			bool SetParent(Node* pParent, _U32 Index);
+			virtual _U32 GetChildrenCount();
+			virtual BaseNode* GetChild(_U32 index);
 
-			virtual _U32 GetNodeCount();
-			virtual BaseNode* GetNode(_U32 index);
+			_U32 GetLevel();
 
 		private:
+			_U32 m_Level;
 			Node* m_pParent;
 			_U32 m_Index;
 		};
 
-		class ConstantNode : public BaseNode
+		class Node : public BaseNode
 		{
-		};
-
-		class VariantNode : public BaseNode
-		{
-		};
-
-		class Node : public CBaseNode
-		{
+			friend class BaseNode;
 		public:
 			Node(_U32 level);
+			virtual ~Node();
 
-			virtual _U32 GetNodeCount();
-			virtual BaseNode* GetNode(_U32 index);
+			virtual _U32 GetChildrenCount();
+			virtual BaseNode* GetChild(_U32 index);
 
-			void Apend(BaseNode* node);
-			void SetNode(_U32 index, BaseNode* node);
+		protected:
+			bool SetChild(BaseNode* node, _U32& index);
 
 		private:
 			Array<BaseNode*> m_Children;
 		};
 
+		class VM
+		{
+		public:
+			VM();
+			virtual ~VM();
+
+			_U32 StackDepth();
+			void StackPop(JsonValue& value);
+			void StackPush(const JsonValue& value);
+
+			bool GetVariant(const String& name);
+			bool GetArray(const String& name);
+			bool CallFunction(const String& name, const JsonValue* JsonValue, _U32 arg_count);
+
+			virtual bool GetVariant(const String& name, JsonValue& value) = 0;
+			virtual bool GetArray(const String& name, _U32 index, JsonValue& value) = 0;
+			virtual bool CallFunction(const String& name, const Array<JsonValue>& params, JsonValue& value) = 0;
+
+		private:
+			Array<JsonValue> m_Stack;
+		};
+
 		// level 0
+		class ConstantNode : public BaseNode
+		{
+		public:
+			ConstantNode(const JsonValue& value);
+
+			const JsonValue& GetValue();
+
+		private:
+			JsonValue m_Value;
+		};
+
+		class VariantNode : public BaseNode
+		{
+		public:
+			VariantNode(const String& name);
+
+			const String& GetName();
+
+		private:
+			String m_Name;
+		};
+
 		class FunctionNode : public Node
 		{
 		public:
@@ -61,6 +101,8 @@ namespace Zion
 
 		class NotNode : public Node
 		{
+		public:
+			NotNode();
 		};
 
 		class BracketNode : public Node
@@ -131,16 +173,10 @@ namespace Zion
 		};
 
 		//
-		class VM
-		{
-		public:
-			virtual bool GetVariant(const String& name, JsonValue& value) = 0;
-			virtual bool GetArray(const String& name, _U32 index, JsonValue& value) = 0;
-			virtual bool CallFunction(const String& name, const Array<JsonValue>& params, JsonValue& value) = 0;
-		};
 
 		bool ParseExpression(const String& exp, BracketNode& node);
 		bool ExecuteExpression(VM* vm, const BraketNode& node, JsonValue& value);
+*/
 
 	}
 }

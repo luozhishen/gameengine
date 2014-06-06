@@ -1,142 +1,86 @@
-#ifndef __ZION_EXPRESSION__
-#define __ZION_EXPRESSION__
+#include <ZionDefines.h>
+#include <ZionSTL.h>
+#include <FastJson.h>
+#include "Expression.h"
 
 namespace Zion
 {
 	namespace Expression
 	{
 
-		class BaseNode;
-		class Node;
-		class VM;
-
-		class BaseNode
+		BaseNode::BaseNode(_U32 level)
 		{
-		public:
-			virtual void GetValue(VM* vm, JsonValue& value) = 0;
-			void SetParent(Node* pParent, _U32 Index);
+			m_Level = level;
+			m_pParent = NULL;
+			m_Index = (_U32)-1;
+		}
 
-		private:
-			Node* m_pParent;
-			_U32 m_Index;
-		};
-
-		class ConstantNode : public BaseNode
+		BaseNode::~BaseNode()
 		{
-		};
+		}
 
-		class VariantNode : public BaseNode
+		bool BaseNode::SetParent(Node* pParent, _U32 Index)
 		{
-		};
+			if(m_pParent)
+			{
+				if(!pParent->SetChild(NULL, Index)) return false;
+				m_pParent = NULL;
+				m_Index = (_U32)-1;
+			}
+			if(!pParent->SetChild(this, Index)) return false;
+			m_pParent = pParent;
+			m_Index = Index;
+			return true;
+		}
 
-		class Node : public CBaseNode
+		_U32 BaseNode::GetChildrenCount()
 		{
-		public:
-			Node(_U32 level);
+			return 0;
+		}
 
-			void Apend(BaseNode* node);
-			void SetNode(_U32 index, BaseNode* node);
-			_U32 GetNodeCount();
-			BaseNode* GetNode(_U32 index);
-
-		private:
-			Array<BaseNode*> m_Children;
-		};
-
-		// level 0
-		class FunctionNode : public Node
+		BaseNode* BaseNode::GetChild(_U32 index)
 		{
-		public:
-			FunctionNode(const String& name) : Node(0) {}
+			return NULL;
+		}
 
-		private:
-			String m_Name;
-		};
-
-		class NotNode : public Node
+		_U32 BaseNode::GetLevel()
 		{
-		};
-
-		class BracketNode : public Node
+			return m_Level;
+		}
+		
+		Node::Node(_U32 level) : BaseNode(level)
 		{
-		};
+		}
 
-		class ArrayNode : public Node
+		Node::~Node()
 		{
-		public:
-		private:
-			String m_Name;
-		};
+		}
 
-		// level 1
-		class MultiplyNode : public Node
+		_U32 Node::GetChildrenCount()
 		{
-		};
+			return (_U32)m_Children.size();
+		}
 
-		class DivideNode : public Node
+		BaseNode* Node::GetChild(_U32 index)
 		{
-		};
+			if(index>=(_U32)m_Children.size()) return NULL;
+			return m_Children[index];
+		}
 
-		class ModNode : public Node
+		bool Node::SetChild(BaseNode* node, _U32& index)
 		{
-		};
-
-		// level 2
-		class AddNode : public Node
-		{
-		};
-
-		class SubNode : public Node
-		{
-		};
-
-		// level 3
-		class EqualNode : public Node
-		{
-		};
-
-		class NotEqualNode : public Node
-		{
-		};
-
-		class GreaterNode : public Node
-		{
-		};
-
-		class LessNode : public Node
-		{
-		};
-
-		class GreaterEqualNode : public Node
-		{
-		};
-
-		class LessEqualNode : public Node
-		{
-		};
-
-		// level 4
-		class AndNode : public Node
-		{
-		};
-
-		class OrNode : public Node
-		{
-		};
-
-		//
-		class VM
-		{
-		public:
-			virtual bool GetVariant(const String& name, JsonValue& value) = 0;
-			virtual bool GetArray(const String& name, _U32 index, JsonValue& value) = 0;
-			virtual bool CallFunction(const String& name, const Array<JsonValue>& params, JsonValue& value) = 0;
-		};
-
-		bool ParseExpression(const String& exp, BracketNode& node);
-		bool ExecuteExpression(VM* vm, const BraketNode& node, JsonValue& value);
+			if(index==(_U32)-1)
+			{
+				m_Children.push_back(node);
+				index = (_U32)m_Children.size()-1;
+			}
+			else
+			{
+				if(index>=(_U32)m_Children.size()) return false;
+				m_Children[index] = node;
+			}
+			return true;
+		}
 
 	}
 }
-
-#endif

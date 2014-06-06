@@ -31,6 +31,9 @@
     <ProjectReference Include="..\..\LibEditor\LibEditor.vcxproj">
       <Project>{48206a30-7d48-4ab8-b647-413a4ee27afa}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\LibGameFramework\LibGameFramework.vcxproj">
+      <Project>{a859d2b5-df33-4177-bf74-48c15f1f6641}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\LibGui\LibGui.vcxproj">
       <Project>{ed44f362-6b0a-4d84-9089-2e0a89cdbecc}</Project>
     </ProjectReference>

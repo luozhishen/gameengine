@@ -1,5 +1,6 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
+#include <GameObject.h>
 #include "ZionClient.h"
 #include "DataSyncClient.h"
 
@@ -17,6 +18,23 @@ namespace Zion
 	CDataSyncClient::~CDataSyncClient()
 	{
 		Clear();
+	}
+
+	bool CDataSyncClient::GetGameObject(const A_UUID& _uuid, const DDLReflect::STRUCT_INFO*& pType, const A_LIVE_OBJECT*& pData)
+	{
+		LiveData::CObject* pObject = GetObject(_uuid);
+		if(!pObject) return false;
+		ZION_ASSERT(DDLReflect::IsParent(pObject->GetStructInfo(), DDLReflect::GetStruct<A_LIVE_OBJECT>()));
+		if(!DDLReflect::IsParent(pObject->GetStructInfo(), DDLReflect::GetStruct<A_LIVE_OBJECT>())) return false;
+		pType = pObject->GetStructInfo();
+		pData = (const A_LIVE_OBJECT*)pObject->GetData();
+		return true;
+	}
+
+	bool CDataSyncClient::GetGameObject(CGameObject& Object, const A_UUID& _uuid)
+	{
+		Object.Init(this, _uuid);
+		return Object.IsValid();
 	}
 
 	A_LIVE_OBJECT* CDataSyncClient::CreateObject(const DDLReflect::STRUCT_INFO* pInfo)

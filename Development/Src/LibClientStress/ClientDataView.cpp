@@ -11,6 +11,7 @@
 
 #include <ZionBase.h>
 #include <ZionCommon.h>
+#include <GameObject.h>
 #include <ZionClient.h>
 #include <DataSyncClient.h>
 #include <mosdk.h>

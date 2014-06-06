@@ -1,5 +1,6 @@
 #include <ZionBase.h>
 #include <ZionCommon.h>
+#include <GameObject.h>
 #include <mosdk.h>
 #include "ZionClientApp.h"
 #include "ZionClient.h"

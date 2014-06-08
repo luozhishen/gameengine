@@ -2,83 +2,87 @@
 #include <ZionSTL.h>
 #include <FastJson.h>
 #include "Expression.h"
+#include "ExpressionParser.h"
+#include "ExpressionNode.h"
 
 namespace Zion
 {
 	namespace Expression
 	{
 
-		BaseNode::BaseNode(_U32 level)
-		{
-			m_Level = level;
-			m_pParent = NULL;
-			m_Index = (_U32)-1;
-		}
-
-		BaseNode::~BaseNode()
+		VM::VM()
 		{
 		}
 
-		bool BaseNode::SetParent(Node* pParent, _U32 Index)
+		VM::~VM()
 		{
-			if(m_pParent)
-			{
-				if(!pParent->SetChild(NULL, Index)) return false;
-				m_pParent = NULL;
-				m_Index = (_U32)-1;
-			}
-			if(!pParent->SetChild(this, Index)) return false;
-			m_pParent = pParent;
-			m_Index = Index;
+		}
+
+		_U32 VM::StackDepth()
+		{
+			return (_U32)m_Stack.size();
+		}
+
+		bool VM::StackPop(JsonValue& value)
+		{
+			if(m_Stack.empty()) return false;
+			value = m_Stack[m_Stack.size()-1];
+			m_Stack.pop_back();
 			return true;
 		}
 
-		_U32 BaseNode::GetChildrenCount()
+		void VM::StackPush(const JsonValue& value)
 		{
-			return 0;
+			m_Stack.push_back(value);
 		}
 
-		BaseNode* BaseNode::GetChild(_U32 index)
+		bool VM::GetVariant(const String& name)
 		{
-			return NULL;
+			return false;
 		}
 
-		_U32 BaseNode::GetLevel()
+		bool VM::GetArray(const String& name)
 		{
-			return m_Level;
+			return false;
 		}
-		
-		Node::Node(_U32 level) : BaseNode(level)
+
+		bool VM::CallFunction(const String& name, const JsonValue* JsonValue, _U32 arg_count)
+		{
+			return false;
+		}
+
+		VMState::VMState()
 		{
 		}
 
-		Node::~Node()
+		VMState::~VMState()
 		{
 		}
 
-		_U32 Node::GetChildrenCount()
+		bool VMState::Compile(const String& exp)
 		{
-			return (_U32)m_Children.size();
+			RootNode root;
+			if(!ParseExpression(exp, root)) return false;
+			return Compile(&root);
 		}
 
-		BaseNode* Node::GetChild(_U32 index)
+		bool VMState::Compile(const RootNode* root)
 		{
-			if(index>=(_U32)m_Children.size()) return NULL;
-			return m_Children[index];
+			return false;
 		}
 
-		bool Node::SetChild(BaseNode* node, _U32& index)
+		bool VMState::Load(const _U8* data, _U32 len)
 		{
-			if(index==(_U32)-1)
-			{
-				m_Children.push_back(node);
-				index = (_U32)m_Children.size()-1;
-			}
-			else
-			{
-				if(index>=(_U32)m_Children.size()) return false;
-				m_Children[index] = node;
-			}
+			return false;
+		}
+
+		bool VMState::Save()
+		{
+			return false;
+		}
+
+		bool VMState::Execute(VM* vm, JsonValue& retval)
+		{
 			return true;
 		}
 

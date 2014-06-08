@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="DataSyncDDL.cpp" />
     <ClCompile Include="Expression.cpp" />
+    <ClCompile Include="ExpressionNode.cpp" />
+    <ClCompile Include="ExpressionParser.cpp" />
     <ClCompile Include="LiveData.cpp" />
     <ClCompile Include="ZionCommon.cpp" />
     <ClCompile Include="CommonDDL.cpp" />
@@ -31,6 +33,8 @@
   <ItemGroup>
     <ClInclude Include="DataSyncDDL.h" />
     <ClInclude Include="Expression.h" />
+    <ClInclude Include="ExpressionNode.h" />
+    <ClInclude Include="ExpressionParser.h" />
     <ClInclude Include="LiveData.h" />
     <ClInclude Include="ZionCommon.h" />
     <ClInclude Include="CommonDDL.h" />

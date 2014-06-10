@@ -1,142 +1,90 @@
-#ifndef __ZION_EXPRESSION__
-#define __ZION_EXPRESSION__
+#include <ZionDefines.h>
+#include <ZionSTL.h>
+#include <FastJson.h>
+#include "Expression.h"
+#include "ExpressionParser.h"
+#include "ExpressionNode.h"
 
 namespace Zion
 {
 	namespace Expression
 	{
 
-		class BaseNode;
-		class Node;
-		class VM;
-
-		class BaseNode
+		VM::VM()
 		{
-		public:
-			virtual void GetValue(VM* vm, JsonValue& value) = 0;
-			void SetParent(Node* pParent, _U32 Index);
+		}
 
-		private:
-			Node* m_pParent;
-			_U32 m_Index;
-		};
-
-		class ConstantNode : public BaseNode
+		VM::~VM()
 		{
-		};
+		}
 
-		class VariantNode : public BaseNode
+		_U32 VM::StackDepth()
 		{
-		};
+			return (_U32)m_Stack.size();
+		}
 
-		class Node : public CBaseNode
+		bool VM::StackPop(JsonValue& value)
 		{
-		public:
-			Node(_U32 level);
+			if(m_Stack.empty()) return false;
+			value = m_Stack[m_Stack.size()-1];
+			m_Stack.pop_back();
+			return true;
+		}
 
-			void Apend(BaseNode* node);
-			void SetNode(_U32 index, BaseNode* node);
-			_U32 GetNodeCount();
-			BaseNode* GetNode(_U32 index);
-
-		private:
-			Array<BaseNode*> m_Children;
-		};
-
-		// level 0
-		class FunctionNode : public Node
+		void VM::StackPush(const JsonValue& value)
 		{
-		public:
-			FunctionNode(const String& name) : Node(0) {}
+			m_Stack.push_back(value);
+		}
 
-		private:
-			String m_Name;
-		};
-
-		class NotNode : public Node
+		bool VM::GetVariant(const String& name)
 		{
-		};
+			return false;
+		}
 
-		class BracketNode : public Node
+		bool VM::GetArray(const String& name)
 		{
-		};
+			return false;
+		}
 
-		class ArrayNode : public Node
+		bool VM::CallFunction(const String& name, const JsonValue* JsonValue, _U32 arg_count)
 		{
-		public:
-		private:
-			String m_Name;
-		};
+			return false;
+		}
 
-		// level 1
-		class MultiplyNode : public Node
+		VMState::VMState()
 		{
-		};
+		}
 
-		class DivideNode : public Node
+		VMState::~VMState()
 		{
-		};
+		}
 
-		class ModNode : public Node
+		bool VMState::Compile(const String& exp)
 		{
-		};
+			RootNode root;
+			if(!ParseExpression(exp, root)) return false;
+			return Compile(&root);
+		}
 
-		// level 2
-		class AddNode : public Node
+		bool VMState::Compile(const RootNode* root)
 		{
-		};
+			return false;
+		}
 
-		class SubNode : public Node
+		bool VMState::Load(const _U8* data, _U32 len)
 		{
-		};
+			return false;
+		}
 
-		// level 3
-		class EqualNode : public Node
+		bool VMState::Save()
 		{
-		};
+			return false;
+		}
 
-		class NotEqualNode : public Node
+		bool VMState::Execute(VM* vm, JsonValue& retval)
 		{
-		};
-
-		class GreaterNode : public Node
-		{
-		};
-
-		class LessNode : public Node
-		{
-		};
-
-		class GreaterEqualNode : public Node
-		{
-		};
-
-		class LessEqualNode : public Node
-		{
-		};
-
-		// level 4
-		class AndNode : public Node
-		{
-		};
-
-		class OrNode : public Node
-		{
-		};
-
-		//
-		class VM
-		{
-		public:
-			virtual bool GetVariant(const String& name, JsonValue& value) = 0;
-			virtual bool GetArray(const String& name, _U32 index, JsonValue& value) = 0;
-			virtual bool CallFunction(const String& name, const Array<JsonValue>& params, JsonValue& value) = 0;
-		};
-
-		bool ParseExpression(const String& exp, BracketNode& node);
-		bool ExecuteExpression(VM* vm, const BraketNode& node, JsonValue& value);
+			return true;
+		}
 
 	}
 }
-
-#endif

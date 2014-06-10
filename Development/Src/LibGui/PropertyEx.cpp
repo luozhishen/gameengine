@@ -56,7 +56,7 @@ wxArrayProperty::wxArrayProperty(const wxString& label, const wxString& name, co
 bool wxArrayProperty::ModifyValue(const wxVariant& value)
 {
 	_U32 count = (_U32)value.GetInteger();
-	if(count>=(_U32)m_finfo->alen)
+	if(count>(_U32)m_finfo->alen)
 	{
 		SetValueFromString(wxString::Format(wxT("%d"), *((_U32*)m_data)));
 		return false;
